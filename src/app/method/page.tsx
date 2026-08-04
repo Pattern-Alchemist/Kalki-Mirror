@@ -11,7 +11,7 @@ export default function MethodPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/Surreal_labyrinth_black_stone_te…_202608031904_3.jpeg"
+        image="/assets/tantra/dark-labyrinth.jpeg"
         title="The Mirror Method"
         subtitle="A five-stage framework for recognizing and dissolving your psychological patterns through ancient sādhana."
         sectionLabel="Our Framework"

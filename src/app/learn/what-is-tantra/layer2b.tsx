@@ -47,7 +47,7 @@ export function Layer2b_DeepHistory() {
       </ArticleSection>
 
       <SectionDivider
-        image="/assets/tantra/Forgotten_chamber_ancient_yantra…_202608031904_3.jpeg"
+        image="/assets/tantra/yantra-chamber.jpeg"
         alt="Forgotten chamber with ancient yantra carvings"
         caption="Yantra carvings in a temple chamber — the geometric language of tantric practice"
       />

@@ -14,7 +14,7 @@ export function ThresholdHero() {
   return (
     <section className="relative h-screen min-h-[600px] w-full flex items-center justify-center overflow-hidden">
       <CinematicImage
-        src="/assets/hero/observatory.jpg"
+        src="/assets/tantra/temple-midnight.jpeg"
         alt="Observatory under the night sky"
         kenBurns="slow"
         scrim="full"

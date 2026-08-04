@@ -9,12 +9,12 @@ import { TIER_ORDER } from '@/lib/utils/tier-gate';
 import { AuthenticityMeter } from './AuthenticityMeter';
 
 const FALLBACK_IMAGES = [
-  '/assets/siddhi/kali-temple.jpg',
-  '/assets/siddhi/abandoned-temple.jpg',
-  '/assets/siddhi/cremation-ground.jpg',
-  '/assets/siddhi/bhairava-pathway.jpg',
-  '/assets/siddhi/temple-midnight.jpg',
-  '/assets/siddhi/sri-yantra.jpg',
+  '/assets/tantra/kali-temple.jpeg',
+  '/assets/tantra/abandoned-temple.jpeg',
+  '/assets/tantra/cremation-ground.jpeg',
+  '/assets/tantra/bhairava-pathway.jpeg',
+  '/assets/tantra/temple-midnight.jpeg',
+  '/assets/tantra/sri-yantra-sky.jpeg',
 ];
 
 function getImage(slug: string, image?: string): string {
