@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 const FOOTER_LINKS = {
   Explore: [
+    { href: '/learn/what-is-tantra', label: 'What is Tantra?' },
     { href: '/archive', label: 'The Living Archive' },
     { href: '/patterns', label: 'Pattern Atlas' },
     { href: '/practice', label: 'Sādhana Tools' },

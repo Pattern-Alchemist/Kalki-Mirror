@@ -8,6 +8,7 @@ import { fadeIn } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
+  { href: '/learn/what-is-tantra', label: 'Learn' },
   { href: '/archive', label: 'Archive' },
   { href: '/patterns', label: 'Patterns' },
   { href: '/practice', label: 'Practice' },
