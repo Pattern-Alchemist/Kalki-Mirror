@@ -5,7 +5,6 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { PageHero } from '@/components/layout/PageHero';
 import { BreathTimer } from '@/components/practice/BreathTimer';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
-import { useTier } from '@/components/layout/TierProvider';
 import { GatedContent } from '@/components/monetization/GatedContent';
 import { fadeInUp } from '@/lib/motion/tokens';
 
@@ -14,7 +13,6 @@ const FREE_PATTERNS = ['nadi-shuddhi-basic', 'bhramari', 'ujjayi-pranayama'];
 export default function PracticePage() {
   const [active, setActive] = useState(FREE_PATTERNS[0]);
   const reduced = useReducedMotion();
-  const { canAccess } = useTier();
 
   const freePatterns = allBreathPatterns.filter((p) => FREE_PATTERNS.includes(p.slug));
   const lockedPatterns = allBreathPatterns.filter((p) => !FREE_PATTERNS.includes(p.slug));
@@ -22,7 +20,7 @@ export default function PracticePage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/practice/cave-sadhana.jpg"
+        image="/assets/tantra/Underground_ritual_chamber_black…_202608031904.jpeg"
         title="Sādhana Tools"
         subtitle="Guided breathwork, japa counting, and meditation."
         sectionLabel="Practice"

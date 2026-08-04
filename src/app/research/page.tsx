@@ -14,7 +14,7 @@ export default function ResearchPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/research/ritual-chamber.jpg"
+        image="/assets/tantra/Underground_ritual_chamber_black…_202608031904_3.jpeg"
         title="Research & Sources"
         subtitle="Epistemic transparency: every claim sourced, every score explained."
         sectionLabel="Academic Rigour"

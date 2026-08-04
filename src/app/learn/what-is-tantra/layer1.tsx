@@ -13,7 +13,7 @@ export function Layer1_Mystery() {
       {/* === OPENING === */}
       <section className="relative h-screen flex items-center justify-center">
         <CinematicImage
-          src="/assets/siddhi/temple-midnight.jpg"
+          src="/assets/tantra/Ancient_temple_midnight_glowing_…_202608031904_4.jpeg"
           alt="Ancient temple at midnight with dim ritual glow"
           kenBurns="slow"
           scrim="full"

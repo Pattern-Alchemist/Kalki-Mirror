@@ -52,3 +52,9 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# AstroKalki specific
+tool-results/
+upload/
+scripts/
+*.zip

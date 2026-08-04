@@ -19,6 +19,7 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceCount: 1,
     evidenceSources: [{"confidence":"high","title":"Gheraṇḍa Saṃhitā I.54; HYP II.32 (primary)","url":"https://www.wisdomlib.org/hinduism/book/hatha-yoga-pradipika"}],
     minTier: "jal",
+    image: "/assets/tantra/Ancient_temple_midnight_glowing_…_202608031904_2.jpeg",
   },
   {
     slug: "ajapa-japa",
@@ -38,6 +39,7 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceCount: 1,
     evidenceSources: [{"confidence":"high","title":"Vijñāna Bhairava Tantra vv. 24, 27 (primary)","url":"https://www.wisdomlib.org/hinduism/book/vijnana-bhairava-tantra"}],
     minTier: "jal",
+    image: "/assets/tantra/Submerged_temple_beneath_sacred_…_202608031904.jpeg",
   },
   {
     slug: "mahamrityunjaya",
@@ -57,6 +59,7 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceCount: 1,
     evidenceSources: [{"confidence":"high","title":"Ṛgveda VII.59.12 (primary)","url":"https://www.wisdomlib.org/hinduism/compilation/rig-veda"}],
     minTier: "jal",
+    image: "/assets/tantra/Forgotten_forest_shrine_ancient_…_202608031904_2.jpeg",
   },
   {
     slug: "yoga-nidra",
@@ -76,6 +79,7 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceCount: 2,
     evidenceSources: [{"confidence":"high","title":"Māṇḍūkya Upaniṣad vv. 5–7 (primary)","url":"https://www.wisdomlib.org/hinduism/book/mandukya-upanishad"},{"confidence":"medium","title":"Saraswati, S.","url":"Yoga Nidrā (Bihar School, 1976) (modern)"}],
     minTier: "jal",
+    image: "/assets/tantra/Meditation_platform_overlooking_…_202608031904_3.jpeg",
   },
   {
     slug: "bija-mantra",
@@ -95,6 +99,7 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceCount: 1,
     evidenceSources: [{"confidence":"high","title":"Ṣaṭ-Cakra-Nirūpaṇa vv. 104–112 (primary)","url":"https://www.wisdomlib.org/hinduism/book/shat-chakra-nirupana"}],
     minTier: "jal",
+    image: "/assets/tantra/Forgotten_chamber_ancient_yantra…_202608031904_2.jpeg",
   },
   {
     slug: "kumbhaka",
@@ -114,6 +119,7 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceCount: 1,
     evidenceSources: [{"confidence":"high","title":"Yoga Sūtras II.49–52 (primary)","url":"https://www.wisdomlib.org/hinduism/book/yoga-sutras-of-patanjali"}],
     minTier: "jal",
+    image: "/assets/tantra/Cave_with_yantras_inscriptions_202608031904_2.jpeg",
   },
   {
     slug: "chakra-dharana",
@@ -133,6 +139,7 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceCount: 1,
     evidenceSources: [{"confidence":"high","title":"Ṣaṭ-Cakra-Nirūpaṇa vv. 1–55, 104–112 (primary)","url":"https://www.wisdomlib.org/hinduism/book/shat-chakra-nirupana"}],
     minTier: "jal",
+    image: "/assets/tantra/Forgotten_chamber_ancient_yantra…_202608031904.jpeg",
   },
   {
     slug: "sudarshana-chakra-sadhana",
@@ -152,6 +159,7 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceCount: 2,
     evidenceSources: [{"confidence":"high","title":"Ahirbudhnya Saṃhitā (Pāñcarātra, c. 6th-9th c.) (primary)","url":"https://archive.org/details/ahirbudhnya-samhita"},{"confidence":"high","title":"F.O. Schrader, Introduction to the Pāñcarātra and the Ahirbudhnya Saṃhitā (1916) (scholarly)","url":"https://archive.org/details/introductiontoth00schruoft"}],
     minTier: "jal",
+    image: "/assets/tantra/Ancient_observatory_with_astrola…_202608031904_2.jpeg",
   },
   {
     slug: "kamala-sadhana",
@@ -171,6 +179,7 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceCount: 5,
     evidenceSources: [{"confidence":"high","title":"Kamalā Mahāvidyā (Goswami Prahlad Giri, Chowkhamba) (primary)","url":"https://archive.org/details/kamala-mahavidya-giri"},{"confidence":"high","title":"Śākta Praamoda (3 editions, Internet Archive) (primary)","url":"https://archive.org/details/sakta-pramoda"},{"confidence":"medium","title":"Daśa Mahāvidyā Tantra-Sāra (Yogiraj Yashpal) (primary)","url":"https://archive.org/details/dasa-mahavidya-tantra-sara"},{"confidence":"high","title":"D. Kinsley, Tantric Visions of the Divine Feminine (1997, ch. 9) (scholarly)","url":""},{"confidence":"high","title":"D. Kinsley, Hindu Goddesses (UC Press, 1986) (scholarly)","url":""}],
     minTier: "jal",
+    image: "/assets/tantra/Sri_Yantra_floating_above_Himalayas_202608031904_2.jpeg",
   },
   {
     slug: "shanti-karma",
@@ -190,5 +199,6 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceCount: 0,
     evidenceSources: [],
     minTier: "jal",
+    image: "/assets/tantra/Forgotten_forest_shrine_ancient_…_202608031904.jpeg",
   }
 ];

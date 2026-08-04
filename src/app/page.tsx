@@ -22,7 +22,7 @@ export default function HomePage() {
       {/* ===== BAND 1: THRESHOLD HERO ===== */}
       <section className="relative h-screen flex items-end">
         <CinematicImage
-          src="/assets/hero/observatory.jpg"
+          src="/assets/tantra/Ancient_observatory_with_astrola…_202608031904_3.jpeg"
           alt="Ancient observatory under the Milky Way"
           kenBurns="slow"
           scrim="full"
@@ -62,7 +62,7 @@ export default function HomePage() {
         {/* Archive Door */}
         <Link href="/archive" className="group relative h-[60vh] overflow-hidden">
           <CinematicImage
-            src="/assets/archive/cave-yantras.jpg"
+            src="/assets/tantra/Cave_with_yantras_inscriptions_202608031904.jpeg"
             alt="Ancient cave with yantra inscriptions"
             kenBurns="normal"
             scrim="bottom"
@@ -81,7 +81,7 @@ export default function HomePage() {
         {/* Practice Door */}
         <Link href="/practice" className="group relative h-[60vh] overflow-hidden">
           <CinematicImage
-            src="/assets/practice/meditation-platform.jpg"
+            src="/assets/tantra/Meditation_platform_overlooking_…_202608031904_3.jpeg"
             alt="Meditation platform overlooking misty valley"
             kenBurns="normal"
             scrim="bottom"
@@ -101,7 +101,7 @@ export default function HomePage() {
       {/* ===== BAND 3: FEATURED SIDDHIS ===== */}
       <section className="relative py-24 md:py-32">
         <CinematicImage
-          src="/assets/siddhi/kali-temple.jpg"
+          src="/assets/tantra/Black_granite_temple_Kali_monsoon_202608031904.jpeg"
           alt="Black granite temple in monsoon rain"
           scrim="full"
           className="absolute inset-0"
@@ -226,7 +226,7 @@ export default function HomePage() {
       {/* ===== BAND 6: PRICING GATE ===== */}
       <section className="relative py-24 md:py-32">
         <CinematicImage
-          src="/assets/pricing/jungle-shrine.jpg"
+          src="/assets/tantra/Forgotten_forest_shrine_ancient_…_202608031904.jpeg"
           alt="Forgotten forest shrine with glowing doorway"
           scrim="full"
           className="absolute inset-0"

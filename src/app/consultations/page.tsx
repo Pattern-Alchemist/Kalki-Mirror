@@ -11,7 +11,7 @@ export default function ConsultationsPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/consultations/observatory.jpg"
+        image="/assets/tantra/Ancient_observatory_with_astrola…_202608031904.jpeg"
         title="Consultations"
         subtitle="Personal sessions bridging the ancient map and your lived experience."
         sectionLabel="With Kaustubh"
