@@ -1,0 +1,12 @@
+{
+  "name": "AstroKalki",
+  "short_name": "AstroKalki",
+  "description": "The Living Archive of Siddhi Heritage",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#c9a84c",
+  "icons": [
+    { "src": "/assets/hero/observatory.jpg", "sizes": "192x192", "type": "image/jpeg" }
+  ]
+}
