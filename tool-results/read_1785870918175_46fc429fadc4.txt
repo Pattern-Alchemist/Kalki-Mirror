@@ -1,0 +1,502 @@
+   501→   501→      "not to be undertaken without lineage transmission",
+   502→   502→      "The source manual warns that the preta's suffering is 'infectious' to unprepared prāṇa and manas",
+   503→   503→      "Never reuse a preta-sandhi yantra — single engagement only, then immersed in running water",
+   504→   504→      "Do not perform the full kriyā more than once a fortnight",
+   505→   505→      "it drains prāṇa",
+   506→   506→      "Several mantras in the source carry apparent transmission artifacts",
+   507→   507→      "the editorial-correction table in the field manual should be consulted"
+   508→   508→    ],
+   509→   509→    "evidenceCount": 1,
+   510→   510→    "evidenceSources": [
+   511→   511→      {
+   512→   512→        "confidence": "medium",
+   513→   513→        "title": "Preta-Siddhi Field Manual (user-supplied transcription, Aghora/Kaula) (primary)",
+   514→   514→        "url": ""
+   515→   515→      }
+   516→   516→    ],
+   517→   517→    "minTier": "agni"
+   518→   518→  },
+   519→   519→  {
+   520→   520→    "slug": "bagalamukhi-sadhana",
+   521→   521→    "name": "Bagalāmukhī Sādhana",
+   522→   522→    "sanskrit": "बगलामुखी — The Paralysing Goddess",
+   523→   523→    "category": "Tantra",
+   524→   524→    "tradition": "Śākta (Daśa Mahāvidyā)",
+   525→   525→    "level": "Advanced",
+   526→   526→    "durationHours": 24,
+   527→   527→    "days": 45,
+   528→   528→    "authenticityScore": 78,
+   529→   529→    "summary": "The eighth Mahāvidyā, embodying stambhana (paralysis) — the power to silence hostile speech and arrest inauspicious force. Attested in the Todala Tantra and Rudrayāmala.",
+   530→   530→    "primaryMantra": "the specific mūla-mantra varies across recensions; the bīja-syllable hrīṁ and the namaskāra 'oṃ hrīṁ bagalāmukhī devyai namaḥ' are publicly attested",
+   531→   531→    "lineage": "Todala Tantra → Rudrayāmala → Pitāmbarā Peeth recension → modern Śākta paddhatis. Academic study: D.G. White (Kiss of the Yoginī, 2003), Sanderson (Śaiva Exegesis, 2007), Goudriaan & Gupta (Hindu Tantric and Śākta Literature, 1981).",
+   532→   532→    "benefits": [
+   533→   533→      "Documents one of the ten Mahāvidyās in their textual lineage",
+   534→   534→      "Surfaces the stambhana framework as a category of contemplative action",
+   535→   535→      "Connects to a substantial academic literature on Śākta tantric practice"
+   536→   536→    ],
+   537→   537→    "warnings": [
+   538→   538→      "HIGH CAUTION — advanced Mahāvidyā practice, traditionally requires dīkṣā",
+   539→   539→      "Stambhana rites are categorized as ugra (fierce)",
+   540→   540→      "the source texts warn against casual undertaking",
+   541→   541→      "The Pitāmbarā Peeth recension carries explicit restriction against open publication of the mūla-mantra",
+   542→   542→      "Not appropriate for practitioners without a Śākta lineage grounding"
+   543→   543→    ],
+   544→   544→    "evidenceCount": 5,
+   545→   545→    "evidenceSources": [
+   546→   546→      {
+   547→   547→        "confidence": "high",
+   548→   548→        "title": "Todala Tantra ch. 6 (mūla-mantras of the 10 Mahāvidyās) (primary)",
+   549→   549→        "url": "https://archive.org/details/todala-tantra"
+   550→   550→      },
+   551→   551→      {
+   552→   552→        "confidence": "high",
+   553→   553→        "title": "Rudrayāmala (Bagalāmukhī-stotra section, Uttara-tantra) (primary)",
+   554→   554→        "url": ""
+   555→   555→      },
+   556→   556→      {
+   557→   557→        "confidence": "high",
+   558→   558→        "title": "Bagalāmukhī Rahasyam (Pitāmbarā Peeth, Datia, 1st ed. 1964) (primary)",
+   559→   559→        "url": ""
+   560→   560→      },
+   561→   561→      {
+   562→   562→        "confidence": "high",
+   563→   563→        "title": "D.G. White, Kiss of the Yoginī (Chicago, 2003) (scholarly)",
+   564→   564→        "url": ""
+   565→   565→      },
+   566→   566→      {
+   567→   567→        "confidence": "high",
+   568→   568→        "title": "Goudriaan & Gupta, Hindu Tantric and Śākta Literature (Harrassowitz, 1981) (scholarly)",
+   569→   569→        "url": ""
+   570→   570→      }
+   571→   571→    ],
+   572→   572→    "minTier": "agni"
+   573→   573→  },
+   574→   574→  {
+   575→   575→    "slug": "chinnamasta-sadhana",
+   576→   576→    "name": "Chinnamastā Sādhana",
+   577→   577→    "sanskrit": "चिन्नमस्ता — The Self-Decapitated Goddess",
+   578→   578→    "category": "Tantra",
+   579→   579→    "tradition": "Śākta (Daśa Mahāvidyā)",
+   580→   580→    "level": "Advanced",
+   581→   581→    "durationHours": 24,
+   582→   582→    "days": 45,
+   583→   583→    "authenticityScore": 80,
+   584→   584→    "summary": "The third Mahāvidyā, iconographically depicted as self-decapitated, holding her own severed head while her two attendants drink the three streams of blood. Attested in Śāradā Tilaka ch. 7 and Prāṇatoṣiṇī commentary.",
+   585→   585→    "primaryMantra": "the mūla-mantra and the bīja 'hūṁ' are publicly attested; the operational form is dīkṣā-restricted",
+   586→   586→    "lineage": "Śāradā Tilaka (c. 8th-11th c.) → Prāṇatoṣiṇī commentary (Bhatțoji Dīkṣita) → Śakti Saṅgama Tantra → modern Śākta paddhatis. Academic study: Benard 1994.",
+   587→   587→    "benefits": [
+   588→   588→      "Documents one of the most theologically dense Mahāvidyā iconographies",
+   589→   589→      "Surfaces the self-offering theology of the prāṇa-cycle",
+   590→   590→      "Connects to academic work by Benard and Ramachandra Rao"
+   591→   591→    ],
+   592→   592→    "warnings": [
+   593→   593→      "HIGH CAUTION — advanced Mahāvidyā practice",
+   594→   594→      "The iconography itself is psychologically intense",
+   595→   595→      "the source texts warn that the sādhana requires stable psychological grounding",
+   596→   596→      "The mūla-mantra is dīkṣā-restricted in published editions",
+   597→   597→      "Not appropriate for practitioners without a Śākta lineage grounding"
+   598→   598→    ],
+   599→   599→    "evidenceCount": 3,
+   600→   600→    "evidenceSources": [
+   601→   601→      {
+   602→   602→        "confidence": "high",
+   603→   603→        "title": "Śāradā Tilaka ch. 7 + Prāṇatoṣiṇī commentary (1898 ed.) (primary)",
+   604→   604→        "url": "https://archive.org/details/pranatoshini"
+   605→   605→      },
+   606→   606→      {
+   607→   607→        "confidence": "high",
+   608→   608→        "title": "Śakti Saṅgama Tantra, Chinnamastā Khaṇḍa (primary)",
+   609→   609→        "url": ""
+   610→   610→      },
+   611→   611→      {
+   612→   612→        "confidence": "high",
+   613→   613→        "title": "E. Benard, Chinnamastā: The Aweful Buddhist and Hindu Tantric Goddess (Motilal Banarsidass, 1994) (scholarly)",
+   614→   614→        "url": ""
+   615→   615→      }
+   616→   616→    ],
+   617→   617→    "minTier": "agni"
+   618→   618→  },
+   619→   619→  {
+   620→   620→    "slug": "kala-bhairava-sadhana",
+   621→   621→    "name": "Kāla Bhairava Aṣṭākṣara Sādhana",
+   622→   622→    "sanskrit": "काल भैरव — The Terrifying Form of Śiva",
+   623→   623→    "category": "Tantra",
+   624→   624→    "tradition": "Śaiva (Kashmir Śaiva / Siddhānta)",
+   625→   625→    "level": "Advanced",
+   626→   626→    "durationHours": 18,
+   627→   627→    "days": 41,
+   628→   628→    "authenticityScore": 82,
+   629→   629→    "summary": "Sādhana of Kāla Bhairava — the fierce, time-bound form of Śiva who guards the threshold and dissolves fear. Attested in the Svacchanda Tantra and the Kāla Bhairavāṣṭakam.",
+   630→   630→    "primaryMantra": "the aṣṭākṣara is attested in the Svacchanda Tantra; the specific bīja-syllables are dīkṣā-restricted. The Kāla Bhairavāṣṭakam is publicly recited.",
+   631→   631→    "lineage": "Svacchanda Tantra (Kashmir Śaiva, c. 7th-9th c.) → Abhinavagupta's commentary → modern Śaiva paddhatis. Devotional stream: Kāla Bhairavāṣṭakam (traditional attribution to Śaṅkarācārya, unverifiable). Academic: Dyczkowski (The Canon of the Śaivāgama), Sanderson (Śaiva Exegesis).",
+   632→   632→    "benefits": [
+   633→   633→      "Documents a major Śaiva ugra-devatā practice with strong textual attestation",
+   634→   634→      "Connects the contemplative and devotional streams of Bhairava worship",
+   635→   635→      "Surfaces the Svacchanda Tantra as a primary scriptural source"
+   636→   636→    ],
+   637→   637→    "warnings": [
+   638→   638→      "HIGH CAUTION — ugra-devatā practice",
+   639→   639→      "traditionally requires dīkṣā",
+   640→   640→      "The Svacchanda Tantra prescribes specific nyāsa and āvāhana preliminaries",
+   641→   641→      "without these the japa is held to be ineffective or destabilising",
+   642→   642→      "The attribution of the Kāla Bhairavāṣṭakam to Śaṅkarācārya is traditional and unverifiable",
+   643→   643→      "Not appropriate for practitioners without a Śaiva lineage grounding"
+   644→   644→    ],
+   645→   645→    "evidenceCount": 3,
+   646→   646→    "evidenceSources": [
+   647→   647→      {
+   648→   648→        "confidence": "high",
+   649→   649→        "title": "Svacchanda Tantra (Kashmir Śaiva) (primary)",
+   650→   650→        "url": "https://www.wisdomlib.org/hinduism/book/svacchanda-tantra"
+   651→   651→      },
+   652→   652→      {
+   653→   653→        "confidence": "medium",
+   654→   654→        "title": "Kāla Bhairavāṣṭakam (traditional attribution to Śaṅkarācārya, unverifiable) (primary)",
+   655→   655→        "url": "https://archive.org/details/completeworksofs00sanauoft"
+   656→   656→      },
+   657→   657→      {
+   658→   658→        "confidence": "high",
+   659→   659→        "title": "Dyczkowski, The Canon of the Śaivāgama and the Kubjikā Tantras (1988) (scholarly)",
+   660→   660→        "url": ""
+   661→   661→      }
+   662→   662→    ],
+   663→   663→    "minTier": "agni"
+   664→   664→  },
+   665→   665→  {
+   666→   666→    "slug": "bala-tripurasundari-sadhana",
+   667→   667→    "name": "Bālā Tripurasundarī (Bālā Pañcadaśākṣarī)",
+   668→   668→    "sanskrit": "बालात्रिपुरसुन्दरी — The Girl-Form of the Goddess",
+   669→   669→    "category": "Tantra",
+   670→   670→    "tradition": "Śrī Vidyā (Śākta)",
+   671→   671→    "level": "Advanced",
+   672→   672→    "durationHours": 20,
+   673→   673→    "days": 45,
+   674→   674→    "authenticityScore": 84,
+   675→   675→    "summary": "Sādhana of Bālā Tripurasundarī — the girl-form (bālā) of the Goddess, the entry-level practice of Śrī Vidyā using the 15-syllable pañcadaśākṣarī mantra. Attested in the Vāmakeśvara Tantra and Paraśurāma Kalpasūtra.",
+   676→   676→    "primaryMantra": "the pañcadaśākṣarī (15-syllable) is dīkṣā-restricted; the Bālā bīja-mantra (3-syllable) is the entry-level form, also dīkṣā-restricted in operational form",
+   677→   677→    "lineage": "Vāmakeśvara Tantra → Bhāvanā Upaniṣad → Paraśurāma Kalpasūtra (c. 10th-11th c.) + Rāmeśvara Sūtri commentary → modern Śrī Vidyā paddhatis. Academic: S.K. Ramchandra Rao, André Padoux, Madhu Khanna.",
+   678→   678→    "benefits": [
+   679→   679→      "Documents the entry-level practice of the Śrī Vidyā canon",
+   680→   680→      "Surfaces the Vāmakeśvara Tantra and Paraśurāma Kalpasūtra as primary sources",
+   681→   681→      "Connects to a substantial academic literature (Padoux, Khanna, Rao)"
+   682→   682→    ],
+   683→   683→    "warnings": [
+   684→   684→      "HIGH CAUTION — advanced Śrī Vidyā practice, traditionally requires dīkṣā",
+   685→   685→      "The pañcadaśākṣarī is held to require precise pronunciation",
+   686→   686→      "the source texts warn that incorrect japa is destabilising rather than merely ineffective",
+   687→   687→      "The mūla-mantra is dīkṣā-restricted in published editions",
+   688→   688→      "Not appropriate for practitioners without a Śrī Vidyā lineage holder"
+   689→   689→    ],
+   690→   690→    "evidenceCount": 5,
+   691→   691→    "evidenceSources": [
+   692→   692→      {
+   693→   693→        "confidence": "high",
+   694→   694→        "title": "Vāmakeśvara Tantra (primary)",
+   695→   695→        "url": ""
+   696→   696→      },
+   697→   697→      {
+   698→   698→        "confidence": "high",
+   699→   699→        "title": "Bhāvanā Upaniṣad (Śrī Cakra and pañcadaśī) (primary)",
+   700→   700→        "url": ""
+   701→   701→      },
+   702→   702→      {
+   703→   703→        "confidence": "high",
+   704→   704→        "title": "Paraśurāma Kalpasūtra (c. 10th-11th c.) + Rāmeśvara Sūtri commentary (primary)",
+   705→   705→        "url": "https://archive.org/details/srividya-sadhana-vol-1"
+   706→   706→      },
+   707→   707→      {
+   708→   708→        "confidence": "high",
+   709→   709→        "title": "S.K. Ramchandra Rao, Tantra of Śrī Cakra (Kalpatharu, 1989) (scholarly)",
+   710→   710→        "url": ""
+   711→   711→      },
+   712→   712→      {
+   713→   713→        "confidence": "high",
+   714→   714→        "title": "A. Padoux, Vac: The Concept of the Word in Selected Hindu Tantras (SUNY, 1990) (scholarly)",
+   715→   715→        "url": ""
+   716→   716→      }
+   717→   717→    ],
+   718→   718→    "minTier": "agni"
+   719→   719→  },
+   720→   720→  {
+   721→   721→    "slug": "vajrayogini-sadhana",
+   722→   722→    "name": "Vajravārāhī / Vajrayoginī Sādhana",
+   723→   723→    "sanskrit": "वज्रवाराही — The Adamantine Sow-Headed Ḍākinī",
+   724→   724→    "category": "Tantra",
+   725→   725→    "tradition": "Buddhist Tantra (Cakrasaṃvara cycle)",
+   726→   726→    "level": "Advanced",
+   727→   727→    "durationHours": 24,
+   728→   728→    "days": 60,
+   729→   729→    "authenticityScore": 86,
+   730→   730→    "summary": "Sādhana of Vajravārāhī (Vajrayoginī) — the adamantine sow-headed ḍākinī of the Cakrasaṃvara cycle. Attested in the Śrī Vajravārāhīsādhana and the Cakrasaṃvara-tantra.",
+   731→   731→    "primaryMantra": "the 10-syllable (or 12-syllable in some recensions) Vajravārāhī mantra is attested in the Śrī Vajravārāhīsādhana; the operational form is dīkṣā-restricted. The seed-syllable hrīṁ is publicly attested.",
+   732→   732→    "lineage": "Cakrasaṃvara-tantra → Śrī Vajravārāhīsādhana (Sanskrit, DSBC) → Tibetan (bKa' brgyud, Sa skya, dGe lugs transmissions) → Newari tradition. Academic: English 2002 (full monograph), Davidson 2002.",
+   733→   733→    "benefits": [
+   734→   734→      "Documents the principal female deity of the Buddhist mother-tantras",
+   735→   735→      "Surfaces the Śrī Vajravārāhīsādhana and Cakrasaṃvara-tantra as primary sources",
+   736→   736→      "Connects to substantial academic study (English 2002, Davidson 2002)"
+   737→   737→    ],
+   738→   738→    "warnings": [
+   739→   739→      "HIGH CAUTION — advanced Buddhist mother-tantra practice",
+   740→   740→      "requires abhiṣeka (empowerment)",
+   741→   741→      "The Cakrasaṃvara cycle is held in the Tibetan tradition to require completion-stage preliminaries",
+   742→   742→      "The operational mantra is dīkṣā-restricted in published editions",
+   743→   743→      "Not appropriate for practitioners without a Tibetan or Newari Buddhist lineage transmission"
+   744→   744→    ],
+   745→   745→    "evidenceCount": 4,
+   746→   746→    "evidenceSources": [
+   747→   747→      {
+   748→   748→        "confidence": "high",
+   749→   749→        "title": "Śrī Vajravārāhīsādhana (Digital Sanskrit Buddhist Canon) (primary)",
+   750→   750→        "url": "https://www.dsbcproject.org/"
+   751→   751→      },
+   752→   752→      {
+   753→   753→        "confidence": "high",
+   754→   754→        "title": "Cakrasaṃvara-tantra (primary)",
+   755→   755→        "url": ""
+   756→   756→      },
+   757→   757→      {
+   758→   758→        "confidence": "high",
+   759→   759→        "title": "E. English, Vajrayoginī: Her Visualizations, Rituals, and Forms (Wisdom, 2002) (scholarly)",
+   760→   760→        "url": "https://archive.org/details/vajrayogini-her-visualizations-rituals-forms"
+   761→   761→      },
+   762→   762→      {
+   763→   763→        "confidence": "high",
+   764→   764→        "title": "R. Davidson, Indian Esoteric Buddhism (Columbia, 2002) (scholarly)",
+   765→   765→        "url": ""
+   766→   766→      }
+   767→   767→    ],
+   768→   768→    "minTier": "agni"
+   769→   769→  },
+   770→   770→  {
+   771→   771→    "slug": "sudarshana-chakra-sadhana",
+   772→   772→    "name": "Sudarśana Chakra Sādhana",
+   773→   773→    "sanskrit": "सुदर्शन चक्र — The Discus of Viṣṇu",
+   774→   774→    "category": "Tantra",
+   775→   775→    "tradition": "Śrī Vaiṣṇava (Pāñcarātra)",
+   776→   776→    "level": "Intermediate",
+   777→   777→    "durationHours": 16,
+   778→   778→    "days": 41,
+   779→   779→    "authenticityScore": 83,
+   780→   780→    "summary": "Sādhana of the Sudarśana Chakra — the discus of Viṣṇu, wielded as the instrument of protective dharma. Attested in the Ahirbudhnya Saṃhitā and the Sudarśana Kavaca tradition.",
+   781→   781→    "primaryMantra": "the Sudarśana mūla-mantra is attested in the Ahirbudhnya Saṃhitā; the operational form is dīkṣā-restricted. The Sudarśana aṣṭākṣara 'oṃ namaḥ nārāyaṇāya' is publicly recited.",
+   782→   782→    "lineage": "Ahirbudhnya Saṃhitā (Pāñcarātra, c. 6th-9th c.) → Sudarśana Kavaca tradition → Śrī Vaiṣṇava Ācārya transmission → modern Pāñcarātra paddhatis. Academic: Schrader 1916, S. Gupta.",
+   783→   783→    "benefits": [
+   784→   784→      "Documents a major Śrī Vaiṣṇava protective practice with strong textual attestation",
+   785→   785→      "Surfaces the Ahirbudhnya Saṃhitā as a primary Pāñcarātra source",
+   786→   786→      "Connects to academic study by Schrader and Gupta"
+   787→   787→    ],
+   788→   788→    "warnings": [
+   789→   789→      "MODERATE CAUTION — protective Pāñcarātra practice",
+   790→   790→      "The mūla-mantra is dīkṣā-restricted in published editions",
+   791→   791→      "the operational japa requires Ācārya transmission in the Śrī Vaiṣṇava tradition",
+   792→   792→      "The Sudarśana homa (fire ritual) involves prescribed materials and should only be performed by trained Ācāryas"
+   793→   793→    ],
+   794→   794→    "evidenceCount": 2,
+   795→   795→    "evidenceSources": [
+   796→   796→      {
+   797→   797→        "confidence": "high",
+   798→   798→        "title": "Ahirbudhnya Saṃhitā (Pāñcarātra, c. 6th-9th c.) (primary)",
+   799→   799→        "url": "https://archive.org/details/ahirbudhnya-samhita"
+   800→   800→      },
+   801→   801→      {
+   802→   802→        "confidence": "high",
+   803→   803→        "title": "F.O. Schrader, Introduction to the Pāñcarātra and the Ahirbudhnya Saṃhitā (1916) (scholarly)",
+   804→   804→        "url": "https://archive.org/details/introductiontoth00schruoft"
+   805→   805→      }
+   806→   806→    ],
+   807→   807→    "minTier": "jal"
+   808→   808→  },
+   809→   809→  {
+   810→   810→    "slug": "pratyangira-devi-sadhana",
+   811→   811→    "name": "Pratyaṅgirā Devī Sādhana",
+   812→   812→    "sanskrit": "प्रत्यङ्गिरा — The Atharvaṇa Protective Goddess",
+   813→   813→    "category": "Tantra",
+   814→   814→    "tradition": "Śākta (Atharvaṇa / Aghora)",
+   815→   815→    "level": "Advanced",
+   816→   816→    "durationHours": 24,
+   817→   817→    "days": 41,
+   818→   818→    "authenticityScore": 70,
+   819→   819→    "summary": "Sādhana of Pratyaṅgirā Devī — the protective goddess of the Atharvaṇa tradition, invoked to neutralise hostile force. Attested in the Atharvānokta Pratyaṅgirā Vidhāna and Pratyaṅgirā Kalpa.",
+   820→   820→    "primaryMantra": "the mūla-mantra is attested in the Atharvānokta Pratyaṅgirā Vidhāna; the operational form is dīkṣā-restricted. The public form 'oṃ hrīṁ pratyaṅgirāyai namaḥ' is widely recited.",
+   821→   821→    "lineage": "Atharvānokta Pratyaṅgirā Vidhāna → Pratyaṅgirā Kalpa → Viprīta Pratyaṅgirā Vidhānam (Sanskrit manuscripts, Internet Archive) → modern Śākta-Aghora paddhatis. Academic: Hatley 2007 (Brahmayāmalatantra, milieu coverage), Sanderson (general Śaiva-Śākta context).",
+   822→   822→    "benefits": [
+   823→   823→      "Documents a major Śākta-Atharvaṇa protective practice",
+   824→   824→      "Surfaces the Internet Archive manuscripts as primary sources",
+   825→   825→      "Fills a gap in the academic coverage of Śākta tantric protective deities"
+   826→   826→    ],
+   827→   827→    "warnings": [
+   828→   828→      "HIGH CAUTION — Atharvaṇa protective rite",
+   829→   829→      "traditionally requires dīkṣā",
+   830→   830→      "The Pratyaṅgirā Vidhāna prescribes specific nyāsa, āvāhana, and bali preliminaries",
+   831→   831→      "without these the japa is held to be ineffective or destabilising",
+   832→   832→      "The mūla-mantra is dīkṣā-restricted in published editions",
+   833→   833→      "The academic literature specifically on Pratyaṅgirā is thin",
+   834→   834→      "readers should consult the Sanskrit manuscripts directly for primary attestation",
+   835→   835→      "Not appropriate for practitioners without a Śākta-Atharvaṇa lineage grounding"
+   836→   836→    ],
+   837→   837→    "evidenceCount": 4,
+   838→   838→    "evidenceSources": [
+   839→   839→      {
+   840→   840→        "confidence": "high",
+   841→   841→        "title": "Atharvānokta Pratyaṅgirā Vidhāna (Sanskrit manuscript, Internet Archive) (primary)",
+   842→   842→        "url": "https://archive.org/details/atharvanokta-pratyangira-vidhana"
+   843→   843→      },
+   844→   844→      {
+   845→   845→        "confidence": "high",
+   846→   846→        "title": "Pratyaṅgirā Kalpa (Sanskrit manuscript, Internet Archive) (primary)",
+   847→   847→        "url": "https://archive.org/details/pratyangira-kalpa"
+   848→   848→      },
+   849→   849→      {
+   850→   850→        "confidence": "high",
+   851→   851→        "title": "Viprīta Pratyaṅgirā Vidhānam (Sanskrit manuscript, Internet Archive) (primary)",
+   852→   852→        "url": "https://archive.org/details/viprita-pratyangira-vidhanam"
+   853→   853→      },
+   854→   854→      {
+   855→   855→        "confidence": "medium",
+   856→   856→        "title": "Shaman Hatley, The Brahmayāmalatantra and Early Śaiva Cult of Yoginīs (diss. 2007) (scholarly)",
+   857→   857→        "url": ""
+   858→   858→      }
+   859→   859→    ],
+   860→   860→    "minTier": "agni"
+   861→   861→  },
+   862→   862→  {
+   863→   863→    "slug": "dhumavati-sadhana",
+   864→   864→    "name": "Dhūmāvatī Sādhana",
+   865→   865→    "sanskrit": "धूमावती — The Smoke-Clad Widow",
+   866→   866→    "category": "Tantra",
+   867→   867→    "tradition": "Śākta (Daśa Mahāvidyā)",
+   868→   868→    "level": "Advanced",
+   869→   869→    "durationHours": 24,
+   870→   870→    "days": 45,
+   871→   871→    "authenticityScore": 79,
+   872→   872→    "summary": "The seventh Mahāvidyā, iconographically depicted as an aged, smoke-clad widow riding a crow, embodying inauspiciousness, decay, and the wisdom of all that is rejected. Attested in Dhūmāvatī Tantra and Śākta Praamoda.",
+   873→   873→    "primaryMantra": "the mūla-mantra is dīkṣā-restricted in published editions; the publicly attested bīja-frame is 'dhūṃ dhūmāvatyai namaḥ'",
+   874→   874→    "lineage": "Dhūmāvatī Tantra → Śākta Praamoda digest → modern Śākta paddhatis. Academic: Kinsley 1997, van Kooij 1972, Goudriaan & Gupta 1981.",
+   875→   875→    "benefits": [
+   876→   876→      "Documents the most deliberately inauspicious Mahāvidyā form",
+   877→   877→      "Surfaces the Śākta theology of wisdom-through-decay",
+   878→   878→      "Connects to Kinsley's scholarly treatment of the Mahāvidyās"
+   879→   879→    ],
+   880→   880→    "warnings": [
+   881→   881→      "HIGH CAUTION — advanced Mahāvidyā practice",
+   882→   882→      "traditionally requires dīkṣā",
+   883→   883→      "The textual tradition warns that improper practice manifests the very inauspiciousness the goddess embodies",
+   884→   884→      "The mūla-mantra is dīkṣā-restricted in the Śākta Praamoda and related editions",
+   885→   885→      "Not appropriate for practitioners without a Śākta lineage grounding"
+   886→   886→    ],
+   887→   887→    "evidenceCount": 4,
+   888→   888→    "evidenceSources": [
+   889→   889→      {
+   890→   890→        "confidence": "high",
+   891→   891→        "title": "Dhūmāvatī Tantra (Sanskrit, Internet Archive) (primary)",
+   892→   892→        "url": "https://archive.org/details/dhumavati-tantra"
+   893→   893→      },
+   894→   894→      {
+   895→   895→        "confidence": "high",
+   896→   896→        "title": "Śākta Praamoda (Rājadevanandan & Devnandan Singh eds., Internet Archive) (primary)",
+   897→   897→        "url": "https://archive.org/details/sakta-pramoda"
+   898→   898→      },
+   899→   899→      {
+   900→   900→        "confidence": "high",
+   901→   901→        "title": "David Kinsley, Tantric Visions of the Divine Feminine (UC Press, 1997) (scholarly)",
+   902→   902→        "url": ""
+   903→   903→      },
+   904→   904→      {
+   905→   905→        "confidence": "medium",
+   906→   906→        "title": "Karel van Kooij, Worship of the Goddess according to the Kālikāpurāṇa (1972) (scholarly)",
+   907→   907→        "url": ""
+   908→   908→      }
+   909→   909→    ],
+   910→   910→    "minTier": "agni"
+   911→   911→  },
+   912→   912→  {
+   913→   913→    "slug": "matangi-sadhana",
+   914→   914→    "name": "Mātaṅgī Sādhana (Ucchiṣṭa Caṇḍālinī)",
+   915→   915→    "sanskrit": "मातङ्गी — The Leftover Goddess",
+   916→   916→    "category": "Tantra",
+   917→   917→    "tradition": "Śākta (Daśa Mahāvidyā)",
+   918→   918→    "level": "Advanced",
+   919→   919→    "durationHours": 24,
+   920→   920→    "days": 45,
+   921→   921→    "authenticityScore": 81,
+   922→   922→    "summary": "The tenth Mahāvidyā, in her Ucchiṣṭa Caṇḍālinī form — the goddess worshipped with leftover food, embodying the transgressive wisdom of the marginal. Attested in the Gandharva Tantra and Mātaṅgī Tantra.",
+   923→   923→    "primaryMantra": "the mūla-mantra is dīkṣā-restricted in published editions; the publicly attested bīja-frame is 'oṃ hrīṁ aim̐ mātaṅgyai namaḥ'",
+   924→   924→    "lineage": "Gandharva Tantra (Kak & Shastri 1934 ed.) → Mātaṅgī Tantra → Śākta Praamoda → modern Śākta paddhatis. Academic: Kinsley 1997, White 2003, Goudriaan & Gupta 1981.",
+   925→   925→    "benefits": [
+   926→   926→      "Documents the transgressive Ucchiṣṭa Caṇḍālinī form of the Goddess",
+   927→   927→      "Surfaces the Śākta theology of the marginal and the rejected",
+   928→   928→      "Connects to academic work on Śākta transgressive practice (White, Kinsley)"
+   929→   929→    ],
+   930→   930→    "warnings": [
+   931→   931→      "HIGH CAUTION — advanced Mahāvidyā practice",
+   932→   932→      "traditionally requires dīkṣā",
+   933→   933→      "The Ucchiṣṭa form involves deliberate inversion of purity protocols",
+   934→   934→      "the textual tradition warns against casual undertaking",
+   935→   935→      "The mūla-mantra is dīkṣā-restricted in published editions",
+   936→   936→      "Not appropriate for practitioners without a Śākta lineage grounding"
+   937→   937→    ],
+   938→   938→    "evidenceCount": 4,
+   939→   939→    "evidenceSources": [
+   940→   940→      {
+   941→   941→        "confidence": "high",
+   942→   942→        "title": "Gandharva Tantra (Kak & Shastri 1934 ed., Internet Archive) (primary)",
+   943→   943→        "url": "https://archive.org/details/gandharva-tantra"
+   944→   944→      },
+   945→   945→      {
+   946→   946→        "confidence": "high",
+   947→   947→        "title": "Mātaṅgī Mahāvidyā (Goswami Prahlad Giri, Internet Archive) (primary)",
+   948→   948→        "url": "https://archive.org/details/matangi-mahavidya"
+   949→   949→      },
+   950→   950→      {
+   951→   951→        "confidence": "high",
+   952→   952→        "title": "D.G. White, Kiss of the Yoginī (Chicago, 2003) (scholarly)",
+   953→   953→        "url": ""
+   954→   954→      },
+   955→   955→      {
+   956→   956→        "confidence": "high",
+   957→   957→        "title": "Kinsley, Tantric Visions of the Divine Feminine (1997, ch. 8) (scholarly)",
+   958→   958→        "url": ""
+   959→   959→      }
+   960→   960→    ],
+   961→   961→    "minTier": "agni"
+   962→   962→  },
+   963→   963→  {
+   964→   964→    "slug": "tara-ugra-sadhana",
+   965→   965→    "name": "Tārā (Ugra) Sādhana",
+   966→   966→    "sanskrit": "उग्रतारा — The Fierce Hindu Tārā",
+   967→   967→    "category": "Tantra",
+   968→   968→    "tradition": "Śākta (Daśa Mahāvidyā)",
+   969→   969→    "level": "Advanced",
+   970→   970→    "durationHours": 24,
+   971→   971→    "days": 45,
+   972→   972→    "authenticityScore": 83,
+   973→   973→    "summary": "The second Mahāvidyā, the Hindu Ugra Tārā form — distinct from Tibetan Green Tārā — depicted standing on a corpse in the cremation ground. Attested in the Bṛhad Nīla Tantra and the Tārā Tantra.",
+   974→   974→    "primaryMantra": "the mūla-mantra is dīkṣā-restricted in published editions; the publicly attested bīja-frame is 'oṃ hrīṁ strīṁ hūṃ phaṭ'",
+   975→   975→    "lineage": "Bṛhad Nīla Tantra (multiple Internet Archive editions) → Tārā Tantra → Ekajaṭā Tārā Sādhana Tantra (Khandelwal 2001) → modern Śākta paddhatis. Academic: Kinsley 1997, Padoux 1990, Goudriaan & Gupta 1981.",
+   976→   976→    "benefits": [
+   977→   977→      "Documents the Hindu Ugra Tārā form (distinct from the Tibetan traditions)",
+   978→   978→      "Surfaces the Bṛhad Nīla Tantra as the primary textual witness",
+   979→   979→      "Connects to academic work by Kinsley and Padoux"
+   980→   980→    ],
+   981→   981→    "warnings": [
+   982→   982→      "HIGH CAUTION — advanced Mahāvidyā practice",
+   983→   983→      "traditionally requires dīkṣā",
+   984→   984→      "The Hindu Ugra Tārā is a fierce cremation-ground form",
+   985→   985→      "the textual tradition warns against casual undertaking",
+   986→   986→      "The mūla-mantra is dīkṣā-restricted in the Bṛhad Nīla Tantra editions",
+   987→   987→      "Not appropriate for practitioners without a Śākta lineage grounding",
+   988→   988→      "not to be confused with the Tibetan Buddhist Tārā practices"
+   989→   989→    ],
+   990→   990→    "evidenceCount": 6,
+   991→   991→    "evidenceSources": [
+   992→   992→      {
+   993→   993→        "confidence": "high",
+   994→   994→        "title": "Bṛhad Nīla Tantra (Kak & Shastri 1938 ed., Internet Archive) (primary)",
+   995→   995→        "url": "https://archive.org/details/brihad-nila-tantra"
+   996→   996→      },
+   997→   997→      {
+   998→   998→        "confidence": "high",
+   999→   999→        "title": "Bṛhad Nīla Tantra (DLI / JaiGyan edition) (primary)",
+  1000→  1000→        "url": "https://archive.org/details/brihad-nila-tantra-dli"
+
+[showing lines 501-1000 of 1802; use offset=1001 with limit to continue reading]

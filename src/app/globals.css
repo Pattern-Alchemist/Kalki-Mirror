@@ -1,0 +1,260 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-gold: var(--gold);
+  --color-gold-dim: var(--gold-dim);
+  --color-gold-bright: var(--gold-bright);
+  --color-sacred-red: var(--sacred-red);
+  --color-deep-black: var(--deep-black);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-border-subtle: var(--border-subtle);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --font-display: 'Cormorant Garamond', 'Georgia', serif;
+  --font-body: 'Crimson Text', 'Georgia', serif;
+  --font-ui: system-ui, -apple-system, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+:root {
+  --background: #0a0a0f;
+  --foreground: #e8e4d9;
+  --gold: #c9a84c;
+  --gold-dim: #8a7230;
+  --gold-bright: #e8c860;
+  --sacred-red: #8b1a1a;
+  --deep-black: #050508;
+  --surface: #111118;
+  --surface-elevated: #1a1a24;
+  --border-subtle: rgba(201, 168, 76, 0.12);
+  --text-secondary: #b8b4a8;
+  --text-muted: #6b6760;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border-subtle;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: var(--font-body);
+    background: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+  ::selection {
+    background: rgba(201, 168, 76, 0.3);
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  .section-label {
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+  }
+  .text-gold { color: var(--gold); }
+  .text-gold-dim { color: var(--gold-dim); }
+  .text-gold-bright { color: var(--gold-bright); }
+  .bg-deep-black { background-color: var(--deep-black); }
+  .bg-surface { background-color: var(--surface); }
+  .bg-surface-elevated { background-color: var(--surface-elevated); }
+  .border-gold-subtle { border-color: var(--border-subtle); }
+}
+
+/* ===== CINEMATIC IMAGE SYSTEM ===== */
+.cinematic-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.cinematic-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Ken Burns — slow zoom breathing */
+.ken-burns img {
+  animation: kenBurns 25s ease-in-out infinite alternate;
+}
+.ken-burns-slow img {
+  animation: kenBurns 40s ease-in-out infinite alternate;
+}
+@keyframes kenBurns {
+  0%   { transform: scale(1)    translate(0, 0); }
+  100% { transform: scale(1.12) translate(-1.5%, -1%); }
+}
+
+/* Film grain overlay */
+.film-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+  mix-blend-mode: overlay;
+  z-index: 2;
+}
+
+/* Gradient scrims for text legibility */
+.scrim-bottom::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 70%;
+  background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.4) 50%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+.scrim-full::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10,10,15,0.6) 0%, rgba(10,10,15,0.3) 40%, rgba(10,10,15,0.85) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+.scrim-top::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 40%;
+  background: linear-gradient(to bottom, rgba(10,10,15,0.7) 0%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Gold gradient text */
+.gold-foil-text {
+  background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 40%, var(--gold-dim) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gold gradient CTA button */
+.gold-cta {
+  background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 60%, var(--gold-dim) 100%);
+  color: #0a0a0f;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.875rem 2.5rem;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+.gold-cta:hover {
+  box-shadow: 0 0 30px rgba(201, 168, 76, 0.3);
+  transform: translateY(-1px);
+}
+.gold-cta:active {
+  transform: translateY(0);
+}
+.gold-cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Ghost CTA */
+.ghost-cta {
+  background: transparent;
+  color: var(--gold);
+  font-family: var(--font-ui);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.875rem 2.5rem;
+  border-radius: 2px;
+  border: 1px solid var(--gold-dim);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.ghost-cta:hover {
+  border-color: var(--gold);
+  background: rgba(201, 168, 76, 0.08);
+}
+
+/* Glass chip (for siddhi cards on images) */
+.glass-chip {
+  background: rgba(10, 10, 15, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  border-radius: 4px;
+}
+
+/* Entrance animations */
+.blur-fade-up {
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s ease;
+}
+.blur-fade-up.visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+/* Stagger delays */
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+.stagger-5 { transition-delay: 0.5s; }
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  .ken-burns img,
+  .ken-burns-slow img {
+    animation: none !important;
+  }
+  .blur-fade-up {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+  .gold-cta:hover,
+  .ghost-cta:hover {
+    transform: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--deep-black); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* Focus visible for accessibility */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
