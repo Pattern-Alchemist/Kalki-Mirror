@@ -1,6 +1,7 @@
 'use client';
 
 import { use } from 'react';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
@@ -9,11 +10,26 @@ import { allPatterns } from '@/lib/data/patterns';
 import { AuthenticityMeter } from '@/components/archive/AuthenticityMeter';
 import { GatedContent } from '@/components/monetization/GatedContent';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
-import { useTier } from '@/components/layout/TierProvider';
+import { CinematicImage } from '@/components/ui/CinematicImage';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { WHATSAPP_LINKS } from '@/lib/utils/whatsapp';
 import { Tier } from '@/lib/data/types';
+
+const FALLBACK_IMAGES = [
+  '/assets/siddhi/kali-temple.jpg',
+  '/assets/siddhi/abandoned-temple.jpg',
+  '/assets/siddhi/cremation-ground.jpg',
+  '/assets/siddhi/bhairava-pathway.jpg',
+  '/assets/siddhi/temple-midnight.jpg',
+  '/assets/siddhi/sri-yantra.jpg',
+];
+
+function getHeroImage(slug: string, image?: string): string {
+  if (image) return image;
+  const idx = Math.abs(slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0)) % FALLBACK_IMAGES.length;
+  return FALLBACK_IMAGES[idx];
+}
 
 function ConfidenceBadge({ confidence }: { confidence: string }) {
   const color = confidence === 'high' ? 'text-green-400 border-green-400/30 bg-green-400/10' :
@@ -27,38 +43,54 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
   const siddhi = getSiddhiBySlug(slug);
   if (!siddhi) notFound();
   const reduced = useReducedMotion();
-  const { canAccess } = useTier();
 
   const related = allSiddhis.filter((s) => s.slug !== siddhi.slug && s.category === siddhi.category).slice(0, 3);
   const relPatterns = allPatterns.filter((p) => p.relatedSiddhis.includes(siddhi.slug)).slice(0, 2);
+  const heroImg = getHeroImage(siddhi.slug, siddhi.image);
 
   return (
     <div className="bg-deep-black min-h-screen">
-      <header className="max-w-4xl mx-auto px-6 pt-24 pb-8">
-        <motion.p className="section-label mb-4" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible}>
-          {siddhi.category} · {siddhi.tradition}
-        </motion.p>
-        <motion.h1 className="font-display text-4xl md:text-5xl mb-2" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.1 }}>
-          {siddhi.name}
-        </motion.h1>
-        <motion.p className="text-text-muted text-lg mb-6" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.15 }}>
-          {siddhi.sanskrit}
-        </motion.p>
-        <motion.div className="flex flex-wrap gap-3 mb-8" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.2 }}>
-          <span className="glass-chip px-3 py-1 text-xs text-gold">{siddhi.level}</span>
-          <span className="glass-chip px-3 py-1 text-xs text-text-secondary">{TIER_LABELS[siddhi.minTier as Tier]} tier</span>
-        </motion.div>
-        <motion.div className="mb-8" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.25 }}>
-          <p className="text-text-muted text-xs uppercase tracking-wider mb-2">Authenticity</p>
-          <AuthenticityMeter score={siddhi.authenticityScore} />
-        </motion.div>
+      {/* Hero with cinematic image */}
+      <header className="relative h-[50vh] flex items-end">
+        <CinematicImage
+          src={heroImg}
+          alt={siddhi.name}
+          kenBurns="slow"
+          scrim="bottom"
+          priority
+        />
+        <div className="relative z-10 w-full max-w-4xl mx-auto px-6 pb-16 pt-32">
+          <motion.p className="section-label mb-4" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible}>
+            {siddhi.category} · {siddhi.tradition}
+          </motion.p>
+          <motion.h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-2"
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.1 }}>
+            {siddhi.name}
+          </motion.h1>
+          <motion.p className="text-text-secondary text-lg mb-6" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.15 }}>
+            {siddhi.sanskrit}
+          </motion.p>
+          <motion.div className="flex flex-wrap gap-3 mb-8" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.2 }}>
+            <span className="glass-chip px-3 py-1 text-xs text-gold">{siddhi.level}</span>
+            <span className="glass-chip px-3 py-1 text-xs text-text-secondary">{TIER_LABELS[siddhi.minTier as Tier]} tier</span>
+          </motion.div>
+        </div>
       </header>
 
       <div className="max-w-4xl mx-auto px-6 space-y-16 pb-32">
+        {/* Authenticity */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
+          <p className="text-text-muted text-xs uppercase tracking-wider mb-2">Authenticity</p>
+          <AuthenticityMeter score={siddhi.authenticityScore} />
+        </motion.section>
+
+        {/* Summary */}
+        <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
+          <h2 className="section-label mb-4">Overview</h2>
           <p className="text-text-secondary text-lg leading-relaxed">{siddhi.summary}</p>
         </motion.section>
 
+        {/* Mantra */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <h2 className="section-label mb-4">Primary Mantra</h2>
           <GatedContent minTier={siddhi.minTier}>
@@ -68,6 +100,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
           </GatedContent>
         </motion.section>
 
+        {/* Lineage */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <h2 className="section-label mb-4">Lineage</h2>
           <GatedContent minTier={siddhi.minTier}>
@@ -75,6 +108,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
           </GatedContent>
         </motion.section>
 
+        {/* Benefits */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <h2 className="section-label mb-4">Benefits</h2>
           <GatedContent minTier={siddhi.minTier}>
@@ -88,6 +122,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
           </GatedContent>
         </motion.section>
 
+        {/* Warnings - ALWAYS visible */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <h2 className="section-label mb-4 text-red-400">Warnings</h2>
           <div className="bg-red-950/20 border border-red-900/30 rounded p-6">
@@ -101,6 +136,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
           </div>
         </motion.section>
 
+        {/* Evidence */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <h2 className="section-label mb-4">Evidence Sources ({siddhi.evidenceCount})</h2>
           <div className="space-y-4">
@@ -120,20 +156,35 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
           </div>
         </motion.section>
 
+        {/* Related Siddhis */}
         {related.length > 0 && (
           <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
             <h2 className="section-label mb-6">Related Siddhis</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {related.map((s) => (
-                <Link key={s.slug} href={`/archive/${s.slug}`} className="glass-chip p-4 hover:border-gold transition-colors group">
-                  <p className="text-sm text-foreground group-hover:text-gold transition-colors">{s.name}</p>
-                  <p className="text-xs text-text-muted mt-1">{s.level}</p>
+                <Link key={s.slug} href={`/archive/${s.slug}`} className="glass-chip overflow-hidden hover:border-gold transition-colors group">
+                  {s.image && (
+                    <div className="relative h-24 w-full">
+                      <Image src={s.image} alt={s.name} fill className="object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      <p className="absolute bottom-2 left-3 text-sm text-white group-hover:text-gold transition-colors">{s.name}</p>
+                    </div>
+                  )}
+                  {!s.image && (
+                    <div className="p-4">
+                      <p className="text-sm text-foreground group-hover:text-gold transition-colors">{s.name}</p>
+                    </div>
+                  )}
+                  <div className="px-4 pb-3">
+                    <p className="text-xs text-text-muted">{s.level}</p>
+                  </div>
                 </Link>
               ))}
             </div>
           </motion.section>
         )}
 
+        {/* Mirror Method Connections */}
         {relPatterns.length > 0 && (
           <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
             <h2 className="section-label mb-6">Mirror Method Connections</h2>
@@ -148,6 +199,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
           </motion.section>
         )}
 
+        {/* CTA */}
         <motion.section className="text-center pt-8" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <WhatsAppCTA variant="inline" message={WHATSAPP_LINKS.siddhi(siddhi.name)} label="Discuss with Kaustubh" />
         </motion.section>

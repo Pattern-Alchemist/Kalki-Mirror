@@ -73,7 +73,7 @@ export function Layer2_History() {
       </ArticleSection>
 
       <SectionDivider
-        image="/assets/archive/lost-library.jpg"
+        image="/assets/tantra/Underground_library_ancient_manu…_202608031904.jpeg"
         alt="Underground library with ancient manuscripts"
         caption="A reconstruction of the kind of manuscript library tantric scholars would have maintained"
       />

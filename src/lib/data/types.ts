@@ -28,6 +28,7 @@ export interface Siddhi {
   evidenceCount: number;
   evidenceSources: EvidenceSource[];
   minTier: Tier;
+  image?: string;
 }
 
 export interface Pattern {

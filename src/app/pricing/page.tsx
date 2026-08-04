@@ -4,9 +4,8 @@ import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { PageHero } from '@/components/layout/PageHero';
 import { pricingTiers } from '@/lib/data/pricing';
-import { TIER_LABELS, TIER_ELEMENTS, TIER_COLORS } from '@/lib/utils/tier-gate';
+import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
-import { useTier } from '@/components/layout/TierProvider';
 
 export default function PricingPage() {
   const [currency, setCurrency] = useState<'INR' | 'USD'>('INR');
@@ -15,7 +14,7 @@ export default function PricingPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/pricing/jungle-shrine.jpg"
+        image="/assets/tantra/Pathway_to_Bhairava_shrine_202608031904.jpeg"
         title="Choose Your Depth"
         subtitle="Four paths. One purpose. Every tier unlocks a deeper layer."
         sectionLabel="Membership"

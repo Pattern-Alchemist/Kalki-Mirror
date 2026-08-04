@@ -83,7 +83,7 @@ export function Layer3_Tradition() {
       </ArticleSection>
 
       <SectionDivider
-        image="/assets/siddhi/sri-yantra.jpg"
+        image="/assets/tantra/Sri_Yantra_floating_above_Himalayas_202608031904.jpeg"
         alt="Śrī Yantra floating above Himalayan peaks"
         caption="The Śrī Cakra — central yantra of the Śrī Vidyā tradition"
       />

@@ -78,7 +78,7 @@ export function Layer5_Modern() {
       </ArticleSection>
 
       <SectionDivider
-        image="/assets/siddhi/bhairava-pathway.jpg"
+        image="/assets/tantra/Pathway_to_Bhairava_shrine_202608031904_3.jpeg"
         alt="Pathway leading to a Bhairava shrine at twilight"
         caption="A modern pathway to an ancient shrine — not unlike the practitioner's path into deeper awareness"
       />

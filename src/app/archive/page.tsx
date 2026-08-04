@@ -26,7 +26,7 @@ export default function ArchivePage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/archive/cave-yantras.jpg"
+        image="/assets/tantra/Cave_with_yantras_inscriptions_202608031904_4.jpeg"
         title="The Living Archive"
         subtitle="41 siddhis with evidence sources, authenticity scores, and lineage."
         sectionLabel="Scholarly Heritage"
