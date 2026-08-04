@@ -19,7 +19,7 @@ export const foundationSiddhis: Siddhi[] = [
     evidenceCount: 2,
     evidenceSources: [{"confidence":"high","title":"Māṇḍūkya Upaniṣad vv. 1–12 (primary)","url":"https://www.wisdomlib.org/hinduism/book/mandukya-upanishad"},{"confidence":"high","title":"Yoga Sūtras I.27–28 (primary)","url":"https://www.wisdomlib.org/hinduism/book/yoga-sutras-of-patanjali"}],
     minTier: "prithvi",
-    image: "/assets/siddhi/sri-yantra.jpg",
+    image: "/assets/tantra/sri-yantra-sky.jpeg",
   },
   {
     slug: "gayatri-mantra",
@@ -39,7 +39,7 @@ export const foundationSiddhis: Siddhi[] = [
     evidenceCount: 1,
     evidenceSources: [{"confidence":"high","title":"Ṛgveda III.62.10 (primary)","url":"https://www.wisdomlib.org/hinduism/compilation/rig-veda"}],
     minTier: "prithvi",
-    image: "/assets/tantra/Meditation_platform_overlooking_…_202608031904_4.jpeg",
+    image: "/assets/tantra/temple-midnight.jpeg",
   },
   {
     slug: "nadi-shuddhi",
@@ -59,7 +59,7 @@ export const foundationSiddhis: Siddhi[] = [
     evidenceCount: 1,
     evidenceSources: [{"confidence":"high","title":"Haṭha Yoga Pradīpikā II.7–14 (primary)","url":"https://www.wisdomlib.org/hinduism/book/hatha-yoga-pradipika"}],
     minTier: "prithvi",
-    image: "/assets/tantra/Submerged_temple_beneath_sacred_…_202608031904_2.jpeg",
+    image: "/assets/tantra/cave-yantras.jpeg",
   },
   {
     slug: "soham-dhyana",
@@ -79,7 +79,7 @@ export const foundationSiddhis: Siddhi[] = [
     evidenceCount: 1,
     evidenceSources: [{"confidence":"high","title":"Bṛhadāraṇyaka Upaniṣad I.4.1 (sa ahaṃ asmī) (primary)","url":""}],
     minTier: "prithvi",
-    image: "/assets/tantra/Meditation_platform_overlooking_…_202608031904.jpeg",
+    image: "/assets/tantra/bhairava-pathway.jpeg",
   },
   {
     slug: "manasika-japa",
@@ -99,7 +99,7 @@ export const foundationSiddhis: Siddhi[] = [
     evidenceCount: 1,
     evidenceSources: [{"confidence":"medium","title":"Manu Smṛti II.85; Haṭha texts (primary)","url":""}],
     minTier: "prithvi",
-    image: "/assets/tantra/Meditation_platform_overlooking_…_202608031904_2.jpeg",
+    image: "/assets/tantra/bhairava-pathway.jpeg",
   },
   {
     slug: "sandhya-vandanam",
@@ -119,6 +119,6 @@ export const foundationSiddhis: Siddhi[] = [
     evidenceCount: 1,
     evidenceSources: [{"confidence":"high","title":"Taittirīya Āraṇyaka; Gṛhya Sūtras (primary)","url":""}],
     minTier: "prithvi",
-    image: "/assets/tantra/Ancient_observatory_with_astrola…_202608031904.jpeg",
+    image: "/assets/tantra/temple-midnight.jpeg",
   }
 ];

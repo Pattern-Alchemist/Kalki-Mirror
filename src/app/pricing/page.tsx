@@ -14,7 +14,7 @@ export default function PricingPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/Pathway_to_Bhairava_shrine_202608031904.jpeg"
+        image="/assets/tantra/bhairava-pathway.jpeg"
         title="Choose Your Depth"
         subtitle="Four paths. One purpose. Every tier unlocks a deeper layer."
         sectionLabel="Membership"

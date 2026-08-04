@@ -20,7 +20,7 @@ export default function PracticePage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/Underground_ritual_chamber_black…_202608031904.jpeg"
+        image="/assets/tantra/ritual-chamber.jpeg"
         title="Sādhana Tools"
         subtitle="Guided breathwork, japa counting, and meditation."
         sectionLabel="Practice"

@@ -6,18 +6,18 @@ import { cn } from '@/lib/utils';
 import type { Pattern } from '@/lib/data/types';
 
 const PATTERN_IMAGES: Record<string, string> = {
-  'the-rescuer': '/assets/tantra/Pathway_to_Bhairava_shrine_202608031904_2.jpeg',
-  'the-perfectionist': '/assets/tantra/Cave_with_yantras_inscriptions_202608031904_3.jpeg',
-  'the-ghost': '/assets/tantra/Abandoned_Hindu_cremation_ground…_202608031904_2.jpeg',
-  'the-controller': '/assets/tantra/Abandoned_tantric_temple_Indian_…_202608031904_2.jpeg',
-  'the-hermit': '/assets/tantra/Forgotten_forest_shrine_ancient_…_202608031904_3.jpeg',
+  'the-rescuer': '/assets/tantra/bhairava-pathway.jpeg',
+  'the-perfectionist': '/assets/tantra/cave-yantras.jpeg',
+  'the-ghost': '/assets/tantra/cremation-ground.jpeg',
+  'the-controller': '/assets/tantra/abandoned-temple.jpeg',
+  'the-hermit': '/assets/tantra/abandoned-temple.jpeg',
   'the-chameleon': '/assets/tantra/Surreal_labyrinth_black_stone_te…_202608031904_2.jpeg',
-  'the-saboteur': '/assets/tantra/Underground_ritual_chamber_black…_202608031904_2.jpeg',
-  'the-avoidant': '/assets/tantra/Mountain_pass_trident_twilight_s…_202608031904_2.jpeg',
-  'the-martyr': '/assets/tantra/Black_granite_temple_Kali_monsoon_202608031904_2.jpeg',
-  'the-pleaser': '/assets/tantra/Ancient_temple_midnight_glowing_…_202608031904_3.jpeg',
-  'the-positivist': '/assets/tantra/Sri_Yantra_floating_above_Himalayas_202608031904_3.jpeg',
-  'the-architect': '/assets/tantra/Ancient_observatory_with_astrola…_202608031904_3.jpeg',
+  'the-saboteur': '/assets/tantra/ritual-chamber.jpeg',
+  'the-avoidant': '/assets/tantra/bhairava-pathway.jpeg',
+  'the-martyr': '/assets/tantra/kali-temple.jpeg',
+  'the-pleaser': '/assets/tantra/temple-midnight.jpeg',
+  'the-positivist': '/assets/tantra/sri-yantra-sky.jpeg',
+  'the-architect': '/assets/tantra/temple-midnight.jpeg',
 };
 
 interface PatternCardProps {
@@ -26,7 +26,7 @@ interface PatternCardProps {
 }
 
 export function PatternCard({ pattern, className }: PatternCardProps) {
-  const imgSrc = PATTERN_IMAGES[pattern.slug] || '/assets/patterns/labyrinth.jpg';
+  const imgSrc = PATTERN_IMAGES[pattern.slug] || '/assets/tantra/dark-labyrinth.jpeg';
 
   return (
     <Link
