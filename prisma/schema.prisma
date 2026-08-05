@@ -102,10 +102,35 @@ model InviteCode {
   @@index([code])
 }
 
+// ============================================================
+// FOLIO CHUNKS — RAG-Grounded YANTRA Intelligence
+// Each siddhi folio is split into semantic sections.
+// Embeddings enable two-pool retrieval:
+//   Pool P (prescription): OPEN only → feeds prescribed_sadhana
+//   Pool C (citation): tier-filtered → feeds archetype + tantric_citation
+//
+// On SQLite: embedding stored as JSON string, cosine sim in JS.
+// Migration path: swap to pgvector with <=> operator when moving to Postgres.
+// ============================================================
+
+model FolioChunk {
+  id        String  @id @default(cuid())
+  slug      String  // siddhi folio slug (e.g. "nadi-shuddhi", "bagalamukhi-sadhana")
+  archetype String? // linked archetype id if applicable
+  section   String  // summary | benefits | warnings | mantra | lineage | bibliography
+  caution   String  // OPEN | MODERATE | HIGH | SEALED
+  text      String  // the actual chunk text
+  embedding String  @default("[]") // JSON array of floats; empty = use keyword fallback
+
+  @@index([slug])
+  @@index([caution])
+  @@index([section])
+}
+
 model InviteUsage {
   id        String   @id @default(cuid())
   codeId    String
-  usedBy   String   // User ID who used the key
+  usedBy   String // User ID who used the key
   usedAt    DateTime @default(now())
 
   code  InviteCode @relation(fields: [codeId], references: [id], onDelete: Cascade)
