@@ -32,10 +32,10 @@ export default function RootLayout({
       <body className="min-h-screen bg-deep-black text-foreground antialiased">
         <TierProvider>
           <SacredNav />
-          <main className="pt-16">{children}</main>
+          <main className="pt-16 md:pt-20">{children}</main>
           <SacredFooter />
-          <WhatsAppCTA variant="floating" />
-          <PaywallModal />
+          <WhatsAppCTA variant="floating" />\n          <PaywallModal />\n          {/* Cinematic page vignette */}
+          <div className="page-vignette" aria-hidden="true" />
         </TierProvider>
       </body>
     </html>

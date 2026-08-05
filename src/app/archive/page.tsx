@@ -26,21 +26,21 @@ export default function ArchivePage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/cave-yantras.jpeg"
+        image="/assets/tantra/hero-temple.jpeg"
         title="The Living Archive"
         subtitle="41 siddhis with evidence sources, authenticity scores, and lineage."
         sectionLabel="Scholarly Heritage"
       />
 
-      <div className="max-w-6xl mx-auto px-6 py-16">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28">
         {/* Search + Filter */}
-        <div className="flex flex-col md:flex-row gap-4 mb-12">
+        <div className="flex flex-col md:flex-row gap-4 mb-16">
           <input
             type="text"
             placeholder="Search by name or Sanskrit..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 bg-surface border border-gold-subtle rounded px-4 py-3 text-foreground placeholder-text-muted focus:outline-none focus:border-gold font-body"
+            className="flex-1 bg-surface border border-gold/10 rounded-sm px-5 py-3.5 text-foreground placeholder-text-muted focus:outline-none focus:border-gold/30 font-body text-sm transition-colors duration-500"
             aria-label="Search siddhis"
           />
           <div className="flex flex-wrap gap-2">
@@ -48,10 +48,10 @@ export default function ArchivePage() {
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`px-4 py-2 text-xs font-ui tracking-wider uppercase rounded transition-all ${
+                className={`px-4 py-2.5 text-[0.65rem] font-ui tracking-[0.15em] uppercase rounded-sm transition-all duration-400 ${
                   filter === cat
                     ? 'bg-gold text-deep-black'
-                    : 'bg-surface text-text-muted hover:text-gold hover:border-gold border border-transparent'
+                    : 'bg-surface text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
                 }`}
               >
                 {cat}
@@ -60,7 +60,7 @@ export default function ArchivePage() {
           </div>
         </div>
 
-        <p className="text-text-muted text-sm mb-8">
+        <p className="text-caption mb-12">
           Showing {filtered.length} of {allSiddhis.length} siddhis
         </p>
 
@@ -77,7 +77,7 @@ export default function ArchivePage() {
                 variants={staggerItem}
                 initial="hidden"
                 animate="visible"
-                exit={{ opacity: 0, scale: 0.95 }}
+                exit={{ opacity: 0, scale: 0.96 }}
               >
                 <SiddhiCard siddhi={s} />
               </motion.div>

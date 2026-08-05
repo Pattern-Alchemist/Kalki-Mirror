@@ -11,14 +11,14 @@ export default function ConsultationsPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/temple-midnight.jpeg"
+        image="/assets/tantra/hero-fire.jpeg"
         title="Consultations"
         subtitle="Personal sessions bridging the ancient map and your lived experience."
         sectionLabel="With Kaustubh"
       />
 
-      <div className="max-w-4xl mx-auto px-6 py-16">
-        <motion.p className="text-text-secondary text-lg leading-relaxed mb-16 max-w-2xl"
+      <div className="max-w-4xl mx-auto px-6 lg:px-10 py-20 md:py-28">
+        <motion.p className="text-editorial mb-20 max-w-2xl"
           initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
           whileInView={fadeInUp.visible}
           viewport={{ once: true }}
@@ -34,19 +34,19 @@ export default function ConsultationsPage() {
         >
           {consultationServices.map((service) => (
             <motion.div key={service.slug} variants={staggerItem}
-              className={`glass-chip p-8 flex flex-col md:flex-row md:items-center gap-6 ${
+              className={`glass-panel p-8 md:p-10 flex flex-col md:flex-row md:items-center gap-6 ${
                 service.popular ? 'border-gold' : ''
               }`}
             >
               <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center gap-3 mb-3">
                   <h3 className="font-display text-xl text-foreground">{service.name}</h3>
                   {service.popular && (
-                    <span className="text-xs bg-gold/20 text-gold px-2 py-0.5 rounded">Most Chosen</span>
+                    <span className="text-[0.6rem] bg-gold/15 text-gold px-2.5 py-1 rounded-full tracking-wider uppercase">Most Chosen</span>
                   )}
                 </div>
-                <p className="text-text-muted text-sm mb-2">{service.duration} · {service.price}</p>
-                <p className="text-text-secondary text-sm">{service.description}</p>
+                <p className="text-caption mb-3">{service.duration} &middot; {service.price}</p>
+                <p className="text-text-secondary text-sm leading-relaxed">{service.description}</p>
               </div>
               <WhatsAppCTA
                 variant="inline"
