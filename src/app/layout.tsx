@@ -4,6 +4,7 @@ import { SacredNav } from "@/components/nav/SacredNav";
 import { SacredFooter } from "@/components/nav/SacredFooter";
 import { WhatsAppCTA } from "@/components/booking/WhatsAppCTA";
 import { TierProvider } from "@/components/layout/TierProvider";
+import { PaywallModal } from "@/components/monetization/PaywallModal";
 
 export const metadata: Metadata = {
   title: {
@@ -34,6 +35,7 @@ export default function RootLayout({
           <main className="pt-16">{children}</main>
           <SacredFooter />
           <WhatsAppCTA variant="floating" />
+          <PaywallModal />
         </TierProvider>
       </body>
     </html>

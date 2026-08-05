@@ -4,68 +4,134 @@ export const pricingTiers: PricingTier[] = [
   {
     id: 'prithvi',
     element: 'Earth',
-    elementSanskrit: 'पृथिवी',
-    priceINR: 499,
-    priceUSD: 7,
-    annualDiscount: '20%',
-    unlocks: [
-      '6 Foundation siddhis with full guides',
-      'Breath pattern library (prithvi-tier)',
-      'Shadow pattern recognition toolkit',
+    elementSanskrit: '\u092A\u0943\u0925\u094D\u0935\u0940',
+    priceINR: 0,
+    priceUSD: 0,
+    yearlyINR: 0,
+    yearlyUSD: 0,
+    annualDiscount: '0%',
+    description: 'Begin your journey with foundational sadhanas, breath work, and community wisdom. The earth beneath your feet \u2014 steady, grounded, free.',
+    features: [
+      '6 Foundation siddhis with full lineage guides',
+      'Breath Timer (3 patterns)',
+      'Shadow Pattern Recognition toolkit (3 patterns)',
+      'Japa Mala counter',
       'Community forum access',
     ],
+    gatedFeatures: [],
+    sadhanaAccess: 'basic',
+    cta: 'Current Plan',
+    unlocks: [],
     highlight: false,
   },
   {
     id: 'jal',
     element: 'Water',
-    elementSanskrit: 'जल',
-    priceINR: 1499,
-    priceUSD: 19,
-    annualDiscount: '25%',
-    unlocks: [
-      'Everything in Prithvi',
-      '10 Intermediate siddhis with full guides',
-      'Extended breath pattern library',
-      'Guided practice audio (intermediate)',
-      'Monthly group satsang',
+    elementSanskrit: '\u091C\u0932',
+    priceINR: 499,
+    priceUSD: 9,
+    yearlyINR: 4990,
+    yearlyUSD: 90,
+    annualDiscount: '17%',
+    description: 'Flow deeper into the tradition. Access all 15 intermediate siddhis with full descriptions, advanced pattern diagnostics, and the whisper of forbidden rituals.',
+    features: [
+      'All 15 Foundation + Intermediate siddhis',
+      '5 breath patterns',
+      'Pattern Atlas with 12 psychological patterns',
+      'Japa history & streaks',
+      'Shadow pattern deep-dive (9 more patterns)',
+      'Email support',
+      'Forbidden ritual teasers',
     ],
-    highlight: false,
+    gatedFeatures: [
+      'Mantra audio library',
+      'Guided ritual protocols',
+      'Custom yantra work',
+    ],
+    sadhanaAccess: 'standard',
+    cta: 'Unlock Sadhanas',
+    unlocks: [],
+    highlight: true,
+    popular: true,
   },
   {
     id: 'agni',
     element: 'Fire',
-    elementSanskrit: 'अग्नि',
-    priceINR: 3999,
-    priceUSD: 49,
-    annualDiscount: '30%',
-    unlocks: [
+    elementSanskrit: '\u0905\u0917\u094D\u0928\u093F',
+    priceINR: 1499,
+    priceUSD: 29,
+    yearlyINR: 14990,
+    yearlyUSD: 290,
+    annualDiscount: '17%',
+    description: 'Ignite the inner fire. Mantra libraries, guided rituals, monthly guru calls, and the first gates of siddhi practice open before you.',
+    features: [
       'Everything in Jal',
-      '15 Advanced siddhis with full guides',
-      'Complete breath pattern library',
-      'Guided practice audio (all tiers)',
-      'Weekly group satsang',
-      '1:1 onboarding session (30 min)',
-      'Sanskrit pronunciation workshop',
+      'Mantra audio library (50+ mantras)',
+      'Guided ritual protocols',
+      'Detailed chakra diagnostics',
+      'Priority WhatsApp support',
+      '1 monthly guru call (15 min)',
+      'Forbidden ritual access',
+      'Siddhi practice basics',
+      'Custom practice plans',
     ],
-    highlight: true,
+    gatedFeatures: [
+      '1-on-1 deep guru sessions',
+      'Custom yantra design',
+      'Advanced siddhi transmission',
+      'Retreat invitations',
+    ],
+    sadhanaAccess: 'advanced',
+    cta: 'Activate Fire',
+    unlocks: [],
+    highlight: false,
   },
   {
     id: 'akash',
-    element: 'Sky',
-    elementSanskrit: 'आकाश',
-    priceINR: 9999,
-    priceUSD: 129,
-    annualDiscount: '35%',
-    unlocks: [
+    element: 'Sky / Space',
+    elementSanskrit: '\u0906\u0915\u093E\u0936',
+    priceINR: 4999,
+    priceUSD: 99,
+    yearlyINR: 49990,
+    yearlyUSD: 990,
+    annualDiscount: '17%',
+    description: 'The innermost circle. Unlimited access to the guru, advanced siddhi transmissions, custom yantras, retreats, and the deepest teachings of the tradition.',
+    features: [
       'Everything in Agni',
-      '10 Restricted siddhis (lineage-vetted)',
-      'Private consultation priority',
-      'Custom practice plan',
-      'Direct lineage introduction (where available)',
+      'All 41 siddhis (including 10 restricted)',
+      'Weekly 1-on-1 guru sessions (60 min)',
+      'Custom yantra design & ritual',
+      'Advanced siddhi practices (forbidden)',
+      'Retreat invitations',
+      '24/7 direct guru access',
       'Scholarly source library access',
       'Lifetime updates',
     ],
+    gatedFeatures: [],
+    sadhanaAccess: 'all',
+    cta: 'Enter the Inner Circle',
+    unlocks: [],
     highlight: false,
   },
 ];
+
+export type Currency = 'INR' | 'USD';
+
+/**
+ * Detect user's preferred currency from browser locale.
+ */
+export function detectCurrency(): Currency {
+  if (typeof navigator === 'undefined') return 'INR';
+  const lang = navigator.language || (Intl.DateTimeFormat().resolvedOptions()?.locale ?? '');
+  if (/\b(IN|hi|bn|te|ta|kn|ml|mr|gu|or|pa|as|ur)\b/i.test(lang)) return 'INR';
+  return 'USD';
+}
+
+/**
+ * Format price for display.
+ */
+export function formatPrice(amount: number, currency: Currency): string {
+  if (amount === 0) return 'Free';
+  if (currency === 'INR') return `\u20B9${amount.toLocaleString('en-IN')}`;
+  return `$${amount.toLocaleString('en-US')}`;
+}
