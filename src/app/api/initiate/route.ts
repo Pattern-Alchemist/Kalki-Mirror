@@ -1,13 +1,13 @@
+export const runtime = 'nodejs';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getTransitGeometry, formatTransitForPrompt } from '@/lib/ephemeris/transits';
 import { allPatterns } from '@/lib/data/patterns';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { PATTERN_ARCHETYPE_MAP, getArchetypeById, TEN_MAHAVIDYAS, ALL_ARCHETYPES } from '@/lib/data/archetypes';
-import { getCautionLevel } from '@/components/archive/CautionBadge';
-import { getSiddhiBySlug } from '@/lib/data/siddhis';
+import { getCautionLevel, type Tier } from '@/lib/data/types';
 import { retrievePrescription, retrieveCitation } from '@/lib/rag/retrieval';
 import { buildYantraUserPrompt, YANTRA_SYSTEM_PROMPT } from '@/lib/ai/yantra-prompt';
-import type { Tier } from '@/lib/data/types';
 
 /**
  * POST /api/initiate
