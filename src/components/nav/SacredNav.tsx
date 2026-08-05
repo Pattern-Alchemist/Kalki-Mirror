@@ -75,7 +75,7 @@ export function SacredNav() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'relative text-[0.68rem] font-ui tracking-[0.18em] uppercase transition-colors duration-500 py-1',
+                    'relative text-[0.68rem] font-ui tracking-[0.18em] uppercase transition-colors duration-500 py-1 neon-tab-glow',
                     isActive(link.href)
                       ? 'text-gold'
                       : 'text-text-muted hover:text-ivory'
@@ -166,7 +166,7 @@ export function SacredNav() {
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
                       className={cn(
-                        'font-display text-3xl md:text-4xl tracking-[0.15em] py-2 transition-colors duration-500 font-light',
+                        'font-display text-3xl md:text-4xl tracking-[0.15em] py-2 transition-colors duration-500 font-light neon-tab-glow',
                         isActive(link.href)
                           ? 'text-gold'
                           : 'text-text-muted hover:text-ivory'

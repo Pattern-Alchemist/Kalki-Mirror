@@ -106,7 +106,7 @@ export default function ArchivePage() {
                   key={cat}
                   onClick={() => setFilter(cat)}
                   className={cn(
-                    'px-3.5 py-2 text-[0.6rem] font-ui tracking-[0.12em] uppercase rounded-sm transition-all duration-400',
+                    'px-3.5 py-2 text-[0.6rem] font-ui tracking-[0.12em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
                     filter === cat
                       ? 'bg-gold text-deep-black'
                       : 'bg-surface/30 text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
@@ -126,7 +126,7 @@ export default function ArchivePage() {
                   key={c.value}
                   onClick={() => setCautionFilter(c.value)}
                   className={cn(
-                    'px-3.5 py-2 text-[0.6rem] font-mono tracking-[0.12em] uppercase rounded-sm transition-all duration-400',
+                    'px-3.5 py-2 text-[0.6rem] font-mono tracking-[0.12em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
                     cautionFilter === c.value
                       ? 'bg-gold text-deep-black'
                       : 'text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
@@ -146,7 +146,7 @@ export default function ArchivePage() {
                   key={t.value}
                   onClick={() => setTierFilter(t.value)}
                   className={cn(
-                    'px-3.5 py-2 text-[0.6rem] font-mono tracking-[0.12em] uppercase rounded-sm transition-all duration-400',
+                    'px-3.5 py-2 text-[0.6rem] font-mono tracking-[0.12em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
                     tierFilter === t.value
                       ? 'bg-gold text-deep-black'
                       : 'text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
