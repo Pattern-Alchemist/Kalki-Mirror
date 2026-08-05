@@ -7,7 +7,7 @@ import { SiddhiCard } from '@/components/archive/SiddhiCard';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { staggerContainer, staggerItem } from '@/lib/motion/tokens';
 
-const CATEGORIES = ['All', 'Mantra', 'Yantra', 'Breath', 'Ritual', 'Karma', 'Meditation'];
+const CATEGORIES = ['All', 'Mantra', 'Yantra', 'Pr\u0101\u1e47\u0101y\u0101ma', 'Ritual', 'Tantra', 'Meditation', 'Dh\u0101ra\u1e47\u0101'];
 
 export default function ArchivePage() {
   const [filter, setFilter] = useState('All');

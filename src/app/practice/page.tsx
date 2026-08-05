@@ -30,7 +30,7 @@ export default function PracticePage() {
         {/* Breathwork Section */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-3">Breathwork</p>
-          <h2 className="font-display text-3xl mb-8">Prāṇāyāma Timer</h2>
+          <h2 className="font-display text-3xl text-foreground mb-8">Prāṇāyāma Timer</h2>
 
           {/* Pattern tabs */}
           <div className="flex flex-wrap gap-2 mb-10">
@@ -65,7 +65,7 @@ export default function PracticePage() {
         {/* Japa Section */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-3">Mantra Practice</p>
-          <h2 className="font-display text-3xl mb-4">Japa Mālā</h2>
+          <h2 className="font-display text-3xl text-foreground mb-4">Japa Mālā</h2>
           <p className="text-text-secondary mb-6">
             Count your mantra repetitions. The mālā persists in your browser.
           </p>
@@ -75,7 +75,7 @@ export default function PracticePage() {
         {/* Meditation Section */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-3">Meditation</p>
-          <h2 className="font-display text-3xl mb-4">Silent Sitting Timer</h2>
+          <h2 className="font-display text-3xl text-foreground mb-4">Silent Sitting Timer</h2>
           <p className="text-text-secondary mb-6">
             A simple timer for unstructured meditation practice.
           </p>
