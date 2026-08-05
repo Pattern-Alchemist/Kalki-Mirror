@@ -15,10 +15,10 @@ import { WHATSAPP_LINKS } from '@/lib/utils/whatsapp';
 import type { Tier } from '@/lib/data/types';
 
 function ConfidenceBadge({ confidence }: { confidence: string }) {
-  const color = confidence === 'high' ? 'text-green-400 border-green-400/30 bg-green-400/10' :
-    confidence === 'medium' ? 'text-yellow-400 border-yellow-400/30 bg-yellow-400/10' :
-      'text-red-400 border-red-400/30 bg-red-400/10';
-  return <span className={`text-xs px-2 py-0.5 rounded border ${color}`}>{confidence}</span>;
+  const color = confidence === 'high' ? 'text-green-400 border-green-400/20 bg-green-400/8' :
+    confidence === 'medium' ? 'text-yellow-400 border-yellow-400/20 bg-yellow-400/8' :
+      'text-red-400 border-red-400/20 bg-red-400/8';
+  return <span className={`text-[0.6rem] px-2.5 py-1 rounded-sm border tracking-wider uppercase ${color}`}>{confidence}</span>;
 }
 
 export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -32,44 +32,46 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
 
   return (
     <div className="bg-deep-black min-h-screen">
-      {/* Dark atmospheric header — no image */}
-      <header className="border-b border-[var(--border-subtle)]">
-        <div className="w-full max-w-4xl mx-auto px-6 pt-32 pb-16">
-          <motion.p className="section-label mb-4" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible}>
+      {/* Atmospheric header */}
+      <header className="border-b border-gold/5">
+        <div className="w-full max-w-4xl mx-auto px-6 lg:px-10 pt-32 pb-16">
+          <motion.p className="section-label mb-6" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible}>
             {siddhi.category} &middot; {siddhi.tradition}
           </motion.p>
-          <motion.h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground leading-tight mb-2"
+          <motion.h1 className="font-display text-4xl md:text-6xl lg:text-7xl text-foreground leading-[0.95] tracking-tight mb-3 engraved-heading"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.1 }}>
             {siddhi.name}
           </motion.h1>
-          <motion.p className="text-text-secondary text-lg mb-6" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.15 }}>
+          <motion.p className="text-text-secondary text-lg italic mb-8" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.15 }}>
             {siddhi.sanskrit}
           </motion.p>
-          <motion.div className="flex flex-wrap gap-3 mb-8" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.2 }}>
-            <span className="glass-chip px-3 py-1 text-xs text-gold">{siddhi.level}</span>
-            <span className="glass-chip px-3 py-1 text-xs text-text-secondary">{TIER_LABELS[siddhi.minTier as Tier]} tier</span>
+          <motion.div className="flex flex-wrap gap-3" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.2 }}>
+            <span className="glass-chip px-4 py-1.5 text-[0.6rem] text-gold tracking-wider uppercase">{siddhi.level}</span>
+            <span className="glass-chip px-4 py-1.5 text-[0.6rem] text-text-secondary tracking-wider uppercase">{TIER_LABELS[siddhi.minTier as Tier]} tier</span>
           </motion.div>
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto px-6 space-y-16 pb-32">
+      <div className="max-w-4xl mx-auto px-6 lg:px-10 space-y-24 pb-32">
         {/* Authenticity */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <p className="text-text-muted text-xs uppercase tracking-wider mb-2">Authenticity</p>
+          <p className="text-caption mb-4">Authenticity</p>
           <AuthenticityMeter score={siddhi.authenticityScore} />
         </motion.section>
 
+        <div className="divider-subtle" />
+
         {/* Summary */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <h2 className="section-label mb-4">Overview</h2>
-          <p className="text-text-secondary text-lg leading-relaxed">{siddhi.summary}</p>
+          <p className="section-label mb-6">Overview</p>
+          <p className="text-editorial">{siddhi.summary}</p>
         </motion.section>
 
         {/* Mantra */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <h2 className="section-label mb-4">Primary Mantra</h2>
+          <p className="section-label mb-6">Primary Mantra</p>
           <GatedContent minTier={siddhi.minTier}>
-            <p className="font-display text-2xl text-gold leading-relaxed p-6 bg-surface rounded border border-gold-subtle">
+            <p className="font-display text-2xl md:text-3xl text-gold leading-relaxed p-8 glass-panel">
               {siddhi.primaryMantra}
             </p>
           </GatedContent>
@@ -77,20 +79,20 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
 
         {/* Lineage */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <h2 className="section-label mb-4">Lineage</h2>
+          <p className="section-label mb-6">Lineage</p>
           <GatedContent minTier={siddhi.minTier}>
-            <p className="text-text-secondary leading-relaxed">{siddhi.lineage}</p>
+            <p className="text-editorial">{siddhi.lineage}</p>
           </GatedContent>
         </motion.section>
 
         {/* Benefits */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <h2 className="section-label mb-4">Benefits</h2>
+          <p className="section-label mb-6">Benefits</p>
           <GatedContent minTier={siddhi.minTier}>
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {siddhi.benefits.map((b, i) => (
-                <li key={i} className="flex items-start gap-3 text-text-secondary">
-                  <span className="text-gold mt-1">&middot;</span>{b}
+                <li key={i} className="flex items-start gap-4 text-text-secondary">
+                  <span className="text-gold mt-1">&middot;</span><span className="editorial-spacing">{b}</span>
                 </li>
               ))}
             </ul>
@@ -99,11 +101,11 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
 
         {/* Warnings - ALWAYS visible */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <h2 className="section-label mb-4 text-red-400">Warnings</h2>
-          <div className="bg-red-950/20 border border-red-900/30 rounded p-6">
+          <p className="section-label mb-6 text-red-400">Warnings</p>
+          <div className="glass-chip border-red-900/20 p-8">
             <ul className="space-y-3">
               {siddhi.warnings.map((w, i) => (
-                <li key={i} className="flex items-start gap-3 text-red-300/80">
+                <li key={i} className="flex items-start gap-3 text-red-300/70 text-sm">
                   <span className="text-red-400 mt-0.5">&middot;</span>{w}
                 </li>
               ))}
@@ -113,15 +115,15 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
 
         {/* Evidence */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <h2 className="section-label mb-4">Evidence Sources ({siddhi.evidenceCount})</h2>
+          <p className="section-label mb-6">Evidence Sources ({siddhi.evidenceCount})</p>
           <div className="space-y-4">
             {siddhi.evidenceSources.map((src, i) => (
-              <div key={i} className="glass-chip p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+              <div key={i} className="glass-chip p-5 flex flex-col sm:flex-row sm:items-center gap-4">
                 <ConfidenceBadge confidence={src.confidence} />
                 <div className="flex-1">
                   <p className="text-sm text-foreground">{src.title}</p>
                   {src.url && (
-                    <a href={src.url} target="_blank" rel="noopener noreferrer" className="text-xs text-gold-dim hover:text-gold truncate block max-w-md">
+                    <a href={src.url} target="_blank" rel="noopener noreferrer" className="text-xs text-gold-dim hover:text-gold truncate block max-w-md transition-colors duration-500">
                       {src.url}
                     </a>
                   )}
@@ -134,12 +136,12 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
         {/* Related Siddhis */}
         {related.length > 0 && (
           <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-            <h2 className="section-label mb-6">Related Siddhis</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <p className="section-label mb-8">Related Siddhis</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {related.map((s) => (
-                <Link key={s.slug} href={`/archive/${s.slug}`} className="glass-chip p-4 hover:border-gold transition-colors group">
-                  <p className="text-sm text-foreground group-hover:text-gold transition-colors mb-1">{s.name}</p>
-                  <p className="text-xs text-text-muted">{s.level}</p>
+                <Link key={s.slug} href={`/archive/${s.slug}`} className="glass-chip p-5 group">
+                  <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors duration-500 mb-1">{s.name}</p>
+                  <p className="text-caption">{s.level}</p>
                 </Link>
               ))}
             </div>
@@ -149,12 +151,12 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
         {/* Mirror Method Connections */}
         {relPatterns.length > 0 && (
           <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-            <h2 className="section-label mb-6">Mirror Method Connections</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <p className="section-label mb-8">Mirror Method Connections</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {relPatterns.map((p) => (
-                <Link key={p.slug} href={`/patterns/${p.slug}`} className="glass-chip p-4 hover:border-gold transition-colors group">
-                  <p className="text-sm text-foreground group-hover:text-gold transition-colors">{p.name}</p>
-                  <p className="text-xs text-text-muted mt-1">{p.subtitle}</p>
+                <Link key={p.slug} href={`/patterns/${p.slug}`} className="glass-chip p-5 group">
+                  <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors duration-500">{p.name}</p>
+                  <p className="text-xs text-text-muted mt-1 italic">{p.subtitle}</p>
                 </Link>
               ))}
             </div>
@@ -162,9 +164,9 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
         )}
 
         {/* CTA */}
-        <motion.section className="text-center pt-8" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
+        <motion.div className="text-center pt-12" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <WhatsAppCTA variant="inline" message={WHATSAPP_LINKS.siddhi(siddhi.name)} label="Discuss with Kaustubh" />
-        </motion.section>
+        </motion.div>
       </div>
     </div>
   );

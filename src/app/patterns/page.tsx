@@ -11,12 +11,12 @@ export default function PatternsPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/dark-labyrinth.jpeg"
+        image="/assets/tantra/hero-mountain.jpeg"
         title="Pattern Atlas"
         subtitle="The emotional patterns that run your life — and the sādhanas designed to dissolve them."
         sectionLabel="The Mirror Method"
       />
-      <div className="max-w-6xl mx-auto px-6 py-16">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28">
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           initial={reduced ? { opacity: 1 } : staggerContainer.hidden}

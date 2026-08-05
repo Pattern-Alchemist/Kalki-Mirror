@@ -12,10 +12,15 @@ interface CinematicImageProps {
   height?: number;
   className?: string;
   priority?: boolean;
-  kenBurns?: 'normal' | 'slow';
+  kenBurns?: 'normal' | 'slow' | 'none';
   scrim?: 'bottom' | 'full' | 'top' | 'none';
   filmGrain?: boolean;
+  vignette?: boolean;
+  volumetric?: boolean;
+  fog?: boolean;
+  dust?: boolean;
   aspect?: string;
+  colorGrade?: boolean;
 }
 
 export function CinematicImage({
@@ -26,10 +31,15 @@ export function CinematicImage({
   height,
   className,
   priority = false,
-  kenBurns,
+  kenBurns = 'none',
   scrim = 'none',
   filmGrain = true,
+  vignette = false,
+  volumetric = false,
+  fog = false,
+  dust = false,
   aspect,
+  colorGrade = true,
 }: CinematicImageProps) {
   const prefersReduced = useReducedMotion();
   const kbClass = prefersReduced
@@ -42,6 +52,11 @@ export function CinematicImage({
   const scrimClass =
     scrim === 'bottom' ? 'scrim-bottom' : scrim === 'full' ? 'scrim-full' : scrim === 'top' ? 'scrim-top' : '';
   const grainClass = prefersReduced ? '' : filmGrain ? 'film-grain' : '';
+  const vignetteClass = vignette ? 'vignette' : '';
+  const volumetricClass = volumetric ? 'volumetric-light' : '';
+  const fogClass = fog ? 'atmospheric-fog' : '';
+  const dustClass = prefersReduced ? '' : dust ? 'dust-particles' : '';
+  const gradeClass = colorGrade ? '' : 'no-grade';
 
   return (
     <div
@@ -50,6 +65,10 @@ export function CinematicImage({
         kbClass,
         scrimClass,
         grainClass,
+        vignetteClass,
+        volumetricClass,
+        fogClass,
+        dustClass,
         aspect,
         className
       )}
@@ -60,8 +79,8 @@ export function CinematicImage({
         <Image
           src={src}
           alt={alt}
-          width={width ?? 1200}
-          height={height ?? 800}
+          width={width ?? 1400}
+          height={height ?? 900}
           priority={priority}
           className="object-cover w-full h-full"
         />

@@ -19,13 +19,16 @@ const FOOTER_LINKS = {
 
 export function SacredFooter() {
   return (
-    <footer className="bg-deep-black border-t border-gold-subtle mt-32">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {/* Brand */}
+    <footer className="relative mt-40">
+      {/* Cinematic divider */}
+      <div className="divider-gold max-w-[1400px] mx-auto" />
+
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+          {/* Brand column */}
           <div>
-            <h3 className="font-display text-2xl text-gold mb-4">AstroKalki</h3>
-            <p className="text-text-muted text-sm leading-relaxed max-w-xs">
+            <h3 className="font-display text-3xl gold-foil-text mb-6">AstroKalki</h3>
+            <p className="text-text-muted text-sm leading-relaxed max-w-xs editorial-spacing">
               Where tantric heritage meets psychological pattern recognition.
               Scholarly, honest, Indian at its core.
             </p>
@@ -34,13 +37,13 @@ export function SacredFooter() {
           {/* Link columns */}
           {Object.entries(FOOTER_LINKS).map(([heading, links]) => (
             <div key={heading}>
-              <h4 className="section-label mb-4">{heading}</h4>
-              <ul className="space-y-3">
+              <h4 className="section-label mb-6">{heading}</h4>
+              <ul className="space-y-4">
                 {links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-text-secondary text-sm hover:text-gold transition-colors"
+                      className="text-text-secondary text-sm hover:text-gold transition-colors duration-500"
                     >
                       {link.label}
                     </Link>
@@ -51,12 +54,13 @@ export function SacredFooter() {
           ))}
         </div>
 
-        <div className="mt-16 pt-8 border-t border-gold-subtle flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-text-muted text-xs tracking-wider">
+        {/* Bottom bar */}
+        <div className="mt-20 pt-8 border-t border-gold/5 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-caption">
             Built with scholarly restraint.
           </p>
-          <p className="text-text-muted text-xs">
-            © {new Date().getFullYear()} AstroKalki. All rights reserved.
+          <p className="text-caption">
+            &copy; {new Date().getFullYear()} AstroKalki. All rights reserved.
           </p>
         </div>
       </div>

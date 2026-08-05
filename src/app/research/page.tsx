@@ -14,13 +14,13 @@ export default function ResearchPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/yantra-chamber.jpeg"
+        image="/assets/tantra/kali-temple.jpeg"
         title="Research & Sources"
         subtitle="Epistemic transparency: every claim sourced, every score explained."
         sectionLabel="Academic Rigour"
       />
 
-      <div className="max-w-4xl mx-auto px-6 py-16 space-y-20">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28 space-y-28">
         {/* Stats */}
         <motion.section className="grid grid-cols-1 md:grid-cols-3 gap-8"
           initial={reduced ? { opacity: 1 } : staggerContainer.hidden}
@@ -31,29 +31,29 @@ export default function ResearchPage() {
             { label: 'Evidence Sources', value: String(totalEvidence) },
             { label: 'Average Authenticity', value: `${avgAuth}%` },
           ].map((stat) => (
-            <motion.div key={stat.label} variants={staggerItem} className="glass-chip p-6 text-center">
-              <p className="font-display text-3xl text-gold mb-2">{stat.value}</p>
-              <p className="text-text-muted text-xs uppercase tracking-wider">{stat.label}</p>
+            <motion.div key={stat.label} variants={staggerItem} className="glass-panel p-8 md:p-10 text-center">
+              <p className="font-display text-4xl md:text-5xl text-gold mb-3 text-glow-subtle">{stat.value}</p>
+              <p className="text-caption">{stat.label}</p>
             </motion.div>
           ))}
         </motion.section>
 
         {/* Epistemic Framework */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <p className="section-label mb-3">Epistemic Transparency</p>
-          <h2 className="font-display text-3xl text-foreground mb-8">Six Evidence Categories</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <p className="section-label mb-4">Epistemic Transparency</p>
+          <h2 className="font-display text-3xl md:text-5xl text-foreground mb-12 engraved-heading">Six Evidence Categories</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { name: 'Traditional Source', desc: 'Direct from scriptural or oral tradition', icon: '📜' },
-              { name: 'Historical Evidence', desc: 'Verified through historical records and archaeology', icon: '🏛' },
-              { name: 'Academic Research', desc: 'Peer-reviewed publications and scholarly analysis', icon: '📚' },
-              { name: 'Experiential Tradition', desc: 'Living practitioner lineages and testimonies', icon: '🧘' },
-              { name: 'Editorial Synthesis', desc: 'AstroKalki editorial team cross-referenced analysis', icon: '✍' },
-              { name: 'AI Interpretation', desc: 'Machine-generated connections flagged as such', icon: '🤖' },
+              { name: 'Traditional Source', desc: 'Direct from scriptural or oral tradition' },
+              { name: 'Historical Evidence', desc: 'Verified through historical records and archaeology' },
+              { name: 'Academic Research', desc: 'Peer-reviewed publications and scholarly analysis' },
+              { name: 'Experiential Tradition', desc: 'Living practitioner lineages and testimonies' },
+              { name: 'Editorial Synthesis', desc: 'AstroKalki editorial team cross-referenced analysis' },
+              { name: 'AI Interpretation', desc: 'Machine-generated connections flagged as such' },
             ].map((cat) => (
-              <div key={cat.name} className="glass-chip p-4">
-                <p className="text-sm text-foreground mb-1">{cat.name}</p>
-                <p className="text-xs text-text-muted">{cat.desc}</p>
+              <div key={cat.name} className="glass-chip p-6">
+                <p className="text-sm text-foreground mb-2 font-display text-lg">{cat.name}</p>
+                <p className="text-xs text-text-muted editorial-spacing">{cat.desc}</p>
               </div>
             ))}
           </div>
@@ -61,20 +61,22 @@ export default function ResearchPage() {
 
         {/* Traditions covered */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <p className="section-label mb-3">Coverage</p>
-          <h2 className="font-display text-3xl text-foreground mb-6">Traditions Represented</h2>
+          <div className="divider-subtle mb-16" />
+          <p className="section-label mb-4">Coverage</p>
+          <h2 className="font-display text-3xl md:text-5xl text-foreground mb-10 engraved-heading">Traditions Represented</h2>
           <div className="flex flex-wrap gap-3">
             {traditions.map((t) => (
-              <span key={t} className="glass-chip px-4 py-2 text-sm text-text-secondary">{t}</span>
+              <span key={t} className="glass-chip px-5 py-2.5 text-sm text-text-secondary">{t}</span>
             ))}
           </div>
         </motion.section>
 
         {/* Authenticity methodology */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <p className="section-label mb-3">Methodology</p>
-          <h2 className="font-display text-3xl text-foreground mb-6">How We Score Authenticity</h2>
-          <div className="space-y-4 text-text-secondary leading-relaxed">
+          <div className="divider-subtle mb-16" />
+          <p className="section-label mb-4">Methodology</p>
+          <h2 className="font-display text-3xl md:text-5xl text-foreground mb-10 engraved-heading">How We Score Authenticity</h2>
+          <div className="space-y-6 text-editorial max-w-3xl">
             <p>Each siddhi receives an authenticity score from 0 to 100, calculated from three weighted factors: textual attestation (how many primary and secondary sources reference the practice), lineage continuity (whether the practice has an unbroken living tradition), and experiential verification (whether contemporary practitioners report results consistent with traditional descriptions).</p>
             <p>Sources are individually rated as high, medium, or low confidence. High-confidence sources are primary textual references (Upaniṣads, Tantras, Āgamas). Medium-confidence sources are secondary scholarship, commentaries, or historical records. Low-confidence sources are oral traditions without textual corroboration or modern reinterpretations without traditional grounding.</p>
             <p>We never blur the distinction between traditional knowledge and our editorial interpretation. When AstroKalki synthesizes or connects material, it is flagged as editorial synthesis, not traditional source.</p>

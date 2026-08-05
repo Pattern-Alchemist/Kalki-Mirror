@@ -2,96 +2,176 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { fadeIn } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
-  { href: '/learn/what-is-tantra', label: 'Learn' },
   { href: '/archive', label: 'Archive' },
   { href: '/patterns', label: 'Patterns' },
   { href: '/practice', label: 'Practice' },
   { href: '/method', label: 'Method' },
   { href: '/research', label: 'Research' },
-  { href: '/pricing', label: 'Pricing' },
+  { href: '/pricing', label: 'Membership' },
 ];
 
 export function SacredNav() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const reduced = useReducedMotion();
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-deep-black/80 backdrop-blur-md border-b border-gold-subtle">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="font-display text-xl text-gold tracking-wide">
-          AstroKalki
-        </Link>
-
-        {/* Desktop */}
-        <div className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                'text-sm font-ui tracking-wider uppercase transition-colors',
-                pathname === link.href || pathname.startsWith(link.href + '/')
-                  ? 'text-gold'
-                  : 'text-text-muted hover:text-text-secondary'
-              )}
-            >
-              {link.label}
+    <>
+      <nav
+        className={cn(
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-700',
+          scrolled
+            ? 'glass-nav'
+            : 'bg-transparent'
+        )}
+      >
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+          <div className="flex items-center justify-between h-16 md:h-20">
+            {/* Logo */}
+            <Link href="/" className="relative z-10">
+              <span className="font-display text-lg md:text-xl tracking-wide gold-foil-text">
+                AstroKalki
+              </span>
             </Link>
-          ))}
-        </div>
 
-        {/* Mobile toggle */}
-        <button
-          className="md:hidden text-gold p-2"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={mobileOpen}
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            {mobileOpen ? (
-              <path d="M6 6l12 12M6 18L18 6" />
-            ) : (
-              <path d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
-        </button>
-      </div>
-
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            className="md:hidden bg-deep-black/95 border-t border-gold-subtle"
-            initial={reduced ? { opacity: 1 } : { opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="px-6 py-4 flex flex-col gap-4">
+            {/* Desktop links */}
+            <div className="hidden lg:flex items-center gap-10">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={() => setMobileOpen(false)}
                   className={cn(
-                    'text-sm font-ui tracking-wider uppercase py-2',
-                    pathname === link.href ? 'text-gold' : 'text-text-secondary'
+                    'relative text-[0.68rem] font-ui tracking-[0.18em] uppercase transition-colors duration-500 py-1',
+                    isActive(link.href)
+                      ? 'text-gold'
+                      : 'text-text-muted hover:text-ivory'
                   )}
                 >
                   {link.label}
+                  {isActive(link.href) && (
+                    <motion.span
+                      className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent"
+                      layoutId="nav-underline"
+                      transition={{ type: 'spring', stiffness: 200, damping: 30 }}
+                    />
+                  )}
                 </Link>
               ))}
+            </div>
+
+            {/* Mobile toggle */}
+            <button
+              className="lg:hidden relative z-10 w-10 h-10 flex items-center justify-center"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileOpen}
+            >
+              <div className="relative w-5 h-4">
+                <span
+                  className={cn(
+                    'absolute left-0 h-px bg-gold transition-all duration-500',
+                    mobileOpen ? 'top-1/2 w-5 -translate-y-1/2 rotate-45' : 'top-0 w-4'
+                  )}
+                />
+                <span
+                  className={cn(
+                    'absolute left-0 top-1/2 h-px bg-gold transition-all duration-500',
+                    mobileOpen ? 'opacity-0 w-0' : 'w-5 -translate-y-1/2'
+                  )}
+                />
+                <span
+                  className={cn(
+                    'absolute left-0 h-px bg-gold transition-all duration-500',
+                    mobileOpen ? 'top-1/2 w-5 -translate-y-1/2 -rotate-45' : 'bottom-0 w-3'
+                  )}
+                />
+              </div>
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Full-Screen Menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            className="fixed inset-0 z-40 lg:hidden"
+            initial={reduced ? { opacity: 1 } : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {/* Backdrop */}
+            <div className="absolute inset-0 bg-deep-black/95 backdrop-blur-2xl" />
+            {/* Fog gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-deep-black/50" />
+
+            <div className="relative z-10 flex flex-col justify-center h-full px-10">
+              <nav className="flex flex-col gap-2">
+                {NAV_LINKS.map((link, i) => (
+                  <motion.div
+                    key={link.href}
+                    initial={reduced ? { opacity: 1 } : { opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{
+                      duration: 0.5,
+                      delay: reduced ? 0 : 0.08 * i,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={cn(
+                        'font-display text-3xl md:text-4xl tracking-wide py-2 transition-colors duration-500',
+                        isActive(link.href)
+                          ? 'text-gold'
+                          : 'text-text-muted hover:text-ivory'
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+              </nav>
+
+              {/* Bottom tagline */}
+              <motion.p
+                className="absolute bottom-12 left-10 text-caption"
+                initial={reduced ? { opacity: 1 } : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                The Living Archive of Siddhi Heritage
+              </motion.p>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </>
   );
 }
