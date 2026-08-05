@@ -9,6 +9,7 @@ const FOOTER_LINKS = {
     { href: '/patterns', label: 'Pattern Atlas' },
     { href: '/practice', label: 'Sādhana Instruments' },
     { href: '/method', label: 'The Mirror Method' },
+    { href: '/codex', label: 'The Kalki Codex' },
   ],
   System: [
     { href: '/research', label: 'Epistemic Sources' },

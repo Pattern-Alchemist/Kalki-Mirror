@@ -12,7 +12,7 @@ const NAV_LINKS = [
   { href: '/patterns', label: 'Patterns' },
   { href: '/practice', label: 'Sādhana' },
   { href: '/method', label: 'The Method' },
-  { href: '/research', label: 'Sources' },
+  { href: '/codex', label: 'Codex' },
   { href: '/pricing', label: 'Membership' },
 ];
 
