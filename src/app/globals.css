@@ -616,6 +616,66 @@
 }
 
 /* ==========================================================
+   NEON TAB & CHIP GLOW — Subtle pulsating white neon
+   Medium intensity. Breathes like embers in a dark temple.
+   ========================================================== */
+
+/* Nav / tab text glow — text-shadow only, no box */
+.neon-tab-glow {
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.14),
+    0 0 22px rgba(255, 255, 255, 0.07),
+    0 0 44px rgba(255, 255, 255, 0.03);
+  animation: neonTabPulse 3s ease-in-out infinite;
+}
+@keyframes neonTabPulse {
+  0%, 100% {
+    text-shadow:
+      0 0 8px rgba(255, 255, 255, 0.14),
+      0 0 22px rgba(255, 255, 255, 0.07),
+      0 0 44px rgba(255, 255, 255, 0.03);
+  }
+  50% {
+    text-shadow:
+      0 0 14px rgba(255, 255, 255, 0.24),
+      0 0 32px rgba(255, 255, 255, 0.12),
+      0 0 64px rgba(255, 255, 255, 0.06);
+  }
+}
+
+/* Filter chip glow — text-shadow + subtle box-shadow border glow */
+.neon-chip-glow {
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 0.12),
+    0 0 18px rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.06),
+    0 0 26px rgba(255, 255, 255, 0.03),
+    inset 0 0 8px rgba(255, 255, 255, 0.02);
+  animation: neonChipPulse 3s ease-in-out infinite;
+}
+@keyframes neonChipPulse {
+  0%, 100% {
+    text-shadow:
+      0 0 6px rgba(255, 255, 255, 0.12),
+      0 0 18px rgba(255, 255, 255, 0.06);
+    box-shadow:
+      0 0 10px rgba(255, 255, 255, 0.06),
+      0 0 26px rgba(255, 255, 255, 0.03),
+      inset 0 0 8px rgba(255, 255, 255, 0.02);
+  }
+  50% {
+    text-shadow:
+      0 0 10px rgba(255, 255, 255, 0.22),
+      0 0 28px rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 0 18px rgba(255, 255, 255, 0.1),
+      0 0 40px rgba(255, 255, 255, 0.05),
+      inset 0 0 14px rgba(255, 255, 255, 0.04);
+  }
+}
+
+/* ==========================================================
    REDUCED MOTION
    ========================================================== */
 @media (prefers-reduced-motion: reduce) {
@@ -640,6 +700,10 @@
     animation: none !important;
   }
   .neon-glow-white {
+    animation: none !important;
+  }
+  .neon-tab-glow,
+  .neon-chip-glow {
     animation: none !important;
   }
   .animate-breathe-slow {
