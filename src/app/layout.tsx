@@ -1,11 +1,29 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Inter, JetBrains_Mono, Cormorant_Garamond } from 'next/font/google';
 import "./globals.css";
 import { SacredNav } from "@/components/nav/SacredNav";
 import { SacredFooter } from "@/components/nav/SacredFooter";
 import { WhatsAppCTA } from "@/components/booking/WhatsAppCTA";
 import { TierProvider } from "@/components/layout/TierProvider";
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { PaywallModal } from "@/components/monetization/PaywallModal";
+import { ResonanceToggle } from "@/components/ui/ResonanceToggle";
+
+/* ============================================================
+   TYPOGRAPHY — The Inscriptions of Time
+   Headlines: Cormorant Garamond (luxury editorial serif, closest
+   to Canela/Ogg available on Google Fonts). Thin weights only.
+   Body/Data: Inter (Geist-class Swiss sans-serif).
+   Monospace: JetBrains Mono (pattern intelligence, esoteric codes).
+   ============================================================ */
+
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  variable: '--font-cormorant',
+  display: 'swap',
+  weight: ['300', '400', '500'],
+  style: ['normal', 'italic'],
+});
 
 const inter = Inter({
   subsets: ['latin'],
@@ -33,6 +51,10 @@ export const metadata: Metadata = {
     siteName: 'KALKI',
     type: 'website',
   },
+  icons: {
+    icon: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
@@ -41,15 +63,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="min-h-screen bg-deep-black text-foreground antialiased">
         <TierProvider>
-          <SacredNav />
-          <main className="pt-16 md:pt-20">{children}</main>
-          <SacredFooter />
-          <WhatsAppCTA variant="floating" />
-          <PaywallModal />
-          <div className="page-vignette" aria-hidden="true" />
+          <SmoothScroll>
+            <SacredNav />
+            <main className="pt-16 md:pt-20">{children}</main>
+            <SacredFooter />
+            <WhatsAppCTA variant="floating" />
+            <PaywallModal />
+            <ResonanceToggle />
+            <div className="page-vignette" aria-hidden="true" />
+          </SmoothScroll>
         </TierProvider>
       </body>
     </html>

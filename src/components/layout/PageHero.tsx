@@ -54,7 +54,7 @@ export function PageHero({
           </motion.p>
         )}
         <motion.h1
-          className="font-display text-4xl md:text-6xl lg:text-7xl text-white leading-[0.95] tracking-tight mb-5 engraved-heading"
+          className="font-display text-4xl md:text-6xl lg:text-7xl text-white leading-[0.95] tracking-[0.06em] mb-5 engraved-heading font-light"
           initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
           animate={fadeInUp.visible}
           transition={{ delay: 0.1, duration: 0.8 }}

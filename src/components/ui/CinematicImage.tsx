@@ -23,9 +23,9 @@ interface CinematicImageProps {
 }
 
 const SCRIM_STYLES: Record<string, React.CSSProperties> = {
-  bottom: { background: 'linear-gradient(to top, rgba(7,8,12,0.98) 0%, rgba(7,8,12,0.7) 30%, rgba(7,8,12,0.15) 70%, transparent 100%)' },
-  full: { background: 'linear-gradient(180deg, rgba(7,8,12,0.82) 0%, rgba(7,8,12,0.3) 30%, rgba(7,8,12,0.4) 60%, rgba(7,8,12,0.92) 100%)' },
-  top: { background: 'linear-gradient(to bottom, rgba(7,8,12,0.85) 0%, rgba(7,8,12,0.2) 60%, transparent 100%)' },
+  bottom: { background: 'linear-gradient(to top, rgba(11,12,16,0.98) 0%, rgba(11,12,16,0.7) 30%, rgba(11,12,16,0.15) 70%, transparent 100%)' },
+  full: { background: 'linear-gradient(180deg, rgba(11,12,16,0.82) 0%, rgba(11,12,16,0.3) 30%, rgba(11,12,16,0.4) 60%, rgba(11,12,16,0.92) 100%)' },
+  top: { background: 'linear-gradient(to bottom, rgba(11,12,16,0.85) 0%, rgba(11,12,16,0.2) 60%, transparent 100%)' },
 };
 
 export function CinematicImage({

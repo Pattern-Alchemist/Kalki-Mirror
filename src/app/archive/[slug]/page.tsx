@@ -35,19 +35,20 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
       {/* Atmospheric header */}
       <header className="border-b border-gold/5">
         <div className="w-full max-w-4xl mx-auto px-6 lg:px-10 pt-32 pb-16">
-          <motion.p className="section-label mb-6" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible}>
-            {siddhi.category} &middot; {siddhi.tradition}
+          {/* Metadata tags — JetBrains Mono terminal aesthetic */}
+          <motion.p className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-copper mb-6" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible}>
+            [ {siddhi.category.toUpperCase()} / {siddhi.tradition.toUpperCase()} ]
           </motion.p>
-          <motion.h1 className="font-display text-4xl md:text-6xl lg:text-7xl text-foreground leading-[0.95] tracking-tight mb-3 engraved-heading"
+          <motion.h1 className="font-display text-4xl md:text-6xl lg:text-7xl text-foreground leading-[0.95] tracking-[0.06em] mb-3 engraved-heading font-light"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.1 }}>
             {siddhi.name}
           </motion.h1>
-          <motion.p className="text-text-secondary text-lg italic mb-8" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.15 }}>
+          <motion.p className="font-mono text-gold-dim text-sm tracking-[0.12em] mb-8" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.15 }}>
             {siddhi.sanskrit}
           </motion.p>
           <motion.div className="flex flex-wrap gap-3" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.2 }}>
-            <span className="glass-chip px-4 py-1.5 text-[0.6rem] text-gold tracking-wider uppercase">{siddhi.level}</span>
-            <span className="glass-chip px-4 py-1.5 text-[0.6rem] text-text-secondary tracking-wider uppercase">{TIER_LABELS[siddhi.minTier as Tier]} tier</span>
+            <span className="glass-chip px-4 py-1.5 font-mono text-[0.6rem] text-gold tracking-[0.15em] uppercase">{siddhi.level}</span>
+            <span className="glass-chip px-4 py-1.5 font-mono text-[0.6rem] text-text-secondary tracking-[0.15em] uppercase">{TIER_LABELS[siddhi.minTier as Tier]} TIER</span>
           </motion.div>
         </div>
       </header>
@@ -101,12 +102,12 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
 
         {/* Warnings - ALWAYS visible */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <p className="section-label mb-6 text-red-400">Warnings</p>
-          <div className="glass-chip border-red-900/20 p-8">
+          <p className="section-label mb-6" style={{ color: 'var(--crimson)' }}>Warnings</p>
+          <div className="glass-chip p-8" style={{ borderColor: 'rgba(138, 37, 44, 0.2)' }}>
             <ul className="space-y-3">
               {siddhi.warnings.map((w, i) => (
-                <li key={i} className="flex items-start gap-3 text-red-300/70 text-sm">
-                  <span className="text-red-400 mt-0.5">&middot;</span>{w}
+                <li key={i} className="flex items-start gap-3 text-sm" style={{ color: 'rgba(138, 37, 44, 0.85)' }}>
+                  <span className="mt-0.5" style={{ color: 'var(--crimson)' }}>&middot;</span>{w}
                 </li>
               ))}
             </ul>
@@ -140,8 +141,8 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {related.map((s) => (
                 <Link key={s.slug} href={`/archive/${s.slug}`} className="glass-chip p-5 group">
-                  <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors duration-500 mb-1">{s.name}</p>
-                  <p className="text-caption">{s.level}</p>
+                  <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors duration-500 mb-1 font-light">{s.name}</p>
+                  <p className="font-mono text-[0.55rem] tracking-[0.15em] uppercase text-copper">{s.level}</p>
                 </Link>
               ))}
             </div>
@@ -165,7 +166,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
 
         {/* CTA */}
         <motion.div className="text-center pt-12" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <WhatsAppCTA variant="inline" message={WHATSAPP_LINKS.siddhi(siddhi.name)} label="Discuss with Kaustubh" />
+          <WhatsAppCTA variant="inline" message={WHATSAPP_LINKS.siddhi(siddhi.name)} label="Consult the Archivist" />
         </motion.div>
       </div>
     </div>

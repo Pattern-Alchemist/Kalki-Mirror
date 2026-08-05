@@ -27,10 +27,11 @@ export function SiddhiCard({ siddhi, className }: SiddhiCardProps) {
         {/* Top row: Name + Lock */}
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
-            <h3 className="font-display text-xl md:text-2xl text-foreground leading-tight tracking-tight group-hover:text-gold transition-colors duration-500">
+            <h3 className="font-display text-xl md:text-2xl text-foreground leading-tight tracking-tight group-hover:text-gold transition-colors duration-500 font-light">
               {siddhi.name}
             </h3>
-            <p className="text-xs text-text-muted mt-1.5 italic tracking-wide">{siddhi.sanskrit}</p>
+            {/* Sanskrit in JetBrains Mono — the computational feel */}
+            <p className="text-xs text-gold-dim mt-1.5 font-mono tracking-wider">{siddhi.sanskrit}</p>
           </div>
           {locked && (
             <div className="shrink-0 w-8 h-8 rounded-full bg-surface-elevated flex items-center justify-center border border-gold/10">
@@ -44,13 +45,13 @@ export function SiddhiCard({ siddhi, className }: SiddhiCardProps) {
           {siddhi.summary}
         </p>
 
-        {/* Bottom row: Meta */}
+        {/* Bottom row: Meta — all in monospace for terminal/quantum feel */}
         <div className="flex items-center gap-4 mt-auto pt-4 border-t border-gold-subtle">
-          <span className="text-caption">{siddhi.tradition}</span>
+          <span className="font-mono text-[0.6rem] tracking-[0.15em] uppercase text-text-muted">{siddhi.tradition}</span>
           <div className="flex-1" />
           <AuthenticityMeter score={siddhi.authenticityScore} />
         </div>
-        <span className="text-caption w-fit">{siddhi.level}</span>
+        <span className="font-mono text-[0.6rem] tracking-[0.15em] uppercase text-copper w-fit">{siddhi.level}</span>
       </div>
     </Link>
   );
