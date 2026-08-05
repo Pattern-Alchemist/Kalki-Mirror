@@ -12,7 +12,7 @@ export default function PatternsPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/hero-mountain.jpeg"
+        image="/assets/tantra/hero-mountain-trident.jpeg"
         title="Pattern Atlas"
         subtitle="The emotional patterns that run your life — and the sādhanas designed to dissolve them."
         sectionLabel="The Mirror Method"

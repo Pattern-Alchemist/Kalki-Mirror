@@ -580,6 +580,27 @@
   animation: breatheSlow 6s ease-in-out infinite;
 }
 
+/* Cinematic parallax image strip — thin full-bleed band between sections */
+.cinematic-strip {
+  position: relative;
+  height: 40vh;
+  min-height: 280px;
+  overflow: hidden;
+}
+.cinematic-strip img,
+.cinematic-strip span {
+  filter: contrast(1.1) saturate(0.85) brightness(0.88) sepia(0.1);
+}
+.cinematic-strip-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, var(--deep-black) 0%, transparent 15%, transparent 85%, var(--deep-black) 100%),
+    radial-gradient(ellipse 60% 50% at 50% 50%, transparent 40%, rgba(7,8,12,0.4) 100%);
+  z-index: 1;
+}
+
 /* ==========================================================
    REDUCED MOTION
    ========================================================== */

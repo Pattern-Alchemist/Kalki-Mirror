@@ -96,7 +96,7 @@ export default function PricingPage() {
 
   return (
     <div className="bg-deep-black min-h-screen">
-      <PageHero image="/assets/tantra/dark-labyrinth.jpeg" title="The Covenant" subtitle="Four access levels. One path to Shambhala. Each tier unlocks deeper layers of the Akashic Archive." sectionLabel="Sacred Offerings" />
+      <PageHero image="/assets/tantra/hero-labyrinth-alt.jpeg" title="The Covenant" subtitle="Four access levels. One path to Shambhala. Each tier unlocks deeper layers of the Akashic Archive." sectionLabel="Sacred Offerings" />
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28">
         <BackButton href="/" label="Back to Home" className="mb-10" />

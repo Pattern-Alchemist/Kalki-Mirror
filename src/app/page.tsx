@@ -23,8 +23,8 @@ export default function HomePage() {
       {/* ===== CHAMBER I: ARRIVAL — The Initiation ===== */}
       <section className="relative h-[110vh] md:h-[120vh] flex items-end overflow-hidden">
         <CinematicImage
-          src="/assets/tantra/sacred-manuscript-new.jpeg"
-          alt="Sacred manuscript detailing cosmic geometry — the architecture of awareness"
+          src="/assets/tantra/hero-ritual-chamber.jpeg"
+          alt="Underground ritual chamber with mandala geometry and volumetric candlelight — the architecture of awareness"
           kenBurns="slow"
           scrim="full"
           vignette
@@ -85,13 +85,24 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== CINEMATIC STRIP I — Cave yantras ===== */}
+      <div className="cinematic-strip">
+        <CinematicImage
+          src="/assets/tantra/hero-cave-yantras-alt.jpeg"
+          alt="Ancient cave with flickering butter lamps illuminating carved yantras"
+          kenBurns="normal"
+          filmGrain={false}
+        />
+        <div className="cinematic-strip-overlay" />
+      </div>
+
       {/* ===== CHAMBER II: THE TWO DOORS — Asymmetric split ===== */}
       <section className="grid grid-cols-1 md:grid-cols-2 min-h-[70vh] md:min-h-[85vh]">
         {/* Archive Door — YANTRA Decoded */}
         <Link href="/archive" className="group relative overflow-hidden">
           <CinematicImage
-            src="/assets/tantra/ritual-altar-new.jpeg"
-            alt="Ritual items arranged on ancient altar — sacred instruments of the tradition"
+            src="/assets/tantra/hero-cave-yantras.jpeg"
+            alt="Cave with ancient yantra inscriptions and golden butter lamps — the repository of knowledge"
             kenBurns="normal"
             scrim="bottom"
             volumetric
@@ -111,8 +122,8 @@ export default function HomePage() {
         {/* Practice Door — Sādhana Instruments */}
         <Link href="/practice" className="group relative overflow-hidden">
           <CinematicImage
-            src="/assets/tantra/sadhu-ash-gold-new.jpeg"
-            alt="Sadhu with ash and gold — the living tradition of Tantra"
+            src="/assets/tantra/hero-mountain-trident.jpeg"
+            alt="Mountain pass with ritual trident under twilight sky — the path of practice"
             kenBurns="normal"
             scrim="bottom"
             volumetric
@@ -124,7 +135,7 @@ export default function HomePage() {
               See Yourself.<br />Clearly.
             </h2>
             <p className="text-text-secondary text-sm max-w-sm editorial-spacing">
-              Breathwork, japa, journaling — guided tools for inner work.
+              Breathwork, japa, meditation — guided tools for inner work.
             </p>
           </div>
         </Link>
@@ -151,8 +162,25 @@ export default function HomePage() {
         <div className="divider-gold mt-20" />
       </div>
 
+      {/* ===== CINEMATIC STRIP II — Sri Yantra sky ===== */}
+      <div className="cinematic-strip">
+        <CinematicImage
+          src="/assets/tantra/hero-sri-yantra-sky.jpeg"
+          alt="Sri Yantra floating above Himalayan peaks at twilight"
+          kenBurns="normal"
+          filmGrain={false}
+        />\n        <div className="cinematic-strip-overlay" />
+      </div>
+
       {/* ===== CHAMBER IV: PATTERN ATLAS — Museum grid ===== */}
-      <section className="py-20 md:py-32 atmospheric-bg">
+      <section className="relative py-20 md:py-32">
+        <CinematicImage
+          src="/assets/tantra/hero-forest-shrine.jpeg"
+          alt="Forgotten forest shrine draped in mist and ancient light"
+          scrim="full"
+          vignette
+          className="absolute inset-0"
+        />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
           <motion.p
             className="section-label mb-4"
@@ -188,8 +216,8 @@ export default function HomePage() {
       {/* ===== CHAMBER V: FEATURED SIDDHIS — Dark museum hall ===== */}
       <section className="relative py-28 md:py-40">
         <CinematicImage
-          src="/assets/tantra/meditation-bowl.jpeg"
-          alt="Meditation bowl on wooden altar — the stillness of practice"
+          src="/assets/tantra/hero-forgotten-chamber.jpeg"
+          alt="Forgotten chamber with volumetric god rays illuminating ancient yantras and sacred artifacts"
           scrim="full"
           vignette
           dust
@@ -227,8 +255,27 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== CINEMATIC STRIP III — Underground library ===== */}
+      <div className="cinematic-strip">
+        <CinematicImage
+          src="/assets/tantra/hero-underground-library.jpeg"
+          alt="Vast underground library of ancient manuscripts and golden artifacts"
+          kenBurns="normal"
+          filmGrain={false}
+        />
+        <div className="cinematic-strip-overlay" />
+      </div>
+
       {/* ===== CHAMBER VI: BREATH — Stillness ===== */}
-      <section className="py-28 md:py-40 bg-deep-black atmospheric-bg">
+      <section className="relative py-28 md:py-40">
+        <CinematicImage
+          src="/assets/tantra/hero-temple-doorway.jpeg"
+          alt="Rain-soaked abandoned tantric temple with a glowing golden interior"
+          scrim="full"
+          vignette
+          dust
+          className="absolute inset-0"
+        />
         <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 text-center">
           <motion.p
             className="section-label mb-6"
@@ -239,7 +286,7 @@ export default function HomePage() {
             Practice Now
           </motion.p>
           <motion.h2
-            className="font-display text-5xl md:text-7xl text-foreground mb-16 engraved-heading font-light tracking-[0.12em] uppercase"
+            className="font-display text-5xl md:text-7xl text-white mb-16 engraved-heading font-light tracking-[0.12em] uppercase"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}
@@ -260,8 +307,8 @@ export default function HomePage() {
       {/* ===== CHAMBER VII: MEMBERSHIP — Cinematic CTA ===== */}
       <section className="relative py-28 md:py-40">
         <CinematicImage
-          src="/assets/tantra/abandoned-temple.jpeg"
-          alt="Ancient temple doorway"
+          src="/assets/tantra/hero-submerged-temple.jpeg"
+          alt="Submerged temple beneath sacred waters — the depth of commitment"
           scrim="full"
           vignette
           dust
@@ -283,8 +330,27 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== CHAMBER VIII: CONSULTATION — Quiet CTA ===== */}
-      <section className="py-28 md:py-40 atmospheric-bg">
+      {/* ===== CINEMATIC STRIP IV — Observatory ===== */}
+      <div className="cinematic-strip">
+        <CinematicImage
+          src="/assets/tantra/hero-observatory.jpeg"
+          alt="Ancient astronomical observatory with brass instruments under night sky"
+          kenBurns="normal"
+          filmGrain={false}
+        />
+        <div className="cinematic-strip-overlay" />
+      </div>
+
+      {/* ===== CHAMBER VIII: CONSULTATION — Cinematic CTA with image ===== */}
+      <section className="relative py-28 md:py-40">
+        <CinematicImage
+          src="/assets/tantra/hero-temple-midnight-alt.jpeg"
+          alt="Ancient temple at midnight with ethereal glow — the archivist awaits"
+          scrim="full"
+          vignette
+          dust
+          className="absolute inset-0"
+        />
         <div className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">
           <motion.p
             className="section-label mb-6"
@@ -295,7 +361,7 @@ export default function HomePage() {
             Beyond the Archive
           </motion.p>
           <motion.h2
-            className="font-display text-3xl md:text-5xl text-foreground mb-8 engraved-heading font-light tracking-wide"
+            className="font-display text-3xl md:text-5xl text-white mb-8 engraved-heading font-light tracking-wide"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}
@@ -303,7 +369,7 @@ export default function HomePage() {
             Consult the Archivist.
           </motion.h2>
           <motion.p
-            className="text-editorial mb-12"
+            className="text-text-secondary text-lg mb-12 editorial-spacing"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}
