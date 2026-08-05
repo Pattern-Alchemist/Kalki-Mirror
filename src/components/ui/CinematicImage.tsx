@@ -134,7 +134,11 @@ export function CinematicImage({
   ) : null;
 
   return (
-    <div className={cn('cinematic-wrap', kbClass, grainClass, aspect, className)}>
+    <div className={cn(
+      'cinematic-wrap',
+      fill && 'absolute inset-0',
+      kbClass, grainClass, aspect, className
+    )}>
       {imageEl}
       {scrimEl}
       {volumetricEl}
