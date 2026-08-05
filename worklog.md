@@ -50,3 +50,25 @@ Stage Summary:
 - 23 archetype-specific images in /public/assets/tantra/archetypes/
 - Safety layer: AcknowledgmentGate on HIGH/SEALED, no CTA on SEALED, YANTRA constrained to OPEN-tier sādhana only in /api/initiate
 - Brand promise 'Where Forbidden Knowledge Meets Pattern Intelligence' is now architectural
+---
+Task ID: 0
+Agent: main
+Task: Step 0 — Vercel deploy hardening (nft include, runtime guards, health endpoint, getCautionLevel fix, Pulse schema)
+
+Work Log:
+- Added outputFileTracingIncludes to next.config.ts forcing db/**/* into all /api/** bundles (Gotcha 1 fix)
+- Added export const runtime = 'nodejs' to /api/initiate, /api/yantra, /api/health (Gotcha 2 fix)
+- Created /api/health/route.ts — GET endpoint exposing getCorpusStats(), returns status ok/degraded/critical
+- Extracted getCautionLevel() from CautionBadge.tsx ('use client') to @/lib/data/types.ts — this was causing 500 on /api/initiate in Next.js 16
+- CautionBadge.tsx now re-exports getCautionLevel for backward compat
+- Added latitude, longitude, timezone, lastTransmissionDate fields to User model in schema.prisma (Pulse prep)
+- Full smoke-test passed: health=279 chunks (OPEN:42, MODERATE:71, HIGH:96, SEALED:70), initiate=200 grounded 4+4 pools 5 folio blocks
+
+Stage Summary:
+- next.config.ts: outputFileTracingIncludes added
+- /api/health: new route, returns corpus stats + timing + environment
+- /api/initiate: runtime=nodejs, getCautionLevel import fixed (was importing from 'use client' component)
+- /api/yantra: runtime=nodejs added
+- prisma/schema.prisma: User model extended with 4 Pulse fields
+- Build: clean, 0 errors, 0 warnings
+- Local smoke-test: all 5 checklist items pass

@@ -12,6 +12,16 @@ export interface EvidenceSource {
 
 export type CautionLevel = 'OPEN' | 'MODERATE' | 'HIGH' | 'SEALED';
 
+/** Map a SiddhiLevel to its corresponding CautionLevel for the archive gate. */
+export function getCautionLevel(level: SiddhiLevel): CautionLevel {
+  switch (level) {
+    case 'Foundation': return 'OPEN';
+    case 'Intermediate': return 'MODERATE';
+    case 'Advanced': return 'HIGH';
+    case 'Restricted': return 'SEALED';
+  }
+}
+
 export interface Siddhi {
   slug: string;
   name: string;

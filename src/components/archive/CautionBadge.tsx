@@ -1,7 +1,10 @@
 'use client';
 
-import type { CautionLevel, SiddhiLevel } from '@/lib/data/types';
+import type { CautionLevel } from '@/lib/data/types';
 import { cn } from '@/lib/utils';
+
+// Re-export for backward compat — server routes should import from @/lib/data/types directly
+export { getCautionLevel } from '@/lib/data/types';
 
 interface CautionBadgeProps {
   level: CautionLevel;
@@ -29,13 +32,4 @@ export function CautionBadge({ level, className }: CautionBadgeProps) {
       {level}
     </span>
   );
-}
-
-export function getCautionLevel(level: SiddhiLevel): CautionLevel {
-  switch (level) {
-    case 'Foundation': return 'OPEN';
-    case 'Intermediate': return 'MODERATE';
-    case 'Advanced': return 'HIGH';
-    case 'Restricted': return 'SEALED';
-  }
 }

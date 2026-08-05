@@ -35,6 +35,10 @@ model User {
   natalMoonLng  Float?   // Vedic Moon longitude at birth (0-360)
   birthDate     DateTime?
   birthPlace    String?
+  latitude      Float?    // For Brahma Muhūrta computation (The Pulse)
+  longitude     Float?    // For Brahma Muhūrta computation (The Pulse)
+  timezone      String?   // IANA timezone e.g. "Asia/Kolkata" (The Pulse)
+  lastTransmissionDate DateTime? // Idempotency guard — prevents double-scheduling
   invitedByCode String?   // The Golden Key used to enter
   goldKeysRemaining Int     @default(0) // Remaining keys to transmit
   createdAt     DateTime  @default(now())

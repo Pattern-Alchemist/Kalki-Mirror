@@ -1,3 +1,5 @@
+export const runtime = 'nodejs';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { YANTRA_SYSTEM_PROMPT, buildYantraUserPrompt, type YantraAnalysis } from '@/lib/ai/yantra-prompt';
 import { retrievePrescription, retrieveCitation } from '@/lib/rag/retrieval';
