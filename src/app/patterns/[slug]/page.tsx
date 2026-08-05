@@ -6,8 +6,10 @@ import Link from 'next/link';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { allPatterns } from '@/lib/data/patterns';
 import { allSiddhis } from '@/lib/data/siddhis';
+import { getArchetypeById, PATTERN_ARCHETYPE_MAP } from '@/lib/data/archetypes';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { YantraLoader } from '@/components/patterns/YantraLoader';
+import { CautionBadge } from '@/components/archive/CautionBadge';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 export default function PatternFolioPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -17,6 +19,8 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
   const reduced = useReducedMotion();
   const [loading, setLoading] = useState(true);
   const relatedSiddhis = allSiddhis.filter((s) => pattern.relatedSiddhis.includes(s.slug)).slice(0, 3);
+  const archetypeId = PATTERN_ARCHETYPE_MAP[slug];
+  const archetype = archetypeId ? getArchetypeById(archetypeId) : null;
 
   const handleLoadComplete = useCallback(() => setLoading(false), []);
 
@@ -61,6 +65,31 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
       </header>
 
       <div className="max-w-4xl mx-auto px-6 space-y-16 pb-32">
+        {/* Archetype Classification */}
+        {archetype && (
+          <motion.section
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            whileInView={fadeInUp.visible}
+            viewport={{ once: true }}
+          >
+            <p className="section-label mb-6">Mahāvidyā Classification</p>
+            <Link href={`/archetypes#${archetype.id}`} className="glass-chip p-6 md:p-8 flex flex-col md:flex-row md:items-center gap-6 group hover:border-gold/30 transition-all duration-500 block">
+              <div className="shrink-0 w-20 h-20 rounded-sm overflow-hidden border border-gold/10">
+                <img src={archetype.image} alt={archetype.name} className="w-full h-full object-cover opacity-70" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-1">
+                  <p className="font-display text-2xl text-foreground group-hover:text-gold transition-colors duration-500 font-light">{archetype.name}</p>
+                  <CautionBadge level={archetype.cautionLevel} />
+                </div>
+                <p className="font-mono text-[0.6rem] text-gold-dim tracking-[0.12em] mb-2">{archetype.sanskrit}</p>
+                <p className="text-sm text-copper font-mono tracking-[0.06em] italic">{archetype.pattern}</p>
+              </div>
+              <span className="font-mono text-[0.55rem] text-text-muted tracking-[0.1em] shrink-0 hidden md:block">VIEW ARCHETYPE →</span>
+            </Link>
+          </motion.section>
+        )}
+
         {/* Overview — blueprint section */}
         <motion.section
           initial={reduced ? { opacity: 1 } : fadeInUp.hidden}

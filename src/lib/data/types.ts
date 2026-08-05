@@ -10,12 +10,15 @@ export interface EvidenceSource {
   url: string;
 }
 
+export type CautionLevel = 'OPEN' | 'MODERATE' | 'HIGH' | 'SEALED';
+
 export interface Siddhi {
   slug: string;
   name: string;
   sanskrit: string;
   category: string;
   tradition: string;
+  subcategory?: string;
   level: SiddhiLevel;
   durationHours: number;
   days: number;
@@ -28,6 +31,8 @@ export interface Siddhi {
   evidenceCount: number;
   evidenceSources: EvidenceSource[];
   minTier: Tier;
+  cautionLevel?: CautionLevel;
+  archetypeId?: string;
   image?: string;
 }
 
