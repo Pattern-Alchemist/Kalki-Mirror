@@ -1,0 +1,464 @@
+'use client';
+
+import { useState, useCallback } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { BackButton } from '@/components/nav/BackButton';
+import { CautionBadge } from '@/components/archive/CautionBadge';
+import { CitationCard } from '@/components/dossier/CitationCard';
+import { UnattestedState } from '@/components/dossier/UnattestedState';
+import { ArchiveRefsLedger } from '@/components/dossier/ArchiveRefsLedger';
+import { PrescriptionBlueprint } from '@/components/dossier/PrescriptionBlueprint';
+import { TransitReadout } from '@/components/dossier/TransitReadout';
+import {
+  fadeInUp,
+  staggerContainer,
+  staggerItem,
+} from '@/lib/motion/tokens';
+import type { Tier, CautionLevel } from '@/lib/data/types';
+
+// ─── Dossier response type (mirrors /api/initiate) ──────────────────────────
+
+interface Dossier {
+  timestamp: string;
+  status: string;
+  transit: {
+    positions: any[];
+    frictions: any[];
+    yantra_context: string;
+  };
+  patterns: Array<{
+    slug: string;
+    name: string;
+    subtitle: string;
+    description: string;
+    signs: string[];
+    practice: string;
+  }>;
+  archetypes: Array<{
+    id: string;
+    name: string;
+    sanskrit: string;
+    pattern: string;
+    bija: string;
+    cautionLevel: CautionLevel;
+    image: string;
+  }>;
+  rag: {
+    retrieval_method: string;
+    prescription_pool_size: number;
+    citation_pool_size: number;
+    archive_refs: string[];
+    archive_refs_caution: Record<string, string>;
+  };
+  prescribed_sadhana: Array<{
+    slug: string;
+    name: string;
+    sanskrit: string;
+    summary: string;
+    primaryMantra: string;
+    warnings: string[];
+    level: string;
+    cautionLevel: string;
+  }>;
+  karmic_loop: string | null;
+  tantric_citation: {
+    text: string;
+    source_slug: string;
+    caution: string;
+  } | null;
+  yantra_prompt: {
+    system_prompt_length: number;
+    user_prompt_length: number;
+    folio_blocks_injected: number;
+    archetype_list_size: number;
+  };
+  meta: {
+    total_folios_available: number;
+    open_folios: number;
+    archetype_count: number;
+    chunk_count: number;
+  };
+}
+
+// ─── Page ───────────────────────────────────────────────────────────────────
+
+export default function DossierPage() {
+  const reduced = useReducedMotion();
+
+  // Form state
+  const [query, setQuery] = useState('');
+  const [natalMoon, setNatalMoon] = useState('');
+  const [tier, setTier] = useState<Tier>('prithvi');
+
+  // Dossier state
+  const [dossier, setDossier] = useState<Dossier | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const runInitiation = useCallback(async () => {
+    if (!query.trim() && !natalMoon) return;
+    setLoading(true);
+    setError(null);
+
+    try {
+      const body: Record<string, unknown> = { tier };
+      if (query.trim()) body.behavioralQuery = query.trim();
+      if (natalMoon) body.natalMoonDeg = parseFloat(natalMoon);
+
+      const res = await fetch('/api/initiate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Initiation failed');
+
+      setDossier(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'The geometry requires recalibration.');
+    } finally {
+      setLoading(false);
+    }
+  }, [query, natalMoon, tier]);
+
+  return (
+    <div className="bg-deep-black min-h-screen">
+      {/* ── Header ────────────────────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 lg:px-10 pt-10 md:pt-16">
+        <BackButton href="/" label="Back to Home" className="mb-12" />
+
+        <motion.div
+          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+          animate={fadeInUp.visible}
+        >
+          <p className="section-label mb-6">The Initiation Sequence</p>
+          <h1 className="font-display text-3xl md:text-5xl text-foreground tracking-[0.06em] font-light leading-[1] mb-4 engraved-heading">
+            The Dossier
+          </h1>
+          <p className="text-editorial max-w-2xl">
+            A grounded psychological blueprint synthesized from your behavioral coordinates, transit geometry, and the Tantric archive. Every claim traces to a textual witness — or declares itself unattested.
+          </p>
+        </motion.div>
+      </div>
+
+      {/* ── Input Form ────────────────────────────────── */}
+      <div className="max-w-3xl mx-auto px-6 lg:px-10 mt-16">
+        <motion.div
+          className="glass-panel p-8 md:p-10"
+          initial={reduced ? { opacity: 0.8 } : fadeInUp.hidden}
+          whileInView={fadeInUp.visible}
+          viewport={{ once: true }}
+        >
+          <p className="text-caption mb-6" style={{ color: 'var(--gold-dim)' }}>
+            INPUT COORDINATES
+          </p>
+
+          {/* Behavioral Query */}
+          <div className="mb-6">
+            <label
+              htmlFor="behavioral-query"
+              className="block font-mono text-xs tracking-[0.12em] uppercase mb-3"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              Behavioral Query
+            </label>
+            <textarea
+              id="behavioral-query"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              placeholder="Describe the karmic loop you observe in your life..."
+              rows={3}
+              className="w-full bg-transparent border px-4 py-3 font-body text-sm text-foreground placeholder:text-text-muted resize-none focus:outline-none transition-colors duration-300"
+              style={{ borderColor: 'var(--border-subtle)' }}
+              onFocus={e => { e.currentTarget.style.borderColor = 'var(--gold)'; }}
+              onBlur={e => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; }}
+            />
+          </div>
+
+          {/* Moon Degree + Tier row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div>
+              <label
+                htmlFor="natal-moon"
+                className="block font-mono text-xs tracking-[0.12em] uppercase mb-3"
+                style={{ color: 'var(--text-secondary)' }}
+              >
+                Natal Moon Longitude (0-360)
+              </label>
+              <input
+                id="natal-moon"
+                type="number"
+                min="0"
+                max="360"
+                step="0.1"
+                value={natalMoon}
+                onChange={e => setNatalMoon(e.target.value)}
+                placeholder="45.2"
+                className="w-full bg-transparent border px-4 py-3 font-mono text-sm text-foreground placeholder:text-text-muted focus:outline-none transition-colors duration-300"
+                style={{ borderColor: 'var(--border-subtle)' }}
+                onFocus={e => { e.currentTarget.style.borderColor = 'var(--gold)'; }}
+                onBlur={e => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; }}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="tier-select"
+                className="block font-mono text-xs tracking-[0.12em] uppercase mb-3"
+                style={{ color: 'var(--text-secondary)' }}
+              >
+                Covenant Tier (test)
+              </label>
+              <select
+                id="tier-select"
+                value={tier}
+                onChange={e => setTier(e.target.value as Tier)}
+                className="w-full bg-transparent border px-4 py-3 font-mono text-sm text-foreground focus:outline-none transition-colors duration-300 appearance-none cursor-pointer"
+                style={{
+                  borderColor: 'var(--border-subtle)',
+                  background: 'var(--background)',
+                }}
+              >
+                <option value="prithvi">Prithvi — The Antechamber</option>
+                <option value="jal">Jal — The Initiate</option>
+                <option value="agni">Agni — The Practitioner</option>
+                <option value="akash">Akash — The Vault</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Submit */}
+          <button
+            onClick={runInitiation}
+            disabled={loading || (!query.trim() && !natalMoon)}
+            className="gold-cta w-full md:w-auto disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            {loading ? 'COMPUTING GEOMETRY...' : 'INITIATE DOSSIER'}
+          </button>
+
+          {error && (
+            <p className="mt-4 text-sm" style={{ color: 'var(--crimson)' }}>{error}</p>
+          )}
+        </motion.div>
+      </div>
+
+      {/* ── The Dossier Output ────────────────────────── */}
+      <AnimatePresence mode="wait">
+        {dossier && (
+          <motion.div
+            key="dossier"
+            className="max-w-3xl mx-auto px-6 lg:px-10 mt-20 pb-32"
+            initial={reduced ? { opacity: 1 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {/* Timestamp + Integrity marker */}
+            <div className="flex flex-wrap items-center gap-4 mb-12">
+              <p className="text-caption">
+                {new Date(dossier.timestamp).toLocaleDateString('en-US', {
+                  year: 'numeric', month: 'short', day: 'numeric',
+                  hour: '2-digit', minute: '2-digit',
+                })}
+              </p>
+              <div
+                className="w-1.5 h-1.5 rounded-full"
+                style={{
+                  background: dossier.rag.retrieval_method === 'grounded'
+                    ? 'var(--gold)' : 'var(--crimson)',
+                  opacity: 0.6,
+                }}
+              />
+              <p className="text-caption">
+                {dossier.rag.retrieval_method === 'grounded' ? 'RAG-GROUNDED' : 'PATTERN FALLBACK'}
+              </p>
+            </div>
+
+            {/* ═══════════════════════════════════════
+                ZONE A: THE HEADER (THE DIAGNOSIS)
+               ═══════════════════════════════════════ */}
+            <section className="mb-20">
+              <motion.div
+                initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+                animate={fadeInUp.visible}
+              >
+                {/* Pattern Name */}
+                {dossier.patterns.length > 0 && (
+                  <>
+                    <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground tracking-[0.08em] font-light leading-[0.95] mb-6 engraved-heading">
+                      {dossier.patterns[0].name.toUpperCase()}
+                    </h2>
+                    {dossier.patterns[0].subtitle && (
+                      <p className="text-text-secondary text-lg mb-4">
+                        {dossier.patterns[0].subtitle}
+                      </p>
+                    )}
+                  </>
+                )}
+
+                {/* Archetype Badge(s) */}
+                {dossier.archetypes.length > 0 && (
+                  <div className="flex flex-wrap gap-3 mb-2">
+                    {dossier.archetypes.map(a => (
+                      <div
+                        key={a.id}
+                        className="inline-flex items-center gap-2.5 px-4 py-2 border"
+                        style={{ borderColor: 'var(--gold)', opacity: 0.85 }}
+                      >
+                        <span className="font-mono text-xs tracking-[0.12em]" style={{ color: 'var(--gold)' }}>
+                          {a.sanskrit.toUpperCase()} / {a.pattern.toUpperCase()}
+                        </span>
+                        <CautionBadge level={a.cautionLevel} />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Archetype image */}
+                {dossier.archetypes.length > 0 && dossier.archetypes[0].image && (
+                  <div className="mt-8 w-20 h-20 rounded-full overflow-hidden border" style={{ borderColor: 'var(--border-gold)' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={dossier.archetypes[0].image}
+                      alt={dossier.archetypes[0].name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+              </motion.div>
+
+              {/* Transit Geometry readout */}
+              <TransitReadout
+                frictions={dossier.transit.frictions}
+                positions={dossier.transit.positions}
+              />
+            </section>
+
+            <div className="divider-gold mb-20" />
+
+            {/* ═══════════════════════════════════════
+                ZONE B: THE KARMIC LOOP (THE ANALYSIS)
+               ═══════════════════════════════════════ */}
+            <section className="mb-20">
+              <p className="text-caption mb-6" style={{ color: 'var(--gold-dim)' }}>
+                PATTERN ANALYSIS
+              </p>
+
+              {dossier.karmic_loop ? (
+                <div
+                  className="pl-6 md:pl-8 border-l-2 py-2"
+                  style={{ borderColor: 'var(--copper)' }}
+                >
+                  <p className="text-editorial max-w-2xl">
+                    {dossier.karmic_loop}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-text-muted text-sm font-mono">
+                  NO PATTERN CLASSIFICATION AVAILABLE — INSUFFICIENT COORDINATES
+                </p>
+              )}
+
+              {/* Behavioral indicators */}
+              {dossier.patterns.length > 0 && dossier.patterns[0].signs.length > 0 && (
+                <motion.div
+                  className="mt-8"
+                  initial={reduced ? { opacity: 1 } : staggerContainer.hidden}
+                  whileInView={staggerContainer.visible}
+                  viewport={{ once: true }}
+                >
+                  <p className="text-caption mb-4" style={{ color: 'var(--text-muted)' }}>
+                    BEHAVIORAL INDICATORS DETECTED
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {dossier.patterns[0].signs.map((sign) => (
+                      <motion.span
+                        key={sign}
+                        className="font-mono text-[0.65rem] tracking-wider uppercase px-3 py-1.5 border"
+                        style={{
+                          borderColor: 'var(--border-subtle)',
+                          color: 'var(--text-secondary)',
+                        }}
+                        variants={staggerItem}
+                      >
+                        {sign}
+                      </motion.span>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </section>
+
+            <div className="divider-gold mb-20" />
+
+            {/* ═══════════════════════════════════════
+                ZONE C: THE PRESCRIPTION (OPEN SADHANA)
+               ═══════════════════════════════════════ */}
+            <section className="mb-20">
+              <PrescriptionBlueprint sadhanas={dossier.prescribed_sadhana} />
+            </section>
+
+            <div className="divider-gold mb-20" />
+
+            {/* ═══════════════════════════════════════
+                ZONE D: THE TRUST LOOP (CITATIONS & WITNESSES)
+               ═══════════════════════════════════════ */}
+            <section className="mb-12">
+              <p className="text-caption mb-8" style={{ color: 'var(--gold-dim)' }}>
+                TEXTUAL GROUNDING
+              </p>
+
+              {dossier.tantric_citation ? (
+                <CitationCard
+                  text={dossier.tantric_citation.text}
+                  sourceSlug={dossier.tantric_citation.source_slug}
+                  caution={dossier.tantric_citation.caution as CautionLevel}
+                />
+              ) : (
+                <UnattestedState />
+              )}
+            </section>
+
+            {/* Archive Refs Ledger */}
+            <ArchiveRefsLedger
+              refs={dossier.rag.archive_refs}
+              refsCaution={dossier.rag.archive_refs_caution || {}}
+              userTier={tier}
+            />
+
+            {/* ── Meta footer ──────────────────────── */}
+            <div className="mt-20 pt-8 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div>
+                  <p className="text-caption mb-1">FOLIOS IN ARCHIVE</p>
+                  <p className="font-mono text-lg text-foreground">{dossier.meta.total_folios_available}</p>
+                </div>
+                <div>
+                  <p className="text-caption mb-1">CHUNKS INJECTED</p>
+                  <p className="font-mono text-lg text-foreground">{dossier.yantra_prompt.folio_blocks_injected}</p>
+                </div>
+                <div>
+                  <p className="text-caption mb-1">ARCHETYPES</p>
+                  <p className="font-mono text-lg text-foreground">{dossier.meta.archetype_count}</p>
+                </div>
+                <div>
+                  <p className="text-caption mb-1">RETRIEVAL</p>
+                  <p
+                    className="font-mono text-lg"
+                    style={{
+                      color: dossier.rag.retrieval_method === 'grounded'
+                        ? 'var(--gold)' : 'var(--crimson)',
+                    }}
+                  >
+                    {dossier.rag.retrieval_method.toUpperCase()}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

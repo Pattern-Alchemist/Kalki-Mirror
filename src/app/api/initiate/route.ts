@@ -4,6 +4,7 @@ import { allPatterns } from '@/lib/data/patterns';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { PATTERN_ARCHETYPE_MAP, getArchetypeById, TEN_MAHAVIDYAS, ALL_ARCHETYPES } from '@/lib/data/archetypes';
 import { getCautionLevel } from '@/components/archive/CautionBadge';
+import { getSiddhiBySlug } from '@/lib/data/siddhis';
 import { retrievePrescription, retrieveCitation } from '@/lib/rag/retrieval';
 import { buildYantraUserPrompt, YANTRA_SYSTEM_PROMPT } from '@/lib/ai/yantra-prompt';
 import type { Tier } from '@/lib/data/types';
@@ -103,8 +104,13 @@ export async function POST(request: NextRequest) {
       .filter(s => ['Foundation', 'Intermediate'].includes(s!.level))
       .slice(0, 5);
 
-    // Step 6: Collect unique archive_refs from retrieval
-    const archiveRefs = [...new Set(allRetrievedChunks.map(c => c.slug))];
+    // Step 6: Collect unique archive_refs with caution metadata
+    const archiveRefsMap = new Map<string, string>();
+    for (const c of allRetrievedChunks) {
+      if (!archiveRefsMap.has(c.slug)) archiveRefsMap.set(c.slug, c.caution);
+    }
+    const archiveRefs = [...archiveRefsMap.keys()];
+    const archiveRefsCaution = Object.fromEntries(archiveRefsMap);
 
     // Step 7: Build the grounded YANTRA prompt (for when LLM is connected)
     const yantraPrompt = buildYantraUserPrompt(query, {
@@ -166,6 +172,7 @@ export async function POST(request: NextRequest) {
         prescription_pool_size: prescriptionChunks.length,
         citation_pool_size: citationChunks.length,
         archive_refs: archiveRefs,
+        archive_refs_caution: archiveRefsCaution,
       },
 
       // Prescribed sādhana (OPEN tier only — safety constraint)
@@ -179,6 +186,19 @@ export async function POST(request: NextRequest) {
         level: s!.level,
         cautionLevel: getCautionLevel(s!.level),
       })),
+
+      // Synthesis layer — YANTRA output (LLM-connected) or pattern-based fallback
+      karmic_loop: dominantPatterns.length > 0
+        ? `${dominantPatterns[0].description} ${dominantPatterns[0].practice}`.trim()
+        : null,
+
+      tantric_citation: citationChunks.length > 0
+        ? {
+            text: citationChunks[0].text,
+            source_slug: citationChunks[0].slug,
+            caution: citationChunks[0].caution,
+          }
+        : null,
 
       // YANTRA prompt (ready for LLM connection)
       yantra_prompt: {
