@@ -13,7 +13,7 @@ export default function ConsultationsPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/trident-courtyard-new.jpeg"
+        image="/assets/tantra/hero-ritual-chamber-alt.jpeg"
         title="Consult the Archivist"
         subtitle="Structured sessions bridging the ancient map and your lived experience. Not fortune-telling — pattern intelligence."
         sectionLabel="With Kaustubh"

@@ -59,7 +59,7 @@ export default function ArchivePage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/archetypes/archive-library.jpeg"
+        image="/assets/tantra/hero-underground-library.jpeg"
         title="The Akashic Archive"
         subtitle={`${SIDDHI_COUNT} siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access.`}
         sectionLabel="The Reading Room"

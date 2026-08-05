@@ -15,7 +15,7 @@ export default function ResearchPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/kali-temple.jpeg"
+        image="/assets/tantra/hero-observatory-alt.jpeg"
         title="Research & Sources"
         subtitle="Epistemic transparency: every claim sourced, every score explained."
         sectionLabel="Epistemic Rigour"

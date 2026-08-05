@@ -12,7 +12,7 @@ export default function MethodPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/cremation-ground.jpeg"
+        image="/assets/tantra/hero-cremation-ground-alt.jpeg"
         title="The Mirror Method"
         subtitle="A five-stage framework for recognizing and dissolving your psychological patterns through ancient sādhana."
         sectionLabel="The Architecture"
