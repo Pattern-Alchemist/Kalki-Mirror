@@ -134,7 +134,7 @@ export function CinematicImage({
   return (
     <div className={cn(
       'cinematic-wrap',
-      fill && 'absolute inset-0',
+      fill ? 'absolute inset-0' : 'relative',
       kbClass, grainClass, aspect, className
     )}>
       {imageEl}

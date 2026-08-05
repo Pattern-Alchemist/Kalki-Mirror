@@ -251,7 +251,6 @@
    Full-bleed storytelling with atmospheric depth.
    ========================================================== */
 .cinematic-wrap {
-  position: relative;
   overflow: hidden;
 }
 /* Native img fill mode — replaces next/image fill */
