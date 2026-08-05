@@ -8,9 +8,23 @@ datasource db {
 }
 
 // ============================================================
-// KALKI DATA ARCHITECTURE
-// The AKASHA LEDGER — Longitudinal karmic tracking.
-// The GOLDEN KEY SYSTEM — Invite-gated covenant access.
+// KALKI DATA ARCHITECTURE — Persistence Split
+//
+// TWO DATABASE CLIENTS, ONE SCHEMA:
+//
+// 1. staticDb (src/lib/static-db.ts)
+//    - Reads ONLY FolioChunk from the baked db/custom.db
+//    - On Vercel: copies to /tmp/kalki-corpus.db at cold start
+//    - 279 chunks, immutable, committed as a read-only asset
+//
+// 2. db (src/lib/db.ts)
+//    - Reads/writes User, SadhanaStreak, PatternResolution, InviteCode, InviteUsage
+//    - Dev: local SQLite via DATABASE_URL
+//    - Production: Turso via @prisma/adapter-libsql (TURSO_DATABASE_URL + TURSO_AUTH_TOKEN)
+//
+// WHY: Vercel's serverless filesystem is read-only. SQLite writes evaporate
+// between invocations and are not shared across function instances.
+// The FolioChunk corpus never changes at runtime — bake it, ship it, read it.
 // ============================================================
 
 model User {

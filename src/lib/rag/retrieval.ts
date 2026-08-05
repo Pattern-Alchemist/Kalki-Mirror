@@ -1,4 +1,4 @@
-import { db } from '@/lib/db';
+import { staticDb } from '@/lib/static-db';
 import type { Tier } from '@/lib/data/types';
 import type { RetrievedChunk, RetrievalPool } from './types';
 import { TIER_TO_CAUTION, PRESCRIPTION_CAUTIONS, type CautionLevel } from './caution-map';
@@ -99,7 +99,7 @@ export async function retrieveChunks(
     : TIER_TO_CAUTION[tier];
 
   // Fetch candidate chunks from DB
-  const candidates = await db.folioChunk.findMany({
+  const candidates = await staticDb.folioChunk.findMany({
     where: {
       caution: { in: allowedCautions },
       ...(sectionFilter ? { section: { in: sectionFilter } } : {}),

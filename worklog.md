@@ -1,4 +1,27 @@
 ---
+Task ID: 2
+Agent: Main
+Task: Persistence split — static corpus DB + Turso-ready dynamic DB
+
+Work Log:
+- Identified critical production blocker: Vercel serverless filesystem is read-only; SQLite writes (User, Streaks, Keys) evaporate between invocations
+- Installed @prisma/adapter-libsql + @libsql/client for Turso connection
+- Created src/lib/static-db.ts: cold-start loader that copies baked db/custom.db to /tmp/kalki-corpus.db on Vercel, PrismaClient singleton for read-only FolioChunk queries, getCorpusStats() health check
+- Refactored src/lib/db.ts: createPrismaClient() factory that routes to Turso via PrismaLibSql adapter when TURSO_DATABASE_URL + TURSO_AUTH_TOKEN are set, falls back to local SQLite in dev
+- Re-pointed src/lib/rag/retrieval.ts from `db` to `staticDb` — all FolioChunk reads now go through the baked corpus client
+- Fixed /api/keys/route.ts and /api/keys/redeem/route.ts: replaced inline `new PrismaClient()` with shared `db` singleton from @/lib/db
+- Updated .env with TURSO_DATABASE_URL/TURSO_AUTH_TOKEN placeholders
+- Updated prisma/schema.prisma header with full persistence split documentation
+- Verified: 279 FolioChunks read correctly through staticDb, two-pool retrieval works (prescription=4, citation=4), /api/initiate returns 200 in 252ms with grounded dossier (7 folio blocks, method=grounded)
+
+Stage Summary:
+- Architecture: static corpus (baked SQLite, 279 chunks, read-only) + dynamic runtime (Turso/libSQL for production, local SQLite for dev)
+- New files: src/lib/static-db.ts
+- Modified files: src/lib/db.ts, src/lib/rag/retrieval.ts, src/app/api/keys/route.ts, src/app/api/keys/redeem/route.ts, prisma/schema.prisma, .env
+- No migration needed for Turso: set TURSO_DATABASE_URL + TURSO_AUTH_TOKEN in Vercel env vars and prisma db push
+- Next: Day 4 Dossier UI, then Days 5-6 Pulse (needs Turso live for streak writes)
+
+---
 Task ID: 1
 Agent: Main
 Task: Ingest Tantra archive (Horizon 5 — The Archive) and build archetype taxonomy
