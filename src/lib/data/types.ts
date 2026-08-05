@@ -52,6 +52,16 @@ export interface PricingTier {
   annualDiscount: string;
   unlocks: string[];
   highlight: boolean;
+  yearlyINR?: number;
+  yearlyUSD?: number;
+  features?: string[];
+  gatedFeatures?: string[];
+  sadhanaAccess?: 'basic' | 'standard' | 'advanced' | 'all';
+  cta?: string;
+  description?: string;
+  popular?: boolean;
+  elementEmoji?: string;
+  color?: string;
 }
 
 export interface ConsultationService {
