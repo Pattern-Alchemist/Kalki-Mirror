@@ -4,8 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ==========================================================
-   KALKI MIRROR — DESIGN SYSTEM v10.0
-   Ancient Repository × Future Technology
+   KALKI — MASTER BRAND SYSTEM
+   Esoteric Intelligence. Sacred Architecture. Pattern Recognition.
    ========================================================== */
 
 @theme inline {
@@ -27,53 +27,54 @@
   --color-copper: var(--copper);
   --color-crimson: var(--crimson);
   --font-display: 'Cormorant Garamond', 'Georgia', serif;
-  --font-body: 'Crimson Text', 'Georgia', serif;
-  --font-ui: system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'Fira Code', monospace;
+  --font-body: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-ui: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), 'JetBrains Mono', 'Fira Code', monospace;
 }
 
 /* ==========================================================
-   PHYSICAL MATERIAL COLOR PALETTE
-   These should feel like touching ancient materials.
+   THE ELEMENTAL PALETTE — Alchemy, Temple Stone, Deep Meditation
    ========================================================== */
 :root {
-  /* Core blacks — obsidian & volcanic stone */
-  --background: #050507;
-  --deep-black: #030305;
+  /* Akasha — The Void. Not pure black. Abyssal space with 1% indigo. */
+  --background: #0B0C10;
+  --deep-black: #07080C;
 
-  /* Golds — polished metal catching candlelight */
-  --gold: #c9a84c;
-  --gold-dim: #7a6530;
-  --gold-bright: #e0c068;
+  /* Shambhala Gold — Antique oxidized gold leaf on a temple ceiling. */
+  --gold: #C5A059;
+  --gold-dim: #7A6233;
+  --gold-bright: #D4B06A;
 
-  /* Ivory — aged palm-leaf manuscript paper */
-  --foreground: #d8d0c0;
-  --ivory: #e8e0d0;
+  /* Bhasma — Sacred Ash. Aged manuscript paper, temple stone, detachment. */
+  --foreground: #E5E1D8;
+  --ivory: #EDE9E0;
 
-  /* Stone surfaces — dark granite & weathered marble */
-  --surface: #0c0c10;
-  --surface-elevated: #131318;
-  --granite: #1a1a22;
+  /* Kalki Indigo — Midnight sky, throat chakra, deep meditation. */
+  --surface: #1A2436;
+  --surface-elevated: #1E2A3E;
+  --granite: #1F2937;
 
-  /* Accent materials */
-  --bronze: #8b6914;
-  --copper: #6b4423;
-  --crimson: #8b2020;
-  --sacred-red: #6b1010;
+  /* Cinnabar — Tantric Red. Dried vermilion, root chakra, commanding. */
+  --crimson: #8A252C;
+  --sacred-red: #6B1A20;
 
-  /* Text hierarchy — aged ink on vellum */
-  --text-secondary: #9a9488;
-  --text-muted: #5a5650;
+  /* Oxidized Copper — Time, astrolabes, alchemical borders. */
+  --copper: #594A42;
+  --bronze: #6B5B3A;
 
-  /* Borders — oxidized metal edges */
-  --border-subtle: rgba(201, 168, 76, 0.06);
-  --border-gold: rgba(201, 168, 76, 0.15);
-  --border-gold-hover: rgba(201, 168, 76, 0.35);
+  /* Text hierarchy — Bhasma tints on Akasha */
+  --text-secondary: #A09B8E;
+  --text-muted: #5C5850;
 
-  /* Glass — museum vitrine */
-  --glass-bg: rgba(8, 8, 14, 0.55);
-  --glass-border: rgba(201, 168, 76, 0.08);
-  --glass-glow: rgba(201, 168, 76, 0.04);
+  /* Borders — oxidized copper edges */
+  --border-subtle: rgba(89, 74, 66, 0.15);
+  --border-gold: rgba(197, 160, 89, 0.15);
+  --border-gold-hover: rgba(197, 160, 89, 0.35);
+
+  /* Glass — museum vitrine on void */
+  --glass-bg: rgba(11, 12, 16, 0.6);
+  --glass-border: rgba(197, 160, 89, 0.06);
+  --glass-glow: rgba(197, 160, 89, 0.03);
 
   /* Atmospheric */
   --vignette-inner: transparent;
@@ -113,7 +114,7 @@
   }
 
   ::selection {
-    background: rgba(201, 168, 76, 0.3);
+    background: rgba(197, 160, 89, 0.3);
     color: var(--ivory);
   }
 
@@ -134,7 +135,7 @@
     letter-spacing: 0.7em;
     text-transform: uppercase;
     color: var(--gold-dim);
-    text-shadow: 0 0 20px rgba(201, 168, 76, 0.15);
+    text-shadow: 0 0 20px rgba(197, 160, 89, 0.15);
   }
 
   /* --- Gold Text Variants --- */
@@ -161,11 +162,11 @@
 
   /* --- Text Glow --- */
   .text-glow {
-    text-shadow: 0 0 60px rgba(201, 168, 76, 0.25), 0 0 120px rgba(201, 168, 76, 0.08);
+    text-shadow: 0 0 60px rgba(197, 160, 89, 0.25), 0 0 120px rgba(197, 160, 89, 0.08);
   }
 
   .text-glow-subtle {
-    text-shadow: 0 0 30px rgba(201, 168, 76, 0.12);
+    text-shadow: 0 0 30px rgba(197, 160, 89, 0.12);
   }
 }
 
@@ -183,7 +184,7 @@
   border-radius: var(--radius);
   box-shadow:
     0 4px 30px rgba(0, 0, 0, 0.5),
-    0 1px 0 rgba(201, 168, 76, 0.04) inset,
+    0 1px 0 rgba(197, 160, 89, 0.04) inset,
     0 -1px 0 rgba(0, 0, 0, 0.2) inset;
   transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
 }
@@ -192,29 +193,29 @@
   box-shadow:
     0 8px 40px rgba(0, 0, 0, 0.6),
     0 0 30px var(--glass-glow),
-    0 1px 0 rgba(201, 168, 76, 0.08) inset;
+    0 1px 0 rgba(197, 160, 89, 0.08) inset;
   transform: translateY(-2px);
 }
 
 /* Large panel glass — sections, containers */
 .glass-panel {
-  background: rgba(8, 8, 14, 0.4);
+  background: rgba(11, 12, 16, 0.45);
   backdrop-filter: blur(40px) saturate(1.3);
   -webkit-backdrop-filter: blur(40px) saturate(1.3);
-  border: 1px solid rgba(201, 168, 76, 0.06);
+  border: 1px solid rgba(197, 160, 89, 0.06);
   border-radius: var(--radius-lg);
   box-shadow:
     0 12px 60px rgba(0, 0, 0, 0.6),
-    0 1px 0 rgba(201, 168, 76, 0.03) inset;
+    0 1px 0 rgba(197, 160, 89, 0.03) inset;
 }
 
 /* Navigation glass */
 .glass-nav {
-  background: rgba(5, 5, 7, 0.6);
+  background: rgba(11, 12, 16, 0.65);
   backdrop-filter: blur(28px) saturate(1.4);
   -webkit-backdrop-filter: blur(28px) saturate(1.4);
-  border: 1px solid rgba(201, 168, 76, 0.05);
-  box-shadow: 0 1px 0 rgba(201, 168, 76, 0.04) inset;
+  border: 1px solid rgba(197, 160, 89, 0.05);
+  box-shadow: 0 1px 0 rgba(197, 160, 89, 0.04) inset;
 }
 
 /* ==========================================================
@@ -299,8 +300,8 @@
 /* Engraved heading — subtle inset shadow for depth */
 .engraved-heading {
   text-shadow:
-    0 1px 0 rgba(201, 168, 76, 0.12),
-    0 0 40px rgba(201, 168, 76, 0.06);
+    0 1px 0 rgba(197, 160, 89, 0.12),
+    0 0 40px rgba(197, 160, 89, 0.06);
 }
 
 /* ==========================================================
@@ -330,7 +331,7 @@
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   box-shadow:
-    0 2px 20px rgba(201, 168, 76, 0.15),
+    0 2px 20px rgba(197, 160, 89, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 .gold-cta::before {
@@ -348,8 +349,8 @@
 }
 .gold-cta:hover {
   box-shadow:
-    0 4px 40px rgba(201, 168, 76, 0.3),
-    0 0 80px rgba(201, 168, 76, 0.08),
+    0 4px 40px rgba(197, 160, 89, 0.3),
+    0 0 80px rgba(197, 160, 89, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
   transform: translateY(-2px);
 }
@@ -359,7 +360,7 @@
 .gold-cta:active {
   transform: translateY(0);
   box-shadow:
-    0 1px 10px rgba(201, 168, 76, 0.2),
+    0 1px 10px rgba(197, 160, 89, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 .gold-cta:disabled {
@@ -380,7 +381,7 @@
   text-transform: uppercase;
   padding: 1rem 2.8rem;
   border-radius: 2px;
-  border: 1px solid rgba(201, 168, 76, 0.15);
+  border: 1px solid rgba(197, 160, 89, 0.15);
   cursor: pointer;
   position: relative;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
@@ -388,8 +389,8 @@
 .ghost-cta:hover {
  border-color: var(--gold);
   color: var(--gold);
-  background: rgba(201, 168, 76, 0.03);
-  box-shadow: 0 0 30px rgba(201, 168, 76, 0.06), inset 0 0 30px rgba(201, 168, 76, 0.02);
+  background: rgba(197, 160, 89, 0.03);
+  box-shadow: 0 0 30px rgba(197, 160, 89, 0.06), inset 0 0 30px rgba(197, 160, 89, 0.02);
 }
 .ghost-cta:active {
   transform: translateY(0);
@@ -411,7 +412,7 @@
   pointer-events: none;
   background:
     radial-gradient(ellipse 80% 50% at 20% 20%, rgba(201, 168, 76, 0.015) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(107, 68, 35, 0.01) 0%, transparent 70%);
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(89, 74, 66, 0.015) 0%, transparent 70%);
   z-index: 0;
 }
 
@@ -423,10 +424,10 @@
   pointer-events: none;
   opacity: 0.3;
   background-image:
-    radial-gradient(1px 1px at 15% 25%, rgba(201, 168, 76, 0.15), transparent),
+    radial-gradient(1px 1px at 15% 25%, rgba(197, 160, 89, 0.15), transparent),
     radial-gradient(1px 1px at 45% 65%, rgba(201, 168, 76, 0.1), transparent),
-    radial-gradient(1px 1px at 75% 35%, rgba(201, 168, 76, 0.12), transparent),
-    radial-gradient(1px 1px at 85% 80%, rgba(201, 168, 76, 0.08), transparent),
+    radial-gradient(1px 1px at 75% 35%, rgba(197, 160, 89, 0.12), transparent),
+    radial-gradient(1px 1px at 85% 80%, rgba(197, 160, 89, 0.08), transparent),
     radial-gradient(1px 1px at 35% 15%, rgba(201, 168, 76, 0.1), transparent);
   animation: dustDrift 30s linear infinite;
 }
@@ -505,7 +506,7 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(201, 168, 76, 0.08) 50%,
+    rgba(197, 160, 89, 0.08) 50%,
     transparent 100%
   );
 }
@@ -545,7 +546,7 @@
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: var(--deep-black); }
 ::-webkit-scrollbar-thumb {
-  background: rgba(201, 168, 76, 0.2);
+  background: rgba(197, 160, 89, 0.2);
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover { background: rgba(201, 168, 76, 0.35); }

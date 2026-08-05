@@ -10,5 +10,5 @@ export const WHATSAPP_LINKS = {
     "Hello Kaustubh, I'd like to book a " + service + " (" + price + ").",
   siddhi: (name: string) =>
     `Hello Kaustubh, I have a question about the ${name} sādhana practice.`,
-  general: "Hello Kaustubh, I'm reaching out from AstroKalki.",
+  general: "Hello Kaustubh, I'm reaching out from KALKI.",
 } as const;

@@ -1,12 +1,9 @@
 {
-  "name": "AstroKalki",
-  "short_name": "AstroKalki",
-  "description": "The Living Archive of Siddhi Heritage",
+  "name": "KALKI",
+  "short_name": "KALKI",
+  "description": "Light for the Dark Age. Esoteric Intelligence. Sacred Architecture. Pattern Recognition.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0a0f",
-  "theme_color": "#c9a84c",
-  "icons": [
-    { "src": "/assets/hero/observatory.jpg", "sizes": "192x192", "type": "image/jpeg" }
-  ]
+  "background_color": "#0B0C10",
+  "theme_color": "#C5A059"
 }

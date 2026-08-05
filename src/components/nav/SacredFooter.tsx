@@ -4,13 +4,13 @@ import Link from 'next/link';
 
 const FOOTER_LINKS = {
   Explore: [
-    { href: '/archive', label: 'The Living Archive' },
+    { href: '/archive', label: 'The Akashic Archive' },
     { href: '/patterns', label: 'Pattern Atlas' },
-    { href: '/practice', label: 'Sādhana Tools' },
+    { href: '/practice', label: 'Sādhana Instruments' },
     { href: '/method', label: 'The Mirror Method' },
   ],
   Learn: [
-    { href: '/research', label: 'Research & Sources' },
+    { href: '/research', label: 'Epistemic Sources' },
     { href: '/pricing', label: 'Membership Tiers' },
     { href: '/consultations', label: 'Consultations' },
   ],
@@ -26,10 +26,10 @@ export function SacredFooter() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
           {/* Brand column */}
           <div>
-            <h3 className="font-display text-3xl gold-foil-text mb-6">AstroKalki</h3>
+            <h3 className="font-display text-3xl gold-foil-text mb-6">KALKI</h3>
             <p className="text-text-muted text-sm leading-relaxed max-w-xs editorial-spacing">
-              Where tantric heritage meets psychological pattern recognition.
-              Scholarly, honest, Indian at its core.
+              Where ancient Tantric geometry meets modern computational intelligence.
+              Esoteric Intelligence. Sacred Architecture. Pattern Recognition.
             </p>
           </div>
 
@@ -56,10 +56,10 @@ export function SacredFooter() {
         {/* Bottom bar */}
         <div className="mt-20 pt-8 border-t border-gold/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-caption">
-            Built with scholarly restraint.
+            The Architecture of Karma.
           </p>
           <p className="text-caption">
-            &copy; {new Date().getFullYear()} AstroKalki. All rights reserved.
+            &copy; {new Date().getFullYear()} KALKI. All rights reserved.
           </p>
         </div>
       </div>

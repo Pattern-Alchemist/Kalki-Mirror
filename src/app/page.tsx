@@ -39,9 +39,9 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
           >
-            <p className="section-label mb-8 text-glow-subtle">The Living Archive</p>
+            <p className="section-label mb-8 text-glow-subtle">Light for the Dark Age.</p>
             <h1 className="text-display gold-foil-text text-glow mb-8">
-              AstroKalki
+              KALKI
             </h1>
             <motion.p
               className="text-text-secondary text-lg md:text-xl max-w-lg editorial-spacing"
@@ -57,8 +57,8 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Link href="/archive" className="gold-cta">Enter the Archive</Link>
-              <Link href="/practice" className="ghost-cta">Begin Your Practice</Link>
+              <Link href="/archive" className="gold-cta">Enter the Akasha</Link>
+              <Link href="/practice" className="ghost-cta">Begin Sādhana</Link>
             </motion.div>
           </motion.div>
         </div>
@@ -77,12 +77,12 @@ export default function HomePage() {
             dust
           />
           <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 lg:p-16">
-            <p className="section-label mb-4 text-glow-subtle">Chamber I</p>
+            <p className="section-label mb-4 text-glow-subtle">YANTRA Decoded</p>
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 engraved-heading">
               41 Siddhis.<br />Mapped.
             </h2>
             <p className="text-text-secondary text-sm max-w-sm editorial-spacing">
-              Scholarly. Sourced. Every mantra, every lineage, every warning.
+              Decoded by YANTRA. Every mantra, every lineage, every warning.
             </p>
           </div>
         </Link>
@@ -98,7 +98,7 @@ export default function HomePage() {
             dust
           />
           <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 lg:p-16">
-            <p className="section-label mb-4 text-glow-subtle">Chamber II</p>
+            <p className="section-label mb-4 text-glow-subtle">Sādhana Instruments</p>
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 engraved-heading">
               See Yourself.<br />Clearly.
             </h2>
@@ -181,7 +181,7 @@ export default function HomePage() {
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}
           >
-            From the Archive
+            From the Akashic Archive
           </motion.p>
           <motion.div
             className="grid grid-cols-1 md:grid-cols-3 gap-6"

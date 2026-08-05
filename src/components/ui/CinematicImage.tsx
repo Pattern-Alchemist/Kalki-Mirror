@@ -23,9 +23,9 @@ interface CinematicImageProps {
 }
 
 const SCRIM_STYLES: Record<string, React.CSSProperties> = {
-  bottom: { background: 'linear-gradient(to top, rgba(3,3,5,0.98) 0%, rgba(3,3,5,0.7) 30%, rgba(3,3,5,0.15) 70%, transparent 100%)' },
-  full: { background: 'linear-gradient(180deg, rgba(3,3,5,0.82) 0%, rgba(3,3,5,0.3) 30%, rgba(3,3,5,0.4) 60%, rgba(3,3,5,0.92) 100%)' },
-  top: { background: 'linear-gradient(to bottom, rgba(3,3,5,0.85) 0%, rgba(3,3,5,0.2) 60%, transparent 100%)' },
+  bottom: { background: 'linear-gradient(to top, rgba(7,8,12,0.98) 0%, rgba(7,8,12,0.7) 30%, rgba(7,8,12,0.15) 70%, transparent 100%)' },
+  full: { background: 'linear-gradient(180deg, rgba(7,8,12,0.82) 0%, rgba(7,8,12,0.3) 30%, rgba(7,8,12,0.4) 60%, rgba(7,8,12,0.92) 100%)' },
+  top: { background: 'linear-gradient(to bottom, rgba(7,8,12,0.85) 0%, rgba(7,8,12,0.2) 60%, transparent 100%)' },
 };
 
 export function CinematicImage({
@@ -96,7 +96,7 @@ export function CinematicImage({
         left: '30%',
         width: '40%',
         height: '80%',
-        background: 'linear-gradient(180deg, rgba(201,168,76,0.04) 0%, rgba(201,168,76,0.01) 40%, transparent 100%)',
+        background: 'linear-gradient(180deg, rgba(197,160,89,0.04) 0%, rgba(197,160,89,0.01) 40%, transparent 100%)',
         transform: 'rotate(8deg)',
         filter: 'blur(40px)',
       }}
@@ -112,7 +112,7 @@ export function CinematicImage({
         left: '-10%',
         right: '-10%',
         height: '50%',
-        background: 'linear-gradient(to top, rgba(8,8,14,0.3) 0%, rgba(8,8,14,0.08) 40%, transparent 100%)',
+        background: 'linear-gradient(to top, rgba(11,12,16,0.3) 0%, rgba(11,12,16,0.08) 40%, transparent 100%)',
         filter: 'blur(8px)',
       }}
     />
