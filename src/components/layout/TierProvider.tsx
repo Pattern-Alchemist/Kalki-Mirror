@@ -33,7 +33,7 @@ const TierContext = createContext<TierContextValue>({
 
 function getSavedTier(): Tier {
   try {
-    const saved = localStorage.getItem('astrokalki-tier') as Tier | null;
+    const saved = localStorage.getItem('kalki-tier') as Tier | null;
     const valid: Tier[] = ['prithvi', 'jal', 'agni', 'akash'];
     if (saved && valid.includes(saved)) return saved;
   } catch { /* SSR */ }
@@ -67,7 +67,7 @@ export function TierProvider({ children }: { children: ReactNode }) {
     setTier(newTier);
     setShowPaywall(false);
     setPaywallFeature('');
-    try { localStorage.setItem('astrokalki-tier', newTier); } catch { /* */ }
+    try { localStorage.setItem('kalki-tier', newTier); } catch { /* */ }
   }, []);
 
   return (

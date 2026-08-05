@@ -1,15 +1,16 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 const FOOTER_LINKS = {
-  Explore: [
+  Navigate: [
     { href: '/archive', label: 'The Akashic Archive' },
     { href: '/patterns', label: 'Pattern Atlas' },
     { href: '/practice', label: 'Sādhana Instruments' },
     { href: '/method', label: 'The Mirror Method' },
   ],
-  Learn: [
+  System: [
     { href: '/research', label: 'Epistemic Sources' },
     { href: '/pricing', label: 'Membership Tiers' },
     { href: '/consultations', label: 'Consultations' },
@@ -26,10 +27,24 @@ export function SacredFooter() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
           {/* Brand column */}
           <div>
-            <h3 className="font-display text-3xl gold-foil-text mb-6">KALKI</h3>
+            <div className="flex items-center gap-3 mb-6">
+              <Image
+                src="/logo.svg"
+                alt="Kalki Yantra"
+                width={32}
+                height={32}
+                className="opacity-60"
+              />
+              <h3 className="font-display text-3xl gold-foil-text font-light tracking-[0.2em]">
+                KALKI
+              </h3>
+            </div>
             <p className="text-text-muted text-sm leading-relaxed max-w-xs editorial-spacing">
               Where ancient Tantric geometry meets modern computational intelligence.
               Esoteric Intelligence. Sacred Architecture. Pattern Recognition.
+            </p>
+            <p className="text-gold-dim text-xs mt-4 tracking-[0.15em] uppercase font-ui">
+              The Architecture of Karma.
             </p>
           </div>
 
@@ -56,7 +71,7 @@ export function SacredFooter() {
         {/* Bottom bar */}
         <div className="mt-20 pt-8 border-t border-gold/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-caption">
-            The Architecture of Karma.
+            Ancient Algorithms. Cosmic Law.
           </p>
           <p className="text-caption">
             &copy; {new Date().getFullYear()} KALKI. All rights reserved.

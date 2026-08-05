@@ -1,12 +1,13 @@
 'use client';
 
-import { use } from 'react';
+import { use, useState, useCallback } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { allPatterns } from '@/lib/data/patterns';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
+import { YantraLoader } from '@/components/patterns/YantraLoader';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 export default function PatternFolioPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -14,66 +15,149 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
   const pattern = allPatterns.find((p) => p.slug === slug);
   if (!pattern) notFound();
   const reduced = useReducedMotion();
+  const [loading, setLoading] = useState(true);
   const relatedSiddhis = allSiddhis.filter((s) => pattern.relatedSiddhis.includes(s.slug)).slice(0, 3);
+
+  const handleLoadComplete = useCallback(() => setLoading(false), []);
 
   return (
     <div className="bg-deep-black min-h-screen">
-      <header className="max-w-4xl mx-auto px-6 pt-24 pb-8">
-        <motion.p className="section-label mb-4" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible}>
-          The Mirror Method
-        </motion.p>
-        <motion.h1 className="font-display text-4xl md:text-5xl mb-2" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.1 }}>
-          {pattern.name}
-        </motion.h1>
-        <motion.p className="text-gold-dim text-lg mb-8" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.15 }}>
-          {pattern.subtitle}
-        </motion.p>
+      {/* YANTRA Analysis Loading Sequence */}
+      <AnimatePresence>
+        {loading && (
+          <YantraLoader patternName={pattern.name} onComplete={handleLoadComplete} />
+        )}
+      </AnimatePresence>
+
+      {/* Header — dark mode dossier aesthetic */}
+      <header className="border-b border-gold/5">
+        <div className="w-full max-w-4xl mx-auto px-6 lg:px-10 pt-32 pb-16">
+          {/* Terminal-style metadata */}
+          <motion.p
+            className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-copper mb-6"
+            initial={reduced ? { opacity: 1 } : { opacity: 0 }}
+            animate={loading ? { opacity: 0 } : { opacity: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            [ YANTRA PATTERN / MIRROR METHOD ]
+          </motion.p>
+          <motion.h1
+            className="font-display text-4xl md:text-5xl text-foreground leading-[0.95] tracking-[0.06em] mb-3 font-light"
+            initial={reduced ? { opacity: 1 } : { opacity: 0, y: 20 }}
+            animate={loading ? { opacity: 0 } : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+          >
+            {pattern.name}
+          </motion.h1>
+          <motion.p
+            className="font-mono text-gold-dim text-sm tracking-[0.12em] mb-8"
+            initial={reduced ? { opacity: 1 } : { opacity: 0 }}
+            animate={loading ? { opacity: 0 } : { opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            {pattern.subtitle}
+          </motion.p>
+        </div>
       </header>
 
       <div className="max-w-4xl mx-auto px-6 space-y-16 pb-32">
-        <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <h2 className="section-label mb-4">Overview</h2>
-          <p className="text-text-secondary text-lg leading-relaxed">{pattern.description}</p>
+        {/* Overview — blueprint section */}
+        <motion.section
+          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+          whileInView={fadeInUp.visible}
+          viewport={{ once: true }}
+        >
+          <p className="section-label mb-4">Overview</p>
+          <p className="text-text-secondary text-lg leading-relaxed editorial-spacing">{pattern.description}</p>
         </motion.section>
 
-        <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <h2 className="section-label mb-6">Recognizing This Pattern</h2>
-          <div className="space-y-4">
+        {/* Recognizing This Pattern — Cinnabar warnings for critical signs */}
+        <motion.section
+          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+          whileInView={fadeInUp.visible}
+          viewport={{ once: true }}
+        >
+          <p className="section-label mb-6">Recognizing This Pattern</p>
+          <div className="space-y-3">
             {pattern.signs.map((sign, i) => (
-              <div key={i} className="glass-chip p-4 flex items-start gap-4">
-                <span className="text-gold font-display text-lg">{i + 1}</span>
-                <p className="text-text-secondary">{sign}</p>
+              <div
+                key={i}
+                className="glass-chip p-4 flex items-start gap-4"
+              >
+                {/* Oxidized copper connector line */}
+                <div className="flex flex-col items-center gap-1 shrink-0 pt-1">
+                  <div className="w-px h-3" style={{ backgroundColor: 'var(--copper)' }} />
+                  <span
+                    className="font-mono text-[0.55rem] tracking-[0.15em] text-copper"
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <div className="w-px h-3" style={{ backgroundColor: 'var(--copper)' }} />
+                </div>
+                <p className="text-text-secondary text-sm leading-relaxed">{sign}</p>
               </div>
             ))}
           </div>
         </motion.section>
 
-        <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <h2 className="section-label mb-4">Origin</h2>
-          <p className="text-text-secondary leading-relaxed">{pattern.origin}</p>
+        {/* Origin */}
+        <motion.section
+          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+          whileInView={fadeInUp.visible}
+          viewport={{ once: true }}
+        >
+          <p className="section-label mb-4">Origin</p>
+          <p className="text-editorial">{pattern.origin}</p>
         </motion.section>
 
-        <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <h2 className="section-label mb-4">Suggested Practice</h2>
-          <p className="text-text-secondary leading-relaxed">{pattern.practice}</p>
+        {/* Suggested Practice — with YANTRA engine feel */}
+        <motion.section
+          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+          whileInView={fadeInUp.visible}
+          viewport={{ once: true }}
+        >
+          <p className="section-label mb-4">Prescribed Sādhana</p>
+          <div className="glass-panel p-8 relative overflow-hidden">
+            {/* Blueprint grid lines */}
+            <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
+              style={{
+                backgroundImage: `repeating-linear-gradient(0deg, var(--copper) 0px, var(--copper) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, var(--copper) 0px, var(--copper) 1px, transparent 1px, transparent 40px)`,
+              }}
+            />
+            <p className="text-text-secondary leading-relaxed relative z-10 editorial-spacing">{pattern.practice}</p>
+          </div>
         </motion.section>
 
+        {/* Connected Siddhis — blueprint schematic links */}
         {relatedSiddhis.length > 0 && (
-          <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-            <h2 className="section-label mb-6">Connected Siddhis</h2>
+          <motion.section
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            whileInView={fadeInUp.visible}
+            viewport={{ once: true }}
+          >
+            <p className="section-label mb-6">Connected Siddhis</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {relatedSiddhis.map((s) => (
-                <Link key={s.slug} href={`/archive/${s.slug}`} className="glass-chip p-4 hover:border-gold transition-colors group">
-                  <p className="text-sm text-foreground group-hover:text-gold transition-colors">{s.name}</p>
-                  <p className="text-xs text-text-muted mt-1">{s.level}</p>
-                </Link>
+              {relatedSiddhis.map((s, i) => (
+                <div key={s.slug} className="relative">
+                  {/* Copper connection line between cards */}
+                  {i < relatedSiddhis.length - 1 && (
+                    <div className="hidden md:block absolute top-1/2 -right-2 w-4 h-px" style={{ backgroundColor: 'var(--copper)', opacity: 0.4 }} />
+                  )}
+                  <Link
+                    href={`/archive/${s.slug}`}
+                    className="glass-chip p-5 hover:border-gold/30 transition-colors duration-500 group block"
+                  >
+                    <p className="text-sm text-foreground group-hover:text-gold transition-colors duration-500 font-light">{s.name}</p>
+                    <p className="font-mono text-[0.55rem] tracking-[0.15em] uppercase text-copper mt-1">{s.level}</p>
+                  </Link>
+                </div>
               ))}
             </div>
           </motion.section>
         )}
 
         <motion.div className="text-center pt-8" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <WhatsAppCTA variant="inline" label="Discuss Your Pattern" />
+          <WhatsAppCTA variant="inline" label="Consult the Archivist" />
         </motion.div>
       </div>
     </div>

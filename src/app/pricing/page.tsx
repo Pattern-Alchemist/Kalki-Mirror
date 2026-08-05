@@ -95,7 +95,7 @@ export default function PricingPage() {
 
   return (
     <div className="bg-deep-black min-h-screen">
-      <PageHero image="/assets/tantra/dark-labyrinth.jpeg" title="Choose Your Depth" subtitle="From free exploration to advanced siddhi transmission. Every tier unlocks deeper layers." sectionLabel="Sacred Offerings" />
+      <PageHero image="/assets/tantra/dark-labyrinth.jpeg" title="The Covenant" subtitle="Four access levels. One path to Shambhala. Each tier unlocks deeper layers of the Akashic Archive." sectionLabel="Sacred Offerings" />
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28">
         {/* Currency + Billing toggles */}
@@ -152,11 +152,11 @@ export default function PricingPage() {
                 {/* CTA */}
                 <div className="mt-auto">
                   {isCurrent ? (
-                    <button disabled className="ghost-cta w-full opacity-30 cursor-not-allowed">Current Plan</button>
+                    <button disabled className="ghost-cta w-full opacity-30 cursor-not-allowed">Current Access</button>
                   ) : tier.id === 'prithvi' ? (
-                    <button onClick={() => handleCTA('prithvi')} className="ghost-cta w-full">Get Started</button>
+                    <button onClick={() => handleCTA('prithvi')} className="ghost-cta w-full">Enter the Antechamber</button>
                   ) : (
-                    <button onClick={() => handleCTA(tier.id)} className="gold-cta w-full">{tier.cta ?? `Choose ${TIER_LABELS[tier.id]}`}</button>
+                    <button onClick={() => handleCTA(tier.id)} className="gold-cta w-full">{tier.cta ?? 'Enter'}</button>
                   )}
                 </div>
               </motion.div>
@@ -173,7 +173,7 @@ export default function PricingPage() {
 
         {/* Guarantee */}
         <div className="glass-panel text-center max-w-2xl mx-auto mt-16 p-10 md:p-12">
-          <h3 className="font-display text-2xl text-gold mb-3 text-glow-subtle">Sacred Guarantee</h3>
+          <h3 className="font-display text-2xl text-gold mb-3 text-glow-subtle font-light tracking-wide">Sacred Guarantee</h3>
           <p className="text-editorial">If you don&apos;t feel a tangible shift in your practice within 14 days, we&apos;ll refund every rupee. No questions asked. Your spiritual journey is too important for compromise.</p>
         </div>
 

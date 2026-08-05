@@ -12,8 +12,8 @@ export default function ConsultationsPage() {
     <div className="bg-deep-black min-h-screen">
       <PageHero
         image="/assets/tantra/hero-fire.jpeg"
-        title="Consultations"
-        subtitle="Personal sessions bridging the ancient map and your lived experience."
+        title="Consult the Archivist"
+        subtitle="Structured sessions bridging the ancient map and your lived experience. Not fortune-telling — pattern intelligence."
         sectionLabel="With Kaustubh"
       />
 
@@ -23,9 +23,10 @@ export default function ConsultationsPage() {
           whileInView={fadeInUp.visible}
           viewport={{ once: true }}
         >
-          These are not fortune-telling sessions. They are structured conversations
-          where Kaustubh helps you identify your recurring emotional patterns and
-          connects them to specific sādhana practices designed for transformation.
+          These are not therapy sessions or fortune-telling. Kaustubh operates as a
+          Tantric Technologist — identifying your recurring behavioral loops through
+          the Mirror Method, and prescribing specific sādhana practices from the
+          Akashic Archive designed for your exact pattern. Discreet. Professional. Sovereign.
         </motion.p>
 
         <motion.div className="space-y-6"

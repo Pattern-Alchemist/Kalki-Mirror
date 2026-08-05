@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
@@ -50,9 +51,17 @@ export function SacredNav() {
       >
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo */}
-            <Link href="/" className="relative z-10">
-              <span className="font-display text-lg md:text-xl tracking-wide gold-foil-text">
+            {/* Logo — Yantra mark + KALKI wordmark */}
+            <Link href="/" className="relative z-10 flex items-center gap-3 group">
+              <Image
+                src="/logo.svg"
+                alt="Kalki Yantra"
+                width={28}
+                height={28}
+                className="opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                priority
+              />
+              <span className="font-display text-lg md:text-xl tracking-[0.25em] gold-foil-text font-light">
                 KALKI
               </span>
             </Link>
@@ -124,12 +133,20 @@ export function SacredNav() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            {/* Backdrop */}
+            {/* Backdrop — pure Akasha void */}
             <div className="absolute inset-0 bg-deep-black/95 backdrop-blur-2xl" />
-            {/* Fog gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-deep-black/50" />
 
             <div className="relative z-10 flex flex-col justify-center h-full px-10">
+              {/* Yantra mark centered at top of menu */}
+              <div className="mb-16 flex justify-center">
+                <Image
+                  src="/logo.svg"
+                  alt="Kalki Yantra"
+                  width={48}
+                  height={48}
+                  className="opacity-60"
+                />
+              </div>
               <nav className="flex flex-col gap-2">
                 {NAV_LINKS.map((link, i) => (
                   <motion.div
@@ -147,7 +164,7 @@ export function SacredNav() {
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
                       className={cn(
-                        'font-display text-3xl md:text-4xl tracking-wide py-2 transition-colors duration-500',
+                        'font-display text-3xl md:text-4xl tracking-[0.15em] py-2 transition-colors duration-500 font-light',
                         isActive(link.href)
                           ? 'text-gold'
                           : 'text-text-muted hover:text-ivory'
@@ -166,7 +183,8 @@ export function SacredNav() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                Light for the Dark Age.</motion.p>
+                Light for the Dark Age.
+              </motion.p>
             </div>
           </motion.div>
         )}

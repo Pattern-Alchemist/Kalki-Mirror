@@ -26,10 +26,10 @@
   --color-granite: var(--granite);
   --color-copper: var(--copper);
   --color-crimson: var(--crimson);
-  --font-display: 'Cormorant Garamond', 'Georgia', serif;
+  --font-display: var(--font-cormorant), 'Cormorant Garamond', 'Georgia', serif;
   --font-body: var(--font-inter), 'Inter', system-ui, sans-serif;
   --font-ui: var(--font-inter), 'Inter', system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), 'JetBrains Mono', 'Fira Code', monospace;
+  --font-mono: var(--font-jetbrains), 'JetBrains Mono', 'IBM Plex Mono', monospace;
 }
 
 /* ==========================================================
@@ -94,7 +94,6 @@
   }
 
   html {
-    scroll-behavior: smooth;
     overflow-x: hidden;
   }
 
@@ -110,6 +109,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+    font-weight: 300;
     font-feature-settings: 'kern' 1, 'liga' 1, 'dlig' 1;
   }
 
@@ -451,8 +451,40 @@
 }
 
 /* ==========================================================
+   YANTRA LOADING SEQUENCE
+   The initiation — elements emerge from the dark.
+   ========================================================== */
+
+/* The Yantra draws itself: Axis Mundi first, then geometry locks, then Bindu pulses */
+@keyframes yantraDraw {
+  0%   { stroke-dashoffset: 600; opacity: 0; }
+  10%  { opacity: 1; }
+  60%  { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes binduPulse {
+  0%, 100% { r: 2.5; opacity: 0.7; }
+  50%      { r: 3.5; opacity: 1; }
+}
+@keyframes wordmarkFade {
+  0%   { opacity: 0; filter: blur(8px); }
+  100% { opacity: 1; filter: blur(0); }
+}
+.yantra-loading svg line,
+.yantra-loading svg polygon {
+  stroke-dasharray: 600;
+  animation: yantraDraw 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.yantra-loading svg circle[fill] {
+  animation: binduPulse 1.2s ease-in-out 2s infinite;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+/* ==========================================================
    ENTRANCE ANIMATIONS
    Cinematic reveals — slow, dignified, layered.
+   Elements emerge from the dark.
    ========================================================== */
 .blur-fade-up {
   opacity: 0;
@@ -560,13 +592,14 @@
 /* ==========================================================
    RESPONSIVE TYPOGRAPHY SCALE
    ========================================================== */
-/* Display — massive cinematic headings */
+/* Display — massive cinematic headings. Thin weight only. Generous tracking. */
 .text-display {
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 6vw, 6.5rem);
   line-height: 0.95;
-  letter-spacing: -0.02em;
-  font-weight: 400;
+  letter-spacing: 0.08em;
+  font-weight: 300;
+  text-transform: uppercase;
 }
 
 /* Sub-display — section openings */
@@ -574,8 +607,8 @@
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 3.5vw, 3.5rem);
   line-height: 1.1;
-  letter-spacing: -0.01em;
-  font-weight: 400;
+  letter-spacing: 0.04em;
+  font-weight: 300;
 }
 
 /* Editorial body — generous leading for readability */

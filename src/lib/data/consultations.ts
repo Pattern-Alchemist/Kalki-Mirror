@@ -3,7 +3,7 @@ import type { ConsultationService } from './types';
 export const consultationServices: ConsultationService[] = [
   {
     slug: 'introductory-call',
-    name: 'Introductory Discovery Call',
+    name: 'Archival Discovery',
     duration: '30 min',
     price: 'Free',
     description:
@@ -14,7 +14,7 @@ export const consultationServices: ConsultationService[] = [
   },
   {
     slug: 'practice-consultation',
-    name: 'Practice Consultation',
+    name: 'Pattern Consultation',
     duration: '60 min',
     price: '₹1,999 / $29',
     description:
@@ -25,7 +25,7 @@ export const consultationServices: ConsultationService[] = [
   },
   {
     slug: 'shadow-pattern-reading',
-    name: 'Shadow Pattern Reading',
+    name: 'Shadow Dossier',
     duration: '90 min',
     price: '₹3,499 / $49',
     description:
