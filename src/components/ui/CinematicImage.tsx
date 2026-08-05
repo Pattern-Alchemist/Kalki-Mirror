@@ -20,8 +20,13 @@ interface CinematicImageProps {
   fog?: boolean;
   dust?: boolean;
   aspect?: string;
-  colorGrade?: boolean;
 }
+
+const SCRIM_STYLES: Record<string, React.CSSProperties> = {
+  bottom: { background: 'linear-gradient(to top, rgba(3,3,5,0.98) 0%, rgba(3,3,5,0.7) 30%, rgba(3,3,5,0.15) 70%, transparent 100%)' },
+  full: { background: 'linear-gradient(180deg, rgba(3,3,5,0.82) 0%, rgba(3,3,5,0.3) 30%, rgba(3,3,5,0.4) 60%, rgba(3,3,5,0.92) 100%)' },
+  top: { background: 'linear-gradient(to bottom, rgba(3,3,5,0.85) 0%, rgba(3,3,5,0.2) 60%, transparent 100%)' },
+};
 
 export function CinematicImage({
   src,
@@ -39,7 +44,6 @@ export function CinematicImage({
   fog = false,
   dust = false,
   aspect,
-  colorGrade = true,
 }: CinematicImageProps) {
   const prefersReduced = useReducedMotion();
   const kbClass = prefersReduced
@@ -49,42 +53,67 @@ export function CinematicImage({
       : kenBurns === 'normal'
         ? 'ken-burns'
         : '';
-  const scrimClass =
-    scrim === 'bottom' ? 'scrim-bottom' : scrim === 'full' ? 'scrim-full' : scrim === 'top' ? 'scrim-top' : '';
   const grainClass = prefersReduced ? '' : filmGrain ? 'film-grain' : '';
-  const vignetteClass = vignette ? 'vignette' : '';
-  const volumetricClass = volumetric ? 'volumetric-light' : '';
-  const fogClass = fog ? 'atmospheric-fog' : '';
   const dustClass = prefersReduced ? '' : dust ? 'dust-particles' : '';
-  const gradeClass = colorGrade ? '' : 'no-grade';
+
+  const imageEl = fill ? (
+    <Image src={src} alt={alt} fill priority={priority} className="object-cover" />
+  ) : (
+    <Image src={src} alt={alt} width={width ?? 1400} height={height ?? 900} priority={priority} className="object-cover w-full h-full" />
+  );
+
+  const scrimEl = scrim !== 'none' ? (
+    <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1, ...SCRIM_STYLES[scrim] }} />
+  ) : null;
+
+  const volumetricEl = volumetric && !prefersReduced ? (
+    <div
+      className="absolute pointer-events-none"
+      style={{
+        zIndex: 2,
+        top: '-20%',
+        left: '30%',
+        width: '40%',
+        height: '80%',
+        background: 'linear-gradient(180deg, rgba(201,168,76,0.04) 0%, rgba(201,168,76,0.01) 40%, transparent 100%)',
+        transform: 'rotate(8deg)',
+        filter: 'blur(40px)',
+      }}
+    />
+  ) : null;
+
+  const fogEl = fog ? (
+    <div
+      className="absolute pointer-events-none"
+      style={{
+        zIndex: 2,
+        bottom: 0,
+        left: '-10%',
+        right: '-10%',
+        height: '50%',
+        background: 'linear-gradient(to top, rgba(8,8,14,0.3) 0%, rgba(8,8,14,0.08) 40%, transparent 100%)',
+        filter: 'blur(8px)',
+      }}
+    />
+  ) : null;
+
+  const vignetteEl = vignette ? (
+    <div
+      className="absolute inset-0 pointer-events-none"
+      style={{
+        zIndex: 3,
+        background: 'radial-gradient(ellipse 70% 60% at 50% 50%, transparent 50%, rgba(0,0,0,0.45) 100%)',
+      }}
+    />
+  ) : null;
 
   return (
-    <div
-      className={cn(
-        'cinematic-wrap',
-        kbClass,
-        scrimClass,
-        grainClass,
-        vignetteClass,
-        volumetricClass,
-        fogClass,
-        dustClass,
-        aspect,
-        className
-      )}
-    >
-      {fill ? (
-        <Image src={src} alt={alt} fill priority={priority} className="object-cover" />
-      ) : (
-        <Image
-          src={src}
-          alt={alt}
-          width={width ?? 1400}
-          height={height ?? 900}
-          priority={priority}
-          className="object-cover w-full h-full"
-        />
-      )}
+    <div className={cn('cinematic-wrap', kbClass, grainClass, dustClass, aspect, className)}>
+      {imageEl}
+      {scrimEl}
+      {volumetricEl}
+      {fogEl}
+      {vignetteEl}
     </div>
   );
 }
