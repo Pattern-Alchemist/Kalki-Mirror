@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
   { href: '/archive', label: 'Akasha' },
+  { href: '/archetypes', label: 'Archetypes' },
   { href: '/patterns', label: 'Patterns' },
   { href: '/practice', label: 'Sādhana' },
   { href: '/method', label: 'The Method' },

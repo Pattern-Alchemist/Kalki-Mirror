@@ -6,6 +6,7 @@ import Image from 'next/image';
 const FOOTER_LINKS = {
   Navigate: [
     { href: '/archive', label: 'The Akashic Archive' },
+    { href: '/archetypes', label: 'Mahāvidyā Archetypes' },
     { href: '/patterns', label: 'Pattern Atlas' },
     { href: '/practice', label: 'Sādhana Instruments' },
     { href: '/method', label: 'The Mirror Method' },
