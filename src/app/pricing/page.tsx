@@ -7,6 +7,7 @@ import { pricingTiers, formatPrice } from '@/lib/data/pricing';
 import { useTier } from '@/components/layout/TierProvider';
 import type { Tier, Currency } from '@/lib/data/types';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
+import { BackButton } from '@/components/nav/BackButton';
 import { staggerContainer, staggerItem } from '@/lib/motion/tokens';
 
 const TIER_ORDER: Tier[] = ['prithvi', 'jal', 'agni', 'akash'];
@@ -98,7 +99,7 @@ export default function PricingPage() {
       <PageHero image="/assets/tantra/dark-labyrinth.jpeg" title="The Covenant" subtitle="Four access levels. One path to Shambhala. Each tier unlocks deeper layers of the Akashic Archive." sectionLabel="Sacred Offerings" />
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28">
-        {/* Currency + Billing toggles */}
+        <BackButton href="/" label="Back to Home" className="mb-10" />
         <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-20">
           <div className="glass-chip p-1 flex gap-1">
             <button onClick={() => setCurrency('INR')} className={`px-6 py-2.5 rounded-sm text-[0.65rem] font-ui tracking-[0.15em] uppercase transition-all duration-400 ${currency === 'INR' ? 'bg-gold text-deep-black' : 'text-text-muted hover:text-gold-dim'}`}>INR</button>

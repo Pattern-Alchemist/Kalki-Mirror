@@ -13,6 +13,7 @@ import { AcknowledgmentGate } from '@/components/archive/AcknowledgmentGate';
 import { GatedContent } from '@/components/monetization/GatedContent';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
+import { BackButton } from '@/components/nav/BackButton';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { WHATSAPP_LINKS } from '@/lib/utils/whatsapp';
 import type { Tier } from '@/lib/data/types';
@@ -54,6 +55,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
       {/* Atmospheric header */}
       <header className="border-b border-gold/5">
         <div className="w-full max-w-4xl mx-auto px-6 lg:px-10 pt-32 pb-16">
+          <BackButton href="/archive" label="Back to Archive" className="mb-8" />
           {/* Metadata tags — JetBrains Mono terminal aesthetic */}
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <motion.p 

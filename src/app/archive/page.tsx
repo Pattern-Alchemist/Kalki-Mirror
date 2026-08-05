@@ -11,6 +11,7 @@ import { TEN_MAHAVIDYAS, ACCESS_LABELS, type CautionLevel as ArchCaution } from 
 import { staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import type { SiddhiLevel, Tier } from '@/lib/data/types';
 import { cn } from '@/lib/utils';
+import { BackButton } from '@/components/nav/BackButton';
 
 const CATEGORIES = ['All', 'Mantra', 'Yantra', 'Prāṇāyāma', 'Ritual', 'Tantra', 'Meditation', 'Dhāraṇā'];
 const CAUTION_FILTERS: { value: string; label: string }[] = [
@@ -81,6 +82,7 @@ export default function ArchivePage() {
       </div>
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-16 md:py-24">
+        <BackButton href="/" label="Back to Home" className="mb-10" />
         {/* Search + Filters — ledger terminal aesthetic */}
         <div className="flex flex-col gap-5 mb-12">
           {/* Search bar */}

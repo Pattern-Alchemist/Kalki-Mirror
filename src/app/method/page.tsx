@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { PageHero } from '@/components/layout/PageHero';
 import { MirrorMethodSteps } from '@/components/patterns/MirrorMethodSteps';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
+import { BackButton } from '@/components/nav/BackButton';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 export default function MethodPage() {
@@ -18,6 +19,7 @@ export default function MethodPage() {
       />
 
       <div className="max-w-4xl mx-auto px-6 lg:px-10 py-20 md:py-28 space-y-28">
+        <BackButton href="/" label="Back to Home" />
         {/* The Five Steps */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-4">Five Stages</p>

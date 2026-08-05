@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { PageHero } from '@/components/layout/PageHero';
 import { allSiddhis } from '@/lib/data/siddhis';
+import { BackButton } from '@/components/nav/BackButton';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 
 export default function ResearchPage() {
@@ -21,6 +22,7 @@ export default function ResearchPage() {
       />
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28 space-y-28">
+        <BackButton href="/" label="Back to Home" className="mb-10" />
         {/* Stats */}
         <motion.section className="grid grid-cols-1 md:grid-cols-3 gap-8"
           initial={reduced ? { opacity: 1 } : staggerContainer.hidden}

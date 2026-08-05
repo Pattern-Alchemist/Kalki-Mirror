@@ -168,6 +168,34 @@
   .text-glow-subtle {
     text-shadow: 0 0 30px rgba(197, 160, 89, 0.12);
   }
+
+  /* --- White Neon Glow (medium intensity, pulsating) --- */
+  .neon-glow-white {
+    box-shadow:
+      0 0 15px rgba(255, 255, 255, 0.12),
+      0 0 40px rgba(255, 255, 255, 0.06),
+      0 0 80px rgba(255, 255, 255, 0.03);
+    animation: neonPulse 3s ease-in-out infinite;
+  }
+
+  .neon-glow-white img {
+    filter: contrast(1.12) saturate(0.85) brightness(1.05) sepia(0.04);
+  }
+
+  @keyframes neonPulse {
+    0%, 100% {
+      box-shadow:
+        0 0 15px rgba(255, 255, 255, 0.12),
+        0 0 40px rgba(255, 255, 255, 0.06),
+        0 0 80px rgba(255, 255, 255, 0.03);
+    }
+    50% {
+      box-shadow:
+        0 0 25px rgba(255, 255, 255, 0.2),
+        0 0 60px rgba(255, 255, 255, 0.1),
+        0 0 100px rgba(255, 255, 255, 0.05);
+    }
+  }
 }
 
 /* ==========================================================
@@ -543,6 +571,15 @@
   );
 }
 
+/* Slow breathing animation for meditation timer */
+@keyframes breatheSlow {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.015); }
+}
+.animate-breathe-slow {
+  animation: breatheSlow 6s ease-in-out infinite;
+}
+
 /* ==========================================================
    REDUCED MOTION
    ========================================================== */
@@ -565,6 +602,12 @@
     animation: none !important;
   }
   .dust-overlay {
+    animation: none !important;
+  }
+  .neon-glow-white {
+    animation: none !important;
+  }
+  .animate-breathe-slow {
     animation: none !important;
   }
   html {

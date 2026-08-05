@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { PageHero } from '@/components/layout/PageHero';
 import { PatternCard } from '@/components/patterns/PatternCard';
 import { allPatterns } from '@/lib/data/patterns';
+import { BackButton } from '@/components/nav/BackButton';
 import { staggerContainer, staggerItem } from '@/lib/motion/tokens';
 
 export default function PatternsPage() {
@@ -17,6 +18,7 @@ export default function PatternsPage() {
         sectionLabel="The Mirror Method"
       />
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28">
+        <BackButton href="/" label="Back to Home" className="mb-10" />
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           initial={reduced ? { opacity: 1 } : staggerContainer.hidden}

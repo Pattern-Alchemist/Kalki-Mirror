@@ -10,6 +10,7 @@ import { getArchetypeById, PATTERN_ARCHETYPE_MAP } from '@/lib/data/archetypes';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { YantraLoader } from '@/components/patterns/YantraLoader';
 import { CautionBadge } from '@/components/archive/CautionBadge';
+import { BackButton } from '@/components/nav/BackButton';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 export default function PatternFolioPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -36,6 +37,7 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
       {/* Header — dark mode dossier aesthetic */}
       <header className="border-b border-gold/5">
         <div className="w-full max-w-4xl mx-auto px-6 lg:px-10 pt-32 pb-16">
+          <BackButton href="/patterns" label="Back to Patterns" className="mb-8" />
           {/* Terminal-style metadata */}
           <motion.p
             className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-copper mb-6"

@@ -23,8 +23,8 @@ export default function HomePage() {
       {/* ===== CHAMBER I: ARRIVAL — The Initiation ===== */}
       <section className="relative h-[110vh] md:h-[120vh] flex items-end overflow-hidden">
         <CinematicImage
-          src="/assets/tantra/hero-main.jpeg"
-          alt="Ancient trident in stone courtyard"
+          src="/assets/tantra/sacred-manuscript-new.jpeg"
+          alt="Sacred manuscript detailing cosmic geometry — the architecture of awareness"
           kenBurns="slow"
           scrim="full"
           vignette
@@ -90,8 +90,8 @@ export default function HomePage() {
         {/* Archive Door — YANTRA Decoded */}
         <Link href="/archive" className="group relative overflow-hidden">
           <CinematicImage
-            src="/assets/tantra/hero-temple.jpeg"
-            alt="Sacred ritual items on ancient altar"
+            src="/assets/tantra/ritual-altar-new.jpeg"
+            alt="Ritual items arranged on ancient altar — sacred instruments of the tradition"
             kenBurns="normal"
             scrim="bottom"
             volumetric
@@ -111,8 +111,8 @@ export default function HomePage() {
         {/* Practice Door — Sādhana Instruments */}
         <Link href="/practice" className="group relative overflow-hidden">
           <CinematicImage
-            src="/assets/tantra/hero-fire.jpeg"
-            alt="Sadhu with ash and gold markings"
+            src="/assets/tantra/sadhu-ash-gold-new.jpeg"
+            alt="Sadhu with ash and gold — the living tradition of Tantra"
             kenBurns="normal"
             scrim="bottom"
             volumetric
@@ -188,8 +188,8 @@ export default function HomePage() {
       {/* ===== CHAMBER V: FEATURED SIDDHIS — Dark museum hall ===== */}
       <section className="relative py-28 md:py-40">
         <CinematicImage
-          src="/assets/tantra/hero-manuscript.jpeg"
-          alt="Sacred manuscript with geometric patterns"
+          src="/assets/tantra/meditation-bowl.jpeg"
+          alt="Meditation bowl on wooden altar — the stillness of practice"
           scrim="full"
           vignette
           dust

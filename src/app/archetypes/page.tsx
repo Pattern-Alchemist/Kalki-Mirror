@@ -9,6 +9,7 @@ import { CautionBadge } from '@/components/archive/CautionBadge';
 import { GatedContent } from '@/components/monetization/GatedContent';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import Link from 'next/link';
+import { BackButton } from '@/components/nav/BackButton';
 import type { CautionLevel } from '@/lib/data/archetypes';
 import type { Tier } from '@/lib/data/types';
 
@@ -24,6 +25,7 @@ export default function ArchetypesPage() {
       {/* Header */}
       <header className="border-b border-gold/5">
         <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-10 pt-32 pb-16">
+          <BackButton href="/" label="Back to Home" className="mb-8" />
           <motion.p
             className="section-label mb-6"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
