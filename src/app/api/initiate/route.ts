@@ -2,32 +2,33 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getTransitGeometry, formatTransitForPrompt } from '@/lib/ephemeris/transits';
 import { allPatterns } from '@/lib/data/patterns';
 import { allSiddhis } from '@/lib/data/siddhis';
-import { PATTERN_ARCHETYPE_MAP, getArchetypeById, TEN_MAHAVIDYAS } from '@/lib/data/archetypes';
+import { PATTERN_ARCHETYPE_MAP, getArchetypeById, TEN_MAHAVIDYAS, ALL_ARCHETYPES } from '@/lib/data/archetypes';
 import { getCautionLevel } from '@/components/archive/CautionBadge';
+import { retrievePrescription, retrieveCitation } from '@/lib/rag/retrieval';
+import { buildYantraUserPrompt, YANTRA_SYSTEM_PROMPT } from '@/lib/ai/yantra-prompt';
 import type { Tier } from '@/lib/data/types';
 
 /**
  * POST /api/initiate
- * 
+ *
  * The Initiation Sequence — one route that chains:
- * 1. Birth coordinates → natal Moon extraction
- * 2. Transit geometry computation → active frictions
- * 3. Pattern matching → dominant karmic loops
- * 4. Archetype classification → Mahāvidyā taxonomy
- * 5. Returns a single Dossier JSON
+ * 1. Birth coordinates / behavioral query → pattern matching
+ * 2. RAG retrieval: two-pool (prescription + citation)
+ * 3. Transit geometry computation → active frictions
+ * 4. Grounded dossier assembly with archive_refs
  */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { birthDate, birthTime, birthPlace, natalMoonDeg, behavioralQuery } = body as {
+    const { birthDate, birthTime, birthPlace, natalMoonDeg, behavioralQuery, tier } = body as {
       birthDate?: string;
       birthTime?: string;
       birthPlace?: string;
       natalMoonDeg?: number;
       behavioralQuery?: string;
+      tier?: string;
     };
 
-    // Validate — at least one input method required
     if (!natalMoonDeg && !behavioralQuery && !birthDate) {
       return NextResponse.json(
         { error: 'Provide birth coordinates (date/time/place), natal Moon degrees, or a behavioral description.' },
@@ -35,33 +36,58 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const userTier = (tier || 'prithvi') as Tier;
+
     // Step 1: Transit geometry
     const moonDeg = natalMoonDeg || 0;
     const geometry = getTransitGeometry(natalMoonDeg ? moonDeg : undefined);
 
-    // Step 2: Pattern matching
-    // In production, this would use the YANTRA LLM analysis.
-    // For now, we do keyword-based matching against the Pattern Atlas.
+    // Step 2: Pattern matching (keyword fallback for pattern selection)
     const query = behavioralQuery || '';
     const q = query.toLowerCase();
-    
+
     let matchedPatterns = allPatterns;
     if (q.length > 0) {
       matchedPatterns = allPatterns.filter(p => {
         const haystack = `${p.name} ${p.subtitle} ${p.description} ${p.signs.join(' ')} ${p.origin} ${p.practice}`.toLowerCase();
-        // Score by keyword overlap
         const keywords = q.split(/[\s,;.]+/).filter(w => w.length > 3);
-        const score = keywords.reduce((acc, kw) => {
-          return acc + (haystack.includes(kw) ? 1 : 0);
-        }, 0);
+        const score = keywords.reduce((acc, kw) => acc + (haystack.includes(kw) ? 1 : 0), 0);
         return score >= 2;
       });
     }
-    
-    // Take top 3 patterns or default to first 2
+
     const dominantPatterns = matchedPatterns.slice(0, 3);
 
-    // Step 3: Archetype classification
+    // Step 3: RAG retrieval — two pools
+    const retrievalQuery = `${q} ${dominantPatterns.map(p => p.description).join(' ')}`.trim();
+
+    let prescriptionChunks: Awaited<ReturnType<typeof retrievePrescription>>['chunks'] = [];
+    let citationChunks: Awaited<ReturnType<typeof retrieveCitation>>['chunks'] = [];
+
+    if (retrievalQuery.length > 5) {
+      try {
+        const [presResult, citeResult] = await Promise.all([
+          retrievePrescription(retrievalQuery, { k: 4 }),
+          retrieveCitation(retrievalQuery, userTier, { k: 4 }),
+        ]);
+        prescriptionChunks = presResult.chunks;
+        citationChunks = citeResult.chunks;
+      } catch {
+        // Retrieval failure — proceed without folio grounding
+      }
+    }
+
+    // Deduplicate and merge all chunks for the YANTRA context
+    const seen = new Set<string>();
+    const allRetrievedChunks = [...prescriptionChunks, ...citationChunks]
+      .filter(c => {
+        const key = `${c.slug}:${c.section}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+
+    // Step 4: Archetype classification
     const archetypeMap = dominantPatterns.map(p => ({
       pattern: p.slug,
       patternName: p.name,
@@ -69,7 +95,7 @@ export async function POST(request: NextRequest) {
       archetype: PATTERN_ARCHETYPE_MAP[p.slug] ? getArchetypeById(PATTERN_ARCHETYPE_MAP[p.slug]) : null,
     }));
 
-    // Step 4: Find connected siddhis (only OPEN/MODERATE for the dossier)
+    // Step 5: Connected siddhis (OPEN/MODERATE for dossier)
     const connectedSiddhis = dominantPatterns.flatMap(p => p.relatedSiddhis)
       .filter((v, i, a) => a.indexOf(v) === i)
       .map(slug => allSiddhis.find(s => s.slug === slug))
@@ -77,11 +103,33 @@ export async function POST(request: NextRequest) {
       .filter(s => ['Foundation', 'Intermediate'].includes(s!.level))
       .slice(0, 5);
 
-    // Step 5: Compose the Dossier
+    // Step 6: Collect unique archive_refs from retrieval
+    const archiveRefs = [...new Set(allRetrievedChunks.map(c => c.slug))];
+
+    // Step 7: Build the grounded YANTRA prompt (for when LLM is connected)
+    const yantraPrompt = buildYantraUserPrompt(query, {
+      dominantPatterns: dominantPatterns.map(p => p.name),
+      currentTransit: formatTransitForPrompt(geometry),
+      folioChunks: allRetrievedChunks.map(c => ({
+        slug: c.slug,
+        section: c.section,
+        caution: c.caution,
+        text: c.text,
+      })),
+      archetypeList: ALL_ARCHETYPES.map(a => ({
+        id: a.id,
+        name: a.name,
+        sanskrit: a.sanskrit,
+        pattern: a.pattern,
+        bija: a.bija,
+      })),
+    });
+
+    // Step 8: Compose the Dossier
     const dossier = {
       timestamp: geometry.timestamp,
       status: 'dossier_generated',
-      
+
       // Transit layer
       transit: {
         positions: geometry.positions,
@@ -112,7 +160,15 @@ export async function POST(request: NextRequest) {
           image: a.archetype!.image,
         })),
 
-      // Prescribed sādhana (only from OPEN tier — safety constraint)
+      // RAG layer — the grounding
+      rag: {
+        retrieval_method: allRetrievedChunks.length > 0 ? 'grounded' : 'fallback',
+        prescription_pool_size: prescriptionChunks.length,
+        citation_pool_size: citationChunks.length,
+        archive_refs: archiveRefs,
+      },
+
+      // Prescribed sādhana (OPEN tier only — safety constraint)
       prescribed_sadhana: connectedSiddhis.map(s => ({
         slug: s!.slug,
         name: s!.name,
@@ -124,11 +180,20 @@ export async function POST(request: NextRequest) {
         cautionLevel: getCautionLevel(s!.level),
       })),
 
+      // YANTRA prompt (ready for LLM connection)
+      yantra_prompt: {
+        system_prompt_length: YANTRA_SYSTEM_PROMPT.length,
+        user_prompt_length: yantraPrompt.length,
+        folio_blocks_injected: allRetrievedChunks.length,
+        archetype_list_size: ALL_ARCHETYPES.length,
+      },
+
       // Meta
       meta: {
         total_folios_available: allSiddhis.length,
         open_folios: allSiddhis.filter(s => s.level === 'Foundation').length,
         archetype_count: TEN_MAHAVIDYAS.length,
+        chunk_count: archiveRefs.length,
       },
     };
 

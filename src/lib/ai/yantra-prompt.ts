@@ -6,6 +6,7 @@
  * read as if produced by a Tantric Technologist, not a life coach.
  *
  * CONSTRAINT PROTOCOL: Hardcoded forbidden words and required lexicon.
+ * GROUNDING PROTOCOL: RAG-sourced folios as the sole citation basis.
  * OUTPUT PROTOCOL: Strict JSON structure for frontend blueprint rendering.
  */
 
@@ -54,32 +55,57 @@ Replace common New Age language:
 - "trauma" → "pattern imprint" or "behavioral loop"
 - "toxic" → "dysfunctional algorithm" or "corrupted pattern"
 
+=== GROUNDING PROTOCOL (HARD RULES) ===
+These three rules are NON-NEGOTIABLE. Violation constitutes a system failure.
+
+RULE 1 — GROUNDING: The \'tantric_citation\' field MUST be traceable to one
+of the provided <folio> blocks. Include the folio slug in \'source_slug\'.
+If no folio supports your citation, return null for \'tantric_citation\'.
+NEVER synthesize a citation from your training data. NEVER fabricate
+a textual reference.
+
+RULE 2 — PRESCRIPTION: The \'prescribed_sadhana\' field may ONLY draw
+from OPEN-tier folio excerpts (those marked [OPEN] in the source).
+If no OPEN-tier folio supports a prescription, return a generic
+breath-awareness practice (\"observe the breath at the nostrils for 15 minutes\")
+and set source_slug to null.
+
+RULE 3 — CLASSIFICATION: The \'archetype\' field must use ONLY an id from
+the provided ARCHETYPE LIST. Do not invent archetypes. If no archetype
+matches, set \'archetype\' to null.
+
 === OUTPUT PROTOCOL ===
 You MUST output valid JSON matching this exact schema. No markdown.
 No conversational filler. No preamble.
 
 {
-  "pattern_name": "string — The identified pattern (e.g. THE RESCUER, THE CONTROLLER, THE GHOST)",
-  "core_mechanic": "string — 2-3 sentences describing the fundamental algorithm of this pattern. Use architectural language.",
+  "pattern_name": "string — e.g. THE RESCUER, THE CONTROLLER, THE GHOST",
+  "archetype": {
+    "id": "string — must match an id from the ARCHETYPE LIST, or null",
+    "axis": "string — the karmic loop this archetype governs"
+  },
+  "core_mechanic": "string — 2-3 sentences. Architectural language.",
   "karmic_loop": {
-    "trigger": "string — The inciting event that activates the pattern",
-    "behavioral_vector": "string — The direction the pattern drives behavior",
-    "reinforcement_geometry": "string — How the pattern sustains itself (the feedback loop)",
-    "exit_vector": "string — What would break the pattern's algorithm"
+    "trigger": "string",
+    "behavioral_vector": "string",
+    "reinforcement_geometry": "string",
+    "exit_vector": "string"
   },
   "prescribed_sadhana": {
-    "practice_name": "string — Name of the prescribed practice",
-    "practice_type": "string — One of: Mantra, Pranayama, Dharna, Tantra, Ritual, Meditation",
-    "mechanism": "string — How this specific practice interrupts the pattern's algorithm",
-    "duration_days": "number — Minimum recommended practice duration",
-    "contraindications": "string — Warnings about when NOT to practice this"
+    "name": "string — practice name",
+    "tier": "string — must be OPEN (rule 2)",
+    "source_slug": "string — folio slug, or null if generic fallback",
+    "mechanism": "string — how this practice interrupts the pattern\'s algorithm",
+    "duration_days": "number"
   },
   "tantric_citation": {
-    "text": "string — The specific textual source",
-    "tradition": "string — The specific lineage or school",
-    "relevance": "string — Why this text applies to this pattern"
+    "text": "string — the citation text, or null if no folio supports it",
+    "source": "string — full bibliographic reference",
+    "source_slug": "string — folio slug (rule 1)",
+    "relevance": "string — why this text applies"
   },
-  "confidence_score": "number 0-100 — How clearly the pattern matches the user's description"
+  "archive_refs": ["string — folio slugs cited, for deep linking"],
+  "confidence_score": "number 0-100"
 }
 
 === TONE PROTOCOL ===
@@ -90,43 +116,45 @@ No conversational filler. No preamble.
 - Use diacritics correctly: Sādhana, Prāṇāyāma, Dhāraṇā, Upaniṣad, etc.
 
 === KNOWLEDGE BOUNDARIES ===
-- You draw from: Upaniṣads, Tantras, Āgamas, Haṭha Yoga Pradīpikā,
-  Patañjali's Yoga Sūtras, Vijñāna Bhikṣu's commentary, Abhinavagupta's Tantrāloka,
-  Māṇḍūkya Upaniṣad, Śiva Sūtras, Spanda Kārikās.
+- You draw from: the provided <folio> blocks below. These are your SOLE
+  knowledge source. If a folio does not contain the information you need,
+  do not fabricate it — state the limitation.
 - You NEVER reference: Western pop-psychology, social media astrology,
   New Age authors, or unattributed "ancient wisdom."
-- If uncertain, cite the specific text and admit the limitation.
+- If uncertain, cite the specific folio slug and admit the limitation.
 
 === EXAMPLE OUTPUT ===
 User: "I keep attracting people who need saving and I abandon myself."
 
 {
   "pattern_name": "THE RESCUER",
-  "core_mechanic": "The subject's self-worth algorithm is calibrated to external validation through caretaking. The ego-structure equates personal value with utility-to-others, creating a perpetual deficit loop where the self must remain depleted to justify its existence.",
+  "archetype": { "id": "tara", "axis": "the drowning/rescue loop" },
+  "core_mechanic": "The subject\'s self-worth algorithm is calibrated to external validation through caretaking. The ego-structure equates personal value with utility-to-others, creating a perpetual deficit loop.",
   "karmic_loop": {
-    "trigger": "Perception of another's suffering or incompetence",
-    "behavioral_vector": "Self-abandonment in service of the other's perceived needs",
+    "trigger": "Perception of another\'s suffering or incompetence",
+    "behavioral_vector": "Self-abandonment in service of the other\'s perceived needs",
     "reinforcement_geometry": "Temporary elevation of status followed by depletion, which resets the deficit and scans for the next target",
     "exit_vector": "Withholding the rescue impulse and observing the resulting oscillation without intervention"
   },
   "prescribed_sadhana": {
-    "practice_name": "Nāḍī Śuddhi with Antar Kumbhaka",
-    "practice_type": "Pranayama",
-    "mechanism": "Alternate nostril breathing recalibrates the ida-pingala oscillation, which in Tantric physiology governs the attachment-detachment axis. Internal breath retention (Antar Kumbhaka) builds the capacity to sit with discomfort without acting — directly targeting the rescue impulse at the somatic level.",
-    "duration_days": 40,
-    "contraindications": "Not during acute anxiety episodes or if the subject has unmanaged hypertension. The Kumbhaka holds can trigger panic in subjects with severe attachment patterns — begin with 2:1 ratio only."
+    "name": "Nāḍī Śuddhi with Antar Kumbhaka",
+    "tier": "OPEN",
+    "source_slug": "nadi-shuddhi",
+    "mechanism": "Alternate nostril breathing recalibrates the ida-pingala oscillation, which in Tantric physiology governs the attachment-detachment axis.",
+    "duration_days": 40
   },
   "tantric_citation": {
     "text": "Haṭha Yoga Pradīpikā, Chapter 2, verses 7-10",
-    "tradition": "Nāth Sampradāya",
-    "relevance": "The HYP explicitly links Nāḍī purification to the dissolution of behavioral samskaras (imprint patterns). Svatmarama's methodology treats prāṇāyāma not as breathwork but as a precision tool for restructuring consciousness architecture."
+    "source": "Svatmarama, Haṭha Yoga Pradīpikā (Nāth Sampradāya)",
+    "source_slug": "nadi-shuddhi",
+    "relevance": "The HYP explicitly links Nāḍī purification to the dissolution of behavioral samskaras."
   },
+  "archive_refs": ["nadi-shuddhi"],
   "confidence_score": 87
 }`;
 
 /**
- * Builds the full user-facing prompt by combining the system prompt
- * with the user's query and optional karmic context.
+ * Builds the grounded user prompt with retrieved folio context.
  */
 export function buildYantraUserPrompt(
   userQuery: string,
@@ -134,7 +162,9 @@ export function buildYantraUserPrompt(
     dominantPatterns?: string[];
     currentTransit?: string;
     sadhanaStreaks?: { practice: string; days: number }[];
-  }
+    folioChunks?: { slug: string; section: string; caution: string; text: string }[];
+    archetypeList?: { id: string; name: string; sanskrit: string; pattern: string; bija: string }[];
+  },
 ): string {
   let prompt = `Analyze this behavioral pattern:
 
@@ -159,15 +189,37 @@ export function buildYantraUserPrompt(
 `;
   }
 
-  prompt += `\nReturn the analysis as JSON matching the required schema.`;
+  // Inject retrieved folio chunks as <folio> blocks
+  if (context?.folioChunks && context.folioChunks.length > 0) {
+    prompt += `\n=== ARCHIVE FOLIOS (your sole knowledge source for citations and prescriptions) ===\n`;
+    for (const chunk of context.folioChunks) {
+      prompt += `\n<folio slug="${chunk.slug}" section="${chunk.section}" caution="${chunk.caution}">
+${chunk.text}
+</folio>\n`;
+    }
+  }
+
+  // Inject archetype list
+  if (context?.archetypeList && context.archetypeList.length > 0) {
+    prompt += `\n=== ARCHETYPE LIST (assign from this list only) ===\n`;
+    for (const a of context.archetypeList) {
+      prompt += `- id: "${a.id}" | ${a.name} (${a.sanskrit}) | pattern: ${a.pattern}\n`;
+    }
+  }
+
+  prompt += `\nReturn the analysis as JSON matching the required schema. Obey all three GROUNDING RULES.`;
   return prompt;
 }
 
 /**
- * Type definition for the structured YANTRA output.
+ * Grounded YANTRA analysis output schema.
  */
 export interface YantraAnalysis {
   pattern_name: string;
+  archetype: {
+    id: string | null;
+    axis: string;
+  } | null;
   core_mechanic: string;
   karmic_loop: {
     trigger: string;
@@ -176,16 +228,18 @@ export interface YantraAnalysis {
     exit_vector: string;
   };
   prescribed_sadhana: {
-    practice_name: string;
-    practice_type: string;
+    name: string;
+    tier: string;
+    source_slug: string | null;
     mechanism: string;
     duration_days: number;
-    contraindications: string;
   };
   tantric_citation: {
-    text: string;
-    tradition: string;
+    text: string | null;
+    source: string;
+    source_slug: string;
     relevance: string;
-  };
+  } | null;
+  archive_refs: string[];
   confidence_score: number;
 }
