@@ -40,7 +40,7 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
           <BackButton href="/patterns" label="Back to Patterns" className="mb-8" />
           {/* Terminal-style metadata */}
           <motion.p
-            className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-copper mb-6"
+            className="font-mono text-[0.8125rem] tracking-[0.2em] uppercase text-copper mb-6"
             initial={reduced ? { opacity: 1 } : { opacity: 0 }}
             animate={loading ? { opacity: 0 } : { opacity: 1 }}
             transition={{ duration: 0.8 }}
@@ -84,10 +84,10 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
                   <p className="font-display text-2xl text-foreground group-hover:text-gold transition-colors duration-500 font-light">{archetype.name}</p>
                   <CautionBadge level={archetype.cautionLevel} />
                 </div>
-                <p className="font-mono text-[0.6rem] text-gold-dim tracking-[0.12em] mb-2">{archetype.sanskrit}</p>
+                <p className="font-mono text-[0.8125rem] text-gold-dim tracking-[0.12em] mb-2">{archetype.sanskrit}</p>
                 <p className="text-sm text-copper font-mono tracking-[0.06em] italic">{archetype.pattern}</p>
               </div>
-              <span className="font-mono text-[0.55rem] text-text-muted tracking-[0.1em] shrink-0 hidden md:block">VIEW ARCHETYPE →</span>
+              <span className="font-mono text-[0.75rem] text-text-muted tracking-[0.1em] shrink-0 hidden md:block">VIEW ARCHETYPE →</span>
             </Link>
           </motion.section>
         )}
@@ -119,7 +119,7 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
                 <div className="flex flex-col items-center gap-1 shrink-0 pt-1">
                   <div className="w-px h-3" style={{ backgroundColor: 'var(--copper)' }} />
                   <span
-                    className="font-mono text-[0.55rem] tracking-[0.15em] text-copper"
+                    className="font-mono text-[0.75rem] tracking-[0.15em] text-copper"
                   >
                     {String(i + 1).padStart(2, '0')}
                   </span>
@@ -179,7 +179,7 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
                     className="glass-chip p-5 hover:border-gold/30 transition-colors duration-500 group block"
                   >
                     <p className="text-sm text-foreground group-hover:text-gold transition-colors duration-500 font-light">{s.name}</p>
-                    <p className="font-mono text-[0.55rem] tracking-[0.15em] uppercase text-copper mt-1">{s.level}</p>
+                    <p className="font-mono text-[0.75rem] tracking-[0.15em] uppercase text-copper mt-1">{s.level}</p>
                   </Link>
                 </div>
               ))}

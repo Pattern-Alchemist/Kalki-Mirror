@@ -41,11 +41,11 @@ export function SacredFooter() {
                 KALKI
               </h3>
             </div>
-            <p className="text-text-muted text-sm leading-relaxed max-w-xs editorial-spacing">
+            <p className="text-text-secondary text-base leading-relaxed max-w-xs editorial-spacing">
               Where ancient Tantric geometry meets modern computational intelligence.
               Esoteric Intelligence. Sacred Architecture. Pattern Recognition.
             </p>
-            <p className="text-gold-dim text-xs mt-4 tracking-[0.15em] uppercase font-ui">
+            <p className="text-gold-dim text-sm mt-4 tracking-[0.15em] uppercase font-ui">
               The Architecture of Karma.
             </p>
           </div>
@@ -59,7 +59,7 @@ export function SacredFooter() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-text-secondary text-sm hover:text-gold transition-colors duration-500"
+                      className="text-text-secondary text-base hover:text-gold transition-colors duration-500"
                     >
                       {link.label}
                     </Link>

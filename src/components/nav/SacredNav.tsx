@@ -75,7 +75,7 @@ export function SacredNav() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'relative text-[0.68rem] font-ui tracking-[0.18em] uppercase transition-colors duration-500 py-1 neon-tab-glow',
+                    'relative text-[0.8125rem] font-ui tracking-[0.18em] uppercase transition-colors duration-500 py-1 neon-tab-glow',
                     isActive(link.href)
                       ? 'text-gold'
                       : 'text-text-muted hover:text-ivory'
