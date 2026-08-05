@@ -11,7 +11,7 @@ export default function MethodPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/dark-labyrinth.jpeg"
+        image="/assets/tantra/cremation-ground.jpeg"
         title="The Mirror Method"
         subtitle="A five-stage framework for recognizing and dissolving your psychological patterns through ancient sādhana."
         sectionLabel="Our Framework"
@@ -21,7 +21,7 @@ export default function MethodPage() {
         {/* The Five Steps */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-3">Five Stages</p>
-          <h2 className="font-display text-3xl mb-10">The Path of Recognition</h2>
+          <h2 className="font-display text-3xl text-foreground mb-10">The Path of Recognition</h2>
           <MirrorMethodSteps />
         </motion.section>
 
@@ -39,7 +39,7 @@ export default function MethodPage() {
             viewport={{ once: true }}
           >
             <p className="section-label mb-2">Stage {stage.num}</p>
-            <h3 className="font-display text-2xl mb-4">{stage.title}</h3>
+            <h3 className="font-display text-2xl text-foreground mb-4">{stage.title}</h3>
             <p className="text-text-secondary leading-relaxed">{stage.text}</p>
           </motion.section>
         ))}

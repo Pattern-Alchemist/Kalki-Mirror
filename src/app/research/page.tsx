@@ -14,7 +14,7 @@ export default function ResearchPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/ritual-chamber.jpeg"
+        image="/assets/tantra/yantra-chamber.jpeg"
         title="Research & Sources"
         subtitle="Epistemic transparency: every claim sourced, every score explained."
         sectionLabel="Academic Rigour"
@@ -41,7 +41,7 @@ export default function ResearchPage() {
         {/* Epistemic Framework */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-3">Epistemic Transparency</p>
-          <h2 className="font-display text-3xl mb-8">Six Evidence Categories</h2>
+          <h2 className="font-display text-3xl text-foreground mb-8">Six Evidence Categories</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               { name: 'Traditional Source', desc: 'Direct from scriptural or oral tradition', icon: '📜' },
@@ -62,7 +62,7 @@ export default function ResearchPage() {
         {/* Traditions covered */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-3">Coverage</p>
-          <h2 className="font-display text-3xl mb-6">Traditions Represented</h2>
+          <h2 className="font-display text-3xl text-foreground mb-6">Traditions Represented</h2>
           <div className="flex flex-wrap gap-3">
             {traditions.map((t) => (
               <span key={t} className="glass-chip px-4 py-2 text-sm text-text-secondary">{t}</span>
@@ -73,7 +73,7 @@ export default function ResearchPage() {
         {/* Authenticity methodology */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-3">Methodology</p>
-          <h2 className="font-display text-3xl mb-6">How We Score Authenticity</h2>
+          <h2 className="font-display text-3xl text-foreground mb-6">How We Score Authenticity</h2>
           <div className="space-y-4 text-text-secondary leading-relaxed">
             <p>Each siddhi receives an authenticity score from 0 to 100, calculated from three weighted factors: textual attestation (how many primary and secondary sources reference the practice), lineage continuity (whether the practice has an unbroken living tradition), and experiential verification (whether contemporary practitioners report results consistent with traditional descriptions).</p>
             <p>Sources are individually rated as high, medium, or low confidence. High-confidence sources are primary textual references (Upaniṣads, Tantras, Āgamas). Medium-confidence sources are secondary scholarship, commentaries, or historical records. Low-confidence sources are oral traditions without textual corroboration or modern reinterpretations without traditional grounding.</p>

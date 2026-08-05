@@ -1,7 +1,6 @@
 'use client';
 
 import { use } from 'react';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
@@ -10,26 +9,10 @@ import { allPatterns } from '@/lib/data/patterns';
 import { AuthenticityMeter } from '@/components/archive/AuthenticityMeter';
 import { GatedContent } from '@/components/monetization/GatedContent';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
-import { CinematicImage } from '@/components/ui/CinematicImage';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { WHATSAPP_LINKS } from '@/lib/utils/whatsapp';
-import { Tier } from '@/lib/data/types';
-
-const FALLBACK_IMAGES = [
-  '/assets/tantra/kali-temple.jpeg',
-  '/assets/tantra/abandoned-temple.jpeg',
-  '/assets/tantra/cremation-ground.jpeg',
-  '/assets/tantra/bhairava-pathway.jpeg',
-  '/assets/tantra/temple-midnight.jpeg',
-  '/assets/tantra/sri-yantra-sky.jpeg',
-];
-
-function getHeroImage(slug: string, image?: string): string {
-  if (image) return image;
-  const idx = Math.abs(slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0)) % FALLBACK_IMAGES.length;
-  return FALLBACK_IMAGES[idx];
-}
+import type { Tier } from '@/lib/data/types';
 
 function ConfidenceBadge({ confidence }: { confidence: string }) {
   const color = confidence === 'high' ? 'text-green-400 border-green-400/30 bg-green-400/10' :
@@ -46,24 +29,16 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
 
   const related = allSiddhis.filter((s) => s.slug !== siddhi.slug && s.category === siddhi.category).slice(0, 3);
   const relPatterns = allPatterns.filter((p) => p.relatedSiddhis.includes(siddhi.slug)).slice(0, 2);
-  const heroImg = getHeroImage(siddhi.slug, siddhi.image);
 
   return (
     <div className="bg-deep-black min-h-screen">
-      {/* Hero with cinematic image */}
-      <header className="relative h-[50vh] flex items-end">
-        <CinematicImage
-          src={heroImg}
-          alt={siddhi.name}
-          kenBurns="slow"
-          scrim="bottom"
-          priority
-        />
-        <div className="relative z-10 w-full max-w-4xl mx-auto px-6 pb-16 pt-32">
+      {/* Dark atmospheric header — no image */}
+      <header className="border-b border-[var(--border-subtle)]">
+        <div className="w-full max-w-4xl mx-auto px-6 pt-32 pb-16">
           <motion.p className="section-label mb-4" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible}>
-            {siddhi.category} · {siddhi.tradition}
+            {siddhi.category} &middot; {siddhi.tradition}
           </motion.p>
-          <motion.h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-2"
+          <motion.h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground leading-tight mb-2"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.1 }}>
             {siddhi.name}
           </motion.h1>
@@ -115,7 +90,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
             <ul className="space-y-3">
               {siddhi.benefits.map((b, i) => (
                 <li key={i} className="flex items-start gap-3 text-text-secondary">
-                  <span className="text-gold mt-1">·</span>{b}
+                  <span className="text-gold mt-1">&middot;</span>{b}
                 </li>
               ))}
             </ul>
@@ -129,7 +104,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
             <ul className="space-y-3">
               {siddhi.warnings.map((w, i) => (
                 <li key={i} className="flex items-start gap-3 text-red-300/80">
-                  <span className="text-red-400 mt-0.5">⚠</span>{w}
+                  <span className="text-red-400 mt-0.5">&middot;</span>{w}
                 </li>
               ))}
             </ul>
@@ -162,22 +137,9 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
             <h2 className="section-label mb-6">Related Siddhis</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {related.map((s) => (
-                <Link key={s.slug} href={`/archive/${s.slug}`} className="glass-chip overflow-hidden hover:border-gold transition-colors group">
-                  {s.image && (
-                    <div className="relative h-24 w-full">
-                      <Image src={s.image} alt={s.name} fill className="object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                      <p className="absolute bottom-2 left-3 text-sm text-white group-hover:text-gold transition-colors">{s.name}</p>
-                    </div>
-                  )}
-                  {!s.image && (
-                    <div className="p-4">
-                      <p className="text-sm text-foreground group-hover:text-gold transition-colors">{s.name}</p>
-                    </div>
-                  )}
-                  <div className="px-4 pb-3">
-                    <p className="text-xs text-text-muted">{s.level}</p>
-                  </div>
+                <Link key={s.slug} href={`/archive/${s.slug}`} className="glass-chip p-4 hover:border-gold transition-colors group">
+                  <p className="text-sm text-foreground group-hover:text-gold transition-colors mb-1">{s.name}</p>
+                  <p className="text-xs text-text-muted">{s.level}</p>
                 </Link>
               ))}
             </div>

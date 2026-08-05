@@ -171,10 +171,10 @@ export default function PricingPage() {
           ))}
         </div>
 
-        {/* Guarantee */
+        {/* Guarantee */}
         <div className="glass-chip text-center max-w-2xl mx-auto mt-12 p-8">
           <h3 className="font-display text-xl text-gold mb-2">Sacred Guarantee</h3>
-          <p className="text-text-secondary text-sm leading-relaxed">If you don’t feel a tangible shift in your practice within 14 days, we’ll refund every rupee. No questions asked. Your spiritual journey is too important for compromise.</p>
+          <p className="text-text-secondary text-sm leading-relaxed">If you don't feel a tangible shift in your practice within 14 days, we'll refund every rupee. No questions asked. Your spiritual journey is too important for compromise.</p>
         </div>
 
         {/* FAQ */}
