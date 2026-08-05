@@ -33,7 +33,7 @@ function TierRow({ tier, index, reduced }: { tier: PricingTier; index: number; r
           <h3 className="font-display text-xl text-foreground font-light tracking-wide group-hover:text-gold transition-colors duration-500">
             {ACCESS_LABELS[tier.id] ?? tier.element}
           </h3>
-          <p className="font-mono text-[0.55rem] tracking-[0.15em] uppercase text-copper mt-1">
+          <p className="font-mono text-[0.75rem] tracking-[0.12em] uppercase text-copper mt-1">
             {tier.elementSanskrit} {'\u00B7'} {tier.element}
           </p>
         </div>
@@ -44,13 +44,13 @@ function TierRow({ tier, index, reduced }: { tier: PricingTier; index: number; r
           {(tier.features ?? tier.unlocks).map((f, fi) => (
             <li key={fi} className="flex items-start gap-3">
               <span className="mt-1.5 w-1 h-1 rounded-full bg-gold/40 shrink-0" />
-              <span className="text-text-secondary text-sm leading-relaxed">{f}</span>
+              <span className="text-text-secondary text-base leading-relaxed">{f}</span>
             </li>
           ))}
           {(tier.gatedFeatures ?? []).map((f, gi) => (
             <li key={`g-${gi}`} className="flex items-start gap-3 opacity-30">
               <span className="mt-1.5 w-1 h-1 rounded-full border border-copper/40 shrink-0" />
-              <span className="text-text-muted text-sm leading-relaxed line-through">{f}</span>
+              <span className="text-text-muted text-base leading-relaxed line-through">{f}</span>
             </li>
           ))}
         </ul>
@@ -61,16 +61,16 @@ function TierRow({ tier, index, reduced }: { tier: PricingTier; index: number; r
           {isPaid ? (
             <>
               <p className="font-display text-3xl text-foreground font-light">{'\u20B9'}{tier.priceINR.toLocaleString('en-IN')}</p>
-              <p className="font-mono text-[0.55rem] tracking-[0.15em] uppercase text-text-muted mt-1">/month</p>
+              <p className="font-mono text-[0.75rem] tracking-[0.12em] uppercase text-text-muted mt-1">/month</p>
             </>
           ) : (
-            <p className="font-display text-2xl text-text-muted font-light">Free</p>
+            <p className="font-display text-3xl text-text-muted font-light">Free</p>
           )}
         </div>
         <Link
           href="/pricing"
           className={cn(
-            'w-full text-center text-xs font-ui py-3 px-4 tracking-[0.12em] uppercase transition-all',
+            'w-full text-center text-sm font-ui py-3.5 px-4 tracking-[0.12em] uppercase transition-all',
             highlighted ? 'gold-cta' : 'ghost-cta',
           )}
         >

@@ -72,7 +72,7 @@ export default function ArchivePage() {
             {(['OPEN', 'MODERATE', 'HIGH', 'SEALED'] as const).map((level) => (
               <div key={level} className="flex items-center gap-3">
                 <CautionBadge level={level} />
-                <span className="font-mono text-[0.6rem] tracking-[0.15em] text-text-muted">
+                <span className="font-mono text-[0.8125rem] tracking-[0.12em] text-text-muted">
                   {counts[level]}
                 </span>
               </div>
@@ -92,7 +92,7 @@ export default function ArchivePage() {
               placeholder="Query the Akasha..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 bg-surface/50 border border-gold/10 rounded-sm px-5 py-3.5 text-foreground placeholder-text-muted focus:outline-none focus:border-gold/30 font-body text-sm transition-colors duration-500"
+              className="flex-1 bg-surface/50 border border-gold/10 rounded-sm px-5 py-3.5 text-foreground placeholder-text-secondary focus:outline-none focus:border-gold/30 font-body text-sm transition-colors duration-500"
               aria-label="Search siddhis"
             />
           </div>
@@ -106,7 +106,7 @@ export default function ArchivePage() {
                   key={cat}
                   onClick={() => setFilter(cat)}
                   className={cn(
-                    'px-3.5 py-2 text-[0.6rem] font-ui tracking-[0.12em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
+                    'px-3.5 py-2 text-[0.8125rem] font-ui tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
                     filter === cat
                       ? 'bg-gold text-deep-black'
                       : 'bg-surface/30 text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
@@ -126,7 +126,7 @@ export default function ArchivePage() {
                   key={c.value}
                   onClick={() => setCautionFilter(c.value)}
                   className={cn(
-                    'px-3.5 py-2 text-[0.6rem] font-mono tracking-[0.12em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
+                    'px-3.5 py-2 text-[0.8125rem] font-mono tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
                     cautionFilter === c.value
                       ? 'bg-gold text-deep-black'
                       : 'text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
@@ -146,7 +146,7 @@ export default function ArchivePage() {
                   key={t.value}
                   onClick={() => setTierFilter(t.value)}
                   className={cn(
-                    'px-3.5 py-2 text-[0.6rem] font-mono tracking-[0.12em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
+                    'px-3.5 py-2 text-[0.8125rem] font-mono tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
                     tierFilter === t.value
                       ? 'bg-gold text-deep-black'
                       : 'text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
@@ -190,7 +190,7 @@ export default function ArchivePage() {
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
             <div>
               <p className="section-label mb-4">The Pattern Taxonomy</p>
-              <h2 className="font-display text-3xl md:text-4xl text-foreground font-light tracking-[0.06em] engraved-heading">
+              <h2 className="font-display text-4xl md:text-5xl text-foreground font-light tracking-[0.06em] engraved-heading">
                 Ten Mahāvidyās{' \u2014'} Ten Karmic Loops
               </h2>
             </div>
@@ -208,13 +208,13 @@ export default function ArchivePage() {
                 href={`/archetypes#${a.id}`}
                 className="glass-chip p-5 group text-center"
               >
-                <p className="font-mono text-[0.55rem] text-gold-dim mb-2 tracking-[0.2em]">
+                <p className="font-mono text-[0.75rem] text-gold-dim mb-2 tracking-[0.2em]">
                   {String(i + 1).padStart(2, '0')}
                 </p>
-                <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors duration-500 font-light">
+                <p className="font-display text-2xl text-foreground group-hover:text-gold transition-colors duration-500 font-light">
                   {a.name}
                 </p>
-                <p className="font-mono text-[0.5rem] text-text-muted mt-1.5 tracking-[0.1em] line-clamp-2">
+                <p className="font-mono text-[0.75rem] text-text-muted mt-1.5 tracking-[0.1em] line-clamp-2">
                   {a.pattern}
                 </p>
               </Link>

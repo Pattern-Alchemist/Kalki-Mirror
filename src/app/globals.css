@@ -36,18 +36,18 @@
    THE ELEMENTAL PALETTE — Alchemy, Temple Stone, Deep Meditation
    ========================================================== */
 :root {
-  /* Akasha — The Void. Not pure black. Abyssal space with 1% indigo. */
-  --background: #0B0C10;
-  --deep-black: #07080C;
+  /* Akasha — The Void. Pure cinematic black. */
+  --background: #0A0A0A;
+  --deep-black: #050505;
 
-  /* Shambhala Gold — Antique oxidized gold leaf on a temple ceiling. */
-  --gold: #C5A059;
-  --gold-dim: #7A6233;
-  --gold-bright: #D4B06A;
+  /* Polished Gold — Bright, luminous metallic. Accents only. */
+  --gold: #D4AF37;
+  --gold-dim: #9A7B3A;
+  --gold-bright: #E8C855;
 
-  /* Bhasma — Sacred Ash. Aged manuscript paper, temple stone, detachment. */
-  --foreground: #E5E1D8;
-  --ivory: #EDE9E0;
+  /* Luminous Off-White — High contrast on black. WCAG AAA. */
+  --foreground: #F5F5F0;
+  --ivory: #FAFAF5;
 
   /* Kalki Indigo — Midnight sky, throat chakra, deep meditation. */
   --surface: #1A2436;
@@ -58,23 +58,23 @@
   --crimson: #8A252C;
   --sacred-red: #6B1A20;
 
-  /* Oxidized Copper — Time, astrolabes, alchemical borders. */
-  --copper: #594A42;
-  --bronze: #6B5B3A;
+  /* Copper — Warmer accent, never for body text. */
+  --copper: #B87333;
+  --bronze: #8B6914;
 
-  /* Text hierarchy — Bhasma tints on Akasha */
-  --text-secondary: #A09B8E;
-  --text-muted: #5C5850;
+  /* Text hierarchy — Luminous on dark. Never muddy. */
+  --text-secondary: #D5D2C9;
+  --text-muted: #8A8A85;
 
   /* Borders — oxidized copper edges */
-  --border-subtle: rgba(89, 74, 66, 0.15);
-  --border-gold: rgba(197, 160, 89, 0.15);
-  --border-gold-hover: rgba(197, 160, 89, 0.35);
+  --border-subtle: rgba(212, 175, 55, 0.12);
+  --border-gold: rgba(212, 175, 55, 0.15);
+  --border-gold-hover: rgba(212, 175, 55, 0.35);
 
   /* Glass — museum vitrine on void */
-  --glass-bg: rgba(11, 12, 16, 0.6);
-  --glass-border: rgba(197, 160, 89, 0.06);
-  --glass-glow: rgba(197, 160, 89, 0.03);
+  --glass-bg: rgba(10, 10, 10, 0.6);
+  --glass-border: rgba(212, 175, 55, 0.06);
+  --glass-glow: rgba(212, 175, 55, 0.03);
 
   /* Atmospheric */
   --vignette-inner: transparent;
@@ -95,12 +95,14 @@
 
   html {
     overflow-x: hidden;
+    font-size: 18px;
   }
 
   body {
     font-family: var(--font-body);
     background: var(--background);
     color: var(--foreground);
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -114,7 +116,7 @@
   }
 
   ::selection {
-    background: rgba(197, 160, 89, 0.3);
+    background: rgba(212, 175, 55, 0.3);
     color: var(--ivory);
   }
 
@@ -131,8 +133,8 @@
   /* --- Section Labels — engraved copperplate captions --- */
   .section-label {
     font-family: var(--font-ui);
-    font-size: 0.65rem;
-    letter-spacing: 0.7em;
+    font-size: 0.8125rem;
+    letter-spacing: 0.5em;
     text-transform: uppercase;
     color: var(--gold-dim);
     text-shadow: 0 0 20px rgba(197, 160, 89, 0.15);
@@ -162,12 +164,40 @@
 
   /* --- Text Glow --- */
   .text-glow {
-    text-shadow: 0 0 60px rgba(197, 160, 89, 0.25), 0 0 120px rgba(197, 160, 89, 0.08);
+    text-shadow: 0 0 60px rgba(212, 175, 55, 0.25), 0 0 120px rgba(212, 175, 55, 0.08);
   }
 
   .text-glow-subtle {
-    text-shadow: 0 0 30px rgba(197, 160, 89, 0.12);
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.12);
   }
+
+
+/* --- Editorial Container — narrow centered column for body text --- */
+.prose-column {
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- Paragraph Spacing — generous breathing room --- */
+.prose-spacing > p,
+.prose-spacing > div {
+  margin-bottom: 2rem;
+}
+.prose-spacing > p:last-child,
+.prose-spacing > div:last-child {
+  margin-bottom: 0;
+}
+
+/* --- Section spacing tokens --- */
+.section-py {
+  padding-top: clamp(5rem, 8vw, 8rem);
+  padding-bottom: clamp(5rem, 8vw, 8rem);
+}
+.section-py-lg {
+  padding-top: clamp(7rem, 10vw, 10rem);
+  padding-bottom: clamp(7rem, 10vw, 10rem);
+}
 
   /* --- White Neon Glow (medium intensity, pulsating) --- */
   .neon-glow-white {
@@ -212,7 +242,7 @@
   border-radius: var(--radius);
   box-shadow:
     0 4px 30px rgba(0, 0, 0, 0.5),
-    0 1px 0 rgba(197, 160, 89, 0.04) inset,
+    0 1px 0 rgba(212, 175, 55, 0.04) inset,
     0 -1px 0 rgba(0, 0, 0, 0.2) inset;
   transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
 }
@@ -221,7 +251,7 @@
   box-shadow:
     0 8px 40px rgba(0, 0, 0, 0.6),
     0 0 30px var(--glass-glow),
-    0 1px 0 rgba(197, 160, 89, 0.08) inset;
+    0 1px 0 rgba(212, 175, 55, 0.08) inset;
   transform: translateY(-2px);
 }
 
@@ -230,11 +260,11 @@
   background: rgba(11, 12, 16, 0.45);
   backdrop-filter: blur(40px) saturate(1.3);
   -webkit-backdrop-filter: blur(40px) saturate(1.3);
-  border: 1px solid rgba(197, 160, 89, 0.06);
+  border: 1px solid rgba(212, 175, 55, 0.06);
   border-radius: var(--radius-lg);
   box-shadow:
     0 12px 60px rgba(0, 0, 0, 0.6),
-    0 1px 0 rgba(197, 160, 89, 0.03) inset;
+ 0 1px 0 rgba(212, 175, 55, 0.03) inset;
 }
 
 /* Navigation glass */
@@ -242,8 +272,8 @@
   background: rgba(11, 12, 16, 0.65);
   backdrop-filter: blur(28px) saturate(1.4);
   -webkit-backdrop-filter: blur(28px) saturate(1.4);
-  border: 1px solid rgba(197, 160, 89, 0.05);
-  box-shadow: 0 1px 0 rgba(197, 160, 89, 0.04) inset;
+  border: 1px solid rgba(212, 175, 55, 0.05);
+  box-shadow: 0 1px 0 rgba(212, 175, 55, 0.04) inset;
 }
 
 /* ==========================================================
@@ -322,11 +352,11 @@
 .gold-foil-text {
   background: linear-gradient(
     135deg,
-    var(--gold-bright) 0%,
-    var(--gold) 30%,
-    var(--bronze) 60%,
-    var(--gold) 85%,
-    var(--gold-bright) 100%
+    var(--ivory) 0%,
+    var(--gold-bright) 25%,
+    var(--gold) 50%,
+    var(--gold-bright) 75%,
+    var(--ivory) 100%
   );
   background-size: 200% 200%;
   -webkit-background-clip: text;
@@ -342,8 +372,8 @@
 /* Engraved heading — subtle inset shadow for depth */
 .engraved-heading {
   text-shadow:
-    0 1px 0 rgba(197, 160, 89, 0.12),
-    0 0 40px rgba(197, 160, 89, 0.06);
+    0 1px 0 rgba(212, 175, 55, 0.15),
+    0 0 40px rgba(212, 175, 55, 0.08);
 }
 
 /* ==========================================================
@@ -362,10 +392,10 @@
   color: var(--deep-black);
   font-family: var(--font-ui);
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 1rem 2.8rem;
+  padding: 1.1rem 3rem;
   border-radius: 2px;
   border: none;
   cursor: pointer;
@@ -373,8 +403,8 @@
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   box-shadow:
-    0 2px 20px rgba(197, 160, 89, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 2px 20px rgba(212, 175, 55, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 .gold-cta::before {
   content: '';
@@ -391,8 +421,8 @@
 }
 .gold-cta:hover {
   box-shadow:
-    0 4px 40px rgba(197, 160, 89, 0.3),
-    0 0 80px rgba(197, 160, 89, 0.08),
+    0 4px 40px rgba(212, 175, 55, 0.35),
+    0 0 80px rgba(212, 175, 55, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
   transform: translateY(-2px);
 }
@@ -402,7 +432,7 @@
 .gold-cta:active {
   transform: translateY(0);
   box-shadow:
-    0 1px 10px rgba(197, 160, 89, 0.2),
+    0 1px 10px rgba(212, 175, 55, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 .gold-cta:disabled {
@@ -415,15 +445,15 @@
 /* Ghost CTA — metallic outline */
 .ghost-cta {
   background: transparent;
-  color: var(--gold-dim);
+  color: var(--gold);
   font-family: var(--font-ui);
   font-weight: 500;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 1rem 2.8rem;
+  padding: 1.1rem 3rem;
   border-radius: 2px;
-  border: 1px solid rgba(197, 160, 89, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.2);
   cursor: pointer;
   position: relative;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
@@ -431,8 +461,8 @@
 .ghost-cta:hover {
  border-color: var(--gold);
   color: var(--gold);
-  background: rgba(197, 160, 89, 0.03);
-  box-shadow: 0 0 30px rgba(197, 160, 89, 0.06), inset 0 0 30px rgba(197, 160, 89, 0.02);
+  background: rgba(212, 175, 55, 0.04);
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.08), inset 0 0 30px rgba(212, 175, 55, 0.03);
 }
 .ghost-cta:active {
   transform: translateY(0);
@@ -466,11 +496,11 @@
   pointer-events: none;
   opacity: 0.3;
   background-image:
-    radial-gradient(1px 1px at 15% 25%, rgba(197, 160, 89, 0.15), transparent),
-    radial-gradient(1px 1px at 45% 65%, rgba(201, 168, 76, 0.1), transparent),
-    radial-gradient(1px 1px at 75% 35%, rgba(197, 160, 89, 0.12), transparent),
-    radial-gradient(1px 1px at 85% 80%, rgba(197, 160, 89, 0.08), transparent),
-    radial-gradient(1px 1px at 35% 15%, rgba(201, 168, 76, 0.1), transparent);
+    radial-gradient(1px 1px at 15% 25%, rgba(212, 175, 55, 0.15), transparent),
+    radial-gradient(1px 1px at 45% 65%, rgba(232, 200, 85, 0.1), transparent),
+    radial-gradient(1px 1px at 75% 35%, rgba(212, 175, 55, 0.12), transparent),
+    radial-gradient(1px 1px at 85% 80%, rgba(212, 175, 55, 0.08), transparent),
+    radial-gradient(1px 1px at 35% 15%, rgba(232, 200, 85, 0.1), transparent);
   animation: dustDrift 30s linear infinite;
 }
 @keyframes dustDrift {
@@ -580,7 +610,7 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(197, 160, 89, 0.08) 50%,
+    rgba(212, 175, 55, 0.1) 50%,
     transparent 100%
   );
 }
@@ -720,10 +750,10 @@
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: var(--deep-black); }
 ::-webkit-scrollbar-thumb {
-  background: rgba(197, 160, 89, 0.2);
+  background: rgba(212, 175, 55, 0.25);
   border-radius: 2px;
 }
-::-webkit-scrollbar-thumb:hover { background: rgba(201, 168, 76, 0.35); }
+::-webkit-scrollbar-thumb:hover { background: rgba(232, 200, 85, 0.4); }
 
 /* Focus visible for accessibility */
 :focus-visible {
@@ -737,8 +767,8 @@
 /* Display — massive cinematic headings. Thin weight only. Generous tracking. */
 .text-display {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 6vw, 6.5rem);
-  line-height: 0.95;
+  font-size: clamp(3rem, 5vw, 5rem);
+  line-height: 1.0;
   letter-spacing: 0.08em;
   font-weight: 300;
   text-transform: uppercase;
@@ -747,8 +777,8 @@
 /* Sub-display — section openings */
 .text-sub-display {
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 3.5vw, 3.5rem);
-  line-height: 1.1;
+  font-size: clamp(2rem, 4vw, 3.75rem);
+  line-height: 1.15;
   letter-spacing: 0.04em;
   font-weight: 300;
 }
@@ -756,17 +786,17 @@
 /* Editorial body — generous leading for readability */
 .text-editorial {
   font-family: var(--font-body);
-  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  font-size: clamp(1.05rem, 1.2vw, 1.2rem);
   line-height: 1.8;
   letter-spacing: 0.01em;
-  color: var(--text-secondary);
+  color: var(--foreground);
 }
 
 /* Caption — small engraved labels */
 .text-caption {
   font-family: var(--font-ui);
-  font-size: 0.65rem;
-  letter-spacing: 0.5em;
+  font-size: 0.8125rem;
+  letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--text-muted);
 }

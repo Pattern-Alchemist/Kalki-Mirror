@@ -61,11 +61,11 @@ export default function HomePage() {
             <h1 className="text-display gold-foil-text text-glow mb-6">
               KALKI
             </h1>
-            <p className="text-gold-dim font-ui text-xs tracking-[0.3em] uppercase mb-10">
+            <p className="text-gold-dim font-ui text-sm tracking-[0.25em] uppercase mb-10">
               Light for the Dark Age.
             </p>
             <motion.p
-              className="text-text-secondary text-lg md:text-xl max-w-lg editorial-spacing"
+              className="text-foreground text-xl md:text-2xl max-w-xl editorial-spacing"
               initial={reduced ? { opacity: 1 } : { opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -113,7 +113,7 @@ export default function HomePage() {
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 engraved-heading font-light tracking-wide">
               41 Siddhis.<br />Mapped.
             </h2>
-            <p className="text-text-secondary text-sm max-w-sm editorial-spacing">
+            <p className="text-foreground text-base max-w-md editorial-spacing">
               Decoded by YANTRA. Every mantra, every lineage, every warning.
             </p>
           </div>
@@ -134,7 +134,7 @@ export default function HomePage() {
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 engraved-heading font-light tracking-wide">
               See Yourself.<br />Clearly.
             </h2>
-            <p className="text-text-secondary text-sm max-w-sm editorial-spacing">
+            <p className="text-foreground text-base max-w-md editorial-spacing">
               Breathwork, japa, meditation — guided tools for inner work.
             </p>
           </div>
@@ -208,7 +208,7 @@ export default function HomePage() {
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}
           >
-            <Link href="/patterns" className="ghost-cta text-xs">Decode All 12 Patterns</Link>
+            <Link href="/patterns" className="ghost-cta text-sm">Decode All 12 Patterns</Link>
           </motion.div>
         </div>
       </section>
@@ -250,7 +250,7 @@ export default function HomePage() {
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}
           >
-            <Link href="/archive" className="ghost-cta text-xs">Browse All 41 Siddhis</Link>
+            <Link href="/archive" className="ghost-cta text-sm">Browse All 41 Siddhis</Link>
           </motion.div>
         </div>
       </section>
@@ -286,7 +286,7 @@ export default function HomePage() {
             Practice Now
           </motion.p>
           <motion.h2
-            className="font-display text-5xl md:text-7xl text-white mb-16 engraved-heading font-light tracking-[0.12em] uppercase"
+            className="font-display text-6xl md:text-8xl text-white mb-16 engraved-heading font-light tracking-[0.12em] uppercase"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}

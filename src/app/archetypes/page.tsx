@@ -84,7 +84,7 @@ export default function ArchetypesPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-deep-black/80 to-transparent md:hidden" />
                     {/* Number */}
                     <div className="absolute top-4 left-4">
-                      <span className="font-mono text-[0.55rem] tracking-[0.2em] text-gold/60">
+                      <span className="font-mono text-[0.75rem] tracking-[0.2em] text-gold/60">
                         {String(i + 1).padStart(2, '0')}
                       </span>
                     </div>
@@ -96,14 +96,14 @@ export default function ArchetypesPage() {
                         <h3 className="font-display text-2xl md:text-3xl text-foreground group-hover:text-gold transition-colors duration-500 font-light">
                           {a.name}
                         </h3>
-                        <p className="font-mono text-[0.6rem] text-gold-dim tracking-[0.12em] mt-1">{a.sanskrit}</p>
+                        <p className="font-mono text-[0.8125rem] text-gold-dim tracking-[0.12em] mt-1">{a.sanskrit}</p>
                       </div>
                       <CautionBadge level={a.cautionLevel} />
                     </div>
                     <p className="text-sm text-copper font-mono tracking-[0.08em] mb-3 italic">
                       {a.pattern}
                     </p>
-                    <div className="flex items-center gap-3 text-[0.55rem] font-mono text-text-muted tracking-[0.1em]">
+                    <div className="flex items-center gap-3 text-[0.75rem] font-mono text-text-muted tracking-[0.1em]">
                       <span>{a.element}</span>
                       <span>{'·'}</span>
                       <span>{TIER_LABELS[a.accessTier]} TIER</span>
@@ -150,11 +150,11 @@ export default function ArchetypesPage() {
                                 <p className="text-sm text-foreground group-hover/folio:text-gold transition-colors duration-500">
                                   {s.name}
                                 </p>
-                                <p className="font-mono text-[0.5rem] text-text-muted mt-0.5 tracking-[0.1em]">
+                                <p className="font-mono text-[0.75rem] text-text-muted mt-0.5 tracking-[0.1em]">
                                   {s.tradition.toUpperCase()}
                                 </p>
                               </div>
-                              <span className="font-mono text-[0.55rem] text-copper tracking-[0.1em]">{s.level}</span>
+                              <span className="font-mono text-[0.75rem] text-copper tracking-[0.1em]">{s.level}</span>
                             </Link>
                           );
                         })}
@@ -178,7 +178,7 @@ export default function ArchetypesPage() {
                                     {pSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
                                   </p>
                                 </div>
-                                <span className="font-mono text-[0.55rem] text-copper tracking-[0.1em]">PATTERN</span>
+                                <span className="font-mono text-[0.75rem] text-copper tracking-[0.1em]">PATTERN</span>
                               </Link>
                             ))}
                           </div>
@@ -212,13 +212,13 @@ export default function ArchetypesPage() {
                   <h3 className="font-display text-xl text-foreground font-light">{a.name}</h3>
                   <CautionBadge level={a.cautionLevel} />
                 </div>
-                <p className="font-mono text-[0.55rem] text-gold-dim tracking-[0.1em] mb-3">{a.sanskrit}</p>
+                <p className="font-mono text-[0.75rem] text-gold-dim tracking-[0.1em] mb-3">{a.sanskrit}</p>
                 <p className="text-sm text-copper font-mono tracking-[0.06em] mb-4 italic line-clamp-2">{a.pattern}</p>
                 <p className="text-sm text-text-secondary leading-relaxed line-clamp-3 editorial-spacing">{a.description}</p>
                 <div className="mt-4 pt-4 border-t border-gold/5 flex items-center gap-2">
-                  <span className="font-mono text-[0.5rem] text-text-muted tracking-[0.1em]">{a.element}</span>
-                  <span className="font-mono text-[0.5rem] text-text-muted">{'·'}</span>
-                  <span className="font-mono text-[0.5rem] text-text-muted tracking-[0.1em]">{a.relatedSiddhiSlugs.length} FOLIOS</span>
+                  <span className="font-mono text-[0.75rem] text-text-muted tracking-[0.1em]">{a.element}</span>
+                  <span className="font-mono text-[0.75rem] text-text-muted">{'·'}</span>
+                  <span className="font-mono text-[0.75rem] text-text-muted tracking-[0.1em]">{a.relatedSiddhiSlugs.length} FOLIOS</span>
                 </div>
               </div>
             </motion.div>

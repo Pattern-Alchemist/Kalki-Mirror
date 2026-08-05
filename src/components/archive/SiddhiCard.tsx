@@ -39,26 +39,26 @@ export function SiddhiCard({ siddhi, className }: SiddhiCardProps) {
                 </span>
               )}
             </div>
-            <p className="text-xs text-gold-dim font-mono tracking-wider">{siddhi.sanskrit}</p>
+            <p className="text-sm text-gold-dim font-mono tracking-wider">{siddhi.sanskrit}</p>
           </div>
         </div>
 
         {/* Summary */}
-        <p className="text-sm text-text-secondary leading-relaxed line-clamp-3 editorial-spacing">
+        <p className="text-base text-text-secondary leading-relaxed line-clamp-3 editorial-spacing">
           {siddhi.summary}
         </p>
 
         {/* Bottom row: Metadata ledger */}
         <div className="flex items-center gap-3 mt-auto pt-4 border-t border-gold/5">
           <CautionBadge level={caution} />
-          <span className="font-mono text-[0.55rem] tracking-[0.12em] uppercase text-text-muted">{siddhi.category}</span>
+          <span className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-text-muted">{siddhi.category}</span>
           <div className="flex-1" />
           <AuthenticityMeter score={siddhi.authenticityScore} />
         </div>
         <div className="flex items-center gap-3">
-          <span className="font-mono text-[0.55rem] tracking-[0.15em] uppercase text-copper">{siddhi.tradition}</span>
+          <span className="font-mono text-[0.75rem] tracking-[0.12em] uppercase text-copper">{siddhi.tradition}</span>
           <div className="flex-1" />
-          <span className="font-mono text-[0.55rem] tracking-[0.15em] uppercase text-text-muted">{siddhi.level}</span>
+          <span className="font-mono text-[0.75rem] tracking-[0.12em] uppercase text-text-muted">{siddhi.level}</span>
         </div>
       </div>
     </Link>

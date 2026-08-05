@@ -68,7 +68,7 @@ export default function ConsultationsPage() {
                 <div className="flex items-center gap-3 mb-3">
                   <h3 className="font-display text-xl text-foreground">{service.name}</h3>
                   {service.popular && (
-                    <span className="text-[0.6rem] bg-gold/15 text-gold px-2.5 py-1 rounded-full tracking-wider uppercase">Most Chosen</span>
+                    <span className="text-[0.8125rem] bg-gold/15 text-gold px-2.5 py-1 rounded-full tracking-wider uppercase">Most Chosen</span>
                   )}
                 </div>
                 <p className="text-caption mb-3">{service.duration} &middot; {service.price}</p>

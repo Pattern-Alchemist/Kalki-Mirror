@@ -23,7 +23,7 @@ export function CautionBadge({ level, className }: CautionBadgeProps) {
   return (
     <span
       className={cn(
-        'text-[0.6rem] px-2.5 py-1 rounded-sm border tracking-[0.15em] uppercase font-mono',
+        'text-[0.8125rem] px-2.5 py-1 rounded-sm border tracking-[0.15em] uppercase font-mono',
         CAUTION_STYLES[level],
         className
       )}

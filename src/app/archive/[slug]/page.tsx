@@ -22,7 +22,7 @@ function ConfidenceBadge({ confidence }: { confidence: string }) {
   const color = confidence === 'high' ? 'text-green-400 border-green-400/20 bg-green-400/8' :
     confidence === 'medium' ? 'text-yellow-400 border-yellow-400/20 bg-yellow-400/8' :
       'text-red-400 border-red-400/20 bg-red-400/8';
-  return <span className={`text-[0.6rem] px-2.5 py-1 rounded-sm border tracking-wider uppercase ${color}`}>{confidence}</span>;
+  return <span className={`text-[0.8125rem] px-2.5 py-1 rounded-sm border tracking-wider uppercase ${color}`}>{confidence}</span>;
 }
 
 export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -59,7 +59,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
           {/* Metadata tags — JetBrains Mono terminal aesthetic */}
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <motion.p 
-              className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-copper" 
+              className="font-mono text-[0.8125rem] tracking-[0.2em] uppercase text-copper" 
               initial={reduced ? { opacity: 1 } : fadeInUp.hidden} 
               animate={fadeInUp.visible}
             >
@@ -79,12 +79,12 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
             {siddhi.sanskrit}
           </motion.p>
           <motion.div className="flex flex-wrap gap-3" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.2 }}>
-            <span className="glass-chip px-4 py-1.5 font-mono text-[0.6rem] text-gold tracking-[0.15em] uppercase">{siddhi.level}</span>
-            <span className="glass-chip px-4 py-1.5 font-mono text-[0.6rem] text-text-secondary tracking-[0.15em] uppercase">{TIER_LABELS[siddhi.minTier as Tier]} TIER</span>
+            <span className="glass-chip px-4 py-1.5 font-mono text-[0.8125rem] text-gold tracking-[0.15em] uppercase">{siddhi.level}</span>
+            <span className="glass-chip px-4 py-1.5 font-mono text-[0.8125rem] text-text-secondary tracking-[0.15em] uppercase">{TIER_LABELS[siddhi.minTier as Tier]} TIER</span>
             {activeArchetype && (
               <Link 
                 href={`/archetypes#${activeArchetype.id}`} 
-                className="glass-chip px-4 py-1.5 font-mono text-[0.6rem] text-copper tracking-[0.15em] uppercase hover:text-gold hover:border-gold/30 transition-colors duration-500"
+                className="glass-chip px-4 py-1.5 font-mono text-[0.8125rem] text-copper tracking-[0.15em] uppercase hover:text-gold hover:border-gold/30 transition-colors duration-500"
               >
                 {activeArchetype.name}
               </Link>
@@ -121,7 +121,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
                       <p className="font-display text-2xl text-foreground group-hover:text-gold transition-colors duration-500 font-light mb-2">
                         {activeArchetype.name}
                       </p>
-                      <p className="font-mono text-[0.6rem] text-gold-dim tracking-[0.12em] mb-4">
+                      <p className="font-mono text-[0.8125rem] text-gold-dim tracking-[0.12em] mb-4">
                         {activeArchetype.sanskrit}
                       </p>
                     </Link>
@@ -217,7 +217,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
                     <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors duration-500">{p.name}</p>
                     <p className="text-xs text-text-muted mt-1 italic">{p.subtitle}</p>
                     {activeArchetype && (
-                      <p className="font-mono text-[0.55rem] text-copper mt-2 tracking-[0.1em]">
+                      <p className="font-mono text-[0.75rem] text-copper mt-2 tracking-[0.1em]">
                         ARCHETYPE: {activeArchetype.name.toUpperCase()}
                       </p>
                     )}
@@ -235,7 +235,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
                 {related.map((s) => (
                   <Link key={s.slug} href={`/archive/${s.slug}`} className="glass-chip p-5 group">
                     <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors duration-500 mb-1 font-light">{s.name}</p>
-                    <p className="font-mono text-[0.55rem] tracking-[0.15em] uppercase text-copper">{s.level}</p>
+                    <p className="font-mono text-[0.75rem] tracking-[0.15em] uppercase text-copper">{s.level}</p>
                   </Link>
                 ))}
               </div>

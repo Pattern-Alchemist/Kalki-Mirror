@@ -336,7 +336,7 @@ export default function CodexPage() {
       <footer className="pb-20 md:pb-28">
         <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center">
           <motion.p
-            className="font-mono text-[0.55rem] tracking-[0.2em] uppercase text-copper"
+            className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}

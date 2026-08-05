@@ -110,7 +110,7 @@ export default function PricingPage() {
             <div className="w-px h-4 bg-gold/10" />
             <button onClick={() => setBilling('yearly')} className={`text-sm transition-colors duration-400 flex items-center gap-3 ${billing === 'yearly' ? 'text-foreground font-medium' : 'text-text-muted hover:text-text-secondary'}`}>
               Yearly
-              <span className="px-2.5 py-1 rounded-full bg-gold/10 text-gold text-[0.6rem] font-bold uppercase tracking-wider">Save 17%</span>
+              <span className="px-2.5 py-1 rounded-full bg-gold/10 text-gold text-[0.8125rem] font-bold uppercase tracking-wider">Save 17%</span>
             </button>
           </div>
         </div>
@@ -124,7 +124,7 @@ export default function PricingPage() {
             const monthlyPrice = tier.priceINR ?? 0;
             return (
               <motion.div key={tier.id} variants={staggerItem} className={"glass-chip relative p-6 md:p-8 flex flex-col" + ((tier.popular || tier.highlight) ? ' border-gold' : '')} style={{ borderTopColor: tier.color ?? 'transparent', borderTopWidth: '3px', borderTopStyle: 'solid' }}>
-                {(tier.popular || tier.highlight) && <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold text-deep-black text-[0.6rem] font-bold px-3 py-1 rounded-full z-10 whitespace-nowrap tracking-wider uppercase">Most Popular</span>}
+                {(tier.popular || tier.highlight) && <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold text-deep-black text-[0.8125rem] font-bold px-3 py-1 rounded-full z-10 whitespace-nowrap tracking-wider uppercase">Most Popular</span>}
                 <p className="text-caption mb-4">{ELEMENT_LABELS[tier.id]}</p>
                 <h3 className="font-display text-2xl text-foreground mb-1">{TIER_LABELS[tier.id]}</h3>
                 <p className="text-gold text-sm font-display mb-6 italic">{tier.elementSanskrit}</p>

@@ -91,7 +91,7 @@ export function ResonanceToggle() {
       aria-label={active ? 'Deactivate resonance' : 'Activate resonance'}
       aria-pressed={active}
     >
-      <span className="font-mono text-[0.55rem] tracking-[0.2em] uppercase text-text-muted opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+      <span className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-text-muted opacity-0 group-hover:opacity-100 transition-opacity duration-500">
         {active ? 'Deactivate' : 'Activate'} Resonance
       </span>
 
