@@ -415,9 +415,9 @@
   z-index: 0;
 }
 
-/* Dust particles — subtle floating motes (uses ::after) */
-.dust-particles::after {
-  content: '';
+/* Dust particles — rendered as real DOM elements in CinematicImage.tsx
+   to avoid ::after collision with film-grain. */
+.dust-overlay {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -428,7 +428,6 @@
     radial-gradient(1px 1px at 75% 35%, rgba(201, 168, 76, 0.12), transparent),
     radial-gradient(1px 1px at 85% 80%, rgba(201, 168, 76, 0.08), transparent),
     radial-gradient(1px 1px at 35% 15%, rgba(201, 168, 76, 0.1), transparent);
-  z-index: 1;
   animation: dustDrift 30s linear infinite;
 }
 @keyframes dustDrift {
@@ -532,7 +531,7 @@
   .gold-foil-text {
     animation: none !important;
   }
-  .dust-particles::after {
+  .dust-overlay {
     animation: none !important;
   }
   html {

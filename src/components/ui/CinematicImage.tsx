@@ -54,13 +54,34 @@ export function CinematicImage({
         ? 'ken-burns'
         : '';
   const grainClass = prefersReduced ? '' : filmGrain ? 'film-grain' : '';
-  const dustClass = prefersReduced ? '' : dust ? 'dust-particles' : '';
 
   const imageEl = fill ? (
-    <Image src={src} alt={alt} fill priority={priority} className="object-cover" />
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      priority={priority}
+      sizes="100vw"
+      className="object-cover"
+    />
   ) : (
-    <Image src={src} alt={alt} width={width ?? 1400} height={height ?? 900} priority={priority} className="object-cover w-full h-full" />
+    <Image
+      src={src}
+      alt={alt}
+      width={width ?? 1400}
+      height={height ?? 900}
+      priority={priority}
+      className="object-cover w-full h-full"
+    />
   );
+
+  /* z-index layering:
+     0 = image (natural)
+     1 = scrim
+     2 = volumetric / fog / dust (all at 2, visual overlap ok)
+     3 = vignette
+     4 = film-grain (topmost texture, ::after z-index:2 but rendered last)
+  */
 
   const scrimEl = scrim !== 'none' ? (
     <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1, ...SCRIM_STYLES[scrim] }} />
@@ -97,6 +118,11 @@ export function CinematicImage({
     />
   ) : null;
 
+  /* Dust — real DOM element, no ::after collision with film-grain */
+  const dustEl = dust && !prefersReduced ? (
+    <div className="dust-overlay" style={{ zIndex: 2 }} />
+  ) : null;
+
   const vignetteEl = vignette ? (
     <div
       className="absolute inset-0 pointer-events-none"
@@ -108,11 +134,12 @@ export function CinematicImage({
   ) : null;
 
   return (
-    <div className={cn('cinematic-wrap', kbClass, grainClass, dustClass, aspect, className)}>
+    <div className={cn('cinematic-wrap', kbClass, grainClass, aspect, className)}>
       {imageEl}
       {scrimEl}
       {volumetricEl}
       {fogEl}
+      {dustEl}
       {vignetteEl}
     </div>
   );
