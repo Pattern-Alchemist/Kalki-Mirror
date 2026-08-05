@@ -1,7 +1,9 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
+import Image from 'next/image';
 import { PageHero } from '@/components/layout/PageHero';
+import { BackButton } from '@/components/nav/BackButton';
 import { consultationServices } from '@/lib/data/consultations';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
@@ -11,13 +13,36 @@ export default function ConsultationsPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/hero-fire.jpeg"
+        image="/assets/tantra/trident-courtyard-new.jpeg"
         title="Consult the Archivist"
         subtitle="Structured sessions bridging the ancient map and your lived experience. Not fortune-telling — pattern intelligence."
         sectionLabel="With Kaustubh"
       />
 
       <div className="max-w-4xl mx-auto px-6 lg:px-10 py-20 md:py-28">
+        <BackButton href="/" label="Back to Home" className="mb-12" />
+
+        {/* Archivist Portrait with white neon glow */}
+        <motion.div
+          className="relative mx-auto max-w-md mb-20"
+          initial={reduced ? { opacity: 0.8 } : { opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+        >
+          <div className="relative neon-glow-white rounded-sm overflow-hidden">
+            <Image
+              src="/assets/tantra/archivist-portrait.jpg"
+              alt="The Archivist — Kaustubh, Tantric Technologist"
+              width={600}
+              height={800}
+              className="w-full h-auto object-cover"
+              priority
+            />
+            {/* Subtle gold border inside */}
+            <div className="absolute inset-0 border border-white/5 rounded-sm pointer-events-none" />
+          </div>
+        </motion.div>
+
         <motion.p className="text-editorial mb-20 max-w-2xl"
           initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
           whileInView={fadeInUp.visible}

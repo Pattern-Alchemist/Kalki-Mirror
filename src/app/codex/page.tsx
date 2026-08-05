@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
+import { BackButton } from '@/components/nav/BackButton';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 
@@ -280,6 +281,9 @@ export default function CodexPage() {
 
       {/* ── Five Parts ── */}
       <section className="pb-32">
+        <div className="max-w-3xl mx-auto px-6 lg:px-10 pt-6">
+          <BackButton href="/" label="Back to Home" />
+        </div>
         <div className="max-w-3xl mx-auto px-6 lg:px-10">
           {parts.map((part, idx) => (
             <motion.article
