@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { db } from '@/lib/db';
 
 /**
  * POST /api/keys/redeem
@@ -18,7 +16,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Code and userId required.' }, { status: 400 });
     }
 
-    const invite = await prisma.inviteCode.findUnique({
+    const invite = await db.inviteCode.findUnique({
       where: { code },
     });
 
@@ -30,7 +28,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (invite.expiresAt && invite.expiresAt < new Date()) {
-      await prisma.inviteCode.update({ where: { code }, data: { active: false } });
+      await db.inviteCode.update({ where: { code }, data: { active: false } });
       return NextResponse.json(
         { error: 'This key has expired. The geometry has shifted.' },
         { status: 410 }
@@ -44,7 +42,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const existingUsage = await prisma.inviteUsage.findFirst({
+    const existingUsage = await db.inviteUsage.findFirst({
       where: { codeId: invite.id, usedBy: userId },
     });
     if (existingUsage) {
@@ -56,21 +54,21 @@ export async function POST(request: NextRequest) {
 
     const tierOrder = ['prithvi', 'jal', 'agni', 'akash'];
 
-    await prisma.inviteUsage.create({
+    await db.inviteUsage.create({
       data: { codeId: invite.id, usedBy: userId },
     });
-    await prisma.inviteCode.update({
+    await db.inviteCode.update({
       where: { id: invite.id },
       data: { usesUsed: { increment: 1 } },
     });
 
-    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const user = await db.user.findUnique({ where: { id: userId } });
     if (user) {
       const currentIdx = tierOrder.indexOf(user.tier);
       const grantedIdx = tierOrder.indexOf(invite.tierGranted);
       if (grantedIdx > currentIdx) {
         const newKeys = grantedIdx >= 1 ? 3 : 0;
-        await prisma.user.update({
+        await db.user.update({
           where: { id: userId },
           data: {
             tier: invite.tierGranted,

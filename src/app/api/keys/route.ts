@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { db } from '@/lib/db';
 
 /**
  * POST /api/keys/generate
@@ -23,7 +21,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'UserId required.' }, { status: 400 });
     }
 
-    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const user = await db.user.findUnique({ where: { id: userId } });
     if (!user) {
       return NextResponse.json({ error: 'User not found in the AKASHA.' }, { status: 404 });
     }
@@ -49,7 +47,7 @@ export async function POST(request: NextRequest) {
     const seg = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
     const code = `KALKI-${seg()}-${seg()}`;
 
-    const invite = await prisma.inviteCode.create({
+    const invite = await db.inviteCode.create({
       data: {
         code,
         createdBy: userId,
@@ -60,7 +58,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Decrement user's remaining keys
-    await prisma.user.update({
+    await db.user.update({
       where: { id: userId },
       data: { goldKeysRemaining: { decrement: 1 } },
     });
@@ -91,7 +89,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Provide ?vault=userId to access the vault.' }, { status: 400 });
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await db.user.findUnique({
       where: { id: vaultUserId },
       select: {
         goldKeysRemaining: true,
