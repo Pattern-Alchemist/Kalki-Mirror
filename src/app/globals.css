@@ -254,6 +254,21 @@
   position: relative;
   overflow: hidden;
 }
+/* Native img fill mode — replaces next/image fill */
+.cinematic-img-fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Native img sized mode — replaces next/image width/height */
+.cinematic-img-sized {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .cinematic-wrap img,
 .cinematic-wrap span {
   width: 100%;

@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -55,23 +54,22 @@ export function CinematicImage({
         : '';
   const grainClass = prefersReduced ? '' : filmGrain ? 'film-grain' : '';
 
-  const imageEl = fill ? (
-    <Image
+  /*
+   Native <img> instead of next/image.
+   next/image's fill + optimization pipeline was failing silently
+   on Vercel (all cinematic images rendered as black/empty).
+   Native img is reliable, zero-dependency, and these JPEGs are
+   already production-optimized.
+  */
+  const imageEl = (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
       src={src}
       alt={alt}
-      fill
-      priority={priority}
-      sizes="100vw"
-      className="object-cover"
-    />
-  ) : (
-    <Image
-      src={src}
-      alt={alt}
-      width={width ?? 1400}
-      height={height ?? 900}
-      priority={priority}
-      className="object-cover w-full h-full"
+      loading={priority ? 'eager' : 'lazy'}
+      decoding={priority ? 'sync' : 'async'}
+      draggable={false}
+      className={fill ? 'cinematic-img-fill' : 'cinematic-img-sized'}
     />
   );
 
