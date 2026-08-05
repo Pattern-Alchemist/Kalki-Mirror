@@ -14,7 +14,7 @@ export default function MethodPage() {
         image="/assets/tantra/cremation-ground.jpeg"
         title="The Mirror Method"
         subtitle="A five-stage framework for recognizing and dissolving your psychological patterns through ancient sādhana."
-        sectionLabel="Our Framework"
+        sectionLabel="The Architecture"
       />
 
       <div className="max-w-4xl mx-auto px-6 lg:px-10 py-20 md:py-28 space-y-28">
@@ -27,7 +27,7 @@ export default function MethodPage() {
 
         {/* Stage Details */}
         {[
-          { num: 1, title: 'Pattern Recognition', text: 'The first step is naming the loop. Every recurring frustration, every self-sabotaging decision, every relationship that ends the same way — these are not random. They are patterns with names, origins, and specific sādhanas designed to address them. AstroKalki maps 12 core psychological patterns to specific tantric practices.' },
+          { num: 1, title: 'Pattern Recognition', text: 'The first step is naming the loop. Every recurring frustration, every self-sabotaging decision, every relationship that ends the same way — these are not random. They are patterns with names, origins, and specific sādhanas designed to address them. KALKI maps 12 core psychological patterns to specific tantric practices.' },
           { num: 2, title: 'Emotional Origin', text: 'Every pattern started somewhere. Not as a flaw, but as a survival strategy. The Rescuer pattern formed because love felt conditional on being useful. The Perfectionist formed because safety meant never making a mistake. Understanding the origin dissolves shame and replaces it with clarity.' },
           { num: 3, title: 'Karmic Reinforcement', text: 'Patterns persist because they are reinforced by karma — not in the mystical sense, but in the neurological sense. Each repetition strengthens the neural pathway. Each time you choose the familiar pain over the unknown growth, you deepen the groove. The sādhanas are designed to create new grooves.' },
           { num: 4, title: 'Behavioral Expression', text: 'Patterns do not stay in the mind. They express through behavior: the way you speak, the relationships you choose, the work you avoid, the anger you swallow. Observing these expressions without judgment is itself a practice — and it is the gateway to change.' },

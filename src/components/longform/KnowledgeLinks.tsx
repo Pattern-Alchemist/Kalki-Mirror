@@ -17,11 +17,11 @@ interface KnowledgeLinksProps {
 }
 
 const TYPE_STYLES: Record<string, { label: string; color: string }> = {
-  siddhi:   { label: 'Archive',     color: 'text-gold' },
+  siddhi:   { label: 'Akasha',     color: 'text-gold' },
   pattern:  { label: 'Pattern',     color: 'text-purple-400' },
-  practice: { label: 'Practice',    color: 'text-cyan-400' },
-  method:   { label: 'Method',      color: 'text-gold-dim' },
-  research: { label: 'Research',    color: 'text-text-muted' },
+  practice: { label: 'Sādhana',    color: 'text-cyan-400' },
+  method:   { label: 'The Method',      color: 'text-gold-dim' },
+  research: { label: 'Sources',    color: 'text-text-muted' },
 };
 
 export function KnowledgeLinks({ title = 'What should you explore next?', links }: KnowledgeLinksProps) {

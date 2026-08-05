@@ -17,7 +17,7 @@ export default function ResearchPage() {
         image="/assets/tantra/kali-temple.jpeg"
         title="Research & Sources"
         subtitle="Epistemic transparency: every claim sourced, every score explained."
-        sectionLabel="Academic Rigour"
+        sectionLabel="Epistemic Rigour"
       />
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28 space-y-28">
@@ -48,7 +48,7 @@ export default function ResearchPage() {
               { name: 'Historical Evidence', desc: 'Verified through historical records and archaeology' },
               { name: 'Academic Research', desc: 'Peer-reviewed publications and scholarly analysis' },
               { name: 'Experiential Tradition', desc: 'Living practitioner lineages and testimonies' },
-              { name: 'Editorial Synthesis', desc: 'AstroKalki editorial team cross-referenced analysis' },
+              { name: 'Editorial Synthesis', desc: 'KALKI editorial team cross-referenced analysis' },
               { name: 'AI Interpretation', desc: 'Machine-generated connections flagged as such' },
             ].map((cat) => (
               <div key={cat.name} className="glass-chip p-6">
@@ -79,7 +79,7 @@ export default function ResearchPage() {
           <div className="space-y-6 text-editorial max-w-3xl">
             <p>Each siddhi receives an authenticity score from 0 to 100, calculated from three weighted factors: textual attestation (how many primary and secondary sources reference the practice), lineage continuity (whether the practice has an unbroken living tradition), and experiential verification (whether contemporary practitioners report results consistent with traditional descriptions).</p>
             <p>Sources are individually rated as high, medium, or low confidence. High-confidence sources are primary textual references (Upaniṣads, Tantras, Āgamas). Medium-confidence sources are secondary scholarship, commentaries, or historical records. Low-confidence sources are oral traditions without textual corroboration or modern reinterpretations without traditional grounding.</p>
-            <p>We never blur the distinction between traditional knowledge and our editorial interpretation. When AstroKalki synthesizes or connects material, it is flagged as editorial synthesis, not traditional source.</p>
+            <p>We never blur the distinction between traditional knowledge and our editorial interpretation. When KALKI synthesizes or connects material, it is flagged as editorial synthesis, not traditional source.</p>
           </div>
         </motion.section>
       </div>

@@ -40,7 +40,7 @@ export const consultationServices: ConsultationService[] = [
     duration: 'Varies',
     price: 'Akash tier only',
     description:
-      'For serious practitioners ready for Restricted-level siddhis. An introduction to a vetted lineage holder in the relevant tradition, arranged through AstroKalki\'s network. Subject to vetting and availability.',
+      'For serious practitioners ready for Restricted-level siddhis. An introduction to a vetted lineage holder in the relevant tradition, arranged through KALKI\'s network. Subject to vetting and availability.',
     whatsappPrefill:
       'Hi, I\'m an Akash-tier member interested in a lineage introduction for ___ practice. I have ___ years of experience.',
     popular: false,

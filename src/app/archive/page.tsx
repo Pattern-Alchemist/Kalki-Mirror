@@ -27,9 +27,9 @@ export default function ArchivePage() {
     <div className="bg-deep-black min-h-screen">
       <PageHero
         image="/assets/tantra/hero-temple.jpeg"
-        title="The Living Archive"
-        subtitle="41 siddhis with evidence sources, authenticity scores, and lineage."
-        sectionLabel="Scholarly Heritage"
+        title="The Akashic Archive"
+        subtitle="41 siddhis decoded by YANTRA — evidence sources, authenticity scores, and lineage."
+        sectionLabel="Initiate"
       />
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28">
@@ -37,7 +37,7 @@ export default function ArchivePage() {
         <div className="flex flex-col md:flex-row gap-4 mb-16">
           <input
             type="text"
-            placeholder="Search by name or Sanskrit..."
+            placeholder="Query the Akasha..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="flex-1 bg-surface border border-gold/10 rounded-sm px-5 py-3.5 text-foreground placeholder-text-muted focus:outline-none focus:border-gold/30 font-body text-sm transition-colors duration-500"

@@ -7,11 +7,11 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
-  { href: '/archive', label: 'Archive' },
+  { href: '/archive', label: 'Akasha' },
   { href: '/patterns', label: 'Patterns' },
-  { href: '/practice', label: 'Practice' },
-  { href: '/method', label: 'Method' },
-  { href: '/research', label: 'Research' },
+  { href: '/practice', label: 'Sādhana' },
+  { href: '/method', label: 'The Method' },
+  { href: '/research', label: 'Sources' },
   { href: '/pricing', label: 'Membership' },
 ];
 
@@ -53,7 +53,7 @@ export function SacredNav() {
             {/* Logo */}
             <Link href="/" className="relative z-10">
               <span className="font-display text-lg md:text-xl tracking-wide gold-foil-text">
-                AstroKalki
+                KALKI
               </span>
             </Link>
 
@@ -166,8 +166,7 @@ export function SacredNav() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                The Living Archive of Siddhi Heritage
-              </motion.p>
+                Light for the Dark Age.</motion.p>
             </div>
           </motion.div>
         )}

@@ -33,15 +33,15 @@ interface FAQItem { question: string; answer: string; }
 const FAQ_DATA: FAQItem[] = [
   { question: 'What siddhis are included in the free tier?', answer: 'The free Prithvi tier includes six foundational siddhis covering mantra repetition, breath purification, non-dual contemplation, and ritual practice. These are drawn from authentic tantric texts like the Upaniṣads, Haṭha Yoga Pradīpikā, and Smārta tradition. They provide a solid base for deeper exploration.' },
   { question: 'Can I switch between plans?', answer: 'Yes, you can upgrade or downgrade your plan at any time. When upgrading, you gain immediate access to the new tier content. When downgrading, your current tier remains active until the end of your billing cycle. All changes are managed via WhatsApp for personal attention.' },
-  { question: 'Is the content authentic tantric tradition?', answer: 'Every practice, mantra, and lineage reference on AstroKalki is sourced from recognized tantric texts — Upaniṣads, Tantras, Āgamas, Haṭha Yoga corpus, and Pāñcarātra Āgamas. Each siddhi includes an authenticity score calculated from textual attestation, lineage continuity, and experiential verification.' },
+  { question: 'Is the content authentic tantric tradition?', answer: 'Every practice, mantra, and lineage reference on KALKI is sourced from recognized tantric texts — Upaniṣads, Tantras, Āgamas, Haṭha Yoga corpus, and Pāñcarātra Āgamas. Each siddhi includes an authenticity score calculated from textual attestation, lineage continuity, and experiential verification.' },
   { question: 'How do guru sessions work?', answer: 'Guru sessions are conducted via WhatsApp video call. Agni members receive one 15-minute monthly session focused on practice review and guidance. Akash members receive weekly 60-minute sessions covering deep practice, siddhi transmission, and personalized ritual design.' },
   { question: 'What payment methods do you accept?', answer: 'We accept all major credit and debit cards, UPI, net banking, and popular wallets via Razorpay for Indian users. International users can pay with any card through Stripe. All transactions are encrypted and PCI-compliant.' },
 ];
 function GoldCheckIcon() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <circle cx="10" cy="10" r="10" fill="#c9a84c" fillOpacity="0.1" />
-      <path d="M6 10.5L8.5 13L14 7.5" stroke="#c9a84c" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="10" cy="10" r="10" fill="#C5A059" fillOpacity="0.1" />
+      <path d="M6 10.5L8.5 13L14 7.5" stroke="#C5A059" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -49,9 +49,9 @@ function GoldCheckIcon() {
 function LockIconSmall() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <circle cx="10" cy="10" r="10" fill="#c9a84c" fillOpacity="0.04" />
-      <rect x="6.5" y="9.5" width="7" height="5.5" rx="1.5" stroke="#c9a84c" strokeWidth="1.2" opacity="0.4" />
-      <path d="M8 9.5V7.5C8 6.1 9 5 10 5C11 5 12 6.1 12 7.5V9.5" stroke="#c9a84c" strokeWidth="1.2" opacity="0.4" strokeLinecap="round" />
+      <circle cx="10" cy="10" r="10" fill="#C5A059" fillOpacity="0.04" />
+      <rect x="6.5" y="9.5" width="7" height="5.5" rx="1.5" stroke="#C5A059" strokeWidth="1.2" opacity="0.4" />
+      <path d="M8 9.5V7.5C8 6.1 9 5 10 5C11 5 12 6.1 12 7.5V9.5" stroke="#C5A059" strokeWidth="1.2" opacity="0.4" strokeLinecap="round" />
     </svg>
   );
 }
@@ -59,8 +59,8 @@ function LockIconSmall() {
 function ShieldCheckIcon() {
   return (
     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M12 2L3 7V12C3 16.97 6.93 21.59 12 22.5C17.07 21.59 21 16.97 21 12V7L12 2Z" stroke="#c9a84c" strokeWidth="1.5" strokeLinejoin="round" fill="#c9a84c" fillOpacity="0.04" />
-      <path d="M8 12.5L10.5 15L16 9.5" stroke="#c9a84c" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M12 2L3 7V12C3 16.97 6.93 21.59 12 22.5C17.07 21.59 21 16.97 21 12V7L12 2Z" stroke="#C5A059" strokeWidth="1.5" strokeLinejoin="round" fill="#C5A059" fillOpacity="0.04" />
+      <path d="M8 12.5L10.5 15L16 9.5" stroke="#C5A059" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
  );
 }
