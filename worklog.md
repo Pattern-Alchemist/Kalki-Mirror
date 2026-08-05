@@ -72,3 +72,19 @@ Stage Summary:
 - prisma/schema.prisma: User model extended with 4 Pulse fields
 - Build: clean, 0 errors, 0 warnings
 - Local smoke-test: all 5 checklist items pass
+---
+Task ID: 1
+Agent: main
+Task: Apply hero image to homepage from 6 uploaded candidates
+
+Work Log:
+- VLM-analyzed all 6 images across 5 axes: composition, color harmony, text-overlay suitability, mobile crop, authenticity
+- Selected Runes_hovering_above_ancient_manuscript (45/50) — perfect palette match (Akasha void, Gold runes, Cinnabar embers, Bhasma parchment)
+- Copied to public/assets/tantra/hero-runes-manuscript.jpeg (2752x1536, 542KB)
+- Updated page.tsx Chamber I hero: swapped src, updated alt text
+- Build: clean, 0 errors
+
+Stage Summary:
+- Hero image: /assets/tantra/hero-runes-manuscript.jpeg
+- All CinematicImage effects preserved (kenBurns slow, full scrim, vignette, volumetric, dust)
+- Mobile: object-cover centers on manuscript/altar in portrait crop

@@ -23,8 +23,8 @@ export default function HomePage() {
       {/* ===== CHAMBER I: ARRIVAL — The Initiation ===== */}
       <section className="relative h-[110vh] md:h-[120vh] flex items-end overflow-hidden">
         <CinematicImage
-          src="/assets/tantra/hero-ritual-chamber.jpeg"
-          alt="Underground ritual chamber with mandala geometry and volumetric candlelight — the architecture of awareness"
+          src="/assets/tantra/hero-runes-manuscript.jpeg"
+          alt="Ancient tantric manuscript with golden Devanagari runes hovering above a stone altar — the Akashic Archive illuminated"
           kenBurns="slow"
           scrim="full"
           vignette
