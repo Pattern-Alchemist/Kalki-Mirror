@@ -1,17 +1,10 @@
+// Cloudflare Pages configuration
+// NOTE: If deploying via Cloudflare Pages dashboard,
+// the build command should be: npx @cloudflare/next-on-pages
+// Output directory: .vercel/output/static
 {
   "name": "kalki-mirror",
+  "pages_build_output_dir": ".vercel/output/static",
   "compatibility_date": "2024-09-23",
-  "compatibility_flags": ["nodejs_compat"],
-  "main": ".open-next/worker.js",
-  "assets": {
-    "directory": ".open-next/assets",
-    "binding": "ASSETS"
-  },
-  "services": [
-    {
-      "binding": "WORKER_SELF_REFERENCE",
-      "service": "kalki-mirror",
-      "entrypoint": "main"
-    }
-  ]
+  "compatibility_flags": ["nodejs_compat"]
 }
