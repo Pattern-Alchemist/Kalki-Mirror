@@ -869,6 +869,13 @@
   .animate-breathe-slow {
     animation: none !important;
   }
+  .hero-glow-container::before,
+  .hero-glow-text {
+    animation: none !important;
+  }
+  .hero-glow-container::before {
+    opacity: 0.8;
+  }
   html {
     scroll-behavior: auto;
   }
@@ -889,6 +896,83 @@
 :focus-visible {
   outline: 1px solid var(--gold-dim);
   outline-offset: 3px;
+}
+
+/* ==========================================================
+   HERO PULSATING GOLD GLOW — KALKI wordmark neon radiance
+   Medium-speed ~3s infinite ease-in-out pulse of layered gold
+   light radiating from behind the letters.
+   ========================================================== */
+.hero-glow-container {
+  position: relative;
+}
+/* Soft radial glow behind the word */
+.hero-glow-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 200%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(212, 175, 55, 0.15) 0%,
+    rgba(212, 175, 55, 0.06) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+  animation: heroRadialGlow 3s ease-in-out infinite;
+}
+@keyframes heroRadialGlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+/* Stacked gold text-shadows on the KALKI heading */
+.hero-glow-text {
+  color: #FFFFFF !important;
+  text-shadow:
+    0 2px 18px rgba(0, 0, 0, 0.9),
+    0 1px 3px rgba(0, 0, 0, 0.8),
+    0 0 10px rgba(212, 175, 55, 0.4),
+    0 0 30px rgba(212, 175, 55, 0.25),
+    0 0 60px rgba(212, 175, 55, 0.15);
+  animation: heroTextGlow 3s ease-in-out infinite;
+}
+@keyframes heroTextGlow {
+  0%, 100% {
+    text-shadow:
+      0 2px 18px rgba(0, 0, 0, 0.9),
+      0 1px 3px rgba(0, 0, 0, 0.8),
+      0 0 10px rgba(212, 175, 55, 0.4),
+      0 0 30px rgba(212, 175, 55, 0.25),
+      0 0 60px rgba(212, 175, 55, 0.15);
+  }
+  50% {
+    text-shadow:
+      0 2px 18px rgba(0, 0, 0, 0.9),
+      0 1px 3px rgba(0, 0, 0, 0.8),
+      0 0 15px rgba(212, 175, 55, 0.6),
+      0 0 45px rgba(212, 175, 55, 0.4),
+      0 0 90px rgba(212, 175, 55, 0.2);
+  }
+}
+
+/* Hero video — mobile framing */
+.hero-video-bg {
+  object-position: center;
+}
+@media (max-width: 767px) {
+  .hero-video-bg {
+    object-position: center 40% !important;
+  }
 }
 
 /* ==========================================================
