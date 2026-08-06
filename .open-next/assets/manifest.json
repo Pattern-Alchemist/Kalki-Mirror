@@ -1,9 +1,0 @@
-{
-  "name": "KALKI",
-  "short_name": "KALKI",
-  "description": "Light for the Dark Age. Esoteric Intelligence. Sacred Architecture. Pattern Recognition.",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#0B0C10",
-  "theme_color": "#C5A059"
-}
