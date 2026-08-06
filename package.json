@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev -p 3000 2>&1 | tee dev.log",
     "build": "next build",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "preview": "opennextjs-cloudflare build && wrangler dev",
+    "deploy": "opennextjs-cloudflare build && wrangler deploy",
     "pages:build": "npx @cloudflare/next-on-pages",
     "pages:deploy": "npx @cloudflare/next-on-pages && npx wrangler pages deploy .vercel/output/static",
     "start": "next start",
