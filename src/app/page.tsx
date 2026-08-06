@@ -52,7 +52,7 @@ export default function HomePage() {
         </div>
 
         <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-10 hero-content-safe">
-          {/* KALKI — with pulsating neon glow */
+          {/* KALKI — with pulsating neon glow */}
           <motion.div
             initial={reduced ? { opacity: 1 } : { opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
