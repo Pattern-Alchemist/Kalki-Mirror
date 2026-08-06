@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!--
+    KALKI YANTRA — The Mark of Discernment
+    
+    Construction:
+    1. Outer circle with four cardinal gate-gaps
+    2. Interlocked ascending (Shiva) / descending (Shakti) triangles
+    3. Axis Mundi — the vertical sword line
+    4. Bindu — the center singularity
+    5. Hidden K monogram in negative space
+    
+    Palette: Shambhala Gold #C5A059 on Akasha #0B0C10
+    No gradients. No glow. Pure vector precision.
+  -->
+  
+  <g transform="translate(100,100)">
+    
+    <!-- ====== OUTER CIRCLE WITH FOUR GATE-GAPS ====== -->
+    <!-- Gap angle: 12deg at each cardinal, centered on axis -->
+    <!-- Total arcs: 4 x 78deg = 312deg of circle -->
+    <circle 
+      cx="0" cy="0" r="88" 
+      stroke="#C5A059" 
+      stroke-width="0.75" 
+      fill="none"
+      stroke-dasharray="119.38 15.38 119.38 15.38 119.38 15.38 119.38 15.38"
+      stroke-dashoffset="7.69"
+      transform="rotate(-90)"
+    />
+    
+    <!-- ====== INTERLOCKED TRIANGLES ====== -->
+    <!-- Upward triangle (Shiva / Consciousness / Static) -->
+    <polygon 
+      points="0,-62 53.69,31 -53.69,31" 
+      stroke="#C5A059" 
+      stroke-width="0.6" 
+      fill="none"
+      stroke-linejoin="miter"
+    />
+    
+    <!-- Downward triangle (Shakti / Energy / Kinetic) -->
+    <polygon 
+      points="0,62 53.69,-31 -53.69,-31" 
+      stroke="#C5A059" 
+      stroke-width="0.6" 
+      fill="none"
+      stroke-linejoin="miter"
+    />
+    
+    <!-- ====== AXIS MUNDI — The Sword of Kalki ====== -->
+    <!-- Vertical line through center. Also the vertical stroke of hidden K. -->
+    <line 
+      x1="0" y1="-74" 
+      x2="0" y2="74" 
+      stroke="#C5A059" 
+      stroke-width="0.5"
+    />
+    
+    <!-- ====== HIDDEN K MONOGRAM ====== -->
+    <!-- The K is formed by negative space: 
+       - Vertical stroke = Axis Mundi (already drawn above)
+       - Diagonal strokes emerge from the triangle intersections
+       creating an architectural K that reads as sacred geometry -->
+    <!-- Upper diagonal (the K's arm) -->
+    <line 
+      x1="0" y1="-8" 
+      x2="28" y2="-52" 
+      stroke="#C5A059" 
+      stroke-width="0.4"
+      opacity="0.6"
+    />
+    <!-- Lower diagonal (the K's leg) -->
+    <line 
+      x1="0" y1="8" 
+      x2="32" y2="50" 
+      stroke="#C5A059" 
+      stroke-width="0.4"
+      opacity="0.6"
+    />
+    
+    <!-- ====== BINDU — The Singularity ====== -->
+    <!-- Center dot: Shambhala, the destination -->
+    <circle 
+      cx="0" cy="0" r="2.5" 
+      fill="#C5A059"
+    />
+    
+    <!-- ====== INNER CONCENTRIC RING ====== -->
+    <!-- Subtle inner ring suggesting depth/meditation focus -->
+    <circle 
+      cx="0" cy="0" r="18" 
+      stroke="#C5A059" 
+      stroke-width="0.3" 
+      fill="none"
+      opacity="0.5"
+    />
+    
+  </g>
+</svg>
