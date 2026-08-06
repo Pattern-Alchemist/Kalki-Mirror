@@ -21,7 +21,7 @@ export default function PracticePage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/hero-meditation-platform.jpeg"
+        image='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-meditation-platform'
         title="Sādhana Tools"
         subtitle="Guided breathwork, japa counting, and meditation."
         sectionLabel="Practice"

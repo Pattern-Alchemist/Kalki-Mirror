@@ -12,7 +12,7 @@ export default function PatternsPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/hero-mountain-trident.jpeg"
+        image='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-mountain-trident'
         title="Pattern Atlas"
         subtitle="The emotional patterns that run your life — and the sādhanas designed to dissolve them."
         sectionLabel="The Mirror Method"

@@ -13,7 +13,7 @@ export default function ConsultationsPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/hero-ritual-chamber-alt.jpeg"
+        image='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-ritual-chamber-alt'
         title="Consult the Archivist"
         subtitle="Structured sessions bridging the ancient map and your lived experience. Not fortune-telling — pattern intelligence."
         sectionLabel="With Kaustubh"
@@ -31,7 +31,7 @@ export default function ConsultationsPage() {
         >
           <div className="relative neon-glow-white rounded-sm overflow-hidden">
             <Image
-              src="/assets/tantra/archivist-portrait.jpg"
+              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archivist-portrait'
               alt="The Archivist — Kaustubh, Tantric Technologist"
               width={600}
               height={800}

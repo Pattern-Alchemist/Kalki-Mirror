@@ -59,7 +59,7 @@ export default function ArchivePage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/hero-underground-library.jpeg"
+        image='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-underground-library'
         title="The Akashic Archive"
         subtitle={`${SIDDHI_COUNT} siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access.`}
         sectionLabel="The Reading Room"
