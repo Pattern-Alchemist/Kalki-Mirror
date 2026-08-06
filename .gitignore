@@ -58,4 +58,4 @@ tool-results/
 upload/
 scripts/
 *.zip
-cloudinary-map.json
+cloudinary-map.json.open-next/
