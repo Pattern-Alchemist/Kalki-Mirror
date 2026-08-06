@@ -22,6 +22,13 @@ function TierRow({ tier, index, reduced }: { tier: PricingTier; index: number; r
     <motion.div
       variants={reduced ? undefined : staggerItem}
       className="group relative flex flex-col md:flex-row md:items-stretch gap-0"
+      style={{
+        background: 'rgba(8, 8, 8, 0.92)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        border: '1px solid rgba(212, 175, 55, 0.3)',
+        borderRadius: 'var(--radius)',
+      }}
     >
       <div className="flex items-center gap-4 md:w-64 shrink-0 p-6 md:p-8 border-b md:border-b-0 md:border-r border-gold/5">
         <div className="hidden md:flex flex-col items-center gap-1">
@@ -29,8 +36,8 @@ function TierRow({ tier, index, reduced }: { tier: PricingTier; index: number; r
           <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: highlighted ? 'var(--gold)' : 'var(--copper)' }} />
           <div className="w-px h-4" style={{ backgroundColor: 'var(--copper)', opacity: 0.3 }} />
         </div>
-        <div>
-          <h3 className="font-display text-xl text-foreground font-light tracking-wide group-hover:text-gold transition-colors duration-500">
+        <div className="min-w-0">
+          <h3 className="font-display text-xl text-foreground font-light tracking-wide group-hover:text-gold transition-colors duration-500 whitespace-normal">
             {ACCESS_LABELS[tier.id] ?? tier.element}
           </h3>
           <p className="font-mono text-[0.75rem] tracking-[0.12em] uppercase text-copper mt-1">
@@ -56,7 +63,7 @@ function TierRow({ tier, index, reduced }: { tier: PricingTier; index: number; r
         </ul>
       </div>
 
-      <div className="flex flex-col items-center justify-center p-6 md:p-8 md:w-56 shrink-0 border-t md:border-t-0 md:border-l border-gold/5">
+      <div className="flex flex-col items-center justify-center p-6 md:p-8 md:w-auto md:min-w-[14rem] shrink-0 border-t md:border-t-0 md:border-l border-gold/5">
         <div className="text-center mb-4">
           {isPaid ? (
             <>
@@ -70,7 +77,7 @@ function TierRow({ tier, index, reduced }: { tier: PricingTier; index: number; r
         <Link
           href="/pricing"
           className={cn(
-            'w-full text-center text-sm font-ui py-3.5 px-4 tracking-[0.12em] uppercase transition-all',
+            'text-center text-sm font-ui py-3.5 px-6 tracking-[0.12em] uppercase transition-all whitespace-normal break-words',
             highlighted ? 'gold-cta' : 'ghost-cta',
           )}
         >
@@ -92,7 +99,7 @@ export function PricingCards({ className }: { className?: string }) {
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
     >
-      <div className="border border-gold/5 divide-y divide-gold/5">
+      <div className="flex flex-col gap-3">
         {pricingTiers.map((tier, i) => (
           <TierRow key={tier.id} tier={tier} index={i} reduced={prefersReduced} />
         ))}
