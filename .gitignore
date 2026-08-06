@@ -58,3 +58,4 @@ tool-results/
 upload/
 scripts/
 *.zip
+cloudinary-map.json

@@ -24,7 +24,7 @@ export const supplementarySiddhis: Siddhi[] = [
     evidenceCount: 3,
     evidenceSources: [{"confidence":"high","title":"Śāradā Tilaka (Avalon, TTS 16) (primary)","url":"https://archive.org/details/sarada-tilaka"},{"confidence":"high","title":"Prapañcasāra Tantra (Avalon, TTS 18) (primary)","url":"https://archive.org/details/prapanchasara"},{"confidence":"high","title":"Goudriaan & Gupta, Hindu Tantric and Śākta Literature (1981) (scholarly)","url":""}],
     minTier: 'prithvi',
-    image: '/assets/tantra/archetypes/yantra-chamber-gold.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/yantra-chamber-gold',
   },
   {
     slug: 'personalized-bija-mantra',
@@ -44,7 +44,7 @@ export const supplementarySiddhis: Siddhi[] = [
     evidenceCount: 2,
     evidenceSources: [{"confidence":"high","title":"Bṛhat Parāśara Horā Śāstra (primary)","url":"https://www.wisdomlib.org/hinduism/book/brihat-parashara-hora-shastra"},{"confidence":"medium","title":"Phaladīpikā of Mantreśvara (primary)","url":""}],
     minTier: 'jal',
-    image: '/assets/tantra/archetypes/ephemeris-observatory.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/ephemeris-observatory',
   },
   {
     slug: 'five-rare-breath-techniques',
@@ -64,7 +64,7 @@ export const supplementarySiddhis: Siddhi[] = [
     evidenceCount: 1,
     evidenceSources: [{"confidence":"high","title":"Gheraṇḍa Saṃhitā; Śiva Saṃhitā; various tantric paddhatis (primary)","url":"https://www.wisdomlib.org/hinduism/book/gheranda-samhita"}],
     minTier: 'jal',
-    image: '/assets/tantra/cave-yantras.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cave-yantras',
   },
   {
     slug: 'agni-marana-tantra',
@@ -84,7 +84,7 @@ export const supplementarySiddhis: Siddhi[] = [
     evidenceCount: 0,
     evidenceSources: [],
     minTier: 'akash',
-    image: '/assets/tantra/archetypes/shatkarma-labyrinth.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/shatkarma-labyrinth',
   },
   {
     slug: 'stambhana-marana-combined',
@@ -104,7 +104,7 @@ export const supplementarySiddhis: Siddhi[] = [
     evidenceCount: 0,
     evidenceSources: [],
     minTier: 'akash',
-    image: '/assets/tantra/archetypes/shatkarma-labyrinth.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/shatkarma-labyrinth',
   },
   {
     slug: 'virudha-ahara-marana',
@@ -124,7 +124,7 @@ export const supplementarySiddhis: Siddhi[] = [
     evidenceCount: 0,
     evidenceSources: [],
     minTier: 'akash',
-    image: '/assets/tantra/archetypes/vault-ritual-chamber.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/vault-ritual-chamber',
   },
   {
     slug: 'nimbu-mantra-siddhi',
@@ -144,6 +144,6 @@ export const supplementarySiddhis: Siddhi[] = [
     evidenceCount: 1,
     evidenceSources: [{"confidence":"low","title":"User-supplied field compilation (primary)","url":""}],
     minTier: 'agni',
-    image: '/assets/tantra/ritual-altar.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/ritual-altar',
   },
 ];

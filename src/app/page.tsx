@@ -23,7 +23,7 @@ export default function HomePage() {
       {/* ===== CHAMBER I: ARRIVAL — The Initiation ===== */}
       <section className="relative h-[110vh] md:h-[120vh] flex items-end overflow-hidden">
         <CinematicImage
-          src="/assets/tantra/hero-runes-manuscript.jpeg"
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-runes-manuscript'
           alt="Ancient tantric manuscript with golden Devanagari runes hovering above a stone altar — the Akashic Archive illuminated"
           kenBurns="slow"
           scrim="full"
@@ -88,7 +88,7 @@ export default function HomePage() {
       {/* ===== CINEMATIC STRIP I — Cave yantras ===== */}
       <div className="cinematic-strip">
         <CinematicImage
-          src="/assets/tantra/hero-cave-yantras-alt.jpeg"
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-cave-yantras-alt'
           alt="Ancient cave with flickering butter lamps illuminating carved yantras"
           kenBurns="normal"
           filmGrain={false}
@@ -101,7 +101,7 @@ export default function HomePage() {
         {/* Archive Door — YANTRA Decoded */}
         <Link href="/archive" className="group relative overflow-hidden">
           <CinematicImage
-            src="/assets/tantra/hero-cave-yantras.jpeg"
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-cave-yantras'
             alt="Cave with ancient yantra inscriptions and golden butter lamps — the repository of knowledge"
             kenBurns="normal"
             scrim="bottom"
@@ -122,7 +122,7 @@ export default function HomePage() {
         {/* Practice Door — Sādhana Instruments */}
         <Link href="/practice" className="group relative overflow-hidden">
           <CinematicImage
-            src="/assets/tantra/hero-mountain-trident.jpeg"
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-mountain-trident'
             alt="Mountain pass with ritual trident under twilight sky — the path of practice"
             kenBurns="normal"
             scrim="bottom"
@@ -165,7 +165,7 @@ export default function HomePage() {
       {/* ===== CINEMATIC STRIP II — Sri Yantra sky ===== */}
       <div className="cinematic-strip">
         <CinematicImage
-          src="/assets/tantra/hero-sri-yantra-sky.jpeg"
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-sri-yantra-sky'
           alt="Sri Yantra floating above Himalayan peaks at twilight"
           kenBurns="normal"
           filmGrain={false}
@@ -175,7 +175,7 @@ export default function HomePage() {
       {/* ===== CHAMBER IV: PATTERN ATLAS — Museum grid ===== */}
       <section className="relative py-20 md:py-32">
         <CinematicImage
-          src="/assets/tantra/hero-forest-shrine.jpeg"
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-forest-shrine'
           alt="Forgotten forest shrine draped in mist and ancient light"
           scrim="full"
           vignette
@@ -216,7 +216,7 @@ export default function HomePage() {
       {/* ===== CHAMBER V: FEATURED SIDDHIS — Dark museum hall ===== */}
       <section className="relative py-28 md:py-40">
         <CinematicImage
-          src="/assets/tantra/hero-forgotten-chamber.jpeg"
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-forgotten-chamber'
           alt="Forgotten chamber with volumetric god rays illuminating ancient yantras and sacred artifacts"
           scrim="full"
           vignette
@@ -258,7 +258,7 @@ export default function HomePage() {
       {/* ===== CINEMATIC STRIP III — Underground library ===== */}
       <div className="cinematic-strip">
         <CinematicImage
-          src="/assets/tantra/hero-underground-library.jpeg"
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-underground-library'
           alt="Vast underground library of ancient manuscripts and golden artifacts"
           kenBurns="normal"
           filmGrain={false}
@@ -269,7 +269,7 @@ export default function HomePage() {
       {/* ===== CHAMBER VI: BREATH — Stillness ===== */}
       <section className="relative py-28 md:py-40">
         <CinematicImage
-          src="/assets/tantra/hero-temple-doorway.jpeg"
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-temple-doorway'
           alt="Rain-soaked abandoned tantric temple with a glowing golden interior"
           scrim="full"
           vignette
@@ -307,7 +307,7 @@ export default function HomePage() {
       {/* ===== CHAMBER VII: MEMBERSHIP — Cinematic CTA ===== */}
       <section className="relative py-28 md:py-40">
         <CinematicImage
-          src="/assets/tantra/hero-submerged-temple.jpeg"
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-submerged-temple'
           alt="Submerged temple beneath sacred waters — the depth of commitment"
           scrim="full"
           vignette
@@ -333,7 +333,7 @@ export default function HomePage() {
       {/* ===== CINEMATIC STRIP IV — Observatory ===== */}
       <div className="cinematic-strip">
         <CinematicImage
-          src="/assets/tantra/hero-observatory.jpeg"
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-observatory'
           alt="Ancient astronomical observatory with brass instruments under night sky"
           kenBurns="normal"
           filmGrain={false}
@@ -344,7 +344,7 @@ export default function HomePage() {
       {/* ===== CHAMBER VIII: CONSULTATION — Cinematic CTA with image ===== */}
       <section className="relative py-28 md:py-40">
         <CinematicImage
-          src="/assets/tantra/hero-temple-midnight-alt.jpeg"
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-temple-midnight-alt'
           alt="Ancient temple at midnight with ethereal glow — the archivist awaits"
           scrim="full"
           vignette

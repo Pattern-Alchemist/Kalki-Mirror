@@ -15,7 +15,7 @@ export default function ResearchPage() {
   return (
     <div className="bg-deep-black min-h-screen">
       <PageHero
-        image="/assets/tantra/hero-observatory-alt.jpeg"
+        image='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-observatory-alt'
         title="Research & Sources"
         subtitle="Epistemic transparency: every claim sourced, every score explained."
         sectionLabel="Epistemic Rigour"
