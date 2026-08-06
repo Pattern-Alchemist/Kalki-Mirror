@@ -54,7 +54,7 @@ export function PageHero({
           </motion.p>
         )}
         <motion.h1
-          className="font-display text-4xl md:text-6xl lg:text-7xl text-white leading-[0.95] tracking-[0.06em] mb-5 engraved-heading font-light"
+          className="font-display text-4xl md:text-6xl lg:text-7xl text-white leading-[0.95] tracking-[0.06em] mb-5 hero-heading"
           initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
           animate={fadeInUp.visible}
           transition={{ delay: 0.1, duration: 0.8 }}
@@ -64,6 +64,7 @@ export function PageHero({
         {subtitle && (
           <motion.p
             className="text-foreground text-xl md:text-2xl max-w-3xl editorial-spacing"
+            style={{textShadow: '0 1px 8px rgba(0,0,0,0.6)'}}
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             animate={fadeInUp.visible}
             transition={{ delay: 0.2, duration: 0.8 }}

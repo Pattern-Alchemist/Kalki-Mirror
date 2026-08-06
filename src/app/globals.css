@@ -44,6 +44,7 @@
   --gold: #D4AF37;
   --gold-dim: #9A7B3A;
   --gold-bright: #E8C855;
+  --gold-label: #E9C860;
 
   /* Luminous Off-White — High contrast on black. WCAG AAA. */
   --foreground: #F5F5F0;
@@ -76,6 +77,11 @@
   --glass-border: rgba(212, 175, 55, 0.06);
   --glass-glow: rgba(212, 175, 55, 0.03);
 
+  /* Hero heading — white with deep shadow for image readability */
+  --hero-shadow:
+    0 2px 18px rgba(0, 0, 0, 0.9),
+    0 1px 3px rgba(0, 0, 0, 0.8);
+
   /* Atmospheric */
   --vignette-inner: transparent;
   --vignette-outer: rgba(0, 0, 0, 0.5);
@@ -103,6 +109,7 @@
     background: var(--background);
     color: var(--foreground);
     line-height: 1.7;
+    font-weight: 500;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -130,14 +137,17 @@
    UTILITY LAYER — The Vocabulary
    ========================================================== */
 @layer utilities {
-  /* --- Section Labels — engraved copperplate captions --- */
+  /* --- Section Labels — bright gold eyebrow labels --- */
   .section-label {
     font-family: var(--font-ui);
     font-size: 0.8125rem;
+    font-weight: 600;
     letter-spacing: 0.5em;
     text-transform: uppercase;
-    color: var(--gold-dim);
-    text-shadow: 0 0 20px rgba(197, 160, 89, 0.15);
+    color: var(--gold-label);
+    text-shadow:
+      0 2px 18px rgba(0, 0, 0, 0.9),
+      0 1px 3px rgba(0, 0, 0, 0.8);
   }
 
   /* --- Gold Text Variants --- */
@@ -380,7 +390,7 @@
    BUTTONS — Engraved Brass & Wax Seal
    ========================================================== */
 
-/* Gold CTA — solid brass button */
+/* Gold CTA — solid brass button with lightning hover */
 .gold-cta {
   background: linear-gradient(
     135deg,
@@ -419,15 +429,41 @@
   background-size: 200% 200%;
   transition: background-position 0.6s ease;
 }
+/* Lightning sweep on hover — a bright diagonal flash */
+.gold-cta::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.35) 45%,
+    rgba(255, 255, 255, 0.55) 50%,
+    rgba(255, 255, 255, 0.35) 55%,
+    transparent 80%
+  );
+  transform: skewX(-15deg);
+  transition: left 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+  opacity: 0;
+  pointer-events: none;
+}
 .gold-cta:hover {
   box-shadow:
-    0 4px 40px rgba(212, 175, 55, 0.35),
-    0 0 80px rgba(212, 175, 55, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    0 4px 40px rgba(212, 175, 55, 0.4),
+    0 0 80px rgba(212, 175, 55, 0.15),
+    0 0 120px rgba(232, 200, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }
 .gold-cta:hover::before {
   background-position: 100% 100%;
+}
+.gold-cta:hover::after {
+  left: 120%;
+  opacity: 1;
 }
 .gold-cta:active {
   transform: translateY(0);
@@ -442,7 +478,7 @@
   box-shadow: none;
 }
 
-/* Ghost CTA — metallic outline */
+/* Ghost CTA — metallic outline with lightning hover */
 .ghost-cta {
   background: transparent;
   color: var(--gold);
@@ -456,13 +492,39 @@
   border: 1px solid rgba(212, 175, 55, 0.2);
   cursor: pointer;
   position: relative;
+  overflow: hidden;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
+/* Lightning sweep for ghost button */
+.ghost-cta::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(212, 175, 55, 0.2) 45%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(212, 175, 55, 0.2) 55%,
+    transparent 80%
+  );
+  transform: skewX(-15deg);
+  transition: left 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+  opacity: 0;
+  pointer-events: none;
+}
 .ghost-cta:hover {
- border-color: var(--gold);
-  color: var(--gold);
-  background: rgba(212, 175, 55, 0.04);
-  box-shadow: 0 0 30px rgba(212, 175, 55, 0.08), inset 0 0 30px rgba(212, 175, 55, 0.03);
+  border-color: var(--gold);
+  color: var(--gold-bright);
+  background: rgba(212, 175, 55, 0.06);
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.12), inset 0 0 30px rgba(212, 175, 55, 0.04);
+}
+.ghost-cta:hover::after {
+  left: 120%;
+  opacity: 1;
 }
 .ghost-cta:active {
   transform: translateY(0);
@@ -703,6 +765,74 @@
       0 0 40px rgba(255, 255, 255, 0.05),
       inset 0 0 14px rgba(255, 255, 255, 0.04);
   }
+}
+
+/* ==========================================================
+   READABILITY SYSTEM — Hero Headings, Cards, Scrims, Safety
+   ========================================================== */
+
+/* Hero headings — pure white + deep shadow, never lost over images */
+.hero-heading {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  text-shadow: var(--hero-shadow);
+}
+
+/* Engraved heading upgraded — stronger shadow */
+.engraved-heading {
+  text-shadow:
+    0 2px 18px rgba(0, 0, 0, 0.9),
+    0 1px 3px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(212, 175, 55, 0.08);
+}
+
+/* Glass chip — upgraded for Pattern Intelligence cards */
+.glass-chip {
+  background: rgba(8, 8, 8, 0.88) !important;
+  backdrop-filter: blur(10px) saturate(1.2) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(1.2) !important;
+  border: 1px solid rgba(212, 175, 55, 0.3) !important;
+  border-radius: var(--radius) !important;
+  box-shadow:
+    0 4px 30px rgba(0, 0, 0, 0.5),
+    0 1px 0 rgba(212, 175, 55, 0.04) inset;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+/* Bottom-anchored scrim for split-panel sections (two doors) */
+.scrim-bottom-anchored {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.35) 60%, transparent);
+  z-index: 1;
+}
+
+/* Extra scrim dimming for Pattern Intelligence section */
+.section-scrim-dim::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Safe bottom padding for floating action buttons */
+.safe-bottom {
+  padding-bottom: 96px;
+}
+
+/* Floating elements — stacked vertically to prevent overlap */
+.fixed-bottom-stack {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
 }
 
 /* ==========================================================

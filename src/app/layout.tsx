@@ -70,9 +70,11 @@ export default function RootLayout({
             <SacredNav />
             <main className="pt-16 md:pt-20">{children}</main>
             <SacredFooter />
-            <WhatsAppCTA variant="floating" />
+            <div className="fixed-bottom-stack">
+              <ResonanceToggle />
+              <WhatsAppCTA variant="floating" />
+            </div>
             <PaywallModal />
-            <ResonanceToggle />
             <div className="page-vignette" aria-hidden="true" />
           </SmoothScroll>
         </TierProvider>
