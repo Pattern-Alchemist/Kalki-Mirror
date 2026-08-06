@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 
 const FOOTER_LINKS = {
   Navigate: [
@@ -29,14 +28,7 @@ export function SacredFooter() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
           {/* Brand column */}
           <div>
-            <div className="flex items-center gap-3 mb-6">
-              <Image
-                src="/logo.svg"
-                alt="Kalki Yantra"
-                width={32}
-                height={32}
-                className="opacity-60"
-              />
+            <div className="mb-6">
               <h3 className="font-display text-3xl gold-foil-text font-light tracking-[0.2em]">
                 KALKI
               </h3>

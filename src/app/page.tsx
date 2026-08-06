@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
+
 import { motion, useReducedMotion } from 'framer-motion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { SiddhiCard } from '@/components/archive/SiddhiCard';
@@ -35,21 +35,16 @@ export default function HomePage() {
         {/* Extra top darkness for nav readability */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-deep-black/60 to-transparent z-[3] pointer-events-none" />
         <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-10 pb-28 md:pb-40">
-          {/* Yantra Mark — the brand emerges from the dark */}
+          {/* KALKI emerges from the dark */}
           <motion.div
             className="mb-10"
-            initial={reduced ? { opacity: 0.8 } : { opacity: 0, scale: 0.9, filter: 'blur(4px)' }}
-            animate={{ opacity: 0.8, scale: 1, filter: 'blur(0px)' }}
+            initial={reduced ? { opacity: 0.8 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 0.8, y: 0 }}
             transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Image
-              src="/logo.svg"
-              alt="Kalki Yantra — The Mark of Discernment"
-              width={64}
-              height={64}
-              className="opacity-80"
-              priority
-            />
+            <span className="font-display text-2xl tracking-[0.35em] gold-foil-text font-light">
+              KALKI
+            </span>
           </motion.div>
 
           <motion.div
@@ -65,7 +60,8 @@ export default function HomePage() {
               Light for the Dark Age.
             </p>
             <motion.p
-              className="text-foreground text-xl md:text-2xl max-w-xl editorial-spacing"
+              className="text-white text-xl md:text-2xl max-w-xl editorial-spacing font-semibold"
+              style={{textShadow: '0 2px 18px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8)'}}
               initial={reduced ? { opacity: 1 } : { opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -108,12 +104,13 @@ export default function HomePage() {
             volumetric
             dust
           />
+          <div className="scrim-bottom-anchored" />
           <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 lg:p-16">
-            <p className="section-label mb-4 text-glow-subtle">YANTRA Decoded</p>
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 engraved-heading font-light tracking-wide">
+            <p className="section-label mb-4">YANTRA Decoded</p>
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 hero-heading tracking-wide">
               41 Siddhis.<br />Mapped.
             </h2>
-            <p className="text-foreground text-base max-w-md editorial-spacing">
+            <p className="text-foreground text-base max-w-md editorial-spacing" style={{textShadow: '0 1px 8px rgba(0,0,0,0.7)'}}>
               Decoded by YANTRA. Every mantra, every lineage, every warning.
             </p>
           </div>
@@ -129,12 +126,13 @@ export default function HomePage() {
             volumetric
             dust
           />
+          <div className="scrim-bottom-anchored" />
           <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 lg:p-16">
-            <p className="section-label mb-4 text-glow-subtle">Sādhana Instruments</p>
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 engraved-heading font-light tracking-wide">
+            <p className="section-label mb-4">Sādhana Instruments</p>
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 hero-heading tracking-wide">
               See Yourself.<br />Clearly.
             </h2>
-            <p className="text-foreground text-base max-w-md editorial-spacing">
+            <p className="text-foreground text-base max-w-md editorial-spacing" style={{textShadow: '0 1px 8px rgba(0,0,0,0.7)'}}>
               Breathwork, japa, meditation — guided tools for inner work.
             </p>
           </div>
@@ -173,7 +171,7 @@ export default function HomePage() {
       </div>
 
       {/* ===== CHAMBER IV: PATTERN ATLAS — Museum grid ===== */}
-      <section className="relative py-20 md:py-32">
+      <section className="relative py-20 md:py-32 section-scrim-dim">
         <CinematicImage
           src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-forest-shrine'
           alt="Forgotten forest shrine draped in mist and ancient light"
@@ -286,7 +284,7 @@ export default function HomePage() {
             Practice Now
           </motion.p>
           <motion.h2
-            className="font-display text-6xl md:text-8xl text-white mb-16 engraved-heading font-light tracking-[0.12em] uppercase"
+            className="font-display text-6xl md:text-8xl text-white mb-16 hero-heading tracking-[0.12em] uppercase"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}
@@ -322,7 +320,7 @@ export default function HomePage() {
             viewport={{ once: true }}
           >
             <p className="section-label mb-6">Choose Your Depth</p>
-            <h2 className="font-display text-4xl md:text-6xl text-white engraved-heading font-light tracking-[0.08em]">
+            <h2 className="font-display text-4xl md:text-6xl text-white hero-heading tracking-[0.08em]">
               Four paths.<br />One purpose.
             </h2>
           </motion.div>
@@ -342,7 +340,7 @@ export default function HomePage() {
       </div>
 
       {/* ===== CHAMBER VIII: CONSULTATION — Cinematic CTA with image ===== */}
-      <section className="relative py-28 md:py-40">
+      <section className="relative py-28 md:py-40 safe-bottom">
         <CinematicImage
           src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-temple-midnight-alt'
           alt="Ancient temple at midnight with ethereal glow — the archivist awaits"
@@ -361,7 +359,7 @@ export default function HomePage() {
             Beyond the Archive
           </motion.p>
           <motion.h2
-            className="font-display text-3xl md:text-5xl text-white mb-8 engraved-heading font-light tracking-wide"
+            className="font-display text-3xl md:text-5xl text-white mb-8 hero-heading tracking-wide"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}
@@ -369,7 +367,8 @@ export default function HomePage() {
             Consult the Archivist.
           </motion.h2>
           <motion.p
-            className="text-text-secondary text-lg mb-12 editorial-spacing"
+            className="text-foreground text-lg mb-12 editorial-spacing"
+            style={{textShadow: '0 1px 8px rgba(0,0,0,0.6)'}}
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}

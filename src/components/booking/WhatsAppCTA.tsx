@@ -43,7 +43,7 @@ export function WhatsAppCTA({
   return (
     <button
       onClick={() => openWhatsApp(msg)}
-      className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg shadow-[#25D366]/20 hover:scale-110 transition-transform ${className}`}
+      className={`w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg shadow-[#25D366]/20 hover:scale-110 transition-transform ${className}`}
       aria-label="Contact via WhatsApp"
     >
       <svg width="28" height="28" viewBox="0 0 24 24" fill="white">

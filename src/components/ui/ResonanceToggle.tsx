@@ -83,7 +83,7 @@ export function ResonanceToggle() {
 
   return (
     <motion.button
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-3 group"
+      className="flex items-center gap-3 group"
       initial={reduced ? { opacity: 1 } : { opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.5 }}

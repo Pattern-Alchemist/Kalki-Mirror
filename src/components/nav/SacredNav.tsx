@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
@@ -53,16 +52,8 @@ export function SacredNav() {
       >
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo — Yantra mark + KALKI wordmark */}
+            {/* Logo — KALKI wordmark */}
             <Link href="/" className="relative z-10 flex items-center gap-3 group">
-              <Image
-                src="/logo.svg"
-                alt="Kalki Yantra"
-                width={28}
-                height={28}
-                className="opacity-80 group-hover:opacity-100 transition-opacity duration-500"
-                priority
-              />
               <span className="font-display text-lg md:text-xl tracking-[0.25em] gold-foil-text font-light">
                 KALKI
               </span>
@@ -139,15 +130,11 @@ export function SacredNav() {
             <div className="absolute inset-0 bg-deep-black/95 backdrop-blur-2xl" />
 
             <div className="relative z-10 flex flex-col justify-center h-full px-10">
-              {/* Yantra mark centered at top of menu */}
+              {/* KALKI wordmark centered at top of menu */}
               <div className="mb-16 flex justify-center">
-                <Image
-                  src="/logo.svg"
-                  alt="Kalki Yantra"
-                  width={48}
-                  height={48}
-                  className="opacity-60"
-                />
+                <span className="font-display text-3xl tracking-[0.3em] gold-foil-text font-light">
+                  KALKI
+                </span>
               </div>
               <nav className="flex flex-col gap-2">
                 {NAV_LINKS.map((link, i) => (
