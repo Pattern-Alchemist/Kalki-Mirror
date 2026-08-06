@@ -7,11 +7,11 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
-  { href: '/archive', label: 'Akashic Library' },
+  { href: '/archive', label: 'Akashic' },
   { href: '/archetypes', label: 'Archetypes' },
   { href: '/patterns', label: 'Patterns' },
   { href: '/dossier', label: 'Dossier' },
-  { href: '/practice', label: 'Sādhana' },
+  { href: '/practice', label: 'Tantra' },
   { href: '/method', label: 'The Method' },
   { href: '/codex', label: 'Codex' },
   { href: '/pricing', label: 'Membership' },
