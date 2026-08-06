@@ -3,8 +3,16 @@
 import { useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
+const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || '';
+
+function cloudinaryUrl(cloudinaryId: string, width = 1920): string {
+  if (!CLOUD) return '';
+  return `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto:good,w_${width},c_limit/${cloudinaryId}`;
+}
+
 interface CinematicImageProps {
-  src: string;
+  src?: string;
+  cloudinaryId?: string;
   alt: string;
   fill?: boolean;
   width?: number;
@@ -29,6 +37,7 @@ const SCRIM_STYLES: Record<string, React.CSSProperties> = {
 
 export function CinematicImage({
   src,
+  cloudinaryId,
   alt,
   fill = true,
   width,
@@ -61,10 +70,14 @@ export function CinematicImage({
    Native img is reliable, zero-dependency, and these JPEGs are
    already production-optimized.
   */
+  const resolvedSrc = cloudinaryId ? cloudinaryUrl(cloudinaryId, width || 1920) : (src || '');
+
+  if (!resolvedSrc) return null;
+
   const imageEl = (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={src}
+      src={resolvedSrc}
       alt={alt}
       loading={priority ? 'eager' : 'lazy'}
       decoding={priority ? 'sync' : 'async'}
