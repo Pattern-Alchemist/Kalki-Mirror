@@ -317,7 +317,7 @@ export default function HomePage() {
               whileInView={fadeInUp.visible}
               viewport={{ once: true }}
             >
-              <div className="rounded-lg overflow-hidden"
+              <div className="relative rounded-lg overflow-hidden aspect-[16/10]"
                 style={{
                   border: '1px solid rgba(212,175,55,0.3)',
                   boxShadow: '0 8px 40px rgba(0,0,0,0.5), 0 0 60px rgba(212,175,55,0.06)',
