@@ -30,6 +30,8 @@ export function SacredNav() {
   }, []);
 
   useEffect(() => {
+    // Route changes close the overlay; this is an intentional UI reset.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMobileOpen(false);
   }, [pathname]);
 
@@ -129,7 +131,7 @@ export function SacredNav() {
             {/* Backdrop — pure Akasha void */}
             <div className="absolute inset-0 bg-deep-black/95 backdrop-blur-2xl" />
 
-            <div className="relative z-10 flex flex-col justify-center h-full px-6 py-20 safe-area-x">
+            <div className="relative z-10 flex flex-col justify-center h-full overflow-y-auto px-6 py-20 safe-area-x">
               {/* KALKI wordmark centered at top of menu */}
               <div className="mb-10 flex justify-center">
                 <span className="font-display text-3xl tracking-[0.3em] gold-foil-text font-light">
@@ -162,6 +164,12 @@ export function SacredNav() {
                     >
                       {link.label}
                     </Link>
+                    {i === 5 && (
+                      <div className="hero-brand-lockup" aria-label="KALKI-TANTRA, The Only Key to Shambhala">
+                        <span className="hero-brand-name">KALKI-TANTRA</span>
+                        <span className="hero-brand-subtitle">The Only Key to - SHAMBHALA</span>
+                      </div>
+                    )}
                   </motion.div>
                 ))}
               </nav>
@@ -170,7 +178,7 @@ export function SacredNav() {
 
               {/* Bottom tagline */}
               <motion.p
-                className="absolute bottom-12 left-10 text-caption"
+                className="mt-8 text-caption"
                 initial={reduced ? { opacity: 1 } : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}

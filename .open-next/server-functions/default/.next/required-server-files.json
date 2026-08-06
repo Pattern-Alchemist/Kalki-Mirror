@@ -68,12 +68,10 @@
       "qualities": [
         75
       ],
-      "unoptimized": true,
+      "unoptimized": false,
       "customCacheHandler": false
     },
-    "devIndicators": {
-      "position": "bottom-left"
-    },
+    "devIndicators": false,
     "onDemandEntries": {
       "maxInactiveAge": 60000,
       "pagesBufferLength": 5
@@ -92,7 +90,11 @@
     },
     "logging": {
       "serverFunctions": true,
-      "browserToTerminal": "warn"
+      "fetches": {
+        "fullUrl": true,
+        "hmrRefreshes": true
+      },
+      "browserToTerminal": true
     },
     "compiler": {},
     "expireTime": 31536000,
@@ -106,7 +108,13 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "/home/z/my-project",
+    "outputFileTracingRoot": "/vercel/share/v0-project",
+    "allowedDevOrigins": [
+      "*.vusercontent.net",
+      "*.dev-vm.vusercontent.net",
+      "*.v0.build",
+      "*.vercel.run"
+    ],
     "cacheComponents": false,
     "cacheLife": {
       "default": {
@@ -168,7 +176,7 @@
       "proxyPrefetch": "flexible",
       "optimisticClientCache": true,
       "manualClientBasePath": false,
-      "cpus": 1,
+      "cpus": 3,
       "memoryBasedWorkersCount": false,
       "imgOptConcurrency": null,
       "imgOptTimeoutInSeconds": 7,
@@ -208,7 +216,7 @@
       "serverComponentsHmrCache": true,
       "staticGenerationMaxConcurrency": 8,
       "staticGenerationMinPagesPerWorker": 25,
-      "transitionIndicator": false,
+      "transitionIndicator": true,
       "gestureTransition": false,
       "inlineCss": false,
       "useCache": false,
@@ -222,6 +230,12 @@
       "turbopackFileSystemCacheForBuild": false,
       "turbopackInferModuleSideEffects": true,
       "turbopackPluginRuntimeStrategy": "childProcesses",
+      "serverActions": {
+        "allowedOrigins": [
+          "*.vusercontent.net",
+          "*.v0.build"
+        ]
+      },
       "optimizePackageImports": [
         "lucide-react",
         "date-fns",
@@ -314,11 +328,11 @@
       ]
     },
     "turbopack": {
-      "root": "/home/z/my-project"
+      "root": "/vercel/share/v0-project"
     },
     "distDirRoot": ".next"
   },
-  "appDir": "/home/z/my-project",
+  "appDir": "/vercel/share/v0-project",
   "relativeAppDir": "",
   "files": [
     ".next/package.json",

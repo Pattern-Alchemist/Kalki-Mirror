@@ -45,12 +45,6 @@ export default function HomePage() {
         {/* Extra top darkness for nav readability */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-deep-black/60 to-transparent z-[2] pointer-events-none" />
 
-        {/* Centered brand lockup — positioned against the hero, not the CTA stack */}
-        <div className="hero-brand-lockup" aria-label="KALKI-TANTRA, The Only Key to Shambhala">
-            <span className="hero-brand-name">KALKI-TANTRA</span>
-            <span className="hero-brand-subtitle">The Only Key to - SHAMBHALA</span>
-        </div>
-
         <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-10 hero-content-safe">
           {/* KALKI — with pulsating neon glow */}
           <motion.div
@@ -138,13 +132,13 @@ export default function HomePage() {
             dust
           />
           <div className="scrim-bottom-anchored" />
-          <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 lg:p-16">
+          <div className="relative z-10 h-full flex flex-col justify-end p-8 pb-4 md:p-12 md:pb-12 lg:p-16">
             <p className="section-label mb-4">Sadhana Instruments</p>
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 hero-heading tracking-wide">
               See Yourself.<br />Clearly.
             </h2>
             <p className="text-foreground text-base max-w-md editorial-spacing" style={{textShadow: '0 1px 8px rgba(0,0,0,0.7)'}}>
-              Breathwork, japa, meditation — guided tools for inner work.
+              Breathwork, japa, meditation — tools for inner work.
             </p>
           </div>
         </Link>
@@ -429,6 +423,21 @@ className="section-label editorial-heading mb-6"
             viewport={{ once: true }}
           >
             <WhatsAppCTA variant="inline" label="Consult Kaustubh" />
+          </motion.div>
+          <motion.div
+            className="mt-10 mx-auto w-full max-w-xs overflow-hidden rounded-lg border border-gold/30 shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
+            initial={reduced ? { opacity: 1 } : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            {/* Source image supplied by the user; the same asset is also uploaded to Cloudinary. */}
+            <img
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1000069409-KI0j15j1uJ0tvw5eZfcvUBGaUndDtP.jpg"
+              alt="Portrait of Kaustubh"
+              className="block aspect-square w-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
           </motion.div>
         </div>
       </section>
