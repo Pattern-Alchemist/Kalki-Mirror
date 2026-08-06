@@ -129,14 +129,15 @@ export function SacredNav() {
             {/* Backdrop — pure Akasha void */}
             <div className="absolute inset-0 bg-deep-black/95 backdrop-blur-2xl" />
 
-            <div className="relative z-10 flex flex-col justify-center h-full px-10">
+            <div className="relative z-10 flex flex-col justify-center h-full px-6 py-20 safe-area-x">
               {/* KALKI wordmark centered at top of menu */}
-              <div className="mb-16 flex justify-center">
+              <div className="mb-10 flex justify-center">
                 <span className="font-display text-3xl tracking-[0.3em] gold-foil-text font-light">
                   KALKI
                 </span>
               </div>
-              <nav className="flex flex-col gap-2">
+              <div className="mb-5 text-center text-caption">Explore the archive</div>
+              <nav className="flex flex-col gap-1">
                 {NAV_LINKS.map((link, i) => (
                   <motion.div
                     key={link.href}
@@ -153,7 +154,7 @@ export function SacredNav() {
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
                       className={cn(
-                        'font-display text-3xl md:text-4xl tracking-[0.15em] py-2 transition-colors duration-500 font-light neon-tab-glow',
+                        'font-display text-2xl md:text-4xl tracking-[0.12em] py-2 transition-colors duration-500 font-light neon-tab-glow',
                         isActive(link.href)
                           ? 'text-gold'
                           : 'text-text-muted hover:text-ivory'
@@ -164,6 +165,8 @@ export function SacredNav() {
                   </motion.div>
                 ))}
               </nav>
+
+              <p className="sr-only">Primary navigation</p>
 
               {/* Bottom tagline */}
               <motion.p
