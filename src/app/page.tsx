@@ -21,7 +21,7 @@ export default function HomePage() {
   return (
     <div className="bg-deep-black">
       {/* ===== CHAMBER I: ARRIVAL — Hero with Video Background ===== */}
-      <section className="relative h-[110vh] md:h-[120vh] flex items-end overflow-hidden">
+      <section className="relative min-h-[100svh] md:h-[120vh] flex items-end overflow-hidden">
         {/* Video background — full bleed, behind scrim */}
         <video
           autoPlay
@@ -45,7 +45,7 @@ export default function HomePage() {
         {/* Extra top darkness for nav readability */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-deep-black/60 to-transparent z-[2] pointer-events-none" />
 
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-10 pb-28 md:pb-40">
+        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-10 hero-content-safe">
           {/* KALKI — with pulsating neon glow */}
           <motion.div
             initial={reduced ? { opacity: 1 } : { opacity: 0, y: 60 }}
@@ -56,7 +56,7 @@ export default function HomePage() {
             <div className="hero-glow-container relative inline-block">
               <h1 className="hero-glow-text font-display text-white hero-heading tracking-[0.08em] uppercase"
                 style={{
-                  fontSize: 'clamp(4rem, 10vw, 8rem)',
+                  fontSize: 'clamp(3.5rem, 10vw, 8rem)',
                   lineHeight: 1,
                 }}
               >
@@ -75,7 +75,7 @@ export default function HomePage() {
 
           {/* CTA Buttons */}
           <motion.div
-            className="flex flex-wrap gap-4 mt-4"
+            className="hero-actions flex flex-wrap gap-4 mt-4"
             initial={reduced ? { opacity: 1 } : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
@@ -187,7 +187,7 @@ export default function HomePage() {
         />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
           <motion.p
-            className="section-label mb-4"
+className="section-label editorial-heading mb-6"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}
@@ -228,7 +228,7 @@ export default function HomePage() {
         />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
           <motion.p
-            className="section-label mb-10"
+            className="section-label editorial-heading mb-8"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}
@@ -272,7 +272,7 @@ export default function HomePage() {
       {/* ===== CHAMBER VI: BREATH — Two-column layout with Nadi Shuddhi image ===== */}
       <section className="relative py-20 md:py-28 lg:py-32 bg-deep-black">
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+          <div className="practice-layout grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
             {/* LEFT COLUMN — all text + timer */}
             <div>
               <motion.p
