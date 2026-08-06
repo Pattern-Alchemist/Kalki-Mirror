@@ -432,7 +432,7 @@ className="section-label editorial-heading mb-6"
           >
             {/* Source image supplied by the user; the same asset is also uploaded to Cloudinary. */}
             <img
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1000069409-KI0j15j1uJ0tvw5eZfcvUBGaUndDtP.jpg"
+              src="https://res.cloudinary.com/b9oo5abp/image/upload/v1786011233/kalki-mirror/kaustubh-portrait.jpg"
               alt="Portrait of Kaustubh"
               className="block aspect-square w-full object-cover"
               loading="lazy"
