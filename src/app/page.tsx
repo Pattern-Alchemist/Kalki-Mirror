@@ -324,7 +324,7 @@ export default function HomePage() {
                 }}
               >
                 <CinematicImage
-                  src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/nadi-shuddhi-channel'
+                  src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/nadi-shuddhi-channel-v2'
                   alt="Nadi Shuddhi channel purification — subtle energy pathways"
                 />
               </div>
@@ -372,59 +372,7 @@ export default function HomePage() {
         <div className="cinematic-strip-overlay" />
       </div>
 
-      {/* ===== CHAMBER VIII: BEYOND THE ARCHIVE — New background, safe text zone ===== */}
-      <section className="relative py-28 md:py-40">
-        {/* New background — translucent figure among silhouettes */}
-        <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/translucent-figure-silhouettes'
-          alt="Translucent luminous figure among dark silhouettes — the archivist awaits"
-          scrim="full"
-          vignette
-          className="absolute inset-0"
-        />
-        {/* Extra scrim for text safety */}
-        <div className="absolute inset-0 pointer-events-none z-[1]"
-          style={{ background: 'linear-gradient(to right, rgba(5,5,5,0.85) 0%, rgba(5,5,5,0.6) 50%, rgba(5,5,5,0.75) 100%)' }}
-        />
-        <div className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">
-          <motion.p
-            className="section-label mb-6"
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            whileInView={fadeInUp.visible}
-            viewport={{ once: true }}
-          >
-            Beyond the Archive
-          </motion.p>
-          <motion.h2
-            className="font-display text-3xl md:text-5xl text-white mb-8 hero-heading tracking-wide"
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            whileInView={fadeInUp.visible}
-            viewport={{ once: true }}
-          >
-            Consult the Archivist.
-          </motion.h2>
-          <motion.p
-            className="text-foreground text-lg mb-12 editorial-spacing"
-            style={{textShadow: '0 1px 8px rgba(0,0,0,0.6)'}}
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            whileInView={fadeInUp.visible}
-            viewport={{ once: true }}
-          >
-            Kaustubh operates as a Tantric Technologist — identifying your
-            recurring behavioral loops and prescribing specific sadhana practices
-            from the Akashic Archive designed for your exact pattern.
-          </motion.p>
-          <motion.div
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            whileInView={fadeInUp.visible}
-            viewport={{ once: true }}
-          >
-            <WhatsAppCTA variant="inline" label="Consult the Archivist" />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ===== CHAMBER IX: CONSULT THE ARCHIVIST CTA BAND ===== */}
+      {/* ===== CHAMBER VIII: CONSULT THE ARCHIVIST CTA BAND ===== */}
       <section className="relative py-28 md:py-40 safe-bottom">
         {/* New background — ancient temple midnight glow */}
         <CinematicImage
@@ -462,15 +410,19 @@ export default function HomePage() {
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}
           >
-            Begin your journey into pattern intelligence. The first step
-            is always the hardest — and the most important.
+            Kaustubh is a Tantric Technologist — part technologist, part
+            practitioner, part pattern-recognizer. He maps your recurring
+            behavioral loops to specific siddhis and sadhanas from the
+            Akashic Archive, prescribing exact practices for your exact pattern.
+            No guesswork. No generic advice. Just precise, lineage-backed
+            intervention designed for where you are right now.
           </motion.p>
           <motion.div
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}
           >
-            <WhatsAppCTA variant="inline" label="Consult the Archivist" />
+            <WhatsAppCTA variant="inline" label="Consult Kaustubh" />
           </motion.div>
         </div>
       </section>
