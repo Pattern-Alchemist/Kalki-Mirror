@@ -7,7 +7,6 @@ import { WhatsAppCTA } from "@/components/booking/WhatsAppCTA";
 import { TierProvider } from "@/components/layout/TierProvider";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { PaywallModal } from "@/components/monetization/PaywallModal";
-import { ResonanceToggle } from "@/components/ui/ResonanceToggle";
 
 /* ============================================================
    TYPOGRAPHY — The Inscriptions of Time
@@ -43,8 +42,8 @@ export const metadata: Metadata = {
     template: '%s | KALKI',
   },
   description:
-    'Esoteric Intelligence. Sacred Architecture. Pattern Recognition. Where ancient Tantric geometry meets modern computational intelligence.',
-  keywords: ['kalki', 'siddhi', 'tantra', 'yantra', 'akasha', 'sadhana', 'pattern recognition', 'karma', 'shambhala', 'esoteric intelligence'],
+    'Tantrik Intelligence. Sacred Architecture. Pattern Recognition. Where ancient Tantric geometry meets modern computational intelligence.',
+  keywords: ['kalki', 'siddhi', 'tantra', 'yantra', 'akasha', 'sadhana', 'pattern recognition', 'karma', 'shambhala', 'tantrik intelligence'],
   openGraph: {
     title: 'KALKI',
     description: 'Light for the Dark Age. The Architecture of Karma.',
@@ -71,7 +70,6 @@ export default function RootLayout({
             <main className="pt-16 md:pt-20">{children}</main>
             <SacredFooter />
             <div className="fixed-bottom-stack">
-              <ResonanceToggle />
               <WhatsAppCTA variant="floating" />
             </div>
             <PaywallModal />
