@@ -88,3 +88,27 @@ Stage Summary:
 - Hero image: /assets/tantra/hero-runes-manuscript.jpeg
 - All CinematicImage effects preserved (kenBurns slow, full scrim, vignette, volumetric, dust)
 - Mobile: object-cover centers on manuscript/altar in portrait crop
+---
+Task ID: 1
+Agent: main
+Task: Hero video background, pulsating glow, section image swaps, pricing clarity
+
+Work Log:
+- Identified 6 uploaded files: 1 MP4 (hero video), 4 new images, 2 reference screenshots
+- Uploaded 5 assets to Cloudinary: hero-kalki-avatar-riding (video), nadi-shuddhi-channel, translucent-figure-silhouettes, copper-trident-courtyard, ancient-temple-midnight
+- Hero: Replaced CinematicImage with <video> element, poster fallback to old hero still, dark scrim layer above video below text
+- Hero: Restructured text to 2 lines only (KALKI + ESOTERIC INTELLIGENCE), removed eyebrow/tagline/Light for Dark Age
+- Hero: Added pulsating gold glow (3s ease-in-out) with stacked text-shadows + radial ::before, reduced-motion static fallback
+- Hero: Mobile video object-position: center 40% for rider framing
+- Breathe: Converted from centered overlay to 2-column grid (text left, Nadi Shuddhi image right with gold frame)
+- Pricing: Swapped galaxy background for copper-trident-courtyard with rgba(0,0,0,0.8) overlay
+- Pricing: Strengthened cards with rgba(8,8,8,0.92) bg, blur(10px), gold border
+- Pricing: Fixed truncated button with whitespace-normal, break-words, min-w instead of fixed w-56
+- Beyond Archive: Swapped to translucent-figure-silhouettes with left-to-right scrim gradient
+- CTA Band: Swapped to ancient-temple-midnight with bottom-anchored scrim
+- Build verified clean, committed and pushed to GitHub
+
+Stage Summary:
+- All 5 sections updated in page.tsx, PricingCards.tsx, globals.css
+- 5 new Cloudinary assets uploaded and referenced
+- Commit: feat: hero video, pulsating glow typography, section image swaps, pricing clarity
