@@ -69,7 +69,7 @@ export default function HomePage() {
                 textShadow: '0 2px 18px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8), 0 0 30px rgba(212,175,55,0.15)',
               }}
             >
-              Esoteric Intelligence
+              Tantrik Intelligence
             </p>
           </motion.div>
 
@@ -80,8 +80,8 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Link href="/archive" className="gold-cta">Enter the Akasha</Link>
-            <Link href="/practice" className="ghost-cta">Begin Sadhana</Link>
+            <Link href="/archive" className="gold-cta">Akashic Library</Link>
+            <Link href="/practice" className="ghost-cta">Tantra Siddhis</Link>
           </motion.div>
         </div>
       </section>

@@ -35,7 +35,7 @@ export function SacredFooter() {
             </div>
             <p className="text-text-secondary text-base leading-relaxed max-w-xs editorial-spacing">
               Where ancient Tantric geometry meets modern computational intelligence.
-              Esoteric Intelligence. Sacred Architecture. Pattern Recognition.
+              Tantrik Intelligence. Sacred Architecture. Pattern Recognition.
             </p>
             <p className="text-gold-dim text-sm mt-4 tracking-[0.15em] uppercase font-ui">
               The Architecture of Karma.
