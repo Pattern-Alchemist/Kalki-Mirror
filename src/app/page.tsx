@@ -30,7 +30,7 @@ export default function HomePage() {
           playsInline
           preload="metadata"
           aria-hidden="true"
-          poster="/assets/tantra/hero-temple-midnight-alt.jpeg"
+          poster="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ancient_temple_midnight_glowing_%E2%80%A6_202608031904_4-I8iUrf3bUZOL9MYIcJU40eRov5dvop.jpeg"
           className="hero-video-bg absolute inset-0 w-full h-full object-cover"
           style={{ zIndex: 0, objectPosition: 'center' }}
         >
@@ -45,14 +45,14 @@ export default function HomePage() {
         {/* Extra top darkness for nav readability */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-deep-black/60 to-transparent z-[2] pointer-events-none" />
 
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-10 hero-content-safe">
-          {/* Centered brand lockup — protected by the hero scrim */}
-          <div className="hero-brand-lockup" aria-label="KALKI-TANTRA, The Only Key to Shambhala">
+        {/* Centered brand lockup — positioned against the hero, not the CTA stack */}
+        <div className="hero-brand-lockup" aria-label="KALKI-TANTRA, The Only Key to Shambhala">
             <span className="hero-brand-name">KALKI-TANTRA</span>
             <span className="hero-brand-subtitle">The Only Key to - SHAMBHALA</span>
-          </div>
+        </div>
 
-          {/* KALKI — with pulsating neon glow */}
+        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-10 hero-content-safe">
+          {/* KALKI — with pulsating neon glow */
           <motion.div
             initial={reduced ? { opacity: 1 } : { opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
@@ -95,7 +95,7 @@ export default function HomePage() {
       {/* ===== CINEMATIC STRIP I — Cave yantras ===== */}
       <div className="cinematic-strip">
         <CinematicImage
-          src='/assets/tantra/hero-cave-yantras-alt.jpeg'
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Forgotten_forest_shrine_ancient_%E2%80%A6_202608031904_3-8pHV5vvy2PpjQ9tUJQlHfTHDYgp5zA.jpeg"
           alt="Ancient cave with flickering butter lamps illuminating carved yantras"
           kenBurns="normal"
           filmGrain={false}
@@ -108,7 +108,7 @@ export default function HomePage() {
         {/* Archive Door — YANTRA Decoded */}
         <Link href="/archive" className="group relative overflow-hidden">
           <CinematicImage
-            src='/assets/tantra/hero-cave-yantras.jpeg'
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Manuscript_detailing_sacred_geom%E2%80%A6_2K_202608050655-W9zhMGHLZcPHFHktRv57tela1SC3TG.jpeg"
             alt="Cave with ancient yantra inscriptions and golden butter lamps — the repository of knowledge"
             kenBurns="normal"
             scrim="bottom"
@@ -130,7 +130,7 @@ export default function HomePage() {
         {/* Practice Door — Sadhana Instruments */}
         <Link href="/practice" className="group relative overflow-hidden">
           <CinematicImage
-            src='/assets/tantra/hero-mountain-trident.jpeg'
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Mountain_pass_trident_twilight_s%E2%80%A6_202608031904_3-IfYvsdxzj6itBxExULqvRbhPJTUDtp.jpeg"
             alt="Mountain pass with ritual trident under twilight sky — the path of practice"
             kenBurns="normal"
             scrim="bottom"
@@ -174,7 +174,7 @@ export default function HomePage() {
       {/* ===== CINEMATIC STRIP II — Sri Yantra sky ===== */}
       <div className="cinematic-strip">
         <CinematicImage
-          src='/assets/tantra/hero-sri-yantra-sky.jpeg'
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pattern_Intelligence_Rescuer_Per%E2%80%A6_202608061239-Tui9sNCxKR6kPFLjWZatF9zLlenizc.jpeg"
           alt="Sri Yantra floating above Himalayan peaks at twilight"
           kenBurns="normal"
           filmGrain={false}
@@ -185,7 +185,7 @@ export default function HomePage() {
       {/* ===== CHAMBER IV: PATTERN ATLAS — Museum grid ===== */}
       <section className="relative py-20 md:py-32 section-scrim-dim">
         <CinematicImage
-          src='/assets/tantra/hero-forest-shrine.jpeg'
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Mandala_of_divine_masks_202608061239-DAtTaSltoqS1eWGHl1ycNrqpTVKsz3.jpeg"
           alt="Forgotten forest shrine draped in mist and ancient light"
           scrim="full"
           vignette
@@ -226,7 +226,7 @@ className="section-label editorial-heading mb-6"
       {/* ===== CHAMBER V: FEATURED SIDDHIS — Dark museum hall ===== */}
       <section className="relative py-28 md:py-40">
         <CinematicImage
-          src='/assets/tantra/hero-forgotten-chamber.jpeg'
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ancient_codex_and_dossier_scroll_202608061239_2-iT39hyEIdVx6oWFVugB2sp9Mt9uSOF.jpeg"
           alt="Forgotten chamber with volumetric god rays illuminating ancient yantras and sacred artifacts"
           scrim="full"
           vignette
@@ -267,7 +267,7 @@ className="section-label editorial-heading mb-6"
       {/* ===== CINEMATIC STRIP III — Underground library ===== */}
       <div className="cinematic-strip">
         <CinematicImage
-          src='/assets/tantra/hero-underground-library.jpeg'
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ancient_codex_and_dossier_scroll_202608061239_2-iT39hyEIdVx6oWFVugB2sp9Mt9uSOF.jpeg"
           alt="Vast underground library of ancient manuscripts and golden artifacts"
           kenBurns="normal"
           filmGrain={false}
@@ -330,7 +330,7 @@ className="section-label editorial-heading mb-6"
                 }}
               >
                 <CinematicImage
-                  src='/assets/tantra/nadi-shuddhi-alt.jpeg'
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ritual_items_arranged_on_altar_202608050655-XqjC9wM9ykNWVURx5dcjwvpASTBaPT.jpeg"
                   alt="Nadi Shuddhi channel purification — subtle energy pathways"
                 />
               </div>
@@ -343,7 +343,7 @@ className="section-label editorial-heading mb-6"
       <section className="relative py-28 md:py-40">
         {/* New background image — copper trident courtyard */}
         <CinematicImage
-          src='/assets/tantra/trident-courtyard-new.jpeg'
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Copper_trident_in_stone_courtyard_202608050700-R6LSleO2mZ2oSJEvEgxFkYzBceifIa.jpeg"
           alt="Copper trident in ancient stone courtyard — the depth of commitment"
           className="absolute inset-0"
         />
@@ -370,7 +370,7 @@ className="section-label editorial-heading mb-6"
       {/* ===== CINEMATIC STRIP IV — Observatory ===== */}
       <div className="cinematic-strip">
         <CinematicImage
-          src='/assets/tantra/hero-observatory.jpeg'
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meditation_platform_overlooking_%E2%80%A6_202608031904_3-KyHEy3C1LCfpT4ElN0zBaQ3L1gBEHr.jpeg"
           alt="Ancient astronomical observatory with brass instruments under night sky"
           kenBurns="normal"
           filmGrain={false}
@@ -382,7 +382,7 @@ className="section-label editorial-heading mb-6"
       <section className="relative py-28 md:py-40 safe-bottom">
         {/* New background — ancient temple midnight glow */}
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/ancient-temple-midnight'
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ancient_temple_midnight_glowing_%E2%80%A6_202608031904_4-I8iUrf3bUZOL9MYIcJU40eRov5dvop.jpeg"
           alt="Ancient temple at midnight with ethereal golden glow — the inner sanctum"
           className="absolute inset-0"
         />
