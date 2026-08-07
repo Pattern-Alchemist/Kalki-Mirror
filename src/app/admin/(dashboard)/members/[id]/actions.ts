@@ -2,8 +2,10 @@
 
 import { db } from "@/lib/db";
 import { logAudit } from "@/lib/admin/audit";
+import { requireRole } from "@/lib/admin/require-role";
 
 export async function grantKeys(userId: string, amount: number, reason: string) {
+  await requireRole('admin_plus');
   const user = await db.user.findUniqueOrThrow({ where: { id: userId } });
   const previousKeys = user.goldKeysRemaining;
 

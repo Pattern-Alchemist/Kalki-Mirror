@@ -35,6 +35,7 @@ export default function ArchivePage() {
   const [search, setSearch] = useState('');
   const [cautionFilter, setCautionFilter] = useState('all');
   const [tierFilter, setTierFilter] = useState('all');
+  const [showCount, setShowCount] = useState(12);
   const reduced = useReducedMotion();
 
   const filtered = useMemo(() => {
@@ -48,6 +49,16 @@ export default function ArchivePage() {
       return matchCat && matchSearch && matchCaution && matchTier;
     });
   }, [filter, search, cautionFilter, tierFilter]);
+
+  // Reset visible count when filters change
+  const visible = useMemo(() => filtered.slice(0, showCount), [filtered, showCount]);
+  const hasMore = showCount < filtered.length;
+
+  // Reset pagination on filter change
+  const handleFilterChange = (setter: (v: string) => void, value: string) => {
+    setter(value);
+    setShowCount(12);
+  };
 
   // Count by caution level
   const counts = useMemo(() => {
@@ -91,7 +102,7 @@ export default function ArchivePage() {
               type="text"
               placeholder="Query the Akasha..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => { setSearch(e.target.value); setShowCount(12); }}
               className="flex-1 bg-surface/50 border border-gold/10 rounded-sm px-5 py-3.5 text-foreground placeholder-text-secondary focus:outline-none focus:border-gold/30 font-body text-sm transition-colors duration-500"
               aria-label="Search siddhis"
             />
@@ -104,7 +115,7 @@ export default function ArchivePage() {
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat}
-                  onClick={() => setFilter(cat)}
+                  onClick={() => handleFilterChange(setFilter, cat)}
                   className={cn(
                     'px-3.5 py-2 text-[0.8125rem] font-ui tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
                     filter === cat
@@ -124,7 +135,7 @@ export default function ArchivePage() {
               {CAUTION_FILTERS.map((c) => (
                 <button
                   key={c.value}
-                  onClick={() => setCautionFilter(c.value)}
+                  onClick={() => handleFilterChange(setCautionFilter, c.value)}
                   className={cn(
                     'px-3.5 py-2 text-[0.8125rem] font-mono tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
                     cautionFilter === c.value
@@ -144,7 +155,7 @@ export default function ArchivePage() {
               {TIER_FILTERS.map((t) => (
                 <button
                   key={t.value}
-                  onClick={() => setTierFilter(t.value)}
+                  onClick={() => handleFilterChange(setTierFilter, t.value)}
                   className={cn(
                     'px-3.5 py-2 text-[0.8125rem] font-mono tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
                     tierFilter === t.value
@@ -160,7 +171,7 @@ export default function ArchivePage() {
         </div>
 
         <p className="text-caption mb-12">
-          Showing {filtered.length} of {SIDDHI_COUNT}
+          Showing {visible.length} of {filtered.length}
         </p>
 
         <motion.div
@@ -169,7 +180,7 @@ export default function ArchivePage() {
           animate={staggerContainer.visible}
         >
           <AnimatePresence mode="popLayout">
-            {filtered.map((s) => (
+            {visible.map((s) => (
               <motion.div
                 key={s.slug}
                 layout
@@ -183,6 +194,17 @@ export default function ArchivePage() {
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {hasMore && (
+          <div className="mt-10 text-center">
+            <button
+              onClick={() => setShowCount(prev => prev + 12)}
+              className="ghost-cta text-sm"
+            >
+              Load More ({filtered.length - visible.length} remaining)
+            </button>
+          </div>
+        )}
 
         {/* Archetype navigation — the pattern wheel teaser */}
         <div className="mt-32">

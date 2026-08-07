@@ -49,27 +49,24 @@ async function fetchServerTier(): Promise<Tier | null> {
   return null;
 }
 
-function getSavedTier(): Tier {
-  try {
-    const saved = localStorage.getItem('kalki-tier') as Tier | null;
-    const valid: Tier[] = ['prithvi', 'jal', 'agni', 'akash'];
-    if (saved && valid.includes(saved)) return saved;
-  } catch { /* SSR */ }
+// localStorage fallback REMOVED — tier is now server-authoritative only.
+// Prevents client-side tier spoofing via DevTools.
+function getInitialTier(): Tier {
   return 'prithvi';
 }
 
 export function TierProvider({ children }: { children: ReactNode }) {
-  const [tier, setTier] = useState<Tier>(getSavedTier);
+  const [tier, setTier] = useState<Tier>(getInitialTier);
   const [currency, setCurrency] = useState<Currency>(detectCurrency);
   const [showPaywall, setShowPaywall] = useState(false);
   const [paywallFeature, setPaywallFeature] = useState('');
 
-  // On mount, sync with server-issued tier (the real DB tier)
+  // On mount, sync with server-issued tier (the real DB tier).
+  // This is the SOLE source of truth — no localStorage fallback.
   useEffect(() => {
     fetchServerTier().then((serverTier) => {
       if (serverTier) {
         setTier(serverTier);
-        try { localStorage.setItem('kalki-tier', serverTier); } catch { /* */ }
       }
     });
   }, []);
@@ -92,10 +89,11 @@ export function TierProvider({ children }: { children: ReactNode }) {
   );
 
   const upgrade = useCallback((newTier: Tier) => {
+    // Only update if server confirms the new tier (e.g. after key redemption)
+    // Direct client-side tier setting is removed for security.
     setTier(newTier);
     setShowPaywall(false);
     setPaywallFeature('');
-    try { localStorage.setItem('kalki-tier', newTier); } catch { /* */ }
   }, []);
 
   return (

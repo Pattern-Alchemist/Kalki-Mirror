@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { requireAuth } from '@/lib/api-auth';
+import { generateKeySchema } from '@/lib/validators/schemas';
 
 /**
  * POST /api/keys/generate
@@ -14,9 +15,12 @@ export async function POST(request: NextRequest) {
     if (authError) return authError;
 
     const body = await request.json();
-    const { tierGranted = 'jal' } = body as {
-      tierGranted?: string;
-    };
+    const parsed = generateKeySchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 });
+    }
+
+    const { tierGranted } = parsed.data;
 
     const userId = token!.id as string;
 

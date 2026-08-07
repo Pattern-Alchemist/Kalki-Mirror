@@ -5,10 +5,11 @@ import { YANTRA_SYSTEM_PROMPT, buildYantraUserPrompt, type YantraAnalysis } from
 import { retrievePrescription, retrieveCitation } from '@/lib/rag/retrieval';
 import { ALL_ARCHETYPES } from '@/lib/data/archetypes';
 import type { Tier } from '@/lib/data/types';
-import { optionalAuth } from '@/lib/api-auth';
+import { optionalAuth, getClientIp } from '@/lib/api-auth';
+import { yantraSchema } from '@/lib/validators/schemas';
 
 /**
- * In-memory rate limiter for /api/yantra and /api/initiate.
+ * In-memory rate limiter for /api/yantra.
  * Tracks IP → [{ timestamp }]. Allows 5 requests per minute.
  */
 const rateLimitMap = new Map<string, number[]>();
@@ -25,12 +26,6 @@ function isRateLimited(ip: string): boolean {
   recent.push(now);
   rateLimitMap.set(ip, recent);
   return false;
-}
-
-export function getClientIp(request: NextRequest): string {
-  return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip') ||
-    'unknown';
 }
 
 /**
@@ -53,29 +48,15 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { query, context } = body as {
-      query: string;
-      context?: {
-        dominantPatterns?: string[];
-        currentTransit?: string;
-        sadhanaStreaks?: { practice: string; days: number }[];
-        tier?: string;
-      };
-    };
-
-    if (!query || typeof query !== 'string' || query.length < 10) {
+    const parsed = yantraSchema.safeParse(body);
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Insufficient input. Describe the behavioral pattern in detail.' },
+        { error: parsed.error.issues[0].message },
         { status: 400 }
       );
     }
 
-    if (query.length > 2000) {
-      return NextResponse.json(
-        { error: 'Input exceeds maximum length. Be precise, not exhaustive.' },
-        { status: 400 }
-      );
-    }
+    const { query, context } = parsed.data;
 
     // Use session tier if available, fall back to context tier, then prithvi
     const token = await optionalAuth(request);

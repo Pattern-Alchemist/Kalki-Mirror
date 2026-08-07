@@ -9,6 +9,7 @@ import { getCautionLevel, type Tier } from '@/lib/data/types';
 import { retrievePrescription, retrieveCitation } from '@/lib/rag/retrieval';
 import { buildYantraUserPrompt, YANTRA_SYSTEM_PROMPT } from '@/lib/ai/yantra-prompt';
 import { optionalAuth, getClientIp } from '@/lib/api-auth';
+import { initiateSchema } from '@/lib/validators/schemas';
 
 // ── In-memory rate limiter: 5 req/min per IP ──
 const rateLimitMap = new Map<string, number[]>();
@@ -37,23 +38,20 @@ export async function POST(request: NextRequest) {
       );
     }
     const body = await request.json();
-    const { birthDate, birthTime, birthPlace, natalMoonDeg, behavioralQuery, tier } = body as {
-      birthDate?: string;
-      birthTime?: string;
-      birthPlace?: string;
-      natalMoonDeg?: number;
-      behavioralQuery?: string;
-      tier?: string;
-    };
-
-    if (!natalMoonDeg && !behavioralQuery && !birthDate) {
+    const parsed = initiateSchema.safeParse(body);
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Provide birth coordinates (date/time/place), natal Moon degrees, or a behavioral description.' },
+        { error: parsed.error.issues[0].message },
         { status: 400 }
       );
     }
 
-    const userTier = (tier || 'prithvi') as Tier;
+    const { birthDate, birthTime, birthPlace, natalMoonDeg, behavioralQuery } = parsed.data;
+
+    // Tier is derived from session (server-authoritative), NOT from request body.
+    // This prevents client-side tier spoofing.
+    const { token } = await optionalAuth(request);
+    const userTier = ((token?.tier as string) || 'prithvi') as Tier;
 
     // Step 1: Transit geometry
     const moonDeg = natalMoonDeg || 0;

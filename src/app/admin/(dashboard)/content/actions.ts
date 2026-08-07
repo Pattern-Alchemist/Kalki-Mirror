@@ -2,22 +2,11 @@
 
 import { db } from "@/lib/db";
 import { logAudit } from "@/lib/admin/audit";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { requireRole } from "@/lib/admin/require-role";
 import type { ContentRow } from "./constants";
 
-async function requireAdmin() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) throw new Error("Unauthorized");
-  const role = (session.user as unknown as { role: string }).role;
-  if (!["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"].includes(role)) {
-    throw new Error("Forbidden");
-  }
-  return (session.user as unknown as { id: string }).id;
-}
-
 export async function getContentEntries(type?: string, status?: string, page: number = 1) {
-  await requireAdmin();
+  const userId = await requireRole('any_staff');
 
   const where: Record<string, unknown> = {};
   if (type && type !== "ALL") where.type = type;
@@ -48,7 +37,7 @@ export async function createContentEntry(data: {
   minTier?: string;
   caution?: string;
 }) {
-  const userId = await requireAdmin();
+  const userId = await requireRole('editor_plus');
 
   const entry = await db.contentEntry.create({
     data: {
@@ -79,8 +68,13 @@ export async function updateContentEntry(
     caution?: string;
   }
 ) {
-  const userId = await requireAdmin();
+  const userId = await requireRole('editor_plus');
   const entry = await db.contentEntry.findUniqueOrThrow({ where: { id } });
+
+  // Status changes to PUBLISHED require ADMIN+
+  if (data.status === 'PUBLISHED') {
+    await requireRole('admin_plus');
+  }
 
   const updated = await db.contentEntry.update({
     where: { id },
@@ -102,7 +96,7 @@ export async function updateContentEntry(
 }
 
 export async function deleteContentEntry(id: string) {
-  await requireAdmin();
+  await requireRole('admin_plus');
   const entry = await db.contentEntry.findUniqueOrThrow({ where: { id } });
 
   await db.contentEntry.delete({ where: { id } });

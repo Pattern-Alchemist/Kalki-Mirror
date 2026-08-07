@@ -10,10 +10,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // NOTE: ignoreBuildErrors was true to ship fast. Set to false
+  // to catch type errors at build time. Enable once all TS errors are resolved.
   typescript: {
     ignoreBuildErrors: true,
   },
-  reactStrictMode: false,
+  reactStrictMode: true,
 
   // ── Vercel serverless: force-include the baked corpus ──────────────
   // The Node File Tracer (nft) often misses non-code assets read via

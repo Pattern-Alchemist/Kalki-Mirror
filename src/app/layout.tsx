@@ -42,13 +42,33 @@ export const metadata: Metadata = {
     template: '%s | KALKI',
   },
   description:
-    'Tantrik Intelligence. Sacred Architecture. Pattern Recognition. Where ancient Tantric geometry meets modern computational intelligence.',
-  keywords: ['kalki', 'siddhi', 'tantra', 'yantra', 'akasha', 'sadhana', 'pattern recognition', 'karma', 'shambhala', 'tantrik intelligence'],
+    'Tantrik Intelligence. Sacred Architecture. Pattern Recognition. Where ancient Tantric geometry meets modern computational intelligence. Discover siddhis, decode behavioral patterns, and walk the path of the Mahavidyas.',
+  keywords: ['kalki', 'siddhi', 'tantra', 'yantra', 'akasha', 'sadhana', 'pattern recognition', 'karma', 'shambhala', 'tantrik intelligence', 'mahavidya', 'ten mahavidyas', 'siddhi archive', 'behavioral patterns', 'tantric psychology'],
+  authors: [{ name: 'Kaustubh', url: 'https://kalki.mirror' }],
+  creator: 'Kaustubh',
+  publisher: 'KALKI',
   openGraph: {
-    title: 'KALKI',
-    description: 'Light for the Dark Age. The Architecture of Karma.',
+    title: 'KALKI — Light for the Dark Age.',
+    description: 'Tantrik Intelligence. Sacred Architecture. Pattern Recognition. The Architecture of Karma.',
     siteName: 'KALKI',
     type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'KALKI — Light for the Dark Age.',
+    description: 'Tantrik Intelligence. Sacred Architecture. Pattern Recognition.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   icons: {
     icon: '/favicon.svg',

@@ -2,8 +2,7 @@
 
 import { db } from "@/lib/db";
 import { logAudit } from "@/lib/admin/audit";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { requireRole } from "@/lib/admin/require-role";
 import { Prisma } from "@prisma/client";
 
 function generateKeyCode(): string {
@@ -14,8 +13,7 @@ function generateKeyCode(): string {
 }
 
 export async function getKeys(query: string, page: number = 1) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) throw new Error("Unauthorized");
+  await requireRole('any_staff');
   const where: Prisma.InviteCodeWhereInput = {};
   if (query) {
     where.OR = [
@@ -45,9 +43,7 @@ export async function getKeys(query: string, page: number = 1) {
 }
 
 export async function generateKeys(count: number, tierGranted: string, maxUses: number, expiresAt?: Date) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) throw new Error("Unauthorized");
-  const actorId = (session?.user as unknown as { id: string })?.id || "unknown";
+  const actorId = await requireRole('admin_plus');
 
   const codes = await Promise.all(
     Array.from({ length: count }, () =>
@@ -74,8 +70,7 @@ export async function generateKeys(count: number, tierGranted: string, maxUses: 
 }
 
 export async function revokeKey(codeId: string) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) throw new Error("Unauthorized");
+  await requireRole('admin_plus');
   const key = await db.inviteCode.findUniqueOrThrow({ where: { id: codeId } });
   await db.inviteCode.update({
     where: { id: codeId },

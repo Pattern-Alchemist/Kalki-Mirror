@@ -11,6 +11,37 @@ if (!secret) {
   );
 }
 
+// ── Server-side brute-force protection ──
+// Tracks failed attempts per email. In-memory, resets on server restart.
+const loginAttempts = new Map<string, { count: number; lockedUntil: number }>();
+const MAX_ATTEMPTS = 10;
+const LOCKOUT_MS = 15 * 60 * 1000; // 15 minutes
+
+function isLoginLocked(email: string): { locked: boolean; remainingSec: number } {
+  const entry = loginAttempts.get(email.toLowerCase());
+  if (!entry) return { locked: false, remainingSec: 0 };
+  if (entry.lockedUntil > Date.now()) {
+    return { locked: true, remainingSec: Math.ceil((entry.lockedUntil - Date.now()) / 1000) };
+  }
+  // Lockout expired, reset
+  loginAttempts.delete(email.toLowerCase());
+  return { locked: false, remainingSec: 0 };
+}
+
+function recordFailedLogin(email: string) {
+  const key = email.toLowerCase();
+  const entry = loginAttempts.get(key) || { count: 0, lockedUntil: 0 };
+  entry.count += 1;
+  if (entry.count >= MAX_ATTEMPTS) {
+    entry.lockedUntil = Date.now() + LOCKOUT_MS;
+  }
+  loginAttempts.set(key, entry);
+}
+
+function clearLoginAttempts(email: string) {
+  loginAttempts.delete(email.toLowerCase());
+}
+
 export const authOptions: NextAuthOptions = {
   secret,
   pages: {
@@ -48,21 +79,42 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
+        const email = credentials.email as string;
+
+        // Server-side brute-force check
+        const { locked, remainingSec } = isLoginLocked(email);
+        if (locked) {
+          console.warn(`[AUTH] Login locked for ${email}. ${remainingSec}s remaining.`);
+          return null;
+        }
+
         const user = await db.user.findUnique({
-          where: { email: credentials.email as string },
+          where: { email },
         });
 
-        if (!user || !user.passwordHash) return null;
+        if (!user || !user.passwordHash) {
+          recordFailedLogin(email);
+          return null;
+        }
 
         const allowedRoles: UserRole[] = ["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"];
-        if (!allowedRoles.includes(user.role)) return null;
+        if (!allowedRoles.includes(user.role)) {
+          recordFailedLogin(email);
+          return null;
+        }
 
         const isValid = await bcrypt.compare(
           credentials.password as string,
           user.passwordHash
         );
 
-        if (!isValid) return null;
+        if (!isValid) {
+          recordFailedLogin(email);
+          return null;
+        }
+
+        // Successful login — clear attempts
+        clearLoginAttempts(email);
 
         return {
           id: user.id,

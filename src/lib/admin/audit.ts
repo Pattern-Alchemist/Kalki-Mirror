@@ -6,13 +6,14 @@ export async function logAudit(params: {
   action: string;
   entity: string;
   entityId?: string;
+  actorId?: string;
   before?: unknown;
   after?: unknown;
 }) {
   const session = await getServerSession(authOptions);
   if (!session?.user) return;
 
-  const userId = (session.user as unknown as { id: string }).id;
+  const userId = params.actorId || (session.user as unknown as { id: string }).id;
 
   await db.adminAuditLog.create({
     data: {

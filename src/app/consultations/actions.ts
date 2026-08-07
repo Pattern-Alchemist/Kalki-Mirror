@@ -1,28 +1,30 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { z } from "zod";
+
+const consultationSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters.").max(200, "Name too long."),
+  whatsapp: z.string().min(7, "A valid WhatsApp number is required.").max(30, "Number too long."),
+  message: z.string().min(10, "Please describe your pattern (at least 10 characters).").max(5000, "Message too long."),
+});
 
 export async function submitConsultation(formData: {
   name: string;
   whatsapp: string;
   message: string;
 }) {
-  // Basic server-side validation
-  const name = (formData.name || "").trim().slice(0, 200);
-  const whatsapp = (formData.whatsapp || "").trim().slice(0, 30);
-  const message = (formData.message || "").trim().slice(0, 5000);
+  const parsed = consultationSchema.safeParse({
+    name: (formData.name || "").trim(),
+    whatsapp: (formData.whatsapp || "").trim(),
+    message: (formData.message || "").trim(),
+  });
 
-  if (!name || name.length < 2) {
-    return { success: false, error: "Name is required." };
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0].message };
   }
 
-  if (!whatsapp || whatsapp.length < 7) {
-    return { success: false, error: "A valid WhatsApp number is required." };
-  }
-
-  if (!message || message.length < 10) {
-    return { success: false, error: "Please describe your pattern (at least 10 characters)." };
-  }
+  const { name, whatsapp, message } = parsed.data;
 
   try {
     await db.consultation.create({

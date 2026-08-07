@@ -2,18 +2,8 @@
 
 import { db } from "@/lib/db";
 import { logAudit } from "@/lib/admin/audit";
+import { requireRole } from "@/lib/admin/require-role";
 import { Prisma } from "@prisma/client";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-
-async function requireAdmin() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) throw new Error("Unauthorized");
-  const role = (session.user as unknown as { role: string }).role;
-  if (!["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"].includes(role)) {
-    throw new Error("Forbidden");
-  }
-}
 
 export type MemberRow = {
   id: string;
@@ -27,7 +17,7 @@ export type MemberRow = {
 };
 
 export async function getMembers(query: string, tier: string, page: number = 1) {
-  await requireAdmin();
+  await requireRole('any_staff');
   const where: Prisma.UserWhereInput = {};
 
   if (query) {
@@ -76,7 +66,7 @@ export async function getMembers(query: string, tier: string, page: number = 1) 
 }
 
 export async function updateMemberTier(userId: string, newTier: string, reason: string) {
-  await requireAdmin();
+  await requireRole('admin_plus');
   const user = await db.user.findUniqueOrThrow({ where: { id: userId } });
   const oldTier = user.tier;
 
@@ -97,7 +87,7 @@ export async function updateMemberTier(userId: string, newTier: string, reason: 
 }
 
 export async function updateMemberRole(userId: string, newRole: string, reason: string) {
-  await requireAdmin();
+  await requireRole('superadmin_only');
   const user = await db.user.findUniqueOrThrow({ where: { id: userId } });
   const oldRole = user.role;
 
