@@ -1,29 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
-  <!-- KALKI YANTRA — The Mark of Discernment -->
-  <!-- Palette: Shambhala Gold #C5A059 on Akasha #0B0C10 -->
+  <!--
+    KALKI — Minimal K Monogram
+    Sharp geometric K. Gold #C5A059 on Akasha #0B0C10.
+    Clean, modern, legible at all sizes.
+  -->
   <g transform="translate(100,100)">
-    <!-- Outer circle with four cardinal gate-gaps -->
-    <circle 
-      cx="0" cy="0" r="88" 
-      stroke="#C5A059" 
-      stroke-width="0.75" 
+    <!-- Outer circle — minimal frame -->
+    <circle cx="0" cy="0" r="88" stroke="#C5A059" stroke-width="0.75" fill="none"/>
+    <!-- K monogram -->
+    <path
+      d="M-40,-56 L-40,56 M-40,0 L44,-56 M-40,0 L44,56"
+      stroke="#C5A059"
+      stroke-width="1.8"
+      stroke-linecap="square"
       fill="none"
-      stroke-dasharray="119.38 15.38 119.38 15.38 119.38 15.38 119.38 15.38"
-      stroke-dashoffset="7.69"
-      transform="rotate(-90)"
     />
-    <!-- Upward triangle (Shiva / Consciousness) -->
-    <polygon points="0,-62 53.69,31 -53.69,31" stroke="#C5A059" stroke-width="0.6" fill="none" stroke-linejoin="miter"/>
-    <!-- Downward triangle (Shakti / Energy) -->
-    <polygon points="0,62 53.69,-31 -53.69,-31" stroke="#C5A059" stroke-width="0.6" fill="none" stroke-linejoin="miter"/>
-    <!-- Axis Mundi — the Sword of Kalki -->
-    <line x1="0" y1="-74" x2="0" y2="74" stroke="#C5A059" stroke-width="0.5"/>
-    <!-- Hidden K monogram diagonals -->
-    <line x1="0" y1="-8" x2="28" y2="-52" stroke="#C5A059" stroke-width="0.4" opacity="0.6"/>
-    <line x1="0" y1="8" x2="32" y2="50" stroke="#C5A059" stroke-width="0.4" opacity="0.6"/>
-    <!-- Bindu — the singularity -->
-    <circle cx="0" cy="0" r="2.5" fill="#C5A059"/>
-    <!-- Inner ring -->
-    <circle cx="0" cy="0" r="18" stroke="#C5A059" stroke-width="0.3" fill="none" opacity="0.5"/>
   </g>
 </svg>

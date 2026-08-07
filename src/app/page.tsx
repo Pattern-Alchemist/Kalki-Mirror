@@ -386,10 +386,10 @@ className="section-label editorial-heading mb-6"
           alt="Ancient temple at midnight with ethereal golden glow — the inner sanctum"
           className="absolute inset-0"
         />
-        {/* Bottom-anchored scrim */}
+        {/* Bottom-anchored scrim — strengthened mid-section for body text contrast */}
         <div className="absolute inset-0 pointer-events-none z-[1]"
           style={{
-            background: 'linear-gradient(to top, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.5) 50%, rgba(5,5,5,0.7) 100%)',
+            background: 'linear-gradient(to top, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.6) 50%, rgba(5,5,5,0.75) 100%)',
           }}
         />
         <div className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">

@@ -1,17 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
   <!--
-    KALKI FAVICON — Simplified Yantra
-    Bindu + Axis Mundi (Sword) + Circle only.
-    Legible at 16x16.
+    KALKI FAVICON — Minimal K monogram
+    Clean, legible at 16x16.
+    Gold #C5A059 on transparent.
   -->
   <g transform="translate(16,16)">
-    <!-- Outer circle -->
-    <circle cx="0" cy="0" r="14" stroke="#C5A059" stroke-width="0.8" fill="none"/>
-    
-    <!-- Axis Mundi — vertical sword -->
-    <line x1="0" y1="-12" x2="0" y2="12" stroke="#C5A059" stroke-width="0.6"/>
-    
-    <!-- Bindu — the singularity -->
-    <circle cx="0" cy="0" r="1.8" fill="#C5A059"/>
+    <!-- K monogram — geometric, sharp serifs -->
+    <path
+      d="M-7,-11 L-7,11 M-7,0 L7,-11 M-7,0 L7,11"
+      stroke="#C5A059"
+      stroke-width="2.2"
+      stroke-linecap="square"
+      fill="none"
+    />
   </g>
 </svg>

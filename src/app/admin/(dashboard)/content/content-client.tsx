@@ -2,8 +2,9 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { createContentEntry, updateContentEntry, deleteContentEntry, type ContentRow } from "./actions";
-import { CONTENT_TYPES, STATUSES, CAUTIONS, TIERS } from "./constants";
+import ReactMarkdown from "react-markdown";
+import { createContentEntry, updateContentEntry, deleteContentEntry } from "./actions";
+import { CONTENT_TYPES, STATUSES, CAUTIONS, TIERS, type ContentRow } from "./constants";
 
 const STATUS_STYLES: Record<string, string> = {
   DRAFT: "bg-zinc-800 text-zinc-400",
@@ -181,7 +182,7 @@ export function ContentClient({
       {/* Create/Edit Modal */}
       {showCreate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => { setShowCreate(false); setEditId(null); }}>
-          <div className="w-full max-w-lg rounded-xl border border-zinc-700 bg-zinc-900 p-6 space-y-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="w-full max-w-4xl rounded-xl border border-zinc-700 bg-zinc-900 p-6 space-y-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-sm font-medium text-zinc-200">{editId ? "Edit Entry" : "New Content Entry"}</h3>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1">
@@ -203,9 +204,17 @@ export function ContentClient({
               <label className="block text-xs font-medium text-zinc-400">Excerpt</label>
               <input value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} placeholder="Brief description…" className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none" />
             </div>
-            <div className="space-y-1">
-              <label className="block text-xs font-medium text-zinc-400">Body (Markdown)</label>
-              <textarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} rows={6} placeholder="Write content body in Markdown…" className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none resize-none font-mono" />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="block text-xs font-medium text-zinc-400">Body (Markdown)</label>
+                <textarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} rows={12} placeholder="Write content body in Markdown…" className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none resize-none font-mono" />
+              </div>
+              <div className="space-y-1">
+                <label className="block text-xs font-medium text-zinc-400">Preview</label>
+                <div className="h-[280px] overflow-y-auto rounded-lg border border-zinc-800 bg-zinc-950 p-3 text-sm text-zinc-300 prose prose-invert prose-sm prose-zinc max-w-none">
+                  {form.body ? <ReactMarkdown>{form.body}</ReactMarkdown> : <span className="text-zinc-600">Nothing to preview</span>}
+                </div>
+              </div>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1">

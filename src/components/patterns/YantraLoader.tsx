@@ -5,8 +5,8 @@ import { motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 
 /**
- * YANTRA Analysis loading sequence.
- * The screen shows a minimalist gold Yantra geometry calculating,
+ * Pattern Analysis loading sequence.
+ * The screen shows the KALKI monogram while calculating,
  * then progressive text reveals the pattern identification.
  *
  * Usage: <YantraLoader patternName="The Rescuer" onComplete={() => setShow(false)} />
@@ -46,22 +46,19 @@ export function YantraLoader({ patternName, onComplete }: YantraLoaderProps) {
       exit={reduced ? { opacity: 0 } : { opacity: 0, filter: 'blur(8px)' }}
       transition={{ duration: 0.6 }}
     >
-      {/* Yantra geometry calculating */}
+      {/* KALKI monogram while calculating */}
       <motion.div
         className="relative mb-12"
         initial={reduced ? { opacity: 0.8 } : { opacity: 0, scale: 0.85 }}
-        animate={{ opacity: 0.8, scale: 1 }}
+        animate={{ opacity: step >= 2 ? 1 : 0.5, scale: 1 }}
         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className={step >= 3 ? 'yantra-loading' : ''}>
-          <Image
-            src="/logo.svg"
-            alt="YANTRA calculating"
-            width={80}
-            height={80}
-            className={step >= 2 ? 'opacity-100' : 'opacity-40'}
-          />
-        </div>
+        <Image
+          src="/logo.svg"
+          alt="KALKI calculating"
+          width={80}
+          height={80}
+        />
       </motion.div>
 
       {/* Progressive text reveals */}

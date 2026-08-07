@@ -460,6 +460,7 @@
     0 0 120px rgba(232, 200, 85, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
+  animation: lightningPulse 0.6s ease-out;
 }
 .gold-cta:hover::before {
   background-position: 100% 100%;
@@ -524,6 +525,7 @@
   color: var(--gold-bright);
   background: rgba(212, 175, 55, 0.06);
   box-shadow: 0 0 30px rgba(212, 175, 55, 0.12), inset 0 0 30px rgba(212, 175, 55, 0.04);
+  animation: lightningPulseGhost 0.6s ease-out;
 }
 .ghost-cta:hover::after {
   left: 120%;
@@ -531,6 +533,16 @@
 }
 .ghost-cta:active {
   transform: translateY(0);
+}
+
+/* Lightning pulse — brief amber glow flash on CTA hover */
+@keyframes lightningPulse {
+  0%   { box-shadow: 0 2px 20px rgba(245,158,11,0.5), 0 0 60px rgba(245,158,11,0.25), inset 0 1px 0 rgba(255,255,255,0.15); }
+  100% { box-shadow: 0 4px 40px rgba(212,175,55,0.4), 0 0 80px rgba(212,175,55,0.15), 0 0 120px rgba(232,200,85,0.08), inset 0 1px 0 rgba(255,255,255,0.2); }
+}
+@keyframes lightningPulseGhost {
+  0%   { box-shadow: 0 0 40px rgba(245,158,11,0.2), inset 0 0 40px rgba(245,158,11,0.06); }
+  100% { box-shadow: 0 0 30px rgba(212,175,55,0.12), inset 0 0 30px rgba(212,175,55,0.04); }
 }
 
 /* ==========================================================
@@ -1034,6 +1046,7 @@
   .gold-cta:hover,
   .ghost-cta:hover {
     transform: none;
+    animation: none;
   }
   .gold-foil-text {
     animation: none !important;
