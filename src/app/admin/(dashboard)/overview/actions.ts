@@ -20,7 +20,7 @@ export async function getOverviewStats() {
     db.inviteCode.count({ where: { active: true } }),
     db.inviteUsage.count(),
     db.consultation.count({ where: { status: "NEW" } }),
-    db.patternResolution.count({ where: { resolvedAt: { not: null } } }),
+    db.patternResolution.count({ where: { resolvedAt: { not: null as never } } }),
     db.contentEntry.count({ where: { status: "DRAFT" } }),
     db.contentEntry.count({ where: { status: "IN_REVIEW" } }),
   ]);
