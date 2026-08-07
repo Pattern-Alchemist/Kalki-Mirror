@@ -4,7 +4,15 @@ import bcrypt from "bcryptjs";
 import { db } from "./db";
 import type { UserRole } from "@prisma/client";
 
+const secret = process.env.NEXTAUTH_SECRET;
+if (!secret) {
+  throw new Error(
+    "NEXTAUTH_SECRET is not set. Add it to your .env file or Vercel environment variables. Generate one with: openssl rand -base64 32"
+  );
+}
+
 export const authOptions: NextAuthOptions = {
+  secret,
   pages: {
     signIn: "/admin/login",
   },
