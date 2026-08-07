@@ -2,7 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { createContentEntry, updateContentEntry, deleteContentEntry, CONTENT_TYPES, STATUSES, CAUTIONS, TIERS, type ContentRow } from "./actions";
+import { createContentEntry, updateContentEntry, deleteContentEntry, type ContentRow } from "./actions";
+import { CONTENT_TYPES, STATUSES, CAUTIONS, TIERS } from "./constants";
 
 const STATUS_STYLES: Record<string, string> = {
   DRAFT: "bg-zinc-800 text-zinc-400",
