@@ -2,12 +2,24 @@
 
 import { db } from "@/lib/db";
 import { logAudit } from "@/lib/admin/audit";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+
+async function requireAdmin() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) throw new Error("Unauthorized");
+  const role = (session.user as unknown as { role: string }).role;
+  if (!["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"].includes(role)) {
+    throw new Error("Forbidden");
+  }
+}
 
 export type ConsultationRow = {
   id: string;
   userId: string | null;
   name: string;
   email: string;
+  phone: string;
   request: string;
   status: string;
   scheduledFor: Date | null;
@@ -19,6 +31,8 @@ export type ConsultationRow = {
 const STATUSES = ["NEW", "ACKNOWLEDGED", "SCHEDULED", "COMPLETED", "CANCELLED"] as const;
 
 export async function getConsultations(status?: string, page: number = 1) {
+  await requireAdmin();
+
   const where: Record<string, unknown> = {};
   if (status && status !== "ALL") {
     where.status = status;
@@ -50,6 +64,8 @@ export async function updateConsultationStatus(
   newStatus: string,
   notes?: string
 ) {
+  await requireAdmin();
+
   const consultation = await db.consultation.findUniqueOrThrow({
     where: { id: consultationId },
   });
@@ -79,6 +95,8 @@ export async function scheduleConsultation(
   scheduledFor: string,
   notes?: string
 ) {
+  await requireAdmin();
+
   const consultation = await db.consultation.findUniqueOrThrow({
     where: { id: consultationId },
   });

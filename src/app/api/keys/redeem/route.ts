@@ -1,20 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
+import { requireAuth } from '@/lib/api-auth';
 
 /**
  * POST /api/keys/redeem
  * 
  * Redeems a Golden Key to unlock a tier.
- * Validates the code, checks expiration, records usage.
+ * Requires authentication. userId is derived from session.
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { code, userId } = body as { code: string; userId: string };
+    const { error: authError, token } = await requireAuth(request);
+    if (authError) return authError;
 
-    if (!code || !userId) {
-      return NextResponse.json({ error: 'Code and userId required.' }, { status: 400 });
+    const body = await request.json();
+    const { code } = body as { code: string };
+
+    if (!code) {
+      return NextResponse.json({ error: 'Code required.' }, { status: 400 });
     }
+
+    // userId from session, NOT from body
+    const userId = token!.id as string;
 
     const invite = await db.inviteCode.findUnique({
       where: { code },
@@ -87,4 +94,4 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return NextResponse.json({ error: 'Key redemption failed.' }, { status: 500 });
   }
-  }
+}

@@ -25,6 +25,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = (user as unknown as { role: UserRole }).role;
+        token.tier = (user as unknown as { tier: string }).tier || 'prithvi';
       }
       return token;
     },
@@ -32,6 +33,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         (session.user as unknown as { id: string }).id = token.id as string;
         (session.user as unknown as { role: UserRole }).role = token.role as UserRole;
+        (session.user as unknown as { tier: string }).tier = (token.tier as string) || 'prithvi';
       }
       return session;
     },

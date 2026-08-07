@@ -1,8 +1,20 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+
+async function requireAdmin() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) throw new Error("Unauthorized");
+  const role = (session.user as unknown as { role: string }).role;
+  if (!["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"].includes(role)) {
+    throw new Error("Forbidden");
+  }
+}
 
 export async function getOverviewStats() {
+  await requireAdmin();
   const [
     totalUsers,
     activeStreaks,

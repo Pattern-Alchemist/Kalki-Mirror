@@ -8,18 +8,34 @@ import { PATTERN_ARCHETYPE_MAP, getArchetypeById, TEN_MAHAVIDYAS, ALL_ARCHETYPES
 import { getCautionLevel, type Tier } from '@/lib/data/types';
 import { retrievePrescription, retrieveCitation } from '@/lib/rag/retrieval';
 import { buildYantraUserPrompt, YANTRA_SYSTEM_PROMPT } from '@/lib/ai/yantra-prompt';
+import { optionalAuth, getClientIp } from '@/lib/api-auth';
 
-/**
- * POST /api/initiate
- *
- * The Initiation Sequence — one route that chains:
- * 1. Birth coordinates / behavioral query → pattern matching
- * 2. RAG retrieval: two-pool (prescription + citation)
- * 3. Transit geometry computation → active frictions
- * 4. Grounded dossier assembly with archive_refs
- */
+// ── In-memory rate limiter: 5 req/min per IP ──
+const rateLimitMap = new Map<string, number[]>();
+const RATE_WINDOW = 60_000;
+const RATE_MAX = 5;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entries = rateLimitMap.get(ip) || [];
+  const recent = entries.filter(t => now - t < RATE_WINDOW);
+  rateLimitMap.set(ip, recent);
+  if (recent.length >= RATE_MAX) return true;
+  recent.push(now);
+  rateLimitMap.set(ip, recent);
+  return false;
+}
+
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit
+    const ip = getClientIp(request);
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: 'Too many requests. The geometry needs time to stabilize.' },
+        { status: 429 }
+      );
+    }
     const body = await request.json();
     const { birthDate, birthTime, birthPlace, natalMoonDeg, behavioralQuery, tier } = body as {
       birthDate?: string;

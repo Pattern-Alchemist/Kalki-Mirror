@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { Tier } from '@/lib/data/types';
 import { detectCurrency, formatPrice, pricingTiers } from '@/lib/data/pricing';
 import type { Currency } from '@/lib/data/pricing';
@@ -31,6 +31,24 @@ const TierContext = createContext<TierContextValue>({
   requestUpgrade: () => false,
 });
 
+/**
+ * Server-issued tier API — fetches the authenticated user's real tier.
+ * Falls back to null if unauthenticated.
+ */
+async function fetchServerTier(): Promise<Tier | null> {
+  try {
+    const res = await fetch('/api/auth/session');
+    if (!res.ok) return null;
+    const session = await res.json();
+    const valid: Tier[] = ['prithvi', 'jal', 'agni', 'akash'];
+    const t = session?.user?.tier;
+    if (t && valid.includes(t)) return t;
+  } catch {
+    // Session fetch failed
+  }
+  return null;
+}
+
 function getSavedTier(): Tier {
   try {
     const saved = localStorage.getItem('kalki-tier') as Tier | null;
@@ -45,6 +63,16 @@ export function TierProvider({ children }: { children: ReactNode }) {
   const [currency, setCurrency] = useState<Currency>(detectCurrency);
   const [showPaywall, setShowPaywall] = useState(false);
   const [paywallFeature, setPaywallFeature] = useState('');
+
+  // On mount, sync with server-issued tier (the real DB tier)
+  useEffect(() => {
+    fetchServerTier().then((serverTier) => {
+      if (serverTier) {
+        setTier(serverTier);
+        try { localStorage.setItem('kalki-tier', serverTier); } catch { /* */ }
+      }
+    });
+  }, []);
 
   const canAccess = useCallback(
     (required: Tier) => TIER_ORDER.indexOf(tier) >= TIER_ORDER.indexOf(required),

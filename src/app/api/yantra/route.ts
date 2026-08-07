@@ -5,6 +5,33 @@ import { YANTRA_SYSTEM_PROMPT, buildYantraUserPrompt, type YantraAnalysis } from
 import { retrievePrescription, retrieveCitation } from '@/lib/rag/retrieval';
 import { ALL_ARCHETYPES } from '@/lib/data/archetypes';
 import type { Tier } from '@/lib/data/types';
+import { optionalAuth } from '@/lib/api-auth';
+
+/**
+ * In-memory rate limiter for /api/yantra and /api/initiate.
+ * Tracks IP → [{ timestamp }]. Allows 5 requests per minute.
+ */
+const rateLimitMap = new Map<string, number[]>();
+const RATE_LIMIT_WINDOW = 60_000; // 1 minute
+const RATE_LIMIT_MAX = 5;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entries = rateLimitMap.get(ip) || [];
+  // Prune old entries
+  const recent = entries.filter(t => now - t < RATE_LIMIT_WINDOW);
+  rateLimitMap.set(ip, recent);
+  if (recent.length >= RATE_LIMIT_MAX) return true;
+  recent.push(now);
+  rateLimitMap.set(ip, recent);
+  return false;
+}
+
+export function getClientIp(request: NextRequest): string {
+  return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    request.headers.get('x-real-ip') ||
+    'unknown';
+}
 
 /**
  * POST /api/yantra
@@ -12,12 +39,19 @@ import type { Tier } from '@/lib/data/types';
  * Accepts a behavioral pattern query and returns
  * a RAG-grounded YANTRA analysis.
  *
- * When an LLM provider is connected, this routes to the LLM
- * with the grounded prompt (folio chunks + archetype list).
- * Currently returns the complete prompt structure for development.
+ * Rate limited: 5 req/min per IP.
  */
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit
+    const ip = getClientIp(request);
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: 'Too many requests. The geometry needs time to stabilize.' },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const { query, context } = body as {
       query: string;
@@ -43,7 +77,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const userTier = (context?.tier || 'prithvi') as Tier;
+    // Use session tier if available, fall back to context tier, then prithvi
+    const token = await optionalAuth(request);
+    const sessionTier = (token?.tier as string) || null;
+    const userTier = (sessionTier || context?.tier || 'prithvi') as Tier;
 
     // RAG retrieval — two pools
     let folioChunks: { slug: string; section: string; caution: string; text: string }[] = [];
@@ -91,9 +128,8 @@ export async function POST(request: NextRequest) {
       })),
     });
 
-    // In production: call your LLM API here with YANTRA_SYSTEM_PROMPT + userPrompt
-    // const completion = await callLLM(YANTRA_SYSTEM_PROMPT, userPrompt);
-    // const analysis: YantraAnalysis = JSON.parse(completion);
+    // NOTE: The system prompt is NO LONGER exposed via GET.
+    // In production: call your LLM API here with YANTRA_SYSTEM_PROMPT + userPrompt.
 
     return NextResponse.json({
       status: 'grounded_prompt_ready',
@@ -112,20 +148,4 @@ export async function POST(request: NextRequest) {
   }
 }
 
-/**
- * GET /api/yantra/prompt
- *
- * Returns the raw YANTRA system prompt for inspection.
- */
-export async function GET() {
-  return NextResponse.json({
-    system_prompt: YANTRA_SYSTEM_PROMPT,
-    grounding_rules: [
-      'GROUNDING: tantric_citation must trace to a provided <folio> block; include source_slug',
-      'PRESCRIPTION: prescribed_sadhana may draw ONLY from OPEN-tier folios',
-      'CLASSIFICATION: archetype id must come from the provided ARCHETYPE LIST',
-    ],
-    forbidden_words: ['vibe', 'manifest', 'zodiac', 'energy healing', 'universe', 'journey', 'chakras', 'toxic', 'trauma', 'crystal', 'reiki', 'angel numbers'],
-    required_lexicon: ['geometry', 'architecture', 'pattern', 'loop', 'resonance', 'discernment', 'algorithm', 'mechanics', 'vector', 'structure', 'system', 'calculus', 'axis', 'coordinates', 'frequency', 'oscillation'],
-  });
-}
+// GET /api/yantra/prompt has been REMOVED — system prompt is no longer publicly exposed.

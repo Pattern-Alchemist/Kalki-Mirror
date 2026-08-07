@@ -1,6 +1,8 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export type AuditLogRow = {
   id: string;
@@ -15,6 +17,8 @@ export type AuditLogRow = {
 };
 
 export async function getAuditLogs(page: number = 1) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) throw new Error("Unauthorized");
   const take = 30;
   const skip = (page - 1) * take;
 

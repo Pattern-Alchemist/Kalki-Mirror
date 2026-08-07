@@ -6,7 +6,19 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import type { ContentRow } from "./constants";
 
+async function requireAdmin() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) throw new Error("Unauthorized");
+  const role = (session.user as unknown as { role: string }).role;
+  if (!["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"].includes(role)) {
+    throw new Error("Forbidden");
+  }
+  return (session.user as unknown as { id: string }).id;
+}
+
 export async function getContentEntries(type?: string, status?: string, page: number = 1) {
+  await requireAdmin();
+
   const where: Record<string, unknown> = {};
   if (type && type !== "ALL") where.type = type;
   if (status && status !== "ALL") where.status = status;
@@ -36,13 +48,13 @@ export async function createContentEntry(data: {
   minTier?: string;
   caution?: string;
 }) {
-  const session = await getServerSession(authOptions);
-  const userId = (session?.user as unknown as { id: string })?.id || "unknown";
+  const userId = await requireAdmin();
 
   const entry = await db.contentEntry.create({
     data: {
       ...data,
       createdById: userId,
+      updatedById: userId,
     },
   });
 
@@ -67,11 +79,15 @@ export async function updateContentEntry(
     caution?: string;
   }
 ) {
+  const userId = await requireAdmin();
   const entry = await db.contentEntry.findUniqueOrThrow({ where: { id } });
 
   const updated = await db.contentEntry.update({
     where: { id },
-    data,
+    data: {
+      ...data,
+      updatedById: userId,
+    },
   });
 
   await logAudit({
@@ -86,6 +102,7 @@ export async function updateContentEntry(
 }
 
 export async function deleteContentEntry(id: string) {
+  await requireAdmin();
   const entry = await db.contentEntry.findUniqueOrThrow({ where: { id } });
 
   await db.contentEntry.delete({ where: { id } });

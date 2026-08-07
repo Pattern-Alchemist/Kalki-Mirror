@@ -15,9 +15,9 @@ const STATUS_STYLES: Record<string, string> = {
 
 const CAUTION_STYLES: Record<string, string> = {
   OPEN: "text-zinc-500",
-  GUARDED: "text-amber-400",
-  RESTRICTED: "text-orange-400",
-  EMBARGO: "text-red-400",
+  MODERATE: "text-amber-400",
+  HIGH: "text-orange-400",
+  SEALED: "text-red-400",
 };
 
 export function ContentClient({
@@ -60,7 +60,7 @@ export function ContentClient({
       slug: entry.slug,
       title: entry.title,
       excerpt: entry.excerpt || "",
-      body: "",
+      body: entry.body || "",
       minTier: entry.minTier,
       caution: entry.caution,
     });

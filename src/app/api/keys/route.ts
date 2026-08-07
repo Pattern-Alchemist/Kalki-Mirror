@@ -1,25 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
+import { requireAuth } from '@/lib/api-auth';
 
 /**
  * POST /api/keys/generate
  * 
- * Generates a new Golden Key. Requires the user to have
- * remaining keys (default 3 for Initiate+ tiers).
- * 
- * Body: { userId: string, tierGranted?: string }
+ * Generates a new Golden Key. Requires authentication.
+ * The userId is derived from the session, NOT the request body.
  */
 export async function POST(request: NextRequest) {
   try {
+    const { error: authError, token } = await requireAuth(request);
+    if (authError) return authError;
+
     const body = await request.json();
-    const { userId, tierGranted = 'jal' } = body as {
-      userId: string;
+    const { tierGranted = 'jal' } = body as {
       tierGranted?: string;
     };
 
-    if (!userId) {
-      return NextResponse.json({ error: 'UserId required.' }, { status: 400 });
-    }
+    const userId = token!.id as string;
 
     const user = await db.user.findUnique({ where: { id: userId } });
     if (!user) {
@@ -77,20 +76,27 @@ export async function POST(request: NextRequest) {
 /**
  * GET /api/keys?vault=userId
  * 
- * Returns the user's vault: their remaining keys
- * and the keys they've generated (with usage status).
+ * Returns the authenticated user's vault only.
  */
 export async function GET(request: NextRequest) {
   try {
+    const { error: authError, token } = await requireAuth(request);
+    if (authError) return authError;
+
     const { searchParams } = new URL(request.url);
     const vaultUserId = searchParams.get('vault');
 
-    if (!vaultUserId) {
-      return NextResponse.json({ error: 'Provide ?vault=userId to access the vault.' }, { status: 400 });
+    // Users can only view their own vault (unless admin)
+    const userId = token!.id as string;
+    const userRole = token!.role as string;
+    if (vaultUserId && vaultUserId !== userId && !['ADMIN', 'SUPERADMIN'].includes(userRole)) {
+      return NextResponse.json({ error: 'Access denied. You can only view your own vault.' }, { status: 403 });
     }
 
+    const targetId = vaultUserId || userId;
+
     const user = await db.user.findUnique({
-      where: { id: vaultUserId },
+      where: { id: targetId },
       select: {
         goldKeysRemaining: true,
         tier: true,
@@ -121,4 +127,4 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     return NextResponse.json({ error: 'Vault access failed.' }, { status: 500 });
   }
-  }
+}

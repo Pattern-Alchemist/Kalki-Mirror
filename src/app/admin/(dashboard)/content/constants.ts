@@ -4,6 +4,7 @@ export type ContentRow = {
   slug: string;
   title: string;
   excerpt: string | null;
+  body: string;
   status: string;
   minTier: string;
   caution: string;
@@ -14,5 +15,5 @@ export type ContentRow = {
 
 export const CONTENT_TYPES = ["practice", "archetype", "pattern", "research", "codex"] as const;
 export const STATUSES = ["DRAFT", "IN_REVIEW", "PUBLISHED", "ARCHIVED"] as const;
-export const CAUTIONS = ["OPEN", "GUARDED", "RESTRICTED", "EMBARGO"] as const;
+export const CAUTIONS = ["OPEN", "MODERATE", "HIGH", "SEALED"] as const;
 export const TIERS = ["prithvi", "jal", "agni", "akash"] as const;

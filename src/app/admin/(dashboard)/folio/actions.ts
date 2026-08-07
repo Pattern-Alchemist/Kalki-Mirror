@@ -1,6 +1,8 @@
 "use server";
 
 import { staticDb } from "@/lib/static-db";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export type FolioChunkRow = {
   id: string;
@@ -18,6 +20,8 @@ export async function getFolioChunks(
   page: number = 1,
   q?: string
 ) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) throw new Error("Unauthorized");
   const where: Record<string, unknown> = {};
 
   if (section) {

@@ -7,6 +7,7 @@ import { BackButton } from '@/components/nav/BackButton';
 import { consultationServices } from '@/lib/data/consultations';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
+import { submitConsultation } from './actions';
 
 const KAUSTUBH_IMG = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_800,c_limit/kalki-mirror/kaustubh-portrait';
 
@@ -21,6 +22,8 @@ export default function ConsultationsPage() {
   const reduced = useReducedMotion();
   const [form, setForm] = useState<ConsultationForm>({ name: '', whatsapp: '', message: '', photoBase64: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePhotoSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -235,13 +238,30 @@ export default function ConsultationsPage() {
                 </div>
               </div>
 
+              {formError && (
+                <p className="text-red-400 text-xs mt-4 text-center">{formError}</p>
+              )}
               <button
                 type="button"
-                onClick={() => setSubmitted(true)}
-                disabled={!form.name || !form.whatsapp}
+                onClick={async () => {
+                  setFormError('');
+                  setSubmitting(true);
+                  const result = await submitConsultation({
+                    name: form.name,
+                    whatsapp: form.whatsapp,
+                    message: form.message,
+                  });
+                  setSubmitting(false);
+                  if (result.success) {
+                    setSubmitted(true);
+                  } else {
+                    setFormError(result.error || 'Submission failed.');
+                  }
+                }}
+                disabled={!form.name || !form.whatsapp || submitting}
                 className="gold-cta w-full mt-8"
               >
-                Send Request
+                {submitting ? 'Sending…' : 'Send Request'}
               </button>
             </div>
           )}

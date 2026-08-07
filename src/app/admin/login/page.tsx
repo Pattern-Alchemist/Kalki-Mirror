@@ -1,8 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_MS = 5 * 60 * 1000; // 5 minutes
+
+function getLoginState(): { attempts: number; lockedUntil: number } {
+  try {
+    const raw = sessionStorage.getItem("kalki-login");
+    if (raw) return JSON.parse(raw);
+  } catch { /* */ }
+  return { attempts: 0, lockedUntil: 0 };
+}
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -12,9 +23,27 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loginState, setLoginState] = useState(getLoginState);
+  const attemptTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  async function handleSubmit(e: React.FormEvent) {
+  const locked = loginState.lockedUntil > Date.now();
+  const remainingMs = Math.max(0, loginState.lockedUntil - Date.now());
+  const remainingSec = Math.ceil(remainingMs / 1000);
+
+  // Clear lockout timer
+  if (!locked && loginState.lockedUntil > 0) {
+    setLoginState({ attempts: 0, lockedUntil: 0 });
+    try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
+  }
+
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (locked) {
+      setError(`Too many attempts. Try again in ${remainingSec}s.`);
+      return;
+    }
+
     setLoading(true);
     setError("");
 
@@ -26,8 +55,25 @@ export default function AdminLoginPage() {
       });
 
       if (result?.error) {
-        setError("Invalid credentials or insufficient role.");
+        const newState = { ...loginState, attempts: loginState.attempts + 1 };
+
+        if (newState.attempts >= MAX_ATTEMPTS) {
+          newState.lockedUntil = Date.now() + LOCKOUT_MS;
+          setError(`Too many failed attempts. Locked for 5 minutes.`);
+          if (attemptTimerRef.current) clearTimeout(attemptTimerRef.current);
+          attemptTimerRef.current = setTimeout(() => {
+            setLoginState({ attempts: 0, lockedUntil: 0 });
+            try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
+          }, LOCKOUT_MS);
+        } else {
+          setError(`Invalid credentials. ${MAX_ATTEMPTS - newState.attempts} attempts remaining.`);
+        }
+
+        setLoginState(newState);
+        try { sessionStorage.setItem("kalki-login", JSON.stringify(newState)); } catch { /* */ }
       } else {
+        setLoginState({ attempts: 0, lockedUntil: 0 });
+        try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
         router.push(callbackUrl);
         router.refresh();
       }
@@ -36,7 +82,7 @@ export default function AdminLoginPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [email, password, locked, remainingSec, loginState, callbackUrl, router]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
@@ -69,7 +115,8 @@ export default function AdminLoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
               autoComplete="email"
-              className="block w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2.5 text-sm text-zinc-100 placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/50"
+              disabled={locked}
+              className="block w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2.5 text-sm text-zinc-100 placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/50 disabled:opacity-50"
               placeholder="archivist@kalki.mirror"
             />
           </div>
@@ -85,17 +132,18 @@ export default function AdminLoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               autoComplete="current-password"
-              className="block w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2.5 text-sm text-zinc-100 placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/50"
+              disabled={locked}
+              className="block w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2.5 text-sm text-zinc-100 placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/50 disabled:opacity-50"
               placeholder="••••••••"
             />
           </div>
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || locked}
             className="w-full rounded-lg bg-amber-600 px-4 py-2.5 text-sm font-medium text-zinc-950 transition hover:bg-amber-500 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {loading ? "Authenticating…" : "Enter the Sanctum"}
+            {locked ? `Locked (${remainingSec}s)` : loading ? "Authenticating…" : "Enter the Sanctum"}
           </button>
         </form>
 

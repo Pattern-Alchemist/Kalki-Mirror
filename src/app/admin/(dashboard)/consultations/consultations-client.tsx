@@ -108,7 +108,7 @@ export function ConsultationsClient({
           <thead>
             <tr className="border-b border-zinc-800 bg-zinc-900/50">
               <th className="px-4 py-3 font-medium text-zinc-500">Name</th>
-              <th className="px-4 py-3 font-medium text-zinc-500">Email</th>
+              <th className="px-4 py-3 font-medium text-zinc-500">Phone</th>
               <th className="px-4 py-3 font-medium text-zinc-500">Request</th>
               <th className="px-4 py-3 font-medium text-zinc-500">Status</th>
               <th className="px-4 py-3 font-medium text-zinc-500">Scheduled</th>
@@ -127,7 +127,7 @@ export function ConsultationsClient({
                     {c.name}
                   </button>
                 </td>
-                <td className="px-4 py-3 text-zinc-400">{c.email}</td>
+                <td className="px-4 py-3 text-zinc-400">{c.phone || c.email || "—"}</td>
                 <td className="max-w-xs truncate px-4 py-3 text-zinc-400">{c.request}</td>
                 <td className="px-4 py-3">
                   <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLES[c.status] || STATUS_STYLES.NEW}`}>
@@ -189,7 +189,7 @@ export function ConsultationsClient({
           <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-3">
             <div className="grid gap-4 sm:grid-cols-2">
               <div><p className="text-xs text-zinc-600">Name</p><p className="text-sm text-zinc-200">{c.name}</p></div>
-              <div><p className="text-xs text-zinc-600">Email</p><p className="text-sm text-zinc-200">{c.email}</p></div>
+              <div><p className="text-xs text-zinc-600">Phone</p><p className="text-sm text-zinc-200">{c.phone || "—"}</p></div>
               <div><p className="text-xs text-zinc-600">User ID</p><p className="text-sm text-zinc-400 font-mono">{c.userId || "Guest"}</p></div>
               <div><p className="text-xs text-zinc-600">Submitted</p><p className="text-sm text-zinc-200">{new Date(c.createdAt).toLocaleString()}</p></div>
             </div>

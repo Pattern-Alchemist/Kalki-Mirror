@@ -227,7 +227,8 @@ model Consultation {
   id           String    @id @default(cuid())
   userId       String?   // Linked user if authenticated
   name         String
-  email        String
+  email        String    @default("")
+  phone        String    @default("") // WhatsApp / contact number
   request      String    // What they're seeking
   status       String    @default("NEW") // NEW | SCHEDULED | COMPLETED | CANCELLED
   scheduledFor DateTime?
