@@ -32,19 +32,20 @@ const TierContext = createContext<TierContextValue>({
 });
 
 /**
- * Server-issued tier API — fetches the authenticated user's real tier.
+ * Fetches the authenticated user's real tier from the DB.
+ * This is the SOLE source of truth — always fresh, not from a stale JWT.
  * Falls back to null if unauthenticated.
  */
 async function fetchServerTier(): Promise<Tier | null> {
   try {
-    const res = await fetch('/api/auth/session');
+    const res = await fetch('/api/user/tier');
     if (!res.ok) return null;
-    const session = await res.json();
+    const data = await res.json();
     const valid: Tier[] = ['prithvi', 'jal', 'agni', 'akash'];
-    const t = session?.user?.tier;
+    const t = data?.tier;
     if (t && valid.includes(t)) return t;
   } catch {
-    // Session fetch failed
+    // Fetch failed — remain at default tier
   }
   return null;
 }
@@ -88,13 +89,24 @@ export function TierProvider({ children }: { children: ReactNode }) {
     [canAccess],
   );
 
+  /**
+   * Re-fetches tier from the server (DB). Call after key redemption
+   * or any event that may have changed the tier server-side.
+   */
+  const refreshTier = useCallback(() => {
+    fetchServerTier().then((serverTier) => {
+      if (serverTier) setTier(serverTier);
+    });
+  }, []);
+
   const upgrade = useCallback((newTier: Tier) => {
-    // Only update if server confirms the new tier (e.g. after key redemption)
-    // Direct client-side tier setting is removed for security.
+    // Immediately update client, then verify with server
     setTier(newTier);
     setShowPaywall(false);
     setPaywallFeature('');
-  }, []);
+    // Verify with the DB after a short delay (allows redeem to commit)
+    setTimeout(() => refreshTier(), 500);
+  }, [refreshTier]);
 
   return (
     <TierContext.Provider value={{ tier, setTier, canAccess, currency, setCurrency, showPaywall, setShowPaywall, paywallFeature, requestUpgrade }}>
@@ -106,3 +118,5 @@ export function TierProvider({ children }: { children: ReactNode }) {
 export function useTier() {
   return useContext(TierContext);
 }
+
+export type { TierContextValue };

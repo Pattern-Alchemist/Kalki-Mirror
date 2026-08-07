@@ -56,7 +56,8 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = (user as unknown as { role: UserRole }).role;
-        token.tier = (user as unknown as { tier: string }).tier || 'prithvi';
+        token.tier = (user as unknown as { tier: string }).tier;
+        if (!token.tier) token.tier = 'prithvi';
       }
       return token;
     },
@@ -121,6 +122,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           role: user.role,
+          tier: user.tier,
         };
       },
     }),

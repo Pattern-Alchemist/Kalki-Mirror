@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
 
     // Tier is derived from session (server-authoritative), NOT from request body.
     // This prevents client-side tier spoofing.
-    const { token } = await optionalAuth(request);
+    const token = await optionalAuth(request);
     const userTier = ((token?.tier as string) || 'prithvi') as Tier;
 
     // Step 1: Transit geometry
