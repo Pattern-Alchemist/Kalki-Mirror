@@ -8,6 +8,7 @@ import { BreathTimer } from '@/components/practice/BreathTimer';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
 import { BackButton } from '@/components/nav/BackButton';
 import { AIBreathworkGenerator } from '@/components/ai/AIBreathworkGenerator';
+import { ResonanceToggle } from '@/components/ui/ResonanceToggle';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 const FREE_PATTERNS = ['nadi-shuddhi-basic', 'bhramari', 'ujjayi-pranayama'];
@@ -29,7 +30,10 @@ export default function PracticePage() {
       />
 
       <div className="max-w-4xl mx-auto px-6 lg:px-10 py-20 md:py-28 space-y-28">
-        <BackButton href="/" label="Back to Home" />
+        <div className="flex items-center justify-between">
+          <BackButton href="/" label="Back to Home" />
+          <ResonanceToggle />
+        </div>
         {/* Breathwork Section */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-4">Breathwork</p>

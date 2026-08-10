@@ -8,10 +8,12 @@ import { SiddhiCard } from '@/components/archive/SiddhiCard';
 import { PatternCard } from '@/components/patterns/PatternCard';
 import { PricingCards } from '@/components/monetization/PricingCards';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
+import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { allPatterns } from '@/lib/data/patterns';
 import { BreathTimer } from '@/components/practice/BreathTimer';
+import { ResonanceToggle } from '@/components/ui/ResonanceToggle';
 
 export default function HomePage() {
   const reduced = useReducedMotion();
@@ -92,8 +94,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== CINEMATIC STRIP I — Cave yantras ===== */}
-      <div className="cinematic-strip">
+      {/* ===== CINEMATIC STRIP I — Cave yantras (with parallax) ===== */}
+      <ScrollParallax speed={-0.2} className="cinematic-strip">
         <CinematicImage
           src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Forgotten_forest_shrine_ancient_%E2%80%A6_202608031904_3-8pHV5vvy2PpjQ9tUJQlHfTHDYgp5zA.jpeg"
           alt="Ancient cave with flickering butter lamps illuminating carved yantras"
@@ -101,64 +103,63 @@ export default function HomePage() {
           filmGrain={false}
         />
         <div className="cinematic-strip-overlay" />
-      </div>
+      </ScrollParallax>
 
-      {/* ===== CHAMBER II: THE TWO DOORS — Asymmetric split ===== */}
+      {/* ===== CHAMBER II: THE TWO DOORS — Asymmetric split (with parallax) ===== */}
       <section className="grid grid-cols-1 md:grid-cols-2 min-h-[70vh] md:min-h-[85vh]">
         {/* Archive Door — YANTRA Decoded */}
-        <Link href="/archive" className="group relative overflow-hidden">
-          <CinematicImage
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Manuscript_detailing_sacred_geom%E2%80%A6_2K_202608050655-W9zhMGHLZcPHFHktRv57tela1SC3TG.jpeg"
-            alt="Cave with ancient yantra inscriptions and golden butter lamps — the repository of knowledge"
-            kenBurns="normal"
-            scrim="bottom"
-            volumetric
-            dust
-          />
-          <div className="scrim-bottom-anchored" />
-          <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 lg:p-16">
-            <p className="section-label mb-4">YANTRA Decoded</p>
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 hero-heading tracking-wide">
-              41 Siddhis.<br />Mapped.
-            </h2>
-            <p className="text-foreground text-base max-w-md editorial-spacing" style={{textShadow: '0 1px 8px rgba(0,0,0,0.7)'}}>
-              Decoded by YANTRA. Every mantra, every lineage, every warning.
-            </p>
-          </div>
-        </Link>
+        <ScrollParallax speed={-0.1} disabled>
+          <Link href="/archive" className="group relative overflow-hidden block min-h-[70vh] md:min-h-[85vh]">
+            <CinematicImage
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Manuscript_detailing_sacred_geom%E2%80%A6_2K_202608050655-W9zhMGHLZcPHFHktRv57tela1SC3TG.jpeg"
+              alt="Cave with ancient yantra inscriptions and golden butter lamps — the repository of knowledge"
+              kenBurns="normal"
+              scrim="bottom"
+              volumetric
+              dust
+            />
+            <div className="scrim-bottom-anchored" />
+            <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 lg:p-16">
+              <p className="section-label mb-4">YANTRA Decoded</p>
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 hero-heading tracking-wide">
+                41 Siddhis.<br />Mapped.
+              </h2>
+              <p className="text-foreground text-base max-w-md editorial-spacing" style={{textShadow: '0 1px 8px rgba(0,0,0,0.7)'}}>
+                Decoded by YANTRA. Every mantra, every lineage, every warning.
+              </p>
+            </div>
+          </Link>
+        </ScrollParallax>
 
         {/* Practice Door — Sadhana Instruments */}
-        <Link href="/practice" className="group relative overflow-hidden">
-          <CinematicImage
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Mountain_pass_trident_twilight_s%E2%80%A6_202608031904_3-IfYvsdxzj6itBxExULqvRbhPJTUDtp.jpeg"
-            alt="Mountain pass with ritual trident under twilight sky — the path of practice"
-            kenBurns="normal"
-            scrim="bottom"
-            volumetric
-            dust
-          />
-          <div className="scrim-bottom-anchored" />
-          <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 lg:p-16">
-            <p className="section-label mb-4">Sadhana Instruments</p>
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 hero-heading tracking-wide">
-              See Yourself.<br />Clearly.
-            </h2>
-            <p className="text-foreground text-base max-w-md editorial-spacing" style={{textShadow: '0 1px 8px rgba(0,0,0,0.7)'}}>
-              Breathwork, japa, meditation — guided tools for inner work.
-            </p>
-          </div>
-        </Link>
+        <ScrollParallax speed={0.1} disabled>
+          <Link href="/practice" className="group relative overflow-hidden block min-h-[70vh] md:min-h-[85vh]">
+            <CinematicImage
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Mountain_pass_trident_twilight_s%E2%80%A6_202608031904_3-IfYvsdxzj6itBxExULqvRbhPJTUDtp.jpeg"
+              alt="Mountain pass with ritual trident under twilight sky — the path of practice"
+              kenBurns="normal"
+              scrim="bottom"
+              volumetric
+              dust
+            />
+            <div className="scrim-bottom-anchored" />
+            <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 lg:p-16">
+              <p className="section-label mb-4">Sadhana Instruments</p>
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 hero-heading tracking-wide">
+                See Yourself.<br />Clearly.
+              </h2>
+              <p className="text-foreground text-base max-w-md editorial-spacing" style={{textShadow: '0 1px 8px rgba(0,0,0,0.7)'}}>
+                Breathwork, japa, meditation — guided tools for inner work.
+              </p>
+            </div>
+          </Link>
+        </ScrollParallax>
       </section>
 
-      {/* ===== CHAMBER III: EDITORIAL DIVIDER — The Mirror Method ===== */}
+      {/* ===== CHAMBER III: EDITORIAL DIVIDER — The Mirror Method (with parallax text) ===== */}
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-28 md:py-40">
         <div className="divider-gold mb-20" />
-        <motion.div
-          className="max-w-3xl mx-auto text-center"
-          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-          whileInView={fadeInUp.visible}
-          viewport={{ once: true, margin: '-80px' }}
-        >
+        <ParallaxText speed={-0.06} className="max-w-3xl mx-auto text-center">
           <p className="section-label mb-8">The Mirror Method</p>
           <p className="text-sub-display text-foreground mb-8 engraved-heading">
             Your patterns<br />have names.
@@ -167,12 +168,12 @@ export default function HomePage() {
             Every emotional loop, every recurring relationship dynamic — they map
             to ancient sadhanas designed for exactly this.
           </p>
-        </motion.div>
+        </ParallaxText>
         <div className="divider-gold mt-20" />
       </div>
 
-      {/* ===== CINEMATIC STRIP II — Sri Yantra sky ===== */}
-      <div className="cinematic-strip">
+      {/* ===== CINEMATIC STRIP II — Sri Yantra sky (with parallax) ===== */}
+      <ScrollParallax speed={-0.2} className="cinematic-strip">
         <CinematicImage
           src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pattern_Intelligence_Rescuer_Per%E2%80%A6_202608061239-Tui9sNCxKR6kPFLjWZatF9zLlenizc.jpeg"
           alt="Sri Yantra floating above Himalayan peaks at twilight"
@@ -180,17 +181,19 @@ export default function HomePage() {
           filmGrain={false}
         />
         <div className="cinematic-strip-overlay" />
-      </div>
+      </ScrollParallax>
 
-      {/* ===== CHAMBER IV: PATTERN ATLAS — Museum grid ===== */}
+      {/* ===== CHAMBER IV: PATTERN ATLAS — Museum grid (with parallax) ===== */}
       <section className="relative py-20 md:py-32 section-scrim-dim">
-        <CinematicImage
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Mandala_of_divine_masks_202608061239-DAtTaSltoqS1eWGHl1ycNrqpTVKsz3.jpeg"
-          alt="Forgotten forest shrine draped in mist and ancient light"
-          scrim="full"
-          vignette
-          className="absolute inset-0"
-        />
+        <ScrollParallax speed={-0.12} disabled>
+          <CinematicImage
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Mandala_of_divine_masks_202608061239-DAtTaSltoqS1eWGHl1ycNrqpTVKsz3.jpeg"
+            alt="Forgotten forest shrine draped in mist and ancient light"
+            scrim="full"
+            vignette
+            className="absolute inset-0"
+          />
+        </ScrollParallax>
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
           <motion.p
 className="section-label editorial-heading mb-6"
@@ -223,15 +226,17 @@ className="section-label editorial-heading mb-6"
         </div>
       </section>
 
-      {/* ===== CHAMBER V: FEATURED SIDDHIS — Dark museum hall ===== */}
+      {/* ===== CHAMBER V: FEATURED SIDDHIS — Dark museum hall (with parallax) ===== */}
       <section className="relative py-28 md:py-40">
-        <CinematicImage
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ancient_codex_and_dossier_scroll_202608061239_2-iT39hyEIdVx6oWFVugB2sp9Mt9uSOF.jpeg"
-          alt="Forgotten chamber with volumetric god rays illuminating ancient yantras and sacred artifacts"
-          scrim="full"
-          vignette
-          dust
-        />
+        <ScrollParallax speed={-0.1} disabled>
+          <CinematicImage
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ancient_codex_and_dossier_scroll_202608061239_2-iT39hyEIdVx6oWFVugB2sp9Mt9uSOF.jpeg"
+            alt="Forgotten chamber with volumetric god rays illuminating ancient yantras and sacred artifacts"
+            scrim="full"
+            vignette
+            dust
+          />
+        </ScrollParallax>
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
           <motion.p
             className="section-label editorial-heading mb-8"
@@ -264,8 +269,8 @@ className="section-label editorial-heading mb-6"
         </div>
       </section>
 
-      {/* ===== CINEMATIC STRIP III — Underground library ===== */}
-      <div className="cinematic-strip">
+      {/* ===== CINEMATIC STRIP III — Underground library (with parallax) ===== */}
+      <ScrollParallax speed={-0.2} className="cinematic-strip">
         <CinematicImage
           src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ancient_codex_and_dossier_scroll_202608061239_2-iT39hyEIdVx6oWFVugB2sp9Mt9uSOF.jpeg"
           alt="Vast underground library of ancient manuscripts and golden artifacts"
@@ -273,9 +278,9 @@ className="section-label editorial-heading mb-6"
           filmGrain={false}
         />
         <div className="cinematic-strip-overlay" />
-      </div>
+      </ScrollParallax>
 
-      {/* ===== CHAMBER VI: BREATH — Two-column layout with Nadi Shuddhi image ===== */}
+      {/* ===== CHAMBER VI: BREATH — Two-column layout with Nadi Shuddhi image (with parallax image) ===== */}
       <section className="relative py-20 md:py-28 lg:py-32 bg-deep-black">
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="practice-layout grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
@@ -306,6 +311,9 @@ className="section-label editorial-heading mb-6"
               >
                 Nadi Shuddhi — Channel Purification
               </motion.p>
+              <div className="flex items-center gap-6 flex-wrap mb-12">
+                <ResonanceToggle />
+              </div>
               <motion.div
                 initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 0.96 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -316,13 +324,8 @@ className="section-label editorial-heading mb-6"
               </motion.div>
             </div>
 
-            {/* RIGHT COLUMN — image, gold-framed */}
-            <motion.div
-              className="relative"
-              initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-              whileInView={fadeInUp.visible}
-              viewport={{ once: true }}
-            >
+            {/* RIGHT COLUMN — image, gold-framed, with parallax depth */}
+            <ScrollParallax speed={-0.08} className="relative">
               <div className="relative rounded-lg overflow-hidden aspect-[16/10]"
                 style={{
                   border: '1px solid rgba(212,175,55,0.3)',
@@ -334,7 +337,7 @@ className="section-label editorial-heading mb-6"
                   alt="Nadi Shuddhi channel purification — subtle energy pathways"
                 />
               </div>
-            </motion.div>
+            </ScrollParallax>
           </div>
         </div>
       </section>
@@ -342,11 +345,13 @@ className="section-label editorial-heading mb-6"
       {/* ===== CHAMBER VII: MEMBERSHIP — New background with heavy dim ===== */}
       <section className="relative py-28 md:py-40">
         {/* New background image — copper trident courtyard */}
-        <CinematicImage
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Copper_trident_in_stone_courtyard_202608050700-R6LSleO2mZ2oSJEvEgxFkYzBceifIa.jpeg"
-          alt="Copper trident in ancient stone courtyard — the depth of commitment"
-          className="absolute inset-0"
-        />
+        <ScrollParallax speed={-0.06} disabled>
+          <CinematicImage
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Copper_trident_in_stone_courtyard_202608050700-R6LSleO2mZ2oSJEvEgxFkYzBceifIa.jpeg"
+            alt="Copper trident in ancient stone courtyard — the depth of commitment"
+            className="absolute inset-0"
+          />
+        </ScrollParallax>
         {/* Heavy dim overlay for pricing readability */}
         <div className="absolute inset-0 pointer-events-none z-[1]"
           style={{ background: 'rgba(0,0,0,0.8)' }}
@@ -367,8 +372,8 @@ className="section-label editorial-heading mb-6"
         </div>
       </section>
 
-      {/* ===== CINEMATIC STRIP IV — Observatory ===== */}
-      <div className="cinematic-strip">
+      {/* ===== CINEMATIC STRIP IV — Observatory (with parallax) ===== */}
+      <ScrollParallax speed={-0.2} className="cinematic-strip">
         <CinematicImage
           src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meditation_platform_overlooking_%E2%80%A6_202608031904_3-KyHEy3C1LCfpT4ElN0zBaQ3L1gBEHr.jpeg"
           alt="Ancient astronomical observatory with brass instruments under night sky"
@@ -376,45 +381,34 @@ className="section-label editorial-heading mb-6"
           filmGrain={false}
         />
         <div className="cinematic-strip-overlay" />
-      </div>
+      </ScrollParallax>
 
-      {/* ===== CHAMBER VIII: CONSULT THE ARCHIVIST CTA BAND ===== */}
+      {/* ===== CHAMBER VIII: CONSULT THE ARCHIVIST CTA BAND (with parallax bg) ===== */}
       <section className="relative py-28 md:py-40 safe-bottom">
         {/* New background — ancient temple midnight glow */}
-        <CinematicImage
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ancient_temple_midnight_glowing_%E2%80%A6_202608031904_4-I8iUrf3bUZOL9MYIcJU40eRov5dvop.jpeg"
-          alt="Ancient temple at midnight with ethereal golden glow — the inner sanctum"
-          className="absolute inset-0"
-        />
+        <ScrollParallax speed={-0.08} disabled>
+          <CinematicImage
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ancient_temple_midnight_glowing_%E2%80%A6_202608031904_4-I8iUrf3bUZOL9MYIcJU40eRov5dvop.jpeg"
+            alt="Ancient temple at midnight with ethereal golden glow — the inner sanctum"
+            className="absolute inset-0"
+          />
+        </ScrollParallax>
         {/* Bottom-anchored scrim — strengthened mid-section for body text contrast */}
         <div className="absolute inset-0 pointer-events-none z-[1]"
           style={{
             background: 'linear-gradient(to top, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.6) 50%, rgba(5,5,5,0.75) 100%)',
           }}
         />
-        <div className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">
-          <motion.p
-            className="section-label mb-6"
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            whileInView={fadeInUp.visible}
-            viewport={{ once: true }}
-          >
+        <ParallaxText speed={-0.05} className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">
+          <p className="section-label mb-6">
             Enter the Inner Sanctum
-          </motion.p>
-          <motion.h2
-            className="font-display text-3xl md:text-5xl text-white mb-8 hero-heading tracking-wide"
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            whileInView={fadeInUp.visible}
-            viewport={{ once: true }}
-          >
+          </p>
+          <h2 className="font-display text-3xl md:text-5xl text-white mb-8 hero-heading tracking-wide">
             The Archive Awaits.
-          </motion.h2>
-          <motion.p
+          </h2>
+          <p
             className="text-foreground text-lg mb-12 editorial-spacing"
             style={{textShadow: '0 1px 8px rgba(0,0,0,0.6)'}}
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            whileInView={fadeInUp.visible}
-            viewport={{ once: true }}
           >
             Kaustubh is a Tantric Technologist — part technologist, part
             practitioner, part pattern-recognizer. He maps your recurring
@@ -422,15 +416,11 @@ className="section-label editorial-heading mb-6"
             Akashic Archive, prescribing exact practices for your exact pattern.
             No guesswork. No generic advice. Just precise, lineage-backed
             intervention designed for where you are right now.
-          </motion.p>
-          <motion.div
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            whileInView={fadeInUp.visible}
-            viewport={{ once: true }}
-          >
+          </p>
+          <div>
             <WhatsAppCTA variant="inline" label="Consult Kaustubh" />
-          </motion.div>
-        </div>
+          </div>
+        </ParallaxText>
       </section>
     </div>
   );
