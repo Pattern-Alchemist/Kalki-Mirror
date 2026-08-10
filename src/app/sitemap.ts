@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/research`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${base}/pricing`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/consultations`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/redeem`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/dossier`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/codex`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${base}/practice/japa`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },

@@ -110,6 +110,44 @@ export default function RootLayout({
             </div>
             <PaywallModal />
             <div className="page-vignette" aria-hidden="true" />
+
+            {/* JSON-LD Structured Data */}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  '@context': 'https://schema.org',
+                  '@graph': [
+                    {
+                      '@type': 'WebSite',
+                      '@id': `${SITE_URL}/#website`,
+                      url: SITE_URL,
+                      name: 'KALKI',
+                      description: 'Tantrik Intelligence. Sacred Architecture. Pattern Recognition.',
+                      publisher: { '@id': `${SITE_URL}/#organization` },
+                      potentialAction: {
+                        '@type': 'SearchAction',
+                        target: `${SITE_URL}/archive?q={search_term_string}`,
+                        'query-input': 'required name=search_term_string',
+                      },
+                    },
+                    {
+                      '@type': 'Organization',
+                      '@id': `${SITE_URL}/#organization`,
+                      name: 'KALKI',
+                      url: SITE_URL,
+                      logo: `${SITE_URL}/favicon.svg`,
+                      description: 'Tantrik Intelligence. The Architecture of Karma.',
+                      founder: {
+                        '@type': 'Person',
+                        name: 'Kaustubh',
+                        jobTitle: 'Tantric Technologist',
+                      },
+                    },
+                  ],
+                }),
+              }}
+            />
           </SmoothScroll>
         </TierProvider>
       </body>

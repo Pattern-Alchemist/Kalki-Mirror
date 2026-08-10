@@ -17,6 +17,8 @@ export interface TierContextValue {
   setShowPaywall: (v: boolean) => void;
   paywallFeature: string;
   requestUpgrade: (feature: string, requiredTier: Tier) => boolean;
+  refreshTier: () => void;
+  upgrade: (newTier: Tier) => void;
 }
 
 const TierContext = createContext<TierContextValue>({
@@ -29,6 +31,8 @@ const TierContext = createContext<TierContextValue>({
   setShowPaywall: () => {},
   paywallFeature: '',
   requestUpgrade: () => false,
+  refreshTier: () => {},
+  upgrade: () => {},
 });
 
 /**
@@ -109,7 +113,7 @@ export function TierProvider({ children }: { children: ReactNode }) {
   }, [refreshTier]);
 
   return (
-    <TierContext.Provider value={{ tier, setTier, canAccess, currency, setCurrency, showPaywall, setShowPaywall, paywallFeature, requestUpgrade }}>
+    <TierContext.Provider value={{ tier, setTier, upgrade, canAccess, currency, setCurrency, showPaywall, setShowPaywall, paywallFeature, requestUpgrade, refreshTier }}>
       {children}
     </TierContext.Provider>
   );

@@ -71,3 +71,70 @@ export const updateRoleSchema = z.object({
   newRole: z.enum(["USER", "EDITOR", "REVIEWER", "ADMIN", "SUPERADMIN"]),
   reason: z.string().min(1, "Reason is required.").max(500),
 });
+
+// ── API: /api/ai/search (semantic siddhi search) ──
+export const aiSearchSchema = z.object({
+  query: z.string().min(3, "Query must be at least 3 characters.").max(500, "Query too long."),
+  limit: z.number().min(1).max(20).default(5),
+});
+
+// ── API: /api/ai/explain (codex explainer) ──
+export const aiExplainSchema = z.object({
+  content: z.string().min(20, "Content must be at least 20 characters.").max(10000, "Content exceeds maximum length."),
+  style: z.enum(['beginner', 'technical']).default('beginner'),
+});
+
+// ── API: /api/ai/pattern-explain (pattern plain-English) ──
+export const aiPatternExplainSchema = z.object({
+  patternSlug: z.string().min(1, "Pattern slug is required."),
+  context: z.string().max(500).optional(),
+});
+
+// ── API: /api/ai/transit-interpretation ──
+export const transitInterpretationSchema = z.object({
+  positions: z.array(
+    z.object({
+      planet: z.string().min(1, "Planet is required."),
+      sign: z.string().min(1, "Sign is required."),
+      degree: z.number().min(0).max(360),
+    })
+  ).min(1, "At least one planetary position is required."),
+});
+
+// ── API: /api/ai/consultation-screen ──
+export const consultationScreenSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters.").max(200, "Name too long."),
+  message: z.string().min(10, "Message must be at least 10 characters.").max(5000, "Message too long."),
+});
+
+// ── API: /api/ai/draft ──
+export const aiDraftSchema = z.object({
+  type: z.enum(['practice', 'archetype', 'pattern', 'research', 'codex']),
+  title: z.string().min(3, "Title must be at least 3 characters.").max(300, "Title too long."),
+  context: z.string().max(2000, "Context too long.").optional(),
+});
+
+// ── API: /api/ai/archetype-quiz ──
+export const archetypeQuizSchema = z.object({
+  answers: z.array(z.string().min(5, "Each answer must be at least 5 characters.")).min(5, "At least 5 answers are required.").max(10, "At most 10 answers are allowed."),
+});
+
+// ── API: /api/ai/japa-guide ──
+export const japaGuideSchema = z.object({
+  mantra: z.string().min(2, "Mantra must be at least 2 characters."),
+  count: z.number().min(1, "Count must be at least 1.").default(108),
+  experience: z.string().max(1000, "Experience context too long.").optional(),
+});
+
+// ── API: /api/ai/breathwork ──
+export const breathworkSchema = z.object({
+  type: z.enum(['calming', 'energizing', 'focus', 'nadi-shuddhi', 'bhramari', 'custom'], {
+    errorMap: () => ({ message: 'Invalid breathwork type.' }),
+  }),
+  duration: z.number().min(3, "Duration must be at least 3 minutes.").max(60, "Duration must be at most 60 minutes.").default(15),
+});
+
+// ── API: /api/ai/recommend-tier ──
+export const recommendTierSchema = z.object({
+  answers: z.array(z.string().min(5, "Each answer must be at least 5 characters.")).min(3, "At least 3 answers are required.").max(5, "At most 5 answers are allowed."),
+});
