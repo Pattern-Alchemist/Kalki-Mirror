@@ -139,3 +139,29 @@ Stage Summary:
 - Key fix: archetype ID mismatches between LLM prompts and canonical data corrected
 - Key fix: hash-based auto-expand on archetypes page for "View Full Archetype" link
 - All 5 Batch 5 UI upgrades implemented and verified
+---
+Task ID: 1
+Agent: main
+Task: Implement Pattern Atlas with evolving scroll architecture
+
+Work Log:
+- Explored project structure: found /patterns page, PatternCard, patterns.ts data, ScrollParallax, CinematicImage, globals.css
+- Generated 3 AI images: zone-mirror (dark threshold), zone-confrontation (cracked mirror + tangled threads), zone-dissolution (fragmenting geometry + emerging light)
+- Uploaded to Cloudinary: kalki-mirror/pattern-atlas/zone-mirror, zone-confrontation, zone-dissolution
+- Rewrote src/app/patterns/page.tsx with 5-zone narrative scroll:
+  - Zone 0: THE MIRROR — fullscreen hero with centered title, scroll hint
+  - Zone 1: RECOGNITION — patterns 1-4 (Rescuer, Perfectionist, Ghost, Controller)
+  - Zone 2: CONFRONTATION — patterns 5-8 (Hermit, Chameleon, Saboteur, Avoidant)
+  - Zone 3: DISSOLUTION — patterns 9-12 (Martyr, Pleaser, Positivist, Architect)
+  - Zone 4: UNDERSTANDING — statistics with gold-foil AnimatedCounters
+- Fixed background layer: 3 images crossfade via useScroll + useTransform
+- Vignette + film grain overlays on fixed backgrounds
+- Zone dividers with roman numerals, section labels, poetic subtitles, gold dividers
+- Search/filter/sort preserved; active filters switch to flat grid mode
+- Updated patterns/layout.tsx metadata and cloudinary-map.json
+- Build verified clean, pushed to GitHub
+
+Stage Summary:
+- Produced: /patterns page with full scroll narrative architecture
+- 3 Cloudinary images hosted and crossfading
+- The narrative: Enter the mirror → Recognize → Confront → Dissolve → Understanding
