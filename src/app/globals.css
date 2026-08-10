@@ -1,8 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
 /* ==========================================================
    KALKI — MASTER BRAND SYSTEM
    Tantrik Intelligence. Sacred Architecture. Pattern Recognition.
@@ -243,27 +241,7 @@
    Multi-layered transparency with depth, noise, and metallic edges.
    ========================================================== */
 
-/* Primary glass — cards, panels, chips */
-.glass-chip {
-  background: var(--glass-bg);
-  backdrop-filter: blur(24px) saturate(1.2);
-  -webkit-backdrop-filter: blur(24px) saturate(1.2);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  box-shadow:
-    0 4px 30px rgba(0, 0, 0, 0.5),
-    0 1px 0 rgba(212, 175, 55, 0.04) inset,
-    0 -1px 0 rgba(0, 0, 0, 0.2) inset;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
-}
-.glass-chip:hover {
-  border-color: var(--border-gold-hover);
-  box-shadow:
-    0 8px 40px rgba(0, 0, 0, 0.6),
-    0 0 30px var(--glass-glow),
-    0 1px 0 rgba(212, 175, 55, 0.08) inset;
-  transform: translateY(-2px);
-}
+/* Glass chip — defined in READABILITY SYSTEM below */
 
 /* Large panel glass — sections, containers */
 .glass-panel {
@@ -379,12 +357,7 @@
   100% { background-position: 100% 50%; }
 }
 
-/* Engraved heading — subtle inset shadow for depth */
-.engraved-heading {
-  text-shadow:
-    0 1px 0 rgba(212, 175, 55, 0.15),
-    0 0 40px rgba(212, 175, 55, 0.08);
-}
+/* Engraved heading — defined in READABILITY SYSTEM below */
 
 /* ==========================================================
    BUTTONS — Engraved Brass & Wax Seal

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import { motion, useReducedMotion } from 'framer-motion';
 import { PageHero } from '@/components/layout/PageHero';
 import { CinematicImage } from '@/components/ui/CinematicImage';
@@ -10,7 +11,7 @@ import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { submitConsultation } from './actions';
-import { ConsultationScreener } from '@/components/ai/ConsultationScreener';
+const ConsultationScreener = dynamic(() => import('@/components/ai/ConsultationScreener').then(m => ({ default: m.ConsultationScreener })), { ssr: false, loading: () => <div className="h-32" /> });
 
 const KAUSTUBH_IMG = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_800,c_limit/kalki-mirror/kaustubh-portrait';
 
@@ -232,7 +233,7 @@ export default function ConsultationsPage() {
                     type="text"
                     value={form.name}
                     onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                    className="w-full bg-transparent border border-zinc-700 rounded-sm px-4 py-3 text-foreground text-sm placeholder:text-zinc-600 focus:border-gold/40 focus:outline-none transition-colors"
+                    className="w-full bg-transparent border border-gold/10 rounded-sm px-4 py-3 text-foreground text-sm placeholder:text-text-muted/50 focus:border-gold/40 focus:outline-none transition-colors"
                     placeholder="Your name"
                   />
                 </div>
@@ -243,7 +244,7 @@ export default function ConsultationsPage() {
                     type="tel"
                     value={form.whatsapp}
                     onChange={e => setForm(p => ({ ...p, whatsapp: e.target.value }))}
-                    className="w-full bg-transparent border border-zinc-700 rounded-sm px-4 py-3 text-foreground text-sm placeholder:text-zinc-600 focus:border-gold/40 focus:outline-none transition-colors"
+                    className="w-full bg-transparent border border-gold/10 rounded-sm px-4 py-3 text-foreground text-sm placeholder:text-text-muted/50 focus:border-gold/40 focus:outline-none transition-colors"
                     placeholder="+91 98765 43210"
                   />
                 </div>
@@ -254,7 +255,7 @@ export default function ConsultationsPage() {
                     rows={4}
                     value={form.message}
                     onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
-                    className="w-full bg-transparent border border-zinc-700 rounded-sm px-4 py-3 text-foreground text-sm placeholder:text-zinc-600 focus:border-gold/40 focus:outline-none transition-colors resize-none"
+                    className="w-full bg-transparent border border-gold/10 rounded-sm px-4 py-3 text-foreground text-sm placeholder:text-text-muted/50 focus:border-gold/40 focus:outline-none transition-colors resize-none"
                     placeholder="Describe what you're navigating — relationships, career, inner blocks..."
                   />
                 </div>

@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 
 const FOOTER_LINKS = {
@@ -68,7 +66,7 @@ export function SacredFooter() {
             Ancient Algorithms. Cosmic Law.
           </p>
           <p className="text-caption">
-            &copy; {new Date().getFullYear()} KALKI. All rights reserved.
+            &copy; 2025 KALKI. All rights reserved.
           </p>
         </div>
       </div>

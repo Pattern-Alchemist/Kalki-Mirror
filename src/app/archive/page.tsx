@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import {
   motion,
   useScroll,
@@ -18,7 +19,7 @@ import { staggerContainer, staggerItem, fadeInUp } from '@/lib/motion/tokens';
 import type { SiddhiLevel } from '@/lib/data/types';
 import { cn } from '@/lib/utils';
 import { BackButton } from '@/components/nav/BackButton';
-import { AISearchBar } from '@/components/ai/AISearchBar';
+const AISearchBar = dynamic(() => import('@/components/ai/AISearchBar').then(m => ({ default: m.AISearchBar })), { ssr: false, loading: () => <div className="h-12" /> });
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 
 /* ─── Zone Images (Cloudinary) ──────────────────────────────────────── */

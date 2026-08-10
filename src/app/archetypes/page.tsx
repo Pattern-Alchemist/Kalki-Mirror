@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { TEN_MAHAVIDYAS, ALL_ARCHETYPES, type Archetype } from '@/lib/data/archetypes';
@@ -11,8 +12,8 @@ import { GatedContent } from '@/components/monetization/GatedContent';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import Link from 'next/link';
 import { BackButton } from '@/components/nav/BackButton';
-import { ArchetypeQuiz } from '@/components/ai/ArchetypeQuiz';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
+const ArchetypeQuiz = dynamic(() => import('@/components/ai/ArchetypeQuiz').then(m => ({ default: m.ArchetypeQuiz })), { ssr: false, loading: () => <div className="h-48" /> });
 import type { CautionLevel } from '@/lib/data/archetypes';
 import type { Tier } from '@/lib/data/types';
 
@@ -44,7 +45,6 @@ export default function ArchetypesPage() {
       {/* Header */}
       <header className="border-b border-gold/5">
         <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-10 pt-32 pb-16">
-          <BackButton href="/" label="Back to Home" className="mb-8" />
           <motion.p
             className="section-label mb-6"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { motion, useReducedMotion, useInView } from 'framer-motion';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
@@ -8,7 +9,7 @@ import { PageHero } from '@/components/layout/PageHero';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
-import { JapaGuide } from '@/components/ai/JapaGuide';
+const JapaGuide = dynamic(() => import('@/components/ai/JapaGuide').then(m => ({ default: m.JapaGuide })), { ssr: false, loading: () => <div className="h-32" /> });
 
 const STORAGE_KEY = 'kalki-japa-state';
 
@@ -214,8 +215,8 @@ export default function JapaPage() {
           </p>
 
           {/* Progress ring */}
-          <div className="relative inline-flex items-center justify-center mb-10">
-            <svg width="240" height="240" viewBox="0 0 240 240" className="transform -rotate-90">
+          <div className="relative inline-flex items-center justify-center mb-10 w-[200px] h-[200px] md:w-[240px] md:h-[240px]">
+            <svg width="100%" height="100%" viewBox="0 0 240 240" className="transform -rotate-90">
               <circle
                 cx="120" cy="120" r="108"
                 fill="none"
@@ -240,7 +241,7 @@ export default function JapaPage() {
             >
               <span
                 ref={counterRef}
-                className={`font-display text-7xl md:text-8xl tabular-nums transition-colors duration-300 ${
+                className={`font-display text-6xl md:text-7xl lg:text-8xl tabular-nums transition-colors duration-300 ${
                   isComplete ? 'text-gold text-glow' : 'text-foreground'
                 }`}
               >

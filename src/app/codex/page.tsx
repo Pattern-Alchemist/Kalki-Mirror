@@ -1,8 +1,9 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { motion, useReducedMotion } from 'framer-motion';
 import { BackButton } from '@/components/nav/BackButton';
-import { CodexExplainer } from '@/components/ai/CodexExplainer';
+const CodexExplainer = dynamic(() => import('@/components/ai/CodexExplainer').then(m => ({ default: m.CodexExplainer })), { ssr: false, loading: () => <div className="h-32" /> });
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp } from '@/lib/motion/tokens';

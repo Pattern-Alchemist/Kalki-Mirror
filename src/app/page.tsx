@@ -1,12 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 
 import { motion, useReducedMotion } from 'framer-motion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { SiddhiCard } from '@/components/archive/SiddhiCard';
 import { PatternCard } from '@/components/patterns/PatternCard';
-import { PricingCards } from '@/components/monetization/PricingCards';
+const PricingCards = dynamic(() => import('@/components/monetization/PricingCards').then(m => ({ default: m.PricingCards })), { ssr: false });
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';

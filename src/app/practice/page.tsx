@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { PageHero } from '@/components/layout/PageHero';
@@ -9,7 +10,7 @@ import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { BreathTimer } from '@/components/practice/BreathTimer';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
 import { BackButton } from '@/components/nav/BackButton';
-import { AIBreathworkGenerator } from '@/components/ai/AIBreathworkGenerator';
+const AIBreathworkGenerator = dynamic(() => import('@/components/ai/AIBreathworkGenerator').then(m => ({ default: m.AIBreathworkGenerator })), { ssr: false, loading: () => <div className="h-32" /> });
 import { ResonanceToggle } from '@/components/ui/ResonanceToggle';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { Timer, CircleDot } from 'lucide-react';
