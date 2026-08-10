@@ -167,6 +167,54 @@ Stage Summary:
 - The narrative: Enter the mirror → Recognize → Confront → Dissolve → Understanding
 
 ---
+Task ID: batch8
+Agent: Main
+Task: Batch 8 — Quiz fix, Archive scroll redesign, UI polish sweep
+
+Work Log:
+- Fixed questionnaire 'calibrating' dead-end: traced to PricingQuiz.tsx (not ArchetypeQuiz), removed unreachable 'unconfigured' state from both PricingQuiz and ArchetypeQuiz
+- Both quiz components: added 25s AbortController timeout on fetch
+- PricingQuiz: added full client-side fallback (localFallback function) mirroring server-side weight matrix — quiz now never shows empty/dead-end
+- Akashic Archive page: rewrote with scroll-driven fixed crossfade background (3 Cloudinary images: threshold, reading-room, deep-archive) using useScroll + useTransform, matching Pattern Atlas architecture
+- Archive: added zone dividers with roman numerals, scroll hint, full-height hero section, text-shadow for readability over crossfade
+- Raw img audit: confirmed all remaining <img> tags are intentional (SVG loading animations + crossfade background layers)
+- Consultations page: added ScrollParallax interlude (ritual-chamber image) between bio and services
+- AuthenticityMeter: enhanced with AnimatedCounter showing numeric percentage score with label
+- Japa page: added 'Mala Complete' golden text indicator on completion
+- Timer page: fixed stats-saving bug (undefined variables s, t in useEffect), moved to separate phase-watching effect
+- Timer page: added keyboard shortcuts (Space=start/pause, R=reset) with visual hints
+- Build verified clean: 0 errors, all 21 routes passing
+
+Stage Summary:
+- 8 files changed across quiz components, archive page, timer, japa, consultations, AuthenticityMeter
+- Archive page now has cinematic scroll-driven 3-zone crossfade background (Threshold → Reading Room → Deep Archive)
+- Both quizzes are now bulletproof: API success → client-side fallback → clear error — no dead-ends
+- Timer stats persist correctly, keyboard shortcuts enhance usability
+---
+Task ID: batch7-quiz-fix
+Agent: Main
+Task: Fix questionnaire bug — 'calibrating' dead-end screen
+
+Work Log:
+- Traced 'The AI engine is calibrating. The geometry awaits its activation.' to PricingQuiz.tsx (NOT ArchetypeQuiz.tsx)
+- Root cause: PricingQuiz checked `res.status === 503` to enter 'unconfigured' state, but the API never returns 503 — it always falls back to rule-based scoring. The 503 check was dead code from an earlier pattern.
+- The 'unconfigured' state showed only Retry + Return buttons with no useful information — a dead-end UX
+- Verified ArchetypeQuiz API works correctly (returns 200 with LLM result or fallback)
+- Verified OpenRouter API responds correctly with json_mode for meta-llama/llama-3.1-8b-instruct
+- Fixed PricingQuiz.tsx: removed 503 check and 'unconfigured' state entirely
+- Fixed ArchetypeQuiz.tsx: removed 503 check and 'unconfigured' state entirely
+- Both quiz components: added 25-second AbortController timeout on fetch
+- PricingQuiz.tsx: added full client-side fallback (localFallback function) — mirrors server-side weight matrix, so if API fails entirely (timeout, network error, server crash), the quiz still computes and displays a result
+- ArchetypeQuiz.tsx: server already has fallbackAnalysis; error state shows clear message with Try Again
+- Removed 'unconfigured' from QuizState type union in both components
+- Build verified clean: 0 errors
+
+Stage Summary:
+- The 'calibrating' dead-end screen is now impossible — the state that rendered it no longer exists
+- PricingQuiz gracefully degrades: API result → local computation → never shows empty/dead-end
+- Both quizzes have 25s timeout to prevent infinite spinner
+- 2 files changed: PricingQuiz.tsx, ArchetypeQuiz.tsx
+---
 Task ID: batch6
 Agent: Main
 Task: Quiz bug fixes, archive Cloudinary migration, parallax rollout, timer persistence

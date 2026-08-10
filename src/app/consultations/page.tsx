@@ -8,6 +8,7 @@ import { BackButton } from '@/components/nav/BackButton';
 import { consultationServices } from '@/lib/data/consultations';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
+import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { submitConsultation } from './actions';
 import { ConsultationScreener } from '@/components/ai/ConsultationScreener';
 
@@ -113,6 +114,20 @@ export default function ConsultationsPage() {
         </motion.div>
 
         <div className="divider-gold mb-20" />
+
+        {/* === Parallax Interlude === */}
+        <ScrollParallax speed={-0.1} className="mb-20">
+          <div className="relative h-[30vh] md:h-[40vh] overflow-hidden">
+            <CinematicImage
+              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-ritual-chamber"
+              alt="Ritual chamber — the space between"
+              fill
+              scrim="full"
+              vignette
+              filmGrain={false}
+            />
+          </div>
+        </ScrollParallax>
 
         {/* === SESSIONS === */}
         <motion.div className="space-y-6"

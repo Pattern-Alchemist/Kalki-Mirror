@@ -253,6 +253,18 @@ export default function JapaPage() {
             of <AnimatedCounter target={state.target} /> repetitions
           </p>
 
+          {/* Completion state — golden pulse feedback */}
+          {isComplete && (
+            <motion.p
+              className="text-gold text-sm tracking-[0.2em] uppercase font-mono mb-6"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              Mala Complete
+            </motion.p>
+          )}
+
           {/* Tap / click button */}
           <button
             onClick={increment}

@@ -22,7 +22,7 @@ interface TierResult {
   unlockedFeatures: string[];
 }
 
-type QuizState = 'intro' | 'quiz' | 'analyzing' | 'result' | 'error' | 'unconfigured';
+type QuizState = 'intro' | 'quiz' | 'analyzing' | 'result' | 'error';
 
 /* ── Tier Display Names ── */
 const TIER_NAMES: Record<string, string> = {
@@ -63,6 +63,63 @@ const QUESTIONS: QuizQuestion[] = [
   },
 ];
 
+/* ── Client-side fallback (mirrors server fallback) ── */
+const ANSWER_TIER_WEIGHTS: Record<string, Record<string, number>> = {
+  'intellectual-curiosity': { prithvi: 3, jal: 1, agni: 0, akash: 0 },
+  'solve-patterns':         { prithvi: 1, jal: 3, agni: 1, akash: 0 },
+  'daily-practice':         { prithvi: 0, jal: 2, agni: 3, akash: 1 },
+  'complete-mastery':       { prithvi: 0, jal: 0, agni: 2, akash: 3 },
+  'beginner':           { prithvi: 3, jal: 1, agni: 0, akash: 0 },
+  'tried-meditation':   { prithvi: 1, jal: 3, agni: 1, akash: 0 },
+  'regular-practice':   { prithvi: 0, jal: 2, agni: 3, akash: 1 },
+  'advanced':           { prithvi: 0, jal: 0, agni: 2, akash: 3 },
+  'basics':               { prithvi: 3, jal: 1, agni: 0, akash: 0 },
+  'structured-practices': { prithvi: 0, jal: 3, agni: 2, akash: 0 },
+  'advanced-siddhis':     { prithvi: 0, jal: 1, agni: 3, akash: 2 },
+  'everything':           { prithvi: 0, jal: 0, agni: 1, akash: 3 },
+};
+
+const TIER_INFO: Record<string, TierResult> = {
+  prithvi: {
+    recommendedTier: 'prithvi',
+    tierElement: 'Earth',
+    reason: 'Your curiosity and foundational interest in Vedic wisdom aligns with the Antechamber — the solid ground from which all deeper practice grows. This tier provides the essential maps and introductory practices to orient your trajectory.',
+    unlockedFeatures: ['Introductory practices', 'Foundational archetypes', 'Entry-level patterns', 'Basic breathwork sequences'],
+  },
+  jal: {
+    recommendedTier: 'jal',
+    tierElement: 'Water',
+    reason: 'Your commitment to establishing a regular practice places you in the Initiate stream — the flowing current that deepens with consistent effort. This tier provides structured sādhana protocols, detailed archetype analyses, and the mantra libraries your practice needs.',
+    unlockedFeatures: ['Structured sādhana protocols', 'Full archetype analyses', 'Mantra library', 'Breathwork sequences', 'Pattern analysis tools'],
+  },
+  agni: {
+    recommendedTier: 'agni',
+    tierElement: 'Fire',
+    reason: 'Your depth of experience and appetite for advanced technique places you in the Practitioner stream — the transformative fire that burns through superficial understanding. This tier provides advanced siddhis, detailed transit interpretations, and yantra construction guides.',
+    unlockedFeatures: ['Advanced siddhis', 'Detailed transit interpretations', 'Pattern deep-dives', 'Yantra construction guides', 'Community consultations'],
+  },
+  akash: {
+    recommendedTier: 'akash',
+    tierElement: 'Space',
+    reason: 'Your pursuit of complete mastery places you in the Vault — the boundless space that contains all practices without restriction. This tier provides unrestricted access to sealed practices, research codices, and priority consultations.',
+    unlockedFeatures: ['All content including sealed practices', 'Research codices', 'Advanced Mahavidya workings', 'Priority consultations', 'Early access to new content'],
+  },
+};
+
+function localFallback(answers: string[]): TierResult {
+  const scores: Record<string, number> = { prithvi: 0, jal: 0, agni: 0, akash: 0 };
+  for (const a of answers) {
+    const weights = ANSWER_TIER_WEIGHTS[a];
+    if (!weights) continue;
+    for (const [tier, w] of Object.entries(weights)) {
+      scores[tier] = (scores[tier] || 0) + w;
+    }
+  }
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const tier = sorted[0]?.[0] || 'prithvi';
+  return TIER_INFO[tier];
+}
+
 /* ── Spinner ── */
 function Spinner() {
   return (
@@ -100,12 +157,15 @@ export function PricingQuiz() {
     setState('analyzing');
     setError('');
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 25000);
       const res = await fetch('/api/ai/recommend-tier', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ answers: cleanAnswers }),
+        signal: controller.signal,
       });
-      if (res.status === 503) { setState('unconfigured'); return; }
+      clearTimeout(timeoutId);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Recommendation failed');
       // Validate that the result has meaningful content
@@ -115,8 +175,10 @@ export function PricingQuiz() {
       setResult(data);
       setState('result');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'The geometry faltered.');
-      setState('error');
+      // On any failure (timeout, network, server error), compute locally
+      console.warn('[PricingQuiz] API failed, using client-side fallback:', err);
+      setResult(localFallback(cleanAnswers));
+      setState('result');
     }
   }, [answers]);
 
@@ -334,26 +396,7 @@ export function PricingQuiz() {
           </motion.div>
         )}
 
-        {/* ── UNCONFIGURED ── */}
-        {state === 'unconfigured' && (
-          <motion.div
-            key="unconfigured"
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            animate={fadeInUp.visible}
-            exit={reduced ? { opacity: 0 } : fadeInUp.exit}
-            className="text-center space-y-4 py-12"
-          >
-            <p className="text-gold-dim text-sm">
-              The AI engine is calibrating. The geometry awaits its activation.
-            </p>
-            <button onClick={submit} className="ghost-cta text-xs">
-              Retry
-            </button>
-            <button onClick={reset} className="ghost-cta text-xs ml-2">
-              Return
-            </button>
-          </motion.div>
-        )}
+
       </AnimatePresence>
     </div>
   );

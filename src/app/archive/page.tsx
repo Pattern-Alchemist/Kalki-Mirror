@@ -1,25 +1,31 @@
 'use client';
 
 import { useState, useMemo, useRef } from 'react';
-import { motion, useInView, AnimatePresence, useReducedMotion } from 'framer-motion';
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useInView,
+  AnimatePresence,
+  useReducedMotion,
+} from 'framer-motion';
 import Link from 'next/link';
 import { SiddhiCard } from '@/components/archive/SiddhiCard';
 import { CautionBadge, getCautionLevel } from '@/components/archive/CautionBadge';
 import { allSiddhis, SIDDHI_COUNT } from '@/lib/data/siddhis';
-import { TEN_MAHAVIDYAS, ACCESS_LABELS, type CautionLevel as ArchCaution } from '@/lib/data/archetypes';
+import { TEN_MAHAVIDYAS } from '@/lib/data/archetypes';
 import { staggerContainer, staggerItem, fadeInUp } from '@/lib/motion/tokens';
-import type { SiddhiLevel, Tier } from '@/lib/data/types';
+import type { SiddhiLevel } from '@/lib/data/types';
 import { cn } from '@/lib/utils';
 import { BackButton } from '@/components/nav/BackButton';
 import { AISearchBar } from '@/components/ai/AISearchBar';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
-import { CinematicImage } from '@/components/ui/CinematicImage';
 
-// ─── Zone Images (Cloudinary) ────────────────────────────────────────
-const CLOUD = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive-zone';
-const ZONE_THRESHOLD = `${CLOUD}/threshold`;
-const ZONE_READING_ROOM = `${CLOUD}/reading-room`;
-const ZONE_DEEP = `${CLOUD}/deep-archive`;
+/* ─── Zone Images (Cloudinary) ──────────────────────────────────────── */
+const CLOUD = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror';
+const ZONE_THRESHOLD = `${CLOUD}/archive-zone/threshold`;
+const ZONE_READING_ROOM = `${CLOUD}/archive-zone/reading-room`;
+const ZONE_DEEP = `${CLOUD}/archive-zone/deep-archive`;
 
 const CATEGORIES = ['All', 'Mantra', 'Yantra', 'Prāṇāyāma', 'Ritual', 'Tantra', 'Meditation', 'Dhāraṇā'];
 const CAUTION_FILTERS: { value: string; label: string }[] = [
@@ -38,7 +44,7 @@ const TIER_FILTERS: { value: string; label: string }[] = [
   { value: 'akash', label: 'The Vault' },
 ];
 
-// ─── Knowledge Light brightness by siddhi level ──────────────────
+/* ─── Knowledge Light brightness by siddhi level ────────────────── */
 const LIGHT_OPACITY: Record<SiddhiLevel, number> = {
   Foundation: 0.7,
   Intermediate: 0.45,
@@ -46,20 +52,13 @@ const LIGHT_OPACITY: Record<SiddhiLevel, number> = {
   Restricted: 0.06,
 };
 
-// ─── 48 Knowledge Lights ──────────────────────────────────────────
-/**
- * A field of 48 tiny warm light dots distributed in a loose grid.
- * Brightness maps to siddhi level — Foundation glows warmest,
- * Restricted barely visible. Subtle pulse on scroll-reveal.
- */
+/* ─── 48 Knowledge Lights ────────────────────────────────────────── */
 function KnowledgeLights({ siddhis }: { siddhis: typeof allSiddhis }) {
   const reduced = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef, { once: true, margin: '-10% 0px' });
 
-  // Pre-compute positions in a 12×4 grid with organic jitter
   const positions = useMemo(() => {
-    // Deterministic pseudo-random jitter using slug hash
     const jitter = (s: string) => {
       let h = 0;
       for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
@@ -69,8 +68,8 @@ function KnowledgeLights({ siddhis }: { siddhis: typeof allSiddhis }) {
     return siddhis.map((s, i) => {
       const col = i % 12;
       const row = Math.floor(i / 12);
-      const jx = (jitter(s.slug) - 0.5) * 6; // ±3% horizontal jitter
-      const jy = (jitter(s.slug + 'y') - 0.5) * 8; // ±4% vertical jitter
+      const jx = (jitter(s.slug) - 0.5) * 6;
+      const jy = (jitter(s.slug + 'y') - 0.5) * 8;
       return {
         id: s.slug,
         left: `${(col / 11) * 90 + 5 + jx}%`,
@@ -84,7 +83,6 @@ function KnowledgeLights({ siddhis }: { siddhis: typeof allSiddhis }) {
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none z-0">
       {positions.map((p, i) => {
-        const delay = i * 0.06;
         const visible = inView ? 1 : 0;
         return (
           <motion.div
@@ -100,17 +98,13 @@ function KnowledgeLights({ siddhis }: { siddhis: typeof allSiddhis }) {
             initial={reduced ? { opacity: p.opacity } : { opacity: 0, scale: 0 }}
             animate={reduced
               ? { opacity: p.opacity }
-              : {
-                  opacity: p.opacity * visible,
-                  scale: visible,
-                }
+              : { opacity: p.opacity * visible, scale: visible }
             }
             transition={{
-              delay,
+              delay: i * 0.06,
               duration: 1.2,
               ease: [0.22, 1, 0.36, 1],
             }}
-            // Continuous subtle pulse after reveal
             {...(!reduced ? {
               whileInView: {
                 opacity: [p.opacity * 0.6, p.opacity, p.opacity * 0.6],
@@ -130,19 +124,34 @@ function KnowledgeLights({ siddhis }: { siddhis: typeof allSiddhis }) {
   );
 }
 
-// ─── Zone Divider ──────────────────────────────────────────────────
-function ZoneDivider({ label }: { label: string }) {
+/* ─── Zone Divider ────────────────────────────────────────────────── */
+function ZoneDivider({ label, subtitle, index }: { label: string; subtitle: string; index: number }) {
+  const reduced = useReducedMotion();
   return (
-    <div className="flex items-center gap-4 py-8">
-      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gold/15 to-transparent" />\n      <span className="font-mono text-[0.6875rem] tracking-[0.25em] uppercase text-gold-dim/50">
-        {label}
+    <motion.div
+      className="py-16 md:py-24 text-center"
+      initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+      whileInView={fadeInUp.visible}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ delay: 0.05 }}
+    >
+      <span className="block font-mono text-[0.65rem] tracking-[0.3em] text-text-muted/50 mb-4">
+        {String(index).padStart(2, '0')}
       </span>
-      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gold/15 to-transparent" />
-    </div>
+      <h2 className="section-label mb-4" style={{ letterSpacing: '0.6em' }}>
+        {label}
+      </h2>
+      <p className="font-display text-lg md:text-xl text-text-secondary max-w-xl mx-auto leading-relaxed">
+        {subtitle}
+      </p>
+      <div className="divider-gold max-w-[200px] mx-auto mt-8" />
+    </motion.div>
   );
 }
 
-// ─── Page ──────────────────────────────────────────────────────────
+/* ══════════════════════════════════════════════════════════════
+   AKASHIC ARCHIVE — Main Page
+   ══════════════════════════════════════════════════════════════ */
 export default function ArchivePage() {
   const [filter, setFilter] = useState('All');
   const [search, setSearch] = useState('');
@@ -150,6 +159,26 @@ export default function ArchivePage() {
   const [tierFilter, setTierFilter] = useState('all');
   const [showCount, setShowCount] = useState(12);
   const reduced = useReducedMotion();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  /* ── Scroll-driven background crossfade ── */
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end'],
+  });
+
+  // Zone 1 (Threshold): visible from 0% → fades out by ~18%
+  const thresholdOpacity = useTransform(scrollYProgress, [0, 0.10, 0.18], [1, 1, 0]);
+  // Zone 2 (Reading Room): fades in ~14% → fully visible → fades out ~68%
+  const readingRoomOpacity = useTransform(
+    scrollYProgress,
+    [0.12, 0.22, 0.62, 0.72, 0.80],
+    [0, 1, 1, 1, 0]
+  );
+  // Zone 3 (Deep Archive): fades in ~74% → stays to end
+  const deepOpacity = useTransform(scrollYProgress, [0.74, 0.84, 1], [0, 1, 1]);
+  // Subtle slow zoom across entire scroll
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
 
   const filtered = useMemo(() => {
     return allSiddhis.filter((s) => {
@@ -178,96 +207,156 @@ export default function ArchivePage() {
   }, []);
 
   return (
-    <div className="bg-deep-black min-h-screen">
+    <div ref={containerRef} className="relative bg-deep-black">
 
-      {/* ═══════════════════════════════════════════════════════════
-          ZONE 1 — THE THRESHOLD
-          Entering. Almost empty darkness. Architectural entrance.
-          ═══════════════════════════════════════════════════════════ */}
-      <section className="relative min-h-[70vh] md:min-h-[80vh] flex flex-col justify-end overflow-hidden">
-        {/* Background — Zone 1 */}
-        <div className="absolute inset-0 z-0">
-          <CinematicImage
-            src={ZONE_THRESHOLD}
-            alt="The Threshold — entering the Akashic Archive"
-            fill
-            scrim="full"
-            vignette
-            fog
-            filmGrain={false}
+      {/* ═══ FIXED BACKGROUND LAYER — Crossfading 3 zones ═══ */}
+      {!reduced && (
+        <div className="fixed inset-0 z-0 overflow-hidden">
+          <motion.div className="absolute inset-0" style={{ opacity: thresholdOpacity, scale: bgScale }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={ZONE_THRESHOLD}
+              alt=""
+              className="w-full h-full object-cover"
+              style={{ filter: 'contrast(1.05) saturate(0.8) brightness(0.90) sepia(0.04)' }}
+              draggable={false}
+            />
+          </motion.div>
+          <motion.div className="absolute inset-0" style={{ opacity: readingRoomOpacity, scale: bgScale }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={ZONE_READING_ROOM}
+              alt=""
+              className="w-full h-full object-cover"
+              style={{ filter: 'contrast(1.05) saturate(0.8) brightness(0.85) sepia(0.04)' }}
+              draggable={false}
+            />
+          </motion.div>
+          <motion.div className="absolute inset-0" style={{ opacity: deepOpacity, scale: bgScale }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={ZONE_DEEP}
+              alt=""
+              className="w-full h-full object-cover"
+              style={{ filter: 'contrast(1.08) saturate(0.75) brightness(0.78) sepia(0.06)' }}
+              draggable={false}
+            />
+          </motion.div>
+          {/* Vignette */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              zIndex: 3,
+              background: 'radial-gradient(ellipse 70% 60% at 50% 50%, transparent 35%, rgba(0,0,0,0.55) 100%)',
+            }}
+          />
+          {/* Film grain */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.035]"
+            style={{
+              zIndex: 4,
+              backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+              backgroundSize: '128px 128px',
+              mixBlendMode: 'overlay',
+            }}
           />
         </div>
+      )}
 
-        {/* Content overlay */}
-        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 pb-16 md:pb-24 w-full">
-          <BackButton href="/" label="Back to Home" className="mb-10" />
+      {/* ═══ SCROLLABLE CONTENT ═══ */}
+      <div className="relative z-10">
 
-          <motion.div
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            animate={fadeInUp.visible}
-            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <p className="section-label mb-6">The Reading Room</p>
-            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl text-foreground leading-[0.95] tracking-[0.06em] mb-6 engraved-heading font-light max-w-3xl">
-              The Akashic Archive
-            </h1>
-            <p className="text-text-secondary text-lg md:text-xl max-w-2xl editorial-spacing">
-              {SIDDHI_COUNT} siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access.
-            </p>
-          </motion.div>
+        {/* ═══════════════════════════════════════════════════════════
+            ZONE 1 — THE THRESHOLD
+            Entering. Almost empty darkness. Architectural entrance.
+            ═══════════════════════════════════════════════════════════ */}
+        <section className="min-h-screen flex flex-col justify-end">
+          {/* Dark scrim for hero text readability */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'radial-gradient(ellipse 80% 60% at 50% 70%, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.6) 100%)',
+            }}
+          />
 
-          {/* Stats ledger */}
-          <motion.div
-            className="flex flex-wrap gap-6 md:gap-12 mt-12"
-            initial={reduced ? { opacity: 1 } : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {(['OPEN', 'MODERATE', 'HIGH', 'SEALED'] as const).map((level) => (
-              <div key={level} className="flex items-center gap-3">
-                <CautionBadge level={level} />
-                <AnimatedCounter target={counts[level]} className="font-mono text-[0.8125rem] tracking-[0.12em] text-text-muted" />
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+          <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 pb-16 md:pb-24 w-full">
+            <BackButton href="/" label="Back to Home" className="mb-10" />
 
-      {/* ═══════════════════════════════════════════════════════════
-          ZONE 2 — THE ARCHIVE (THE READING ROOM)
-          Discovering. Rich shelves, golden knowledge lights.
-          The Siddhi grid lives here.
-          ═══════════════════════════════════════════════════════════ */}
-      <section className="relative">
-        {/* Zone transition label */}
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-          <ZoneDivider label="Descending into the Archive" />
-        </div>
+            <motion.div
+              initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+              animate={fadeInUp.visible}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <p className="section-label mb-6">The Reading Room</p>
+              <h1
+                className="font-display text-4xl md:text-6xl lg:text-7xl text-foreground leading-[0.95] tracking-[0.06em] mb-6 engraved-heading font-light max-w-3xl"
+                style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}
+              >
+                The Akashic Archive
+              </h1>
+              <p
+                className="text-text-secondary text-lg md:text-xl max-w-2xl editorial-spacing"
+                style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
+              >
+                {SIDDHI_COUNT} siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access.
+              </p>
+            </motion.div>
 
-        {/* Parallax background — Reading Room */}
-        <div className="relative">
-          {/* Fixed background layer with Ken Burns */}
-          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-            <div className="absolute inset-0">
-              <CinematicImage
-                src={ZONE_READING_ROOM}
-                alt="The Reading Room"
-                fill
-                filmGrain={false}
-                scrim="full"
-                vignette
-                fog
+            {/* Stats ledger */}
+            <motion.div
+              className="flex flex-wrap gap-6 md:gap-12 mt-12"
+              initial={reduced ? { opacity: 1 } : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {(['OPEN', 'MODERATE', 'HIGH', 'SEALED'] as const).map((level) => (
+                <div key={level} className="flex items-center gap-3">
+                  <CautionBadge level={level} />
+                  <AnimatedCounter target={counts[level]} className="font-mono text-[0.8125rem] tracking-[0.12em] text-text-muted" />
+                </div>
+              ))}
+            </motion.div>
+
+            {/* Scroll hint */}
+            <motion.div
+              className="mt-20 md:mt-28 flex flex-col items-center gap-3"
+              initial={reduced ? { opacity: 1 } : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8, duration: 1 }}
+            >
+              <motion.div
+                className="w-px h-12 bg-gradient-to-b from-gold/40 to-transparent"
+                animate={!reduced ? { opacity: [0.3, 0.8, 0.3], scaleY: [1, 1.2, 1] } : undefined}
+                transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
               />
-            </div>
-            {/* Extra darkening scrim for card readability */}
-            <div className="absolute inset-0 bg-deep-black/40" />
+              <span className="font-mono text-[0.625rem] tracking-[0.3em] text-text-muted/40 uppercase">
+                Descend
+              </span>
+            </motion.div>
           </div>
+        </section>
+
+        {/* ── Zone Divider 01→02 ── */}
+        <ZoneDivider
+          label="THE READING ROOM"
+          subtitle="Scrolls of practice, arranged by tradition. Each folio scored for authenticity and lineage."
+          index={1}
+        />
+
+        {/* ═══════════════════════════════════════════════════════════
+            ZONE 2 — THE ARCHIVE (THE READING ROOM)
+            Discovering. Rich shelves, golden knowledge lights.
+            The Siddhi grid lives here.
+            ═══════════════════════════════════════════════════════════ */}
+        <section className="relative min-h-[200vh]">
+          {/* Semi-transparent dark scrim for card readability over the crossfading bg */}
+          <div className="absolute inset-0 bg-deep-black/30 z-[1] pointer-events-none" />
 
           {/* 48 Knowledge Lights — ambient glow layer */}
           <KnowledgeLights siddhis={allSiddhis} />
 
           {/* Content — scrolls over the background */}
-          <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 py-16 md:py-24">
+          <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 py-8 md:py-16">
 
             {/* Search + Filters */}
             <div className="flex flex-col gap-5 mb-12">
@@ -321,7 +410,7 @@ export default function ArchivePage() {
                   ))}
                 </div>
 
-                <span className="hidden md:block text-text-muted/30">{'·'}</span>
+                <span className="hidden md:block text-text-muted/30">{'\u00B7'}</span>
 
                 <div className="flex flex-wrap gap-2">
                   {TIER_FILTERS.map((t) => (
@@ -379,34 +468,22 @@ export default function ArchivePage() {
               </div>
             )}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ═══════════════════════════════════════════════════════════
-          ZONE 3 — THE DEEP ARCHIVE
-          Descending. Darkest, most mysterious. Mahavidyas dwell here.
-          ═══════════════════════════════════════════════════════════ */}
-      <section className="relative">
-        {/* Zone transition label */}
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-          <ZoneDivider label="The Pattern Taxonomy" />
-        </div>
+        {/* ── Zone Divider 02→03 ── */}
+        <ZoneDivider
+          label="THE DEEP ARCHIVE"
+          subtitle="Beyond the folios, the architecture of consciousness itself. Ten karmic loops. Ten Mahāvidyās."
+          index={2}
+        />
 
-        {/* Background — Deep Archive */}
-        <div className="relative overflow-hidden">
-          <div className="absolute inset-0 z-0">
-            <CinematicImage
-              src={ZONE_DEEP}
-              alt="The Deep Archive"
-              fill
-              filmGrain={false}
-              scrim="full"
-              vignette
-              fog
-            />
-          </div>
+        {/* ═══════════════════════════════════════════════════════════
+            ZONE 3 — THE DEEP ARCHIVE
+            Descending. Darkest, most mysterious. Mahavidyas dwell here.
+            ═══════════════════════════════════════════════════════════ */}
+        <section className="relative min-h-screen">
           {/* Extra darkness for this zone */}
-          <div className="absolute inset-0 bg-deep-black/50 z-[1]" />
+          <div className="absolute inset-0 bg-deep-black/30 z-[1] pointer-events-none" />
 
           {/* Content */}
           <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 py-16 md:py-24">
@@ -426,6 +503,7 @@ export default function ArchivePage() {
                   whileInView={fadeInUp.visible}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ delay: 0.1 }}
+                  style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}
                 >
                   Ten Mahāvidyās{' — '} Ten Karmic Loops
                 </motion.h2>
@@ -474,9 +552,9 @@ export default function ArchivePage() {
             {/* Bottom breathing space — the archive descends into shadow */}
             <div className="h-32 md:h-48" />
           </div>
-        </div>
-      </section>
+        </section>
 
+      </div>
     </div>
   );
 }

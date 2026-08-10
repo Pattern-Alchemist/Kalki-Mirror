@@ -117,6 +117,18 @@ export default function MeditationTimerPage() {
     if (intervalRef.current) clearInterval(intervalRef.current);
   }, [totalSeconds]);
 
+  // Save stats when session completes
+  useEffect(() => {
+    if (phase === 'complete') {
+      const newSessions = sessionsCompleted + 1;
+      const newMinutes = totalMinutesSat + Math.round(totalSeconds / 60);
+      setSessionsCompleted(newSessions);
+      setTotalMinutesSat(newMinutes);
+      saveTimerStats({ sessionsCompleted: newSessions, totalMinutesSat: newMinutes });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
+
   useEffect(() => {
     if (running && remaining > 0) {
       intervalRef.current = setInterval(() => {
@@ -124,11 +136,6 @@ export default function MeditationTimerPage() {
           if (prev <= 1) {
             setRunning(false);
             setPhase('complete');
-            const newSessions = s + 1;
-            const newMinutes = t + Math.round(totalSeconds / 60);
-            setSessionsCompleted(newSessions);
-            setTotalMinutesSat(newMinutes);
-            saveTimerStats({ sessionsCompleted: newSessions, totalMinutesSat: newMinutes });
             playBell();
             return 0;
           }
@@ -145,6 +152,24 @@ export default function MeditationTimerPage() {
     setTotalSeconds(seconds);
     setRemaining(seconds);
   }, []);
+
+  // Keyboard shortcuts: Space = start/pause, R = reset
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        if (phase === 'running') pauseTimer();
+        else if (phase === 'idle' || phase === 'paused') startTimer();
+      }
+      if (e.code === 'KeyR' && phase !== 'idle') {
+        e.preventDefault();
+        resetTimer();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [phase, startTimer, pauseTimer, resetTimer]);
 
   const progress = totalSeconds > 0 ? ((totalSeconds - remaining) / totalSeconds) * 100 : 0;
 
@@ -290,6 +315,15 @@ export default function MeditationTimerPage() {
             >
               Reset
             </button>
+          </div>
+          {/* Keyboard hints */}
+          <div className="flex justify-center gap-6 mt-6">
+            <span className="font-mono text-[0.625rem] text-text-muted/40 tracking-[0.15em] uppercase">
+              Space {'\u2014'} Start / Pause
+            </span>
+            <span className="font-mono text-[0.625rem] text-text-muted/40 tracking-[0.15em] uppercase">
+              R {'\u2014'} Reset
+            </span>
           </div>
         </motion.section>
 

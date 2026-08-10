@@ -27,7 +27,7 @@ interface ArchetypeResult {
   secondaryArchetype: string | null;
 }
 
-type QuizState = 'intro' | 'quiz' | 'analyzing' | 'result' | 'error' | 'unconfigured';
+type QuizState = 'intro' | 'quiz' | 'analyzing' | 'result' | 'error';
 
 /* ── Questions ── */
 const QUESTIONS: QuizQuestion[] = [
@@ -115,12 +115,15 @@ export function ArchetypeQuiz() {
     setState('analyzing');
     setError('');
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 25000);
       const res = await fetch('/api/ai/archetype-quiz', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ answers: cleanAnswers }),
+        signal: controller.signal,
       });
-      if (res.status === 503) { setState('unconfigured'); return; }
+      clearTimeout(timeoutId);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Analysis failed');
       // Validate that the result has meaningful content
@@ -130,7 +133,11 @@ export function ArchetypeQuiz() {
       setResult(data);
       setState('result');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'The geometry faltered.');
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        setError('The pattern-matrix timed out. The geometry will recalibrate.');
+      } else {
+        setError(err instanceof Error ? err.message : 'The geometry faltered.');
+      }
       setState('error');
     }
   }, [answers]);
@@ -364,26 +371,7 @@ export function ArchetypeQuiz() {
           </motion.div>
         )}
 
-        {/* ── UNCONFIGURED ── */}
-        {state === 'unconfigured' && (
-          <motion.div
-            key="unconfigured"
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            animate={fadeInUp.visible}
-            exit={reduced ? { opacity: 0 } : fadeInUp.exit}
-            className="text-center space-y-4 py-12"
-          >
-            <p className="text-gold-dim text-sm">
-              The pattern-matrix is offline. Retrying with geometry engine…
-            </p>
-            <button onClick={submit} className="ghost-cta text-xs">
-              Retry
-            </button>
-            <button onClick={reset} className="ghost-cta text-xs ml-2">
-              Return
-            </button>
-          </motion.div>
-        )}
+
       </AnimatePresence>
     </div>
   );
