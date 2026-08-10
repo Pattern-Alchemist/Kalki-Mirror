@@ -165,3 +165,29 @@ Stage Summary:
 - Produced: /patterns page with full scroll narrative architecture
 - 3 Cloudinary images hosted and crossfading
 - The narrative: Enter the mirror → Recognize → Confront → Dissolve → Understanding
+
+---
+Task ID: batch6
+Agent: Main
+Task: Quiz bug fixes, archive Cloudinary migration, parallax rollout, timer persistence
+
+Work Log:
+- Investigated Mahavidyas questionnaire bug: traced 'calibrating' message to PricingQuiz.tsx (not ArchetypeQuiz)
+- Fixed ArchetypeQuiz.tsx: added answer array cleanup (filter undefined holes), result validation (empty archetypeName/description guard)
+- Fixed PricingQuiz.tsx: added answer cleanup, result validation, Retry button on unconfigured state (was dead-end with only Return)
+- Rewrote recommend-tier/route.ts: added complete rule-based fallback with 12-answer weight matrix, 4 tier info objects, never returns 503/500 for LLM failure
+- Uploaded 3 archive zone images to Cloudinary: threshold, reading-room, deep-archive
+- Updated archive/page.tsx to use Cloudinary URLs instead of local /public JPEGs
+- Added cloudinary-map.json entries for archive zone images
+- Added ScrollParallax interludes to /archetypes (2 breaks), /archive/[slug] (1 break), /patterns/[slug] (1 break)
+- Fixed Timer page: session stats (sessionsCompleted, totalMinutesSat) now persist to localStorage
+- Fixed Japa page: avg/session stat now uses AnimatedCounter
+- Verified all changes pass Turbopack build, committed and pushed
+
+Stage Summary:
+- 10 files changed, 252 insertions, 64 deletions
+- Both quiz components now have: answer cleanup, result validation, fallback paths
+- recommend-tier API has full rule-based fallback (like archetype-quiz already had)
+- Archive zone images on Cloudinary CDN for consistent delivery
+- 4 new parallax interludes across 3 pages
+- Timer stats persist across page reloads
