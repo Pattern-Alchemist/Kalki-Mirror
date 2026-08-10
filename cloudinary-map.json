@@ -1,4 +1,64 @@
 {
+  "/mahavidyas/kali.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/kali",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/kali",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/tara.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/tara",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/tara",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/chinnamasta.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/chinnamasta",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/chinnamasta",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/bhuvaneshvari.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/bhuvaneshvari",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/bhuvaneshvari",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/shodashi.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/shodashi",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/shodashi",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/bhairavi.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/bhairavi",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/bhairavi",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/dhumavati.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/dhumavati",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/dhumavati",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/bagalamukhi.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/bagalamukhi",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/bagalamukhi",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/matangi.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/matangi",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/matangi",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/kamala.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/kamala",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/kamala",
+    "width": 2560,
+    "height": 1440
+  },
   "/assets/tantra/abandoned-temple.jpeg": {
     "publicId": "kalki-mirror/tantra/abandoned-temple",
     "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008690/kalki-mirror/tantra/abandoned-temple.jpg",
