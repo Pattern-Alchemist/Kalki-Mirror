@@ -39,18 +39,13 @@ export function MagneticCard({
       const el = ref.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
       const percentX = (e.clientX - rect.left) / rect.width;
       const percentY = (e.clientY - rect.top) / rect.height;
 
-      // Rotate: positive Y = cursor right of center, positive X = cursor below center
       const rotateY = ((percentX - 0.5) * 2) * tilt;
       const rotateX = ((0.5 - percentY) * 2) * tilt;
-
-      // Slight translate toward cursor (magnetic pull)
-      const pullX = (percentX - 0.5) * 4;
-      const pullY = (percentY - 0.5) * 4;
+      const pullX = (percentX - 0.5) * 3;
+      const pullY = (percentY - 0.5) * 3;
 
       setTransform({ rotateX, rotateY, x: pullX, y: pullY, scale: hoverScale });
       setGlarePos({ x: percentX * 100, y: percentY * 100, opacity: 1 });
@@ -68,36 +63,40 @@ export function MagneticCard({
   }
 
   return (
-    <motion.div
+    <div
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={cn('relative overflow-hidden', className)}
-      animate={{
-        rotateX: transform.rotateX,
-        rotateY: transform.rotateY,
-        x: transform.x,
-        y: transform.y,
-        scale: transform.scale,
-      }}
-      transition={{
-        type: 'spring',
-        stiffness: 300,
-        damping: 20,
-        mass: 0.5,
-      }}
-      style={{ perspective: 800, transformStyle: 'preserve-3d' }}
+      className={cn('relative', className)}
+      style={{ perspective: '800px' }}
     >
-      {/* Glare overlay — follows cursor position */}
-      <div
-        className="pointer-events-none absolute inset-0 z-10 rounded-[inherit]"
-        style={{
-          background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, rgba(212,175,55,${glare}), transparent 60%)`,
-          opacity: glarePos.opacity,
-          transition: 'opacity 0.3s ease',
+      <motion.div
+        animate={{
+          rotateX: transform.rotateX,
+          rotateY: transform.rotateY,
+          x: transform.x,
+          y: transform.y,
+          scale: transform.scale,
         }}
-      />
-      {children}
-    </motion.div>
+        transition={{
+          type: 'spring',
+          stiffness: 300,
+          damping: 20,
+          mass: 0.5,
+        }}
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        {/* Glare overlay — follows cursor position */}
+        <div
+          className="pointer-events-none absolute inset-0 z-10"
+          style={{
+            background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, rgba(212,175,55,${glare}), transparent 60%)`,
+            opacity: glarePos.opacity,
+            transition: 'opacity 0.3s ease',
+          }}
+        />
+        {children}
+      </motion.div>
+    </div>
   );
 }

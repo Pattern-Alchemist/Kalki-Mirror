@@ -1,26 +1,27 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from 'framer-motion';
 
 /**
- * Root template — wraps every page in a fade-slide transition.
- * Unlike layout.tsx (persists across navigations), template.tsx
- * re-mounts on every route change, making AnimatePresence work.
+ * Root template — wraps every page in a subtle fade transition.
+ * Re-mounts on every route change (unlike layout.tsx).
+ * Uses CSS animations instead of Framer Motion to avoid
+ * hydration mismatches and unnecessary JS.
  */
 export default function Template({ children }: { children: React.ReactNode }) {
   const reduced = useReducedMotion();
 
+  if (reduced) {
+    return <>{children}</>;
+  }
+
   return (
-    <motion.div
-      initial={reduced ? { opacity: 1 } : { opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
-      transition={{
-        duration: 0.4,
-        ease: [0.22, 1, 0.36, 1],
+    <div
+      style={{
+        animation: 'pageEnter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both',
       }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
