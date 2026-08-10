@@ -3,6 +3,8 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { BackButton } from '@/components/nav/BackButton';
 import { CodexExplainer } from '@/components/ai/CodexExplainer';
+import { CinematicImage } from '@/components/ui/CinematicImage';
+import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 
@@ -107,7 +109,7 @@ const parts = [
       <>
         <p className="text-editorial mb-6">
           Karma is not punishment. Karma is not reward. Karma is not a cosmic ledger keeping
-          score of your moral performance against an invisible standard. Karma is algorithmic.
+          a score of your moral performance against an invisible standard. Karma is algorithmic.
           It is the most fundamental law of information processing in consciousness: every action
           creates a pattern imprint, and every pattern imprint creates a probabilistic bias
           toward repetition. This is not mysticism. This is basic computational theory applied
@@ -242,43 +244,62 @@ const parts = [
   },
 ] as const;
 
+/* Cinematic image strips inserted between codex parts */
+const cinematicBreaks = [
+  { after: 1, image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-dark-temple-interior', alt: 'Ancient temple interior — darkness and light' },
+  { after: 3, image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-cremation-ground-alt', alt: 'Cremation ground at twilight — transformation' },
+];
+
 export default function CodexPage() {
   const reduced = useReducedMotion();
 
   return (
     <main className="bg-deep-black min-h-screen">
-      {/* ── Page Header ── */}
-      <header className="pt-24 md:pt-36 pb-16 md:pb-20">
-        <div className="max-w-3xl mx-auto px-6 lg:px-10">
+      {/* ── Cinematic Hero ── */}
+      <header className="relative min-h-[80vh] md:min-h-[90vh] flex items-end overflow-hidden">
+        <CinematicImage
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-ancient-manuscripts'
+          alt="Ancient palm-leaf manuscripts"
+          kenBurns="slow"
+          scrim="bottom"
+          vignette
+          volumetric
+          dust
+          priority
+        />
+        <div className="relative z-10 w-full max-w-3xl mx-auto px-6 lg:px-10 pb-20 md:pb-28 pt-32">
           <motion.p
             className="section-label mb-6"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             animate={fadeInUp.visible}
           >
-            THE KALKI CODEX
+            CLASSIFIED DOCUMENT
           </motion.p>
           <motion.h1
             className={cn(
-              'text-sub-display text-foreground font-light engraved-heading',
-              'max-w-2xl'
+              'font-display text-4xl md:text-6xl lg:text-7xl text-white leading-[0.95] tracking-[0.06em] mb-5 hero-heading',
+              'max-w-3xl'
             )}
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             animate={fadeInUp.visible}
-            transition={{ delay: 0.12 }}
+            transition={{ delay: 0.1, duration: 0.8 }}
           >
-            A Five-Part Digital Manifesto on the Architecture of
-            Consciousness, Pattern, and Sovereign Awareness
+            The Kalki Codex
           </motion.h1>
-
-          <motion.div
-            className="divider-gold mt-12"
-            initial={reduced ? { opacity: 0.3, scaleX: 1 } : { opacity: 0, scaleX: 0 }}
-            animate={{ opacity: 0.3, scaleX: 1 }}
-            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-            style={{ transformOrigin: 'left' }}
-          />
+          <motion.p
+            className="text-foreground text-xl md:text-2xl max-w-3xl editorial-spacing"
+            style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            animate={fadeInUp.visible}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          >
+            A Five-Part Digital Manifesto on the Architecture of Consciousness, Pattern, and Sovereign Awareness
+          </motion.p>
         </div>
       </header>
+
+      {/* ── Atmospheric top gradient ── */}
+      <div className="atmospheric-bg h-64 -mt-24 relative z-10" />
 
       {/* ── Five Parts ── */}
       <section className="pb-32">
@@ -287,38 +308,55 @@ export default function CodexPage() {
         </div>
         <div className="max-w-3xl mx-auto px-6 lg:px-10">
           {parts.map((part, idx) => (
-            <motion.article
-              key={part.numeral}
-              className="pt-16 md:pt-24"
-              initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-              whileInView={fadeInUp.visible}
-              viewport={{ once: true, margin: '-60px' }}
-            >
-              {/* Divider between parts (not before first) */}
-              {idx > 0 && (
-                <div className="divider-gold mb-16 md:mb-24" />
-              )}
+            <ParallaxText key={part.numeral} speed={-0.04} className={cn(idx > 0 && 'pt-16 md:pt-24')}>
+              <motion.article
+                className="pt-16 md:pt-24"
+                initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+                whileInView={fadeInUp.visible}
+                viewport={{ once: true, margin: '-60px' }}
+              >
+                {/* Divider between parts (not before first) */}
+                {idx > 0 && (
+                  <div className="divider-gold mb-16 md:mb-24" />
+                )}
 
-              {/* Part numeral — gold drop-cap style */}
-              <p className="text-gold font-display text-5xl md:text-7xl font-light leading-none mb-3 select-none">
-                {part.numeral}
-              </p>
+                {/* Part numeral — gold drop-cap style */}
+                <p className="text-gold font-display text-5xl md:text-7xl font-light leading-none mb-3 select-none">
+                  {part.numeral}
+                </p>
 
-              {/* Part title */}
-              <h2 className="font-display text-xl md:text-2xl lg:text-3xl text-foreground font-light tracking-wide mb-2 engraved-heading">
-                {part.title}
-              </h2>
+                {/* Part title */}
+                <h2 className="font-display text-xl md:text-2xl lg:text-3xl text-foreground font-light tracking-wide mb-2 engraved-heading">
+                  {part.title}
+                </h2>
 
-              {/* Subtitle when present */}
-              {part.subtitle && (
-                <p className="text-caption mb-8 md:mb-10">{part.subtitle}</p>
-              )}
+                {/* Subtitle when present */}
+                {part.subtitle && (
+                  <p className="text-caption mb-8 md:mb-10">{part.subtitle}</p>
+                )}
 
-              {!part.subtitle && <div className="mb-8 md:mb-10" />}
+                {!part.subtitle && <div className="mb-8 md:mb-10" />}
 
-              {/* Body text */}
-              {part.body}
-            </motion.article>
+                {/* Body text */}
+                {part.body}
+              </motion.article>
+            </ParallaxText>
+          ))}
+
+          {/* ── Cinematic Image Breaks ── */}
+          {cinematicBreaks.map((breakItem) => (
+            <ScrollParallax key={breakItem.after} speed={-0.1} className="my-24 md:my-32">
+              <div className="relative h-[40vh] md:h-[50vh] overflow-hidden">
+                <CinematicImage
+                  src={breakItem.image}
+                  alt={breakItem.alt}
+                  kenBurns="slow"
+                  scrim="full"
+                  vignette
+                  fog
+                />
+              </div>
+            </ScrollParallax>
           ))}
 
           {/* ── AI Codex Explainer ── */}
@@ -344,8 +382,18 @@ export default function CodexPage() {
       </section>
 
       {/* ── Page Footer ── */}
-      <footer className="pb-20 md:pb-28">
-        <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center">
+      <footer className="relative pb-20 md:pb-28">
+        <div className="atmospheric-bg absolute inset-0 opacity-30" />
+        <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 text-center">
+          <motion.div
+            className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center"
+            initial={reduced ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
+          </motion.div>
           <motion.p
             className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}

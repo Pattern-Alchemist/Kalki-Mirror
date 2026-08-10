@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { PageHero } from '@/components/layout/PageHero';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { BackButton } from '@/components/nav/BackButton';
+import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 
 export default function ResearchPage() {
@@ -29,12 +30,14 @@ export default function ResearchPage() {
           animate={staggerContainer.visible}
         >
           {[
-            { label: 'Siddhis Catalogued', value: '41' },
-            { label: 'Evidence Sources', value: String(totalEvidence) },
-            { label: 'Average Authenticity', value: `${avgAuth}%` },
+            { label: 'Siddhis Catalogued', value: 41, suffix: '' },
+            { label: 'Evidence Sources', value: totalEvidence, suffix: '' },
+            { label: 'Average Authenticity', value: avgAuth, suffix: '%' },
           ].map((stat) => (
             <motion.div key={stat.label} variants={staggerItem} className="glass-panel p-8 md:p-10 text-center">
-              <p className="font-display text-4xl md:text-5xl text-gold mb-3 text-glow-subtle">{stat.value}</p>
+              <p className="font-display text-4xl md:text-5xl text-gold mb-3 text-glow-subtle">
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+              </p>
               <p className="text-caption">{stat.label}</p>
             </motion.div>
           ))}

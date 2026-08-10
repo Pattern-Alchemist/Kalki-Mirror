@@ -8,6 +8,7 @@ import { allPatterns } from '@/lib/data/patterns';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { BackButton } from '@/components/nav/BackButton';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
+import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { Search, X, SlidersHorizontal } from 'lucide-react';
 
 // Derive unique archetypes from related siddhis
@@ -259,19 +260,19 @@ export default function PatternsPage() {
         >
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
-              <p className="font-display text-3xl md:text-4xl text-gold">{allPatterns.length}</p>
+              <p className="font-display text-3xl md:text-4xl text-gold"><AnimatedCounter target={allPatterns.length} /></p>
               <p className="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-text-muted mt-1">Patterns Mapped</p>
             </div>
             <div>
-              <p className="font-display text-3xl md:text-4xl text-gold">{siddhiSlugSet.size}</p>
+              <p className="font-display text-3xl md:text-4xl text-gold"><AnimatedCounter target={siddhiSlugSet.size} /></p>
               <p className="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-text-muted mt-1">Siddhis Linked</p>
             </div>
             <div>
-              <p className="font-display text-3xl md:text-4xl text-gold">{allArchetypes.length}</p>
+              <p className="font-display text-3xl md:text-4xl text-gold"><AnimatedCounter target={allArchetypes.length} /></p>
               <p className="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-text-muted mt-1">Categories</p>
             </div>
             <div>
-              <p className="font-display text-3xl md:text-4xl text-gold">48</p>
+              <p className="font-display text-3xl md:text-4xl text-gold"><AnimatedCounter target={48} /></p>
               <p className="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-text-muted mt-1">Warning Signs</p>
             </div>
           </div>
