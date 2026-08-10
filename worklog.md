@@ -112,3 +112,30 @@ Stage Summary:
 - All 5 sections updated in page.tsx, PricingCards.tsx, globals.css
 - 5 new Cloudinary assets uploaded and referenced
 - Commit: feat: hero video, pulsating glow typography, section image swaps, pricing clarity
+---
+Task ID: batch5
+Agent: Main
+Task: Batch 5 UI upgrades + Mahavidyas questionnaire bug fix
+
+Work Log:
+- Investigated Mahavidyas questionnaire bug: traced "The AI engine is calibrating" message to ConsultationScreener (503 response) and ArchetypeQuiz (503 response) when isLLMConfigured() returns false
+- Root cause: archetype-quiz API returns 503 when LLM_API_KEY env var is not set (happens on Vercel deployment)
+- Fixed archetype-quiz/route.ts: added complete rule-based fallback with per-answer archetype weight scoring matrix (5 questions x 4 answers x 2-3 archetypes each), descriptions for all 10 Mahavidyas, confidence calculation
+- Fixed archetype-quiz/route.ts: added normalizeArchetypeId() to catch LLM misspellings (chhinnamasta->chinnamasta, tripurasundari->shodashi, dhoomavati->dhumavati)
+- Fixed archetype-quiz/route.ts: LLM failure now gracefully falls back to rule-based analysis instead of returning 503
+- Fixed consultation-screen/route.ts: updated LLM prompt to use canonical archetype IDs (shodashi, chinnamasta, dhumavati)
+- Fixed archetypes/page.tsx: added useEffect to auto-expand archetype card when navigated via URL hash (e.g. /archetypes#kali) with smooth scroll
+- Updated ArchetypeQuiz component: improved unconfigured state UX with retry button
+- Batch 5.1: Japa page - added second parallax interlude (meditation bowl image), lifetime accumulation stats panel (total beads, sessions, avg/session) with AnimatedCounter
+- Batch 5.2: Timer page - created AnimatedTimeDisplay component with per-digit AnimatedCounter for minutes and seconds, added second parallax interlude (meditation platform), added sitting statistics panel (sessions completed, total minutes sat)
+- Batch 5.3: Verified all photo <img> tags already use CinematicImage; remaining <img> tags are intentional SVG yantras in loading states
+- Batch 5.4: Pricing page - replaced static formatPrice() display with AnimatedCounter for animated price counting, with currency symbol prefix
+- Batch 5.5: Added second parallax interludes on archive page (before Mahavidyas section, sri-yantra-mist image) and pricing page (before guarantee, sri-yantra-sky image)
+- Build: clean, 0 errors, committed and pushed
+
+Stage Summary:
+- 8 files changed, 366 insertions, 65 deletions
+- Key fix: archetype quiz now works WITHOUT LLM API key via deterministic fallback
+- Key fix: archetype ID mismatches between LLM prompts and canonical data corrected
+- Key fix: hash-based auto-expand on archetypes page for "View Full Archetype" link
+- All 5 Batch 5 UI upgrades implemented and verified
