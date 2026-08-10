@@ -105,17 +105,28 @@ export function ArchetypeQuiz() {
   const canProceed = answers[step] !== undefined;
 
   const submit = useCallback(async () => {
+    // Compact answers to remove any undefined holes from back-navigation
+    const cleanAnswers = answers.filter(Boolean);
+    if (cleanAnswers.length < QUESTIONS.length) {
+      setError('All questions must be answered before the geometry can read your patterns.');
+      setState('error');
+      return;
+    }
     setState('analyzing');
     setError('');
     try {
       const res = await fetch('/api/ai/archetype-quiz', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answers }),
+        body: JSON.stringify({ answers: cleanAnswers }),
       });
       if (res.status === 503) { setState('unconfigured'); return; }
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Analysis failed');
+      // Validate that the result has meaningful content
+      if (!data.archetypeName || !data.description) {
+        throw new Error('The geometry returned an incomplete reading. Please try again.');
+      }
       setResult(data);
       setState('result');
     } catch (err) {

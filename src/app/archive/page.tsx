@@ -15,10 +15,11 @@ import { AISearchBar } from '@/components/ai/AISearchBar';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 
-// ─── Zone Images ──────────────────────────────────────────────────
-const ZONE_THRESHOLD = '/archive-zone-threshold.jpeg';
-const ZONE_READING_ROOM = '/archive-zone-reading-room.jpeg';
-const ZONE_DEEP = '/archive-zone-deep.jpeg';
+// ─── Zone Images (Cloudinary) ────────────────────────────────────────
+const CLOUD = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive-zone';
+const ZONE_THRESHOLD = `${CLOUD}/threshold`;
+const ZONE_READING_ROOM = `${CLOUD}/reading-room`;
+const ZONE_DEEP = `${CLOUD}/deep-archive`;
 
 const CATEGORIES = ['All', 'Mantra', 'Yantra', 'Prāṇāyāma', 'Ritual', 'Tantra', 'Meditation', 'Dhāraṇā'];
 const CAUTION_FILTERS: { value: string; label: string }[] = [

@@ -610,5 +610,23 @@
     "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008731/kalki-mirror/tiers/prithvi-earth.jpg",
     "width": 1376,
     "height": 768
+  },
+  "/archive-zone-threshold.jpeg": {
+    "publicId": "kalki-mirror/archive-zone/threshold",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive-zone/threshold",
+    "width": 1920,
+    "height": 1080
+  },
+  "/archive-zone-reading-room.jpeg": {
+    "publicId": "kalki-mirror/archive-zone/reading-room",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive-zone/reading-room",
+    "width": 1920,
+    "height": 1080
+  },
+  "/archive-zone-deep.jpeg": {
+    "publicId": "kalki-mirror/archive-zone/deep-archive",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive-zone/deep-archive",
+    "width": 1920,
+    "height": 1080
   }
 }

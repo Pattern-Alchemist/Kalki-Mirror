@@ -12,6 +12,7 @@ import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import Link from 'next/link';
 import { BackButton } from '@/components/nav/BackButton';
 import { ArchetypeQuiz } from '@/components/ai/ArchetypeQuiz';
+import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import type { CautionLevel } from '@/lib/data/archetypes';
 import type { Tier } from '@/lib/data/types';
 
@@ -78,7 +79,19 @@ export default function ArchetypesPage() {
           <ArchetypeQuiz />
         </div>
 
-        {/* Pattern Wheel — the ten Mahāvidyās as interactive nodes */}
+        <ScrollParallax speed={-0.12} className="my-20 md:my-28">
+          <div className="relative h-[40vh] md:h-[50vh] overflow-hidden">
+            <CinematicImage
+              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/shodashi-sri-yantra"
+              alt="Sri Yantra"
+              fill
+              scrim="full"
+              vignette
+              filmGrain={false}
+            />
+          </div>
+        </ScrollParallax>
+
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-32"
           initial={reduced ? { opacity: 1 } : staggerContainer.hidden}
@@ -215,6 +228,20 @@ export default function ArchetypesPage() {
             </motion.div>
           ))}
         </motion.div>
+
+        {/* ── Parallax Interlude — Supplementary transition ── */}
+        <ScrollParallax speed={-0.08} className="mb-20">
+          <div className="relative h-[30vh] md:h-[40vh] overflow-hidden">
+            <CinematicImage
+              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/temple-midnight"
+              alt="Temple at midnight — beyond the ten"
+              fill
+              scrim="full"
+              vignette
+              filmGrain={false}
+            />
+          </div>
+        </ScrollParallax>
 
         {/* Supplementary Archetypes */}
         <div className="divider-gold mb-16" />

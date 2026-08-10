@@ -8,6 +8,27 @@ import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 
+const TIMER_STORAGE_KEY = 'kalki-timer-stats';
+
+interface TimerStats {
+  sessionsCompleted: number;
+  totalMinutesSat: number;
+}
+
+function loadTimerStats(): TimerStats {
+  if (typeof window === 'undefined') return { sessionsCompleted: 0, totalMinutesSat: 0 };
+  try {
+    const raw = localStorage.getItem(TIMER_STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch { /* ignore */ }
+  return { sessionsCompleted: 0, totalMinutesSat: 0 };
+}
+
+function saveTimerStats(stats: TimerStats) {
+  if (typeof window === 'undefined') return;
+  try { localStorage.setItem(TIMER_STORAGE_KEY, JSON.stringify(stats)); } catch { /* ignore */ }
+}
+
 const PRESETS = [
   { label: '5 min', seconds: 300 },
   { label: '10 min', seconds: 600 },
@@ -54,8 +75,8 @@ export default function MeditationTimerPage() {
   const [phase, setPhase] = useState<'idle' | 'running' | 'paused' | 'complete'>('idle');
   const [customMinutes, setCustomMinutes] = useState('');
   const [showCustom, setShowCustom] = useState(false);
-  const [sessionsCompleted, setSessionsCompleted] = useState(0);
-  const [totalMinutesSat, setTotalMinutesSat] = useState(0);
+  const [sessionsCompleted, setSessionsCompleted] = useState(loadTimerStats().sessionsCompleted);
+  const [totalMinutesSat, setTotalMinutesSat] = useState(loadTimerStats().totalMinutesSat);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const bellRef = useRef<AudioContext | null>(null);
   const statsRef = useRef<HTMLDivElement>(null);
@@ -103,8 +124,11 @@ export default function MeditationTimerPage() {
           if (prev <= 1) {
             setRunning(false);
             setPhase('complete');
-            setSessionsCompleted(s => s + 1);
-            setTotalMinutesSat(t => t + Math.round(totalSeconds / 60));
+            const newSessions = s + 1;
+            const newMinutes = t + Math.round(totalSeconds / 60);
+            setSessionsCompleted(newSessions);
+            setTotalMinutesSat(newMinutes);
+            saveTimerStats({ sessionsCompleted: newSessions, totalMinutesSat: newMinutes });
             playBell();
             return 0;
           }

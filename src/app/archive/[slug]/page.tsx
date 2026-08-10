@@ -15,6 +15,7 @@ import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
+import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { WHATSAPP_LINKS } from '@/lib/utils/whatsapp';
 import type { Tier } from '@/lib/data/types';
@@ -191,6 +192,20 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
               </ul>
             </div>
           </motion.section>
+
+          {/* ── Parallax Interlude ── */}
+          <ScrollParallax speed={-0.1} className="-mx-6 lg:-mx-10">
+            <div className="relative h-[35vh] md:h-[40vh] overflow-hidden">
+              <CinematicImage
+                src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/temple-silhouette"
+                alt="Ancient temple silhouette — the archive descends"
+                fill
+                scrim="full"
+                vignette
+                filmGrain={false}
+              />
+            </div>
+          </ScrollParallax>
 
           {/* Evidence Sources */}
           <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>

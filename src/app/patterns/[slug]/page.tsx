@@ -13,6 +13,7 @@ import { YantraLoader } from '@/components/patterns/YantraLoader';
 import { CautionBadge } from '@/components/archive/CautionBadge';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
+import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 export default function PatternFolioPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -140,6 +141,20 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
             ))}
           </div>
         </motion.section>
+
+        {/* ── Parallax Interlude ── */}
+        <ScrollParallax speed={-0.1} className="-mx-6 lg:-mx-10">
+          <div className="relative h-[30vh] md:h-[35vh] overflow-hidden">
+            <CinematicImage
+              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/sri-yantra-mist"
+              alt="Śrī Yantra emerging from mist"
+              fill
+              scrim="full"
+              vignette
+              filmGrain={false}
+            />
+          </div>
+        </ScrollParallax>
 
         {/* Origin */}
         <motion.section

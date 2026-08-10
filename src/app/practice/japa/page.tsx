@@ -306,7 +306,7 @@ export default function JapaPage() {
               </div>
               <div className="glass-chip p-5 text-center hidden md:block">
                 <p className="font-display text-3xl text-copper mb-1">
-                  {state.history.length > 0 ? Math.round(state.history.reduce((sum, h) => sum + h.count, 0) / state.history.length) : 0}
+                  <AnimatedCounter target={state.history.length > 0 ? Math.round(state.history.reduce((sum, h) => sum + h.count, 0) / state.history.length) : 0} />
                 </p>
                 <p className="text-caption">Avg / Session</p>
               </div>

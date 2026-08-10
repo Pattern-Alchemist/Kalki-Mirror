@@ -90,17 +90,28 @@ export function PricingQuiz() {
   const canProceed = answers[step] !== undefined;
 
   const submit = useCallback(async () => {
+    // Compact answers to remove any undefined holes from back-navigation
+    const cleanAnswers = answers.filter(Boolean);
+    if (cleanAnswers.length < QUESTIONS.length) {
+      setError('All questions must be answered before the geometry can assess your resonance.');
+      setState('error');
+      return;
+    }
     setState('analyzing');
     setError('');
     try {
       const res = await fetch('/api/ai/recommend-tier', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answers }),
+        body: JSON.stringify({ answers: cleanAnswers }),
       });
       if (res.status === 503) { setState('unconfigured'); return; }
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Recommendation failed');
+      // Validate that the result has meaningful content
+      if (!data.recommendedTier || !data.reason) {
+        throw new Error('The geometry returned an incomplete reading. Please try again.');
+      }
       setResult(data);
       setState('result');
     } catch (err) {
@@ -335,7 +346,10 @@ export function PricingQuiz() {
             <p className="text-gold-dim text-sm">
               The AI engine is calibrating. The geometry awaits its activation.
             </p>
-            <button onClick={reset} className="ghost-cta text-xs">
+            <button onClick={submit} className="ghost-cta text-xs">
+              Retry
+            </button>
+            <button onClick={reset} className="ghost-cta text-xs ml-2">
               Return
             </button>
           </motion.div>
