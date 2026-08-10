@@ -4,6 +4,7 @@ import { intermediateSiddhis } from './siddhis-intermediate';
 import { advancedSiddhis } from './siddhis-advanced';
 import { restrictedSiddhis } from './siddhis-restricted';
 import { supplementarySiddhis } from './siddhis-supplementary';
+import { aghoriSiddhis } from './siddhis-aghori';
 
 export const allSiddhis: Siddhi[] = [
   ...foundationSiddhis,
@@ -11,6 +12,7 @@ export const allSiddhis: Siddhi[] = [
   ...advancedSiddhis,
   ...restrictedSiddhis,
   ...supplementarySiddhis,
+  ...aghoriSiddhis,
 ];
 
 export function getSiddhiBySlug(slug: string): Siddhi | undefined {

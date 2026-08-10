@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { href: '/patterns', label: 'Patterns' },
   { href: '/dossier', label: 'Dossier' },
   { href: '/practice', label: 'Tantra' },
+  { href: '/aghoiri-tantra', label: 'Aghori Tantra' },
   { href: '/method', label: 'The Method' },
   { href: '/codex', label: 'Codex' },
   { href: '/pricing', label: 'Membership' },
