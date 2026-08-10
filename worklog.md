@@ -294,3 +294,43 @@ Stage Summary:
 - SmoothScroll respects tab visibility — no wasted rAF cycles in background tabs
 - Consultation form inputs now use brand-consistent gold tokens instead of generic zinc
 - Dead deps (next-intl, next-themes) and dead CSS (dark variant, duplicate definitions) removed
+
+---
+Task ID: batch11
+Agent: Main
+Task: Batch 11 — Zero TS errors, Cloudinary migration, generateMetadata, shadcn cleanup
+
+Work Log:
+- Enabled ignoreBuildErrors: false — Next.js build now runs full TypeScript checking
+- Eliminated 520+ TS errors across 15 files:
+  - 507 framer-motion Variant union complexity: retyped motion/tokens.ts from Variants to plain objects (runtime identical, TS no longer creates unresolvable unions)
+  - patterns/page.tsx: 3x 's is possibly undefined' — added findSiddhi() non-null assertion helper
+  - pricing/page.tsx: Currency type imported from wrong module (types.ts → pricing.ts)
+  - AISearchBar.tsx: useRef() requires initial arg in React 19
+  - AcknowledgmentGate.tsx: exit used 'duration' as direct property (must be in transition object)
+  - UnattestedState.tsx: invalid CSS 'borderOpacity' property (replaced with rgba borderColor)
+  - TierProvider.tsx: duplicate export of TierContextValue type
+  - db.ts: PrismaLibSql constructor expected Config object not Client instance
+  - validators/schemas.ts: Zod v4 changed errorMap to message
+  - 3 files: useReducedMotion() returns boolean | null in framer-motion 11 (added ?? false)
+  - cloudinary/upload.ts: SDK type mismatch for resource_type (ts-expect-error)
+- Migrated 12 Vercel Blob Storage URLs on home page to Cloudinary CDN:
+  - 10 images uploaded to kalki-mirror/home/* with f_auto,q_auto:good,w_1920,c_limit
+  - 4 missing files downloaded from blob URLs, then uploaded
+  - All 12 blob references in page.tsx replaced with Cloudinary URLs
+  - Video poster also migrated to Cloudinary
+- Added generateMetadata for 60 dynamic routes via server component layouts:
+  - archive/[slug]/layout.tsx — per-siddhi title (name + sanskrit), description from summary
+  - patterns/[slug]/layout.tsx — per-pattern title (name + subtitle), description
+- Removed 38 unused shadcn UI components (accordion, alert-dialog, badge, calendar, card, carousel, chart, etc.)
+- Removed 28 unused radix/shadcn npm dependencies (saved ~2MB node_modules)
+- Removed dead hooks/use-toast.ts (depended on deleted toast component)
+- Build: clean, 0 errors, full TypeScript checking, 21 routes
+
+Stage Summary:
+- 68 files changed, 229 insertions, 6,629 deletions (net -6,400 lines)
+- TypeScript: 0 errors with strict mode and full build-time checking
+- Home page: 100% Cloudinary CDN, zero Vercel Blob dependencies
+- SEO: 60 dynamic routes now have unique per-page titles and descriptions
+- Bundle: 38 dead components + 28 dead dependencies removed
+- Key architectural fix: motion tokens are plain objects, not Variants-typed, eliminating 507 TS errors at their source
