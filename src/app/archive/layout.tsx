@@ -3,16 +3,16 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'The Akashic Archive',
   description:
-    '41 siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access. Explore the complete siddhi database.',
+    '48 siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access. Explore the complete siddhi database.',
   openGraph: {
     title: 'The Akashic Archive | KALKI',
     description:
-      '41 siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access. Explore the complete siddhi database.',
+      'The ancient forbidden archive of consciousness. 48 siddhis, 16 archetypes, tiered access.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-underground-library',
-        width: 1200,
-        height: 630,
+        url: '/archive-zone-reading-room.jpeg',
+        width: 1344,
+        height: 768,
         alt: 'The Akashic Archive — KALKI',
       },
     ],
