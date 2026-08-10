@@ -7,6 +7,7 @@ import { WhatsAppCTA } from "@/components/booking/WhatsAppCTA";
 import { TierProvider } from "@/components/layout/TierProvider";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { PaywallModal } from "@/components/monetization/PaywallModal";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Analytics } from "@vercel/analytics/react";
 
 /* ============================================================
@@ -104,6 +105,7 @@ export default function RootLayout({
         <TierProvider>
           <SmoothScroll>
             <SacredNav />
+            <ScrollProgress />
             <main className="pt-16 md:pt-20">{children}</main>
             <SacredFooter />
             <div className="fixed-bottom-stack">

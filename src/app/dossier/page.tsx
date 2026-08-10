@@ -9,11 +9,8 @@ import { UnattestedState } from '@/components/dossier/UnattestedState';
 import { ArchiveRefsLedger } from '@/components/dossier/ArchiveRefsLedger';
 import { PrescriptionBlueprint } from '@/components/dossier/PrescriptionBlueprint';
 import { TransitReadout } from '@/components/dossier/TransitReadout';
-import {
-  fadeInUp,
-  staggerContainer,
-  staggerItem,
-} from '@/lib/motion/tokens';
+import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
+import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import type { Tier, CautionLevel } from '@/lib/data/types';
 
 // ─── Dossier response type (mirrors /api/initiate) ──────────────────────────
@@ -123,9 +120,12 @@ export default function DossierPage() {
   }, [query, natalMoon, tier]);
 
   return (
-    <div className="bg-deep-black min-h-screen">
+    <div className="bg-deep-black min-h-screen relative">
+      {/* Atmospheric background */}
+      <div className="atmospheric-bg fixed inset-0 pointer-events-none opacity-40" aria-hidden="true" />
+
       {/* ── Header ────────────────────────────────────── */}
-      <div className="max-w-3xl mx-auto px-6 lg:px-10 pt-10 md:pt-16">
+      <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 pt-10 md:pt-16">
         <BackButton href="/" label="Back to Home" className="mb-12" />
 
         <motion.div
@@ -143,7 +143,7 @@ export default function DossierPage() {
       </div>
 
       {/* ── Input Form ────────────────────────────────── */}
-      <div className="max-w-3xl mx-auto px-6 lg:px-10 mt-16">
+      <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 mt-16">
         <motion.div
           className="glass-panel p-8 md:p-10"
           initial={reduced ? { opacity: 0.8 } : fadeInUp.hidden}
@@ -243,12 +243,83 @@ export default function DossierPage() {
         </motion.div>
       </div>
 
-      {/* ── The Dossier Output ────────────────────────── */}
+      {/* ── Yantra Loading Ceremony ── */}
+      <AnimatePresence>
+        {loading && (
+          <motion.div
+            key="loading-ceremony"
+            className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 mt-20"
+            initial={reduced ? { opacity: 1 } : { opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -20 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="glass-panel p-12 md:p-16 text-center">
+              {/* Yantra SVG spinner */}
+              <motion.div
+                className="mx-auto mb-8 w-28 h-28 relative"
+                initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 0.7 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <img
+                  src="/kalki-yantra.svg"
+                  alt=""
+                  className="w-full h-full opacity-30"
+                  style={!reduced ? { animation: 'yantraDraw 2.4s ease-out forwards' } : undefined}
+                  aria-hidden="true"
+                />
+                <div
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-gold/50 rounded-full"
+                  style={!reduced ? { animation: 'binduPulse 1.2s ease-in-out infinite' } : undefined}
+                  aria-hidden="true"
+                />
+              </motion.div>
+
+              <motion.p
+                className="section-label mb-4"
+                initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+                animate={fadeInUp.visible}
+                transition={{ delay: 0.2 }}
+              >
+                INITIATION IN PROGRESS
+              </motion.p>
+              <motion.p
+                className="text-text-muted text-sm font-mono tracking-[0.1em]"
+                initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+                animate={fadeInUp.visible}
+                transition={{ delay: 0.35 }}
+              >
+                Mapping coordinates against the Akashic Archive...
+              </motion.p>
+
+              {/* Animated progress dots */}
+              <div className="flex justify-center gap-2 mt-8">
+                {[0, 1, 2, 3, 4].map(i => (
+                  <motion.div
+                    key={i}
+                    className="w-1.5 h-1.5 rounded-full bg-gold/40"
+                    animate={{ opacity: [0.2, 1, 0.2] }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      delay: i * 0.2,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── The Dossier Output ── */}
       <AnimatePresence mode="wait">
         {dossier && (
           <motion.div
             key="dossier"
-            className="max-w-3xl mx-auto px-6 lg:px-10 mt-20 pb-32"
+            className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 mt-20 pb-32"
             initial={reduced ? { opacity: 1 } : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
@@ -299,7 +370,7 @@ export default function DossierPage() {
 
                 {/* Archetype Badge(s) */}
                 {dossier.archetypes.length > 0 && (
-                  <div className="flex flex-wrap gap-3 mb-2">
+                  <div className="flex flex-wrap gap-3 mb-6">
                     {dossier.archetypes.map(a => (
                       <div
                         key={a.id}
@@ -315,16 +386,25 @@ export default function DossierPage() {
                   </div>
                 )}
 
-                {/* Archetype image */}
+                {/* Archetype image — enriched with gold border + glow */}
                 {dossier.archetypes.length > 0 && dossier.archetypes[0].image && (
-                  <div className="mt-8 w-20 h-20 rounded-full overflow-hidden border" style={{ borderColor: 'var(--border-gold)' }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={dossier.archetypes[0].image}
-                      alt={dossier.archetypes[0].name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                  <motion.div
+                    className="mt-4 w-28 h-28 md:w-32 md:h-32 relative"
+                    initial={reduced ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                  >
+                    <div className="absolute -inset-1 bg-gradient-to-b from-gold/20 to-transparent rounded-full blur-md" aria-hidden="true" />
+                    <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-gold/30">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={dossier.archetypes[0].image}
+                        alt={dossier.archetypes[0].name}
+                        className="w-full h-full object-cover"
+                        style={{ filter: 'contrast(1.08) saturate(0.9) brightness(0.95) sepia(0.08)' }}
+                      />
+                    </div>
+                  </motion.div>
                 )}
               </motion.div>
 
@@ -346,14 +426,17 @@ export default function DossierPage() {
               </p>
 
               {dossier.karmic_loop ? (
-                <div
+                <motion.div
                   className="pl-6 md:pl-8 border-l-2 py-2"
                   style={{ borderColor: 'var(--copper)' }}
+                  initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+                  whileInView={fadeInUp.visible}
+                  viewport={{ once: true }}
                 >
                   <p className="text-editorial max-w-2xl">
                     {dossier.karmic_loop}
                   </p>
-                </div>
+                </motion.div>
               ) : (
                 <p className="text-text-muted text-sm font-mono">
                   NO PATTERN CLASSIFICATION AVAILABLE — INSUFFICIENT COORDINATES
@@ -427,20 +510,20 @@ export default function DossierPage() {
               userTier={tier}
             />
 
-            {/* ── Meta footer ──────────────────────── */}
+            {/* ── Meta footer ── */}
             <div className="mt-20 pt-8 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div>
                   <p className="text-caption mb-1">FOLIOS IN ARCHIVE</p>
-                  <p className="font-mono text-lg text-foreground">{dossier.meta.total_folios_available}</p>
+                  <p className="font-mono text-lg text-foreground"><AnimatedCounter target={dossier.meta.total_folios_available} /></p>
                 </div>
                 <div>
                   <p className="text-caption mb-1">CHUNKS INJECTED</p>
-                  <p className="font-mono text-lg text-foreground">{dossier.yantra_prompt.folio_blocks_injected}</p>
+                  <p className="font-mono text-lg text-foreground"><AnimatedCounter target={dossier.yantra_prompt.folio_blocks_injected} /></p>
                 </div>
                 <div>
                   <p className="text-caption mb-1">ARCHETYPES</p>
-                  <p className="font-mono text-lg text-foreground">{dossier.meta.archetype_count}</p>
+                  <p className="font-mono text-lg text-foreground"><AnimatedCounter target={dossier.meta.archetype_count} /></p>
                 </div>
                 <div>
                   <p className="text-caption mb-1">RETRIEVAL</p>

@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { PageHero } from '@/components/layout/PageHero';
+import { CinematicImage } from '@/components/ui/CinematicImage';
 import { BackButton } from '@/components/nav/BackButton';
 import { consultationServices } from '@/lib/data/consultations';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
@@ -60,15 +61,13 @@ export default function ConsultationsPage() {
           <div className="md:col-span-2 flex justify-center md:justify-start">
             <div className="relative max-w-xs w-full">
               <div className="absolute -inset-1 bg-gradient-to-b from-gold/30 via-gold/10 to-transparent rounded-sm blur-sm" />
-              <div className="relative neon-glow-white rounded-sm overflow-hidden border border-gold/20">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+              <div className="relative neon-glow-white rounded-sm overflow-hidden border border-gold/20 aspect-[3/4]">
+                <CinematicImage
                   src={KAUSTUBH_IMG}
                   alt="Kaustubh — Tantric Technologist & Founder of KALKI"
-                  className="w-full h-auto object-cover"
-                  loading="eager"
-                  decoding="sync"
-                  draggable={false}
+                  fill
+                  priority
+                  filmGrain={false}
                 />
                 {/* Gold corner accents */}
                 <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-gold/60" />

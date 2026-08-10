@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { fadeInUp } from '@/lib/motion/tokens';
+import { AIBlockSkeleton } from '@/components/ui/Skeleton';
 
 /* ── Types ── */
 interface TransitPosition {
@@ -79,6 +80,26 @@ export function TransitInterpreter({ positions }: TransitInterpreterProps) {
       </button>
 
       <AnimatePresence>
+        {state === 'loading' && (
+          <motion.div
+            key="skeleton"
+            initial={reduced ? { opacity: 1 } : { opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, height: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="flex items-center gap-4 mb-5">
+              <div className="w-8 h-8 relative shrink-0">
+                <img src="/kalki-yantra.svg" alt="" className="w-full h-full opacity-25" style={!reduced ? { animation: 'yantraDraw 2.4s ease-out forwards' } : undefined} aria-hidden="true" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-gold/50 rounded-full" style={!reduced ? { animation: 'binduPulse 1.2s ease-in-out infinite' } : undefined} aria-hidden="true" />
+              </div>
+              <p className="text-xs text-text-muted font-mono tracking-[0.1em]">Reading the transit geometry...</p>
+            </div>
+            <AIBlockSkeleton lines={4} />
+          </motion.div>
+        )}
+
         {state === 'expanded' && data && (
           <motion.div
             key="expanded"

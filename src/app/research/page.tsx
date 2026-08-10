@@ -5,7 +5,10 @@ import { PageHero } from '@/components/layout/PageHero';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { BackButton } from '@/components/nav/BackButton';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
+import { ScrollParallax } from '@/components/ui/ScrollParallax';
+import { CinematicImage } from '@/components/ui/CinematicImage';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
+import { BookOpen, Landmark, GraduationCap, Flame, PenTool, Cpu } from 'lucide-react';
 
 export default function ResearchPage() {
   const reduced = useReducedMotion();
@@ -49,20 +52,39 @@ export default function ResearchPage() {
           <h2 className="font-display text-3xl md:text-5xl text-foreground mb-12 engraved-heading">Six Evidence Categories</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { name: 'Traditional Source', desc: 'Direct from scriptural or oral tradition' },
-              { name: 'Historical Evidence', desc: 'Verified through historical records and archaeology' },
-              { name: 'Academic Research', desc: 'Peer-reviewed publications and scholarly analysis' },
-              { name: 'Experiential Tradition', desc: 'Living practitioner lineages and testimonies' },
-              { name: 'Editorial Synthesis', desc: 'KALKI editorial team cross-referenced analysis' },
-              { name: 'AI Interpretation', desc: 'Machine-generated connections flagged as such' },
+              { name: 'Traditional Source', desc: 'Direct from scriptural or oral tradition', icon: BookOpen },
+              { name: 'Historical Evidence', desc: 'Verified through historical records and archaeology', icon: Landmark },
+              { name: 'Academic Research', desc: 'Peer-reviewed publications and scholarly analysis', icon: GraduationCap },
+              { name: 'Experiential Tradition', desc: 'Living practitioner lineages and testimonies', icon: Flame },
+              { name: 'Editorial Synthesis', desc: 'KALKI editorial team cross-referenced analysis', icon: PenTool },
+              { name: 'AI Interpretation', desc: 'Machine-generated connections flagged as such', icon: Cpu },
             ].map((cat) => (
-              <div key={cat.name} className="glass-chip p-6">
-                <p className="text-sm text-foreground mb-2 font-display text-lg">{cat.name}</p>
-                <p className="text-xs text-text-muted editorial-spacing">{cat.desc}</p>
+              <div key={cat.name} className="glass-chip p-6 flex gap-4">
+                <div className="shrink-0 w-10 h-10 rounded-sm bg-gold/5 border border-gold/10 flex items-center justify-center">
+                  <cat.icon className="w-5 h-5 text-gold/50" />
+                </div>
+                <div>
+                  <p className="text-sm text-foreground mb-1.5 font-display text-lg">{cat.name}</p>
+                  <p className="text-xs text-text-muted editorial-spacing">{cat.desc}</p>
+                </div>
               </div>
             ))}
           </div>
         </motion.section>
+
+        {/* ── Cinematic Divider ── */}
+        <ScrollParallax speed={-0.08}>
+          <div className="relative h-[30vh] md:h-[40vh] overflow-hidden">
+            <CinematicImage
+              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-dark-temple-interior'
+              alt="Ancient texts and observatory instruments"
+              kenBurns="slow"
+              scrim="full"
+              vignette
+              fog
+            />
+          </div>
+        </ScrollParallax>
 
         {/* Traditions covered */}
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
@@ -81,10 +103,19 @@ export default function ResearchPage() {
           <div className="divider-subtle mb-16" />
           <p className="section-label mb-4">Methodology</p>
           <h2 className="font-display text-3xl md:text-5xl text-foreground mb-10 engraved-heading">How We Score Authenticity</h2>
-          <div className="space-y-6 text-editorial max-w-3xl">
-            <p>Each siddhi receives an authenticity score from 0 to 100, calculated from three weighted factors: textual attestation (how many primary and secondary sources reference the practice), lineage continuity (whether the practice has an unbroken living tradition), and experiential verification (whether contemporary practitioners report results consistent with traditional descriptions).</p>
-            <p>Sources are individually rated as high, medium, or low confidence. High-confidence sources are primary textual references (Upaniṣads, Tantras, Āgamas). Medium-confidence sources are secondary scholarship, commentaries, or historical records. Low-confidence sources are oral traditions without textual corroboration or modern reinterpretations without traditional grounding.</p>
-            <p>We never blur the distinction between traditional knowledge and our editorial interpretation. When KALKI synthesizes or connects material, it is flagged as editorial synthesis, not traditional source.</p>
+          <div className="space-y-8 text-editorial max-w-3xl">
+            <div>
+              <p className="text-caption mb-3 text-gold-dim">SCORING FORMULA</p>
+              <p>Each siddhi receives an authenticity score from 0 to 100, calculated from three weighted factors: textual attestation (how many primary and secondary sources reference the practice), lineage continuity (whether the practice has an unbroken living tradition), and experiential verification (whether contemporary practitioners report results consistent with traditional descriptions).</p>
+            </div>
+            <div>
+              <p className="text-caption mb-3 text-gold-dim">SOURCE CONFIDENCE TIERS</p>
+              <p>Sources are individually rated as high, medium, or low confidence. High-confidence sources are primary textual references (Upaniṣads, Tantras, Āgamas). Medium-confidence sources are secondary scholarship, commentaries, or historical records. Low-confidence sources are oral traditions without textual corroboration or modern reinterpretations without traditional grounding.</p>
+            </div>
+            <div>
+              <p className="text-caption mb-3 text-gold-dim">EDITORIAL INTEGRITY</p>
+              <p>We never blur the distinction between traditional knowledge and our editorial interpretation. When KALKI synthesizes or connects material, it is flagged as editorial synthesis, not traditional source.</p>
+            </div>
           </div>
         </motion.section>
       </div>

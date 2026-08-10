@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
+import { CinematicImage } from '@/components/ui/CinematicImage';
 import { TEN_MAHAVIDYAS, ALL_ARCHETYPES, type Archetype } from '@/lib/data/archetypes';
 import { allSiddhis, getSiddhiBySlug } from '@/lib/data/siddhis';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
@@ -82,14 +83,13 @@ export default function ArchetypesPage() {
                 <div className="flex flex-col md:flex-row">
                   {/* Image */}
                   <div className="relative md:w-48 h-40 md:h-auto shrink-0 overflow-hidden">
-                    <img
+                    <CinematicImage
                       src={a.image}
                       alt={a.name}
-                      className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-700"
-                      style={{ filter: 'contrast(1.08) saturate(0.9) brightness(0.95) sepia(0.08)' }}
+                      filmGrain={false}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-deep-black/80 hidden md:block" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-deep-black/80 to-transparent md:hidden" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-deep-black/80 hidden md:block z-[5]" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-deep-black/80 to-transparent md:hidden z-[5]" />
                     {/* Number */}
                     <div className="absolute top-4 left-4">
                       <span className="font-mono text-[0.75rem] tracking-[0.2em] text-gold/60">
