@@ -1,9 +1,13 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
-import { fadeInUp } from '@/lib/motion/tokens';
+import { motion, useReducedMotion, useInView } from 'framer-motion';
+import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
+import { PageHero } from '@/components/layout/PageHero';
+import { ScrollParallax } from '@/components/ui/ScrollParallax';
+import { CinematicImage } from '@/components/ui/CinematicImage';
+import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { JapaGuide } from '@/components/ai/JapaGuide';
 
 const STORAGE_KEY = 'kalki-japa-state';
@@ -43,6 +47,8 @@ export default function JapaPage() {
   const [customMantra, setCustomMantra] = useState('');
   const [showCustom, setShowCustom] = useState(false);
   const [pulse, setPulse] = useState(false);
+  const counterRef = useRef<HTMLSpanElement>(null);
+  const counterInView = useInView(counterRef, { once: false });
 
   useEffect(() => { saveState(state); }, [state]);
 
@@ -78,32 +84,24 @@ export default function JapaPage() {
 
   return (
     <div className="bg-deep-black min-h-screen">
-      {/* Hero bar */}
-      <header className="border-b border-gold/5">
-        <div className="max-w-3xl mx-auto px-6 lg:px-10 pt-32 pb-12">
-          <motion.div initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible}>
-            <Link href="/practice" className="inline-flex items-center gap-2 text-gold-dim hover:text-gold text-xs font-ui tracking-[0.12em] uppercase mb-8 transition-colors">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
-              Back to Sadhana
-            </Link>
-            <p className="section-label mb-4">Mantra Practice</p>
-            <h1 className="font-display text-4xl md:text-6xl text-foreground leading-[0.95] tracking-[0.06em] engraved-heading font-light">
-              Japa Mala
-            </h1>
-            <p className="text-text-secondary text-lg mt-4 editorial-spacing">
-              Count your mantra repetitions. The mala persists in your browser.
-            </p>
-          </motion.div>
-        </div>
-      </header>
+      <PageHero
+        image='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-ritual-chamber-alt'
+        title='Japa Mala'
+        subtitle='Count your mantra repetitions. The mala persists in your browser — a digital mālā for disciplined sādhana.'
+        sectionLabel='Mantra Practice'
+      />
 
       <div className="max-w-3xl mx-auto px-6 lg:px-10 py-16 md:py-24">
         {/* Mantra selector */}
-        <motion.section className="mb-16" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
+        <motion.section className="mb-16"
+          initial={reduced ? { opacity: 1 } : staggerContainer.hidden}
+          whileInView={staggerContainer.visible}
+          viewport={{ once: true }}
+        >
           <p className="text-caption mb-5">Select Mantra</p>
           <div className="flex flex-wrap gap-2 mb-4">
             {DEFAULT_MANTRAS.map((m) => (
-              <button
+              <motion.button
                 key={m}
                 onClick={() => setState(prev => ({ ...prev, mantra: m }))}
                 className={`px-4 py-2 text-[0.65rem] font-ui tracking-[0.12em] uppercase rounded-sm transition-all duration-300 ${
@@ -111,20 +109,22 @@ export default function JapaPage() {
                     ? 'bg-gold text-deep-black'
                     : 'bg-surface text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
                 }`}
+                variants={staggerItem}
               >
                 {m}
-              </button>
+              </motion.button>
             ))}
-            <button
+            <motion.button
               onClick={() => setShowCustom(!showCustom)}
               className={`px-4 py-2 text-[0.65rem] font-ui tracking-[0.12em] uppercase rounded-sm transition-all duration-300 ${
                 showCustom
                   ? 'bg-gold/15 text-gold border border-gold/30'
                   : 'bg-surface text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
               }`}
+              variants={staggerItem}
             >
               Custom
-            </button>
+            </motion.button>
           </div>
           {showCustom && (
             <div className="flex gap-3 mt-3">
@@ -147,9 +147,13 @@ export default function JapaPage() {
         </motion.section>
 
         {/* Target selector */}
-        <motion.section className="mb-16" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
+        <motion.section className="mb-16"
+          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+          whileInView={fadeInUp.visible}
+          viewport={{ once: true }}
+        >
           <p className="text-caption mb-5">Mala Length</p>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {[54, 108, 216, 1008].map((t) => (
               <button
                 key={t}
@@ -165,6 +169,19 @@ export default function JapaPage() {
             ))}
           </div>
         </motion.section>
+
+        {/* ── Cinematic Divider ── */}
+        <ScrollParallax speed={-0.06}>
+          <div className="relative h-[20vh] overflow-hidden -mx-6 lg:-mx-10 mb-16">
+            <CinematicImage
+              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-dark-temple-interior'
+              alt="Meditation chamber"
+              kenBurns="slow"
+              scrim="full"
+              vignette
+            />
+          </div>
+        </ScrollParallax>
 
         {/* AI Japa Guide */}
         <motion.section className="mb-16" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
@@ -206,16 +223,22 @@ export default function JapaPage() {
             <button
               onClick={increment}
               className={`absolute inset-0 flex items-center justify-center rounded-full transition-transform duration-150 ${pulse ? 'scale-95' : 'scale-100'}`}
+              aria-label="Increment japa count"
             >
-              <span className={`font-display text-7xl md:text-8xl tabular-nums transition-colors duration-300 ${
-                isComplete ? 'text-gold text-glow' : 'text-foreground'
-              }`}>
-                {state.count}
+              <span
+                ref={counterRef}
+                className={`font-display text-7xl md:text-8xl tabular-nums transition-colors duration-300 ${
+                  isComplete ? 'text-gold text-glow' : 'text-foreground'
+                }`}
+              >
+                {counterInView ? <AnimatedCounter target={state.count} /> : state.count}
               </span>
             </button>
           </div>
 
-          <p className="text-caption mb-8">of {state.target} repetitions</p>
+          <p className="text-caption mb-8">
+            of <AnimatedCounter target={state.target} /> repetitions
+          </p>
 
           {/* Tap / click button */}
           <button
@@ -225,6 +248,7 @@ export default function JapaPage() {
                 ? 'border-gold bg-gold/10 shadow-[0_0_60px_rgba(197,160,89,0.2)]'
                 : 'border-gold/20 bg-surface hover:border-gold/40 hover:shadow-[0_0_40px_rgba(197,160,89,0.08)]'
             } ${pulse ? 'scale-95' : 'scale-100'}`}
+            aria-label="Tap to count"
           >
             <span className="font-display text-lg text-gold-dim">Tap</span>
           </button>
@@ -258,7 +282,7 @@ export default function JapaPage() {
               {state.history.slice().reverse().map((entry, i) => (
                 <div key={i} className="glass-chip p-4 flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-foreground font-display">{entry.count} repetitions</p>
+                    <p className="text-sm text-foreground font-display"><AnimatedCounter target={entry.count} /> repetitions</p>
                     <p className="text-xs text-text-muted mt-1">{entry.mantra}</p>
                   </div>
                   <p className="text-xs text-text-muted font-mono">

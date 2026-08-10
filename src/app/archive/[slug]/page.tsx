@@ -14,6 +14,7 @@ import { GatedContent } from '@/components/monetization/GatedContent';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import { BackButton } from '@/components/nav/BackButton';
+import { CinematicImage } from '@/components/ui/CinematicImage';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { WHATSAPP_LINKS } from '@/lib/utils/whatsapp';
 import type { Tier } from '@/lib/data/types';
@@ -128,11 +129,15 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
                     <p className="text-editorial">{activeArchetype.pattern}</p>
                   </div>
                   <div className="shrink-0">
-                    <div className="w-24 h-24 rounded-sm overflow-hidden border border-gold/10">
-                      <img 
-                        src={activeArchetype.image} 
+                    <div className="w-24 h-24 rounded-sm overflow-hidden border border-gold/10 relative">
+                      <CinematicImage
+                        src={activeArchetype.image}
                         alt={activeArchetype.name}
-                        className="w-full h-full object-cover opacity-70"
+                        fill={false}
+                        width={96}
+                        height={96}
+                        filmGrain={false}
+                        vignette
                       />
                     </div>
                   </div>

@@ -12,6 +12,7 @@ import { PatternExplainer } from '@/components/ai/PatternExplainer';
 import { YantraLoader } from '@/components/patterns/YantraLoader';
 import { CautionBadge } from '@/components/archive/CautionBadge';
 import { BackButton } from '@/components/nav/BackButton';
+import { CinematicImage } from '@/components/ui/CinematicImage';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 export default function PatternFolioPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -77,8 +78,16 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
           >
             <p className="section-label mb-6">Mahāvidyā Classification</p>
             <Link href={`/archetypes#${archetype.id}`} className="glass-chip p-6 md:p-8 flex flex-col md:flex-row md:items-center gap-6 group hover:border-gold/30 transition-all duration-500 block">
-              <div className="shrink-0 w-20 h-20 rounded-sm overflow-hidden border border-gold/10">
-                <img src={archetype.image} alt={archetype.name} className="w-full h-full object-cover opacity-70" />
+              <div className="shrink-0 w-20 h-20 rounded-sm overflow-hidden border border-gold/10 relative">
+                <CinematicImage
+                  src={archetype.image}
+                  alt={archetype.name}
+                  fill={false}
+                  width={80}
+                  height={80}
+                  filmGrain={false}
+                  vignette
+                />
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-1">

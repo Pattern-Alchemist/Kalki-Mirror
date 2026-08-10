@@ -11,8 +11,11 @@ import { TEN_MAHAVIDYAS, ACCESS_LABELS, type CautionLevel as ArchCaution } from 
 import { staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import type { SiddhiLevel, Tier } from '@/lib/data/types';
 import { cn } from '@/lib/utils';
-import { BackButton } from "@/components/nav/BackButton";
-import { AISearchBar } from "@/components/ai/AISearchBar";
+import { BackButton } from '@/components/nav/BackButton';
+import { AISearchBar } from '@/components/ai/AISearchBar';
+import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
+import { ScrollParallax } from '@/components/ui/ScrollParallax';
+import { CinematicImage } from '@/components/ui/CinematicImage';
 
 const CATEGORIES = ['All', 'Mantra', 'Yantra', 'Prāṇāyāma', 'Ritual', 'Tantra', 'Meditation', 'Dhāraṇā'];
 const CAUTION_FILTERS: { value: string; label: string }[] = [
@@ -84,9 +87,7 @@ export default function ArchivePage() {
             {(['OPEN', 'MODERATE', 'HIGH', 'SEALED'] as const).map((level) => (
               <div key={level} className="flex items-center gap-3">
                 <CautionBadge level={level} />
-                <span className="font-mono text-[0.8125rem] tracking-[0.12em] text-text-muted">
-                  {counts[level]}
-                </span>
+                <AnimatedCounter target={counts[level]} className="font-mono text-[0.8125rem] tracking-[0.12em] text-text-muted" />
               </div>
             ))}
           </div>
@@ -210,8 +211,22 @@ export default function ArchivePage() {
           </div>
         )}
 
+        {/* ── Cinematic Parallax Interlude ── */}
+        <ScrollParallax speed={-0.06}>
+          <div className="relative h-[25vh] md:h-[30vh] overflow-hidden -mx-6 lg:-mx-10 my-16">
+            <CinematicImage
+              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-underground-library'
+              alt="The Akashic Archive"
+              kenBurns="slow"
+              scrim="full"
+              vignette
+              fog
+            />
+          </div>
+        </ScrollParallax>
+
         {/* Archetype navigation — the pattern wheel teaser */}
-        <div className="mt-32">
+        <div className="mt-16">
           <div className="divider-gold mb-16" />
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
             <div>

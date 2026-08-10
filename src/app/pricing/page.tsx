@@ -9,7 +9,9 @@ import type { Tier, Currency } from '@/lib/data/types';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import { BackButton } from '@/components/nav/BackButton';
 import { PricingQuiz } from '@/components/ai/PricingQuiz';
-import { staggerContainer, staggerItem } from '@/lib/motion/tokens';
+import { staggerContainer, staggerItem, fadeInUp } from '@/lib/motion/tokens';
+import { ScrollParallax } from '@/components/ui/ScrollParallax';
+import { CinematicImage } from '@/components/ui/CinematicImage';
 
 const TIER_ORDER: Tier[] = ['prithvi', 'jal', 'agni', 'akash'];
 const WHATSAPP_NUMBER = '918920862931';
@@ -172,6 +174,20 @@ export default function PricingPage() {
           })}
         </motion.div>
 
+        {/* ── Cinematic Parallax Interlude ── */}
+        <ScrollParallax speed={-0.06}>
+          <div className="relative h-[25vh] md:h-[30vh] overflow-hidden -mx-6 lg:-mx-10 my-16">
+            <CinematicImage
+              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-ritual-chamber-alt'
+              alt="The sacred path"
+              kenBurns="slow"
+              scrim="full"
+              vignette
+              fog
+            />
+          </div>
+        </ScrollParallax>
+
         {/* Trust signals */}
         <div className="flex flex-wrap justify-center gap-10 mt-20">
           {TRUST_SIGNALS.map((s, i) => (
@@ -180,13 +196,23 @@ export default function PricingPage() {
         </div>
 
         {/* Guarantee */}
-        <div className="glass-panel text-center max-w-2xl mx-auto mt-16 p-10 md:p-12">
+        <motion.div
+          className="glass-panel text-center max-w-2xl mx-auto mt-16 p-10 md:p-12"
+          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+          whileInView={fadeInUp.visible}
+          viewport={{ once: true }}
+        >
           <h3 className="font-display text-2xl text-gold mb-3 text-glow-subtle font-light tracking-wide">Sacred Guarantee</h3>
           <p className="text-editorial">If you don&apos;t feel a tangible shift in your practice within 14 days, we&apos;ll refund every rupee. No questions asked. Your spiritual journey is too important for compromise.</p>
-        </div>
+        </motion.div>
 
         {/* FAQ */}
-        <div className="max-w-2xl mx-auto mt-24">
+        <motion.div
+          className="max-w-2xl mx-auto mt-24"
+          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+          whileInView={fadeInUp.visible}
+          viewport={{ once: true }}
+        >
           <h3 className="font-display text-2xl text-foreground text-center mb-12 engraved-heading">Frequently Asked Questions</h3>
           <div>
             {FAQ_DATA.map((item, i) => (
@@ -205,7 +231,7 @@ export default function PricingPage() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

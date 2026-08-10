@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
-import { fadeInUp } from '@/lib/motion/tokens';
+import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
+import { PageHero } from '@/components/layout/PageHero';
+import { ScrollParallax } from '@/components/ui/ScrollParallax';
+import { CinematicImage } from '@/components/ui/CinematicImage';
 
 const PRESETS = [
   { label: '5 min', seconds: 300 },
@@ -97,32 +99,24 @@ export default function MeditationTimerPage() {
 
   return (
     <div className="bg-deep-black min-h-screen">
-      {/* Hero bar */}
-      <header className="border-b border-gold/5">
-        <div className="max-w-3xl mx-auto px-6 lg:px-10 pt-32 pb-12">
-          <motion.div initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible}>
-            <Link href="/practice" className="inline-flex items-center gap-2 text-gold-dim hover:text-gold text-xs font-ui tracking-[0.12em] uppercase mb-8 transition-colors">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
-              Back to Sadhana
-            </Link>
-            <p className="section-label mb-4">Meditation</p>
-            <h1 className="font-display text-4xl md:text-6xl text-foreground leading-[0.95] tracking-[0.06em] engraved-heading font-light">
-              Silent Sitting
-            </h1>
-            <p className="text-text-secondary text-lg mt-4 editorial-spacing">
-              A simple timer for unstructured meditation practice.
-            </p>
-          </motion.div>
-        </div>
-      </header>
+      <PageHero
+        image='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-observatory-alt'
+        title='Silent Sitting'
+        subtitle='A simple timer for unstructured meditation practice. Set your duration, begin, and sit.'
+        sectionLabel='Meditation'
+      />
 
       <div className="max-w-3xl mx-auto px-6 lg:px-10 py-16 md:py-24">
         {/* Preset selector */}
-        <motion.section className="mb-16" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
+        <motion.section className="mb-16"
+          initial={reduced ? { opacity: 1 } : staggerContainer.hidden}
+          whileInView={staggerContainer.visible}
+          viewport={{ once: true }}
+        >
           <p className="text-caption mb-5">Duration</p>
           <div className="flex flex-wrap gap-2 mb-4">
             {PRESETS.map((p) => (
-              <button
+              <motion.button
                 key={p.label}
                 onClick={() => setPreset(p.seconds)}
                 disabled={phase === 'running'}
@@ -131,20 +125,22 @@ export default function MeditationTimerPage() {
                     ? 'bg-gold text-deep-black'
                     : 'bg-surface text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20 disabled:opacity-40 disabled:cursor-not-allowed'
                 }`}
+                variants={staggerItem}
               >
                 {p.label}
-              </button>
+              </motion.button>
             ))}
-            <button
+            <motion.button
               onClick={() => setShowCustom(!showCustom)}
               className={`px-5 py-2.5 text-[0.65rem] font-ui tracking-[0.12em] uppercase rounded-sm transition-all duration-300 ${
                 showCustom
                   ? 'bg-gold/15 text-gold border border-gold/30'
                   : 'bg-surface text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
               }`}
+              variants={staggerItem}
             >
               Custom
-            </button>
+            </motion.button>
           </div>
           {showCustom && (
             <div className="flex gap-3 mt-3">
@@ -167,6 +163,20 @@ export default function MeditationTimerPage() {
             </div>
           )}
         </motion.section>
+
+        {/* ── Cinematic Divider ── */}
+        <ScrollParallax speed={-0.06}>
+          <div className="relative h-[20vh] overflow-hidden -mx-6 lg:-mx-10 mb-16">
+            <CinematicImage
+              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-labyrinth-alt'
+              alt="Meditation path"
+              kenBurns="slow"
+              scrim="full"
+              vignette
+              fog
+            />
+          </div>
+        </ScrollParallax>
 
         {/* Timer display */}
         <motion.section
