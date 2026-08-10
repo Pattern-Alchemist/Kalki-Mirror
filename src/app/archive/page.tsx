@@ -225,6 +225,20 @@ export default function ArchivePage() {
           </div>
         </ScrollParallax>
 
+        {/* ── Second Cinematic Parallax Interlude (before Mahavidyas) ── */}
+        <ScrollParallax speed={0.04}>
+          <div className="relative h-[15vh] overflow-hidden -mx-6 lg:-mx-10 my-16">
+            <CinematicImage
+              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/sri-yantra-mist'
+              alt="Sri Yantra in mist"
+              kenBurns="slow"
+              scrim="full"
+              vignette
+              fog
+            />
+          </div>
+        </ScrollParallax>
+
         {/* Archetype navigation — the pattern wheel teaser */}
         <div className="mt-16">
           <div className="divider-gold mb-16" />

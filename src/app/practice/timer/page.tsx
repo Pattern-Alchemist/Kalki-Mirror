@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion, useInView } from 'framer-motion';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { PageHero } from '@/components/layout/PageHero';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { CinematicImage } from '@/components/ui/CinematicImage';
+import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 
 const PRESETS = [
   { label: '5 min', seconds: 300 },
@@ -25,6 +26,26 @@ function formatTime(totalSeconds: number): string {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
 
+function AnimatedTimeDisplay({ seconds, phase }: { seconds: number; phase: string }) {
+  const reduced = useReducedMotion();
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  const h = Math.floor(seconds / 3600);
+
+  return (
+    <span className={`font-display tabular-nums transition-all duration-300 ${
+      phase === 'complete' ? 'text-4xl text-gold text-glow mt-2' :
+      phase === 'running' ? 'text-6xl md:text-7xl text-foreground' :
+      'text-6xl md:text-7xl text-foreground'
+    }`}>
+      {h > 0 && <>{h}<span className="text-gold-dim text-3xl">:</span></>}
+      <AnimatedCounter target={m} duration={0.4} />
+      <span className="text-gold-dim text-3xl">:</span>
+      <AnimatedCounter target={s} duration={0.4} />
+    </span>
+  );
+}
+
 export default function MeditationTimerPage() {
   const reduced = useReducedMotion();
   const [totalSeconds, setTotalSeconds] = useState(PRESETS[1].seconds);
@@ -33,8 +54,12 @@ export default function MeditationTimerPage() {
   const [phase, setPhase] = useState<'idle' | 'running' | 'paused' | 'complete'>('idle');
   const [customMinutes, setCustomMinutes] = useState('');
   const [showCustom, setShowCustom] = useState(false);
+  const [sessionsCompleted, setSessionsCompleted] = useState(0);
+  const [totalMinutesSat, setTotalMinutesSat] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const bellRef = useRef<AudioContext | null>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const statsInView = useInView(statsRef, { once: true });
 
   const playBell = useCallback(() => {
     try {
@@ -78,6 +103,8 @@ export default function MeditationTimerPage() {
           if (prev <= 1) {
             setRunning(false);
             setPhase('complete');
+            setSessionsCompleted(s => s + 1);
+            setTotalMinutesSat(t => t + Math.round(totalSeconds / 60));
             playBell();
             return 0;
           }
@@ -86,7 +113,7 @@ export default function MeditationTimerPage() {
       }, 1000);
     }
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, [running, playBell]);
+  }, [running, playBell, totalSeconds]);
 
   const setPreset = useCallback((seconds: number) => {
     setRunning(false);
@@ -217,13 +244,7 @@ export default function MeditationTimerPage() {
                   <p className="font-display text-sm text-gold-dim tracking-wider uppercase">Paused</p>
                 </>
               ) : null}
-              <span className={`font-display tabular-nums transition-all duration-300 ${
-                phase === 'complete' ? 'text-4xl text-gold text-glow mt-2' :
-                phase === 'running' ? 'text-6xl md:text-7xl text-foreground' :
-                'text-6xl md:text-7xl text-foreground'
-              }`}>
-                {formatTime(remaining)}
-              </span>
+              <AnimatedTimeDisplay seconds={remaining} phase={phase} />
             </div>
           </div>
 
@@ -245,6 +266,45 @@ export default function MeditationTimerPage() {
             >
               Reset
             </button>
+          </div>
+        </motion.section>
+
+        {/* ── Breathing Interlude ── */}
+        <ScrollParallax speed={0.03}>
+          <div className="relative h-[15vh] overflow-hidden -mx-6 lg:-mx-10 my-16">
+            <CinematicImage
+              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-meditation-platform'
+              alt="Meditation platform"
+              kenBurns="slow"
+              scrim="full"
+              vignette
+            />
+          </div>
+        </ScrollParallax>
+
+        {/* ── Sitting Statistics ── */}
+        <motion.section
+          ref={statsRef}
+          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+          whileInView={fadeInUp.visible}
+          viewport={{ once: true }}
+          className="mb-16"
+        >
+          <div className="divider-gold mb-12" />
+          <p className="section-label mb-6">Sitting Statistics</p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="glass-chip p-6 text-center">
+              <p className="font-display text-3xl text-gold mb-1">
+                {statsInView ? <AnimatedCounter target={sessionsCompleted} /> : sessionsCompleted}
+              </p>
+              <p className="text-caption">Sessions</p>
+            </div>
+            <div className="glass-chip p-6 text-center">
+              <p className="font-display text-3xl text-foreground mb-1">
+                {statsInView ? <AnimatedCounter target={totalMinutesSat} suffix=" min" /> : `${totalMinutesSat} min`}
+              </p>
+              <p className="text-caption">Total Sitting</p>
+            </div>
           </div>
         </motion.section>
       </div>

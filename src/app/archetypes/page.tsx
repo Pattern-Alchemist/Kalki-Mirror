@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { TEN_MAHAVIDYAS, ALL_ARCHETYPES, type Archetype } from '@/lib/data/archetypes';
@@ -18,6 +18,22 @@ import type { Tier } from '@/lib/data/types';
 export default function ArchetypesPage() {
   const [selected, setSelected] = useState<Archetype | null>(null);
   const reduced = useReducedMotion();
+
+  // Auto-expand archetype card when navigated via hash (e.g., /archetypes#kali)
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      const match = ALL_ARCHETYPES.find(a => a.id === hash);
+      if (match) {
+        setSelected(match);
+        // Scroll to the card after a brief delay for render
+        setTimeout(() => {
+          const el = document.getElementById(hash);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+  }, []);
 
   const maha = selected && selected.number <= 10 ? selected : null;
   const supplementary = selected && selected.number > 10 ? selected : null;

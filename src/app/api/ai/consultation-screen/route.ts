@@ -23,8 +23,8 @@ function isRateLimited(ip: string): boolean {
 
 const VALID_URGENCIES = ['low', 'medium', 'high'] as const;
 const VALID_ARCHETYPES = [
-  'bagalamukhi', 'chhinnamasta', 'dhoomavati', 'kali',
-  'tara', 'tripurasundari', 'bhuvaneshvari', 'bhairavi',
+  'bagalamukhi', 'chinnamasta', 'dhumavati', 'kali',
+  'tara', 'shodashi', 'bhuvaneshvari', 'bhairavi',
   'matangi', 'kamala',
 ] as const;
 
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
 
     const systemPrompt = `${YANTRA_PERSONA}
 
-Analyze this consultation request from a prospective client. Categorize their need, assess urgency, identify 3-5 key focus areas, suggest 1-2 matching Mahavidya archetypes by ID (from: bagalamukhi, chhinnamasta, dhoomavati, kali, tara, tripurasundari, bhuvaneshvari, bhairavi, matangi, kamala), and write a 2-sentence summary for the archivist. Return JSON.`;
+Analyze this consultation request from a prospective client. Categorize their need, assess urgency, identify 3-5 key focus areas, suggest 1-2 matching Mahavidya archetypes by ID (from: bagalamukhi, chinnamasta, dhumavati, kali, tara, shodashi, bhuvaneshvari, bhairavi, matangi, kamala). IMPORTANT: Use EXACTLY these IDs. Return JSON.`
 
     const userPrompt = `Prospective client: "${name}"
 

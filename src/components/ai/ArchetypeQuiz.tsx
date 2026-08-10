@@ -363,9 +363,12 @@ export function ArchetypeQuiz() {
             className="text-center space-y-4 py-12"
           >
             <p className="text-gold-dim text-sm">
-              The AI engine is calibrating. The geometry awaits its activation.
+              The pattern-matrix is offline. Retrying with geometry engine…
             </p>
-            <button onClick={reset} className="ghost-cta text-xs">
+            <button onClick={submit} className="ghost-cta text-xs">
+              Retry
+            </button>
+            <button onClick={reset} className="ghost-cta text-xs ml-2">
               Return
             </button>
           </motion.div>

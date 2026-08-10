@@ -12,6 +12,7 @@ import { PricingQuiz } from '@/components/ai/PricingQuiz';
 import { staggerContainer, staggerItem, fadeInUp } from '@/lib/motion/tokens';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { CinematicImage } from '@/components/ui/CinematicImage';
+import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 
 const TIER_ORDER: Tier[] = ['prithvi', 'jal', 'agni', 'akash'];
 const WHATSAPP_NUMBER = '918920862931';
@@ -140,7 +141,13 @@ export default function PricingPage() {
                 <div className="mb-3">
                   {billing === 'yearly' && isPaid && monthlyPrice > 0 && <p className="text-text-muted text-sm line-through mb-1">{formatPrice(monthlyPrice, currency)}/mo</p>}
                   <div className="flex items-baseline gap-1">
-                    <span className="font-display text-4xl text-foreground">{formatPrice(price ?? 0, currency)}</span>
+                    {(price ?? 0) > 0 ? (
+                      <span className="font-display text-4xl text-foreground">
+                        {currency === 'INR' ? '\u20B9' : '$'}<AnimatedCounter target={price ?? 0} />
+                      </span>
+                    ) : (
+                      <span className="font-display text-4xl text-foreground">Free</span>
+                    )}
                     {isPaid && <span className="text-text-muted text-sm">/mo</span>}
                   </div>
                   {billing === 'yearly' && isPaid && <p className="text-gold-dim text-xs mt-1">billed annually</p>}
@@ -194,6 +201,19 @@ export default function PricingPage() {
             <div key={i} className="flex items-center gap-2.5"><ShieldCheckIcon /><span className="text-text-secondary text-sm">{s}</span></div>
           ))}
         </div>
+
+        {/* ── Second Parallax Interlude (before guarantee) ── */}
+        <ScrollParallax speed={0.04}>
+          <div className="relative h-[15vh] overflow-hidden -mx-6 lg:-mx-10 my-16">
+            <CinematicImage
+              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/sri-yantra-sky'
+              alt="Sri Yantra sky"
+              kenBurns="slow"
+              scrim="full"
+              vignette
+            />
+          </div>
+        </ScrollParallax>
 
         {/* Guarantee */}
         <motion.div

@@ -183,6 +183,19 @@ export default function JapaPage() {
           </div>
         </ScrollParallax>
 
+        {/* ── Second Parallax Interlude ── */}
+        <ScrollParallax speed={0.04}>
+          <div className="relative h-[15vh] overflow-hidden -mx-6 lg:-mx-10 mb-16">
+            <CinematicImage
+              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/meditation-bowl'
+              alt="Meditation bowl"
+              kenBurns="slow"
+              scrim="full"
+              vignette
+            />
+          </div>
+        </ScrollParallax>
+
         {/* AI Japa Guide */}
         <motion.section className="mb-16" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <JapaGuide mantra={state.mantra} count={state.target} />
@@ -273,10 +286,38 @@ export default function JapaPage() {
           </div>
         </motion.section>
 
+        {/* ── Lifetime Stats ── */}
+        {state.history.length > 0 && (
+          <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
+            <div className="divider-gold mb-12" />
+            <p className="section-label mb-6">Lifetime Accumulation</p>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
+              <div className="glass-chip p-5 text-center">
+                <p className="font-display text-3xl text-gold mb-1">
+                  <AnimatedCounter target={state.history.reduce((sum, h) => sum + h.count, 0)} />
+                </p>
+                <p className="text-caption">Total Beads</p>
+              </div>
+              <div className="glass-chip p-5 text-center">
+                <p className="font-display text-3xl text-foreground mb-1">
+                  <AnimatedCounter target={state.history.length} />
+                </p>
+                <p className="text-caption">Sessions</p>
+              </div>
+              <div className="glass-chip p-5 text-center hidden md:block">
+                <p className="font-display text-3xl text-copper mb-1">
+                  {state.history.length > 0 ? Math.round(state.history.reduce((sum, h) => sum + h.count, 0) / state.history.length) : 0}
+                </p>
+                <p className="text-caption">Avg / Session</p>
+              </div>
+            </div>
+          </motion.section>
+        )}
+
         {/* History */}
         {state.history.length > 0 && (
           <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-            <div className="divider-subtle mb-16" />
+            <div className="divider-subtle mb-8" />
             <p className="text-caption mb-6">Session History</p>
             <div className="space-y-3">
               {state.history.slice().reverse().map((entry, i) => (
