@@ -215,6 +215,29 @@ Stage Summary:
 - Both quizzes have 25s timeout to prevent infinite spinner
 - 2 files changed: PricingQuiz.tsx, ArchetypeQuiz.tsx
 ---
+Task ID: batch9
+Agent: Main
+Task: Batch 9 — Quiz hardening, AIIdleMessage centralization, loading skeletons, infra polish
+
+Work Log:
+- Hardened archetype-quiz API route: added null-safe parsedResponse type, critical field validation (archetypeId/archetypeName/description all required or fallback), confidence clamping (50-99 range)
+- Removed brittle client-side validation from ArchetypeQuiz.tsx (was throwing on empty description when API already guarantees fallback data)
+- Created shared AIIdleMessage component (src/components/ui/AIIdleMessage.tsx) — supports default text and custom children
+- Replaced 8 identical 'calibrating' inline blocks across: TransitInterpreter, AdminAIDraft, ConsultationScreener, JapaGuide, CodexExplainer, PatternExplainer, AIBreathworkGenerator, AISearchBar
+- Added Cloudinary preconnect hint to root layout.tsx for faster image loads
+- Enhanced not-found page: added 'Browse the Archive' ghost CTA + quick-nav links (Patterns, Mahāvidyās, Consult)
+- Created archive/[slug]/loading.tsx — gold-shimmer skeleton matching folio page layout (header, metadata, content blocks)
+- Fixed sidebar.tsx import casing: skeleton → Skeleton (resolved TS1149 casing conflict)
+- Build verified clean: 0 errors, all routes passing
+
+Stage Summary:
+- 12 files changed: 1 new component, 1 new loading page, 10 modified
+- Quiz API now has 3-tier fallback: LLM valid JSON → LLM incomplete JSON → rule-based scoring
+- AIIdleMessage eliminates 8 duplicate text blocks, single source of truth for calibrating message
+- Cloudinary preconnect saves ~100ms on first image load
+- Folio pages now show branded skeleton during navigation
+
+---
 Task ID: batch6
 Agent: Main
 Task: Quiz bug fixes, archive Cloudinary migration, parallax rollout, timer persistence

@@ -75,11 +75,26 @@ export default function NotFound() {
         </motion.p>
 
         <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
           initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
           animate={fadeInUp.visible}
           transition={{ delay: 0.65, duration: 0.8 }}
         >
           <Link href="/" className="gold-cta">Return to the Threshold</Link>
+          <Link href="/archive" className="ghost-cta">Browse the Archive</Link>
+        </motion.div>
+
+        <motion.div
+          className="mt-12 flex items-center justify-center gap-6 text-text-muted/40"
+          initial={reduced ? { opacity: 1 } : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9, duration: 1 }}
+        >
+          <Link href="/patterns" className="text-[0.6875rem] font-mono tracking-[0.15em] uppercase hover:text-gold-dim transition-colors duration-500">Patterns</Link>
+          <span className="text-text-muted/20">{'\u00B7'}</span>
+          <Link href="/archetypes" className="text-[0.6875rem] font-mono tracking-[0.15em] uppercase hover:text-gold-dim transition-colors duration-500">Mah\u0101vidy\u0101s</Link>
+          <span className="text-text-muted/20">{'\u00B7'}</span>
+          <Link href="/consultations" className="text-[0.6875rem] font-mono tracking-[0.15em] uppercase hover:text-gold-dim transition-colors duration-500">Consult</Link>
         </motion.div>
       </div>
     </div>

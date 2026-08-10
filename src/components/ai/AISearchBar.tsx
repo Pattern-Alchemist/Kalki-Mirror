@@ -4,6 +4,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
 import { fadeInUp } from '@/lib/motion/tokens';
+import { AIIdleMessage } from '@/components/ui/AIIdleMessage';
 
 interface SearchResult {
   slug: string;
@@ -98,9 +99,7 @@ export function AISearchBar() {
         {state === 'error' && (
           <motion.p initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} className="mt-2 text-xs text-crimson">{errorMsg}</motion.p>
         )}
-        {state === 'unconfigured' && (
-          <motion.p initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} className="mt-2 text-xs text-gold-dim">AI engine calibrating. Use the filter search above.</motion.p>
-        )}
+        {state === 'unconfigured' && <AIIdleMessage className="mt-2">AI engine calibrating. Use the filter search above.</AIIdleMessage>}
       </AnimatePresence>
     </div>
   );

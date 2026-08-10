@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { AIBlockSkeleton } from '@/components/ui/Skeleton';
+import { AIIdleMessage } from '@/components/ui/AIIdleMessage';
 
 /* ── Types ── */
 interface ExplainResult {
@@ -173,16 +174,7 @@ export function CodexExplainer({ initialText }: CodexExplainerProps) {
           </motion.p>
         )}
 
-        {state === 'unconfigured' && (
-          <motion.p
-            key="unconfigured"
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            animate={fadeInUp.visible}
-            className="text-xs text-gold-dim"
-          >
-            The AI engine is calibrating. The geometry awaits its activation.
-          </motion.p>
-        )}
+        {state === 'unconfigured' && <AIIdleMessage key="unconfigured" />}
       </AnimatePresence>
     </div>
   );

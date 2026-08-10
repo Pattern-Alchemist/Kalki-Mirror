@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
+import { AIIdleMessage } from '@/components/ui/AIIdleMessage';
 
 /* ── Types ── */
 interface ScreenResult {
@@ -164,16 +165,7 @@ export function ConsultationScreener({ name, message, onResult }: ConsultationSc
           </motion.p>
         )}
 
-        {state === 'unconfigured' && (
-          <motion.p
-            key="unconfigured"
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            animate={fadeInUp.visible}
-            className="text-xs text-gold-dim"
-          >
-            The AI engine is calibrating. The geometry awaits its activation.
-          </motion.p>
-        )}
+        {state === 'unconfigured' && <AIIdleMessage key="unconfigured" />}
       </AnimatePresence>
     </div>
   );

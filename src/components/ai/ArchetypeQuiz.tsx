@@ -126,11 +126,9 @@ export function ArchetypeQuiz() {
       clearTimeout(timeoutId);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Analysis failed');
-      // Validate that the result has meaningful content
-      if (!data.archetypeName || !data.description) {
-        throw new Error('The geometry returned an incomplete reading. Please try again.');
-      }
-      setResult(data);
+      // The API guarantees either valid LLM data or rule-based fallback
+      // — so if we get here with a 200, we trust the payload.
+      setResult(data as ArchetypeResult);
       setState('result');
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') {

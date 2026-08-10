@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { AIBlockSkeleton } from '@/components/ui/Skeleton';
+import { AIIdleMessage } from '@/components/ui/AIIdleMessage';
 
 /* ── Types ── */
 interface TransitPosition {
@@ -145,15 +146,7 @@ export function TransitInterpreter({ positions }: TransitInterpreterProps) {
           </motion.p>
         )}
 
-        {state === 'unconfigured' && (
-          <motion.p
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            animate={fadeInUp.visible}
-            className="text-xs text-gold-dim"
-          >
-            The AI engine is calibrating. The geometry awaits its activation.
-          </motion.p>
-        )}
+        {state === 'unconfigured' && <AIIdleMessage />}
       </AnimatePresence>
     </div>
   );

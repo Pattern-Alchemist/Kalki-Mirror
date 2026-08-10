@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
+import { AIIdleMessage } from '@/components/ui/AIIdleMessage';
 
 /* ── Types ── */
 type DraftType = 'practice' | 'archetype' | 'pattern' | 'research' | 'codex';
@@ -226,16 +227,7 @@ export function AdminAIDraft({ type, title, context, onDraft }: AdminAIDraftProp
           </motion.p>
         )}
 
-        {state === 'unconfigured' && (
-          <motion.p
-            key="unconfigured"
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            animate={fadeInUp.visible}
-            className="text-xs text-gold-dim"
-          >
-            The AI engine is calibrating. The geometry awaits its activation.
-          </motion.p>
-        )}
+        {state === 'unconfigured' && <AIIdleMessage key="unconfigured" />}
       </AnimatePresence>
     </div>
   );

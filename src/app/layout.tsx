@@ -101,6 +101,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+      </head>
       <body className="min-h-screen bg-deep-black text-foreground antialiased">
         <TierProvider>
           <SmoothScroll>

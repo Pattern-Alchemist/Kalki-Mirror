@@ -208,15 +208,15 @@ Analyze these answers and determine the dominant Mahavidya archetype. Respond ON
         );
 
         let parsedResponse: {
-          archetypeId: string;
-          archetypeName: string;
-          sanskrit: string;
-          description: string;
-          bija: string;
-          pattern: string;
-          confidence: number;
-          secondaryArchetype: string | null;
-        };
+          archetypeId?: string;
+          archetypeName?: string;
+          sanskrit?: string;
+          description?: string;
+          bija?: string;
+          pattern?: string;
+          confidence?: number;
+          secondaryArchetype?: string | null;
+        } | null = null;
 
         try {
           parsedResponse = JSON.parse(result.text);
@@ -226,8 +226,18 @@ Analyze these answers and determine the dominant Mahavidya archetype. Respond ON
           return NextResponse.json(fallbackAnalysis(answers));
         }
 
+        // If LLM returned a valid JSON object but missing critical fields, fall back
+        if (!parsedResponse?.archetypeId || !parsedResponse?.archetypeName || !parsedResponse?.description) {
+          console.warn('[/api/ai/archetype-quiz] LLM response missing required fields, using fallback:', {
+            hasId: !!parsedResponse?.archetypeId,
+            hasName: !!parsedResponse?.archetypeName,
+            hasDesc: !!parsedResponse?.description,
+          });
+          return NextResponse.json(fallbackAnalysis(answers));
+        }
+
         // Normalize archetype IDs to canonical forms
-        const archetypeId = normalizeArchetypeId(parsedResponse.archetypeId || 'kali');
+        const archetypeId = normalizeArchetypeId(parsedResponse.archetypeId);
         let secondaryArchetype: string | null = null;
         if (parsedResponse.secondaryArchetype) {
           secondaryArchetype = normalizeArchetypeId(parsedResponse.secondaryArchetype);
@@ -239,12 +249,12 @@ Analyze these answers and determine the dominant Mahavidya archetype. Respond ON
 
         return NextResponse.json({
           archetypeId,
-          archetypeName: parsedResponse.archetypeName || 'Unknown',
+          archetypeName: parsedResponse.archetypeName,
           sanskrit: parsedResponse.sanskrit || '',
-          description: parsedResponse.description || '',
+          description: parsedResponse.description,
           bija: parsedResponse.bija || '',
           pattern: parsedResponse.pattern || '',
-          confidence: typeof parsedResponse.confidence === 'number' ? parsedResponse.confidence : 0,
+          confidence: typeof parsedResponse.confidence === 'number' ? Math.min(99, Math.max(50, parsedResponse.confidence)) : 75,
           secondaryArchetype,
         });
       } catch (llmError) {
