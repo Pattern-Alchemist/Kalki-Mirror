@@ -1,4 +1,22 @@
 {
+  "/pattern-atlas/zone-mirror.png": {
+    "publicId": "kalki-mirror/pattern-atlas/zone-mirror",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pattern-atlas/zone-mirror",
+    "width": 1344,
+    "height": 768
+  },
+  "/pattern-atlas/zone-confrontation.png": {
+    "publicId": "kalki-mirror/pattern-atlas/zone-confrontation",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pattern-atlas/zone-confrontation",
+    "width": 1344,
+    "height": 768
+  },
+  "/pattern-atlas/zone-dissolution.png": {
+    "publicId": "kalki-mirror/pattern-atlas/zone-dissolution",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pattern-atlas/zone-dissolution",
+    "width": 1344,
+    "height": 768
+  },
   "/mahavidyas/kali.jpeg": {
     "publicId": "kalki-mirror/mahavidyas/kali",
     "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/kali",

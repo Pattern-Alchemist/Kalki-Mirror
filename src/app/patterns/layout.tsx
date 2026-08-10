@@ -1,19 +1,19 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Pattern Intelligence',
+  title: 'Pattern Atlas — The Mirror Method',
   description:
-    'Decode your behavioral loops, shadow patterns, and repeating karmic signatures. Real-time pattern recognition for self-awareness and transformation.',
+    '12 recurring human emotional patterns mapped through the Mirror Method. Recognize, confront, and dissolve the behavioral loops that run your life.',
   openGraph: {
-    title: 'Pattern Intelligence | KALKI',
+    title: 'Pattern Atlas | KALKI — The Mirror Method',
     description:
-      'Decode your behavioral loops, shadow patterns, and repeating karmic signatures. Real-time pattern recognition for self-awareness and transformation.',
+      '12 recurring human emotional patterns mapped through the Mirror Method. Recognize, confront, and dissolve the behavioral loops that run your life.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-mountain-trident',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/pattern-atlas/zone-mirror',
         width: 1200,
         height: 630,
-        alt: 'Pattern Intelligence — KALKI',
+        alt: 'Pattern Atlas — The Mirror Method — KALKI',
       },
     ],
   },
