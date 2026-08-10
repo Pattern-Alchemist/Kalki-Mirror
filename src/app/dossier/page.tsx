@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { BackButton } from '@/components/nav/BackButton';
 import { CautionBadge } from '@/components/archive/CautionBadge';
@@ -10,6 +10,7 @@ import { ArchiveRefsLedger } from '@/components/dossier/ArchiveRefsLedger';
 import { PrescriptionBlueprint } from '@/components/dossier/PrescriptionBlueprint';
 import { TransitReadout } from '@/components/dossier/TransitReadout';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
+import { CinematicImage } from '@/components/ui/CinematicImage';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import type { Tier, CautionLevel } from '@/lib/data/types';
 
@@ -123,6 +124,119 @@ export default function DossierPage() {
     <div className="bg-deep-black min-h-screen relative">
       {/* Atmospheric background */}
       <div className="atmospheric-bg fixed inset-0 pointer-events-none opacity-40" aria-hidden="true" />
+
+      {/* ═══════════════════════════════════════════════════════════════
+          FULL-PAGE INITIATION CEREMONY OVERLAY
+          ═══════════════════════════════════════════════════════════════ */}
+      <AnimatePresence>
+        {loading && (
+          <motion.div
+            key="initiation-overlay"
+            className="fixed inset-0 z-50 flex items-center justify-center"
+            initial={reduced ? { opacity: 1 } : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 1.05 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {/* Deep void backdrop */}
+            <div className="absolute inset-0 bg-deep-black/95" />
+            {/* Radial atmospheric glow behind yantra */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: 'radial-gradient(ellipse 50% 50% at 50% 45%, rgba(212,175,55,0.04) 0%, transparent 70%)',
+              }}
+              aria-hidden="true"
+            />
+
+            <div className="relative z-10 flex flex-col items-center px-6">
+              {/* Spinning Yantra — large, centered */}
+              <motion.div
+                className="w-40 h-40 md:w-52 md:h-52 relative mb-10"
+                initial={reduced ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.6, rotate: -30 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <img
+                  src="/kalki-yantra.svg"
+                  alt=""
+                  className="w-full h-full"
+                  style={!reduced ? {
+                    animation: 'yantraDraw 2.4s ease-out forwards, yantraSpin 12s linear 2.4s infinite',
+                    opacity: 0.35,
+                  } : { opacity: 0.35 }}
+                  aria-hidden="true"
+                />
+                {/* Bindu — pulsing center point */}
+                <div
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-gold/40 rounded-full"
+                  style={!reduced ? {
+                    animation: 'binduPulse 1.2s ease-in-out 2.4s infinite',
+                    boxShadow: '0 0 20px rgba(212,175,55,0.3), 0 0 60px rgba(212,175,55,0.1)',
+                  } : undefined}
+                  aria-hidden="true"
+                />
+                {/* Outer ring glow */}
+                <div
+                  className="absolute inset-[-12px] rounded-full border border-gold/10"
+                  style={!reduced ? { animation: 'binduPulse 2.4s ease-in-out 1s infinite' } : undefined}
+                  aria-hidden="true"
+                />
+              </motion.div>
+
+              {/* Ceremony text — sequential reveal */}
+              <motion.p
+                className="section-label mb-4"
+                initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+                animate={fadeInUp.visible}
+                transition={{ delay: 0.3 }}
+              >
+                THE INITIATION CEREMONY
+              </motion.p>
+
+              <motion.p
+                className="text-text-muted text-sm font-mono tracking-[0.15em] text-center max-w-md"
+                initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+                animate={fadeInUp.visible}
+                transition={{ delay: 0.5 }}
+              >
+                Mapping coordinates against the Akashic Archive…
+              </motion.p>
+
+              {/* Animated progress dots — 7 dots in mandala arrangement */}
+              <div className="flex justify-center gap-2.5 mt-10">
+                {[0, 1, 2, 3, 4, 5, 6].map(i => (
+                  <motion.div
+                    key={i}
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{ backgroundColor: 'var(--gold)', opacity: 0.3 }}
+                    animate={reduced ? {} : {
+                      opacity: [0.15, 0.9, 0.15],
+                      scale: [1, 1.3, 1],
+                    }}
+                    transition={{
+                      duration: 1.8,
+                      repeat: Infinity,
+                      delay: i * 0.18,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Phase indicators — cycling through ceremonial stages */}
+              <motion.div
+                className="mt-8 h-4"
+                initial={reduced ? { opacity: 1 } : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1 }}
+              >
+                <CeremonyPhases reduced={reduced} />
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── Header ────────────────────────────────────── */}
       <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 pt-10 md:pt-16">
@@ -243,87 +357,16 @@ export default function DossierPage() {
         </motion.div>
       </div>
 
-      {/* ── Yantra Loading Ceremony ── */}
-      <AnimatePresence>
-        {loading && (
-          <motion.div
-            key="loading-ceremony"
-            className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 mt-20"
-            initial={reduced ? { opacity: 1 } : { opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -20 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="glass-panel p-12 md:p-16 text-center">
-              {/* Yantra SVG spinner */}
-              <motion.div
-                className="mx-auto mb-8 w-28 h-28 relative"
-                initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 0.7 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <img
-                  src="/kalki-yantra.svg"
-                  alt=""
-                  className="w-full h-full opacity-30"
-                  style={!reduced ? { animation: 'yantraDraw 2.4s ease-out forwards' } : undefined}
-                  aria-hidden="true"
-                />
-                <div
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-gold/50 rounded-full"
-                  style={!reduced ? { animation: 'binduPulse 1.2s ease-in-out infinite' } : undefined}
-                  aria-hidden="true"
-                />
-              </motion.div>
-
-              <motion.p
-                className="section-label mb-4"
-                initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-                animate={fadeInUp.visible}
-                transition={{ delay: 0.2 }}
-              >
-                INITIATION IN PROGRESS
-              </motion.p>
-              <motion.p
-                className="text-text-muted text-sm font-mono tracking-[0.1em]"
-                initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-                animate={fadeInUp.visible}
-                transition={{ delay: 0.35 }}
-              >
-                Mapping coordinates against the Akashic Archive...
-              </motion.p>
-
-              {/* Animated progress dots */}
-              <div className="flex justify-center gap-2 mt-8">
-                {[0, 1, 2, 3, 4].map(i => (
-                  <motion.div
-                    key={i}
-                    className="w-1.5 h-1.5 rounded-full bg-gold/40"
-                    animate={{ opacity: [0.2, 1, 0.2] }}
-                    transition={{
-                      duration: 1.5,
-                      repeat: Infinity,
-                      delay: i * 0.2,
-                      ease: 'easeInOut',
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* ── The Dossier Output ── */}
       <AnimatePresence mode="wait">
         {dossier && (
           <motion.div
             key="dossier"
             className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 mt-20 pb-32"
-            initial={reduced ? { opacity: 1 } : { opacity: 0, y: 20 }}
+            initial={reduced ? { opacity: 1 } : { opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             {/* Timestamp + Integrity marker */}
             <div className="flex flex-wrap items-center gap-4 mb-12">
@@ -386,24 +429,40 @@ export default function DossierPage() {
                   </div>
                 )}
 
-                {/* Archetype image — enriched with gold border + glow */}
+                {/* Archetype Cinematic Image — full dramatic reveal */}
                 {dossier.archetypes.length > 0 && dossier.archetypes[0].image && (
                   <motion.div
-                    className="mt-4 w-28 h-28 md:w-32 md:h-32 relative"
-                    initial={reduced ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
+                    className="mt-6 relative h-[35vh] md:h-[45vh] overflow-hidden"
+                    initial={reduced ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.05 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
                   >
-                    <div className="absolute -inset-1 bg-gradient-to-b from-gold/20 to-transparent rounded-full blur-md" aria-hidden="true" />
-                    <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-gold/30">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={dossier.archetypes[0].image}
-                        alt={dossier.archetypes[0].name}
-                        className="w-full h-full object-cover"
-                        style={{ filter: 'contrast(1.08) saturate(0.9) brightness(0.95) sepia(0.08)' }}
-                      />
+                    <CinematicImage
+                      src={dossier.archetypes[0].image}
+                      alt={dossier.archetypes[0].name}
+                      kenBurns="slow"
+                      scrim="bottom"
+                      vignette
+                      volumetric
+                      filmGrain={false}
+                    />
+                    {/* Archetype name overlay at bottom of image */}
+                    <div className="absolute bottom-0 left-0 right-0 z-10 p-6 md:p-8">
+                      <p className="font-mono text-[0.65rem] tracking-[0.2em] uppercase mb-2" style={{ color: 'var(--gold)' }}>
+                        Activated Archetype
+                      </p>
+                      <p className="font-display text-2xl md:text-3xl text-white font-light tracking-[0.06em]">
+                        {dossier.archetypes[0].name}
+                      </p>
+                      <p className="font-mono text-xs mt-1" style={{ color: 'var(--gold-dim)' }}>
+                        {dossier.archetypes[0].sanskrit} — Bīja: {dossier.archetypes[0].bija}
+                      </p>
                     </div>
+                    {/* Gold corner accents */}
+                    <div className="absolute top-0 left-0 w-10 h-10 border-t border-l z-10" style={{ borderColor: 'var(--gold)', opacity: 0.3 }} />
+                    <div className="absolute top-0 right-0 w-10 h-10 border-t border-r z-10" style={{ borderColor: 'var(--gold)', opacity: 0.3 }} />
+                    <div className="absolute bottom-0 left-0 w-10 h-10 border-b border-l z-10" style={{ borderColor: 'var(--gold)', opacity: 0.3 }} />
+                    <div className="absolute bottom-0 right-0 w-10 h-10 border-b border-r z-10" style={{ borderColor: 'var(--gold)', opacity: 0.3 }} />
                   </motion.div>
                 )}
               </motion.div>
@@ -543,5 +602,43 @@ export default function DossierPage() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+// ─── Ceremony Phase Cycler ──────────────────────────────────────────────────
+const CEREMONY_PHASES = [
+  'Aligning natal coordinates…',
+  'Scanning transit geometry…',
+  'Querying the Akashic Archive…',
+  'Cross-referencing textual witnesses…',
+  'Synthesizing pattern intelligence…',
+  'Calibrating the Dossier…',
+];
+
+function CeremonyPhases({ reduced }: { reduced: boolean }) {
+  const [phase, setPhase] = useState(0);
+
+  useEffect(() => {
+    if (reduced) return;
+    const id = setInterval(() => {
+      setPhase(p => (p + 1) % CEREMONY_PHASES.length);
+    }, 2400);
+    return () => clearInterval(id);
+  }, [reduced]);
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.p
+        key={phase}
+        className="text-[0.65rem] font-mono tracking-[0.15em] text-center"
+        style={{ color: 'var(--gold-dim)' }}
+        initial={reduced ? { opacity: 1 } : { opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -6 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {CEREMONY_PHASES[phase]}
+      </motion.p>
+    </AnimatePresence>
   );
 }

@@ -90,11 +90,11 @@ export function TransitInterpreter({ positions }: TransitInterpreterProps) {
             className="overflow-hidden"
           >
             <div className="flex items-center gap-4 mb-5">
-              <div className="w-8 h-8 relative shrink-0">
-                <img src="/kalki-yantra.svg" alt="" className="w-full h-full opacity-25" style={!reduced ? { animation: 'yantraDraw 2.4s ease-out forwards' } : undefined} aria-hidden="true" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-gold/50 rounded-full" style={!reduced ? { animation: 'binduPulse 1.2s ease-in-out infinite' } : undefined} aria-hidden="true" />
+              <div className="w-10 h-10 relative shrink-0">
+                <img src="/kalki-yantra.svg" alt="" className="w-full h-full" style={!reduced ? { animation: 'yantraDraw 2.4s ease-out forwards, yantraSpin 8s linear 2.4s infinite', opacity: 0.35 } : { opacity: 0.35 }} aria-hidden="true" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-gold/50 rounded-full" style={!reduced ? { animation: 'binduPulse 1.2s ease-in-out 2.4s infinite', boxShadow: '0 0 8px rgba(212,175,55,0.3)' } : undefined} aria-hidden="true" />
               </div>
-              <p className="text-xs text-text-muted font-mono tracking-[0.1em]">Reading the transit geometry...</p>
+              <p className="text-xs text-text-muted font-mono tracking-[0.1em]">Reading the transit geometry…</p>
             </div>
             <AIBlockSkeleton lines={4} />
           </motion.div>
