@@ -10,6 +10,7 @@ import { GatedContent } from '@/components/monetization/GatedContent';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import Link from 'next/link';
 import { BackButton } from '@/components/nav/BackButton';
+import { ArchetypeQuiz } from '@/components/ai/ArchetypeQuiz';
 import type { CautionLevel } from '@/lib/data/archetypes';
 import type { Tier } from '@/lib/data/types';
 
@@ -53,6 +54,13 @@ export default function ArchetypesPage() {
       </header>
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-16 md:py-24">
+        <BackButton href="/" label="Back to Home" className="mb-10" />
+
+        {/* AI Archetype Quiz */}
+        <div className="mb-16">
+          <ArchetypeQuiz />
+        </div>
+
         {/* Pattern Wheel — the ten Mahāvidyās as interactive nodes */}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-32"

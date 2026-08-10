@@ -7,6 +7,7 @@ import { WhatsAppCTA } from "@/components/booking/WhatsAppCTA";
 import { TierProvider } from "@/components/layout/TierProvider";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { PaywallModal } from "@/components/monetization/PaywallModal";
+import { Analytics } from "@vercel/analytics/react";
 
 /* ============================================================
    TYPOGRAPHY — The Inscriptions of Time
@@ -110,6 +111,7 @@ export default function RootLayout({
             </div>
             <PaywallModal />
             <div className="page-vignette" aria-hidden="true" />
+            <Analytics />
 
             {/* JSON-LD Structured Data */}
             <script

@@ -8,8 +8,10 @@
  * Override with LLM_MODEL env var.
  */
 
-const DEFAULT_BASE_URL = 'https://api.openai.com/v1';
-const DEFAULT_MODEL = 'gpt-4o-mini';
+// Groq is the default provider (free, fast, OpenAI-compatible).
+// Override with LLM_BASE_URL and LLM_MODEL env vars for OpenAI, Gemini, etc.
+const DEFAULT_BASE_URL = 'https://api.groq.com/openai/v1';
+const DEFAULT_MODEL = 'llama-3.1-8b-instant';
 
 export interface LLMMessage {
   role: 'system' | 'user' | 'assistant';

@@ -7,6 +7,7 @@ import { PageHero } from '@/components/layout/PageHero';
 import { BreathTimer } from '@/components/practice/BreathTimer';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
 import { BackButton } from '@/components/nav/BackButton';
+import { AIBreathworkGenerator } from '@/components/ai/AIBreathworkGenerator';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 const FREE_PATTERNS = ['nadi-shuddhi-basic', 'bhramari', 'ujjayi-pranayama'];
@@ -62,6 +63,11 @@ export default function PracticePage() {
           </div>
 
           <BreathTimer patternSlug={active} />
+
+          {/* AI Breathwork Generator */}
+          <div className="mt-12">
+            <AIBreathworkGenerator />
+          </div>
         </motion.section>
 
         {/* Japa Section */}

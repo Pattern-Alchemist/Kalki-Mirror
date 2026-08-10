@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import { createContentEntry, updateContentEntry, deleteContentEntry } from "./actions";
 import { CONTENT_TYPES, STATUSES, CAUTIONS, TIERS, type ContentRow } from "./constants";
+import { AdminAIDraft } from "@/components/ai/AdminAIDraft";
 
 const STATUS_STYLES: Record<string, string> = {
   DRAFT: "bg-zinc-800 text-zinc-400",
@@ -127,6 +128,23 @@ export function ContentClient({
         <button onClick={openCreate} className="ml-auto rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-zinc-950 transition hover:bg-amber-500">
           New Entry
         </button>
+      </div>
+
+      {/* AI Draft Generator */}
+      <div className="rounded-xl border border-zinc-800 p-4">
+        <AdminAIDraft
+          type={form.type as any}
+          title={form.title || undefined || ''}
+          onDraft={(draft, caution, tier, siddhis) => {
+            setForm(prev => ({
+              ...prev,
+              body: draft,
+              caution: caution || prev.caution,
+              minTier: tier || prev.minTier,
+            }));
+            setShowCreate(true);
+          }}
+        />
       </div>
 
       {/* Table */}

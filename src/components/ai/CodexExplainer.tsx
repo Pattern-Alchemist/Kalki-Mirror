@@ -1,0 +1,180 @@
+'use client';
+
+import { useState, useCallback } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { fadeInUp } from '@/lib/motion/tokens';
+
+/* ── Types ── */
+interface ExplainResult {
+  explanation: string;
+  keyTerms: string[];
+}
+
+type ExplainerState = 'idle' | 'loading' | 'result' | 'error' | 'unconfigured';
+
+interface CodexExplainerProps {
+  initialText?: string;
+}
+
+/* ── Component ── */
+export function CodexExplainer({ initialText }: CodexExplainerProps) {
+  const reduced = useReducedMotion();
+  const [content, setContent] = useState(initialText || '');
+  const [style, setStyle] = useState<'beginner' | 'technical'>('beginner');
+  const [state, setState] = useState<ExplainerState>('idle');
+  const [result, setResult] = useState<ExplainResult | null>(null);
+  const [error, setError] = useState('');
+
+  const explain = useCallback(async () => {
+    if (!content.trim()) return;
+    setState('loading');
+    setError('');
+    setResult(null);
+    try {
+      const res = await fetch('/api/ai/explain', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content, style }),
+      });
+      if (res.status === 503) { setState('unconfigured'); return; }
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Explanation failed');
+      setResult(data);
+      setState('result');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'The geometry faltered.');
+      setState('error');
+    }
+  }, [content, style]);
+
+  return (
+    <div className="glass-panel p-6 sm:p-8 space-y-5">
+      <div>
+        <p className="section-label mb-3">Codex Intelligence</p>
+        <p className="text-text-muted text-xs">Select or paste text from the Codex for an AI interpretation.</p>
+      </div>
+
+      {/* Text input */}
+      <textarea
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        placeholder="Paste or type a passage from the Codex..."
+        rows={4}
+        className="w-full bg-surface/50 border border-border-subtle rounded-sm px-4 py-3 text-sm text-foreground placeholder:text-text-muted/50 focus:outline-none focus:border-gold/30 font-body resize-none transition-colors duration-500"
+        aria-label="Codex text to explain"
+      />
+
+      {/* Controls row */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+        {/* Style toggle */}
+        <div className="flex items-center gap-1 bg-surface/50 rounded-sm p-1 border border-border-subtle">
+          <button
+            onClick={() => setStyle('beginner')}
+            className={`px-3 py-1.5 text-xs font-ui tracking-wide uppercase transition-all duration-300 rounded-sm ${
+              style === 'beginner'
+                ? 'bg-gold/15 text-gold border border-gold/30'
+                : 'text-text-muted hover:text-text-secondary'
+            }`}
+          >
+            Beginner
+          </button>
+          <button
+            onClick={() => setStyle('technical')}
+            className={`px-3 py-1.5 text-xs font-ui tracking-wide uppercase transition-all duration-300 rounded-sm ${
+              style === 'technical'
+                ? 'bg-gold/15 text-gold border border-gold/30'
+                : 'text-text-muted hover:text-text-secondary'
+            }`}
+          >
+            Technical
+          </button>
+        </div>
+
+        {/* Explain button */}
+        <button
+          onClick={explain}
+          disabled={!content.trim() || state === 'loading'}
+          className="gold-cta text-xs sm:ml-auto"
+        >
+          {state === 'loading' ? (
+            <span className="inline-flex items-center gap-2">
+              <span className="w-3 h-3 border border-deep-black/40 border-t-deep-black rounded-full animate-spin" />
+              Interpreting...
+            </span>
+          ) : (
+            'Explain'
+          )}
+        </button>
+      </div>
+
+      {/* Results */}
+      <AnimatePresence>
+        {state === 'loading' && (
+          <motion.div
+            key="loading"
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            animate={fadeInUp.visible}
+            exit={reduced ? { opacity: 0 } : fadeInUp.exit}
+            className="flex items-center justify-center py-8"
+          >
+            <div className="w-5 h-5 border border-gold/30 border-t-gold rounded-full animate-spin" />
+          </motion.div>
+        )}
+
+        {state === 'result' && result && (
+          <motion.div
+            key="result"
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            animate={fadeInUp.visible}
+            exit={reduced ? { opacity: 0 } : fadeInUp.exit}
+            className="space-y-5"
+          >
+            <div className="divider-subtle" />
+
+            {/* Explanation */}
+            <div className="text-editorial text-text-secondary whitespace-pre-line leading-relaxed">
+              {result.explanation}
+            </div>
+
+            {/* Key Terms */}
+            {result.keyTerms.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-caption">Key Terms</p>
+                <ul className="space-y-1.5">
+                  {result.keyTerms.map((term, i) => (
+                    <li key={i} className="text-sm text-text-secondary flex items-start gap-2">
+                      <span className="text-gold/50 mt-1.5 text-[6px]">◆</span>
+                      <span>{term}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </motion.div>
+        )}
+
+        {state === 'error' && (
+          <motion.p
+            key="error"
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            animate={fadeInUp.visible}
+            className="text-xs text-crimson"
+          >
+            {error}
+          </motion.p>
+        )}
+
+        {state === 'unconfigured' && (
+          <motion.p
+            key="unconfigured"
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            animate={fadeInUp.visible}
+            className="text-xs text-gold-dim"
+          >
+            The AI engine is calibrating. The geometry awaits its activation.
+          </motion.p>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

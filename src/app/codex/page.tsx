@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from 'framer-motion';
 import { BackButton } from '@/components/nav/BackButton';
+import { CodexExplainer } from '@/components/ai/CodexExplainer';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 
@@ -319,6 +320,16 @@ export default function CodexPage() {
               {part.body}
             </motion.article>
           ))}
+
+          {/* ── AI Codex Explainer ── */}
+          <motion.div
+            className="mt-16"
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            whileInView={fadeInUp.visible}
+            viewport={{ once: true }}
+          >
+            <CodexExplainer />
+          </motion.div>
 
           {/* ── Terminal Divider ── */}
           <motion.div

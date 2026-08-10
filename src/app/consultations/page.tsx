@@ -8,6 +8,7 @@ import { consultationServices } from '@/lib/data/consultations';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { submitConsultation } from './actions';
+import { ConsultationScreener } from '@/components/ai/ConsultationScreener';
 
 const KAUSTUBH_IMG = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_800,c_limit/kalki-mirror/kaustubh-portrait';
 
@@ -165,6 +166,13 @@ export default function ConsultationsPage() {
           ) : (
             <div className="glass-panel p-8 md:p-10">
               <p className="section-label mb-6">Request a Consultation</p>
+
+              {/* AI Pre-Screening Analysis */}
+              {form.name && form.message.length >= 10 && (
+                <div className="mb-8">
+                  <ConsultationScreener name={form.name} message={form.message} />
+                </div>
+              )}
 
               {/* Photo upload */}
               <div className="flex flex-col items-center mb-8">

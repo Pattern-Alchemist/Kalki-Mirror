@@ -8,6 +8,7 @@ import { allPatterns } from '@/lib/data/patterns';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { getArchetypeById, PATTERN_ARCHETYPE_MAP } from '@/lib/data/archetypes';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
+import { PatternExplainer } from '@/components/ai/PatternExplainer';
 import { YantraLoader } from '@/components/patterns/YantraLoader';
 import { CautionBadge } from '@/components/archive/CautionBadge';
 import { BackButton } from '@/components/nav/BackButton';
@@ -157,6 +158,15 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
             />
             <p className="text-text-secondary leading-relaxed relative z-10 editorial-spacing">{pattern.practice}</p>
           </div>
+        </motion.section>
+
+        {/* AI Pattern Explanation */}
+        <motion.section
+          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+          whileInView={fadeInUp.visible}
+          viewport={{ once: true }}
+        >
+          <PatternExplainer patternSlug={slug} />
         </motion.section>
 
         {/* Connected Siddhis — blueprint schematic links */}

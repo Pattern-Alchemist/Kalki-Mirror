@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { fadeInUp } from '@/lib/motion/tokens';
+import { JapaGuide } from '@/components/ai/JapaGuide';
 
 const STORAGE_KEY = 'kalki-japa-state';
 
@@ -163,6 +164,11 @@ export default function JapaPage() {
               </button>
             ))}
           </div>
+        </motion.section>
+
+        {/* AI Japa Guide */}
+        <motion.section className="mb-16" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
+          <JapaGuide mantra={state.mantra} count={state.target} />
         </motion.section>
 
         {/* Counter */}
