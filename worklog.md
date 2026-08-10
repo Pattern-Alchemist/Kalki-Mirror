@@ -262,3 +262,35 @@ Stage Summary:
 - Archive zone images on Cloudinary CDN for consistent delivery
 - 4 new parallax interludes across 3 pages
 - Timer stats persist across page reloads
+
+---
+Task ID: batch10
+Agent: Main
+Task: Batch 10 — Loading skeletons, error boundaries, dynamic imports, CSS cleanup, mobile polish
+
+Work Log:
+- Added 7 gold-shimmer loading.tsx files: codex, dossier, method, research, practice/japa, practice/timer, patterns/[slug]
+- Added 6 branded error.tsx route boundaries: archive, archetypes, patterns, practice, consultations, pricing
+- Dynamic imported 7 heavy components with ssr:false (ArchetypeQuiz, AIBreathworkGenerator, JapaGuide, CodexExplainer, ConsultationScreener, AISearchBar, PricingCards)
+- Removed duplicate BackButton on archetypes page header (was showing 2x)
+- Removed dead .glass-chip (lines 247-266) and .engraved-heading (lines 383-387) from globals.css — upgraded versions in READABILITY SYSTEM are the actual definitions
+- Fixed consultation form inputs: replaced border-zinc-700 with border-gold/10, placeholder:text-zinc-600 with placeholder:text-text-muted/50
+- Removed unnecessary 'use client' from SacredFooter (pure static JSX), hardcoded year
+- Fixed SmoothScroll rAF loop to skip lenis.raf() when document.hidden (battery/CPU savings)
+- Removed dead dependencies: next-intl and next-themes from package.json
+- Removed unused @custom-variant dark directive from globals.css
+- Made japa counter SVG responsive: 200px on mobile, 240px on desktop via container sizing
+- Made japa counter text responsive: text-6xl → md:text-7xl → lg:text-8xl
+- Verified tailwind.config.ts is unused (Tailwind v4 uses CSS-first config via @theme inline)
+- Skipped CSS layer reorganization (high risk, low reward — current @layer utilities works in practice)
+- Build verified clean: 0 errors, 21 routes, committed and pushed
+
+Stage Summary:
+- 25 files changed, 619 insertions, 707 deletions
+- All routes now have branded loading skeletons (gold-shimmer Skeleton component)
+- 6 major routes have contextual error boundaries with themed 'Reconstruct' CTAs
+- 7 AI/heavy components code-split via next/dynamic — reduces initial JS bundle significantly
+- SacredFooter is now a server component (no client JS for footer)
+- SmoothScroll respects tab visibility — no wasted rAF cycles in background tabs
+- Consultation form inputs now use brand-consistent gold tokens instead of generic zinc
+- Dead deps (next-intl, next-themes) and dead CSS (dark variant, duplicate definitions) removed
