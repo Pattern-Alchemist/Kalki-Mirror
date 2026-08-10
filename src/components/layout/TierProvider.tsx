@@ -122,5 +122,3 @@ export function TierProvider({ children }: { children: ReactNode }) {
 export function useTier() {
   return useContext(TierContext);
 }
-
-export type { TierContextValue };

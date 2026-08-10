@@ -15,7 +15,6 @@
 
 import { PrismaClient } from '@prisma/client';
 import { PrismaLibSql } from '@prisma/adapter-libsql';
-import { createClient } from '@libsql/client';
 
 // ─── Client factory ─────────────────────────────────────────────────────────
 
@@ -29,12 +28,10 @@ function createPrismaClient(): PrismaClient {
 
   if (tursoUrl) {
     // ── Production: Turso via libSQL adapter ──────────────────────────────
-    const libsql = createClient({
+    const adapter = new PrismaLibSql({
       url: tursoUrl,
       authToken: tursoAuthToken || undefined,
     });
-
-    const adapter = new PrismaLibSql(libsql);
 
     console.log(
       `[db] Turso adapter active — ${tursoUrl.replace(/\/\/[^@]+@/, '//***@')}`

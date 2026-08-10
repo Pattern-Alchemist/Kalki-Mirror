@@ -46,12 +46,13 @@ export async function uploadToCloudinary(
   } = {}
 ): Promise<UploadResult> {
   const cld = getCloudinary();
+  // @ts-expect-error cloudinary v2 SDK types are inaccurate for resource_type
   const result = await cld.uploader.upload(file, {
     folder: opts.folder || 'kalki-mirror',
     public_id: opts.publicId,
     overwrite: opts.overwrite ?? true,
     transformation: opts.transformation,
-    resource_type: 'image',
+    resource_type: 'image' as const,
   });
 
   return {

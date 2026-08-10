@@ -21,7 +21,7 @@ export function AISearchBar() {
   const [errorMsg, setErrorMsg] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const reduced = useReducedMotion();
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const search = useCallback(async (q: string) => {
     if (q.length < 3) { setState('idle'); setResults([]); return; }

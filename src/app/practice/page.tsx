@@ -19,7 +19,7 @@ const FREE_PATTERNS = ['nadi-shuddhi-basic', 'bhramari', 'ujjayi-pranayama'];
 
 export default function PracticePage() {
   const [active, setActive] = useState(FREE_PATTERNS[0]);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotion() ?? false;
 
   const freePatterns = allBreathPatterns.filter((p) => FREE_PATTERNS.includes(p.slug));
   const lockedPatterns = allBreathPatterns.filter((p) => !FREE_PATTERNS.includes(p.slug));

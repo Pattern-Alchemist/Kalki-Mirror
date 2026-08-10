@@ -129,7 +129,7 @@ export const japaGuideSchema = z.object({
 // ── API: /api/ai/breathwork ──
 export const breathworkSchema = z.object({
   type: z.enum(['calming', 'energizing', 'focus', 'nadi-shuddhi', 'bhramari', 'custom'], {
-    errorMap: () => ({ message: 'Invalid breathwork type.' }),
+    message: 'Invalid breathwork type.',
   }),
   duration: z.number().min(3, "Duration must be at least 3 minutes.").max(60, "Duration must be at most 60 minutes.").default(15),
 });

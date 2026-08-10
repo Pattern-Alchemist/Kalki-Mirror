@@ -33,7 +33,7 @@ export default function HomePage() {
           playsInline
           preload="metadata"
           aria-hidden="true"
-          poster="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ancient_temple_midnight_glowing_%E2%80%A6_202608031904_4-I8iUrf3bUZOL9MYIcJU40eRov5dvop.jpeg"
+          poster="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight.jpeg"
           className="hero-video-bg absolute inset-0 w-full h-full object-cover"
           style={{ zIndex: 0, objectPosition: 'center' }}
         >
@@ -98,7 +98,7 @@ export default function HomePage() {
       {/* ===== CINEMATIC STRIP I — Cave yantras (with parallax) ===== */}
       <ScrollParallax speed={-0.2} className="cinematic-strip">
         <CinematicImage
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Forgotten_forest_shrine_ancient_%E2%80%A6_202608031904_3-8pHV5vvy2PpjQ9tUJQlHfTHDYgp5zA.jpeg"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/forgotten-forest-shrine.jpeg"
           alt="Ancient cave with flickering butter lamps illuminating carved yantras"
           kenBurns="normal"
           filmGrain={false}
@@ -112,7 +112,7 @@ export default function HomePage() {
         <ScrollParallax speed={-0.1} disabled>
           <Link href="/archive" className="group relative overflow-hidden block min-h-[70vh] md:min-h-[85vh]">
             <CinematicImage
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Manuscript_detailing_sacred_geom%E2%80%A6_2K_202608050655-W9zhMGHLZcPHFHktRv57tela1SC3TG.jpeg"
+              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/manuscript-sacred-geometry.jpeg"
               alt="Cave with ancient yantra inscriptions and golden butter lamps — the repository of knowledge"
               kenBurns="normal"
               scrim="bottom"
@@ -136,7 +136,7 @@ export default function HomePage() {
         <ScrollParallax speed={0.1} disabled>
           <Link href="/practice" className="group relative overflow-hidden block min-h-[70vh] md:min-h-[85vh]">
             <CinematicImage
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Mountain_pass_trident_twilight_s%E2%80%A6_202608031904_3-IfYvsdxzj6itBxExULqvRbhPJTUDtp.jpeg"
+              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/mountain-pass-trident.jpeg"
               alt="Mountain pass with ritual trident under twilight sky — the path of practice"
               kenBurns="normal"
               scrim="bottom"
@@ -176,7 +176,7 @@ export default function HomePage() {
       {/* ===== CINEMATIC STRIP II — Sri Yantra sky (with parallax) ===== */}
       <ScrollParallax speed={-0.2} className="cinematic-strip">
         <CinematicImage
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pattern_Intelligence_Rescuer_Per%E2%80%A6_202608061239-Tui9sNCxKR6kPFLjWZatF9zLlenizc.jpeg"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/pattern-intelligence-rescuer.jpeg"
           alt="Sri Yantra floating above Himalayan peaks at twilight"
           kenBurns="normal"
           filmGrain={false}
@@ -188,7 +188,7 @@ export default function HomePage() {
       <section className="relative py-20 md:py-32 section-scrim-dim">
         <ScrollParallax speed={-0.12} disabled>
           <CinematicImage
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Mandala_of_divine_masks_202608061239-DAtTaSltoqS1eWGHl1ycNrqpTVKsz3.jpeg"
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/mandala-divine-masks.jpeg"
             alt="Forgotten forest shrine draped in mist and ancient light"
             scrim="full"
             vignette
@@ -231,7 +231,7 @@ className="section-label editorial-heading mb-6"
       <section className="relative py-28 md:py-40">
         <ScrollParallax speed={-0.1} disabled>
           <CinematicImage
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ancient_codex_and_dossier_scroll_202608061239_2-iT39hyEIdVx6oWFVugB2sp9Mt9uSOF.jpeg"
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-codex-scroll.jpeg"
             alt="Forgotten chamber with volumetric god rays illuminating ancient yantras and sacred artifacts"
             scrim="full"
             vignette
@@ -273,7 +273,7 @@ className="section-label editorial-heading mb-6"
       {/* ===== CINEMATIC STRIP III — Underground library (with parallax) ===== */}
       <ScrollParallax speed={-0.2} className="cinematic-strip">
         <CinematicImage
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ancient_codex_and_dossier_scroll_202608061239_2-iT39hyEIdVx6oWFVugB2sp9Mt9uSOF.jpeg"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-codex-scroll.jpeg"
           alt="Vast underground library of ancient manuscripts and golden artifacts"
           kenBurns="normal"
           filmGrain={false}
@@ -334,7 +334,7 @@ className="section-label editorial-heading mb-6"
                 }}
               >
                 <CinematicImage
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ritual_items_arranged_on_altar_202608050655-XqjC9wM9ykNWVURx5dcjwvpASTBaPT.jpeg"
+                  src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ritual-items-altar.jpeg"
                   alt="Nadi Shuddhi channel purification — subtle energy pathways"
                 />
               </div>
@@ -348,7 +348,7 @@ className="section-label editorial-heading mb-6"
         {/* New background image — copper trident courtyard */}
         <ScrollParallax speed={-0.06} disabled>
           <CinematicImage
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Copper_trident_in_stone_courtyard_202608050700-R6LSleO2mZ2oSJEvEgxFkYzBceifIa.jpeg"
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/copper-trident-courtyard-2.jpeg"
             alt="Copper trident in ancient stone courtyard — the depth of commitment"
             className="absolute inset-0"
           />
@@ -376,7 +376,7 @@ className="section-label editorial-heading mb-6"
       {/* ===== CINEMATIC STRIP IV — Observatory (with parallax) ===== */}
       <ScrollParallax speed={-0.2} className="cinematic-strip">
         <CinematicImage
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meditation_platform_overlooking_%E2%80%A6_202608031904_3-KyHEy3C1LCfpT4ElN0zBaQ3L1gBEHr.jpeg"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/meditation-platform-overlooking.jpeg"
           alt="Ancient astronomical observatory with brass instruments under night sky"
           kenBurns="normal"
           filmGrain={false}
@@ -389,7 +389,7 @@ className="section-label editorial-heading mb-6"
         {/* New background — ancient temple midnight glow */}
         <ScrollParallax speed={-0.08} disabled>
           <CinematicImage
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ancient_temple_midnight_glowing_%E2%80%A6_202608031904_4-I8iUrf3bUZOL9MYIcJU40eRov5dvop.jpeg"
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight.jpeg"
             alt="Ancient temple at midnight with ethereal golden glow — the inner sanctum"
             className="absolute inset-0"
           />

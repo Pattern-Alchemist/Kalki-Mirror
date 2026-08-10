@@ -98,7 +98,7 @@ const MOON_SIGNS = [
 // ─── Page ───────────────────────────────────────────────────────────────────
 
 export default function DossierPage() {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotion() ?? false;
 
   // Form state
   const [query, setQuery] = useState('');

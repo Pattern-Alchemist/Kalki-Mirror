@@ -29,11 +29,13 @@ function cloudUrl(id: string) {
 }
 
 /* ── Derived Data ── */
+const findSiddhi = (slug: string) => allSiddhis.find((s) => s.slug === slug)!;
+
 const allArchetypes = Array.from(
   new Set(
     allPatterns.flatMap((p) => {
       const siddhis = p.relatedSiddhis
-        .map((slug) => allSiddhis.find((s) => s.slug === slug))
+        .map(findSiddhi)
         .filter(Boolean);
       return siddhis.map((s) => s.category);
     })
@@ -158,7 +160,7 @@ export default function PatternsPage() {
     if (activeArchetype) {
       result = result.filter((p) => {
         const siddhis = p.relatedSiddhis
-          .map((slug) => allSiddhis.find((s) => s.slug === slug))
+          .map(findSiddhi)
           .filter(Boolean);
         return siddhis.some((s) => s.category === activeArchetype);
       });
@@ -411,7 +413,7 @@ export default function PatternsPage() {
                     {allArchetypes.map((cat) => {
                       const count = allPatterns.filter((p) => {
                         const siddhis = p.relatedSiddhis
-                          .map((slug) => allSiddhis.find((s) => s.slug === slug))
+                          .map(findSiddhi)
                           .filter(Boolean);
                         return siddhis.some((s) => s.category === cat);
                       }).length;

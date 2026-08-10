@@ -1,32 +1,34 @@
-import type { Variants, Transition } from 'framer-motion';
+// Motion tokens — plain objects to avoid framer-motion Variants type
+// creating unresolvable unions in ternary expressions (TS2590/TS2322).
+// Runtime behavior is identical.
 
 // === TRANSITIONS ===
 export const transitions = {
-  smooth: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } as Transition,
-  quick: { duration: 0.3, ease: 'easeOut' } as Transition,
-  slow: { duration: 1.0, ease: [0.22, 1, 0.36, 1] } as Transition,
-  spring: { type: 'spring', stiffness: 120, damping: 20 } as Transition,
-} as const;
+  smooth: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+  quick: { duration: 0.3, ease: 'easeOut' as const },
+  slow: { duration: 1.0, ease: [0.22, 1, 0.36, 1] as const },
+  spring: { type: 'spring' as const, stiffness: 120, damping: 20 },
+};
 
 // === FADE VARIANTS ===
-export const fadeIn: Variants = {
+export const fadeIn = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: transitions.smooth },
   exit: { opacity: 0, transition: transitions.quick },
 };
 
-export const fadeInUp: Variants = {
+export const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: transitions.smooth },
   exit: { opacity: 0, y: -10, transition: transitions.quick },
 };
 
-export const fadeInDown: Variants = {
+export const fadeInDown = {
   hidden: { opacity: 0, y: -20 },
   visible: { opacity: 1, y: 0, transition: transitions.smooth },
 };
 
-export const staggerContainer: Variants = {
+export const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -34,31 +36,31 @@ export const staggerContainer: Variants = {
   },
 };
 
-export const staggerItem: Variants = {
+export const staggerItem = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: transitions.smooth },
 };
 
 // === SCALE VARIANTS ===
-export const scaleIn: Variants = {
+export const scaleIn = {
   hidden: { opacity: 0, scale: 0.92 },
   visible: { opacity: 1, scale: 1, transition: transitions.spring },
   exit: { opacity: 0, scale: 0.95, transition: transitions.quick },
 };
 
 // === SLIDE VARIANTS ===
-export const slideInLeft: Variants = {
+export const slideInLeft = {
   hidden: { opacity: 0, x: -40 },
   visible: { opacity: 1, x: 0, transition: transitions.smooth },
 };
 
-export const slideInRight: Variants = {
+export const slideInRight = {
   hidden: { opacity: 0, x: 40 },
   visible: { opacity: 1, x: 0, transition: transitions.smooth },
 };
 
 // === METER FILL ===
-export const meterFill = (score: number): Variants => ({
+export const meterFill = (score: number) => ({
   hidden: { width: '0%' },
   visible: { width: `${score}%`, transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 } },
 });

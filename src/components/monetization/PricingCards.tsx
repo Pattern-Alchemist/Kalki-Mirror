@@ -89,7 +89,7 @@ function TierRow({ tier, index, reduced }: { tier: PricingTier; index: number; r
 }
 
 export function PricingCards({ className }: { className?: string }) {
-  const prefersReduced = useReducedMotion();
+  const prefersReduced = useReducedMotion() ?? false;
 
   return (
     <motion.div

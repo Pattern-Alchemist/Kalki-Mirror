@@ -26,8 +26,7 @@ export function UnattestedState() {
       <div
         className="p-8 md:p-10 border"
         style={{
-          borderColor: 'var(--crimson)',
-          borderOpacity: 0.35,
+          borderColor: 'rgba(138, 37, 44, 0.35)',
           background: 'rgba(138, 37, 44, 0.03)',
         }}
       >

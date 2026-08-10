@@ -32,7 +32,7 @@ export function AcknowledgmentGate({ title, cautionLevel, children }: Acknowledg
           style={{ borderColor: 'rgba(138, 37, 44, 0.2)' }}
           initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
           animate={fadeInUp.visible}
-          exit={{ opacity: 0, duration: 0.4 }}
+          exit={{ opacity: 0, transition: { duration: 0.4 } }}
         >
           {/* Vault seal icon */}
           <div className="mb-8">
