@@ -1,9 +1,14 @@
+import { SiddhiCardSkeleton } from '@/components/ui/Skeleton';
+
 export default function Loading() {
   return (
-    <div className="min-h-screen bg-deep-black flex items-center justify-center">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-8 h-8 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
-        <p className="font-mono text-xs text-text-muted tracking-[0.2em] uppercase">Loading</p>
+    <div className="min-h-screen bg-deep-black">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <SiddhiCardSkeleton />
+          <SiddhiCardSkeleton />
+          <SiddhiCardSkeleton />
+        </div>
       </div>
     </div>
   );

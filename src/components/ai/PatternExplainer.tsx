@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
+import { AIBlockSkeleton } from '@/components/ui/Skeleton';
 
 /* ── Types ── */
 interface PatternExplanation {
@@ -75,8 +76,22 @@ export function PatternExplainer({ patternSlug, context }: PatternExplainerProps
         {state === 'unconfigured' && 'AI Calibrating'}
       </button>
 
-      {/* Expanded content */}
+      {/* Loading skeleton */}
       <AnimatePresence>
+        {state === 'loading' && (
+          <motion.div
+            key="skeleton"
+            initial={reduced ? { opacity: 1 } : { opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, height: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+            <AIBlockSkeleton lines={5} />
+          </motion.div>
+        )}
+
+        {/* Expanded content */}
         {state === 'expanded' && data && (
           <motion.div
             key="expanded"

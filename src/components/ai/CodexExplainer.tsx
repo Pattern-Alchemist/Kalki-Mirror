@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { fadeInUp } from '@/lib/motion/tokens';
+import { AIBlockSkeleton } from '@/components/ui/Skeleton';
 
 /* ── Types ── */
 interface ExplainResult {
@@ -112,12 +113,13 @@ export function CodexExplainer({ initialText }: CodexExplainerProps) {
         {state === 'loading' && (
           <motion.div
             key="loading"
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            animate={fadeInUp.visible}
-            exit={reduced ? { opacity: 0 } : fadeInUp.exit}
-            className="flex items-center justify-center py-8"
+            initial={reduced ? { opacity: 1 } : { opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, height: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
           >
-            <div className="w-5 h-5 border border-gold/30 border-t-gold rounded-full animate-spin" />
+            <AIBlockSkeleton lines={6} />
           </motion.div>
         )}
 
