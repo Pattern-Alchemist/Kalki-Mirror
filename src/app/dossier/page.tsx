@@ -78,6 +78,23 @@ interface Dossier {
   };
 }
 
+// ─── Moon Signs — each maps to its mid-degree for the API ────────────────────
+
+const MOON_SIGNS = [
+  { value: 'aries',      label: 'Aries',       sanskrit: 'Meṣa',       midDegree: 15 },
+  { value: 'taurus',     label: 'Taurus',      sanskrit: 'Vṛṣabha',    midDegree: 45 },
+  { value: 'gemini',     label: 'Gemini',      sanskrit: 'Mithuna',    midDegree: 75 },
+  { value: 'cancer',     label: 'Cancer',      sanskrit: 'Karka',      midDegree: 105 },
+  { value: 'leo',        label: 'Leo',         sanskrit: 'Siṃha',      midDegree: 135 },
+  { value: 'virgo',      label: 'Virgo',       sanskrit: 'Kanyā',      midDegree: 165 },
+  { value: 'libra',      label: 'Libra',       sanskrit: 'Tulā',       midDegree: 195 },
+  { value: 'scorpio',    label: 'Scorpio',     sanskrit: 'Vṛścika',    midDegree: 225 },
+  { value: 'sagittarius', label: 'Sagittarius', sanskrit: 'Dhanu',     midDegree: 255 },
+  { value: 'capricorn',  label: 'Capricorn',   sanskrit: 'Makara',     midDegree: 285 },
+  { value: 'aquarius',   label: 'Aquarius',    sanskrit: 'Kumbha',     midDegree: 315 },
+  { value: 'pisces',     label: 'Pisces',      sanskrit: 'Mīna',       midDegree: 345 },
+] as const;
+
 // ─── Page ───────────────────────────────────────────────────────────────────
 
 export default function DossierPage() {
@@ -85,6 +102,8 @@ export default function DossierPage() {
 
   // Form state
   const [query, setQuery] = useState('');
+  const [moonSign, setMoonSign] = useState('');
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [natalMoon, setNatalMoon] = useState('');
   const [tier, setTier] = useState<Tier>('prithvi');
 
@@ -94,14 +113,19 @@ export default function DossierPage() {
   const [error, setError] = useState<string | null>(null);
 
   const runInitiation = useCallback(async () => {
-    if (!query.trim() && !natalMoon) return;
+    if (!query.trim() && !moonSign && !natalMoon) return;
     setLoading(true);
     setError(null);
 
     try {
       const body: Record<string, unknown> = { tier };
       if (query.trim()) body.behavioralQuery = query.trim();
-      if (natalMoon) body.natalMoonDeg = parseFloat(natalMoon);
+      if (natalMoon) {
+        body.natalMoonDeg = parseFloat(natalMoon);
+      } else if (moonSign) {
+        const sign = MOON_SIGNS.find(s => s.value === moonSign);
+        if (sign) body.natalMoonDeg = sign.midDegree;
+      }
 
       const res = await fetch('/api/initiate', {
         method: 'POST',
@@ -118,7 +142,7 @@ export default function DossierPage() {
     } finally {
       setLoading(false);
     }
-  }, [query, natalMoon, tier]);
+  }, [query, natalMoon, moonSign, tier]);
 
   return (
     <div className="bg-deep-black min-h-screen relative">
@@ -290,30 +314,74 @@ export default function DossierPage() {
             />
           </div>
 
-          {/* Moon Degree + Tier row */}
+          {/* Moon Sign + Tier row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div>
               <label
-                htmlFor="natal-moon"
-                className="block font-mono text-xs tracking-[0.12em] uppercase mb-3"
+                htmlFor="moon-sign"
+                className="block font-mono text-xs tracking-[0.12em] uppercase mb-2"
                 style={{ color: 'var(--text-secondary)' }}
               >
-                Natal Moon Longitude (0-360)
+                Your Moon Sign (Rāśi)
               </label>
-              <input
-                id="natal-moon"
-                type="number"
-                min="0"
-                max="360"
-                step="0.1"
-                value={natalMoon}
-                onChange={e => setNatalMoon(e.target.value)}
-                placeholder="45.2"
-                className="w-full bg-transparent border px-4 py-3 font-mono text-sm text-foreground placeholder:text-text-muted focus:outline-none transition-colors duration-300"
-                style={{ borderColor: 'var(--border-subtle)' }}
-                onFocus={e => { e.currentTarget.style.borderColor = 'var(--gold)'; }}
-                onBlur={e => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; }}
-              />
+              <p className="text-[0.6875rem] text-text-muted mb-3 leading-relaxed">
+                The zodiac sign the Moon occupied at your birth. Check a free birth chart online if unsure.
+              </p>
+              <select
+                id="moon-sign"
+                value={moonSign}
+                onChange={e => setMoonSign(e.target.value)}
+                className="w-full bg-transparent border px-4 py-3 font-body text-sm text-foreground focus:outline-none transition-colors duration-300 appearance-none cursor-pointer"
+                style={{
+                  borderColor: moonSign ? 'var(--gold)' : 'var(--border-subtle)',
+                  background: 'var(--background)',
+                }}
+              >
+                <option value="">Select your Moon Sign…</option>
+                {MOON_SIGNS.map(s => (
+                  <option key={s.value} value={s.value}>{s.label} — {s.sanskrit}</option>
+                ))}
+              </select>
+
+              {/* Advanced: precise degree toggle */}
+              <button
+                type="button"
+                onClick={() => setShowAdvanced(v => !v)}
+                className="mt-3 text-[0.625rem] font-mono tracking-[0.1em] inline-flex items-center gap-1.5 transition-colors duration-300"
+                style={{ color: showAdvanced ? 'var(--gold)' : 'var(--text-muted)' }}
+              >
+                <span style={{ transform: showAdvanced ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', display: 'inline-block' }}>▸</span>
+                {showAdvanced ? 'HIDE PRECISE DEGREE' : 'KNOW YOUR EXACT DEGREE?'}
+              </button>
+              <AnimatePresence>
+                {showAdvanced && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <input
+                      id="natal-moon"
+                      type="number"
+                      min="0"
+                      max="360"
+                      step="0.1"
+                      value={natalMoon}
+                      onChange={e => setNatalMoon(e.target.value)}
+                      placeholder="e.g. 45.2"
+                      className="w-full bg-transparent border px-4 py-3 font-mono text-sm text-foreground placeholder:text-text-muted focus:outline-none transition-colors duration-300 mt-2"
+                      style={{ borderColor: natalMoon ? 'var(--gold)' : 'var(--border-subtle)' }}
+                      onFocus={e => { e.currentTarget.style.borderColor = 'var(--gold)'; }}
+                      onBlur={e => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; }}
+                    />
+                    <p className="text-[0.625rem] text-text-muted mt-1.5 leading-relaxed">
+                      Overrides the sign selection above. 0° = Aries start, 360° = Pisces end.
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div>
@@ -345,7 +413,7 @@ export default function DossierPage() {
           {/* Submit */}
           <button
             onClick={runInitiation}
-            disabled={loading || (!query.trim() && !natalMoon)}
+            disabled={loading || (!query.trim() && !moonSign && !natalMoon)}
             className="gold-cta w-full md:w-auto disabled:opacity-30 disabled:cursor-not-allowed"
           >
             {loading ? 'COMPUTING GEOMETRY...' : 'INITIATE DOSSIER'}
