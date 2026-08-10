@@ -221,10 +221,9 @@ Analyze these answers and determine the dominant Mahavidya archetype. Respond ON
         try {
           parsedResponse = JSON.parse(result.text);
         } catch {
-          return NextResponse.json(
-            { error: 'AI response could not be parsed. The geometry returned garbled data.' },
-            { status: 502 }
-          );
+          // LLM returned unparseable data — fall back to rule-based
+          console.warn('[/api/ai/archetype-quiz] JSON parse failed, using fallback');
+          return NextResponse.json(fallbackAnalysis(answers));
         }
 
         // Normalize archetype IDs to canonical forms

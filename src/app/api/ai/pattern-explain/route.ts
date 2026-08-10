@@ -32,9 +32,37 @@ function isRateLimited(ip: string): boolean {
  *
  * Rate limited: 5 req/min per IP.
  */
+/**
+ * Rule-based fallback: returns a structured explanation from the
+ * static pattern data when the LLM is unavailable.
+ */
+function fallbackExplanation(pattern: typeof allPatterns[number], archetype: typeof ALL_ARCHETYPES[number] | undefined) {
+  return {
+    name: pattern.name,
+    explanation: pattern.description,
+    modernAnalogy: archetype
+      ? `Like a ${archetype.element.toLowerCase()}-based algorithm that keeps executing the same subroutine — ${pattern.name.toLowerCase()} operates as an unconscious program running beneath conscious awareness, shaping decisions, relationships, and self-perception.`
+      : `${pattern.name} operates as an unconscious behavioral program — a recurring loop that shapes decisions, relationships, and self-perception without conscious awareness.`,
+    signs: [...pattern.signs],
+    practice: pattern.practice,
+  };
+}
+
 export async function POST(request: NextRequest) {
   try {
     if (!isLLMConfigured()) {
+      // Attempt to serve a rule-based response instead of 503
+      const body = await request.json().catch(() => null);
+      if (body?.patternSlug) {
+        const pattern = allPatterns.find(p => p.slug === body.patternSlug);
+        const archetype = ALL_ARCHETYPES.find(a =>
+          a.relatedPatternSlugs.includes(body.patternSlug)
+        );
+        if (pattern) {
+          console.warn('[/api/ai/pattern-explain] LLM not configured, using fallback for:', body.patternSlug);
+          return NextResponse.json(fallbackExplanation(pattern, archetype));
+        }
+      }
       return NextResponse.json(
         { error: 'AI engine is not configured. The geometry awaits calibration.' },
         { status: 503 }

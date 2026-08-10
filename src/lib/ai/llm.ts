@@ -80,8 +80,14 @@ export async function callLLM(
   }
 
   const data = await res.json();
+  const text = data.choices?.[0]?.message?.content || '';
+
+  if (!text) {
+    throw new Error('LLM returned an empty response.');
+  }
+
   return {
-    text: data.choices?.[0]?.message?.content || '',
+    text,
     model: data.model || model,
     usage: data.usage
       ? { promptTokens: data.usage.prompt_tokens, completionTokens: data.usage.completion_tokens }
