@@ -647,7 +647,7 @@ export default function PracticePage() {
       </section>
 
       {/* \u2550\u2550\u2550 FOOTER \u2550\u2550\u2550 */}
-      <footer className="relative pb-28 md:pb-20 mt-16">
+      <div className="relative pb-28 md:pb-20 mt-16">
         <div className="atmospheric-bg absolute inset-0 opacity-20" />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
           <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
@@ -660,7 +660,7 @@ export default function PracticePage() {
             Drawn from Aghor\u012B, Kashmiri Shaiva, and Buddhist Vajray\u0101na traditions.
           </p>
         </div>
-      </footer>
+      </div>
     </main>
   );
 }

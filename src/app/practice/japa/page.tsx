@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion, useReducedMotion, useInView } from 'framer-motion';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { PageHero } from '@/components/layout/PageHero';
+import { BackButton } from '@/components/nav/BackButton';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
@@ -93,6 +94,7 @@ export default function JapaPage() {
       />
 
       <div className="max-w-3xl mx-auto px-6 lg:px-10 py-16 md:py-24">
+        <BackButton href="/practice" label="Back to Practice" className="mb-10" />
         {/* Mantra selector */}
         <motion.section className="mb-16"
           initial={reduced ? { opacity: 1 } : staggerContainer.hidden}
@@ -350,7 +352,7 @@ export default function JapaPage() {
       </div>
 
       {/* ── Page Footer ── */}
-      <footer className="relative pb-20 md:pb-16 mt-16 border-t border-gold/5">
+      <div className="relative pb-20 md:pb-16 mt-16 border-t border-gold/5">
         <div className="max-w-4xl mx-auto px-6 lg:px-10 text-center pt-12">
           <div className="w-12 h-12 mx-auto mb-6 border border-gold/20 rounded-full flex items-center justify-center">
             <div className="w-2.5 h-2.5 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
@@ -359,7 +361,7 @@ export default function JapaPage() {
             JAPA MĀLĀ — MANTRA COUNTER
           </p>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }

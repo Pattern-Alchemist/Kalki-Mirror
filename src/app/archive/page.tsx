@@ -143,9 +143,9 @@ function ZoneDivider({ label, subtitle, index }: { label: string; subtitle: stri
       <span className="block font-mono text-[0.65rem] tracking-[0.3em] text-text-muted/50 mb-4">
         {String(index).padStart(2, '0')}
       </span>
-      <h2 className="section-label mb-4" style={{ letterSpacing: '0.6em' }}>
+      <p className="section-label mb-4" style={{ letterSpacing: '0.6em' }}>
         {label}
-      </h2>
+      </p>
       <p className="font-display text-lg md:text-xl text-text-secondary max-w-xl mx-auto leading-relaxed">
         {subtitle}
       </p>
@@ -602,7 +602,7 @@ export default function ArchivePage() {
       </section>
 
       {/* ═══ BINDU PULSE FOOTER ═══ */}
-      <footer className="relative pb-28 md:pb-20 mt-16">
+      <div className="relative pb-28 md:pb-20 mt-16">
         <div className="atmospheric-bg absolute inset-0 opacity-20" />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
           <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
@@ -612,7 +612,7 @@ export default function ArchivePage() {
             AKASHIC ARCHIVE — LIVING SYSTEM OF PRACTICE
           </p>
         </div>
-      </footer>
+      </div>
     </main>
   );
 }

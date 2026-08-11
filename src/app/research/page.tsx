@@ -397,7 +397,7 @@ export default function ResearchPage() {
       </section>
 
       {/* ═══ BINDU PULSE FOOTER ═══ */}
-      <footer className="relative pb-28 md:pb-20 mt-16">
+      <div className="relative pb-28 md:pb-20 mt-16">
         <div className="atmospheric-bg absolute inset-0 opacity-20" />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
           <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
@@ -407,7 +407,7 @@ export default function ResearchPage() {
             {'RESEARCH & SOURCES — EPISTEMIC FRAMEWORK'}
           </p>
         </div>
-      </footer>
+      </div>
     </main>
   );
 }

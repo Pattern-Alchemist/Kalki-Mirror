@@ -200,7 +200,7 @@ export default function ConsultationsPage() {
   return (
     <main className="bg-deep-black min-h-screen">
       {/* ═══════ CINEMATIC HERO ═══════ */}
-      <section className="relative h-[75vh] md:h-[85vh] overflow-hidden">
+      <section className="relative min-h-[90vh] md:min-h-[100vh] overflow-hidden">
         <CinematicImage
           src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-ritual-chamber-alt'
           alt="Consult the Archivist — cinematic hero"
@@ -214,7 +214,7 @@ export default function ConsultationsPage() {
         />
         <div className="absolute inset-0 z-[2] bg-gradient-to-t from-deep-black via-deep-black/30 to-deep-black/40" />
         <div className="absolute inset-0 flex items-end pb-20 md:pb-28 z-10">
-          <div className="max-w-5xl mx-auto px-6 lg:px-10 w-full">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-10 w-full">
             <p className="section-label mb-4">WITH KAUSTUBH</p>
             <h1 className="font-display text-4xl md:text-6xl lg:text-7xl text-white font-light tracking-wide hero-heading">
               Consult the Archivist
@@ -227,7 +227,7 @@ export default function ConsultationsPage() {
       <div className="atmospheric-bg h-24 -mt-10 relative z-10" />
 
       {/* ═══════ THE ARCHIVIST — Portrait + Bio ═══════ */}
-      <div className="max-w-5xl mx-auto px-6 lg:px-10 py-20 md:py-28">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-16 md:py-24">
         <BackButton href="/" label="Back to Home" className="mb-12" />
 
         <motion.div
@@ -293,7 +293,7 @@ export default function ConsultationsPage() {
         </motion.div>
 
         {/* ═══════ EDITORIAL DIVIDER — ParallaxText ═══════ */}
-        <div className="max-w-5xl mx-auto px-6 lg:px-10 py-24 md:py-36">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-24 md:py-36">
           <div className="divider-gold mb-16" />
           <ParallaxText speed={-0.05} className="max-w-3xl mx-auto text-center">
             <p className="text-sub-display text-foreground mb-6 engraved-heading">
@@ -391,9 +391,9 @@ export default function ConsultationsPage() {
       </section>
 
       {/* ═══════ BINDU PULSE FOOTER ═══════ */}
-      <footer className="relative pb-28 md:pb-20 mt-16">
+      <div className="relative pb-28 md:pb-20 mt-16">
         <div className="atmospheric-bg absolute inset-0 opacity-20" />
-        <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-10 text-center">
+        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
           <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
             <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
           </div>
@@ -401,7 +401,7 @@ export default function ConsultationsPage() {
             CONSULTATIONS — THE ARCHIVIST
           </p>
         </div>
-      </footer>
+      </div>
     </main>
   );
 }

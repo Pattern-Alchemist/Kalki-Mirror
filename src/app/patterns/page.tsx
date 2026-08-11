@@ -64,9 +64,9 @@ function ZoneDivider({ label, subtitle, index }: { label: string; subtitle: stri
       <span className="block font-mono text-[0.65rem] tracking-[0.3em] text-text-muted/50 mb-4">
         {String(index).padStart(2, '0')}
       </span>
-      <h2 className="section-label mb-4" style={{ letterSpacing: '0.6em' }}>
+      <p className="section-label mb-4" style={{ letterSpacing: '0.6em' }}>
         {label}
-      </h2>
+      </p>
       <p className="font-display text-lg md:text-xl text-text-secondary max-w-xl mx-auto leading-relaxed">
         {subtitle}
       </p>
@@ -471,7 +471,7 @@ export default function PatternsPage() {
         )}
 
         {/* ── ZONE 4: UNDERSTANDING — Statistics ── */}
-        <section className="relative py-24 md:py-32">
+        <section className="relative py-24 md:py-36">
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
@@ -488,9 +488,9 @@ export default function PatternsPage() {
               <span className="block font-mono text-[0.65rem] tracking-[0.3em] text-text-muted/50 mb-4">
                 {String(4).padStart(2, '0')}
               </span>
-              <h2 className="section-label mb-4" style={{ letterSpacing: '0.6em' }}>
+              <p className="section-label mb-4" style={{ letterSpacing: '0.6em' }}>
                 Understanding
-              </h2>
+              </p>
               <p className="font-display text-lg md:text-xl text-text-secondary max-w-xl mx-auto leading-relaxed">
                 The mirror clears. What was pattern becomes awareness.
               </p>
@@ -563,7 +563,7 @@ export default function PatternsPage() {
       </div>
 
       {/* ═══ EDITORIAL DIVIDER ═══ */}
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-24 md:py-32">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-24 md:py-36">
         <div className="divider-gold mb-14" />
         <ParallaxText speed={-0.05} className="max-w-3xl mx-auto text-center">
           <p className="text-sub-display text-foreground mb-6 engraved-heading">
@@ -604,7 +604,7 @@ export default function PatternsPage() {
       </section>
 
       {/* ═══ BINDU PULSE FOOTER ═══ */}
-      <footer className="relative pb-28 md:pb-20 mt-16">
+      <div className="relative pb-28 md:pb-20 mt-16">
         <div className="atmospheric-bg absolute inset-0 opacity-20" />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
           <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
@@ -614,7 +614,7 @@ export default function PatternsPage() {
             PATTERN ATLAS — THE MIRROR METHOD
           </p>
         </div>
-      </footer>
+      </div>
     </main>
   );
 }

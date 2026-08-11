@@ -401,7 +401,7 @@ export default function CodexPage() {
       </section>
 
       {/* ── Page Footer ── */}
-      <footer className="relative pb-20 md:pb-28">
+      <div className="relative pb-20 md:pb-28">
         <div className="atmospheric-bg absolute inset-0 opacity-30" />
         <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 text-center">
           <motion.div
@@ -422,7 +422,7 @@ export default function CodexPage() {
             END OF CODEX — CLASSIFIED UNDER THE KALKI PROTOCOL
           </motion.p>
         </div>
-      </footer>
+      </div>
     </main>
   );
 }

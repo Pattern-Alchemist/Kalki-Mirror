@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Lock } from 'lucide-react';
+import { Lock, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Siddhi } from '@/lib/data/types';
 import { TIER_ORDER } from '@/lib/utils/tier-gate';
@@ -57,7 +57,10 @@ export function SiddhiCard({ siddhi, className }: SiddhiCardProps) {
           <div className="flex items-center gap-3">
             <span className="font-mono text-[0.75rem] tracking-[0.12em] uppercase text-copper">{siddhi.tradition}</span>
             <div className="flex-1" />
-            <span className="font-mono text-[0.75rem] tracking-[0.12em] uppercase text-text-muted">{siddhi.level}</span>
+            <span className="glass-chip-reveal">
+              View Folio <ArrowRight className="w-3.5 h-3.5" />
+            </span>
+            <span className="font-mono text-[0.75rem] tracking-[0.12em] uppercase text-text-muted group-hover:opacity-0 transition-opacity duration-300">{siddhi.level}</span>
           </div>
         </div>
       </Link>

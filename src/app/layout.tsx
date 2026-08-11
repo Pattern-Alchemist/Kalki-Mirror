@@ -109,7 +109,7 @@ export default function RootLayout({
           <SmoothScroll>
             <SacredNav />
             <ScrollProgress />
-            <main className="pt-16 md:pt-20">{children}</main>
+            <div className="pt-16 md:pt-20">{children}</div>
             <SacredFooter />
             <div className="fixed-bottom-stack">
               <WhatsAppCTA variant="floating" />

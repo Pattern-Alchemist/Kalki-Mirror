@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import type { Pattern } from '@/lib/data/types';
 import { MagneticCard } from '@/components/ui/MagneticCard';
 
@@ -32,9 +33,13 @@ export function PatternCard({ pattern, className }: PatternCardProps) {
             ))}
           </ul>
           {/* Bottom metadata tag — monospace terminal style */}
-          <div className="mt-5 pt-3 border-t border-gold/5">
+          <div className="mt-5 pt-3 border-t border-gold/5 flex items-center">
             <span className="font-mono text-[0.75rem] tracking-[0.15em] uppercase text-copper">
               YANTRA PATTERN &middot; {pattern.relatedSiddhis.length} SIDDHIS LINKED
+            </span>
+            <div className="flex-1" />
+            <span className="glass-chip-reveal">
+              Decode <ArrowRight className="w-3.5 h-3.5" />
             </span>
           </div>
         </div>

@@ -111,7 +111,7 @@ export default function ArchetypesPage() {
   return (
     <main className="bg-deep-black min-h-screen">
       {/* ── Full-bleed Cinematic Hero ── */}
-      <section className="relative h-[85vh] md:h-[90vh] overflow-hidden">
+      <section className="relative min-h-[90vh] md:min-h-[100vh] overflow-hidden">
         <CinematicImage
           src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/shodashi-sri-yantra'
           alt='Sri Yantra — The Ten Mahavidyas'
@@ -345,7 +345,7 @@ export default function ArchetypesPage() {
       </section>
 
       {/* ── Bindu Pulse Footer ── */}
-      <footer className="relative pb-28 md:pb-20 mt-16">
+      <div className="relative pb-28 md:pb-20 mt-16">
         <div className="atmospheric-bg absolute inset-0 opacity-20" />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
           <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
@@ -355,7 +355,7 @@ export default function ArchetypesPage() {
             THE TEN MAHĀVIDYĀS {'—'} PATTERN INTELLIGENCE
           </p>
         </div>
-      </footer>
+      </div>
     </main>
   );
 }

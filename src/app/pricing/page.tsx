@@ -202,7 +202,7 @@ export default function PricingPage() {
     <main className="bg-deep-black min-h-screen">
 
       {/* ═══════════════ CINEMATIC HERO ═══════════════ */}
-      <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
+      <section className="relative min-h-[90vh] md:min-h-[100vh] overflow-hidden">
         <CinematicImage
           src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-labyrinth-alt'
           alt="The labyrinth of sacred offerings"
@@ -414,7 +414,7 @@ export default function PricingPage() {
       </section>
 
       {/* ═══════════════ BINDU PULSE FOOTER ═══════════════ */}
-      <footer className="relative pb-28 md:pb-20 mt-16">
+      <div className="relative pb-28 md:pb-20 mt-16">
         <div className="atmospheric-bg absolute inset-0 opacity-20" />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
           <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
@@ -427,7 +427,7 @@ export default function PricingPage() {
             THE COVENANT — SACRED OFFERINGS
           </p>
         </div>
-      </footer>
+      </div>
     </main>
   );
 }
