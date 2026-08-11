@@ -22,6 +22,9 @@ import { cn } from '@/lib/utils';
 import { BackButton } from '@/components/nav/BackButton';
 const AISearchBar = dynamic(() => import('@/components/ai/AISearchBar').then(m => ({ default: m.AISearchBar })), { ssr: false, loading: () => <div className="h-12" /> });
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
+import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
+import { CinematicImage } from '@/components/ui/CinematicImage';
+import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 
 /* ─── Zone Images (Cloudinary) ──────────────────────────────────────── */
 const CLOUD = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror';
@@ -209,7 +212,7 @@ export default function ArchivePage() {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative bg-deep-black">
+    <main ref={containerRef} className="relative bg-deep-black min-h-screen">
 
       {/* ═══ FIXED BACKGROUND LAYER — Crossfading 3 zones ═══ */}
       {!reduced && (
@@ -557,6 +560,59 @@ export default function ArchivePage() {
         </section>
 
       </div>
-    </div>
+
+      {/* ═══ CINEMATIC STRIP ═══ */}
+      <div className="mt-16">
+        <ScrollParallax speed={-0.15} className="cinematic-strip">
+          <CinematicImage
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight.jpeg'
+            alt='Ancient temple corridor'
+            kenBurns="normal"
+            filmGrain={false}
+          />
+          <div className="cinematic-strip-overlay" />
+        </ScrollParallax>
+      </div>
+
+      {/* ═══ CLOSING CTA ═══ */}
+      <section className="relative py-24 md:py-36">
+        <ScrollParallax speed={-0.06} disabled>
+          <CinematicImage
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-codex-scroll.jpeg'
+            alt='Ancient codex with golden illumination'
+            className="absolute inset-0"
+            scrim="full"
+            vignette
+          />
+        </ScrollParallax>
+        <div className="absolute inset-0 pointer-events-none z-[1]" style={{ background: 'rgba(0,0,0,0.75)' }} />
+        <ParallaxText speed={-0.04} className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">
+          <p className="section-label mb-6">The Archive is Open</p>
+          <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
+            Every folio has a sādhana.<br/>Every sādhana has a gate.
+          </h2>
+          <p className="text-foreground/70 text-lg mb-12 editorial-spacing" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>
+            The Archive is not a library. It is a living system of practice. Each siddhi is a door — and behind every door, a specific discipline awaits.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <WhatsAppCTA variant="inline" message="I want to begin my practice from the Archive." />
+            <Link href="/patterns" className="ghost-cta">Pattern Atlas</Link>
+          </div>
+        </ParallaxText>
+      </section>
+
+      {/* ═══ BINDU PULSE FOOTER ═══ */}
+      <footer className="relative pb-28 md:pb-20 mt-16">
+        <div className="atmospheric-bg absolute inset-0 opacity-20" />
+        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
+          <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
+            <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
+          </div>
+          <p className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper">
+            AKASHIC ARCHIVE — LIVING SYSTEM OF PRACTICE
+          </p>
+        </div>
+      </footer>
+    </main>
   );
 }

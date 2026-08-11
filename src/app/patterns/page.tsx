@@ -16,6 +16,10 @@ import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { Search, X, SlidersHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
+import { CinematicImage } from '@/components/ui/CinematicImage';
+import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
+import Link from 'next/link';
 
 /* ── Zone Backgrounds ── */
 const ZONE_MIRROR = '/pattern-atlas/zone-mirror.jpeg';
@@ -192,7 +196,7 @@ export default function PatternsPage() {
   const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
 
   return (
-    <div ref={containerRef} className="relative bg-deep-black">
+    <main ref={containerRef} className="relative bg-deep-black min-h-screen">
       {/* ═══ FIXED BACKGROUND LAYER ═══ */}
       {!reduced && (
         <div className="fixed inset-0 z-0 overflow-hidden">
@@ -544,6 +548,73 @@ export default function PatternsPage() {
           </div>
         </section>
       </div>
-    </div>
+
+      {/* ═══ CINEMATIC STRIP ═══ */}
+      <div className="mt-8">
+        <ScrollParallax speed={-0.15} className="cinematic-strip">
+          <CinematicImage
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/hero/hero-shiva-abyss.jpeg'
+            alt='Deep meditative space'
+            kenBurns="normal"
+            filmGrain={false}
+          />
+          <div className="cinematic-strip-overlay" />
+        </ScrollParallax>
+      </div>
+
+      {/* ═══ EDITORIAL DIVIDER ═══ */}
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-24 md:py-32">
+        <div className="divider-gold mb-14" />
+        <ParallaxText speed={-0.05} className="max-w-3xl mx-auto text-center">
+          <p className="text-sub-display text-foreground mb-6 engraved-heading">
+            The mirror shows the pattern.<br/>The pattern shows the path.<br/>The path shows the practitioner.
+          </p>
+          <p className="text-editorial max-w-xl mx-auto">
+            Twelve patterns. Three stages of transformation. Each one a doorway that was always open — you simply had not yet looked.
+          </p>
+        </ParallaxText>
+        <div className="divider-gold mt-14" />
+      </div>
+
+      {/* ═══ CLOSING CTA ═══ */}
+      <section className="relative py-24 md:py-36">
+        <ScrollParallax speed={-0.06} disabled>
+          <CinematicImage
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/sri-yantra-sky.jpeg'
+            alt='Sri Yantra against twilight sky'
+            className="absolute inset-0"
+            scrim="full"
+            vignette
+          />
+        </ScrollParallax>
+        <div className="absolute inset-0 pointer-events-none z-[1]" style={{ background: 'rgba(0,0,0,0.75)' }} />
+        <ParallaxText speed={-0.04} className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">
+          <p className="section-label mb-6">Begin the Unraveling</p>
+          <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
+            You have seen the pattern.<br/>Now walk through it.
+          </h2>
+          <p className="text-foreground/70 text-lg mb-12 editorial-spacing" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>
+            Every pattern is linked to specific sādhanas — disciplines drawn from living traditions. The Archive holds the practices. The Archivist holds the context.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <WhatsAppCTA variant="inline" message="I have identified my pattern and want to begin practice." />
+            <Link href="/archive" className="ghost-cta">Browse the Archive</Link>
+          </div>
+        </ParallaxText>
+      </section>
+
+      {/* ═══ BINDU PULSE FOOTER ═══ */}
+      <footer className="relative pb-28 md:pb-20 mt-16">
+        <div className="atmospheric-bg absolute inset-0 opacity-20" />
+        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
+          <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
+            <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
+          </div>
+          <p className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper">
+            PATTERN ATLAS — THE MIRROR METHOD
+          </p>
+        </div>
+      </footer>
+    </main>
   );
 }
