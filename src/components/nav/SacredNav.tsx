@@ -52,31 +52,35 @@ export function SacredNav() {
         )}
       >
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-          <div className="flex items-center justify-between h-16 md:h-20">
+          <div className="flex items-center justify-between h-[4.25rem] md:h-[5.25rem]">
             {/* Logo — KALKI wordmark */}
             <Link href="/" className="relative z-10 flex items-center gap-3 group">
-              <span className="font-display text-lg md:text-xl tracking-[0.25em] gold-foil-text font-light">
+              <span className="font-display text-xl md:text-2xl tracking-[0.28em] gold-foil-text font-light nav-logo-glow">
                 KALKI
               </span>
             </Link>
 
             {/* Desktop links */}
-            <div className="hidden lg:flex items-center gap-10">
+            <div className="hidden lg:flex items-center gap-9">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'relative text-[0.8125rem] font-ui tracking-[0.18em] uppercase transition-colors duration-500 py-1 neon-tab-glow',
+                    'relative text-[0.8375rem] font-ui tracking-[0.19em] uppercase transition-all duration-500 py-1 nav-link-glow',
                     isActive(link.href)
-                      ? 'text-gold'
-                      : 'text-text-muted hover:text-ivory'
+                      ? 'text-gold nav-link-active'
+                      : 'text-ivory/80 hover:text-ivory'
                   )}
                 >
                   {link.label}
                   {isActive(link.href) && (
                     <motion.span
-                      className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent"
+                      className="absolute -bottom-0.5 left-0 right-0 h-[2px] rounded-full"
+                      style={{
+                        background: 'linear-gradient(90deg, transparent, var(--gold-bright), var(--gold), var(--gold-bright), transparent)',
+                        boxShadow: '0 0 8px rgba(212,175,55,0.5), 0 0 20px rgba(212,175,55,0.2)',
+                      }}
                       layoutId="nav-underline"
                       transition={{ type: 'spring', stiffness: 200, damping: 30 }}
                     />

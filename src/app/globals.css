@@ -257,11 +257,83 @@
 
 /* Navigation glass */
 .glass-nav {
-  background: rgba(11, 12, 16, 0.65);
-  backdrop-filter: blur(28px) saturate(1.4);
-  -webkit-backdrop-filter: blur(28px) saturate(1.4);
-  border: 1px solid rgba(212, 175, 55, 0.05);
-  box-shadow: 0 1px 0 rgba(212, 175, 55, 0.04) inset;
+  background: linear-gradient(180deg, rgba(5, 5, 5, 0.82) 0%, rgba(11, 12, 16, 0.72) 100%);
+  backdrop-filter: blur(36px) saturate(1.6) brightness(1.05);
+  -webkit-backdrop-filter: blur(36px) saturate(1.6) brightness(1.05);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.12);
+  box-shadow:
+    0 1px 0 rgba(212, 175, 55, 0.06) inset,
+    0 4px 30px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(212, 175, 55, 0.03);
+}
+
+/* Animated gold accent line at bottom of nav */
+.glass-nav::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(212, 175, 55, 0.0) 15%,
+    rgba(212, 175, 55, 0.35) 50%,
+    rgba(212, 175, 55, 0.0) 85%,
+    transparent 100%
+  );
+  animation: navGoldLine 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes navGoldLine {
+  0%, 100% { opacity: 0.4; left: 10%; right: 10%; }
+  50% { opacity: 1; left: 5%; right: 5%; }
+}
+
+/* Nav link glow — high-visibility text treatment */
+.nav-link-glow {
+  text-shadow:
+    0 0 4px rgba(212, 175, 55, 0.12),
+    0 1px 3px rgba(0, 0, 0, 0.95),
+    0 0 12px rgba(255, 255, 255, 0.08);
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-link-glow:hover {
+  text-shadow:
+    0 0 8px rgba(212, 175, 55, 0.25),
+    0 0 18px rgba(255, 255, 255, 0.18),
+    0 1px 3px rgba(0, 0, 0, 0.95);
+}
+
+/* Active nav link — golden fire */
+.nav-link-active {
+  text-shadow:
+    0 0 6px rgba(212, 175, 55, 0.45),
+    0 0 16px rgba(212, 175, 55, 0.2),
+    0 0 32px rgba(212, 175, 55, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.9);
+  animation: navActivePulse 3s ease-in-out infinite;
+}
+@keyframes navActivePulse {
+  0%, 100% {
+    text-shadow:
+      0 0 6px rgba(212, 175, 55, 0.45),
+      0 0 16px rgba(212, 175, 55, 0.2),
+      0 0 32px rgba(212, 175, 55, 0.08),
+      0 1px 3px rgba(0, 0, 0, 0.9);
+  }
+  50% {
+    text-shadow:
+      0 0 10px rgba(212, 175, 55, 0.65),
+      0 0 24px rgba(212, 175, 55, 0.35),
+      0 0 48px rgba(212, 175, 55, 0.15),
+      0 1px 3px rgba(0, 0, 0, 0.9);
+  }
+}
+
+/* Nav logo extra glow */
+.nav-logo-glow {
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.15));
 }
 
 /* ==========================================================
@@ -704,26 +776,29 @@
    Medium intensity. Breathes like embers in a dark temple.
    ========================================================== */
 
-/* Nav / tab text glow — text-shadow only, no box */
+/* Nav / tab text glow — enhanced gold-tinted glow for maximum visibility */
 .neon-tab-glow {
   text-shadow:
-    0 0 8px rgba(255, 255, 255, 0.14),
-    0 0 22px rgba(255, 255, 255, 0.07),
-    0 0 44px rgba(255, 255, 255, 0.03);
+    0 0 6px rgba(212, 175, 55, 0.18),
+    0 0 14px rgba(255, 255, 255, 0.16),
+    0 0 28px rgba(255, 255, 255, 0.08),
+    0 1px 4px rgba(0, 0, 0, 0.9);
   animation: neonTabPulse 3s ease-in-out infinite;
 }
 @keyframes neonTabPulse {
   0%, 100% {
     text-shadow:
-      0 0 8px rgba(255, 255, 255, 0.14),
-      0 0 22px rgba(255, 255, 255, 0.07),
-      0 0 44px rgba(255, 255, 255, 0.03);
+      0 0 6px rgba(212, 175, 55, 0.18),
+      0 0 14px rgba(255, 255, 255, 0.16),
+      0 0 28px rgba(255, 255, 255, 0.08),
+      0 1px 4px rgba(0, 0, 0, 0.9);
   }
   50% {
     text-shadow:
-      0 0 14px rgba(255, 255, 255, 0.24),
-      0 0 32px rgba(255, 255, 255, 0.12),
-      0 0 64px rgba(255, 255, 255, 0.06);
+      0 0 10px rgba(212, 175, 55, 0.35),
+      0 0 22px rgba(255, 255, 255, 0.28),
+      0 0 44px rgba(255, 255, 255, 0.12),
+      0 1px 4px rgba(0, 0, 0, 0.9);
   }
 }
 
@@ -836,7 +911,7 @@
 }
 .hero-brand-lockup {
   position: absolute;
-  top: clamp(4.5rem, 9vh, 7rem);
+  top: clamp(3.2rem, 5.5vh, 4.5rem);
   left: 50%;
   z-index: 4;
   display: flex;
@@ -863,8 +938,8 @@
 .hero-brand-subtitle {
   color: var(--gold-label);
   font-family: var(--font-ui);
-  font-size: clamp(0.55rem, 1.1vw, 0.78rem);
-  letter-spacing: 0.2em;
+  font-size: clamp(0.52rem, 1.05vw, 0.72rem);
+  letter-spacing: 0.18em;
   line-height: 1.3;
   text-transform: uppercase;
   text-shadow: var(--hero-shadow);
@@ -901,7 +976,7 @@
 
 @media (max-width: 767px) {
   .hero-brand-lockup {
-    top: 4.7rem;
+    top: 3.4rem;
     width: calc(100% - 2rem);
     padding: 0.7rem 0.6rem 0.75rem;
   }
@@ -912,8 +987,8 @@
   }
 
   .hero-brand-subtitle {
-    font-size: 0.48rem;
-    letter-spacing: 0.12em;
+    font-size: 0.44rem;
+    letter-spacing: 0.1em;
   }
 
   .hero-content-safe {
@@ -1035,8 +1110,13 @@
     animation: none !important;
   }
   .neon-tab-glow,
-  .neon-chip-glow {
+  .neon-chip-glow,
+  .nav-link-active {
     animation: none !important;
+  }
+  .glass-nav::after {
+    animation: none !important;
+    opacity: 0.7;
   }
   .animate-breathe-slow {
     animation: none !important;

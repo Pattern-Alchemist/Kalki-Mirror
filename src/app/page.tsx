@@ -49,9 +49,9 @@ export default function HomePage() {
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-deep-black/60 to-transparent z-[2] pointer-events-none" />
 
         {/* Centered brand lockup — positioned against the hero, not the CTA stack */}
-        <div className="hero-brand-lockup" aria-label="KALKI-TANTRA, The Only Key to Shambhala">
+        <div className="hero-brand-lockup" aria-label="KALKI-TANTRA, The Gate Beyond Shambhala">
             <span className="hero-brand-name">KALKI-TANTRA</span>
-            <span className="hero-brand-subtitle">The Only Key to - SHAMBHALA</span>
+            <span className="hero-brand-subtitle">The Gate Beyond Shambhala</span>
         </div>
 
         <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-10 hero-content-safe">
