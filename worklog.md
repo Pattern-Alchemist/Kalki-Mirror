@@ -380,3 +380,28 @@ Stage Summary:
 - All image paths now resolve correctly
 - No broken local references remain
 - Cloudinary full URLs work as-is; env var fixes CinematicImage cloudinaryId prop
+
+---
+Task ID: 1
+Agent: main
+Task: Expand Aghori Tantra course from 48 to 54 lessons using YANTRAS.docx content
+
+Work Log:
+- Read and parsed YANTRAS.docx (1509 non-empty paragraphs, ~126KB of text)
+- Extracted key sections: Sri Yantra 9 avaranas, Khadgamala Nyasa, 7 Chakras, 15 Nitya Devis, protective yantras (Hanuman, Mahamrityunjaya, Ganesha, Kali, Dattatreya), Navnath Yantra, Batuk Bhairava, Body Yantra, Soundarya Lahari, Sacred Geometry
+- Analyzed existing course structure: 48 lessons across 8 phases (not 36 as previously assumed)
+- Designed 6 new lessons drawn from YANTRAS.docx, one per phase III-VIII
+- Wrote and debugged insertion scripts (3 iterations to handle TypeScript string literal requirements)
+- All content uses \n for newlines within single-quoted TypeScript strings
+- TypeScript compilation passes with zero errors
+
+Stage Summary:
+- Course expanded from 48 to 54 lessons (6 new lessons)
+- Phase III: 'nitya-lunar-yoga' — 15 Nitya Devis and Lunar Yoga
+- Phase IV: 'protective-yantras-aghori' — Protective/Healing Yantras (Hanuman, Mrityunjaya, Ganesha, Kali, Dattatreya)
+- Phase V: 'batuk-bhairava-nath-lineage' — Batuk Bhairava, Navnath, Guru Yantra, Nath lineage
+- Phase VI: 'yantra-cremation-ground' — Bhasma Yantra practice in smashana, Body Yantra
+- Phase VII: 'soundarya-lahari-internal-yantra' — Soundarya Lahari as tantra manual, sacred geometry
+- Phase VIII: 'modern-ghora-practice' — Living Aghora in the contemporary world
+- All new lessons properly reference Govinda Das Aghori as source (TRADITIONAL/FIELD/ORAL evidence grades)
+- File: src/lib/data/aghoiri-tantra-course.ts
