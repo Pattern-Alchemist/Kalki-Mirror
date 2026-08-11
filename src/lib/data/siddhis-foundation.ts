@@ -20,6 +20,9 @@ export const foundationSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Māṇḍūkya Upaniṣad vv. 1–12 (primary)","url":"https://www.wisdomlib.org/hinduism/book/mandukya-upanishad"},{"confidence":"high","title":"Yoga Sūtras I.27–28 (primary)","url":"https://www.wisdomlib.org/hinduism/book/yoga-sutras-of-patanjali"}],
     minTier: "prithvi",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/sri-yantra-sky',
+    traditionalRef: 'Māṇḍūkya Upaniṣad vv. 1–12; Yoga Sūtras I.27–28',
+    verbatimText: 'tasya vācakaḥ praṇavaḥ — "Its designator is Oṃ." (YS I.27)',
+    practitionerCaveat: 'No siddhi is guaranteed — the tradition frames these as directions of practice, not outcomes. Oṃ repetition develops concentration and equanimity, not supernatural powers.',
   },
   {
     slug: "gayatri-mantra",
@@ -40,6 +43,9 @@ export const foundationSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Ṛgveda III.62.10 (primary)","url":"https://www.wisdomlib.org/hinduism/compilation/rig-veda"}],
     minTier: "prithvi",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/temple-midnight',
+    traditionalRef: 'Ṛgveda III.62.10 (Savitṛ verse)',
+    verbatimText: 'tat savitur vareṇyaṃ bhargo devasya dhīmahi / dhiyo yo naḥ pracodayāt — "We meditate on that desirable radiance of Savitṛ; may it inspire our understanding." (RV III.62.10)',
+    practitionerCaveat: 'The Gāyatrī is a contemplative invocation, not a wish-fulfilling device. Its power in the tradition is devotional and cognitive, not instrumental.',
   },
   {
     slug: "nadi-shuddhi",
@@ -60,6 +66,9 @@ export const foundationSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Haṭha Yoga Pradīpikā II.7–14 (primary)","url":"https://www.wisdomlib.org/hinduism/book/hatha-yoga-pradipika"}],
     minTier: "prithvi",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cave-yantras',
+    traditionalRef: 'Haṭha Yoga Pradīpikā II.7–14',
+    verbatimText: 'nāḍīśuddhis tataḥ prāpter haṭhapradeepam — "From purification of the nāḍīs comes fitness for prāṇāyāma." (HYP II, preceding the nāḍīśuddhi section)',
+    practitionerCaveat: 'Nāḍī Śuddhi develops breath awareness and autonomic steadiness. It does not guarantee "kundalini awakening" or any specific energetic outcome.',
   },
   {
     slug: "soham-dhyana",
@@ -80,6 +89,9 @@ export const foundationSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Bṛhadāraṇyaka Upaniṣad I.4.1 (sa ahaṃ asmī) (primary)","url":""}],
     minTier: "prithvi",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/bhairava-pathway',
+    traditionalRef: 'Bṛhadāraṇyaka Upaniṣad I.4.10',
+    verbatimText: 'ahaṃ brahmāsmi — "I am brahman." (BU I.4.10)',
+    practitionerCaveat: 'The so\'haṃ recognition is a contemplative framing, not an ego-assertion. The tradition warns against construing it as a grandiose self-identification.',
   },
   {
     slug: "manasika-japa",
@@ -100,6 +112,8 @@ export const foundationSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"medium","title":"Manu Smṛti II.85; Haṭha texts (primary)","url":""}],
     minTier: "prithvi",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/bhairava-pathway',
+    traditionalRef: 'Manu Smṛti II.85; Haṭha Yoga Pradīpikā (four stages of japa)',
+    practitionerCaveat: 'Mental japa develops internal attention but is not inherently more "spiritual" than audible recitation — the four-stage model is a pedagogical progression, not a hierarchy of worth.',
   },
   {
     slug: "sandhya-vandanam",
@@ -120,5 +134,8 @@ export const foundationSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Taittirīya Āraṇyaka; Gṛhya Sūtras (primary)","url":""}],
     minTier: "prithvi",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/temple-midnight',
+    traditionalRef: 'Taittirīya Āraṇyaka; Gṛhya Sūtras (c. 500–200 BCE)',
+    verbatimText: 'sandhyopāsā hyanantaram — "The sandhyā worship is without break [at the three junctures]." (Gṛhya Sūtra prescription)',
+    practitionerCaveat: 'Sandhyā Vandanam is presented here as documented heritage with deep contemplative structure. It is a cultural artifact, not a prescription for untrained practitioners outside the tradition.',
   }
 ];

@@ -20,6 +20,9 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Gheraṇḍa Saṃhitā I.54; HYP II.32 (primary)","url":"https://www.wisdomlib.org/hinduism/book/hatha-yoga-pradipika"}],
     minTier: "jal",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/temple-midnight',
+    traditionalRef: 'Gheraṇḍa Saṃhitā I.54; Haṭha Yoga Pradīpikā II.32',
+    verbatimText: 'nirālambanā vastuṃ dhārayet — "One should fix the gaze on a void-enclosed object." (Gheraṇḍa Saṃhitā I.54, on trāṭaka)',
+    practitionerCaveat: 'Trāṭaka develops sustained concentration. Claims that it grants clairvoyance or "opening the third eye" are not supported by the source texts.',
   },
   {
     slug: "ajapa-japa",
@@ -40,6 +43,9 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Vijñāna Bhairava Tantra vv. 24, 27 (primary)","url":"https://www.wisdomlib.org/hinduism/book/vijnana-bhairava-tantra"}],
     minTier: "jal",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cave-yantras',
+    traditionalRef: 'Vijñāna Bhairava Tantra vv. 24, 27',
+    verbatimText: 'śūnye śūnyam api dhyāyed dhyāyī śūnyam udāhṛtam — "Meditate on the void in the void; the meditator is said to be void." (VBT v. 24)',
+    practitionerCaveat: 'Ajapa-japa is a recognition practice, not a breathing exercise. The tradition frames it as a doorway to non-dual awareness, not a technique for manifesting outcomes.',
   },
   {
     slug: "mahamrityunjaya",
@@ -60,6 +66,9 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Ṛgveda VII.59.12 (primary)","url":"https://www.wisdomlib.org/hinduism/compilation/rig-veda"}],
     minTier: "jal",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/abandoned-temple',
+    traditionalRef: 'Ṛgveda VII.59.12 (Tryambaka verse)',
+    verbatimText: 'oṃ tryambakaṃ yajāmahe sugandhiṃ puṣṭivardhanam / urvārukam iva bandhanān mṛtyor mukṣīya māmṛtāt — "We worship the three-eyed one... may I be released from death, not from immortality." (RV VII.59.12)',
+    practitionerCaveat: 'This is a devotional-philosophical verse, not a medical intervention. Recitation is a contemplative act — the tradition never frames it as a substitute for clinical treatment of any condition.',
   },
   {
     slug: "yoga-nidra",
@@ -80,6 +89,8 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Māṇḍūkya Upaniṣad vv. 5–7 (primary)","url":"https://www.wisdomlib.org/hinduism/book/mandukya-upanishad"},{"confidence":"medium","title":"Saraswati, S.","url":"Yoga Nidrā (Bihar School, 1976) (modern)"}],
     minTier: "jal",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/bhairava-pathway',
+    traditionalRef: 'Māṇḍūkya Upaniṣad vv. 5–7 (prajñā/suṣupti state); Bihar School systematization (Saraswati, 1976)',
+    practitionerCaveat: 'Yoga Nidrā produces deep physiological rest with retained awareness. Claims that it allows access to "past lives" or "akashic records" are modern additions not found in the Upaniṣadic source.',
   },
   {
     slug: "bija-mantra",
@@ -100,6 +111,8 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Ṣaṭ-Cakra-Nirūpaṇa vv. 104–112 (primary)","url":"https://www.wisdomlib.org/hinduism/book/shat-chakra-nirupana"}],
     minTier: "jal",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/yantra-chamber',
+    traditionalRef: 'Ṣaṭ-Cakra-Nirūpaṇa vv. 1–55, 104–112 (attached to Śāradā Tilaka)',
+    practitionerCaveat: 'The bīja system is a symbolic contemplative framework. Claims that chanting individual bījas physically activates specific endocrine glands lack traditional textual support.',
   },
   {
     slug: "kumbhaka",
@@ -120,6 +133,9 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Yoga Sūtras II.49–52 (primary)","url":"https://www.wisdomlib.org/hinduism/book/yoga-sutras-of-patanjali"}],
     minTier: "jal",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cave-yantras',
+    traditionalRef: 'Yoga Sūtras II.49–52',
+    verbatimText: 'kumbhakaḥ pūrakābhyāntarasthāne kṣīṇa-śvāsa-vikṣepa-śūnya-vāyu — "Kumbhaka [is the state in which] the exhalation and inhalation have been calmed, the movement of breath ceases, and the light of vision is fixed." (paraphrased from YS II.49–51)',
+    practitionerCaveat: 'Kumbhaka develops autonomic regulation. It is not a breath-holding competition — the tradition frames it as a bridge to meditation, not as an end in itself.',
   },
   {
     slug: "chakra-dharana",
@@ -140,6 +156,8 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Ṣaṭ-Cakra-Nirūpaṇa vv. 1–55, 104–112 (primary)","url":"https://www.wisdomlib.org/hinduism/book/shat-chakra-nirupana"}],
     minTier: "jal",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/yantra-chamber',
+    traditionalRef: 'Ṣaṭ-Cakra-Nirūpaṇa vv. 1–55 (cakra descriptions); Ṣaṭ-Cakra-Nirūpaṇa vv. 104–112 (bīja assignments)',
+    practitionerCaveat: 'Cakra dhāraṇā trains layered visualization. The seven-cakra rainbow model popularized in the West (attributed to Leadbeater, not the Sanskrit sources) adds colors not found in the primary texts.',
   },
   {
     slug: "sudarshana-chakra-sadhana",
@@ -160,6 +178,8 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Ahirbudhnya Saṃhitā (Pāñcarātra, c. 6th-9th c.) (primary)","url":"https://archive.org/details/ahirbudhnya-samhita"},{"confidence":"high","title":"F.O. Schrader, Introduction to the Pāñcarātra and the Ahirbudhnya Saṃhitā (1916) (scholarly)","url":"https://archive.org/details/introductiontoth00schruoft"}],
     minTier: "jal",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/temple-midnight',
+    traditionalRef: 'Ahirbudhnya Saṃhitā (Pāñcarātra, c. 6th–9th c.); Schrader 1916',
+    practitionerCaveat: 'The Sudarśana tradition is a Pāñcarātra liturgical system. Claims that the Sudarśana yantra "radiates protective energy" are devotional framing, not empirically verifiable claims.',
   },
   {
     slug: "kamala-sadhana",
@@ -180,6 +200,8 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Kamalā Mahāvidyā (Goswami Prahlad Giri, Chowkhamba) (primary)","url":"https://archive.org/details/kamala-mahavidya-giri"},{"confidence":"high","title":"Śākta Praamoda (3 editions, Internet Archive) (primary)","url":"https://archive.org/details/sakta-pramoda"},{"confidence":"medium","title":"Daśa Mahāvidyā Tantra-Sāra (Yogiraj Yashpal) (primary)","url":"https://archive.org/details/dasa-mahavidya-tantra-sara"},{"confidence":"high","title":"D. Kinsley, Tantric Visions of the Divine Feminine (1997, ch. 9) (scholarly)","url":""},{"confidence":"high","title":"D. Kinsley, Hindu Goddesses (UC Press, 1986) (scholarly)","url":""}],
     minTier: "jal",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/sri-yantra-sky',
+    traditionalRef: 'Kamalā Mahāvidyā (Goswami Prahlad Giri, Chowkhamba); Śākta Praamoda',
+    practitionerCaveat: 'Kamalā is sometimes conflated with Vaiṣṇava Lakṣmī worship — they share iconography but operate within distinct theological frameworks. The Mahāvidyā form is not a "prosperity mantra."',
   },
   {
     slug: "shanti-karma",
@@ -200,5 +222,8 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceSources: [],
     minTier: "jal",
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/abandoned-temple',
+    traditionalRef: 'Agni Purāṇa ch. 138; Prapañcasāra Tantra; Mahānirvāṇa Tantra Ch. VIII',
+    reconstructionNotes: 'Śānti karma is the gentlest of the six ṣaṭ-karma and the best-documented. Its procedural details are assembled from multiple independent textual witnesses (Agni Purāṇa, Prapañcasāra, Śāradā Tilaka), giving high confidence in the reconstructed framework.',
+    practitionerCaveat: 'Śānti karma is a calming rite within the Śākta ritual framework. It is not a substitute for mental health treatment, conflict resolution, or any therapeutic intervention.',
   }
 ];

@@ -19,6 +19,11 @@ export const restrictedSiddhis: Siddhi[] = [
     evidenceCount: 1,
     evidenceSources: [{"confidence":"medium","title":"Preta-Siddhi Field Manual (user-supplied transcription, Aghora/Kaula) (primary)","url":""}],
     minTier: "akash",
+    traditionalRef: 'No single textual witness — preserved as a field manual of operational detail. The dual-rite release logic (substitution vs. severance) is found across Aghora lineages.',
+    oralSource: 'Aghora / Kaula tantric oral transmission — field compilation from practitioners in North Indian Aghora lineages.',
+    disputedClaims: 'Often marketed online as "spirit communication" or "ghost hunting" — the field manual frames this as a diagnostic and release rite, not recreational contact. The seven mūla-praśna are diagnostic, not sensational.',
+    reconstructionNotes: 'This entry is assembled from a user-supplied field transcription. No single published textual witness exists; the procedural details are pieced together from oral transmission and field practice. The editorial-correction table in the field manual addresses apparent transmission artifacts.',
+    practitionerCaveat: 'This is a documented field rite, not a recommendation. The source manual warns that the preta\'s suffering is "infectious" to unprepared prāṇa and manas. Never reuse a preta-sandhi yantra.',
   },
   {
     slug: "vajrayogini-sadhana",
@@ -38,6 +43,8 @@ export const restrictedSiddhis: Siddhi[] = [
     evidenceCount: 4,
     evidenceSources: [{"confidence":"high","title":"Śrī Vajravārāhīsādhana (Digital Sanskrit Buddhist Canon) (primary)","url":"https://www.dsbcproject.org/"},{"confidence":"high","title":"Cakrasaṃvara-tantra (primary)","url":""},{"confidence":"high","title":"E. English, Vajrayoginī: Her Visualizations, Rituals, and Forms (Wisdom, 2002) (scholarly)","url":"https://archive.org/details/vajrayogini-her-visualizations-rituals-forms"},{"confidence":"high","title":"R. Davidson, Indian Esoteric Buddhism (Columbia, 2002) (scholarly)","url":""}],
     minTier: "akash",
+    traditionalRef: 'Śrī Vajravārāhīsādhana (Digital Sanskrit Buddhist Canon); Cakrasaṃvara-tantra',
+    practitionerCaveat: 'Vajravārāhī is a Buddhist mother-tantra deity requiring abhiṣeka. The Hindu and Buddhist Vajravārāhī/Vārāhī are distinct traditions that should not be conflated.',
   },
   {
     slug: "pratyangira-devi-sadhana",
@@ -57,6 +64,10 @@ export const restrictedSiddhis: Siddhi[] = [
     evidenceCount: 4,
     evidenceSources: [{"confidence":"high","title":"Atharvānokta Pratyaṅgirā Vidhāna (Sanskrit manuscript, Internet Archive) (primary)","url":"https://archive.org/details/atharvanokta-pratyangira-vidhana"},{"confidence":"high","title":"Pratyaṅgirā Kalpa (Sanskrit manuscript, Internet Archive) (primary)","url":"https://archive.org/details/pratyangira-kalpa"},{"confidence":"high","title":"Viprīta Pratyaṅgirā Vidhānam (Sanskrit manuscript, Internet Archive) (primary)","url":"https://archive.org/details/viprita-pratyangira-vidhanam"},{"confidence":"medium","title":"Shaman Hatley, The Brahmayāmalatantra and Early Śaiva Cult of Yoginīs (diss. 2007) (scholarly)","url":""}],
     minTier: "akash",
+    traditionalRef: 'Atharvānokta Pratyaṅgirā Vidhāna; Pratyaṅgirā Kalpa; Viprīta Pratyaṅgirā Vidhānam',
+    disputedClaims: 'Pratyaṅgirā is sometimes marketed online as a "black magic reversal" goddess — the primary texts describe a protective Atharvaṇa deity, not a reactive tool for retaliatory sorcery.',
+    reconstructionNotes: 'The primary textual witnesses are Sanskrit manuscripts on Internet Archive. The academic literature specifically on Pratyaṅgirā is thin; Hatley\'s Brahmayāmala work provides milieu context but is not a dedicated study.',
+    practitionerCaveat: 'Pratyaṅgirā is a protective Atharvaṇa deity requiring dīkṣā. The rite prescribes specific nyāsa, āvāhana, and bali preliminaries without which the japa is held to be ineffective.',
   },
   {
     slug: "lakulisha-pashupata-sadhana",
@@ -76,6 +87,8 @@ export const restrictedSiddhis: Siddhi[] = [
     evidenceCount: 5,
     evidenceSources: [{"confidence":"high","title":"Pāśupata Sūtras with Kauṇḍinya's Pañcārthabhāṣya, Trivandrum Sanskrit Series 143 (1940, ed. Ananta Kṛṣṇa Śāstrī) (primary)","url":"https://archive.org/details/pashupata-sutras-tss-143"},{"confidence":"high","title":"Pashupat Sutram (Chakrapani Trivedi ed., Shaiva Bharati Varanasi #54) (primary)","url":"https://archive.org/details/pashupat-sutram-trivedi"},{"confidence":"high","title":"Daniel Ingalls, 'Cynics and Pāśupatas' (HJAS, 1962) (scholarly)","url":""},{"confidence":"high","title":"Alexis Sanderson, 'Śaivism and the Tantric Traditions' (1985); 'The Śaiva Exegesis of Kashmir' (2009) (scholarly)","url":""},{"confidence":"medium","title":"Peter Bisschop, Early Śaivism and the Skandapurāṇa (2006) (scholarly)","url":""}],
     minTier: "akash",
+    traditionalRef: 'Pāśupata Sūtras with Kauṇḍinya\'s Pañcārthabhāṣya (TSS 143, 1940)',
+    practitionerCaveat: 'The Pāśupata path is a scholarly entry-point, not a practice manual. Its stage-bound conduct includes paradoxical behaviors that are destabilising without supervision. Do not impose tantric frameworks on it.',
   },
   {
     slug: "matsyendranath-nath-sadhana",
@@ -95,6 +108,8 @@ export const restrictedSiddhis: Siddhi[] = [
     evidenceCount: 7,
     evidenceSources: [{"confidence":"high","title":"Kaulajñānanirṇaya (Bagchi Calcutta Sanskrit Series, Internet Archive) (primary)","url":"https://archive.org/details/kaulajnananirnaya-bagchi"},{"confidence":"high","title":"Kaulajñānanirṇaya (DLI Nepal-manuscript corpus 1934) (primary)","url":"https://archive.org/details/kaulajnananirnaya-dli-nepal"},{"confidence":"high","title":"Swacchanda Tantra with Kṣemarāja's commentary (2 Internet Archive editions) (primary)","url":"https://archive.org/details/svacchanda-tantra-kshemaraja"},{"confidence":"high","title":"D.G. White, The Alchemical Body (Chicago, 1996) (scholarly)","url":""},{"confidence":"high","title":"J. Mallinson, Khecarīvidyā of Ādinātha (Routledge, 2007) (scholarly)","url":""},{"confidence":"high","title":"J. Mallinson & M. Singleton, Roots of Yoga (Penguin, 2017) (scholarly)","url":""},{"confidence":"medium","title":"S. Dasgupta, Obscure Religious Cults (1946, 1962) (scholarly)","url":""}],
     minTier: "akash",
+    traditionalRef: 'Kaulajñānanirṇaya (4 editions); Svacchanda Tantra + Kṣemarāja commentary',
+    practitionerCaveat: 'The Nāth tradition is a yoga-and-astral-body framework, not a single-mantra sādhana. The kuṇḍalinī framework is held to require supervision — unsupervised practice risks documented psychophysiological disturbance.',
   },
   {
     slug: "vashikarana-karma",
@@ -114,6 +129,9 @@ export const restrictedSiddhis: Siddhi[] = [
     evidenceCount: 0,
     evidenceSources: [],
     minTier: "akash",
+    traditionalRef: 'Agni Purāṇa; Prapañcasāra Tantra; Rudrayāmala; Mantra Mahodadhi',
+    reconstructionNotes: 'The ṣaṭ-karma framework is documented across multiple compendia (Agni Purāṇa, Mahānirvāṇa Tantra). Vaśīkaraṇa procedural details are assembled from these cross-referential sources, but no single critical edition of a dedicated vaśīkaraṇa text has been published.',
+    practitionerCaveat: 'Vaśīkaraṇa is documented here as a textual category. KALKI does not endorse subjugation rituals targeting other persons without their knowledge or consent.',
   },
   {
     slug: "stambhana-karma",
@@ -133,6 +151,9 @@ export const restrictedSiddhis: Siddhi[] = [
     evidenceCount: 0,
     evidenceSources: [],
     minTier: "akash",
+    traditionalRef: 'Agni Purāṇa; Prapañcasāra; Mahānirvāṇa Tantra; Śāradā Tilaka; Todala Tantra',
+    reconstructionNotes: 'Stambhana procedural details are cross-referenced from Agni Purāṇa, Mahānirvāṇa Tantra (stone kalāśa prescription), and the Bagalāmukhī section of Todala Tantra. The category framework is well-attested; specific operational details vary by recension.',
+    practitionerCaveat: 'Stambhana is documented as a textual category. The Mahānirvāṇa Tantra prescribes a pāṣāṇa (stone) kalāśa — without it, the rite is held to be ineffective.',
   },
   {
     slug: "vidveshana-karma",
@@ -152,6 +173,9 @@ export const restrictedSiddhis: Siddhi[] = [
     evidenceCount: 0,
     evidenceSources: [],
     minTier: "akash",
+    traditionalRef: 'Agni Purāṇa; Prapañcasāra; Mahānirvāṇa Tantra; Brahmayāmala (Hatley 2018)',
+    reconstructionNotes: 'Vidveṣaṇa procedural details are assembled from the Agni Purāṇa, Prapañcasāra, and Mahānirvāṇa Tantra. The iron kalāśa prescription is documented in the Mahānirvāṇa Tantra.',
+    practitionerCaveat: 'Vidveṣaṇa is documented as a textual category. This is the fourth of the six ṣaṭ-karma and is classified as ugra (fierce).',
   },
   {
     slug: "uccatana-karma",
@@ -171,6 +195,9 @@ export const restrictedSiddhis: Siddhi[] = [
     evidenceCount: 0,
     evidenceSources: [],
     minTier: "akash",
+    traditionalRef: 'Agni Purāṇa; Prapañcasāra; Mahānirvāṇa Tantra (Woodroffe 1929 comm.); Mantra Mahodadhi',
+    reconstructionNotes: 'Uccāṭana procedural details are assembled from the Agni Purāṇa, Prapañcasāra, and Mahānirvāṇa Tantra. Woodroffe\'s commentary explicitly names it as a "malevolent purpose" rite.',
+    practitionerCaveat: 'Uccāṭana is documented as a textual category. This is the fifth of the six ṣaṭ-karma and is classified as ugra (fierce).',
   },
   {
     slug: "marana-karma",
@@ -190,5 +217,8 @@ export const restrictedSiddhis: Siddhi[] = [
     evidenceCount: 0,
     evidenceSources: [],
     minTier: "akash",
+    traditionalRef: 'Agni Purāṇa; Prapañcasāra; Mahānirvāṇa Tantra; Mantra Mahodadhi; Sāmba Purāṇa Abhicāra Vidhi',
+    reconstructionNotes: 'Māraṇa is the most severe ṣaṭ-karma. Procedural details are assembled from Agni Purāṇa, Prapañcasāra, and Mahānirvāṇa Tantra. The kapāla (skull-bowl) kalāśa is the most liminal vessel prescribed.',
+    practitionerCaveat: 'Māraṇa is the most restricted ṣaṭ-karma. Woodroffe explicitly names it a "malevolent purpose" rite. KALKI documents it as heritage scholarship — it is not and will never be operationalized.',
   }
 ];

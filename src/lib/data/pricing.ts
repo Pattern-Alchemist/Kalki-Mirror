@@ -98,7 +98,7 @@ export const pricingTiers: PricingTier[] = [
     description: 'The innermost circle. Unlimited access to the guru, advanced siddhi transmissions, custom yantras, retreats, and the deepest teachings of the tradition.',
     features: [
       'Everything in Agni',
-      'All 41 siddhis (including 10 restricted)',
+      'All 56 siddhis (including 10 restricted)',
       'Weekly 1-on-1 guru sessions (60 min)',
       'Custom yantra design & ritual',
       'Advanced siddhi practices (forbidden)',

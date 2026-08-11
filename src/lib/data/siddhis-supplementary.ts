@@ -25,6 +25,8 @@ export const supplementarySiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Śāradā Tilaka (Avalon, TTS 16) (primary)","url":"https://archive.org/details/sarada-tilaka"},{"confidence":"high","title":"Prapañcasāra Tantra (Avalon, TTS 18) (primary)","url":"https://archive.org/details/prapanchasara"},{"confidence":"high","title":"Goudriaan & Gupta, Hindu Tantric and Śākta Literature (1981) (scholarly)","url":""}],
     minTier: 'prithvi',
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/yantra-chamber-gold',
+    traditionalRef: 'Śāradā Tilaka (Avalon, TTS 16); Prapañcasāra Tantra (Avalon, TTS 18)',
+    practitionerCaveat: 'Nyāsa is the universal tantric preliminary — it is not a standalone sādhana. Full ritual nyāsa requires direct transmission; the contemplative study of the structure is open and safe.',
   },
   {
     slug: 'personalized-bija-mantra',
@@ -45,6 +47,8 @@ export const supplementarySiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Bṛhat Parāśara Horā Śāstra (primary)","url":"https://www.wisdomlib.org/hinduism/book/brihat-parashara-hora-shastra"},{"confidence":"medium","title":"Phaladīpikā of Mantreśvara (primary)","url":""}],
     minTier: 'jal',
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/ephemeris-observatory',
+    traditionalRef: 'Bṛhat Parāśara Horā Śāstra; Phaladīpikā of Mantreśvara',
+    practitionerCaveat: 'This framework is educational and scholarly. The specific bīja assignment is traditionally confirmed by a qualified ācārya — do not self-assign based solely on a chart calculation.',
   },
   {
     slug: 'five-rare-breath-techniques',
@@ -65,6 +69,9 @@ export const supplementarySiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"high","title":"Gheraṇḍa Saṃhitā; Śiva Saṃhitā; various tantric paddhatis (primary)","url":"https://www.wisdomlib.org/hinduism/book/gheranda-samhita"}],
     minTier: 'jal',
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cave-yantras',
+    traditionalRef: 'Gheraṇḍa Saṃhitā; Śiva Saṃhitā; various tantric paddhatis (beyond the HYP\'s eight kumbhakas)',
+    reconstructionNotes: 'These five techniques are drawn from multiple paddhatis beyond the Haṭha Yoga Pradīpikā\'s standard eight kumbhakas. Some appear under different names in the Gheraṇḍa Saṃhitā and Śiva Saṃhitā. The collection represents a bridge between classical prāṇāyāma and tantric breathwork.',
+    practitionerCaveat: 'These are uncommon techniques — learn bīja pronunciation from a qualified source before combining with breath retention. Discontinue if disturbing energetic sensations arise.',
   },
   {
     slug: 'agni-marana-tantra',
@@ -85,6 +92,9 @@ export const supplementarySiddhis: Siddhi[] = [
     evidenceSources: [],
     minTier: 'akash',
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/shatkarma-labyrinth',
+    traditionalRef: 'Standalone tantra text — Agni Māraṇa Tantra (preserved as heritage scholarship)',
+    reconstructionNotes: 'This is a standalone tantra text ingested from a user-supplied PDF. No critical edition exists. Documented as heritage scholarship, not operationalized.',
+    practitionerCaveat: 'SEALED — scholarship only. This is heritage documentation. KALKI does not endorse, enable, or operationalize destructive rites.',
   },
   {
     slug: 'stambhana-marana-combined',
@@ -105,6 +115,9 @@ export const supplementarySiddhis: Siddhi[] = [
     evidenceSources: [],
     minTier: 'akash',
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/shatkarma-labyrinth',
+    traditionalRef: 'Specialized paddhati — stambhana + māraṇa chained rite (preserved as heritage scholarship)',
+    reconstructionNotes: 'This combined rite is documented in specialized paddhatis. The procedural details for chaining stone kalāśa (stambhana) with skull-bowl kalāśa (māraṇa) are assembled from multiple sources.',
+    practitionerCaveat: 'SEALED — scholarship only. This is the most restricted category in the archive. KALKI does not endorse or operationalize chained destructive rites.',
   },
   {
     slug: 'virudha-ahara-marana',
@@ -125,6 +138,9 @@ export const supplementarySiddhis: Siddhi[] = [
     evidenceSources: [],
     minTier: 'akash',
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/vault-ritual-chamber',
+    traditionalRef: 'Śākta ṣaṭ-karma / Atharvaṇa intersection — food-based māraṇa variant (preserved as heritage scholarship)',
+    reconstructionNotes: 'This text sits at the intersection of the Śākta ṣaṭ-karma system and the Atharvaṇa tradition of food-based magic. Ingested from a user-supplied PDF. No critical edition exists.',
+    practitionerCaveat: 'SEALED — scholarship only. The food-based vector makes this particularly relevant to the safety protocol. KALKI does not endorse or operationalize this.',
   },
   {
     slug: 'nimbu-mantra-siddhi',
@@ -145,5 +161,10 @@ export const supplementarySiddhis: Siddhi[] = [
     evidenceSources: [{"confidence":"low","title":"User-supplied field compilation (primary)","url":""}],
     minTier: 'agni',
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/ritual-altar',
+    traditionalRef: 'No single textual witness — exists at the boundary between textual paddhati and lived folk practice',
+    oralSource: 'Śākta / folk tantric tradition — multiple regional variants across South Asian folk practice',
+    disputedClaims: 'The lemon rite is sometimes marketed online as a "black magic removal" technique — the textual tradition documents both protective and malefic variants, and the two are not interchangeable.',
+    reconstructionNotes: 'This entry is assembled from a user-supplied field compilation. Multiple regional variants exist, and the boundary between textual and folk practice makes reconstruction imprecise. Evidence confidence is low.',
+    practitionerCaveat: 'The protective variant is presented for scholarly study. Folk-tantric practices often lack the safety constraints of textual traditions. The malefic variant is not operationalized.',
   },
 ];

@@ -44,6 +44,14 @@ export interface Siddhi {
   cautionLevel?: CautionLevel;
   archetypeId?: string;
   image?: string;
+  // ── Scholarly provenance fields (v2) ──
+  traditionalRef?: string;       // Primary textual source (e.g., "Haṭha Yoga Pradīpikā II.7-14", "Māṇḍūkya Upaniṣad vv.1-12")
+  oralSource?: string;           // Oral lineage attribution (e.g., "Govinda Dās Āghori lineage, Varanasi")
+  fieldNotes?: string;           // Fieldwork observations by Kaustubh or verified practitioners
+  reconstructionNotes?: string;  // Notes on how the practice was reconstructed from fragmentary sources
+  verbatimText?: string;         // Key original-language quotation (Sanskrit, with translation)
+  disputedClaims?: string;       // What modern/new-age claims exist that are NOT supported by tradition
+  practitionerCaveat?: string;   // Caveat for practitioners about what the practice can/cannot do
 }
 
 export interface Pattern {

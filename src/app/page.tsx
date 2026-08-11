@@ -11,7 +11,7 @@ const PricingCards = dynamic(() => import('@/components/monetization/PricingCard
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
-import { allSiddhis } from '@/lib/data/siddhis';
+import { allSiddhis, SIDDHI_COUNT } from '@/lib/data/siddhis';
 import { allPatterns } from '@/lib/data/patterns';
 import { BreathTimer } from '@/components/practice/BreathTimer';
 import { ResonanceToggle } from '@/components/ui/ResonanceToggle';
@@ -123,7 +123,7 @@ export default function HomePage() {
             <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 lg:p-16">
               <p className="section-label mb-4">YANTRA Decoded</p>
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 hero-heading tracking-wide">
-                41 Siddhis.<br />Mapped.
+                {SIDDHI_COUNT} Siddhis.<br />Mapped.
               </h2>
               <p className="text-foreground text-base max-w-md editorial-spacing" style={{textShadow: '0 1px 8px rgba(0,0,0,0.7)'}}>
                 Decoded by YANTRA. Every mantra, every lineage, every warning.
@@ -265,7 +265,7 @@ className="section-label editorial-heading mb-6"
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}
           >
-            <Link href="/archive" className="ghost-cta text-sm">Browse All 41 Siddhis</Link>
+            <Link href="/archive" className="ghost-cta text-sm">Browse All {SIDDHI_COUNT} Siddhis</Link>
           </motion.div>
         </div>
       </section>

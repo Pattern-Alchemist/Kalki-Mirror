@@ -19,6 +19,8 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 2,
     evidenceSources: [{"confidence":"high","title":"Saundarya Laharī vv. 1–11, 32, 41 (primary)","url":"https://www.wisdomlib.org/hinduism/compilation/saundarya-lahari"},{"confidence":"medium","title":"Bhāskararāya, Varivasyā-rahasya (comm.) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Saundarya Laharī vv. 1–11 (Śrī Cakra construction); Bhāskararāya, Varivasyā-rahasya',
+    practitionerCaveat: 'Śrī Yantra contemplation is a geometric meditation. Claims that the yantra can be "activated" for wealth or power through commercial puja services are not supported by any traditional Śrī Vidyā source.',
   },
   {
     slug: "bagalamukhi-sadhana",
@@ -38,6 +40,9 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 5,
     evidenceSources: [{"confidence":"high","title":"Todala Tantra ch. 6 (mūla-mantras of the 10 Mahāvidyās) (primary)","url":"https://archive.org/details/todala-tantra"},{"confidence":"high","title":"Rudrayāmala (Bagalāmukhī-stotra section, Uttara-tantra) (primary)","url":""},{"confidence":"high","title":"Bagalāmukhī Rahasyam (Pitāmbarā Peeth, Datia, 1st ed. 1964) (primary)","url":""},{"confidence":"high","title":"D.G. White, Kiss of the Yoginī (Chicago, 2003) (scholarly)","url":""},{"confidence":"high","title":"Goudriaan & Gupta, Hindu Tantric and Śākta Literature (Harrassowitz, 1981) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Todala Tantra ch. 6; Rudrayāmala (Uttara-tantra)',
+    disputedClaims: 'Often marketed online as a "mantra to silence enemies" or "win court cases" — the source texts describe stambhana as a ritual category, not a litigation tool. No traditional source guarantees specific worldly outcomes.',
+    practitionerCaveat: 'Bagalāmukhī is an advanced Mahāvidyā requiring dīkṣā. The stambhana category is a ritual technology within the tradition — it is not a shortcut for resolving interpersonal or legal conflicts.',
   },
   {
     slug: "chinnamasta-sadhana",
@@ -57,6 +62,9 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 3,
     evidenceSources: [{"confidence":"high","title":"Śāradā Tilaka ch. 7 + Prāṇatoṣiṇī commentary (1898 ed.) (primary)","url":"https://archive.org/details/pranatoshini"},{"confidence":"high","title":"Śakti Saṅgama Tantra, Chinnamastā Khaṇḍa (primary)","url":""},{"confidence":"high","title":"E. Benard, Chinnamastā: The Aweful Buddhist and Hindu Tantric Goddess (Motilal Banarsidass, 1994) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Śāradā Tilaka ch. 7; Prāṇatoṣiṇī commentary; Śakti Saṅgama Tantra',
+    disputedClaims: 'New-age interpretations present Chinnamastā as a symbol of "cutting through the ego" in a generic sense — the original theological framework is far more specific about prāṇa-cycle self-offering, not psychological deconstruction.',
+    practitionerCaveat: 'Chinnamastā\'s iconography is psychologically intense. This entry documents the textual tradition — the practice itself requires dīkṣā and stable psychological grounding per the source texts.',
   },
   {
     slug: "kala-bhairava-sadhana",
@@ -76,6 +84,9 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 3,
     evidenceSources: [{"confidence":"high","title":"Svacchanda Tantra (Kashmir Śaiva) (primary)","url":"https://www.wisdomlib.org/hinduism/book/svacchanda-tantra"},{"confidence":"medium","title":"Kāla Bhairavāṣṭakam (traditional attribution to Śaṅkarācārya, unverifiable) (primary)","url":"https://archive.org/details/completeworksofs00sanauoft"},{"confidence":"high","title":"Dyczkowski, The Canon of the Śaivāgama and the Kubjikā Tantras (1988) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Svacchanda Tantra (Kashmir Śaiva, c. 7th–9th c.); Kāla Bhairavāṣṭakam',
+    disputedClaims: 'The Kāla Bhairavāṣṭakam is traditionally attributed to Śaṅkarācārya — this attribution is unverifiable and likely apocryphal (Sanderson 2009). Online claims that the mantra grants "protection from all negativity" are not the traditional framing.',
+    practitionerCaveat: 'Kāla Bhairava is an ugra-devatā requiring dīkṣā. The attribution of the aṣṭakam to Śaṅkarācārya is traditional but unverifiable.',
   },
   {
     slug: "bala-tripurasundari-sadhana",
@@ -95,6 +106,8 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 5,
     evidenceSources: [{"confidence":"high","title":"Vāmakeśvara Tantra (primary)","url":""},{"confidence":"high","title":"Bhāvanā Upaniṣad (Śrī Cakra and pañcadaśī) (primary)","url":""},{"confidence":"high","title":"Paraśurāma Kalpasūtra (c. 10th-11th c.) + Rāmeśvara Sūtri commentary (primary)","url":"https://archive.org/details/srividya-sadhana-vol-1"},{"confidence":"high","title":"S.K. Ramchandra Rao, Tantra of Śrī Cakra (Kalpatharu, 1989) (scholarly)","url":""},{"confidence":"high","title":"A. Padoux, Vac: The Concept of the Word in Selected Hindu Tantras (SUNY, 1990) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Vāmakeśvara Tantra; Bhāvanā Upaniṣad; Paraśurāma Kalpasūtra (c. 10th–11th c.)',
+    practitionerCaveat: 'Bālā is the entry-level Śrī Vidyā practice, but still requires dīkṣā. The tradition holds that the pañcadaśākṣarī must be received orally — no published text contains the operational form.',
   },
   {
     slug: "dhumavati-sadhana",
@@ -114,6 +127,9 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 4,
     evidenceSources: [{"confidence":"high","title":"Dhūmāvatī Tantra (Sanskrit, Internet Archive) (primary)","url":"https://archive.org/details/dhumavati-tantra"},{"confidence":"high","title":"Śākta Praamoda (Rājadevanandan & Devnandan Singh eds., Internet Archive) (primary)","url":"https://archive.org/details/sakta-pramoda"},{"confidence":"high","title":"David Kinsley, Tantric Visions of the Divine Feminine (UC Press, 1997) (scholarly)","url":""},{"confidence":"medium","title":"Karel van Kooij, Worship of the Goddess according to the Kālikāpurāṇa (1972) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Dhūmāvatī Tantra; Śākta Praamoda',
+    disputedClaims: 'Modern "goddess spirituality" movements sometimes present Dhūmāvatī as a feminist icon of marginalized wisdom — while the theological parallel exists, the source texts frame her through inauspiciousness and decay, not empowerment.',
+    practitionerCaveat: 'Dhūmāvatī is deliberately the most inauspicious Mahāvidyā. The textual tradition warns that improper practice manifests the very inauspiciousness the goddess embodies.',
   },
   {
     slug: "matangi-sadhana",
@@ -133,6 +149,9 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 4,
     evidenceSources: [{"confidence":"high","title":"Gandharva Tantra (Kak & Shastri 1934 ed., Internet Archive) (primary)","url":"https://archive.org/details/gandharva-tantra"},{"confidence":"high","title":"Mātaṅgī Mahāvidyā (Goswami Prahlad Giri, Internet Archive) (primary)","url":"https://archive.org/details/matangi-mahavidya"},{"confidence":"high","title":"D.G. White, Kiss of the Yoginī (Chicago, 2003) (scholarly)","url":""},{"confidence":"high","title":"Kinsley, Tantric Visions of the Divine Feminine (1997, ch. 8) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Gandharva Tantra (Kak & Shastri 1934 ed.); Mātaṅgī Tantra',
+    disputedClaims: 'Mātaṅgī is sometimes marketed as the "goddess of speech" or "music" — the Ucchiṣṭa Caṇḍālinī form specifically involves transgressive inversion of purity protocols, which is not captured by these sanitized labels.',
+    practitionerCaveat: 'Mātaṅgī\'s Ucchiṣṭa form involves deliberate inversion of purity protocols. This is a documented theological category, not an invitation to casual transgression.',
   },
   {
     slug: "tara-ugra-sadhana",
@@ -152,6 +171,9 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 6,
     evidenceSources: [{"confidence":"high","title":"Bṛhad Nīla Tantra (Kak & Shastri 1938 ed., Internet Archive) (primary)","url":"https://archive.org/details/brihad-nila-tantra"},{"confidence":"high","title":"Bṛhad Nīla Tantra (DLI / JaiGyan edition) (primary)","url":"https://archive.org/details/brihad-nila-tantra-dli"},{"confidence":"high","title":"Bṛhad Nīla Tantra (Madhusudan Kaul ed., Chaukhamba / DLI) (primary)","url":"https://archive.org/details/brihad-nila-tantra-kaul"},{"confidence":"medium","title":"Ekajaṭā Tārā Sādhana Tantra (Khandelwal, 2001) (primary)","url":""},{"confidence":"high","title":"Kinsley, Tantric Visions of the Divine Feminine (1997, ch. 4) (scholarly)","url":""},{"confidence":"high","title":"A. Padoux, Vac: The Concept of the Word in Selected Hindu Tantras (SUNY, 1990) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Bṛhad Nīla Tantra (multiple editions); Tārā Tantra',
+    disputedClaims: 'The Hindu Ugra Tārā is routinely conflated with Tibetan Green Tārā in popular literature — they are distinct traditions with different iconography, mantras, and theological frameworks. No traditional source supports conflation.',
+    practitionerCaveat: 'Hindu Ugra Tārā is a fierce cremation-ground form requiring dīkṣā. It should not be confused with the Tibetan Buddhist Tārā practices, which are separate traditions.',
   },
   {
     slug: "tripura-bhairavi-sadhana",
@@ -171,6 +193,8 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 7,
     evidenceSources: [{"confidence":"high","title":"Śāradā Tilaka ch. 11 (Malaviya ed., Internet Archive) (primary)","url":"https://archive.org/details/sarada-tilaka"},{"confidence":"high","title":"Śāradā Tilaka (Avalon 1933 PDF edition) (primary)","url":"https://archive.org/details/sarada-tilaka-avalon-1933"},{"confidence":"high","title":"Paraśurāma Kalpa Sūtra (Sampurnanand + Vṛtti + Nīrakṣīra-Viveka, Internet Archive) (primary)","url":"https://archive.org/details/parashurama-kalpa-sutra"},{"confidence":"high","title":"Paraśurāma Kalpa Sūtra (S.Y. Dave + Rāmeśvara commentary, Internet Archive) (primary)","url":"https://archive.org/details/parashurama-kalpa-sutra-dave"},{"confidence":"high","title":"A. Padoux, Vac (SUNY, 1990) (scholarly)","url":""},{"confidence":"high","title":"Douglas Brooks, Auspicious Wisdom: The Texts and Traditions of Śrīvidyā Śākta Tantrism (SUNY, 1990) (scholarly)","url":""},{"confidence":"high","title":"S.K. Ramachandra Rao, Śrī Vidyā (Kalpatharu, 1998) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Śāradā Tilaka ch. 11; Paraśurāma Kalpasūtra',
+    practitionerCaveat: 'Tripura Bhairavī is the fierce form within Śrī Vidyā, distinct from the Bhairavī (proper) Mahāvidyā. The tradition holds that incorrect japa of fierce forms is destabilising rather than merely ineffective.',
   },
   {
     slug: "smasana-bhairavi-sadhana",
@@ -190,6 +214,9 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 4,
     evidenceSources: [{"confidence":"high","title":"Brahmayāmala Tantra (Hatley 2018 critical edition, Institute of Prakrit, Jainology & Aesthetics) (primary)","url":"https://archive.org/details/brahmayamala-hatley"},{"confidence":"high","title":"Shaman Hatley, The Brahmayāmalatantra and Early Śaiva Cult of Yoginīs (PhD diss., 2007) (scholarly)","url":"https://archive.org/details/brahmayamala-hatley-thesis"},{"confidence":"high","title":"Alexis Sanderson, 'Śaivism and the Tantric Traditions' (1988) (scholarly)","url":""},{"confidence":"medium","title":"Csaba Kiss, journal articles on the Brahmayāmala tradition (Cardiff ALT) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Brahmayāmala Tantra (Hatley 2018 critical edition); Jayadrathayāmala',
+    disputedClaims: 'Smāśāna Bhairavī is sometimes conflated with Tripura Bhairavī (the sixth Mahāvidyā) in online sources — they are distinct deities with different textual lineages and iconography.',
+    practitionerCaveat: 'Smāśāna Bhairavī explicitly requires the śmaśāna (cremation ground) setting. Without proper preliminaries and supervision, the rite is held to be psychologically destabilising.',
   },
   {
     slug: "guhyakali-sadhana",
@@ -209,6 +236,8 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 7,
     evidenceSources: [{"confidence":"high","title":"Mahākāla Saṃhitā","url":"Guhyakālī Khaṇḍa (Gopinath Allahabad Block / IGNCA 69227, Internet Archive) (primary) — https://archive.org/details/mahakala-samhita-guhyakali-1"},{"confidence":"high","title":"Mahākāla Saṃhitā","url":"Guhyakālī Khaṇḍa (DLI 552568, Internet Archive) (primary) — https://archive.org/details/mahakala-samhita-guhyakali-2"},{"confidence":"high","title":"Mahākāla Saṃhitā","url":"Guhyakālī Khaṇḍa (Kishor Nath Jha RSS Part 2, Internet Archive) (primary) — https://archive.org/details/mahakala-samhita-guhyakali-3"},{"confidence":"high","title":"Mahākāla Saṃhitā","url":"Guhyakālī Khaṇḍa (Chaukhamba Surbharati 2-vol. printed edition, 917 pp.) (primary)"},{"confidence":"high","title":"Goudriaan & Gupta, Hindu Tantric and Śākta Literature (Harrassowitz, 1981) (scholarly)","url":""},{"confidence":"high","title":"D.G. White, Kiss of the Yoginī (Chicago, 2003) (scholarly)","url":""},{"confidence":"medium","title":"Rachel McDermott, Singing to the Goddess: Poems to Kālī and Umā from Bengal (Oxford, 2001) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Guhyakālī Tantra; Mahākāla Saṃhitā Guhyakālī Khaṇḍa (6+ editions)',
+    practitionerCaveat: 'The 64-fold Guhyakālī form is held to require sustained prior Kālī practice. The "secret" (guhya) framing is not marketing — the textual tradition explicitly restricts operational details.',
   },
   {
     slug: "dakshina-kali-sadhana",
@@ -228,6 +257,8 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 6,
     evidenceSources: [{"confidence":"high","title":"Karpūrādi-Stotra with Vimalānanda commentary (Woodroffe, Tantric Texts Series 9, 1953) (primary)","url":"https://archive.org/details/karpuradi-stotra-tts9"},{"confidence":"high","title":"Kālī Tantra (Mālavīya Chowkhamba + Dīkṣit editions, Internet Archive) (primary)","url":"https://archive.org/details/kali-tantra"},{"confidence":"high","title":"Todala Tantra (ch. 6, mūla-mantras of the 10 Mahāvidyās) (primary)","url":"https://archive.org/details/todala-tantra"},{"confidence":"high","title":"Mahānirvāṇa Tantra (Avalon 1913 ed.) (primary)","url":"https://archive.org/details/mahanirvana-tantra-avalon-1913"},{"confidence":"high","title":"D. Kinsley, Tantric Visions of the Divine Feminine (UC Press, 1997, ch. 2) (scholarly)","url":""},{"confidence":"high","title":"D.G. White, Kiss of the Yoginī (Chicago, 2003) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Karpūrādi Stotra (Woodroffe TTS 9, 1953); Kālī Tantra; Todala Tantra ch. 6',
+    practitionerCaveat: 'Dakṣiṇa Kālī is the primary Mahāvidyā form, but the mūla-mantra is dīkṣā-restricted in all published editions. The popular image of Kālī as a universal mother goddess simplifies a far more complex ritual theology.',
   },
   {
     slug: "shodashi-tripurasundari-sadhana",
@@ -247,6 +278,9 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 9,
     evidenceSources: [{"confidence":"high","title":"Vāmakeśvara Tantra / Nityāṣoḍaśikārṇava (Anandāśrama 56, Internet Archive) (primary)","url":"https://archive.org/details/vamakeshvara-tantra-anandashrama-56"},{"confidence":"high","title":"Vāmakeśvara Tantra (Sampurnanand 1985 ed., Internet Archive) (primary)","url":"https://archive.org/details/vamakeshvara-tantra-sampurnanand-1985"},{"confidence":"high","title":"Vāmakeśvarī Mātam with Jayaratha's Vivaraṇa (trans. Sampath Sharma) (primary)","url":"https://archive.org/details/vamakeshvari-matam-jayaratha"},{"confidence":"high","title":"Bhāvanā Upaniṣad (Śrī Cakra and pañcadaśī) (primary)","url":""},{"confidence":"high","title":"Paraśurāma Kalpa Sūtra (4 Internet Archive editions, c. 10th-11th c.) (primary)","url":"https://archive.org/details/parashurama-kalpa-sutra"},{"confidence":"high","title":"Lalitā Sahasranāma with Bhāskararāya's Saubhāgya-Bhāskara (Adyar 1925) (primary)","url":"https://archive.org/details/lalita-sahasranama-saubhagya-bhaskara"},{"confidence":"high","title":"A. Padoux, Vac (SUNY, 1990) (scholarly)","url":""},{"confidence":"high","title":"D. Brooks, Auspicious Wisdom: The Texts and Traditions of Śrīvidyā Śākta Tantrism (SUNY, 1990) (scholarly)","url":""},{"confidence":"high","title":"S.K. Ramachandra Rao, Śrī Vidyā (Kalpatharu, 1998) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Vāmakeśvara Tantra / Nityāṣoḍaśikārṇava (6 editions); Paraśurāma Kalpasūtra; Lalitā Sahasranāma',
+    verbatimText: 'śrīcakraṃ pūjayet nityaṃ tripureśvarī-pūjane — "One should worship the Śrī Cakra daily in the worship of Tripureśvarī." (Vāmakeśvara Tantra tradition)',
+    practitionerCaveat: 'Ṣoḍaśī is the central sādhana of Śrī Vidyā. The pañcadaśākṣarī is given orally and never written — any published version is a scholarly approximation, not the operational mantra.',
   },
   {
     slug: "bhuvaneshvari-sadhana",
@@ -266,6 +300,8 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 5,
     evidenceSources: [{"confidence":"high","title":"Śāradā Tilaka (4 Internet Archive editions: Malaviya, Avalon 1933, DLI, Sri Satguru 1988) (primary)","url":"https://archive.org/details/sarada-tilaka"},{"confidence":"high","title":"Bhuvaneśvarī Tantra (in Dīkṣit's paired Chinnamastā evam Bhuvaneśvarī Tantra Śāstra) (primary)","url":"https://archive.org/details/chinnamasta-bhuvaneshvari-tantra-dikshit"},{"confidence":"high","title":"Bhuvaneśvarī Aṣṭakam (of Rudrayāmala) (primary)","url":"https://archive.org/details/rudrayamala-bhuvaneshvari-ashtakam"},{"confidence":"high","title":"D. Kinsley, Tantric Visions of the Divine Feminine (1997, ch. 5) (scholarly)","url":""},{"confidence":"medium","title":"P. Bisschop, Early Śaivism and the Skandapurāṇa (2006) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Śāradā Tilaka (4 editions); Bhuvaneśvarī Tantra (Dīkṣit ed.); Rudrayāmala',
+    practitionerCaveat: 'Bhuvaneśvarī is the sovereign creative form, not a "worldly success" goddess. The tradition frames her sādhana as cosmological contemplation, not a prosperity ritual.',
   },
   {
     slug: "bhairavi-proper-sadhana",
@@ -285,5 +321,8 @@ export const advancedSiddhis: Siddhi[] = [
     evidenceCount: 5,
     evidenceSources: [{"confidence":"high","title":"Bhairavī evam Dhūmāvatī Tantra Śāstra (Pt. Rajesh Dīkṣit, archive.org direct PDF) (primary)","url":"https://archive.org/details/bhairavi-dhumavati-tantra-dikshit"},{"confidence":"high","title":"Rudrayāmala Tantram (Internet Archive) (primary)","url":"https://archive.org/details/rudrayamala-tantram"},{"confidence":"high","title":"Śāradā Tilaka, Bhairavī chapter (4 editions) (primary)","url":"https://archive.org/details/sarada-tilaka"},{"confidence":"high","title":"D. Kinsley, Tantric Visions of the Divine Feminine (1997) (scholarly)","url":""},{"confidence":"medium","title":"S.K. Ramachandra Rao, Encyclopaedia of Indian Iconography (Kalpatharu, 1994) (scholarly)","url":""}],
     minTier: "agni",
+    traditionalRef: 'Bhairavī evam Dhūmāvatī Tantra Śāstra (Dīkṣit ed.); Rudrayāmala; Śāradā Tilaka Bhairavī chapter',
+    disputedClaims: 'Bhairavī (proper, fifth Mahāvidyā) is frequently confused with Tripura Bhairavī (sixth Mahāvidyā) in online sources. They are distinct textual lineages with overlapping iconography but different liturgical contexts.',
+    practitionerCaveat: 'Bhairavī (proper) is the teacher-goddess form, distinct from Tripura Bhairavī. Both are dīkṣā-restricted and the two should not be conflated.',
   }
 ];

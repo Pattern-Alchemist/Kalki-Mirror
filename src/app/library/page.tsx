@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import { TIER_LABELS, TIER_ELEMENTS, TIER_COLORS } from '@/lib/utils/tier-gate';
 import { TANTRA_CATEGORIES, getCategoryById } from '@/lib/data/tantra-categories';
 import { sadhanaLibrary, getSadhanasByCategory, SADHANA_COUNT } from '@/lib/data/sadhana-library';
+import { SIDDHI_COUNT } from '@/lib/data/siddhis';
 import { aghoriCourse } from '@/lib/data/aghoiri-tantra-course';
 import type { Sadhana } from '@/lib/data/types';
 import type { Tier } from '@/lib/data/types';
@@ -421,7 +422,7 @@ export default function SadhanaLibraryPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
             <Link href="/archive" className="glass-chip p-5 group block hover:border-gold/20 transition-colors">
               <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors mb-1">Akashic Archive</p>
-              <p className="text-foreground/40 text-xs">The complete siddhi database — {SADHANA_COUNT}+ folios with evidence grading</p>
+              <p className="text-foreground/40 text-xs">The complete siddhi database — {SIDDHI_COUNT} folios with evidence grading</p>
             </Link>
             <Link href="/aghoiri-tantra" className="glass-chip p-5 group block hover:border-gold/20 transition-colors">
               <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors mb-1">Aghori Tantra Course</p>

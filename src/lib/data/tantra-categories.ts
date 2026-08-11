@@ -30,8 +30,11 @@ export interface TantraCategory {
   icon: string;          // SVG path or emoji
   color: string;         // Tailwind-compatible color token or hex
   siddhiAlias: string[]; // Categories used in existing siddhi data that map here
-  practiceCount: number; // How many siddhis fall under this (computed)
+  practiceCount: number; // How many sadhanas fall under this category
   minTierDefault: string; // Default tier for new entries in this category
+  relatedCoursePhases?: string[];  // e.g. ['Phase III', 'Phase IV']
+  primaryTexts?: string[];          // e.g. ['Haṭha Yoga Pradīpikā', 'Gheraṇḍa Saṃhitā']
+  cautionNote?: string;             // e.g. 'Practices in this category can be psychologically intense'
 }
 
 export const TANTRA_CATEGORIES: TantraCategory[] = [
@@ -43,8 +46,10 @@ export const TANTRA_CATEGORIES: TantraCategory[] = [
     icon: 'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3',
     color: '#E8C855',
     siddhiAlias: ['Mantra', 'mantra'],
-    practiceCount: 0,
+    practiceCount: 2,
     minTierDefault: 'prithvi',
+    relatedCoursePhases: ['Phase III'],
+    primaryTexts: ['Tantrāloka', 'Vāmakeśvara Tantra'],
   },
   {
     id: 'yantra',
@@ -54,8 +59,11 @@ export const TANTRA_CATEGORIES: TantraCategory[] = [
     icon: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
     color: '#7ec8e3',
     siddhiAlias: ['Yantra', 'yantra'],
-    practiceCount: 0,
+    practiceCount: 2,
     minTierDefault: 'jal',
+    relatedCoursePhases: ['Phase IV'],
+    primaryTexts: ['Śrī Vidyā texts', 'Yoginī Hṛdaya'],
+    cautionNote: 'Poorly drawn yantras are considered inactive in the tradition',
   },
   {
     id: 'nyasa',
@@ -65,8 +73,11 @@ export const TANTRA_CATEGORIES: TantraCategory[] = [
     icon: 'M7 21L3 17l4-4 4 4zm10-14l-4 4 4 4 4-4-4-4zM3 3h4v4H3V3zm10 0h4v4h-4V3zm0 10h4v4h-4v-4zm-4 8a4 4 0 11-8 0 4 4 0 018 0z',
     color: '#a99de0',
     siddhiAlias: ['Nyāsa', 'nyasa', 'Nyasa'],
-    practiceCount: 0,
+    practiceCount: 2,
     minTierDefault: 'jal',
+    relatedCoursePhases: ['Phase IV'],
+    primaryTexts: ['Śrī Vidyā texts', 'Nityāṣoḍaśikārṇava'],
+    cautionNote: 'Activates subtle body energy stations — do not perform casually',
   },
   {
     id: 'puja',
@@ -76,8 +87,10 @@ export const TANTRA_CATEGORIES: TantraCategory[] = [
     icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z',
     color: '#e8734f',
     siddhiAlias: ['Ritual', 'Pūjā', 'Puja', 'ritual', 'puja'],
-    practiceCount: 0,
+    practiceCount: 3,
     minTierDefault: 'prithvi',
+    relatedCoursePhases: ['Phase V', 'Phase VI'],
+    primaryTexts: ['Āgama literature', 'Tantrāloka'],
   },
   {
     id: 'dharna',
@@ -87,8 +100,10 @@ export const TANTRA_CATEGORIES: TantraCategory[] = [
     icon: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z',
     color: '#4ade80',
     siddhiAlias: ['Dhāraṇā', 'Dharna', 'dharna', 'Meditation', 'meditation', 'Meditation & Dhāraṇā'],
-    practiceCount: 0,
+    practiceCount: 2,
     minTierDefault: 'prithvi',
+    relatedCoursePhases: ['Phase II', 'Phase IV'],
+    primaryTexts: ['Haṭha Yoga Pradīpikā', 'Gheraṇḍa Saṃhitā'],
   },
   {
     id: 'pranayama',
@@ -98,8 +113,11 @@ export const TANTRA_CATEGORIES: TantraCategory[] = [
     icon: 'M4 15s1-1 4-1 5 2 5 2 4-1 4-1V3s-1 1-4 1-5-2-5-2-4 1-4 1z',
     color: '#67e8f9',
     siddhiAlias: ['Prāṇāyāma', 'Pranayama', 'pranayama'],
-    practiceCount: 0,
+    practiceCount: 3,
     minTierDefault: 'prithvi',
+    relatedCoursePhases: ['Phase II'],
+    primaryTexts: ['Haṭha Yoga Pradīpikā', 'Gheraṇḍa Saṃhitā', 'Śiva Saṃhitā'],
+    cautionNote: 'Never force the breath — stop if dizzy or anxious',
   },
   {
     id: 'dhyana',
@@ -109,8 +127,11 @@ export const TANTRA_CATEGORIES: TantraCategory[] = [
     icon: 'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z',
     color: '#c4b5fd',
     siddhiAlias: ['Dhyāna', 'Dhyana', 'dhyana'],
-    practiceCount: 0,
+    practiceCount: 3,
     minTierDefault: 'jal',
+    relatedCoursePhases: ['Phase III', 'Phase VII'],
+    primaryTexts: ['Vijñāna Bhairava Tantra', 'Māṇḍūkya Upaniṣad'],
+    cautionNote: 'Advanced meditation practices can trigger unresolved psychological material',
   },
   {
     id: 'dhuni',
@@ -120,8 +141,11 @@ export const TANTRA_CATEGORIES: TantraCategory[] = [
     icon: 'M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z',
     color: '#f97316',
     siddhiAlias: ['Dhūni', 'Dhuni', 'dhuni', 'Homa', 'homa'],
-    practiceCount: 0,
+    practiceCount: 2,
     minTierDefault: 'agni',
+    relatedCoursePhases: ['Phase VI'],
+    primaryTexts: ['Āgama literature', 'Aghora oral tradition'],
+    cautionNote: 'Fire practice carries inherent physical danger — maintain safe distance',
   },
   {
     id: 'smashana',
@@ -131,8 +155,11 @@ export const TANTRA_CATEGORIES: TantraCategory[] = [
     icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z',
     color: '#dc2626',
     siddhiAlias: ['Aghora', 'Smashana', 'Śmaśāna', 'Smashana', 'smashana'],
-    practiceCount: 0,
+    practiceCount: 2,
     minTierDefault: 'agni',
+    relatedCoursePhases: ['Phase VI'],
+    primaryTexts: ['Aghora oral tradition', 'Kapālīśa Tantra'],
+    cautionNote: 'The most psychologically intense category — stability in witness consciousness required',
   },
   {
     id: 'bhasma',
@@ -142,8 +169,11 @@ export const TANTRA_CATEGORIES: TantraCategory[] = [
     icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93z',
     color: '#a8a29e',
     siddhiAlias: ['Bhasma', 'bhasma'],
-    practiceCount: 0,
+    practiceCount: 2,
     minTierDefault: 'agni',
+    relatedCoursePhases: ['Phase VI'],
+    primaryTexts: ['Aghora oral tradition'],
+    cautionNote: 'Use only fine white ash from sacred fires',
   },
   {
     id: 'japa',
@@ -153,8 +183,11 @@ export const TANTRA_CATEGORIES: TantraCategory[] = [
     icon: 'M4 6h16M4 10h16M4 14h16M4 18h16',
     color: '#fbbf24',
     siddhiAlias: ['Japa', 'japa'],
-    practiceCount: 0,
+    practiceCount: 3,
     minTierDefault: 'prithvi',
+    relatedCoursePhases: ['Phase III'],
+    primaryTexts: ['Manu Smṛti', 'Haṭha Yoga Pradīpikā'],
+    cautionNote: 'Mental japa of certain bījas may require prior dīkṣā in some lineages',
   },
   {
     id: 'kundalini',
@@ -164,8 +197,11 @@ export const TANTRA_CATEGORIES: TantraCategory[] = [
     icon: 'M13 10V3L4 14h7v7l9-11h-7z',
     color: '#a855f7',
     siddhiAlias: ['Kuṇḍalinī', 'Kundalini', 'kundalini', 'Chakra', 'chakra', 'Esoteric'],
-    practiceCount: 0,
+    practiceCount: 2,
     minTierDefault: 'agni',
+    relatedCoursePhases: ['Phase III'],
+    primaryTexts: ['Śiva Saṃhitā', 'Ṣaṭ-cakra-nirūpaṇa', 'Sat-cakra-nirūpaṇa'],
+    cautionNote: 'Kuṇḍalinī practices without proper preparation can be destabilizing',
   },
   {
     id: 'seva',
@@ -175,8 +211,10 @@ export const TANTRA_CATEGORIES: TantraCategory[] = [
     icon: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z',
     color: '#34d399',
     siddhiAlias: ['Sevā', 'Seva', 'seva', 'Initiation'],
-    practiceCount: 0,
+    practiceCount: 2,
     minTierDefault: 'prithvi',
+    relatedCoursePhases: ['Phase VIII'],
+    primaryTexts: ['Aghoreshwar Bhagwan Ramji teachings'],
   },
 ];
 
@@ -193,6 +231,27 @@ export function resolveCategory(legacy: string): TantraCategoryId | null {
 export function getCategoryById(id: TantraCategoryId): TantraCategory | undefined {
   return TANTRA_CATEGORIES.find(c => c.id === id);
 }
+
+/** Compute practice counts from sadhana library and siddhi data */
+export function computeCategoryStats(
+  sadhanas: { categoryId: string }[] = [],
+  siddhis: { category: string }[] = [],
+): Record<TantraCategoryId, { sadhanaCount: number; siddhiCount: number; totalCount: number }> {
+  const stats = {} as Record<TantraCategoryId, { sadhanaCount: number; siddhiCount: number; totalCount: number }>;
+
+  for (const cat of TANTRA_CATEGORIES) {
+    const sadhanaCount = sadhanas.filter(s => s.categoryId === cat.id).length;
+    const siddhiCount = siddhis.filter(s =>
+      cat.siddhiAlias.some(alias => alias.toLowerCase() === s.category.toLowerCase()),
+    ).length;
+    stats[cat.id] = { sadhanaCount, siddhiCount, totalCount: sadhanaCount + siddhiCount };
+  }
+
+  return stats;
+}
+
+/** Pre-computed stats (populated at module load from static data) */
+export const TANTRA_CATEGORY_STATS = computeCategoryStats();
 
 /** Get display-friendly categories for the archive filter (subset) */
 export const ARCHIVE_FILTER_CATEGORIES = [
