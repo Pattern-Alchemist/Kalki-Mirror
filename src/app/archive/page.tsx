@@ -24,7 +24,7 @@ import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 
 /* ─── Zone Images (Cloudinary) ──────────────────────────────────────── */
 const CLOUD = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror';
-const ZONE_THRESHOLD = `${CLOUD}/archive-zone/threshold`;
+const ZONE_THRESHOLD = '/archive-zone/threshold.jpeg';
 const ZONE_READING_ROOM = `${CLOUD}/archive-zone/reading-room`;
 const ZONE_DEEP = `${CLOUD}/archive-zone/deep-archive`;
 

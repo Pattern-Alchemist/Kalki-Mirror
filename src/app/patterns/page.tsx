@@ -17,16 +17,10 @@ import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { Search, X, SlidersHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-/* ── Cloudinary Zone Backgrounds ── */
-const ZONE_MIRROR = 'kalki-mirror/pattern-atlas/zone-mirror';
-const ZONE_CONFRONTATION = 'kalki-mirror/pattern-atlas/zone-confrontation';
-const ZONE_DISSOLUTION = 'kalki-mirror/pattern-atlas/zone-dissolution';
-
-const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || '';
-function cloudUrl(id: string) {
-  if (!CLOUD) return '';
-  return `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto:good,w_1920,c_limit/${id}`;
-}
+/* ── Zone Backgrounds ── */
+const ZONE_MIRROR = '/pattern-atlas/zone-mirror.jpeg';
+const ZONE_CONFRONTATION = '/pattern-atlas/zone-confrontation.png';
+const ZONE_DISSOLUTION = '/pattern-atlas/zone-dissolution.png';
 
 /* ── Derived Data ── */
 const findSiddhi = (slug: string) => allSiddhis.find((s) => s.slug === slug)!;
@@ -205,7 +199,7 @@ export default function PatternsPage() {
           <motion.div className="absolute inset-0" style={{ opacity: mirrorOpacity, scale: bgScale }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={cloudUrl(ZONE_MIRROR)}
+              src={ZONE_MIRROR}
               alt=""
               className="w-full h-full object-cover"
               style={{ filter: 'contrast(1.08) saturate(0.85) brightness(0.92) sepia(0.06)' }}
@@ -215,7 +209,7 @@ export default function PatternsPage() {
           <motion.div className="absolute inset-0" style={{ opacity: confrontationOpacity, scale: bgScale }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={cloudUrl(ZONE_CONFRONTATION)}
+              src={ZONE_CONFRONTATION}
               alt=""
               className="w-full h-full object-cover"
               style={{ filter: 'contrast(1.08) saturate(0.85) brightness(0.88) sepia(0.06)' }}
@@ -225,7 +219,7 @@ export default function PatternsPage() {
           <motion.div className="absolute inset-0" style={{ opacity: dissolutionOpacity, scale: bgScale }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={cloudUrl(ZONE_DISSOLUTION)}
+              src={ZONE_DISSOLUTION}
               alt=""
               className="w-full h-full object-cover"
               style={{ filter: 'contrast(1.08) saturate(0.85) brightness(0.85) sepia(0.06)' }}
