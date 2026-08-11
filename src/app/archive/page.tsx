@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { SiddhiCard } from '@/components/archive/SiddhiCard';
 import { CautionBadge, getCautionLevel } from '@/components/archive/CautionBadge';
 import { allSiddhis, SIDDHI_COUNT } from '@/lib/data/siddhis';
+import { resolveCategory } from '@/lib/data/tantra-categories';
 import { TEN_MAHAVIDYAS } from '@/lib/data/archetypes';
 import { staggerContainer, staggerItem, fadeInUp } from '@/lib/motion/tokens';
 import type { SiddhiLevel } from '@/lib/data/types';
@@ -28,7 +29,7 @@ const ZONE_THRESHOLD = '/archive-zone/threshold.jpeg';
 const ZONE_READING_ROOM = `${CLOUD}/archive-zone/reading-room`;
 const ZONE_DEEP = `${CLOUD}/archive-zone/deep-archive`;
 
-const CATEGORIES = ['All', 'Mantra', 'Yantra', 'Prāṇāyāma', 'Ritual', 'Tantra', 'Meditation', 'Dhāraṇā'];
+const CATEGORIES = ['All', 'Mantra', 'Yantra', 'Prāṇāyāma', 'Pūjā', 'Tantra', 'Dhyāna', 'Dhāraṇā', 'Dhūni', 'Śmaśāna', 'Aghora'];
 const CAUTION_FILTERS: { value: string; label: string }[] = [
   { value: 'all', label: 'All Levels' },
   { value: 'OPEN', label: 'Open' },
@@ -183,7 +184,7 @@ export default function ArchivePage() {
 
   const filtered = useMemo(() => {
     return allSiddhis.filter((s) => {
-      const matchCat = filter === 'All' || s.category === filter;
+      const matchCat = filter === 'All' || s.category === filter || resolveCategory(s.category) === filter.toLowerCase();
       const q = search.toLowerCase();
       const matchSearch = !q || s.name.toLowerCase().includes(q) || s.sanskrit.toLowerCase().includes(q);
       const caution = getCautionLevel(s.level);

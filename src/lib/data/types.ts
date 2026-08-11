@@ -102,3 +102,25 @@ export interface BreathPattern {
   minTier: Tier;
   description: string;
 }
+
+export interface Sadhana {
+  slug: string;
+  name: string;
+  sanskrit: string;
+  categoryId: string;          // Maps to TantraCategoryId
+  tradition: string;
+  level: SiddhiLevel;
+  minTier: Tier;
+  summary: string;
+  duration: string;           // e.g. "40 days", "90 days", "Lifelong"
+  dailyCommitment: string;     // e.g. "30 minutes", "2 hours"
+  prerequisites: string[];
+  steps: string[];
+  primaryMantra?: string;
+  materials?: string[];
+  warnings?: string[];
+  benefits?: string[];
+  evidence?: 'TRADITIONAL' | 'ORAL' | 'FIELD' | 'RECONSTRUCTED';
+  relatedCoursePhase?: string; // e.g. "Phase III", "Phase IV"
+  relatedSiddhis?: string[];  // Siddhi slugs
+}
