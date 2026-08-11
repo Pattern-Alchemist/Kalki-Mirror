@@ -302,6 +302,24 @@ export default function CodexPage() {
       {/* ── Atmospheric top gradient ── */}
       <div className="atmospheric-bg h-64 -mt-24 relative z-10" />
 
+      {/* ── Codex Stats Bar ── */}
+      <div className="max-w-3xl mx-auto px-6 lg:px-10 -mt-4 mb-12">
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-5 text-center">
+            <p className="font-display text-3xl md:text-4xl text-gold font-light">5</p>
+            <p className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-foreground/40 mt-1">Codex Parts</p>
+          </div>
+          <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-5 text-center">
+            <p className="font-display text-3xl md:text-4xl text-gold font-light">3</p>
+            <p className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-foreground/40 mt-1">Cinematic Breaks</p>
+          </div>
+          <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-5 text-center">
+            <p className="font-display text-3xl md:text-4xl text-gold font-light">1</p>
+            <p className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-foreground/40 mt-1">Living System</p>
+          </div>
+        </div>
+      </div>
+
       {/* ── Five Parts ── */}
       <section className="pb-32">
         <div className="max-w-3xl mx-auto px-6 lg:px-10 pt-6">

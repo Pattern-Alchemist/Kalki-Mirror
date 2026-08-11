@@ -1,14 +1,14 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import { PageHero } from '@/components/layout/PageHero';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { BackButton } from '@/components/nav/BackButton';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
-import { ScrollParallax } from '@/components/ui/ScrollParallax';
+import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { CinematicImage } from '@/components/ui/CinematicImage';
-import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
+import { fadeInUp } from '@/lib/motion/tokens';
 import { BookOpen, Landmark, GraduationCap, Flame, PenTool, Cpu, Scale, FileCheck, Eye, ShieldCheck, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 export default function ResearchPage() {
   const reduced = useReducedMotion();
@@ -17,42 +17,82 @@ export default function ResearchPage() {
   const traditions = [...new Set(allSiddhis.map((s) => s.tradition))];
 
   return (
-    <div className="bg-deep-black min-h-screen">
-      <PageHero
-        image='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-observatory-alt'
-        title="Research & Sources"
-        subtitle="Epistemic transparency: every claim sourced, every score explained."
-        sectionLabel="Epistemic Rigour"
-      />
+    <main className="bg-deep-black min-h-screen">
+      {/* ═══ CINEMATIC HERO ═══ */}
+      <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
+        <CinematicImage
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-observatory-alt'
+          alt='Research & Sources — Epistemic Rigour'
+          kenBurns="slow"
+          scrim="bottom"
+          vignette
+          volumetric
+          dust
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-deep-black via-deep-black/30 to-deep-black/40" />
+        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-10 pb-20 md:pb-28 pt-32">
+          <motion.p
+            className="section-label mb-6"
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            animate={fadeInUp.visible}
+          >
+            EPISTEMIC RIGOUR
+          </motion.p>
+          <motion.h1
+            className="font-display text-4xl md:text-6xl lg:text-7xl xl:text-8xl text-white leading-[0.95] tracking-[0.06em] mb-5 hero-heading"
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            animate={fadeInUp.visible}
+            transition={{ delay: 0.1, duration: 0.8 }}
+          >
+            {'Research & Sources'}
+          </motion.h1>
+          <motion.p
+            className="text-foreground/70 text-lg md:text-xl max-w-2xl leading-relaxed"
+            style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            animate={fadeInUp.visible}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          >
+            Epistemic transparency: every claim sourced, every score explained.
+          </motion.p>
+        </div>
+      </header>
 
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28 space-y-28">
-        <BackButton href="/" label="Back to Home" className="mb-10" />
+      {/* ═══ ATMOSPHERIC BG + STATS BAR ═══ */}
+      <div className="atmospheric-bg h-24 -mt-10 relative z-10" />
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 -mt-4 mb-12">
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-5 text-center">
+            <p className="font-display text-3xl md:text-4xl text-gold font-light">
+              <AnimatedCounter target={allSiddhis.length} />
+            </p>
+            <p className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-foreground/40 mt-1">Siddhis Catalogued</p>
+          </div>
+          <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-5 text-center">
+            <p className="font-display text-3xl md:text-4xl text-gold font-light">
+              <AnimatedCounter target={totalEvidence} />
+            </p>
+            <p className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-foreground/40 mt-1">Evidence Sources</p>
+          </div>
+          <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-5 text-center">
+            <p className="font-display text-3xl md:text-4xl text-gold font-light">
+              <AnimatedCounter target={avgAuth} suffix={'%'} />
+            </p>
+            <p className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-foreground/40 mt-1">Avg Authenticity</p>
+          </div>
+        </div>
+      </div>
 
-        {/* ── Stats ── */}
-        <motion.section className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          initial={reduced ? { opacity: 1 } : staggerContainer.hidden}
-          animate={staggerContainer.visible}
-        >
-          {[
-            { label: 'Siddhis Catalogued', value: 41, suffix: '' },
-            { label: 'Evidence Sources', value: totalEvidence, suffix: '' },
-            { label: 'Average Authenticity', value: avgAuth, suffix: '%' },
-          ].map((stat) => (
-            <motion.div key={stat.label} variants={staggerItem} className="glass-panel p-8 md:p-10 text-center">
-              <p className="font-display text-4xl md:text-5xl text-gold mb-3 text-glow-subtle">
-                <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-              </p>
-              <p className="text-caption">{stat.label}</p>
-            </motion.div>
-          ))}
-        </motion.section>
+      {/* ═══ BACK BUTTON ═══ */}
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 mb-16">
+        <BackButton href="/" label="Back to Home" />
+      </div>
 
-        {/* ── Visual Divider: Gold Line ── */}
-        <div className="divider-gold" />
-
-        {/* ═══════════════════════════════════════════════════
-            EPISTEMIC FRAMEWORK — Six Evidence Categories
-           ═══════════════════════════════════════════════════ */}
+      {/* ═══════════════════════════════════════════════════
+          EPISTEMIC FRAMEWORK — Six Evidence Categories
+         ═══════════════════════════════════════════════════ */}
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-4">Epistemic Transparency</p>
           <h2 className="font-display text-3xl md:text-5xl text-foreground mb-6 engraved-heading">Six Evidence Categories</h2>
@@ -90,27 +130,39 @@ export default function ResearchPage() {
             })}
           </div>
         </motion.section>
+      </div>
 
-        {/* ── Cinematic Divider ── */}
-        <ScrollParallax speed={-0.08}>
-          <div className="relative h-[30vh] md:h-[40vh] overflow-hidden">
-            <CinematicImage
-              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-dark-temple-interior'
-              alt="Ancient texts and observatory instruments"
-              kenBurns="slow"
-              scrim="full"
-              vignette
-              fog
-            />
-          </div>
+      {/* ═══ CINEMATIC STRIP I ═══ */}
+      <div className="mt-28">
+        <ScrollParallax speed={-0.15} className="cinematic-strip">
+          <CinematicImage
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-dark-temple-interior'
+            alt='Ancient texts and observatory instruments'
+            kenBurns="normal"
+            filmGrain={false}
+          />
+          <div className="cinematic-strip-overlay" />
         </ScrollParallax>
+      </div>
 
-        {/* ── Visual Divider ── */}
-        <div className="divider-gold" />
+      {/* ═══ EDITORIAL DIVIDER I ═══ */}
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-24 md:py-36">
+        <div className="divider-gold mb-16" />
+        <ParallaxText speed={-0.05} className="max-w-3xl mx-auto text-center">
+          <p className="text-sub-display text-foreground mb-6 engraved-heading">
+            Six categories.<br />Zero ambiguity.<br />Every claim traced.
+          </p>
+          <p className="text-editorial max-w-xl mx-auto">
+            The Archive does not rank sources by prestige — it classifies them by epistemic character. A practitioner's testimony and a palm-leaf manuscript are different kinds of evidence, both valued.
+          </p>
+        </ParallaxText>
+        <div className="divider-gold mt-16" />
+      </div>
 
-        {/* ═══════════════════════════════════════════════════
-            TRADITIONS REPRESENTED
-           ═══════════════════════════════════════════════════ */}
+      {/* ═══════════════════════════════════════════════════
+          TRADITIONS REPRESENTED
+         ═══════════════════════════════════════════════════ */}
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-4">Coverage</p>
           <h2 className="font-display text-3xl md:text-5xl text-foreground mb-6 engraved-heading">Traditions Represented</h2>
@@ -133,13 +185,39 @@ export default function ResearchPage() {
             ))}
           </div>
         </motion.section>
+      </div>
 
-        {/* ── Visual Divider ── */}
-        <div className="divider-subtle" />
+      {/* ═══ CINEMATIC STRIP II ═══ */}
+      <div className="mt-28">
+        <ScrollParallax speed={-0.15} className="cinematic-strip">
+          <CinematicImage
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/manuscript-sacred-geometry.jpeg'
+            alt='Sacred manuscripts and geometric patterns'
+            kenBurns="normal"
+            filmGrain={false}
+          />
+          <div className="cinematic-strip-overlay" />
+        </ScrollParallax>
+      </div>
 
-        {/* ═══════════════════════════════════════════════════
-            AUTHENTICITY METHODOLOGY — Rich Visual Layout
-           ═══════════════════════════════════════════════════ */}
+      {/* ═══ EDITORIAL DIVIDER II ═══ */}
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-24 md:py-36">
+        <div className="divider-gold mb-16" />
+        <ParallaxText speed={-0.05} className="max-w-3xl mx-auto text-center">
+          <p className="text-sub-display text-foreground mb-6 engraved-heading">
+            Multiple darśanas.<br />One rigorous framework.<br />No conflation.
+          </p>
+          <p className="text-editorial max-w-xl mx-auto">
+            Where traditions overlap, we note it. Where they diverge, we preserve the distinction. The Archive is not a synthesis — it is a map.
+          </p>
+        </ParallaxText>
+        <div className="divider-gold mt-16" />
+      </div>
+
+      {/* ═══════════════════════════════════════════════════
+          AUTHENTICITY METHODOLOGY — Rich Visual Layout
+         ═══════════════════════════════════════════════════ */}
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-4">Methodology</p>
           <h2 className="font-display text-3xl md:text-5xl text-foreground mb-6 engraved-heading">How We Score Authenticity</h2>
@@ -263,6 +341,73 @@ export default function ResearchPage() {
           </motion.div>
         </motion.section>
       </div>
-    </div>
+
+      {/* ═══ CINEMATIC STRIP III ═══ */}
+      <div className="mt-28">
+        <ScrollParallax speed={-0.15} className="cinematic-strip">
+          <CinematicImage
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight.jpeg'
+            alt='Ancient temple at midnight'
+            kenBurns="normal"
+            filmGrain={false}
+          />
+          <div className="cinematic-strip-overlay" />
+        </ScrollParallax>
+      </div>
+
+      {/* ═══ EDITORIAL DIVIDER III ═══ */}
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-24 md:py-36">
+        <div className="divider-gold mb-16" />
+        <ParallaxText speed={-0.05} className="max-w-3xl mx-auto text-center">
+          <p className="text-sub-display text-foreground mb-6 engraved-heading">
+            Three dimensions.<br />One composite score.<br />Full transparency.
+          </p>
+          <p className="text-editorial max-w-xl mx-auto">
+            Every authenticity score is calculable from its component parts. We publish the formula, not just the number. Question the score — that is the point.
+          </p>
+        </ParallaxText>
+        <div className="divider-gold mt-16" />
+      </div>
+
+      {/* ═══ CLOSING CTA ═══ */}
+      <section className="relative py-24 md:py-36">
+        <ScrollParallax speed={-0.06} disabled>
+          <CinematicImage
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-codex-scroll.jpeg'
+            alt='Ancient codex with golden illumination'
+            className="absolute inset-0"
+            scrim="full"
+            vignette
+          />
+        </ScrollParallax>
+        <div className="absolute inset-0 pointer-events-none z-[1]" style={{ background: 'rgba(0,0,0,0.75)' }} />
+        <ParallaxText speed={-0.04} className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">
+          <p className="section-label mb-6">Explore the Archive</p>
+          <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
+            The sources are mapped.<br />The claims are scored.
+          </h2>
+          <p className="text-foreground/70 text-lg mb-12 editorial-spacing" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>
+            Every siddhi in the Archive carries a full provenance chain — from primary textual references to contemporary practitioner reports. Browse the evidence yourself.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/archive" className="gold-cta">Browse the Archive</Link>
+            <Link href="/consultations" className="ghost-cta">Consult the Archivist</Link>
+          </div>
+        </ParallaxText>
+      </section>
+
+      {/* ═══ BINDU PULSE FOOTER ═══ */}
+      <footer className="relative pb-28 md:pb-20 mt-16">
+        <div className="atmospheric-bg absolute inset-0 opacity-20" />
+        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
+          <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
+            <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
+          </div>
+          <p className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper">
+            {'RESEARCH & SOURCES — EPISTEMIC FRAMEWORK'}
+          </p>
+        </div>
+      </footer>
+    </main>
   );
 }
