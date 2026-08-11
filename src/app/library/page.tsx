@@ -1,27 +1,28 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { GatedContent } from '@/components/monetization/GatedContent';
-import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
+import { fadeInUp, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 import { TIER_LABELS, TIER_ELEMENTS, TIER_COLORS } from '@/lib/utils/tier-gate';
 import { TANTRA_CATEGORIES, getCategoryById } from '@/lib/data/tantra-categories';
-import { sadhanaLibrary, getSadhanasByCategory, SADHANA_COUNT } from '@/lib/data/sadhana-library';
+import { sadhanaLibrary, SADHANA_COUNT } from '@/lib/data/sadhana-library';
 import { SIDDHI_COUNT } from '@/lib/data/siddhis';
 import { aghoriCourse } from '@/lib/data/aghoiri-tantra-course';
-import type { Sadhana } from '@/lib/data/types';
-import type { Tier } from '@/lib/data/types';
+import type { Sadhana, Tier } from '@/lib/data/types';
+import type { TantraCategory } from '@/lib/data/tantra-categories';
 
 /* ─────────────────────────────────────────────────────────────
-   THE SĀDHANĀ LIBRARY
-   Structured practice protocols organized across the 13
-   categories of tantrik practice.
+   THE SĀDHANĀ LIBRARY — Cinematic Rebuild
+   31 practice protocols across 13 categories of tantrik practice.
+   Tier-grouped navigation. Evidence-graded. Course-linked.
    ───────────────────────────────────────────────────────────── */
 
+/* ─── Shared Styles ─── */
 const tierBadgeStyle: Record<string, string> = {
   prithvi: 'bg-[#8a7230]/15 text-[#d4a853] border-[#8a7230]/30',
   jal: 'bg-[#4a8fa8]/15 text-[#7ec8e3] border-[#4a8fa8]/30',
@@ -36,53 +37,50 @@ const evidenceColor: Record<string, string> = {
   RECONSTRUCTED: 'text-foreground/40 border-foreground/20',
 };
 
-/* ─── Category Icon Component ─── */
-function CategoryIcon({ path, color }: { path: string; color: string }) {
+const levelColor: Record<string, string> = {
+  Foundation: 'text-emerald-400 border-emerald-400/30',
+  Intermediate: 'text-amber-400 border-amber-400/30',
+  Advanced: 'text-red-400 border-red-400/30',
+  Restricted: 'text-red-600 border-red-600/30',
+};
+
+/* ─── Tier-Grouped Category Nav Data ─── */
+const tierGroups: { tier: Tier; label: string; categories: TantraCategory[] }[] = [
+  { tier: 'prithvi', label: 'PRITHVI — EARTH', categories: TANTRA_CATEGORIES.filter(c => c.minTierDefault === 'prithvi') },
+  { tier: 'jal', label: 'JAL — WATER', categories: TANTRA_CATEGORIES.filter(c => c.minTierDefault === 'jal') },
+  { tier: 'agni', label: 'AGNI — FIRE', categories: TANTRA_CATEGORIES.filter(c => c.minTierDefault === 'agni') },
+  { tier: 'akash', label: 'AKASH — SKY', categories: TANTRA_CATEGORIES.filter(c => c.minTierDefault === 'akash') },
+];
+
+/* Flatten all categories in tier-grouped order for nav */
+const allCategoriesOrdered = tierGroups.flatMap(g => g.categories);
+
+/* ─── Category Icon ─── */
+function CategoryIcon({ path, color, size = 24 }: { path: string; color: string; size?: number }) {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
       <path d={path} />
     </svg>
   );
 }
 
-/* ─── Tantra Category Card ─── */
-function CategoryCard({ cat, sadhanaCount, isSelected, onClick }: { cat: typeof TANTRA_CATEGORIES[0]; sadhanaCount: number; isSelected: boolean; onClick: () => void }) {
+/* ─── Tier Badge ─── */
+function TierBadge({ tier, compact = false }: { tier: string; compact?: boolean }) {
+  const t = tier as Tier;
   return (
-    <button
-      onClick={onClick}
-      className={cn(
-        'group text-left w-full border rounded-lg p-4 md:p-5 transition-all duration-400',
-        isSelected
-          ? 'bg-foreground/5 border-gold/30'
-          : 'bg-transparent border-foreground/10 hover:border-foreground/20 hover:bg-foreground/[0.02]',
-      )}
-    >
-      <div className="flex items-start gap-3">
-        <div className="mt-0.5">
-          <CategoryIcon path={cat.icon} color={isSelected ? cat.color : `${cat.color}66`} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <h3 className={cn('font-display text-base md:text-lg tracking-wide', isSelected ? 'text-foreground' : 'text-foreground/80 group-hover:text-foreground')}>
-              {cat.name}
-            </h3>
-            <span className="font-mono text-[0.6rem] text-foreground/30 tracking-wider">{cat.sanskrit}</span>
-          </div>
-          <p className="text-foreground/40 text-xs leading-relaxed line-clamp-2 hidden md:block">{cat.description.slice(0, 120)}...</p>
-          <div className="flex items-center gap-3 mt-2">
-            {sadhanaCount > 0 && (
-              <span className="font-mono text-[0.6rem] text-foreground/25">{sadhanaCount} protocol{sadhanaCount > 1 ? 's' : ''}</span>
-            )}
-            <span className="font-mono text-[0.55rem] px-1.5 py-0.5 rounded border" style={{
-              borderColor: `${TIER_COLORS[cat.minTierDefault as Tier]}33`,
-              color: TIER_COLORS[cat.minTierDefault as Tier],
-            }}>
-              {TIER_LABELS[cat.minTierDefault as Tier]}
-            </span>
-          </div>
-        </div>
-      </div>
-    </button>
+    <span className={cn('inline-flex items-center gap-1.5 rounded border font-mono tracking-wider', tierBadgeStyle[t] || tierBadgeStyle.prithvi, compact ? 'px-2 py-0.5 text-[0.6rem]' : 'px-2.5 py-1 text-[0.65rem]')}>
+      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: TIER_COLORS[t] }} />
+      {TIER_LABELS[t]}{!compact && <span className="opacity-50">· {TIER_ELEMENTS[t]}</span>}
+    </span>
+  );
+}
+
+/* ─── Level Badge ─── */
+function LevelBadge({ level }: { level: string }) {
+  return (
+    <span className={cn('px-2.5 py-0.5 rounded-full border text-[0.6rem] font-mono tracking-widest uppercase', levelColor[level] || levelColor.Foundation)}>
+      {level}
+    </span>
   );
 }
 
@@ -90,7 +88,6 @@ function CategoryCard({ cat, sadhanaCount, isSelected, onClick }: { cat: typeof 
 function SadhanaCard({ sadhana, index }: { sadhana: Sadhana; index: number }) {
   const [open, setOpen] = useState(false);
   const cat = getCategoryById(sadhana.categoryId as any);
-  const reduced = useReducedMotion();
 
   return (
     <GatedContent minTier={sadhana.minTier} label={sadhana.name} teaser={`This practice requires the ${TIER_ELEMENTS[sadhana.minTier]} tier.`}>
@@ -107,9 +104,8 @@ function SadhanaCard({ sadhana, index }: { sadhana: Sadhana; index: number }) {
             <div className="flex items-center gap-2 mb-1.5 flex-wrap">
               <span className="text-gold/30 font-mono text-[0.6rem]">{String(index + 1).padStart(2, '0')}</span>
               {cat && <span className="font-mono text-[0.55rem]" style={{ color: cat.color }}>{cat.name}</span>}
-              <span className={cn('px-2 py-0.5 rounded border text-[0.55rem] font-mono tracking-wider', tierBadgeStyle[sadhana.minTier])}>
-                {TIER_LABELS[sadhana.minTier]}
-              </span>
+              <TierBadge tier={sadhana.minTier} compact />
+              <LevelBadge level={sadhana.level} />
             </div>
             <h3 className={cn('font-display text-base md:text-lg tracking-wide mb-1', open ? 'text-gold' : 'text-foreground')}>
               {sadhana.name}
@@ -136,7 +132,6 @@ function SadhanaCard({ sadhana, index }: { sadhana: Sadhana; index: number }) {
               className="overflow-hidden"
             >
               <div className="px-5 pb-6 space-y-5">
-
                 <div className="flex flex-wrap gap-3">
                   {sadhana.evidence && (
                     <span className={cn('px-2 py-0.5 rounded border text-[0.6rem] font-mono tracking-widest uppercase', evidenceColor[sadhana.evidence])}>
@@ -147,7 +142,6 @@ function SadhanaCard({ sadhana, index }: { sadhana: Sadhana; index: number }) {
                   <span className="text-foreground/30 font-mono text-[0.65rem]">{sadhana.dailyCommitment}</span>
                 </div>
 
-                {/* Mantra */}
                 {sadhana.primaryMantra && (
                   <div className="bg-deep-black/60 border border-gold/10 rounded-lg p-4">
                     <p className="text-gold font-mono text-[0.6rem] tracking-[0.2em] uppercase mb-2">Primary Mantra</p>
@@ -155,7 +149,6 @@ function SadhanaCard({ sadhana, index }: { sadhana: Sadhana; index: number }) {
                   </div>
                 )}
 
-                {/* Prerequisites */}
                 {sadhana.prerequisites.length > 0 && (
                   <div>
                     <p className="text-gold font-mono text-[0.6rem] tracking-[0.2em] uppercase mb-2">Prerequisites</p>
@@ -169,7 +162,6 @@ function SadhanaCard({ sadhana, index }: { sadhana: Sadhana; index: number }) {
                   </div>
                 )}
 
-                {/* Steps */}
                 <div>
                   <p className="text-gold font-mono text-[0.6rem] tracking-[0.2em] uppercase mb-2">Practice Protocol</p>
                   <ol className="space-y-2">
@@ -182,7 +174,6 @@ function SadhanaCard({ sadhana, index }: { sadhana: Sadhana; index: number }) {
                   </ol>
                 </div>
 
-                {/* Materials */}
                 {sadhana.materials && sadhana.materials.length > 0 && (
                   <div>
                     <p className="text-gold font-mono text-[0.6rem] tracking-[0.2em] uppercase mb-2">Materials</p>
@@ -196,7 +187,6 @@ function SadhanaCard({ sadhana, index }: { sadhana: Sadhana; index: number }) {
                   </div>
                 )}
 
-                {/* Benefits */}
                 {sadhana.benefits && sadhana.benefits.length > 0 && (
                   <div className="bg-gold/5 border border-gold/10 rounded-lg p-4">
                     <p className="text-gold font-mono text-[0.6rem] tracking-[0.2em] uppercase mb-2">Benefits</p>
@@ -208,7 +198,6 @@ function SadhanaCard({ sadhana, index }: { sadhana: Sadhana; index: number }) {
                   </div>
                 )}
 
-                {/* Warnings */}
                 {sadhana.warnings && sadhana.warnings.length > 0 && (
                   <div className="bg-red-950/30 border border-red-500/20 rounded-lg p-4 space-y-1.5">
                     <p className="text-red-400 font-mono text-[0.6rem] tracking-[0.2em] uppercase flex items-center gap-2">
@@ -221,7 +210,6 @@ function SadhanaCard({ sadhana, index }: { sadhana: Sadhana; index: number }) {
                   </div>
                 )}
 
-                {/* Course link */}
                 {sadhana.relatedCoursePhase && (
                   <Link
                     href="/aghoiri-tantra"
@@ -240,39 +228,328 @@ function SadhanaCard({ sadhana, index }: { sadhana: Sadhana; index: number }) {
   );
 }
 
+/* ─── Category Section ─── */
+function CategorySection({ cat, catIndex, sadhanas }: { cat: TantraCategory; catIndex: number; sadhanas: Sadhana[] }) {
+  const reduced = useReducedMotion();
+  const [expanded, setExpanded] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <motion.section
+      ref={sectionRef}
+      id={`cat-${cat.id}`}
+      className="mb-12 md:mb-16 scroll-mt-24"
+      initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+      whileInView={fadeInUp.visible}
+      viewport={{ once: true, margin: '-40px' }}
+    >
+      {/* Category header with colored accent */}
+      <div className="relative border border-foreground/10 rounded-lg overflow-hidden mb-6">
+        {/* Color accent bar */}
+        <div className="h-1" style={{ backgroundColor: cat.color }} />
+
+        <div className="p-5 md:p-7">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start gap-4 flex-1 min-w-0">
+              {/* Category number watermark */}
+              <span className="font-mono text-[3rem] md:text-[4rem] font-bold leading-none text-white/[0.03] select-none -mt-2 hidden md:block">
+                {String(catIndex + 1).padStart(2, '0')}
+              </span>
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-2 flex-wrap">
+                  <CategoryIcon path={cat.icon} color={cat.color} />
+                  <h2 className="font-display text-xl md:text-2xl lg:text-3xl text-foreground tracking-wide">{cat.name}</h2>
+                  <span className="font-mono text-[0.6rem] text-foreground/30 tracking-wider">{cat.sanskrit}</span>
+                  <TierBadge tier={cat.minTierDefault} compact />
+                </div>
+                <p className={cn(
+                  'text-foreground/50 text-sm leading-relaxed',
+                  !expanded && 'line-clamp-2 md:line-clamp-3',
+                )}>
+                  {cat.description}
+                </p>
+                {cat.description.length > 180 && (
+                  <button
+                    onClick={() => setExpanded(!expanded)}
+                    className="text-gold-dim hover:text-gold text-[0.6rem] font-mono tracking-wider uppercase mt-2 transition-colors"
+                  >
+                    {expanded ? 'Less' : 'More'}
+                  </button>
+                )}
+
+                {/* Metadata row */}
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3">
+                  <span className="font-mono text-[0.6rem] text-foreground/25">{cat.practiceCount} protocol{cat.practiceCount !== 1 ? 's' : ''}</span>
+                  {cat.cautionNote && (
+                    <span className="text-amber-400/50 text-[0.6rem] font-mono flex items-center gap-1">
+                      <span className="w-1 h-1 rounded-full bg-amber-400/50" />
+                      {cat.cautionNote}
+                    </span>
+                  )}
+                </div>
+
+                {/* Primary texts + Course phases (shown on md+) */}
+                <div className="hidden md:flex flex-wrap gap-x-6 gap-y-1 mt-3">
+                  {cat.primaryTexts && cat.primaryTexts.length > 0 && (
+                    <span className="text-foreground/20 text-[0.55rem] font-mono">
+                      <span className="text-foreground/30">Texts:</span> {cat.primaryTexts.join(', ')}
+                    </span>
+                  )}
+                  {cat.relatedCoursePhases && cat.relatedCoursePhases.length > 0 && (
+                    <span className="text-foreground/20 text-[0.55rem] font-mono">
+                      <span className="text-foreground/30">Course:</span>{' '}
+                      {cat.relatedCoursePhases.map((p, i) => (
+                        <span key={i}>
+                          {i > 0 && ', '}
+                          <Link href="/aghoiri-tantra" className="text-gold-dim hover:text-gold transition-colors">{p}</Link>
+                        </span>
+                      ))}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Sadhana cards for this category */}
+      {sadhanas.length > 0 ? (
+        <div className="space-y-3">
+          {sadhanas.map((sadhana, i) => (
+            <SadhanaCard key={sadhana.slug} sadhana={sadhana} index={i} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-12 border border-foreground/5 rounded-lg">
+          <p className="text-foreground/25 text-sm">Protocols for this category are in development.</p>
+          <Link href="/aghoiri-tantra" className="ghost-cta inline-block mt-4 text-xs">Explore the Course</Link>
+        </div>
+      )}
+    </motion.section>
+  );
+}
+
+/* ─── Category Navigation Sidebar (Desktop) + Bottom Dock (Mobile) ─── */
+function CategoryNav({ activeCatId }: { activeCatId: string | null }) {
+  const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
+  const globalIdx = useCallback((catId: string) => allCategoriesOrdered.findIndex(c => c.id === catId), []);
+
+  return (
+    <>
+      {/* Desktop sidebar — tier-grouped */}
+      <nav
+        className="hidden lg:flex fixed left-0 top-1/2 -translate-y-1/2 z-30 flex-col gap-0 pl-4 max-h-[80vh] overflow-y-auto scrollbar-none"
+        aria-label="Category navigation"
+      >
+        {tierGroups.map((group) => (
+          <div
+            key={group.tier}
+            className="mb-2"
+            onMouseEnter={() => setHoveredGroup(group.tier)}
+            onMouseLeave={() => setHoveredGroup(null)}
+          >
+            {/* Tier group label */}
+            <div className="flex items-center gap-2 mb-1 pl-2">
+              <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: TIER_COLORS[group.tier] }} />
+              <span
+                className="font-mono text-[0.5rem] tracking-[0.2em] uppercase transition-colors duration-300"
+                style={{ color: hoveredGroup === group.tier ? TIER_COLORS[group.tier] : 'rgba(255,255,255,0.15)' }}
+              >
+                {group.label}
+              </span>
+            </div>
+            {/* Category items */}
+            {group.categories.map((cat) => {
+              const isActive = activeCatId === cat.id;
+              const idx = globalIdx(cat.id);
+              return (
+                <a
+                  key={cat.id}
+                  href={`#cat-${cat.id}`}
+                  className={cn(
+                    'group flex items-center gap-2.5 py-1.5 pr-4 rounded-r transition-all duration-300',
+                    isActive ? 'bg-foreground/5' : 'hover:bg-foreground/[0.02]',
+                  )}
+                  aria-current={isActive ? 'true' : undefined}
+                >
+                  <div className="relative flex flex-col items-center">
+                    <div
+                      className={cn(
+                        'w-2 h-2 rounded-full border transition-all duration-500',
+                        isActive
+                          ? 'border-gold bg-gold scale-125'
+                          : `border-transparent group-hover:border-foreground/30`,
+                      )}
+                      style={
+                        isActive
+                          ? { boxShadow: '0 0 8px rgba(212,175,55,0.4)' }
+                          : !isActive
+                            ? { borderColor: `${cat.color}40`, backgroundColor: 'transparent' }
+                            : undefined
+                      }
+                    />
+                    {idx < allCategoriesOrdered.length - 1 && group.categories.indexOf(cat) < group.categories.length - 1 && (
+                      <div className="w-px h-4 mt-0.5" style={{ backgroundColor: `${cat.color}20` }} />
+                    )}
+                  </div>
+                  <div className="flex flex-col min-w-0">
+                    <span className={cn(
+                      'font-mono text-[0.55rem] tracking-widest uppercase transition-colors duration-300',
+                      isActive ? 'text-gold' : 'text-foreground/25 group-hover:text-foreground/50',
+                    )}>
+                      {cat.name}
+                    </span>
+                    <span className="text-[0.5rem] font-mono truncate max-w-[90px]" style={{ color: `${cat.color}60` }}>
+                      {cat.practiceCount}
+                    </span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        ))}
+      </nav>
+
+      {/* Mobile bottom dock — horizontal scroll, tier-colored dots */}
+      <nav
+        className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-deep-black/90 backdrop-blur-md border-t border-foreground/5"
+        aria-label="Category navigation"
+      >
+        <div className="flex overflow-x-auto gap-0 px-2 py-2 scrollbar-none">
+          {allCategoriesOrdered.map((cat) => {
+            const isActive = activeCatId === cat.id;
+            return (
+              <a
+                key={cat.id}
+                href={`#cat-${cat.id}`}
+                className={cn(
+                  'flex flex-col items-center gap-1 px-3 py-1.5 rounded-md shrink-0 transition-all duration-300',
+                  isActive ? 'bg-foreground/5' : 'hover:bg-foreground/[0.02]',
+                )}
+              >
+                <span className={cn(
+                  'font-mono text-[0.55rem] tracking-widest uppercase',
+                  isActive ? 'text-gold' : 'text-foreground/25',
+                )}>
+                  {cat.name}
+                </span>
+                <div className={cn(
+                  'w-1 h-1 rounded-full transition-all duration-500',
+                  isActive ? 'bg-gold' : 'bg-foreground/15',
+                )} style={!isActive ? { backgroundColor: `${cat.color}40` } : undefined} />
+              </a>
+            );
+          })}
+        </div>
+      </nav>
+    </>
+  );
+}
+
+/* ─── Category Tier Map (like Ashram Progression Map) ─── */
+function CategoryTierMap() {
+  const reduced = useReducedMotion();
+  return (
+    <motion.div
+      className="max-w-3xl mx-auto px-6 lg:px-10 mb-12"
+      initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+      whileInView={fadeInUp.visible}
+      viewport={{ once: true, margin: '-40px' }}
+    >
+      <h3 className="text-caption text-xs tracking-[0.2em] uppercase text-foreground/40 mb-5">The Thirteen Gates — Category Access Tiers</h3>
+      <div className="space-y-3">
+        {tierGroups.map((group) => (
+          <div key={group.tier}>
+            <div className="flex items-center gap-3 mb-1.5">
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: TIER_COLORS[group.tier] }} />
+              <span className="font-mono text-[0.6rem] tracking-[0.25em] uppercase" style={{ color: TIER_COLORS[group.tier] }}>
+                {group.label} — {group.categories.length} categories
+              </span>
+            </div>
+            <div className="flex items-center flex-wrap gap-1 ml-1">
+              {group.categories.map((cat, i) => (
+                <div key={cat.id} className="flex items-center">
+                  <a
+                    href={`#cat-${cat.id}`}
+                    className="group/station flex items-center gap-1.5 px-2 py-1 rounded transition-all duration-300"
+                  >
+                    <div
+                      className="w-2.5 h-2.5 rounded-full border-2 transition-all duration-300 group-hover/station:scale-125"
+                      style={{ borderColor: cat.color, backgroundColor: 'transparent' }}
+                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = cat.color; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+                    />
+                    <span className="text-[0.5rem] font-mono text-foreground/25 group-hover/station:text-foreground/50 transition-colors">
+                      {cat.name}
+                    </span>
+                  </a>
+                  {i < group.categories.length - 1 && (
+                    <div className="w-4 md:w-8 h-px" style={{ backgroundColor: `${cat.color}20` }} />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
 /* ─── MAIN PAGE ─── */
 export default function SadhanaLibraryPage() {
   const reduced = useReducedMotion();
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [activeCatId, setActiveCatId] = useState<string | null>(null);
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const filteredSadhana = useMemo(() => {
-    if (!selectedCategory) return sadhanaLibrary;
-    return getSadhanasByCategory(selectedCategory);
-  }, [selectedCategory]);
-
-  // Count sadhanas per category
-  const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
+  // Group sadhanas by category (in tier-grouped order)
+  const sadhanasByCategory = useMemo(() => {
+    const map = new Map<string, Sadhana[]>();
     sadhanaLibrary.forEach(s => {
-      counts[s.categoryId] = (counts[s.categoryId] || 0) + 1;
+      const arr = map.get(s.categoryId) || [];
+      arr.push(s);
+      map.set(s.categoryId, arr);
     });
-    return counts;
+    return map;
+  }, []);
+
+  // Track active category via IntersectionObserver
+  useEffect(() => {
+    const refs = sectionRefs.current.filter(Boolean);
+    if (refs.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id.replace('cat-', '');
+            setActiveCatId(id);
+          }
+        });
+      },
+      { rootMargin: '-15% 0px -65% 0px', threshold: 0 },
+    );
+
+    refs.forEach((ref) => { if (ref) observer.observe(ref); });
+    return () => observer.disconnect();
   }, []);
 
   return (
     <main className="bg-deep-black min-h-screen">
-      {/* Hero */}
-      <header className="relative min-h-[60vh] md:min-h-[70vh] flex items-end overflow-hidden">
+      {/* ═══ HERO ═══ */}
+      <header className="relative min-h-[80vh] md:min-h-[90vh] flex items-end overflow-hidden">
         <CinematicImage
           src='/assets/aghori/course/forgotten-chamber.jpeg'
-          alt='The Sadhana Library — Structured Practice Protocols'
+          alt='The Sādhanā Library — Thirty-One Practice Protocols from Living Lineages'
           kenBurns="slow"
           scrim="bottom"
           vignette
+          volumetric
           dust
           priority
         />
-        <div className="relative z-10 w-full max-w-3xl mx-auto px-6 lg:px-10 pb-16 md:pb-24 pt-32">
+        <div className="relative z-10 w-full max-w-3xl mx-auto px-6 lg:px-10 pb-20 md:pb-28 pt-32">
           <motion.p
             className="section-label mb-6"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
@@ -294,17 +571,17 @@ export default function SadhanaLibraryPage() {
             animate={fadeInUp.visible}
             transition={{ delay: 0.15, duration: 0.8 }}
           >
-            Thirteen Categories of Practice — Structured Protocols from Living Lineages
+            Thirteen Categories · {SADHANA_COUNT} Protocols · Evidence-Graded
           </motion.p>
           <motion.p
-            className="text-foreground/70 text-base max-w-2xl leading-relaxed"
+            className="text-foreground/70 text-base md:text-lg max-w-2xl leading-relaxed"
             style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             animate={fadeInUp.visible}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
             Every practice in the tantrik tradition belongs to one of thirteen categories — from Mantra and Yantra to Dhūni and Sevā.
-            This library organizes structured practice protocols across all thirteen, with evidence grading, step-by-step
+            This library organizes {SADHANA_COUNT} structured practice protocols with evidence grading, step-by-step
             instructions, and direct links to the Aghorī Tantra course phases where each practice is taught in full depth.
           </motion.p>
         </div>
@@ -312,11 +589,10 @@ export default function SadhanaLibraryPage() {
 
       <div className="atmospheric-bg h-48 -mt-20 relative z-10" />
 
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+      {/* ═══ INFO BAR ═══ */}
+      <div className="max-w-3xl mx-auto px-6 lg:px-10 mb-8">
         <BackButton href="/" label="Back to Home" />
-
-        {/* Stats bar */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
           <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-4">
             <p className="text-caption text-xs mb-1">Practice Protocols</p>
             <p className="text-foreground text-sm font-medium">{SADHANA_COUNT}</p>
@@ -326,92 +602,52 @@ export default function SadhanaLibraryPage() {
             <p className="text-foreground text-sm font-medium">{TANTRA_CATEGORIES.length}</p>
           </div>
           <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-4">
-            <p className="text-caption text-xs mb-1">Course Phases</p>
-            <p className="text-foreground text-sm font-medium">{aghoriCourse.length}</p>
+            <p className="text-caption text-xs mb-1">Linked to Course</p>
+            <p className="text-foreground text-sm font-medium">{aghoriCourse.length} Phases</p>
           </div>
           <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-4">
-            <p className="text-caption text-xs mb-1">Evidence Grading</p>
-            <p className="text-foreground text-sm font-medium">4 Levels</p>
+            <p className="text-caption text-xs mb-1">Access Tiers</p>
+            <div className="flex gap-1.5 mt-1">
+              <TierBadge tier="prithvi" compact />
+              <TierBadge tier="jal" compact />
+              <TierBadge tier="agni" compact />
+              <TierBadge tier="akash" compact />
+            </div>
           </div>
         </div>
 
-        {/* Section: 13 Tantra Categories */}
-        <motion.div
-          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-          whileInView={fadeInUp.visible}
-          viewport={{ once: true, margin: '-40px' }}
-        >
-          <div className="flex items-center gap-4 mb-8">
-            <h2 className="font-display text-2xl md:text-3xl text-foreground font-light tracking-[0.04em] engraved-heading">
-              Thirteen Categories
-            </h2>
-            <div className="flex-1 h-px bg-foreground/10" />
-            {selectedCategory && (
-              <button
-                onClick={() => setSelectedCategory(null)}
-                className="text-gold-dim hover:text-gold text-xs font-mono tracking-wider uppercase transition-colors"
-              >
-                Show All
-              </button>
-            )}
-          </div>
+        {/* Evidence grading legend */}
+        <div className="mt-3 flex flex-wrap gap-2">
+          {(Object.keys(evidenceColor) as Array<keyof typeof evidenceColor>).map((k) => (
+            <span key={k} className={cn('px-2 py-0.5 rounded border text-[0.55rem] font-mono tracking-wider uppercase', evidenceColor[k])}>
+              {k}
+            </span>
+          ))}
+        </div>
+      </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 mb-16">
-            {TANTRA_CATEGORIES.map((cat) => (
-              <CategoryCard
-                key={cat.id}
-                cat={cat}
-                sadhanaCount={categoryCounts[cat.id] || 0}
-                isSelected={selectedCategory === cat.id}
-                onClick={() => setSelectedCategory(selectedCategory === cat.id ? null : cat.id)}
-              />
-            ))}
-          </div>
-        </motion.div>
+      {/* ═══ CATEGORY TIER MAP ═══ */}
+      <div className="divider-gold max-w-3xl mx-auto" />
+      <CategoryTierMap />
 
-        <div className="divider-gold mb-16" />
+      {/* ═══ CATEGORY NAV ═══ */}
+      <CategoryNav activeCatId={activeCatId} />
 
-        {/* Section: Practice Protocols */}
-        <motion.div
-          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-          whileInView={fadeInUp.visible}
-          viewport={{ once: true, margin: '-40px' }}
-        >
-          <div className="flex items-center gap-4 mb-4">
-            <h2 className="font-display text-2xl md:text-3xl text-foreground font-light tracking-[0.04em] engraved-heading">
-              {selectedCategory ? getCategoryById(selectedCategory as any)?.name || 'All' : 'All'} Protocols
-            </h2>
-            <div className="flex-1 h-px bg-foreground/10" />
-            <span className="text-caption text-xs">{filteredSadhana.length} protocol{filteredSadhana.length !== 1 ? 's' : ''}</span>
-          </div>
-
-          {selectedCategory && getCategoryById(selectedCategory as any) && (
-            <p className="text-foreground/50 text-sm leading-relaxed mb-8 max-w-2xl">
-              {getCategoryById(selectedCategory as any)?.description}
-            </p>
-          )}
-
-          <motion.div
-            className="space-y-3"
-            variants={staggerContainer}
-            initial={reduced ? { opacity: 1 } : staggerContainer.hidden}
-            whileInView={reduced ? { opacity: 1 } : staggerContainer.visible}
-            viewport={{ once: true, margin: '-40px' }}
-          >
-            {filteredSadhana.map((sadhana, i) => (
-              <SadhanaCard key={sadhana.slug} sadhana={sadhana} index={i} />
-            ))}
-          </motion.div>
-
-          {filteredSadhana.length === 0 && (
-            <div className="text-center py-20">
-              <p className="text-foreground/30 text-sm">No protocols yet in this category. Check the Aghori Tantra course for practices that will be added here.</p>
-              <Link href="/aghoiri-tantra" className="ghost-cta inline-block mt-6 text-sm">Go to Course</Link>
+      {/* ═══ CATEGORY SECTIONS ═══ */}
+      <div className="max-w-3xl mx-auto px-6 lg:px-10">
+        {allCategoriesOrdered.map((cat, i) => {
+          const catSadhana = sadhanasByCategory.get(cat.id) || [];
+          return (
+            <div key={cat.id} ref={(el) => { sectionRefs.current[i] = el; }}>
+              {i > 0 && <div className="divider-gold" />}
+              <CategorySection cat={cat} catIndex={i} sadhanas={catSadhana} />
             </div>
-          )}
-        </motion.div>
+          );
+        })}
+      </div>
 
-        {/* Links to related knowledge sections */}
+      {/* ═══ KNOWLEDGE ARCHITECTURE LINKS ═══ */}
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="divider-gold my-16" />
         <motion.div
           initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
@@ -422,7 +658,7 @@ export default function SadhanaLibraryPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
             <Link href="/archive" className="glass-chip p-5 group block hover:border-gold/20 transition-colors">
               <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors mb-1">Akashic Archive</p>
-              <p className="text-foreground/40 text-xs">The complete siddhi database — {SIDDHI_COUNT} folios with evidence grading</p>
+              <p className="text-foreground/40 text-xs">{SIDDHI_COUNT} siddhi folios with scholarly provenance fields and evidence grading</p>
             </Link>
             <Link href="/aghoiri-tantra" className="glass-chip p-5 group block hover:border-gold/20 transition-colors">
               <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors mb-1">Aghori Tantra Course</p>
@@ -436,8 +672,8 @@ export default function SadhanaLibraryPage() {
         </motion.div>
       </div>
 
-      {/* Footer */}
-      <footer className="relative pb-20 md:pb-28 mt-8">
+      {/* ═══ FOOTER ═══ */}
+      <footer className="relative pb-28 md:pb-20 mt-8">
         <div className="atmospheric-bg absolute inset-0 opacity-20" />
         <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 text-center">
           <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
@@ -445,6 +681,10 @@ export default function SadhanaLibraryPage() {
           </div>
           <p className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper">
             THE SĀDHANĀ LIBRARY — KNOWLEDGE ARCHITECTURE
+          </p>
+          <p className="text-foreground/20 text-[0.6rem] mt-3 max-w-md mx-auto">
+            {SADHANA_COUNT} protocols across 13 categories. Evidence-graded. Course-linked.
+            Distinguishing documented traditional practice from later folklore and unverifiable claims.
           </p>
         </div>
       </footer>

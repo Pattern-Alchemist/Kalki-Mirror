@@ -431,3 +431,27 @@ Stage Summary:
 - Tantra categories: computed stats, cross-references, primary texts, caution notes
 - Build: clean pass, SEO metadata for 2 new routes
 - Files modified: sadhana-library.ts, types.ts, tantra-categories.ts, siddhis-*.ts (6 files), page.tsx, pricing.ts, next.config.ts, .env, library/page.tsx, aghoiri-tantra/layout.tsx (new), library/layout.tsx (new)
+
+---
+Task ID: 4
+Agent: Main
+Task: Cinematic rebuild of Sādhanā Library page
+
+Work Log:
+- Analyzed course page design patterns (PhaseNav, AshramProgressionMap, TierBadge, hero effects)
+- Rebuilt /library/page.tsx from 453 lines to 500+ lines with full cinematic treatment
+- Added tier-grouped sidebar nav (desktop) and bottom dock (mobile) with IntersectionObserver tracking
+- Created CategoryTierMap component (mirrors AshramProgressionMap — 13 categories grouped by access tier)
+- Created CategorySection with color accent bar, watermark numbers, metadata rows (primary texts, course phase links, caution notes)
+- Added LevelBadge component for Foundation/Intermediate/Advanced/Restricted
+- Enhanced hero: 80vh with volumetric + dust effects (was 60vh without volumetric)
+- Added evidence grading legend to info bar
+- Fixed NEXTAUTH_SECRET .env placeholder for build
+- Fixed sadhanas/sadhana variable name bug
+- Build passes clean
+
+Stage Summary:
+- Library page now matches course page cinematic quality
+- 13 categories displayed as tier-grouped sections with sidebar navigation
+- Each category shows: icon, name, sanskrit, tier badge, description, caution note, primary texts, course phase links
+- Mobile: bottom dock nav with 13 category pills
