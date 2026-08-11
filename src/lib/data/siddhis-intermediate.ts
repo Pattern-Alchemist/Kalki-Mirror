@@ -23,20 +23,6 @@ export const intermediateSiddhis: Siddhi[] = [
     traditionalRef: 'Gheraṇḍa Saṃhitā I.54; Haṭha Yoga Pradīpikā II.32',
     verbatimText: 'nirālambanā vastuṃ dhārayet — "One should fix the gaze on a void-enclosed object." (Gheraṇḍa Saṃhitā I.54, on trāṭaka)',
     practitionerCaveat: 'Trāṭaka develops sustained concentration. Claims that it grants clairvoyance or "opening the third eye" are not supported by the source texts.',
-    contraindications: [
-      'Recent eye surgery or active glaucoma — sustained fixation and after-image practice increase intraocular pressure',
-      'Epilepsy with photosensitive triggers — flickering candlelight may lower seizure threshold',
-      'Severe dry eye syndrome — prolonged unblinking gaze exacerbates corneal surface damage',
-    ],
-    integrations: [
-      'Pair with nadi-shuddhi beforehand — balanced breath channels enhance the steadiness required for sustained gazing',
-      'Combines well with manasika-japa: use internal Oṃ or a bīja mantra during the after-image phase to occupy the verbal mind while the visual after-image persists',
-      'Follows naturally from bija-mantra practice — after learning the cakra bījas, trāṭaka can be directed at a yantra of the corresponding cakra',
-    ],
-    variantPractices: [
-      { name: 'Bhrūmadhya Trāṭaka', description: 'Internal gazing at the ājñā cakra point between the eyebrows with eyes closed — removes the candle dependency entirely and develops the inner gaze used in advanced dhāraṇā.', level: 'Intermediate' },
-      { name: 'Trāṭaka on Yantra', description: 'Gazing at a specific yantra (typically Śrī Yantra or a bindu) instead of a candle flame — combines visual concentration with geometric symbolic contemplation.', level: 'Advanced' },
-    ],
   },
   {
     slug: "ajapa-japa",
@@ -60,19 +46,6 @@ export const intermediateSiddhis: Siddhi[] = [
     traditionalRef: 'Vijñāna Bhairava Tantra vv. 24, 27',
     verbatimText: 'śūnye śūnyam api dhyāyed dhyāyī śūnyam udāhṛtam — "Meditate on the void in the void; the meditator is said to be void." (VBT v. 24)',
     practitionerCaveat: 'Ajapa-japa is a recognition practice, not a breathing exercise. The tradition frames it as a doorway to non-dual awareness, not a technique for manifesting outcomes.',
-    contraindications: [
-      'Depersonalization disorder — the blurring of "self" and "breath-sound" can intensify dissociative episodes',
-      'Hyperventilation syndrome — intentional synchronization of mantra with breath may reinforce unhealthy breathing patterns',
-    ],
-    integrations: [
-      'Naturally follows from soham-dhyana — where the Foundation practice establishes the recognition, Ajapa-Japa extends it into continuous breath-linked awareness',
-      'Pair with kumbhaka for an advanced approach: during retention, the mantra becomes pure mental repetition without breath support',
-      'Combines with yoga-nidra as the recognition layer: in the supine relaxation state, the so\u2019ha\u1e43 sound becomes the last object before the witness witnesses itself',
-    ],
-    variantPractices: [
-      { name: 'Ajapa-Japa with Nāda', description: 'The practitioner listens for the subtle inner sound (anāhata nāda) rather than the breath-sound — a transition from breath-mantra to inner-sound meditation described in the Hatha Yoga Pradīpikā.', level: 'Advanced' },
-      { name: 'Haṃsa-Vidya', description: 'The Nāth lineage form that maps haṃsaḥ not to breath but to the cosmic pulsation of creation and dissolution — a philosophical expansion of the basic recognition.', level: 'Advanced' },
-    ],
   },
   {
     slug: "mahamrityunjaya",
@@ -96,19 +69,6 @@ export const intermediateSiddhis: Siddhi[] = [
     traditionalRef: 'Ṛgveda VII.59.12 (Tryambaka verse)',
     verbatimText: 'oṃ tryambakaṃ yajāmahe sugandhiṃ puṣṭivardhanam / urvārukam iva bandhanān mṛtyor mukṣīya māmṛtāt — "We worship the three-eyed one... may I be released from death, not from immortality." (RV VII.59.12)',
     practitionerCaveat: 'This is a devotional-philosophical verse, not a medical intervention. Recitation is a contemplative act — the tradition never frames it as a substitute for clinical treatment of any condition.',
-    contraindications: [
-      'Active suicidal ideation — the death-conquering theme, if misunderstood literally, may paradoxically increase preoccupation with mortality',
-      'Recent bereavement — the verse\'s thematization of release from death can trigger acute grief responses',
-      'Health anxiety — the mantra\'s framing around mortality may reinforce hypochondriacal fixation',
-    ],
-    integrations: [
-      'Pair with gayatri-mantra in a two-part morning practice: Gāyatrī for illumination, Mṛtyuṅjaya for surrender — a classic dawn combination in Vedic households',
-      'Combines with soham-dhyana: recitation frames the philosophical context, then so\'haṃ contemplation grounds it in direct experience',
-      'Follows naturally from pranava-japa — the Oṃ prefix of the Mṛtyuṅjaya is deepened by prior work with the pranava alone',
-    ],
-    variantPractices: [
-      { name: 'Mṛtyuṅjaya with Nyāsa and Kalāśa', description: 'The full ritual form including body-placement (nyāsa), water-vessel (kalāśa) consecration, and prescribed offerings — used in Vedic homa and healing ceremonies.', level: 'Advanced' },
-    ],
   },
   {
     slug: "yoga-nidra",
@@ -131,19 +91,6 @@ export const intermediateSiddhis: Siddhi[] = [
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/bhairava-pathway',
     traditionalRef: 'Māṇḍūkya Upaniṣad vv. 5–7 (prajñā/suṣupti state); Bihar School systematization (Saraswati, 1976)',
     practitionerCaveat: 'Yoga Nidrā produces deep physiological rest with retained awareness. Claims that it allows access to "past lives" or "akashic records" are modern additions not found in the Upaniṣadic source.',
-    contraindications: [
-      'Complex PTSD or dissociative identity disorder — the hypnagogic state can trigger uncontrolled trauma re-emergence',
-      'Narcolepsy — the practice induces states that overlap with narcoleptic episodes, potentially reinforcing sleep-wake boundary confusion',
-    ],
-    integrations: [
-      'Pair with soham-dhyana as the final layer: Yoga Nidrā relaxes the body, so\'haṃ recognition provides the contemplative thread through the hypnagogic state',
-      'Follows naturally from nadi-shuddhi — breath-balancing prepares the nervous system for the profound relaxation of Nidrā',
-      'Combines with ajapa-japa: in the Yoga Nidrā state, the spontaneous so\u2019ha\u1e43 of the breath becomes the natural object of awareness',
-    ],
-    variantPractices: [
-      { name: 'Yoga Nidrā with Saṅkalpa', description: 'The Bihar School form incorporating a personal resolve (saṅkalpa) planted at the beginning and harvested at the end — the most widely taught form in modern yoga studios.', level: 'Intermediate' },
-      { name: 'Yoga Nidrā as Antaryāga', description: 'The tantric internal-worship form where the practitioner performs a complete pūjā mentally in the Nidrā state — a Śrī Vidyā application described in the Saundaryalaharī commentaries.', level: 'Advanced' },
-    ],
   },
   {
     slug: "bija-mantra",
@@ -166,19 +113,6 @@ export const intermediateSiddhis: Siddhi[] = [
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/yantra-chamber',
     traditionalRef: 'Ṣaṭ-Cakra-Nirūpaṇa vv. 1–55, 104–112 (attached to Śāradā Tilaka)',
     practitionerCaveat: 'The bīja system is a symbolic contemplative framework. Claims that chanting individual bījas physically activates specific endocrine glands lack traditional textual support.',
-    contraindications: [
-      'Manic or hypomanic episodes — the energizing quality of some bījas (particularly ram and ham) may amplify activation',
-      'Schizophrenia with auditory hallucinations — internal bīja repetition may be incorporated into existing hallucinatory frameworks',
-    ],
-    integrations: [
-      'Directly feeds into chakra-dharana — the bījas learned here become the sonic layer of cakra concentration practice',
-      'Pair with trataka: chant the bīja while gazing at the corresponding cakra yantra for a multi-sensory concentration practice',
-      'Follows from manasika-japa: once mental repetition is stable, apply that skill to the compact bīja syllables',
-    ],
-    variantPractices: [
-      { name: 'Bīja Nyāsa', description: 'Full tantric form where each bīja is mentally placed (nyāsa) on a specific body part along with prescribed mudrās — the ritual application described in the Ṣaṭ-Cakra-Nirūpaṇa.', level: 'Advanced' },
-      { name: 'Eka-Bīja Sādhana', description: 'Selection of a single bīja for sustained, deep repetition over weeks — a tantric approach where one seed-sound becomes the sole practice object, typically chosen by a guru based on the practitioner\'s constitution.', level: 'Advanced' },
-    ],
   },
   {
     slug: "kumbhaka",
@@ -202,21 +136,6 @@ export const intermediateSiddhis: Siddhi[] = [
     traditionalRef: 'Yoga Sūtras II.49–52',
     verbatimText: 'kumbhakaḥ pūrakābhyāntarasthāne kṣīṇa-śvāsa-vikṣepa-śūnya-vāyu — "Kumbhaka [is the state in which] the exhalation and inhalation have been calmed, the movement of breath ceases, and the light of vision is fixed." (paraphrased from YS II.49–51)',
     practitionerCaveat: 'Kumbhaka develops autonomic regulation. It is not a breath-holding competition — the tradition frames it as a bridge to meditation, not as an end in itself.',
-    contraindications: [
-      'Cardiovascular disease, hypertension, or atherosclerosis — retention alters intrathoracic pressure, heart rate, and blood pressure significantly',
-      'Pregnancy — CO₂ changes affect fetal oxygenation; the tradition itself contraindicates kumbhaka during pregnancy',
-      'Epilepsy — breath-holding may lower seizure threshold through cerebral vasoconstriction',
-      'Recent surgery or active infection — the immune system response to CO₂ elevation is not well-studied in recovery contexts',
-    ],
-    integrations: [
-      'Naturally follows from nadi-shuddhi — once alternate-nostril breathing is comfortable, antar-kumbhaka is the next step in the Haṭha Yoga Pradīpikā progression',
-      'Pair with pranava-japa: during retention, repeat Oṃ mentally for a combined breath-mantra practice',
-      'Feeds into ajapa-japa: advanced practitioners report that the so’haṃ becomes most vivid during the kumbhaka pause',
-    ],
-    variantPractices: [
-      { name: 'Kevala Kumbhaka', description: 'The spontaneous, effortless retention that arises from deep meditative absorption — Patañjali describes it as the state where the need to breathe simply ceases. Cannot be willed; only prepared for.', level: 'Advanced' },
-      { name: 'Kumbhaka with Bandha Trayī', description: 'Retention combined with the three bandhas (mūla, uḍḍīyāna, jālandhara) — the classical Haṭha Yoga form that redirects prāṇa into the suṣumnā channel.', level: 'Advanced' },
-    ],
   },
   {
     slug: "chakra-dharana",
@@ -239,19 +158,6 @@ export const intermediateSiddhis: Siddhi[] = [
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/yantra-chamber',
     traditionalRef: 'Ṣaṭ-Cakra-Nirūpaṇa vv. 1–55 (cakra descriptions); Ṣaṭ-Cakra-Nirūpaṇa vv. 104–112 (bīja assignments)',
     practitionerCaveat: 'Cakra dhāraṇā trains layered visualization. The seven-cakra rainbow model popularized in the West (attributed to Leadbeater, not the Sanskrit sources) adds colors not found in the primary texts.',
-    contraindications: [
-      'Psychosis or thought disorder — structured visualization may be incorporated into delusional systems',
-      'Complex PTSD — body-focused concentration on lower cakras can trigger somatic trauma memories without warning',
-    ],
-    integrations: [
-      'Requires bija-mantra as a prerequisite — the bījas learned there are the sonic layer of cakra dhāraṇā',
-      'Pair with trataka: external gazing develops concentration, then internal cakra visualization applies that concentration inward',
-      'Complements yoga-nidra: some Nidrā protocols include a cakra-by-cakra body scan that naturally feeds into this practice',
-    ],
-    variantPractices: [
-      { name: 'Cakra Dhāraṇā with Kuṇḍalinī Visualization', description: 'Adds the visualization of a luminous serpentine energy ascending through the cakras — the form that moves from dhāraṇā toward active kuṇḍalinī work, described in the Śiva Saṃhitā.', level: 'Advanced' },
-      { name: 'Ājñā-Dhāraṇā', description: 'Concentration exclusively on the ājñā cakra (sixth center) as a single-pointed practice — bypasses the full ascending sequence for practitioners who already have stable concentration.', level: 'Intermediate' },
-    ],
   },
   {
     slug: "sudarshana-chakra-sadhana",
@@ -274,18 +180,6 @@ export const intermediateSiddhis: Siddhi[] = [
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/temple-midnight',
     traditionalRef: 'Ahirbudhnya Saṃhitā (Pāñcarātra, c. 6th–9th c.); Schrader 1916',
     practitionerCaveat: 'The Sudarśana tradition is a Pāñcarātra liturgical system. Claims that the Sudarśana yantra "radiates protective energy" are devotional framing, not empirically verifiable claims.',
-    contraindications: [
-      'Paranoid personality or persecutory delusions — protective ritual framing may reinforce adversarial world-models',
-      'Active conflict or litigation — the protective intention, if misunderstood instrumentally, may harden adversarial positions',
-    ],
-    integrations: [
-      'The aṣṭākṣara (oṃ namaḥ nārāyaṇāya) is the same as many Vaiṣṇava pranava-japa traditions — Oṃ practice provides the sonic foundation',
-      'Pair with shanti-karma: Sudarśana for protection, Śānti for pacification — the two form a complementary pair within Pāñcarātra ritual',
-      'The structured visualization of the discus shares principles with chakra-dharana — both use sustained inner image work',
-    ],
-    variantPractices: [
-      { name: 'Sudarśana Kavaca', description: 'The armor-form (kavaca) where the Sudarśana mantra is recited over each body part for protection — a distinct liturgical form from the meditation practice, requiring separate Ācārya transmission.', level: 'Advanced' },
-    ],
   },
   {
     slug: "kamala-sadhana",
@@ -308,18 +202,6 @@ export const intermediateSiddhis: Siddhi[] = [
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/sri-yantra-sky',
     traditionalRef: 'Kamalā Mahāvidyā (Goswami Prahlad Giri, Chowkhamba); Śākta Praamoda',
     practitionerCaveat: 'Kamalā is sometimes conflated with Vaiṣṇava Lakṣmī worship — they share iconography but operate within distinct theological frameworks. The Mahāvidyā form is not a "prosperity mantra."',
-    contraindications: [
-      'Compulsive gambling or financial mania — the prosperity-adjacent iconography may reinforce unhealthy financial behaviors',
-      'Attachment disorders — devotional practices directed at a nurturing-mother figure can become co-dependent if the contemplative frame is lost',
-    ],
-    integrations: [
-      'The aim̐ hrīṁ srīṁ bīja framework shares bījas with bija-mantra practice — Kamalā sādhana applies the same syllables within a devotional context',
-      'Pair with sudarshana-chakra-sadhana: Kamalā for abundance, Sudarśana for protection — a Śākta-Vaiṣṇava bridge pair',
-      'The lotus visualization components complement chakra-dharana — both use layered symbolic imagery of blooming and containment',
-    ],
-    variantPractices: [
-      { name: 'Kamalā with Śrī Yantra', description: 'Full Śrī Vidyā form where Kamalā worship is performed in the context of the Śrī Yantra — the lotus goddess as one face of the nine-cakra Śrī Yantra. Requires separate dīkṣā.', level: 'Advanced' },
-    ],
   },
   {
     slug: "shanti-karma",
@@ -343,18 +225,5 @@ export const intermediateSiddhis: Siddhi[] = [
     traditionalRef: 'Agni Purāṇa ch. 138; Prapañcasāra Tantra; Mahānirvāṇa Tantra Ch. VIII',
     reconstructionNotes: 'Śānti karma is the gentlest of the six ṣaṭ-karma and the best-documented. Its procedural details are assembled from multiple independent textual witnesses (Agni Purāṇa, Prapañcasāra, Śāradā Tilaka), giving high confidence in the reconstructed framework.',
     practitionerCaveat: 'Śānti karma is a calming rite within the Śākta ritual framework. It is not a substitute for mental health treatment, conflict resolution, or any therapeutic intervention.',
-    contraindications: [
-      'Active suicidal crisis — ritual pacification is not crisis intervention; clinical support is primary',
-      'Domestic violence situations — the "pacification" framing, if applied to interpersonal conflict, may discourage necessary protective action',
-      'Acute mania — calming ritual may be perceived as dismissive of the elevated state, provoking agitation',
-    ],
-    integrations: [
-      'Pairs with sudarshana-chakra-sadhana as the protection/pacification dyad within Śākta-ṣaṭ-karma: Śānti for calming, Sudarśana for containment',
-      'The oṃ śāntiḥ kuru kuru svāhā mantra can be layered into yoga-nidra as a resolve (saṅkalpa) for practitioners familiar with the Śākta framework',
-      'The kalāśa (water vessel) component shares procedural ground with sandhya-vandanam ācamana — both use consecrated water as a ritual medium',
-    ],
-    variantPractices: [
-      { name: 'Mahā-Śānti Karma', description: 'The expanded pacification rite involving multiple deities, extended mantra cycles, and a full homa (fire offering) — the Agni Purāṇa describes this as the complete form for large-scale disturbances.', level: 'Advanced' },
-    ],
   }
 ];
