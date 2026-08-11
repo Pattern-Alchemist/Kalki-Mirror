@@ -911,7 +911,7 @@
 }
 .hero-brand-lockup {
   position: absolute;
-  top: clamp(5rem, 8vh, 6.5rem);
+  top: clamp(5.75rem, 9.5vh, 7.5rem);
   left: 50%;
   z-index: 5;
   display: flex;
@@ -976,7 +976,7 @@
 
 @media (max-width: 767px) {
   .hero-brand-lockup {
-    top: 4.5rem;
+    top: 5rem;
     width: calc(100% - 2rem);
     padding: 0.7rem 0.6rem 0.75rem;
   }
