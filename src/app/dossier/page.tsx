@@ -11,6 +11,9 @@ import { PrescriptionBlueprint } from '@/components/dossier/PrescriptionBlueprin
 import { TransitReadout } from '@/components/dossier/TransitReadout';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { CinematicImage } from '@/components/ui/CinematicImage';
+import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
+import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
+import Link from 'next/link';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import type { Tier, CautionLevel } from '@/lib/data/types';
 
@@ -668,7 +671,48 @@ export default function DossierPage() {
             </div>
           </motion.div>
         )}
+
       </AnimatePresence>
+
+      {/* ═══ CLOSING CTA ═══ */}
+      <div className="relative py-24 md:py-36 mt-16">
+        <ScrollParallax speed={-0.06} disabled>
+          <CinematicImage
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/sri-yantra-sky.jpeg'
+            alt='Sri Yantra against twilight sky'
+            className="absolute inset-0"
+            scrim="full"
+            vignette
+          />
+        </ScrollParallax>
+        <div className="absolute inset-0 pointer-events-none z-[1]" style={{ background: 'rgba(0,0,0,0.75)' }} />
+        <ParallaxText speed={-0.04} className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">
+          <p className="section-label mb-6">Beyond the Dossier</p>
+          <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
+            The pattern is named.<br/>The path is drawn.
+          </h2>
+          <p className="text-foreground/70 text-lg mb-12 editorial-spacing" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>
+            The Dossier maps what is. The Archive holds the practices that transform it. The Archivist provides the context no algorithm can.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <WhatsAppCTA variant="inline" message="I have my Dossier and want to discuss my pattern." />
+            <Link href="/archive" className="ghost-cta">Browse the Archive</Link>
+          </div>
+        </ParallaxText>
+      </div>
+
+      {/* ═══ BINDU PULSE FOOTER ═══ */}
+      <div className="relative pb-28 md:pb-20">
+        <div className="atmospheric-bg absolute inset-0 opacity-20" />
+        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
+          <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
+            <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
+          </div>
+          <p className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper">
+            PATTERN INTELLIGENCE — THE DOSSIER
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

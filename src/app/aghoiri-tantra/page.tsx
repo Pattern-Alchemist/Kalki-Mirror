@@ -24,12 +24,9 @@ const difficultyColor: Record<string, string> = {
   'Forbidden': 'text-red-600 border-red-600/30',
 };
 
-const tierBadgeStyle: Record<string, string> = {
-  prithvi: 'bg-[#8a7230]/15 text-[#d4a853] border-[#8a7230]/30',
-  jal: 'bg-[#4a8fa8]/15 text-[#7ec8e3] border-[#4a8fa8]/30',
-  agni: 'bg-[#c44b2b]/15 text-[#e8734f] border-[#c44b2b]/30',
-  akash: 'bg-[#7c6bb5]/15 text-[#a99de0] border-[#7c6bb5]/30',
-};
+import { TIER_BADGE_STYLE } from '@/lib/tier-colors';
+
+const tierBadgeStyle = TIER_BADGE_STYLE;
 
 const phaseAccent: Record<string, string> = {
   'Phase I': 'from-zinc-500 to-zinc-700',
@@ -450,7 +447,7 @@ export default function AghoriTantraPage() {
   return (
     <main className="bg-deep-black min-h-screen">
       {/* Hero */}
-      <header className="relative min-h-[80vh] md:min-h-[90vh] flex items-end overflow-hidden">
+      <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
           src='/assets/aghori/course/hero-cremation-initiation.jpeg'
           alt='Aghori Tantra — The Pathless Path of Bhairava'

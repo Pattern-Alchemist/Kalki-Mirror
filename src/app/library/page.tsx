@@ -22,13 +22,10 @@ import type { TantraCategory } from '@/lib/data/tantra-categories';
    Tier-grouped navigation. Evidence-graded. Course-linked.
    ───────────────────────────────────────────────────────────── */
 
+import { TIER_BADGE_STYLE } from '@/lib/tier-colors';
+
 /* ─── Shared Styles ─── */
-const tierBadgeStyle: Record<string, string> = {
-  prithvi: 'bg-[#8a7230]/15 text-[#d4a853] border-[#8a7230]/30',
-  jal: 'bg-[#4a8fa8]/15 text-[#7ec8e3] border-[#4a8fa8]/30',
-  agni: 'bg-[#c44b2b]/15 text-[#e8734f] border-[#c44b2b]/30',
-  akash: 'bg-[#7c6bb5]/15 text-[#a99de0] border-[#7c6bb5]/30',
-};
+const tierBadgeStyle = TIER_BADGE_STYLE;
 
 const evidenceColor: Record<string, string> = {
   TRADITIONAL: 'text-emerald-400/70 border-emerald-400/20',
@@ -538,7 +535,7 @@ export default function SadhanaLibraryPage() {
   return (
     <main className="bg-deep-black min-h-screen">
       {/* ═══ HERO ═══ */}
-      <header className="relative min-h-[80vh] md:min-h-[90vh] flex items-end overflow-hidden">
+      <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
           src='/assets/aghori/course/forgotten-chamber.jpeg'
           alt='The Sādhanā Library — Thirty-One Practice Protocols from Living Lineages'

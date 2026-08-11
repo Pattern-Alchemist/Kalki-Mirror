@@ -9,6 +9,7 @@ import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { PaywallModal } from "@/components/monetization/PaywallModal";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Analytics } from "@vercel/analytics/react";
+import { PageTransition } from "@/components/layout/PageTransition";
 
 /* ============================================================
    TYPOGRAPHY — The Inscriptions of Time
@@ -109,7 +110,9 @@ export default function RootLayout({
           <SmoothScroll>
             <SacredNav />
             <ScrollProgress />
-            <div className="pt-16 md:pt-20">{children}</div>
+            <PageTransition>
+              <div className="pt-16 md:pt-20">{children}</div>
+            </PageTransition>
             <SacredFooter />
             <div className="fixed-bottom-stack">
               <WhatsAppCTA variant="floating" />

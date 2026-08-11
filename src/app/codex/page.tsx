@@ -257,7 +257,7 @@ export default function CodexPage() {
   return (
     <main className="bg-deep-black min-h-screen">
       {/* ── Cinematic Hero ── */}
-      <header className="relative min-h-[80vh] md:min-h-[90vh] flex items-end overflow-hidden">
+      <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
           src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-ancient-manuscripts'
           alt="Ancient palm-leaf manuscripts"

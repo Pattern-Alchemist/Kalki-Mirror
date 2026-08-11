@@ -196,6 +196,7 @@ export default function PatternsPage() {
   const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
 
   return (
+    <>
     <main ref={containerRef} className="relative bg-deep-black min-h-screen">
       {/* ═══ FIXED BACKGROUND LAYER ═══ */}
       {!reduced && (
@@ -616,5 +617,26 @@ export default function PatternsPage() {
         </div>
       </div>
     </main>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: 'Pattern Atlas — The Mirror Method',
+          description: '12 emotional patterns mapped to specific tantrik sadhanas',
+          numberOfItems: allPatterns.length,
+          itemListElement: allPatterns.map(function(p, i) {
+            return {
+              '@type': 'ListItem',
+              position: i + 1,
+              name: p.name,
+              url: 'https://astrokalki.com/patterns/' + p.slug,
+            };
+          }),
+        }),
+      }}
+    />
+    </>
   );
 }

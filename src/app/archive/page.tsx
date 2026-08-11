@@ -212,6 +212,7 @@ export default function ArchivePage() {
   }, []);
 
   return (
+    <>
     <main ref={containerRef} className="relative bg-deep-black min-h-screen">
 
       {/* ═══ FIXED BACKGROUND LAYER — Crossfading 3 zones ═══ */}
@@ -614,5 +615,26 @@ export default function ArchivePage() {
         </div>
       </div>
     </main>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: 'The Akashic Archive — Siddhi Collection',
+          description: allSiddhis.length + ' siddhis across 16 archetypes',
+          numberOfItems: allSiddhis.length,
+          itemListElement: allSiddhis.slice(0, 20).map(function(s, i) {
+            return {
+              '@type': 'ListItem',
+              position: i + 1,
+              name: s.name,
+              url: 'https://astrokalki.com/archive/' + s.slug,
+            };
+          }),
+        }),
+      }}
+    />
+    </>
   );
 }

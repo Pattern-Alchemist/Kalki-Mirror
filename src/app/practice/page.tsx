@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
+import { STAGE_ACCENT_COLORS } from '@/lib/tier-colors';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { BreathTimer } from '@/components/practice/BreathTimer';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
@@ -31,7 +32,7 @@ const practiceSections = [
     subtitle: 'Breathwork Timer',
     sanskrit: 'Pr\u0101\u1E47\u0101y\u0101ma \u2014 The Mastery of Pr\u0101\u1E47a',
     icon: Wind,
-    color: '#D4AF37',
+    color: STAGE_ACCENT_COLORS.gold,
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-meditation-platform',
     text: 'The breath is the bridge between body and consciousness. Pr\u0101\u1E47\u0101y\u0101ma is not merely breathing exercises \u2014 it is the systematic regulation of vital energy through precise rhythmic patterns. Each pattern targets a specific nervous system state: N\u0101\u1E0D\u012B \u015Auddhi balances the left and right energy channels, Bhramar\u012B activates the vagus nerve for deep parasympathetic release, and Ujj\u0101y\u012B creates internal heat and focused attention. The timer below guides you through each phase with visual and haptic cues, turning an ancient practice into a precise, repeatable protocol.',
   },
@@ -42,7 +43,7 @@ const practiceSections = [
     subtitle: 'Mantra Counter',
     sanskrit: 'Japa \u2014 The Repetition That Dissolves',
     icon: CircleDot,
-    color: '#7EC8E3',
+    color: STAGE_ACCENT_COLORS.teal,
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-cremation-ground-alt',
     text: 'Count your mantra repetitions with precision. The m\u0101l\u0101 persists in your browser across sessions, tracking your daily rounds and total count. Each bead represents one full recitation \u2014 a single thread in the tapestry of your practice. Select from traditional mantras or enter your own. The counter supports multiple m\u0101l\u0101s of 108 beads, with haptic and visual feedback at each bead boundary. In the tantric tradition, 108 is not arbitrary \u2014 it represents the 108 energy lines (n\u0101\u1E0D\u012Bs) that converge to form the heart chakra.',
   },
@@ -53,7 +54,7 @@ const practiceSections = [
     subtitle: 'Meditation Timer',
     sanskrit: 'Mauna \u2014 The Practice of Sacred Silence',
     icon: Timer,
-    color: '#A99DE0',
+    color: STAGE_ACCENT_COLORS.violet,
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/dark-temple-interior',
     text: 'A minimal timer for unstructured meditation practice. Set your duration, begin sitting, and let the timer handle the rest. A gentle bell signals the end of the session \u2014 no jarring alarms, no interruptions to your stillness. The interface disappears during practice, leaving only the breathing indicator and remaining time. Designed to support, never distract. In the Aghor\u012B tradition, mauna (silence) is considered the highest form of s\u0101dhana \u2014 not because speech is sinful, but because silence reveals what words conceal.',
   },

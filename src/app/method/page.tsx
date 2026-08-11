@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
+import { STAGE_ACCENT_COLORS } from '@/lib/tier-colors';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { MirrorMethodSteps } from '@/components/patterns/MirrorMethodSteps';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
@@ -24,7 +25,7 @@ const stages = [
     text: 'The first step is naming the loop. Every recurring frustration, every self-sabotaging decision, every relationship that ends the same way — these are not random. They are patterns with names, origins, and specific sādhanas designed to address them. KALKI maps 12 core psychological patterns to specific tantric practices drawn from the Aghorī, Kashmiri Shaiva, and Buddhist Vajrayāna traditions. Until a pattern is named, it operates invisibly — shaping your choices from the shadows of unconscious habit. Recognition is the first act of freedom.',
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/manuscript-sacred-geometry.jpeg',
     icon: '◉',
-    color: '#D4AF37',
+    color: STAGE_ACCENT_COLORS.gold,
   },
   {
     num: 2,
@@ -33,7 +34,7 @@ const stages = [
     text: 'Every pattern started somewhere. Not as a flaw, but as a survival strategy. The Rescuer pattern formed because love felt conditional on being useful. The Perfectionist formed because safety meant never making a mistake. The Victim pattern formed because power was taken, not given. Understanding the origin dissolves shame and replaces it with clarity — you see not a broken self, but a brilliant adaptation that has outlived its purpose. The Mirror Method traces each pattern back to its emotional root, often located in early formative experiences where the nervous system first learned to contract.',
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight.jpeg',
     icon: '◎',
-    color: '#7EC8E3',
+    color: STAGE_ACCENT_COLORS.teal,
   },
   {
     num: 3,
@@ -42,7 +43,7 @@ const stages = [
     text: 'Patterns persist because they are reinforced by karma — not in the mystical sense, but in the neurological. Each repetition strengthens the neural pathway. Each time you choose the familiar pain over the unknown growth, you deepen the groove. The yogic concept of saṃskāra (mental imprint) maps precisely to modern neuroscience\'s understanding of neuroplasticity: repeated neural firing creates stable pathways that become the default mode of perception and reaction. The sādhanas are designed to create new grooves — new neural pathways that weaken the old pattern while strengthening a new, conscious response.',
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/pattern-intelligence-rescuer.jpeg',
     icon: '◎',
-    color: '#E8734F',
+    color: STAGE_ACCENT_COLORS.copper,
   },
   {
     num: 4,
@@ -51,7 +52,7 @@ const stages = [
     text: 'Patterns do not stay in the mind. They express through behavior: the way you speak, the relationships you choose, the work you avoid, the anger you swallow, the boundaries you cannot set. Observing these expressions without judgment is itself a practice — and it is the gateway to change. The Mirror Method teaches you to witness your own behavioral expressions as a detached observer would, creating the critical gap between stimulus and response that Viktor Frankl described. In that gap lies your freedom. In that gap, the sādhana begins.',
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/mountain-pass-trident.jpeg',
     icon: '◉',
-    color: '#A99DE0',
+    color: STAGE_ACCENT_COLORS.violet,
   },
   {
     num: 5,
@@ -60,7 +61,7 @@ const stages = [
     text: 'This is where the ancient meets the personal. With awareness of the pattern, its origin, its reinforcement, and its expression, you can now choose a different response. The specific sādhana prescribed for your pattern becomes the tool of intervention — not as an escape, but as a disciplined practice of rewiring. Mantra dissolves the emotional charge. Prāṇāyāma regulates the nervous system. Yantra meditation rewires spatial cognition. Each practice targets a specific layer of the pattern, creating a comprehensive intervention that addresses not just the symptom but the root. This is not self-improvement. This is self-dissolution — the systematic untying of knots you did not know you carried.',
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/copper-trident-courtyard-2.jpeg',
     icon: '◉',
-    color: '#D4AF37',
+    color: STAGE_ACCENT_COLORS.gold,
   },
 ];
 
