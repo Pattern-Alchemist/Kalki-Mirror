@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Cormorant_Garamond } from 'next/font/google';
 import "./globals.css";
 import { SacredNav } from "@/components/nav/SacredNav";
 import { SacredFooter } from "@/components/nav/SacredFooter";
@@ -15,26 +14,6 @@ import { PaywallModal } from "@/components/monetization/PaywallModal";
    Body/Data: Inter (Geist-class Swiss sans-serif).
    Monospace: JetBrains Mono (pattern intelligence, esoteric codes).
    ============================================================ */
-
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
-  variable: '--font-cormorant',
-  display: 'swap',
-  weight: ['300', '400', '500'],
-  style: ['normal', 'italic'],
-});
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-jetbrains',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: {
@@ -62,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-deep-black text-foreground antialiased">
         <TierProvider>
           <SmoothScroll>
