@@ -23,10 +23,21 @@ const difficultyColor: Record<string, string> = {
 };
 
 const phaseAccent: Record<string, string> = {
-  'Phase 0': 'from-zinc-500 to-zinc-700',
-  'Phase 1': 'from-amber-600 to-red-700',
-  'Phase 2': 'from-red-700 to-red-900',
-  'Phase 3': 'from-gold to-amber-700',
+  'Phase I': 'from-zinc-500 to-zinc-700',
+  'Phase II': 'from-amber-600 to-amber-800',
+  'Phase III': 'from-amber-700 to-red-700',
+  'Phase IV': 'from-red-700 to-red-900',
+  'Phase V': 'from-gold to-amber-700',
+  'Phase VI': 'from-red-800 to-red-950',
+  'Phase VII': 'from-red-950 to-black',
+  'Phase VIII': 'from-emerald-800 to-emerald-950',
+};
+
+const evidenceColor: Record<string, string> = {
+  TRADITIONAL: 'text-emerald-400/70 border-emerald-400/20',
+  ORAL: 'text-amber-400/70 border-amber-400/20',
+  FIELD: 'text-sky-400/70 border-sky-400/20',
+  RECONSTRUCTED: 'text-foreground/40 border-foreground/20',
 };
 
 function LessonContent({ lesson, isOpen }: { lesson: CourseLesson; isOpen: boolean }) {
@@ -41,7 +52,13 @@ function LessonContent({ lesson, isOpen }: { lesson: CourseLesson; isOpen: boole
         className="overflow-hidden"
       >
         <div className="pt-6 pb-2 space-y-6">
-          {/* Lesson body — render markdown-like paragraphs */}
+          {/* Evidence badge */}
+          {lesson.evidence && (
+            <span className={cn('inline-block px-2 py-0.5 rounded border text-[0.6rem] font-mono tracking-widest uppercase mb-4', evidenceColor[lesson.evidence] || evidenceColor.RECONSTRUCTED)}>
+              {lesson.evidence}
+            </span>
+          )}
+          {/* Lesson body */}
           {lesson.content.split('\n\n').map((para, i) => {
             if (para.startsWith('**') && para.endsWith('**')) {
               return <p key={i} className="text-gold font-display text-lg tracking-wide">{para.replace(/\*\*/g, '')}</p>;
@@ -193,7 +210,7 @@ export default function AghoriTantraPage() {
       {/* Hero */}
       <header className="relative min-h-[80vh] md:min-h-[90vh] flex items-end overflow-hidden">
         <CinematicImage
-          src='/assets/tantra/aghoiri-course/hero-cremation-initiation.jpeg'
+          src='/assets/aghori/course/hero-cremation-initiation.jpeg'
           alt='Aghori Tantra — The Pathless Path of Bhairava'
           kenBurns="slow"
           scrim="bottom"
@@ -229,13 +246,13 @@ export default function AghoriTantraPage() {
             {COURSE_META.subtitle}
           </motion.p>
           <motion.p
-            className="text-foreground text-xl md:text-2xl max-w-3xl editorial-spacing"
+            className="text-foreground/70 text-base md:text-lg max-w-2xl leading-relaxed"
             style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             animate={fadeInUp.visible}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
-            {COURSE_META.subtitle}
+            {COURSE_META.description}
           </motion.p>
         </div>
       </header>
@@ -264,6 +281,19 @@ export default function AghoriTantraPage() {
             <p className="text-foreground text-sm font-medium">{aghoriCourse.reduce((a, m) => a + m.lessons.length, 0)} Lessons</p>
           </div>
         </div>
+        {/* Lineage */}
+        <div className="mt-6 bg-foreground/5 border border-foreground/10 rounded-lg p-5">
+          <p className="text-caption text-xs mb-2">Lineage</p>
+          <p className="text-foreground/60 text-xs leading-relaxed font-mono">{COURSE_META.lineageGuru}</p>
+        </div>
+        {/* Evidence grading legend */}
+        <div className="mt-4 flex flex-wrap gap-3">
+          {COURSE_META.evidenceGrading && Object.entries(COURSE_META.evidenceGrading).map(([k, v]) => (
+            <span key={k} className={cn('px-2 py-1 rounded border text-[0.6rem] font-mono tracking-wider uppercase', evidenceColor[k])}>
+              {k}
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Modules */}
@@ -282,7 +312,10 @@ export default function AghoriTantraPage() {
             <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
           </div>
           <p className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper">
-            AGHORĪ TANTRA — THE PATH NEVER ENDS
+            AGHORĪ TANTRA — THE ASHRAM PATH
+          </p>
+          <p className="text-foreground/30 text-xs mt-3 max-w-md mx-auto">
+            {COURSE_META.source}
           </p>
         </div>
       </footer>
