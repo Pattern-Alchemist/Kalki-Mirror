@@ -21,7 +21,7 @@ export const aghoriSiddhis: Siddhi[] = [
     evidenceSources: [{confidence:'medium',title:'Aghora Diksha field compilation (user-supplied) (primary)',url:''},{confidence:'medium',title:'Aghora Initiation Chart (user-supplied) (primary)',url:''}],
     minTier: 'akash',
     archetypeId: 'shaiva',
-    image: '/assets/tantra/aghoiri-course/bhairava-fierce-form.jpeg',
+    image: '/assets/aghori/course/bhairava-fierce-form.jpeg',
   },
   {
     slug: 'kalabhairava-siddha-sadhana',
@@ -43,7 +43,7 @@ export const aghoriSiddhis: Siddhi[] = [
     evidenceSources: [{confidence:'medium',title:'Sri Kalabhairava Siddha Sadhana Kit (user-supplied field manual) (primary)',url:''}],
     minTier: 'agni',
     archetypeId: 'shaiva',
-    image: '/assets/tantra/aghoiri-course/bhairava-fierce-form.jpeg',
+    image: '/assets/aghori/course/bhairava-fierce-form.jpeg',
   },
   {
     slug: 'kapal-sadhana',
@@ -65,7 +65,7 @@ export const aghoriSiddhis: Siddhi[] = [
     evidenceSources: [{confidence:'medium',title:'Sadhana and Kriya compilation (user-supplied) (primary)',url:''}],
     minTier: 'akash',
     archetypeId: 'shaiva',
-    image: '/assets/tantra/aghoiri-course/kapal-puja-ritual.jpeg',
+    image: '/assets/aghori/course/kapal-puja-ritual.jpeg',
   },
   {
     slug: 'mahakali-amavasya-sadhana',
@@ -87,7 +87,7 @@ export const aghoriSiddhis: Siddhi[] = [
     evidenceSources: [{confidence:'medium',title:'Sadhana and Kriya compilation (user-supplied, Mahakali section) (primary)',url:''}],
     minTier: 'akash',
     archetypeId: 'kali',
-    image: '/assets/tantra/aghoiri-course/mahakali-cremation.jpeg',
+    image: '/assets/aghori/course/mahakali-cremation.jpeg',
   },
   {
     slug: 'mahakal-bhasm-sadhana',

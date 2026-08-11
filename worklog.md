@@ -334,3 +334,23 @@ Stage Summary:
 - SEO: 60 dynamic routes now have unique per-page titles and descriptions
 - Bundle: 38 dead components + 28 dead dependencies removed
 - Key architectural fix: motion tokens are plain objects, not Variants-typed, eliminating 507 TS errors at their source
+---
+Task ID: 1
+Agent: main
+Task: Clean up duplicate/orphaned assets and fix broken image paths
+
+Work Log:
+- Deleted public/assets/tantra/aghoiri-course/ (7 files duplicated from aghori/course/)
+- Fixed 3 broken image paths in siddhis-aghori.ts pointing to deleted directory
+- Deleted 61 loose orphaned files from public/assets/tantra/ (hero-*, pattern-*, etc.)
+- Deleted duplicate public/assets/tantra/mahavidya/ (10 files, /mahavidyas/ is canonical)
+- Deleted duplicate public/pattern-atlas/zone-mirror.png (.jpeg is canonical)
+- Deleted orphaned archive-zone-deep.jpeg and archive-zone-threshold.jpeg at root
+- Removed 5 empty directories (deities, mantra, ritual, sadhana, siddhis/illustrations)
+- Added NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=b9oo5abp to .env
+
+Stage Summary:
+- public/ reduced from 141 to 63 files
+- All image paths now resolve correctly
+- No broken local references remain
+- Cloudinary full URLs work as-is; env var fixes CinematicImage cloudinaryId prop
