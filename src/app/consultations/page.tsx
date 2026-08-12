@@ -357,7 +357,7 @@ export default function ConsultationsPage() {
           submitting={submitting}
           formError={formError}
           fileInputRef={fileInputRef}
-          reduced={reduced}
+          reduced={!!reduced}
           setForm={setForm}
           setSubmitted={setSubmitted}
           setSubmitting={setSubmitting}
