@@ -452,3 +452,24 @@ Stage Summary:
 - 15 chapters covering: Executive Summary, Strategic Rationale, Ontological Forensics methodology, Seven-Layer Investigation Model, Evidence Classification (E0-E5), Epistemic Seal System, Response Architecture (Level 0-6), Four-Gate Service Architecture, Reality Matrix Audit, Content Ecosystem, Visual Identity & UX, Legal Strategy, SEO, Development Roadmap, Pricing, Acceptance Criteria
 - Cinematic cover with gold accents, grid pattern, yantra geometry
 - No implementation until user approves
+---
+Task ID: 1-7
+Agent: main
+Task: Complete polish pass — 7 remaining items from cinematic audit
+
+Work Log:
+- Extracted 8 hardcoded tier badge hex values into TIER_BADGE_STYLES + TIER_COLORS_LIGHT in tier-gate.ts
+- Replaced duplicated tierBadgeStyle locals in library/ and aghoiri-tantra/ with shared import
+- Dossier page already had closing CTA + bindu footer from remote; cleaned duplicate code
+- Normalized hero heights: library 60/70→90/100vh, codex 80/90→90/100vh, aghoiri-tantra 80/90→90/100vh
+- Upgraded SacredFooter to cinematic: atmospheric bg, staggered motion, animated divider, bindu separator
+- Enhanced 404 page: 100vh, larger yantra, radial gold glow, divider-gold, extra nav hints, bottom bindu
+- Created PageTransition component (AnimatePresence + usePathname, 350ms fade+slide, reduced-motion safe)
+- Added JSON-LD structured data to archive, archive/[slug], patterns, patterns/[slug], pricing layouts
+- Fixed TS errors: duplicate WhatsAppCTA import, boolean|null coercion
+
+Stage Summary:
+- 14 files changed, ~470 insertions, ~100 deletions (main commit)
+- 2 files fixed in follow-up (TS error cleanup)
+- All 7 items completed: tier colors, dossier footer, hero heights, SacredFooter, 404, page transitions, JSON-LD
+- Zero TypeScript errors, pushed to main
