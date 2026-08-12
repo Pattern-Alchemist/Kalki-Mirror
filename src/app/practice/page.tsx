@@ -1,667 +1,940 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import dynamic from 'next/dynamic';
-import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
-import { CinematicImage } from '@/components/ui/CinematicImage';
-import { STAGE_ACCENT_COLORS } from '@/lib/tier-colors';
-import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
-import { BreathTimer } from '@/components/practice/BreathTimer';
-import { allBreathPatterns } from '@/lib/data/breath-patterns';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { BackButton } from '@/components/nav/BackButton';
-import { ResonanceToggle } from '@/components/ui/ResonanceToggle';
-import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
+import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
-import { Timer, CircleDot, Wind, Flame, Moon } from 'lucide-react';
+import { allSiddhis } from '@/lib/data/siddhis';
+import { logSession, getSessions, getSessionStats } from './actions';
+import type { SessionRecord, SessionStats } from './actions';
+import Link from 'next/link';
+import {
+  Timer,
+  Play,
+  Pause,
+  Square,
+  Flame,
+  Calendar,
+  Clock,
+  Trophy,
+  Activity,
+  ChevronDown,
+  ChevronRight,
+  ArrowRight,
+} from 'lucide-react';
 
-const AIBreathworkGenerator = dynamic(() => import('@/components/ai/AIBreathworkGenerator').then(m => ({ default: m.AIBreathworkGenerator })), { ssr: false, loading: () => <div className="h-32" /> });
+/* ══════════════════════════════════════════════════════════════
+   CONSTANTS & HELPERS
+   ══════════════════════════════════════════════════════════════ */
 
-const FREE_PATTERNS = ['nadi-shuddhi-basic', 'bhramari', 'ujjayi-pranayama'];
+const MOOD_LABELS = ['Heavy', 'Low', 'Neutral', 'Good', 'Excellent'] as const;
+const MOOD_MIN = 1;
+const MOOD_MAX = 5;
+const DURATION_OPTIONS = [15, 30, 45, 60];
+const HEATMAP_DAYS = 90;
+const HEATMAP_WEEKS = 13;
+const HEATMAP_DAY_LABELS = ['Mon', '', 'Wed', '', 'Fri', '', 'Sun'];
 
-/* ─────────────────────────────────────────────────────────────
-   SECTION DATA — Three practice gates
-   ───────────────────────────────────────────────────────────── */
-
-const practiceSections = [
-  {
-    id: 'pranayama',
-    num: 1,
-    title: 'Pr\u0101\u1E47\u0101y\u0101ma',
-    subtitle: 'Breathwork Timer',
-    sanskrit: 'Pr\u0101\u1E47\u0101y\u0101ma \u2014 The Mastery of Pr\u0101\u1E47a',
-    icon: Wind,
-    color: STAGE_ACCENT_COLORS.gold,
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-meditation-platform',
-    text: 'The breath is the bridge between body and consciousness. Pr\u0101\u1E47\u0101y\u0101ma is not merely breathing exercises \u2014 it is the systematic regulation of vital energy through precise rhythmic patterns. Each pattern targets a specific nervous system state: N\u0101\u1E0D\u012B \u015Auddhi balances the left and right energy channels, Bhramar\u012B activates the vagus nerve for deep parasympathetic release, and Ujj\u0101y\u012B creates internal heat and focused attention. The timer below guides you through each phase with visual and haptic cues, turning an ancient practice into a precise, repeatable protocol.',
-  },
-  {
-    id: 'japa',
-    num: 2,
-    title: 'Japa M\u0101l\u0101',
-    subtitle: 'Mantra Counter',
-    sanskrit: 'Japa \u2014 The Repetition That Dissolves',
-    icon: CircleDot,
-    color: STAGE_ACCENT_COLORS.teal,
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-cremation-ground-alt',
-    text: 'Count your mantra repetitions with precision. The m\u0101l\u0101 persists in your browser across sessions, tracking your daily rounds and total count. Each bead represents one full recitation \u2014 a single thread in the tapestry of your practice. Select from traditional mantras or enter your own. The counter supports multiple m\u0101l\u0101s of 108 beads, with haptic and visual feedback at each bead boundary. In the tantric tradition, 108 is not arbitrary \u2014 it represents the 108 energy lines (n\u0101\u1E0D\u012Bs) that converge to form the heart chakra.',
-  },
-  {
-    id: 'timer',
-    num: 3,
-    title: 'Silent Sitting',
-    subtitle: 'Meditation Timer',
-    sanskrit: 'Mauna \u2014 The Practice of Sacred Silence',
-    icon: Timer,
-    color: STAGE_ACCENT_COLORS.violet,
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/dark-temple-interior',
-    text: 'A minimal timer for unstructured meditation practice. Set your duration, begin sitting, and let the timer handle the rest. A gentle bell signals the end of the session \u2014 no jarring alarms, no interruptions to your stillness. The interface disappears during practice, leaving only the breathing indicator and remaining time. Designed to support, never distract. In the Aghor\u012B tradition, mauna (silence) is considered the highest form of s\u0101dhana \u2014 not because speech is sinful, but because silence reveals what words conceal.',
-  },
-];
-
-/* ─── Section Navigation (Desktop sidebar + Mobile bottom dock) ─── */
-function SectionNav({ activeSection }: { activeSection: number }) {
-  return (
-    <>
-      {/* Desktop sidebar */}
-      <nav
-        className="hidden lg:flex fixed left-0 top-1/2 -translate-y-1/2 z-30 flex-col gap-1 pl-4"
-        aria-label="Practice section navigation"
-      >
-        {practiceSections.map((s, i) => {
-          const isActive = i === activeSection;
-          return (
-            <a
-              key={s.id}
-              href={`#${s.id}`}
-              className={cn(
-                'group flex items-center gap-3 py-2 pr-4 rounded-r transition-all duration-300',
-                isActive ? 'bg-foreground/5' : 'hover:bg-foreground/[0.02]',
-              )}
-              aria-current={isActive ? 'true' : undefined}
-            >
-              <div className="relative flex flex-col items-center">
-                <div
-                  className={cn(
-                    'w-2.5 h-2.5 rounded-full border-2 transition-all duration-500',
-                    isActive
-                      ? 'border-gold bg-gold scale-125'
-                      : 'border-foreground/20 bg-transparent group-hover:border-foreground/40',
-                  )}
-                  style={isActive ? { boxShadow: `0 0 8px ${s.color}66` } : undefined}
-                />\n                {i < practiceSections.length - 1 && (
-                  <div className={cn(
-                    'w-px h-6 mt-1 transition-colors duration-500',
-                    i < activeSection ? 'bg-gold/30' : 'bg-foreground/10',
-                  )} />
-                )}
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className={cn(
-                  'font-mono text-[0.6rem] tracking-widest uppercase transition-colors duration-300',
-                  isActive ? 'text-gold' : 'text-foreground/30 group-hover:text-foreground/50',
-                )}>
-                  Gate {s.num}
-                </span>
-                <span className={cn(
-                  'text-[0.55rem] truncate max-w-[110px] transition-colors duration-300',
-                  isActive ? 'text-foreground/60' : 'text-foreground/20 group-hover:text-foreground/30',
-                )}>
-                  {s.title}
-                </span>
-              </div>
-            </a>
-          );
-        })}
-      </nav>
-
-      {/* Mobile horizontal scroll dock */}
-      <nav
-        className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-deep-black/90 backdrop-blur-md border-t border-foreground/5"
-        aria-label="Practice section navigation"
-      >
-        <div className="flex overflow-x-auto gap-0 px-2 py-2 scrollbar-none">
-          {practiceSections.map((s, i) => {
-            const isActive = i === activeSection;
-            return (
-              <a
-                key={s.id}
-                href={`#${s.id}`}
-                className={cn(
-                  'flex flex-col items-center gap-1 px-4 py-1.5 rounded-md shrink-0 transition-all duration-300',
-                  isActive ? 'bg-foreground/5' : 'hover:bg-foreground/[0.02]',
-                )}
-              >
-                <span className={cn(
-                  'font-mono text-[0.6rem] tracking-widest uppercase',
-                  isActive ? 'text-gold' : 'text-foreground/30',
-                )}>
-                  {s.num}
-                </span>
-                <div className={cn(
-                  'w-1 h-1 rounded-full transition-all duration-500',
-                  isActive ? 'bg-gold' : 'bg-foreground/15',
-                )} />
-              </a>
-            );
-          })}
-        </div>
-      </nav>
-    </>
-  );
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
 }
 
-/* ─── Breathwork Pattern Detail (extracted to avoid SWC parse issues) ─── */
-function BreathworkPanel({ active, reduced }: { active: string; reduced: boolean }) {
-  const freePatterns = allBreathPatterns.filter((p) => FREE_PATTERNS.includes(p.slug));
-  const lockedPatterns = allBreathPatterns.filter((p) => !FREE_PATTERNS.includes(p.slug));
-
-  return (
-    <>
-      {/* Pattern tabs */}
-      <div className="flex flex-wrap gap-2 mb-12">
-        {freePatterns.map((p) => (
-          <BreathTab key={p.slug} pattern={p} isActive={active === p.slug} locked={false} />
-        ))}
-        {lockedPatterns.map((p) => (
-          <BreathTab key={p.slug} pattern={p} isActive={false} locked />
-        ))}
-      </div>
-
-      <BreathTimer patternSlug={active} />
-
-      {/* AI Breathwork Generator */}
-      <div className="mt-12">
-        <AIBreathworkGenerator />
-      </div>
-    </>
-  );
+function formatTimerTime(totalSeconds: number): string {
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
 
-function BreathTab({ pattern, isActive, locked }: { pattern: typeof allBreathPatterns[0]; isActive: boolean; locked: boolean }) {
+/* ── Siddhi grouped by level — built once outside component ── */
+function buildSiddhisByLevel() {
+  const grouped = new Map<string, Array<{ slug: string; name: string }>>();
+  allSiddhis.forEach((s) => {
+    const level = s.level;
+    if (!grouped.has(level)) grouped.set(level, []);
+    grouped.get(level)!.push({ slug: s.slug, name: s.name });
+  });
+  return grouped;
+}
+
+const SIDDHIS_BY_LEVEL = buildSiddhisByLevel();
+
+/* ══════════════════════════════════════════════════════════════
+   SUB-COMPONENTS
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Stat Card ── */
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+  suffix,
+}: {
+  icon: React.ElementType;
+  label: string;
+  value: number;
+  suffix?: string;
+}) {
+  const reduced = useReducedMotion();
   return (
-    <button
-      disabled={locked}
-      className={cn(
-        'px-5 py-2.5 text-[0.65rem] font-ui tracking-[0.15em] uppercase rounded-sm transition-all duration-400',
-        isActive
-          ? 'bg-gold text-deep-black'
-          : locked
-            ? 'bg-surface text-text-muted/40 cursor-not-allowed border border-gold/5'
-            : 'bg-surface text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20',
-      )}
-      title={locked ? `${pattern.name} \u2014 unlock with ${pattern.minTier} tier` : undefined}
+    <motion.div
+      className="glass-panel p-4 md:p-6 flex flex-col items-center text-center gap-2"
+      variants={staggerItem}
+      initial={reduced ? { opacity: 1 } : staggerItem.hidden}
+      whileInView={reduced ? { opacity: 1 } : staggerItem.visible}
+      viewport={{ once: true, margin: '-40px' }}
     >
-      {pattern.name}
-    </button>
+      <Icon className="w-5 h-5 text-gold-dim mb-1" strokeWidth={1.5} />
+      <span className="text-text-muted text-[0.65rem] font-mono tracking-[0.15em] uppercase">
+        {label}
+      </span>
+      <span className="text-2xl md:text-3xl font-display text-ivory">
+        <AnimatedCounter target={value} suffix={suffix || ''} />
+      </span>
+    </motion.div>
   );
 }
 
-/* ─── MAIN PAGE ─── */
-export default function PracticePage() {
-  const [active, setActive] = useState(FREE_PATTERNS[0]);
-  const reduced = useReducedMotion() ?? false;
-  const [activeSection, setActiveSection] = useState(0);
-  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  // Track active section via IntersectionObserver
-  useEffect(() => {
-    const refs = sectionRefs.current.filter(Boolean);
-    if (refs.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idx = refs.indexOf(entry.target as HTMLDivElement);
-            if (idx !== -1) setActiveSection(idx);
-          }
-        });
-      },
-      { rootMargin: '-20% 0px -60% 0px', threshold: 0 },
-    );
-
-    refs.forEach((ref) => { if (ref) observer.observe(ref); });
-    return () => observer.disconnect();
+/* ── Calendar Heatmap ── */
+function CalendarHeatmap({ sessions }: { sessions: SessionRecord[] }) {
+  const reduced = useReducedMotion();
+  const today = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
   }, []);
 
+  // Build day→count map
+  const dayCountMap = useMemo(() => {
+    const map = new Map<string, number>();
+    sessions.forEach((s) => {
+      const d = new Date(s.createdAt);
+      d.setHours(0, 0, 0, 0);
+      const key = d.toISOString();
+      map.set(key, (map.get(key) || 0) + 1);
+    });
+    return map;
+  }, [sessions]);
+
+  // Build grid cells: 13 weeks × 7 days
+  const cells = useMemo(() => {
+    const grid: Array<{ date: Date; count: number; isFuture: boolean; key: string }[]> = [];
+    // Find the Monday that starts the 90-day window
+    const start = new Date(today);
+    start.setDate(start.getDate() - (HEATMAP_DAYS - 1));
+    // Adjust to previous Monday
+    const dayOfWeek = start.getDay();
+    const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    start.setDate(start.getDate() + mondayOffset);
+
+    for (let week = 0; week < HEATMAP_WEEKS; week++) {
+      const weekCells: Array<{ date: Date; count: number; isFuture: boolean; key: string }> = [];
+      for (let day = 0; day < 7; day++) {
+        const cellDate = new Date(start);
+        cellDate.setDate(start.getDate() + week * 7 + day);
+        cellDate.setHours(0, 0, 0, 0);
+        const key = cellDate.toISOString();
+        const count = dayCountMap.get(key) || 0;
+        const isFuture = cellDate > today;
+        weekCells.push({ date: cellDate, count, isFuture, key });
+      }
+      grid.push(weekCells);
+    }
+    return grid;
+  }, [dayCountMap, today]);
+
+  function getCellColor(count: number, isFuture: boolean): string {
+    if (isFuture) return 'bg-zinc-900/30';
+    if (count === 0) return 'bg-zinc-800/40';
+    if (count === 1) return 'bg-gold/20';
+    if (count === 2) return 'bg-gold/40';
+    return 'bg-gold/70';
+  }
+
   return (
-    <div className="bg-deep-black min-h-screen">
-      {/* \u2550\u2550\u2550 HERO \u2550\u2550\u2550 */}
-      <header className="relative min-h-[85vh] md:min-h-[95vh] flex items-end overflow-hidden">
-        <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/forgotten-forest-shrine.jpeg'
-          alt='S\u0101dhana Tools \u2014 Guided Practice Gateway'
-          kenBurns="slow"
-          scrim="bottom"
-          vignette
-          volumetric
-          dust
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-deep-black via-deep-black/30 to-deep-black/40" />
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-10 pb-20 md:pb-28 pt-32">
-          <motion.p
-            className="section-label mb-6"
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            animate={fadeInUp.visible}
-          >
-            THE PRACTICE GATE
-          </motion.p>
-          <motion.h1
-            className="font-display text-4xl md:text-6xl lg:text-7xl xl:text-8xl text-white leading-[0.95] tracking-[0.06em] mb-5 hero-heading"
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            animate={fadeInUp.visible}
-            transition={{ delay: 0.1, duration: 0.8 }}
-          >
-            S\u0101dhana<br />Tools
-          </motion.h1>
-          <motion.p
-            className="text-foreground/70 text-lg md:text-xl max-w-2xl leading-relaxed"
-            style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            animate={fadeInUp.visible}
-            transition={{ delay: 0.2, duration: 0.8 }}
-          >
-            Guided breathwork, japa counting, and meditation timers. Three practice gates drawn from living tantric lineages \u2014 structured for the modern practitioner.
-          </motion.p>
-        </div>
-      </header>
+    <motion.div
+      className="glass-panel p-4 md:p-6"
+      initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+      whileInView={reduced ? { opacity: 1 } : fadeInUp.visible}
+      viewport={{ once: true, margin: '-60px' }}
+    >
+      <div className="flex items-center gap-2 mb-4">
+        <Calendar className="w-4 h-4 text-gold-dim" strokeWidth={1.5} />
+        <span className="section-label text-[0.65rem]">90-DAY PRACTICE MAP</span>
+      </div>
 
-      {/* \u2550\u2550\u2550 STATS BAR \u2550\u2550\u2550 */}
-      <div className="atmospheric-bg h-24 -mt-10 relative z-10" />
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 -mt-4 mb-12">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-5 text-center">
-            <p className="font-display text-3xl md:text-4xl text-gold font-light">{allBreathPatterns.length}</p>
-            <p className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-foreground/40 mt-1">Breath Patterns</p>
+      {/* Legend */}
+      <div className="flex items-center gap-2 mb-4 text-[0.6rem] font-mono text-text-muted">
+        <span>Less</span>
+        <div className="w-3 h-3 rounded-sm bg-zinc-800/40" />
+        <div className="w-3 h-3 rounded-sm bg-gold/20" />
+        <div className="w-3 h-3 rounded-sm bg-gold/40" />
+        <div className="w-3 h-3 rounded-sm bg-gold/70" />
+        <span>More</span>
+      </div>
+
+      {/* Grid */}
+      <div className="overflow-x-auto pb-2">
+        <div className="inline-grid gap-[3px] min-w-fit">
+          {/* Day labels */}
+          <div className="flex flex-col gap-[3px] mr-1">
+            {HEATMAP_DAY_LABELS.map((label, i) => (
+              <div key={i} className="h-[10px] md:h-[12px] flex items-center">
+                <span className="text-[0.5rem] font-mono text-text-muted/50 leading-none">
+                  {label}
+                </span>
+              </div>
+            ))}
           </div>
-          <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-5 text-center">
-            <p className="font-display text-3xl md:text-4xl text-gold font-light">108</p>
-            <p className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-foreground/40 mt-1">Beads Per M\u0101l\u0101</p>
-          </div>
-          <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-5 text-center">
-            <p className="font-display text-3xl md:text-4xl text-gold font-light">21</p>
-            <p className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-foreground/40 mt-1">Min Default</p>
-          </div>
+          {/* Weeks */}
+          {cells.map((week, wi) => (
+            <div key={wi} className="flex flex-col gap-[3px]">
+              {week.map((cell, di) => (
+                <div
+                  key={cell.key}
+                  className={cn(
+                    'w-[10px] md:w-[12px] h-[10px] md:h-[12px] rounded-sm transition-colors duration-200',
+                    getCellColor(cell.count, cell.isFuture)
+                  )}
+                  title={`${cell.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}${cell.isFuture ? ' (future)' : ` — ${cell.count} session${cell.count !== 1 ? 's' : ''}`}`}
+                />
+              ))}
+            </div>
+          ))}
         </div>
       </div>
+    </motion.div>
+  );
+}
 
-      {/* \u2550\u2550\u2550 BACK + RESONANCE \u2550\u2550\u2550 */}
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 mb-8 flex items-center justify-between">
-        <BackButton href="/" label="Back to Home" />
-        <ResonanceToggle />
-      </div>
-
-      {/* \u2550\u2550\u2550 CINEMATIC STRIP I \u2550\u2550\u2550 */}
-      <ScrollParallax speed={-0.15} className="cinematic-strip">
-        <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-cremation-ground-alt'
-          alt='Ceremonial altar with sacred instruments'
-          kenBurns="normal"
-          filmGrain={false}
-        />
-        <div className="cinematic-strip-overlay" />
-      </ScrollParallax>
-
-      {/* \u2550\u2550\u2550 EDITORIAL DIVIDER \u2550\u2550\u2550 */}
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-24 md:py-36">
-        <div className="divider-gold mb-16" />
-        <ParallaxText speed={-0.05} className="max-w-3xl mx-auto text-center">
-          <p className="text-sub-display text-foreground mb-6 engraved-heading">
-            Where pattern<br />meets discipline.
-          </p>
-          <p className="text-editorial max-w-xl mx-auto">
-            The tools on this page are not wellness apps. They are structured practice instruments drawn from the Aghor\u012B, Kashmiri Shaiva, and Vajray\u0101na traditions \u2014 each one a specific gate to a specific state.
-          </p>
-        </ParallaxText>
-        <div className="divider-gold mt-16" />
-      </div>
-
-      {/* \u2550\u2550\u2550 SECTION NAVIGATION \u2550\u2550\u2550 */}
-      <SectionNav activeSection={activeSection} />
-
-      {/* \u2550\u2550\u2550 GATE 1 \u2014 PR\u0100\u1E46\u0100Y\u0100MA \u2550\u2550\u2550 */}
-      <div ref={(el) => { sectionRefs.current[0] = el; }}>
-        <section id="pranayama" className="max-w-[1400px] mx-auto px-6 lg:px-10 mb-20 md:mb-32 scroll-mt-24">
-          <motion.div
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            whileInView={fadeInUp.visible}
-            viewport={{ once: true, margin: '-60px' }}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-stretch">
-              {/* Image column */}
-              <ScrollParallax speed={-0.06} disabled className="relative min-h-[50vh] md:min-h-[60vh] overflow-hidden">
-                <CinematicImage
-                  src={practiceSections[0].image}
-                  alt="Pr\u0101\u1E47\u0101y\u0101ma practice"
-                  kenBurns="slow"
-                  scrim="full"
-                  vignette
-                  volumetric
-                  dust
-                  className="absolute inset-0"
-                />
-                <div className="absolute top-6 right-6 md:top-10 md:right-10 z-10">
-                  <span
-                    className="font-mono text-[7rem] md:text-[10rem] font-bold leading-none select-none"
-                    style={{ color: `${practiceSections[0].color}08` }}
-                  >
-                    01
-                  </span>
-                </div>
-                <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 z-10">
-                  <Wind
-                    className="w-10 h-10 md:w-12 md:h-12"
-                    style={{
-                      color: practiceSections[0].color,
-                      filter: `drop-shadow(0 0 20px ${practiceSections[0].color}40)`,
-                    }}
-                  />
-                </div>
-              </ScrollParallax>
-
-              {/* Text column */}
-              <div className="flex flex-col justify-center">
-                <div className="flex items-center gap-3 mb-4">
-                  <span
-                    className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 flex items-center justify-center font-display text-xl md:text-2xl font-light"
-                    style={{
-                      borderColor: `${practiceSections[0].color}60`,
-                      color: practiceSections[0].color,
-                      boxShadow: `0 0 20px ${practiceSections[0].color}15, inset 0 0 12px ${practiceSections[0].color}08`,
-                    }}
-                  >
-                    1
-                  </span>
-                  <p className="text-caption text-xs" style={{ color: `${practiceSections[0].color}AA` }}>Gate 1 of 3</p>
-                </div>
-
-                <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white tracking-wide leading-tight mb-2 engraved-heading">
-                  {practiceSections[0].title}
-                </h2>
-                <p className="text-foreground/30 text-sm italic mb-6 font-display tracking-wide">
-                  {practiceSections[0].sanskrit}
-                </p>
-
-                <p className="text-foreground/75 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
-                  {practiceSections[0].text}
-                </p>
-
-                <Link href="/practice#pranayama" className="ghost-cta text-xs self-start">Explore Breathwork</Link>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Full-width timer section below the hero block */}
-          <motion.div
-            className="mt-16"
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            whileInView={fadeInUp.visible}
-            viewport={{ once: true, margin: '-40px' }}
-          >
-            <BreathworkPanel active={active} reduced={reduced} />
-          </motion.div>
-        </section>
-      </div>
-
-      {/* \u2550\u2550\u2550 CINEMATIC STRIP II \u2550\u2550\u2550 */}
-      <ScrollParallax speed={-0.15} className="cinematic-strip">
-        <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/dark-temple-interior'
-          alt='Temple interior with lamp light'
-          kenBurns="normal"
-          filmGrain={false}
-        />
-        <div className="cinematic-strip-overlay" />
-      </ScrollParallax>
-
-      {/* \u2550\u2550\u2550 GATE 2 \u2014 JAPA M\u0100L\u0100 \u2550\u2550\u2550 */}
-      <div ref={(el) => { sectionRefs.current[1] = el; }}>
-        <section id="japa" className="max-w-[1400px] mx-auto px-6 lg:px-10 mb-20 md:mb-32 scroll-mt-24">
-          <motion.div
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            whileInView={fadeInUp.visible}
-            viewport={{ once: true, margin: '-60px' }}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-stretch">
-              {/* Text column (reversed order on desktop) */}
-              <div className="flex flex-col justify-center md:order-1">
-                <div className="flex items-center gap-3 mb-4">
-                  <span
-                    className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 flex items-center justify-center font-display text-xl md:text-2xl font-light"
-                    style={{
-                      borderColor: `${practiceSections[1].color}60`,
-                      color: practiceSections[1].color,
-                      boxShadow: `0 0 20px ${practiceSections[1].color}15, inset 0 0 12px ${practiceSections[1].color}08`,
-                    }}
-                  >
-                    2
-                  </span>
-                  <p className="text-caption text-xs" style={{ color: `${practiceSections[1].color}AA` }}>Gate 2 of 3</p>
-                </div>
-
-                <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white tracking-wide leading-tight mb-2 engraved-heading">
-                  {practiceSections[1].title}
-                </h2>
-                <p className="text-foreground/30 text-sm italic mb-6 font-display tracking-wide">
-                  {practiceSections[1].sanskrit}
-                </p>
-
-                <p className="text-foreground/75 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
-                  {practiceSections[1].text}
-                </p>
-
-                <Link href="/practice/japa" className="gold-cta inline-block self-start">Open Japa Counter</Link>
-              </div>
-
-              {/* Image column (reversed on desktop) */}
-              <ScrollParallax speed={-0.06} disabled className="relative min-h-[50vh] md:min-h-[60vh] overflow-hidden md:order-2">
-                <CinematicImage
-                  src={practiceSections[1].image}
-                  alt="Japa m\u0101l\u0101 practice"
-                  kenBurns="slow"
-                  scrim="full"
-                  vignette
-                  volumetric
-                  dust
-                  className="absolute inset-0"
-                />
-                <div className="absolute top-6 right-6 md:top-10 md:right-10 z-10">
-                  <span
-                    className="font-mono text-[7rem] md:text-[10rem] font-bold leading-none select-none"
-                    style={{ color: `${practiceSections[1].color}08` }}
-                  >
-                    02
-                  </span>
-                </div>
-                <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 z-10">
-                  <CircleDot
-                    className="w-10 h-10 md:w-12 md:h-12"
-                    style={{
-                      color: practiceSections[1].color,
-                      filter: `drop-shadow(0 0 20px ${practiceSections[1].color}40)`,
-                    }}
-                  />
-                </div>
-              </ScrollParallax>
-            </div>
-          </motion.div>
-
-          {/* Japa preview card */}
-          <motion.div
-            className="mt-16 max-w-lg mx-auto"
-            initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-          >
-            <div className="glass-panel p-8 md:p-10 text-center">
-              <CircleDot className="w-10 h-10 text-gold/40 mx-auto mb-4" />
-              <p className="font-display text-6xl md:text-7xl text-gold font-light mb-2">108</p>
-              <p className="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-foreground/40">Beads Per M\u0101l\u0101</p>
-              <div className="mt-6 flex justify-center gap-3">
-                {Array.from({ length: 12 }).map((_, i) => (
-                  <div key={i} className="w-2 h-2 rounded-full bg-gold/20" style={{ animationDelay: `${i * 0.1}s` }} />
-                ))}
-              </div>
-              <p className="text-foreground/30 text-xs mt-6 max-w-sm mx-auto">
-                The m\u0101l\u0101 persists across sessions. Your count is stored locally in your browser \u2014 private, precise, uninterrupted.
-              </p>
-            </div>
-          </motion.div>
-        </section>
-      </div>
-
-      {/* \u2550\u2550\u2550 GATE 3 \u2014 SILENT SITTING \u2550\u2550\u2550 */}
-      <div ref={(el) => { sectionRefs.current[2] = el; }}>
-        <section id="timer" className="max-w-[1400px] mx-auto px-6 lg:px-10 mb-20 md:mb-32 scroll-mt-24 safe-bottom">
-          <div className="divider-gold max-w-3xl mx-auto mb-20 md:mb-32" />
-          <motion.div
-            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-            whileInView={fadeInUp.visible}
-            viewport={{ once: true, margin: '-60px' }}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-stretch">
-              {/* Image column */}
-              <ScrollParallax speed={-0.06} disabled className="relative min-h-[50vh] md:min-h-[60vh] overflow-hidden">
-                <CinematicImage
-                  src={practiceSections[2].image}
-                  alt="Silent meditation practice"
-                  kenBurns="slow"
-                  scrim="full"
-                  vignette
-                  volumetric
-                  dust
-                  className="absolute inset-0"
-                />
-                <div className="absolute top-6 right-6 md:top-10 md:right-10 z-10">
-                  <span
-                    className="font-mono text-[7rem] md:text-[10rem] font-bold leading-none select-none"
-                    style={{ color: `${practiceSections[2].color}08` }}
-                  >
-                    03
-                  </span>
-                </div>
-                <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 z-10">
-                  <Moon
-                    className="w-10 h-10 md:w-12 md:h-12"
-                    style={{
-                      color: practiceSections[2].color,
-                      filter: `drop-shadow(0 0 20px ${practiceSections[2].color}40)`,
-                    }}
-                  />
-                </div>
-              </ScrollParallax>
-
-              {/* Text column (reversed on desktop) */}
-              <div className="flex flex-col justify-center md:order-1">
-                <div className="flex items-center gap-3 mb-4">
-                  <span
-                    className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 flex items-center justify-center font-display text-xl md:text-2xl font-light"
-                    style={{
-                      borderColor: `${practiceSections[2].color}60`,
-                      color: practiceSections[2].color,
-                      boxShadow: `0 0 20px ${practiceSections[2].color}15, inset 0 0 12px ${practiceSections[2].color}08`,
-                    }}
-                  >
-                    3
-                  </span>
-                  <p className="text-caption text-xs" style={{ color: `${practiceSections[2].color}AA` }}>Gate 3 of 3</p>
-                </div>
-
-                <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white tracking-wide leading-tight mb-2 engraved-heading">
-                  {practiceSections[2].title}
-                </h2>
-                <p className="text-foreground/30 text-sm italic mb-6 font-display tracking-wide">
-                  {practiceSections[2].sanskrit}
-                </p>
-
-                <p className="text-foreground/75 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
-                  {practiceSections[2].text}
-                </p>
-
-                <Link href="/practice/timer" className="gold-cta inline-block self-start">Open Timer</Link>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Timer preview card */}
-          <motion.div
-            className="mt-16 max-w-lg mx-auto"
-            initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-          >
-            <div className="glass-panel p-8 md:p-10 text-center">
-              <Timer className="w-10 h-10 text-gold/40 mx-auto mb-4" />
-              <p className="font-display text-6xl md:text-7xl text-gold font-light mb-2">21</p>
-              <p className="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-foreground/40">Minutes Default</p>
-              <div className="mt-6 w-16 h-16 mx-auto rounded-full border border-gold/20 flex items-center justify-center">
-                <div className="w-2.5 h-2.5 bg-gold/50 rounded-full" style={{ animation: 'breatheSlow 6s ease-in-out infinite' }} />
-              </div>
-              <p className="text-foreground/30 text-xs mt-6 max-w-sm mx-auto">
-                The interface disappears during practice. Only the breathing indicator and remaining time remain \u2014 designed to support, never distract.
-              </p>
-            </div>
-          </motion.div>
-        </section>
-      </div>
-
-      {/* \u2550\u2550\u2550 CINEMATIC STRIP III \u2550\u2550\u2550 */}
-      <ScrollParallax speed={-0.15} className="cinematic-strip">
-        <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/meditation-platform-overlooking.jpeg'
-          alt='Meditation platform overlooking the Himalayas'
-          kenBurns="normal"
-          filmGrain={false}
-        />\n        <div className="cinematic-strip-overlay" />
-      </ScrollParallax>
-
-      {/* \u2550\u2550\u2550 CLOSING CTA \u2550\u2550\u2550 */}
-      <section className="relative py-24 md:py-36 lg:pb-40">
-        <ScrollParallax speed={-0.06} disabled>
-          <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-codex-scroll.jpeg'
-            alt='Ancient codex with golden illumination'
-            className="absolute inset-0"
-            scrim="full"
-            vignette
-          />
-        </ScrollParallax>
-        <div className="absolute inset-0 pointer-events-none z-[1]" style={{ background: 'rgba(0,0,0,0.75)' }} />
-        <ParallaxText speed={-0.04} className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">
-          <p className="section-label mb-6">Enter the Practice</p>
-          <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
-            The tools are ready.<br />The practice is yours.
-          </h2>
-          <p className="text-foreground/70 text-lg mb-12 editorial-spacing" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>
-            Begin with the breath. Let the mantra follow. When the mind settles, sit in silence. This is the ancient sequence \u2014 pr\u0101\u1E47\u0101y\u0101ma, japa, then mauna. Each gate prepares you for the next.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <WhatsAppCTA variant="inline" label="Consult Kaustubh" />
-            <Link href="/library" className="ghost-cta">S\u0101dhan\u0101 Library</Link>
-          </div>
-        </ParallaxText>
-      </section>
-
-      {/* \u2550\u2550\u2550 FOOTER \u2550\u2550\u2550 */}
-      <div className="relative pb-28 md:pb-20 mt-16">
-        <div className="atmospheric-bg absolute inset-0 opacity-20" />
-        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
-          <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
-            <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
-          </div>
-          <p className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper">
-            S\u0100DHANA TOOLS \u2014 PRACTICE GATEWAY
-          </p>
-          <p className="text-foreground/30 text-xs mt-3 max-w-md mx-auto">
-            Drawn from Aghor\u012B, Kashmiri Shaiva, and Buddhist Vajray\u0101na traditions.
-          </p>
-        </div>
+/* ── Mood Selector ── */
+function MoodSelector({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: number | undefined;
+  onChange: (v: number) => void;
+}) {
+  return (
+    <div className="space-y-2">
+      <span className="block text-[0.6rem] font-mono tracking-[0.15em] text-text-muted uppercase">
+        {label}
+      </span>
+      <div className="flex gap-1.5 flex-wrap">
+        {MOOD_LABELS.map((mood, i) => {
+          const num = i + 1;
+          const isActive = value === num;
+          return (
+            <button
+              key={num}
+              type="button"
+              onClick={() => onChange(isActive ? 0 : num)}
+              className={cn(
+                'px-2.5 py-1.5 text-[0.65rem] font-mono tracking-wider rounded border transition-all duration-200',
+                isActive
+                  ? 'border-gold/50 bg-gold/15 text-gold'
+                  : 'border-zinc-700/40 bg-zinc-800/20 text-text-muted hover:border-zinc-600/50 hover:text-text-secondary'
+              )}
+            >
+              {mood}
+            </button>
+          );
+        })}
       </div>
     </div>
+  );
+}
+
+/* ── Session Timer ── */
+function SessionTimer({
+  onTimerStop,
+}: {
+  onTimerStop: (minutes: number) => void;
+}) {
+  const [isRunning, setIsRunning] = useState(false);
+  const [seconds, setSeconds] = useState(0);
+  const [elapsed, setElapsed] = useState(0);
+  const reduced = useReducedMotion();
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const handleStart = useCallback(() => {
+    setIsRunning(true);
+  }, []);
+
+  const handlePause = useCallback(() => {
+    setIsRunning(false);
+  }, []);
+
+  const handleStop = useCallback(() => {
+    setIsRunning(false);
+    const mins = Math.max(1, Math.round(elapsed / 60));
+    onTimerStop(mins);
+    setSeconds(0);
+    setElapsed(0);
+  }, [elapsed, onTimerStop]);
+
+  const handleReset = useCallback(() => {
+    setIsRunning(false);
+    setSeconds(0);
+    setElapsed(0);
+  }, []);
+
+  useEffect(() => {
+    if (isRunning) {
+      intervalRef.current = setInterval(() => {
+        setSeconds((prev) => prev + 1);
+        setElapsed((prev) => prev + 1);
+      }, 1000);
+    } else if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isRunning]);
+
+  return (
+    <motion.div
+      className="glass-panel p-6 text-center"
+      initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+      whileInView={reduced ? { opacity: 1 } : fadeInUp.visible}
+      viewport={{ once: true, margin: '-60px' }}
+    >
+      <div className="flex items-center justify-center gap-2 mb-6">
+        <Timer className="w-4 h-4 text-gold-dim" strokeWidth={1.5} />
+        <span className="section-label text-[0.65rem]">SESSION TIMER</span>
+      </div>
+
+      {/* Timer display */}
+      <motion.div
+        className="font-mono text-4xl md:text-5xl text-ivory tracking-widest mb-8 tabular-nums"
+        key={seconds}
+        animate={reduced ? {} : { scale: isRunning ? [1, 1.02, 1] : 1 }}
+        transition={{ duration: 0.5, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        {formatTimerTime(seconds)}
+      </motion.div>
+
+      {/* Controls */}
+      <div className="flex items-center justify-center gap-3">
+        {!isRunning ? (
+          <button
+            type="button"
+            onClick={handleStart}
+            className="gold-cta text-sm inline-flex items-center gap-2"
+          >
+            <Play className="w-4 h-4" />
+            Start
+          </button>
+        ) : (
+          <>
+            <button
+              type="button"
+              onClick={handlePause}
+              className="ghost-cta text-sm inline-flex items-center gap-2"
+            >
+              <Pause className="w-4 h-4" />
+              Pause
+            </button>
+            <button
+              type="button"
+              onClick={handleStop}
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-mono tracking-wider uppercase border border-gold/50 bg-gold/10 text-gold rounded hover:bg-gold/20 transition-colors duration-200"
+            >
+              <Square className="w-3 h-3" />
+              Stop & Log
+            </button>
+          </>
+        )}
+        {(isRunning || elapsed > 0) && (
+          <button
+            type="button"
+            onClick={handleReset}
+            className="text-text-muted hover:text-text-secondary transition-colors p-2"
+            aria-label="Reset timer"
+          >
+            <span className="text-[0.6rem] font-mono tracking-wider">RESET</span>
+          </button>
+        )}
+      </div>
+
+      {isRunning && (
+        <motion.p
+          className="mt-4 text-[0.6rem] font-mono text-gold-dim tracking-wider"
+          initial={reduced ? { opacity: 1 } : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          PRACTICE IN PROGRESS
+        </motion.p>
+      )}
+    </motion.div>
+  );
+}
+
+/* ── Recent Session Card ── */
+function RecentSessionCard({ session }: { session: SessionRecord }) {
+  const reduced = useReducedMotion();
+  const moodLabel = (v: number | null) => {
+    if (v == null) return '—';
+    return MOOD_LABELS[v - 1];
+  };
+
+  return (
+    <motion.div
+      className="glass-chip p-4 flex flex-col gap-2"
+      variants={staggerItem}
+      initial={reduced ? { opacity: 1 } : staggerItem.hidden}
+      whileInView={reduced ? { opacity: 1 } : staggerItem.visible}
+      viewport={{ once: true, margin: '-20px' }}
+    >
+      {/* Header row */}
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-display text-ivory truncate">
+            {session.siddhiName}
+          </p>
+          <p className="text-[0.6rem] font-mono text-text-muted tracking-wider mt-0.5">
+            {formatDate(new Date(session.createdAt))}
+          </p>
+        </div>
+        <div className="flex items-center gap-1.5 text-gold-dim shrink-0">
+          <Clock className="w-3 h-3" strokeWidth={1.5} />
+          <span className="text-[0.7rem] font-mono">{session.durationMin}m</span>
+        </div>
+      </div>
+
+      {/* Mood row */}
+      {(session.moodBefore != null || session.moodAfter != null) && (
+        <div className="flex items-center gap-2 text-[0.6rem] font-mono tracking-wider">
+          <span className="text-text-muted">{moodLabel(session.moodBefore)}</span>
+          <ArrowRight className="w-3 h-3 text-gold-dim/50" />
+          <span className="text-text-secondary">{moodLabel(session.moodAfter)}</span>
+        </div>
+      )}
+
+      {/* Journal excerpt */}
+      {session.journal && (
+        <p className="text-[0.7rem] text-text-muted leading-relaxed line-clamp-2 italic">
+          &ldquo;{session.journal}&rdquo;
+        </p>
+      )}
+    </motion.div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MAIN PAGE
+   ══════════════════════════════════════════════════════════════ */
+
+export default function PracticeLoggerPage() {
+  const reduced = useReducedMotion();
+
+  // ── Data state ──
+  const [stats, setStats] = useState<SessionStats | null>(null);
+  const [sessions, setSessions] = useState<SessionRecord[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // ── Form state ──
+  const [selectedSiddhi, setSelectedSiddhi] = useState('');
+  const [selectedSiddhiName, setSelectedSiddhiName] = useState('');
+  const [durationMin, setDurationMin] = useState(15);
+  const [moodBefore, setMoodBefore] = useState<number>(0);
+  const [moodAfter, setMoodAfter] = useState<number>(0);
+  const [journal, setJournal] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // ── Siddhi dropdown state ──
+  const [siddhiDropdownOpen, setSiddhiDropdownOpen] = useState(false);
+  const [expandedLevels, setExpandedLevels] = useState<Set<string>>(new Set(['Foundation']));
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // ── Load data on mount ──
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [statsData, sessionsData] = await Promise.all([
+          getSessionStats(),
+          getSessions(HEATMAP_DAYS),
+        ]);
+        setStats(statsData);
+        setSessions(sessionsData);
+      } catch (err) {
+        console.error('[KALKI] Failed to load practice data:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
+  // ── Close dropdown on outside click ──
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setSiddhiDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // ── Handle timer stop ──
+  const handleTimerStop = useCallback((minutes: number) => {
+    setDurationMin(minutes);
+  }, []);
+
+  // ── Handle siddhi selection ──
+  const handleSiddhiSelect = useCallback((slug: string, name: string) => {
+    setSelectedSiddhi(slug);
+    setSelectedSiddhiName(name);
+    setSiddhiDropdownOpen(false);
+  }, []);
+
+  // ── Toggle level expansion ──
+  const toggleLevel = useCallback((level: string) => {
+    setExpandedLevels((prev) => {
+      const next = new Set(prev);
+      if (next.has(level)) next.delete(level);
+      else next.add(level);
+      return next;
+    });
+  }, []);
+
+  // ── Handle form submit ──
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!selectedSiddhi || isSubmitting) return;
+
+      setIsSubmitting(true);
+      setSubmitMessage(null);
+
+      const result = await logSession({
+        siddhiSlug: selectedSiddhi,
+        siddhiName: selectedSiddhiName,
+        durationMin,
+        journal: journal.trim() || undefined,
+        moodBefore: moodBefore >= MOOD_MIN && moodBefore <= MOOD_MAX ? moodBefore : undefined,
+        moodAfter: moodAfter >= MOOD_MIN && moodAfter <= MOOD_MAX ? moodAfter : undefined,
+      });
+
+      if (result.success) {
+        setSubmitMessage({ type: 'success', text: 'Session recorded. The geometry deepens.' });
+        // Reset form
+        setJournal('');
+        setMoodBefore(0);
+        setMoodAfter(0);
+        // Refresh data
+        const [statsData, sessionsData] = await Promise.all([
+          getSessionStats(),
+          getSessions(HEATMAP_DAYS),
+        ]);
+        setStats(statsData);
+        setSessions(sessionsData);
+      } else {
+        setSubmitMessage({ type: 'error', text: result.error || 'Failed to record session.' });
+      }
+
+      setIsSubmitting(false);
+    },
+    [selectedSiddhi, selectedSiddhiName, durationMin, journal, moodBefore, moodAfter, isSubmitting]
+  );
+
+  const totalHours = stats ? Math.round((stats.totalMinutes / 60) * 10) / 10 : 0;
+
+  return (
+    <main className="min-h-screen bg-deep-black">
+      {/* ═══ HERO — The Practice Floor ═══ */}
+      <section className="relative min-h-[90vh] md:min-h-[100vh] flex items-center atmospheric-bg overflow-hidden">
+        {/* Radial glow */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse 60% 50% at 50% 40%, rgba(212,175,55,0.06) 0%, transparent 70%)',
+          }}
+        />
+
+        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-10 pt-32 pb-20">
+          <BackButton href="/" label="Return" />
+
+          <motion.div
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            animate={fadeInUp.visible}
+            transition={{ delay: 0.15 }}
+            className="mt-8 max-w-2xl"
+          >
+            <span className="section-label block mb-4" style={{ letterSpacing: '0.6em' }}>
+              Sadhana Logger
+            </span>
+            <h1 className="hero-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+              The Practice<br />Floor
+            </h1>
+            <p className="text-editorial text-lg md:text-xl text-text-secondary mt-6 max-w-xl leading-relaxed">
+              Every session is a thread in the tapestry of transformation.
+              Track your sādhana with precision — duration, mood, continuity.
+              The data reveals what the mind cannot see.
+            </p>
+          </motion.div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5, duration: 0.8 }}
+          >
+            <span className="text-[0.55rem] font-mono tracking-[0.3em] text-text-muted/40 uppercase">
+              Scroll
+            </span>
+            <div className="w-px h-8 bg-gradient-to-b from-gold/30 to-transparent" />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══ STATS BAR ═══ */}
+      {stats && (
+        <section className="py-12 md:py-16">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+            <motion.div
+              className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
+              variants={staggerContainer}
+              initial={reduced ? 'visible' : 'hidden'}
+              whileInView={reduced ? 'visible' : 'visible'}
+              viewport={{ once: true, margin: '-60px' }}
+            >
+              <StatCard icon={Activity} label="Total Sessions" value={stats.totalSessions} />
+              <StatCard icon={Clock} label="Total Hours" value={totalHours} />
+              <StatCard icon={Flame} label="Current Streak" value={stats.currentStreak} suffix="d" />
+              <StatCard icon={Trophy} label="Longest Streak" value={stats.longestStreak} suffix="d" />
+            </motion.div>
+            {stats.topPractice && (
+              <motion.p
+                className="text-center text-[0.6rem] font-mono tracking-[0.15em] text-text-muted mt-6"
+                initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+                whileInView={reduced ? { opacity: 1 } : fadeInUp.visible}
+                viewport={{ once: true }}
+              >
+                Dominant practice: <span className="text-gold-dim">{stats.topPractice}</span>
+              </motion.p>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* ═══ DIVIDER ═══ */}
+      <div className="max-w-[200px] mx-auto">
+        <div className="divider-gold" />
+      </div>
+
+      {/* ═══ HEATMAP + TIMER ROW ═══ */}
+      <section className="py-12 md:py-16">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr,360px] gap-4 md:gap-6">
+            {/* Calendar Heatmap */}
+            <CalendarHeatmap sessions={sessions} />
+
+            {/* Session Timer */}
+            <SessionTimer onTimerStop={handleTimerStop} />
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ DIVIDER ═══ */}
+      <div className="max-w-[200px] mx-auto">
+        <div className="divider-gold" />
+      </div>
+
+      {/* ═══ QUICK LOG ═══ */}
+      <section className="py-12 md:py-20">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+          <motion.div
+            className="text-center mb-10"
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            whileInView={reduced ? { opacity: 1 } : fadeInUp.visible}
+            viewport={{ once: true, margin: '-60px' }}
+          >
+            <span className="section-label block mb-3" style={{ letterSpacing: '0.5em' }}>
+              Quick Log
+            </span>
+            <h2 className="engraved-heading text-2xl md:text-3xl">Record a Session</h2>
+          </motion.div>
+
+          <motion.form
+            onSubmit={handleSubmit}
+            className="glass-panel p-6 md:p-8 max-w-2xl mx-auto space-y-6"
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            whileInView={reduced ? { opacity: 1 } : fadeInUp.visible}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ delay: 0.1 }}
+          >
+            {/* Siddhi Selector */}
+            <div className="space-y-2">
+              <label className="block text-[0.6rem] font-mono tracking-[0.15em] text-text-muted uppercase">
+                Practice
+              </label>
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  type="button"
+                  onClick={() => setSiddhiDropdownOpen(!siddhiDropdownOpen)}
+                  className="w-full flex items-center justify-between px-4 py-3 rounded border border-zinc-700/40 bg-zinc-800/20 text-sm text-ivory hover:border-zinc-600/50 transition-colors duration-200"
+                >
+                  <span className={selectedSiddhiName ? 'text-ivory' : 'text-text-muted'}>
+                    {selectedSiddhiName || 'Select a practice...'}
+                  </span>
+                  <ChevronDown
+                    className={cn(
+                      'w-4 h-4 text-text-muted transition-transform duration-200',
+                      siddhiDropdownOpen && 'rotate-180'
+                    )}
+                  />
+                </button>
+
+                <AnimatePresence>
+                  {siddhiDropdownOpen && (
+                    <motion.div
+                      className="absolute top-full left-0 right-0 mt-1 z-50 border border-zinc-700/40 bg-zinc-900/95 backdrop-blur-xl rounded max-h-72 overflow-y-auto"
+                      initial={reduced ? { opacity: 1 } : { opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      {Array.from(SIDDHIS_BY_LEVEL.entries()).map(([level, siddhis]) => (
+                        <div key={level}>
+                          <button
+                            type="button"
+                            onClick={() => toggleLevel(level)}
+                            className="w-full flex items-center gap-2 px-4 py-2 text-[0.6rem] font-mono tracking-[0.15em] uppercase text-gold-dim hover:bg-zinc-800/40 transition-colors"
+                          >
+                            <ChevronRight
+                              className={cn(
+                                'w-3 h-3 transition-transform duration-200',
+                                expandedLevels.has(level) && 'rotate-90'
+                              )}
+                            />
+                            {level}
+                            <span className="ml-auto text-text-muted/50">
+                              {siddhis.length}
+                            </span>
+                          </button>
+                          <AnimatePresence>
+                            {expandedLevels.has(level) && (
+                              <motion.div
+                                initial={reduced ? {} : { height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={reduced ? {} : { height: 0, opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="overflow-hidden"
+                              >
+                                {siddhis.map((s) => (
+                                  <button
+                                    key={s.slug}
+                                    type="button"
+                                    onClick={() => handleSiddhiSelect(s.slug, s.name)}
+                                    className={cn(
+                                      'w-full text-left px-6 py-2 text-xs text-text-secondary hover:text-ivory hover:bg-zinc-800/30 transition-colors duration-150',
+                                      selectedSiddhi === s.slug && 'text-gold bg-gold/5'
+                                    )}
+                                  >
+                                    {s.name}
+                                  </button>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* Duration */}
+            <div className="space-y-2">
+              <label className="block text-[0.6rem] font-mono tracking-[0.15em] text-text-muted uppercase">
+                Duration
+              </label>
+              <div className="flex gap-2">
+                {DURATION_OPTIONS.map((d) => (
+                  <button
+                    key={d}
+                    type="button"
+                    onClick={() => setDurationMin(d)}
+                    className={cn(
+                      'flex-1 py-2.5 text-sm font-mono rounded border transition-all duration-200',
+                      durationMin === d
+                        ? 'border-gold/50 bg-gold/15 text-gold'
+                        : 'border-zinc-700/40 bg-zinc-800/20 text-text-muted hover:border-zinc-600/50 hover:text-text-secondary'
+                    )}
+                  >
+                    {d}m
+                  </button>
+                ))}
+              </div>
+              {durationMin !== 15 && durationMin !== 30 && durationMin !== 45 && durationMin !== 60 && (
+                <p className="text-[0.6rem] font-mono text-gold-dim tracking-wider">
+                  Timer filled: {durationMin} minutes
+                </p>
+              )}
+            </div>
+
+            {/* Mood Before / After */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <MoodSelector
+                label="Mood Before"
+                value={moodBefore || undefined}
+                onChange={(v) => setMoodBefore(v)}
+              />
+              <MoodSelector
+                label="Mood After"
+                value={moodAfter || undefined}
+                onChange={(v) => setMoodAfter(v)}
+              />
+            </div>
+
+            {/* Journal */}
+            <div className="space-y-2">
+              <label className="block text-[0.6rem] font-mono tracking-[0.15em] text-text-muted uppercase">
+                Journal <span className="text-text-muted/40">(optional)</span>
+              </label>
+              <textarea
+                value={journal}
+                onChange={(e) => setJournal(e.target.value)}
+                rows={3}
+                maxLength={1000}
+                placeholder="What arose during practice? What dissolved?"
+                className="w-full px-4 py-3 rounded border border-zinc-700/40 bg-zinc-800/20 text-sm text-ivory placeholder:text-text-muted/40 resize-none focus:outline-none focus:border-gold/30 transition-colors duration-200"
+              />
+            </div>
+
+            {/* Submit message */}
+            <AnimatePresence>
+              {submitMessage && (
+                <motion.p
+                  className={cn(
+                    'text-[0.7rem] font-mono tracking-wider text-center',
+                    submitMessage.type === 'success' ? 'text-gold' : 'text-red-400/80'
+                  )}
+                  initial={reduced ? { opacity: 1 } : { opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={reduced ? { opacity: 0 } : { opacity: 0, y: -5 }}
+                >
+                  {submitMessage.text}
+                </motion.p>
+              )}
+            </AnimatePresence>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={!selectedSiddhi || isSubmitting}
+              className="gold-cta w-full text-sm disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? 'Recording...' : 'Log Session'}
+            </button>
+          </motion.form>
+        </div>
+      </section>
+
+      {/* ═══ DIVIDER ═══ */}
+      <div className="max-w-[200px] mx-auto">
+        <div className="divider-gold" />
+      </div>
+
+      {/* ═══ RECENT SESSIONS ═══ */}
+      <section className="py-12 md:py-20">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+          <motion.div
+            className="text-center mb-10"
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            whileInView={reduced ? { opacity: 1 } : fadeInUp.visible}
+            viewport={{ once: true, margin: '-60px' }}
+          >
+            <span className="section-label block mb-3" style={{ letterSpacing: '0.5em' }}>
+              Practice Record
+            </span>
+            <h2 className="engraved-heading text-2xl md:text-3xl">Recent Sessions</h2>
+          </motion.div>
+
+          {sessions.length > 0 ? (
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 max-h-[600px] overflow-y-auto pr-2"
+              style={{
+                scrollbarWidth: 'thin',
+                scrollbarColor: 'rgba(212,175,55,0.2) transparent',
+              }}
+              variants={staggerContainer}
+              initial={reduced ? 'visible' : 'hidden'}
+              whileInView={reduced ? 'visible' : 'visible'}
+              viewport={{ once: true, margin: '-60px' }}
+            >
+              {sessions.slice(0, 10).map((s) => (
+                <RecentSessionCard key={s.id} session={s} />
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div
+              className="glass-panel p-8 text-center max-w-md mx-auto"
+              initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+              whileInView={reduced ? { opacity: 1 } : fadeInUp.visible}
+              viewport={{ once: true }}
+            >
+              <p className="text-text-muted text-sm font-mono tracking-wider">
+                No sessions recorded yet.
+              </p>
+              <p className="text-text-muted/50 text-xs mt-2">
+                Begin your practice. The floor is waiting.
+              </p>
+            </motion.div>
+          )}
+        </div>
+      </section>
+
+      {/* ═══ CINEMATIC STRIP — Closing Statement ═══ */}
+      <section className="py-24 md:py-32 relative overflow-hidden">
+        {/* Background texture */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse 50% 60% at 50% 50%, rgba(212,175,55,0.04) 0%, transparent 70%)',
+          }}
+        />
+
+        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
+          <motion.div
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            whileInView={reduced ? { opacity: 1 } : fadeInUp.visible}
+            viewport={{ once: true, margin: '-80px' }}
+          >
+            <p className="gold-foil-text text-lg md:text-xl font-display max-w-xl mx-auto leading-relaxed mb-6">
+              The practice floor does not judge.
+              It receives. It records. And over time,
+              it reveals the shape of your transformation
+              — one session at a time.
+            </p>
+            <div className="divider-gold max-w-[120px] mx-auto mb-8" />
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link href="/practice/timer" className="gold-cta text-sm">
+                Silent Sitting Timer
+              </Link>
+              <Link href="/practice/japa" className="ghost-cta text-sm">
+                Japa Mala Counter
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </main>
   );
 }

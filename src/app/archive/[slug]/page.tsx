@@ -45,7 +45,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
   // Related siddhis by category
   const related = allSiddhis.filter((s) => s.slug !== siddhi.slug && s.category === siddhi.category).slice(0, 3);
   // Related patterns
-  const relPatterns = allPatterns.filter((p) => p.relatedSiddhis.includes(siddhi.slug)).slice(0, 2);
+  const relPatterns = allPatterns.filter((p) => p.relatedSiddhis.includes(siddhi.slug)).slice(0, 4);
   // Find archetype from pattern mapping
   const patternArchetype = relPatterns.length > 0
     ? getArchetypeById(PATTERN_ARCHETYPE_MAP[relPatterns[0].slug])
@@ -193,6 +193,23 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
             </div>
           </motion.section>
 
+          {/* Contraindications — amber/yellow tones */}
+          {siddhi.contraindications && siddhi.contraindications.length > 0 && (
+            <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
+              <p className="section-label mb-6" style={{ color: 'var(--amber, #d97706)' }}>Contraindications</p>
+              <div className="glass-chip p-8" style={{ borderColor: 'rgba(217, 119, 6, 0.2)' }}>
+                <p className="text-xs text-text-muted mb-4 font-mono tracking-wider uppercase">Medical &amp; psychological conditions requiring caution</p>
+                <ul className="space-y-3">
+                  {siddhi.contraindications.map((c, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm" style={{ color: 'rgba(217, 119, 6, 0.9)' }}>
+                      <span className="mt-0.5 shrink-0" style={{ color: 'var(--amber, #d97706)' }}>{'\u26A0'}</span><span>{c}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.section>
+          )}
+
           {/* ── Parallax Interlude ── */}
           <ScrollParallax speed={-0.1} className="-mx-6 lg:-mx-10">
             <div className="relative h-[35vh] md:h-[40vh] overflow-hidden">
@@ -226,6 +243,39 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
               ))}
             </div>
           </motion.section>
+
+          {/* Integrations — glass-chip items */}
+          {siddhi.integrations && siddhi.integrations.length > 0 && (
+            <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
+              <p className="section-label mb-6">Practice Integrations</p>
+              <div className="space-y-3">
+                {siddhi.integrations.map((integ, i) => (
+                  <div key={i} className="glass-chip p-4 flex items-start gap-3">
+                    <span className="mt-0.5 shrink-0 text-copper">{'↗'}</span>
+                    <p className="text-sm text-text-secondary">{integ}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.section>
+          )}
+
+          {/* Practice Variants */}
+          {siddhi.variantPractices && siddhi.variantPractices.length > 0 && (
+            <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
+              <p className="section-label mb-6">Practice Variants</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {siddhi.variantPractices.map((vp, i) => (
+                  <div key={i} className="glass-chip p-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="font-display text-lg text-foreground font-light">{vp.name}</p>
+                      <span className="glass-chip px-3 py-1 font-mono text-[0.75rem] text-gold tracking-[0.15em] uppercase">{vp.level}</span>
+                    </div>
+                    <p className="text-sm text-text-secondary">{vp.description}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.section>
+          )}
 
           {/* Connected Patterns */}
           {relPatterns.length > 0 && (

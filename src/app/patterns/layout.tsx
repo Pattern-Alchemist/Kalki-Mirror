@@ -6,11 +6,11 @@ export const metadata: Metadata = {
   alternates: { canonical: canonicalUrl('/patterns') },
   title: 'Pattern Atlas — The Mirror Method',
   description:
-    '12 recurring human emotional patterns mapped through the Mirror Method. Recognize, confront, and dissolve the behavioral loops that run your life.',
+    '20 recurring human emotional patterns mapped through the Mirror Method. Recognize, confront, dissolve, and integrate the behavioral loops that run your life.',
   openGraph: {
     title: 'Pattern Atlas | KALKI — The Mirror Method',
     description:
-      '12 recurring human emotional patterns mapped through the Mirror Method. Recognize, confront, and dissolve the behavioral loops that run your life.',
+      '20 recurring human emotional patterns mapped through the Mirror Method. Four zones of deepening self-investigation.',
     images: [
       {
         url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/pattern-atlas/zone-mirror',
@@ -26,7 +26,7 @@ const patternsJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
   name: 'Pattern Atlas',
-  description: '12 recurring human emotional patterns mapped through the Mirror Method.',
+  description: '20 recurring human emotional patterns mapped through the Mirror Method. Four zones: Recognition, Confrontation, Dissolution, Integration.',
   url: `${SITE_URL}/patterns`,
   isPartOf: { '@id': `${SITE_URL}/#website` },
   about: {
@@ -34,7 +34,7 @@ const patternsJsonLd = {
     name: 'The Mirror Method',
     description: 'A framework for recognizing, confronting, and dissolving recurring behavioral loops.',
   },
-  numberOfItems: 12,
+  numberOfItems: 20,
 };
 
 export default function PatternsLayout({ children }: { children: React.ReactNode }) {

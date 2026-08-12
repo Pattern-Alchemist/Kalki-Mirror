@@ -236,5 +236,36 @@ model Consultation {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
+  // Outcome tracking (added post-consultation by archivist)
+  patternDiagnosis  String?   // JSON string of diagnosed pattern slugs e.g. '["the-rescuer","the-controller"]'
+  prescribedSequence String? // Sequence slug if a sequence was assigned
+  prescribedSiddhis String? // JSON string of recommended siddhi slugs
+  sessionNotes     String? // Archivist's notes from the session
+  outcome          String?   // PENDING | IN_PROGRESS | RESOLVED | DISCONTINUED
+  followUpDate     DateTime?
+  completedAt      DateTime?
+
   @@index([status, scheduledFor])
+  @@index([phone])
+}
+
+// ============================================================
+// PRACTICE SESSIONS — The Practice Floor
+// Granular session logging for every sadhana practice.
+// Duration, mood tracking, journal entries.
+// Feeds the heatmap, streaks, and longitudinal practice intelligence.
+// ============================================================
+
+model PracticeSession {
+  id          String   @id @default(cuid())
+  userId      String   @default("anonymous")  // Future auth support
+  siddhiSlug  String   // Practice slug
+  siddhiName  String   // Display name
+  durationMin Int      // Minutes practiced
+  journal     String?  // Optional journal entry
+  moodBefore  Int?     // 1-5 scale
+  moodAfter   Int?     // 1-5 scale
+  createdAt   DateTime @default(now())
+
+  @@index([userId, siddhiSlug, createdAt])
 }

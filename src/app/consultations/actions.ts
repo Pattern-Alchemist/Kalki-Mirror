@@ -13,11 +13,13 @@ export async function submitConsultation(formData: {
   name: string;
   whatsapp: string;
   message: string;
+  enrichedMessage?: string;
 }) {
+  const messageBody = formData.enrichedMessage?.trim() || formData.message || '';
   const parsed = consultationSchema.safeParse({
     name: (formData.name || "").trim(),
     whatsapp: (formData.whatsapp || "").trim(),
-    message: (formData.message || "").trim(),
+    message: messageBody,
   });
 
   if (!parsed.success) {

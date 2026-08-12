@@ -1,8 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import { motion, useReducedMotion } from 'framer-motion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { BackButton } from '@/components/nav/BackButton';
@@ -10,192 +8,14 @@ import { consultationServices } from '@/lib/data/consultations';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
-import { submitConsultation } from './actions';
-
-const ConsultationScreener = dynamic(() => import('@/components/ai/ConsultationScreener').then(m => ({ default: m.ConsultationScreener })), { ssr: false, loading: () => <div className="h-32" /> });
+import ConsultationWizard from '@/components/consultations/ConsultationWizard';
 
 const KAUSTUBH_IMG = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_800,c_limit/kalki-mirror/kaustubh-portrait';
-
-interface ConsultationForm {
-  name: string;
-  whatsapp: string;
-  message: string;
-  photoBase64: string;
-}
-
-/* ─── ConsultationForm sub-component (avoids nested conditional JSX inside motion) ─── */
-
-function ConsultationFormSection({
-  form,
-  submitted,
-  submitting,
-  formError,
-  fileInputRef,
-  reduced,
-  setForm,
-  setSubmitted,
-  setSubmitting,
-  setFormError,
-}: {
-  form: ConsultationForm;
-  submitted: boolean;
-  submitting: boolean;
-  formError: string;
-  fileInputRef: React.RefObject<HTMLInputElement | null>;
-  reduced: boolean;
-  setForm: React.Dispatch<React.SetStateAction<ConsultationForm>>;
-  setSubmitted: (v: boolean) => void;
-  setSubmitting: (v: boolean) => void;
-  setFormError: (v: string) => void;
-}) {
-  const handlePhotoSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setForm(prev => ({ ...prev, photoBase64: reader.result as string }));
-    };
-    reader.readAsDataURL(file);
-  }, [setForm]);
-
-  return (
-    <motion.div
-      initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-      whileInView={fadeInUp.visible}
-      viewport={{ once: true, margin: '-60px' }}
-      className="max-w-xl mx-auto"
-    >
-      {submitted ? (
-        <div className="glass-panel p-10 text-center">
-          <p className="section-label mb-4">Request Received</p>
-          <p className="font-display text-2xl text-white mb-4">The Archive acknowledges you.</p>
-          <p className="text-text-secondary text-sm editorial-spacing">
-            Kaustubh will respond via WhatsApp within 24 hours.
-          </p>
-        </div>
-      ) : (
-        <div className="glass-panel p-8 md:p-10">
-          <p className="section-label mb-6">Request a Consultation</p>
-
-          {/* AI Pre-Screening Analysis */}
-          {form.name && form.message.length >= 10 && (
-            <div className="mb-8">
-              <ConsultationScreener name={form.name} message={form.message} />
-            </div>
-          )}
-
-          {/* Photo upload */}
-          <div className="flex flex-col items-center mb-8">
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="relative w-16 h-16 rounded-full border border-zinc-700 bg-zinc-800 overflow-hidden cursor-pointer transition-all duration-300 hover:border-gold/40 hover:ring-2 hover:ring-gold/10 focus-visible:outline-2 focus-visible:outline-gold focus-visible:outline-offset-2"
-              aria-label={form.photoBase64 ? 'Change photo' : 'Add your photo'}
-            >
-              {form.photoBase64 ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  src={form.photoBase64}
-                  alt="Your photo preview"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <svg className="w-6 h-6 text-zinc-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" />
-                </svg>
-              )}
-            </button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handlePhotoSelect}
-              className="hidden"
-              aria-hidden="true"
-            />
-            <span className="mt-2 text-[0.6875rem] tracking-[0.2em] uppercase text-text-muted">
-              {form.photoBase64 ? 'Change Photo' : 'Add Photo'}
-            </span>
-          </div>
-
-          {/* Form fields */}
-          <div className="space-y-5">
-            <div>
-              <label htmlFor="consult-name" className="block text-[0.6875rem] tracking-[0.2em] uppercase text-text-muted mb-2">Name</label>
-              <input
-                id="consult-name"
-                type="text"
-                value={form.name}
-                onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                className="w-full bg-transparent border border-gold/10 rounded-sm px-4 py-3 text-foreground text-sm placeholder:text-text-muted/50 focus:border-gold/40 focus:outline-none transition-colors"
-                placeholder="Your name"
-              />
-            </div>
-            <div>
-              <label htmlFor="consult-whatsapp" className="block text-[0.6875rem] tracking-[0.2em] uppercase text-text-muted mb-2">WhatsApp Number</label>
-              <input
-                id="consult-whatsapp"
-                type="tel"
-                value={form.whatsapp}
-                onChange={e => setForm(p => ({ ...p, whatsapp: e.target.value }))}
-                className="w-full bg-transparent border border-gold/10 rounded-sm px-4 py-3 text-foreground text-sm placeholder:text-text-muted/50 focus:border-gold/40 focus:outline-none transition-colors"
-                placeholder="+91 98765 43210"
-              />
-            </div>
-            <div>
-              <label htmlFor="consult-message" className="block text-[0.6875rem] tracking-[0.2em] uppercase text-text-muted mb-2">Your Pattern</label>
-              <textarea
-                id="consult-message"
-                rows={4}
-                value={form.message}
-                onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
-                className="w-full bg-transparent border border-gold/10 rounded-sm px-4 py-3 text-foreground text-sm placeholder:text-text-muted/50 focus:border-gold/40 focus:outline-none transition-colors resize-none"
-                placeholder="Describe what you're navigating — relationships, career, inner blocks..."
-              />
-            </div>
-          </div>
-
-          {formError && (
-            <p className="text-red-400 text-xs mt-4 text-center">{formError}</p>
-          )}
-          <button
-            type="button"
-            onClick={async () => {
-              setFormError('');
-              setSubmitting(true);
-              const result = await submitConsultation({
-                name: form.name,
-                whatsapp: form.whatsapp,
-                message: form.message,
-              });
-              setSubmitting(false);
-              if (result.success) {
-                setSubmitted(true);
-              } else {
-                setFormError(result.error || 'Submission failed.');
-              }
-            }}
-            disabled={!form.name || !form.whatsapp || submitting}
-            className="gold-cta w-full mt-8"
-          >
-            {submitting ? 'Sending\u2026' : 'Send Request'}
-          </button>
-        </div>
-      )}
-    </motion.div>
-  );
-}
 
 /* ─── Main Page ─── */
 
 export default function ConsultationsPage() {
   const reduced = useReducedMotion();
-  const [form, setForm] = useState<ConsultationForm>({ name: '', whatsapp: '', message: '', photoBase64: '' });
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [formError, setFormError] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className="bg-deep-black min-h-screen">
@@ -350,19 +170,8 @@ export default function ConsultationsPage() {
 
         <div className="divider-gold my-20" />
 
-        {/* ═══════ CONSULTATION REQUEST FORM ═══════ */}
-        <ConsultationFormSection
-          form={form}
-          submitted={submitted}
-          submitting={submitting}
-          formError={formError}
-          fileInputRef={fileInputRef}
-          reduced={!!reduced}
-          setForm={setForm}
-          setSubmitted={setSubmitted}
-          setSubmitting={setSubmitting}
-          setFormError={setFormError}
-        />
+        {/* ═══════ CONSULTATION INTAKE WIZARD ═══════ */}
+        <ConsultationWizard />
       </div>
 
       {/* ═══════ CLOSING CTA ═══════ */}

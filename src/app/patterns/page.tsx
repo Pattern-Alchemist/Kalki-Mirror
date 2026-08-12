@@ -46,6 +46,7 @@ const siddhiSlugSet = new Set(allPatterns.flatMap((p) => p.relatedSiddhis));
 const ZONE_RECOGNITION = allPatterns.slice(0, 4);
 const ZONE_CONFRONTATION_PATTERNS = allPatterns.slice(4, 8);
 const ZONE_DISSOLUTION_PATTERNS = allPatterns.slice(8, 12);
+const ZONE_INTEGRATION_PATTERNS = allPatterns.slice(12, 20);
 
 /* ══════════════════════════════════════════════════════════════
    SUB-COMPONENTS
@@ -186,13 +187,16 @@ export default function PatternsPage() {
     offset: ['start start', 'end end'],
   });
 
-  const mirrorOpacity = useTransform(scrollYProgress, [0, 0.12, 0.20], [1, 1, 0]);
+  const ZONE_INTEGRATION = '/pattern-atlas/zone-integration.jpeg';
+
+  const mirrorOpacity = useTransform(scrollYProgress, [0, 0.06, 0.12], [1, 1, 0]);
   const confrontationOpacity = useTransform(
     scrollYProgress,
-    [0.14, 0.24, 0.50, 0.58, 0.66],
+    [0.10, 0.16, 0.32, 0.38, 0.44],
     [0, 1, 1, 1, 0]
   );
-  const dissolutionOpacity = useTransform(scrollYProgress, [0.60, 0.72, 1], [0, 1, 1]);
+  const dissolutionOpacity = useTransform(scrollYProgress, [0.38, 0.44, 0.62, 0.68, 0.74], [0, 1, 1, 1, 0]);
+  const integrationOpacity = useTransform(scrollYProgress, [0.72, 0.78, 1], [0, 1, 1]);
   const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
 
   return (
@@ -228,6 +232,16 @@ export default function PatternsPage() {
               alt=""
               className="w-full h-full object-cover"
               style={{ filter: 'contrast(1.08) saturate(0.85) brightness(0.85) sepia(0.06)' }}
+              draggable={false}
+            />
+          </motion.div>
+          <motion.div className="absolute inset-0" style={{ opacity: integrationOpacity, scale: bgScale }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={ZONE_INTEGRATION}
+              alt=""
+              className="w-full h-full object-cover"
+              style={{ filter: 'contrast(1.08) saturate(0.85) brightness(0.82) sepia(0.06)' }}
               draggable={false}
             />
           </motion.div>
@@ -461,6 +475,13 @@ export default function PatternsPage() {
               index={3}
             />
             <PatternZone patterns={ZONE_DISSOLUTION_PATTERNS} />
+
+            <ZoneDivider
+              label="Integration"
+              subtitle="The deepest patterns. The ones that require everything you have. Not for the uninitiated."
+              index={4}
+            />
+            <PatternZone patterns={ZONE_INTEGRATION_PATTERNS} />
           </div>
         )}
 
@@ -487,7 +508,7 @@ export default function PatternsPage() {
               viewport={{ once: true, margin: '-60px' }}
             >
               <span className="block font-mono text-[0.65rem] tracking-[0.3em] text-text-muted/50 mb-4">
-                {String(4).padStart(2, '0')}
+                {String(5).padStart(2, '0')}
               </span>
               <p className="section-label mb-4" style={{ letterSpacing: '0.6em' }}>
                 Understanding

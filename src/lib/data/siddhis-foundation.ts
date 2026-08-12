@@ -23,6 +23,20 @@ export const foundationSiddhis: Siddhi[] = [
     traditionalRef: 'Māṇḍūkya Upaniṣad vv. 1–12; Yoga Sūtras I.27–28',
     verbatimText: 'tasya vācakaḥ praṇavaḥ — "Its designator is Oṃ." (YS I.27)',
     practitionerCaveat: 'No siddhi is guaranteed — the tradition frames these as directions of practice, not outcomes. Oṃ repetition develops concentration and equanimity, not supernatural powers.',
+    contraindications: [
+      'Severe anxiety or panic disorder — extended silence after the M can amplify intrusive thoughts in early practice',
+      'Obsessive-compulsive tendencies — repetitive mantra loops may reinforce compulsive patterns without proper guidance',
+      'Recent throat or vocal cord surgery — begin directly with mānasika japa to avoid strain on healing tissue',
+    ],
+    integrations: [
+      'Combines well with soham-dhyana for deeper inward focus after establishing Oṃ as the anchor',
+      'Pair with nadi-shuddhi to settle the breath before transitioning to silent Oṃ repetition',
+      'Serves as the foundational mantra layer in sandhya-vandanam integration sequences',
+    ],
+    variantPractices: [
+      { name: 'Oṃkāra with Sāyujya Intention', description: 'Extended Oṃ repetition with the specific contemplative intention of dissolution into silence — used in Advaita Vedānta retreats where the mantra is progressively lengthened then dropped.', level: 'Intermediate' },
+      { name: 'Oṃ Nāda Yoga', description: 'Focus on the internal resonance (nāda) produced by Oṃ vibration rather than the syllable itself — transitions from mantra to inner sound meditation.', level: 'Intermediate' },
+    ],
   },
   {
     slug: "gayatri-mantra",
@@ -46,6 +60,19 @@ export const foundationSiddhis: Siddhi[] = [
     traditionalRef: 'Ṛgveda III.62.10 (Savitṛ verse)',
     verbatimText: 'tat savitur vareṇyaṃ bhargo devasya dhīmahi / dhiyo yo naḥ pracodayāt — "We meditate on that desirable radiance of Savitṛ; may it inspire our understanding." (RV III.62.10)',
     practitionerCaveat: 'The Gāyatrī is a contemplative invocation, not a wish-fulfilling device. Its power in the tradition is devotional and cognitive, not instrumental.',
+    contraindications: [
+      'Severe depression with suicidal ideation — the mantra\'s theme of illumination may feel unattainable and worsen hopelessness',
+      'Schizophrenia or psychosis — structured devotional repetition may be incorporated into delusional frameworks',
+    ],
+    integrations: [
+      'Naturally embedded in sandhya-vandanam as the core japa component — the two are traditionally inseparable',
+      'Pair with pranava-japa: use Oṃ to settle attention, then Gāyatrī for the main invocation',
+      'Precedes soham-dhyana well — the outward devotional posture of Gāyatrī provides a counterbalance to the inward non-dual frame',
+    ],
+    variantPractices: [
+      { name: 'Gāyatrī with Nyāsa', description: 'Full ritual form including anga-nyāsa (placement of the mantra on body parts) and kara-nyāsa (on the fingers) — the complete liturgical form preserved in Smārta paddhatis.', level: 'Intermediate' },
+      { name: 'Sāvitrī Dhyāna', description: 'Contemplative meditation on the meaning of each word of the Gāyatrī rather than metrical recitation — a Vedānta-style approach where the verse becomes an object of philosophical inquiry.', level: 'Intermediate' },
+    ],
   },
   {
     slug: "nadi-shuddhi",
@@ -69,6 +96,21 @@ export const foundationSiddhis: Siddhi[] = [
     traditionalRef: 'Haṭha Yoga Pradīpikā II.7–14',
     verbatimText: 'nāḍīśuddhis tataḥ prāpter haṭhapradeepam — "From purification of the nāḍīs comes fitness for prāṇāyāma." (HYP II, preceding the nāḍīśuddhi section)',
     practitionerCaveat: 'Nāḍī Śuddhi develops breath awareness and autonomic steadiness. It does not guarantee "kundalini awakening" or any specific energetic outcome.',
+    contraindications: [
+      'Cardiovascular disease or hypertension — breath retention alters blood pressure and heart rate variability',
+      'Recent nasal surgery or severe deviated septum — alternate nostril breathing requires unobstructed nasal passages',
+      'Panic disorder — controlled retention can trigger hyperventilation-related anxiety cascades',
+      'Epilepsy — breath-holding practices may lower seizure threshold in susceptible individuals',
+    ],
+    integrations: [
+      'Pair with pranava-japa: use Nāḍī Śuddhi to settle the nervous system, then transition to silent Oṃ repetition',
+      'Precedes trataka effectively — balanced breath channels improve sustained visual concentration',
+      'Follows naturally from soham-dhyana as a bridge from recognition-based to technique-based breath work',
+    ],
+    variantPractices: [
+      { name: 'Nāḍī Śuddhi with Bīja', description: 'Incorporating the bīja mantras (haṃ on exhalation, ṣaṃ on inhalation) into each nostril cycle — adds a mantra layer that deepens the practice from purely breath-based to sonic-energetic.', level: 'Intermediate' },
+      { name: 'Sūkṣma Nāḍī Śuddhi', description: 'Micro-channel purification using visualization of breath as light moving through the iḍā and piṅgalā — a gentler form suited for those who find retention uncomfortable.', level: 'Foundation' },
+    ],
   },
   {
     slug: "soham-dhyana",
@@ -92,6 +134,20 @@ export const foundationSiddhis: Siddhi[] = [
     traditionalRef: 'Bṛhadāraṇyaka Upaniṣad I.4.10',
     verbatimText: 'ahaṃ brahmāsmi — "I am brahman." (BU I.4.10)',
     practitionerCaveat: 'The so\'haṃ recognition is a contemplative framing, not an ego-assertion. The tradition warns against construing it as a grandiose self-identification.',
+    contraindications: [
+      'Depersonalization or derealization disorder — non-dual framing can intensify dissociative episodes',
+      'Active grief or trauma processing — the "I am That" recognition may feel dismissive of personal suffering',
+      'Narcissistic personality features — may be misconstrued as validation of grandiose self-image rather than its dissolution',
+    ],
+    integrations: [
+      'Combines well with pranava-japa — use Oṃ as the entry point, then let so\'haṃ emerge from the silence after the M',
+      'Pair with yoga-nidra for a layered approach: body relaxation first, then non-dual recognition in the hypnagogic space',
+      'Complements manasika-japa — after mental repetition settles the mind, so\'haṃ shifts the frame from technique to recognition',
+    ],
+    variantPractices: [
+      { name: 'Śivo\'haṃ Dhyāna', description: 'Replacing so\'haṃ with śivo\'haṃ ("I am Śiva") — the Nāth variant that adds a theistic-devotional quality to the non-dual recognition, found in the Siddha Siddhānta Paddhati.', level: 'Intermediate' },
+      { name: 'So\'haṃ with Sākṣī Bhāva', description: 'The so\'haṃ phrase is observed by the witness (sākṣī) rather than identified with — a triple-layer practice: breath, mantra, and the awareness watching both.', level: 'Advanced' },
+    ],
   },
   {
     slug: "manasika-japa",
@@ -114,6 +170,18 @@ export const foundationSiddhis: Siddhi[] = [
     image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/bhairava-pathway',
     traditionalRef: 'Manu Smṛti II.85; Haṭha Yoga Pradīpikā (four stages of japa)',
     practitionerCaveat: 'Mental japa develops internal attention but is not inherently more "spiritual" than audible recitation — the four-stage model is a pedagogical progression, not a hierarchy of worth.',
+    contraindications: [
+      'Severe insomnia — internal mantra repetition can reinforce pre-sleep cognitive rumination',
+      'Attention-deficit patterns without external anchor — some practitioners cannot sustain mental japa without first mastering audible or whispered stages',
+    ],
+    integrations: [
+      'Natural progression from pranava-japa — once audible Oṃ is steady, transition to mānasika form as the tradition prescribes',
+      'Pair with trataka for dual-channel concentration: visual fixation + internal mantra creates layered absorption',
+      'Precedes soham-dhyana \u2014 once m\u0101nasika japa is stable, the so\u2019ha\u1e43 recognition can replace the chosen mantra',
+    ],
+    variantPractices: [
+      { name: 'Mānasika Japa with Mala Visualization', description: 'Mental repetition synchronized with visualization of moving through a 108-bead mala in the mind\'s eye — combines mantra with internal visualization practice.', level: 'Intermediate' },
+    ],
   },
   {
     slug: "sandhya-vandanam",
@@ -137,5 +205,19 @@ export const foundationSiddhis: Siddhi[] = [
     traditionalRef: 'Taittirīya Āraṇyaka; Gṛhya Sūtras (c. 500–200 BCE)',
     verbatimText: 'sandhyopāsā hyanantaram — "The sandhyā worship is without break [at the three junctures]." (Gṛhya Sūtra prescription)',
     practitionerCaveat: 'Sandhyā Vandanam is presented here as documented heritage with deep contemplative structure. It is a cultural artifact, not a prescription for untrained practitioners outside the tradition.',
+    contraindications: [
+      'Severe joint mobility limitations — the rite requires repeated squatting (ācaman), standing, and specific hand gestures (mudrā)',
+      'Open wounds on hands or face — ācamana involves touching water to the face and body; contamination risk for healing tissue',
+      'Active psychosis or disorganized thinking — the complex sequential choreography may increase confusion',
+    ],
+    integrations: [
+      'Contains gayatri-mantra as its core japa component — the two are structurally inseparable in Smārta practice',
+      'The prāṇāyāma portions align with nadi-shuddhi principles — Sandhyā can serve as the ritual vehicle for breath work',
+      'The concluding śānti mantra and ācamana create a natural bridge into soham-dhyana as a closing meditation',
+    ],
+    variantPractices: [
+      { name: 'Simplified Sandhyā for Modern Practitioners', description: 'A reduced form retaining the core prāṇāyāma, Gāyatrī japa (28 or 54 instead of 108), and closing — designed by modern Ācāryas for practitioners without access to full ritual training.', level: 'Foundation' },
+      { name: 'Sandhyā with Vedic Svara', description: 'The full rite performed with Vedic svara (chanting tones) applied to each mantra — a specialized form requiring training in the specific melodic modes of the practitioner\'s Śākhā.', level: 'Advanced' },
+    ],
   }
 ];

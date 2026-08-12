@@ -309,6 +309,14 @@ export const PATTERN_ARCHETYPE_MAP: Record<string, string> = {
   'the-pleaser': 'tara',
   'the-positivist': 'kamala',
   'the-architect': 'bhuvaneshvari',
+  'the-addict': 'dhumavati',
+  'the-judge': 'kali',
+  'the-witness': 'bhuvaneshvari',
+  'the-seeker': 'kamala',
+  'the-tyrant': 'bhuvaneshvari',
+  'the-victim': 'chinnamasta',
+  'the-prophet': 'bhairavi',
+  'the-void': 'dhumavati',
 };
 
 // Access tier labels for the archive

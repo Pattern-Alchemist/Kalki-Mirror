@@ -106,6 +106,59 @@ export const breathPatterns: BreathPattern[] = [
     description:
       'The mirror of Sūrya Bhedana — inhale through the left (lunar), exhale through the right (solar). Cools, calms, and promotes parasympathetic dominance. Practice in the evening.',
   },
+  {
+    slug: 'kapalabhati-advanced',
+    name: 'Kapālabhāti — Advanced',
+    phases: [
+      { name: 'Passive inhale', duration: 0.3 },
+      { name: 'Active exhale', duration: 0.3 },
+    ],
+    cycles: 50,
+    minTier: 'agni',
+    description:
+      'Advanced skull-shining with longer rounds — 50 rapid pump cycles at double the tempo of the basic variation. Builds sustained internal heat, clears the frontal sinuses deeply, and activates manipūra cakra. Only for practitioners who have steadied the basic 30-cycle round for at least four weeks. Rest between rounds is essential.',
+  },
+  {
+    slug: 'bhastrika',
+    name: 'Bhastrikā — Bellows Breath',
+    phases: [
+      { name: 'Active inhale', duration: 1 },
+      { name: 'Active exhale', duration: 1 },
+    ],
+    cycles: 10,
+    minTier: 'agni',
+    description:
+      'The bellows breath — both inhale and exhale are forceful and active, mimicking the pumping action of a blacksmith\'s bellows. Rapidly oxygenates the blood, stokes the digestive fire, and awakens sahasrāra. Contra-indicated in hypertension, peptic ulcer, or during acute anxiety. Practice on an empty stomach.',
+  },
+  {
+    slug: 'nadi-shuddhi-advanced',
+    name: 'Nāḍī Śuddhi — Advanced',
+    phases: [
+      { name: 'Inhale (left)', duration: 6 },
+      { name: 'Retain', duration: 6 },
+      { name: 'Exhale (right)', duration: 12 },
+      { name: 'Inhale (right)', duration: 6 },
+      { name: 'Retain', duration: 6 },
+      { name: 'Exhale (left)', duration: 12 },
+    ],
+    cycles: 5,
+    minTier: 'agni',
+    description:
+      'Advanced alternate-nostril breath with extended ratios — 1:1:2 using 6-6-12 second phases. The longer durations demand significant CO₂ tolerance and mental steadiness. Builds on the foundation of the basic and retention-based patterns. This is the gateway ratio from which sūrya and candra bhedana variations emerge.',
+  },
+  {
+    slug: 'kevala-kumbhaka',
+    name: 'Kevala Kumbhaka — Spontaneous Retention',
+    phases: [
+      { name: 'Inhale', duration: 4 },
+      { name: 'Sustained retention', duration: 30 },
+      { name: 'Exhale', duration: 8 },
+    ],
+    cycles: 3,
+    minTier: 'akash',
+    description:
+      'The pinnacle of prāṇāyāma — kevala kumbhaka is the state where breath suspension arises spontaneously, without deliberate effort. This guided version uses a 30-second retention as a training wheel toward the unmediated state. The nervous system enters deep parasympathetic dominance. Only suitable for advanced practitioners who have stabilized in antara kumbhaka for extended periods.',
+  },
 ];
 
 export const allBreathPatterns = breathPatterns;

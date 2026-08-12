@@ -11,10 +11,13 @@ import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { PatternExplainer } from '@/components/ai/PatternExplainer';
 import { YantraLoader } from '@/components/patterns/YantraLoader';
 import { CautionBadge } from '@/components/archive/CautionBadge';
+import { GatedContent } from '@/components/monetization/GatedContent';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp } from '@/lib/motion/tokens';
+import { TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
+import type { Tier } from '@/lib/data/types';
 
 export default function PatternFolioPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -25,6 +28,7 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
   const relatedSiddhis = allSiddhis.filter((s) => pattern.relatedSiddhis.includes(s.slug)).slice(0, 3);
   const archetypeId = PATTERN_ARCHETYPE_MAP[slug];
   const archetype = archetypeId ? getArchetypeById(archetypeId) : null;
+  const patternTier = pattern.minTier as Tier | undefined;
 
   const handleLoadComplete = useCallback(() => setLoading(false), []);
 
@@ -183,6 +187,43 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
             <p className="text-text-secondary leading-relaxed relative z-10 editorial-spacing">{pattern.practice}</p>
           </div>
         </motion.section>
+
+        {/* Archetype Integration — Agni+ gated */}
+        {pattern.archetypeIntegration && patternTier && (
+          <motion.section
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            whileInView={fadeInUp.visible}
+            viewport={{ once: true }}
+          >
+            <p className="section-label mb-4">Archetype Integration</p>
+            <GatedContent minTier='agni' label='Archetype Mapping' teaser={`Deep archetype analysis for ${pattern.name} is available to Agni practitioners and above.`}>
+              <div className="glass-panel p-8">
+                <p className="text-text-secondary leading-relaxed editorial-spacing">{pattern.archetypeIntegration}</p>
+              </div>
+            </GatedContent>
+          </motion.section>
+        )}
+
+        {/* Advanced Notes — Akash gated */}
+        {pattern.advancedNotes && (
+          <motion.section
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            whileInView={fadeInUp.visible}
+            viewport={{ once: true }}
+          >
+            <p className="section-label mb-4">Advanced Integration Notes</p>
+            <GatedContent minTier='akash' label='Akash-Level Intelligence' teaser={`Advanced integration protocols for ${pattern.name} are available to Akash practitioners only.`}>
+              <div className="glass-panel p-8 relative overflow-hidden">
+                <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
+                  style={{
+                    backgroundImage: `repeating-linear-gradient(0deg, var(--copper) 0px, var(--copper) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, var(--copper) 0px, var(--copper) 1px, transparent 1px, transparent 40px)`,
+                  }}
+                />
+                <p className="text-text-secondary leading-relaxed editorial-spacing relative z-10">{pattern.advancedNotes}</p>
+              </div>
+            </GatedContent>
+          </motion.section>
+        )}
 
         {/* AI Pattern Explanation */}
         <motion.section

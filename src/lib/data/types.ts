@@ -52,6 +52,9 @@ export interface Siddhi {
   verbatimText?: string;         // Key original-language quotation (Sanskrit, with translation)
   disputedClaims?: string;       // What modern/new-age claims exist that are NOT supported by tradition
   practitionerCaveat?: string;   // Caveat for practitioners about what the practice can/cannot do
+  contraindications?: string[];     // Medical/psychological contraindications
+  integrations?: string[];         // What practices combine well with this one (siddhi slugs + notes)
+  variantPractices?: { name: string; description: string; level: SiddhiLevel }[];
 }
 
 export interface Pattern {
@@ -64,6 +67,9 @@ export interface Pattern {
   practice: string;
   relatedSiddhis: string[];
   imageSlug: string;
+  minTier?: Tier;
+  archetypeIntegration?: string;  // Agni+ deep archetype mapping notes
+  advancedNotes?: string;        // Akash+ advanced integration notes
 }
 
 export interface PricingTier {
