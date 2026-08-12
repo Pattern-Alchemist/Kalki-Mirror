@@ -7,7 +7,7 @@ import { CinematicImage } from '@/components/ui/CinematicImage';
 import { GatedContent } from '@/components/monetization/GatedContent';
 import { fadeInUp, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
-import { TIER_LABELS, TIER_ELEMENTS, TIER_COLORS } from '@/lib/utils/tier-gate';
+import { TIER_LABELS, TIER_ELEMENTS, TIER_COLORS, TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
 import { aghoriCourse, COURSE_META } from '@/lib/data/aghoiri-tantra-course';
 import type { CourseModule, CourseLesson } from '@/lib/data/aghoiri-tantra-course';
 import type { Tier } from '@/lib/data/types';
@@ -24,9 +24,7 @@ const difficultyColor: Record<string, string> = {
   'Forbidden': 'text-red-600 border-red-600/30',
 };
 
-import { TIER_BADGE_STYLE } from '@/lib/tier-colors';
 
-const tierBadgeStyle = TIER_BADGE_STYLE;
 
 const phaseAccent: Record<string, string> = {
   'Phase I': 'from-zinc-500 to-zinc-700',
@@ -62,7 +60,7 @@ const phaseNavData = aghoriCourse.map((m, i) => ({
 function TierBadge({ tier, showElement = true, compact = false }: { tier: string; showElement?: boolean; compact?: boolean }) {
   const t = tier as Tier;
   return (
-    <span className={cn('inline-flex items-center gap-1.5 rounded border font-mono tracking-wider', tierBadgeStyle[t] || tierBadgeStyle.prithvi, compact ? 'px-2 py-0.5 text-[0.6rem]' : 'px-2.5 py-1 text-[0.65rem]')}>
+    <span className={cn('inline-flex items-center gap-1.5 rounded border font-mono tracking-wider', TIER_BADGE_STYLES[t as Tier] || TIER_BADGE_STYLES.prithvi, compact ? 'px-2 py-0.5 text-[0.6rem]' : 'px-2.5 py-1 text-[0.65rem]')}>
       <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: TIER_COLORS[t] }} />
       {TIER_LABELS[t]}{showElement && <span className="opacity-50">· {TIER_ELEMENTS[t]}</span>}
     </span>
@@ -558,7 +556,7 @@ export default function AghoriTantraPage() {
       ))}
 
       {/* Footer */}
-      <div className="relative pb-28 md:pb-20 mt-16">
+      <footer className="relative pb-28 md:pb-20 mt-16">
         <div className="atmospheric-bg absolute inset-0 opacity-20" />
         <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 text-center">
           <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
@@ -571,7 +569,7 @@ export default function AghoriTantraPage() {
             {COURSE_META.source}
           </p>
         </div>
-      </div>
+      </footer>
     </main>
   );
 }

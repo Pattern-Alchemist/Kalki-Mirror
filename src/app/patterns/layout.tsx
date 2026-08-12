@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 
+const SITE_URL = 'https://astrokalki.com';
+
 export const metadata: Metadata = {
   title: 'Pattern Atlas — The Mirror Method',
   description:
@@ -19,6 +21,29 @@ export const metadata: Metadata = {
   },
 };
 
+const patternsJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Pattern Atlas',
+  description: '12 recurring human emotional patterns mapped through the Mirror Method.',
+  url: `${SITE_URL}/patterns`,
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  about: {
+    '@type': 'Thing',
+    name: 'The Mirror Method',
+    description: 'A framework for recognizing, confronting, and dissolving recurring behavioral loops.',
+  },
+  numberOfItems: 12,
+};
+
 export default function PatternsLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(patternsJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }

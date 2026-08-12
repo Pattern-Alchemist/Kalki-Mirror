@@ -6,10 +6,10 @@ import { SacredFooter } from "@/components/nav/SacredFooter";
 import { WhatsAppCTA } from "@/components/booking/WhatsAppCTA";
 import { TierProvider } from "@/components/layout/TierProvider";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
+import { PageTransition } from "@/components/layout/PageTransition";
 import { PaywallModal } from "@/components/monetization/PaywallModal";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Analytics } from "@vercel/analytics/react";
-import { PageTransition } from "@/components/layout/PageTransition";
 
 /* ============================================================
    TYPOGRAPHY — The Inscriptions of Time
@@ -110,9 +110,9 @@ export default function RootLayout({
           <SmoothScroll>
             <SacredNav />
             <ScrollProgress />
-            <PageTransition>
-              <div className="pt-16 md:pt-20">{children}</div>
-            </PageTransition>
+            <main className="pt-16 md:pt-20">
+              <PageTransition>{children}</PageTransition>
+            </main>
             <SacredFooter />
             <div className="fixed-bottom-stack">
               <WhatsAppCTA variant="floating" />

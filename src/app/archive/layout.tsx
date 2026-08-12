@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 
+const SITE_URL = 'https://astrokalki.com';
+
 export const metadata: Metadata = {
   title: 'The Akashic Archive',
   description:
@@ -19,6 +21,29 @@ export const metadata: Metadata = {
   },
 };
 
+const archiveJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'The Akashic Archive',
+  description: '48 siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access.',
+  url: `${SITE_URL}/archive`,
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  about: {
+    '@type': 'Thing',
+    name: 'Siddhis',
+    description: 'Supernatural powers and abilities from the Tantric tradition, documented with evidence grading and scholarly provenance.',
+  },
+  numberOfItems: 48,
+};
+
 export default function ArchiveLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(archiveJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }

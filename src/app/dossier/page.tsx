@@ -15,6 +15,7 @@ import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import Link from 'next/link';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
+import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import type { Tier, CautionLevel } from '@/lib/data/types';
 
 // ─── Dossier response type (mirrors /api/initiate) ──────────────────────────
@@ -669,6 +670,57 @@ export default function DossierPage() {
                 </div>
               </div>
             </div>
+
+            {/* ── Terminal Divider ── */}
+            <motion.div
+              className="divider-gold mt-24"
+              initial={reduced ? { opacity: 0.3, scaleX: 1 } : { opacity: 0, scaleX: 0 }}
+              whileInView={{ opacity: 0.3, scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+              style={{ transformOrigin: 'center' }}
+            />
+
+            {/* ── Closing CTA ── */}
+            <motion.div
+              className="max-w-lg mx-auto mt-16 text-center"
+              initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+              whileInView={fadeInUp.visible}
+              viewport={{ once: true, margin: '-60px' }}
+            >
+              <p className="font-mono text-[0.6875rem] tracking-[0.2em] uppercase text-text-muted mb-3">DISCUSS YOUR DOSSIER</p>
+              <p className="font-display text-xl md:text-2xl tracking-wide mb-6">Walk through the patterns with Kaustubh.</p>
+              <WhatsAppCTA
+                variant="inline"
+                label="Discuss This Dossier"
+                message="I've received my YANTRA Dossier and would like to discuss the findings."
+                className="mx-auto"
+              />
+            </motion.div>
+
+            {/* ── Page Footer (Bindu Pulse) ── */}
+            <footer className="relative pb-20 md:pb-28 mt-16">
+              <div className="atmospheric-bg absolute inset-0 opacity-30" />
+              <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 text-center">
+                <motion.div
+                  className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center"
+                  initial={reduced ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
+                </motion.div>
+                <motion.p
+                  className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper"
+                  initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+                  whileInView={fadeInUp.visible}
+                  viewport={{ once: true }}
+                >
+                  DOSSIER SEALED — CLASSIFIED UNDER THE KALKI PROTOCOL
+                </motion.p>
+              </div>
+            </footer>
           </motion.div>
         )}
 

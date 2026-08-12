@@ -1,4 +1,8 @@
+'use client';
+
 import Link from 'next/link';
+import { motion, useReducedMotion } from 'framer-motion';
+import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 
 const FOOTER_LINKS = {
   Navigate: [
@@ -17,65 +21,102 @@ const FOOTER_LINKS = {
 };
 
 export function SacredFooter() {
+  const reduced = useReducedMotion();
+
   return (
     <footer className="relative mt-40">
-      {/* Cinematic gold divider */}
-      <div className="relative">
-        <div className="divider-gold max-w-[1400px] mx-auto" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
-      </div>
+      {/* Atmospheric depth layer */}
+      <div className="atmospheric-bg absolute inset-0 opacity-20 pointer-events-none" aria-hidden="true" />
 
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
+      {/* Cinematic divider with animation */}
+      <motion.div
+        className="divider-gold max-w-[1400px] mx-auto"
+        initial={reduced ? { opacity: 0.3, scaleX: 1 } : { opacity: 0, scaleX: 0 }}
+        whileInView={{ opacity: 0.3, scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+        style={{ transformOrigin: 'center' }}
+      />
+
+      <div className="relative max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-16"
+          initial={reduced ? { opacity: 1 } : staggerContainer.hidden}
+          whileInView={reduced ? { opacity: 1 } : staggerContainer.visible}
+          viewport={{ once: true, margin: '-40px' }}
+        >
           {/* Brand column */}
-          <div>
+          <motion.div
+            initial={reduced ? { opacity: 1 } : staggerItem.hidden}
+            whileInView={reduced ? { opacity: 1 } : staggerItem.visible}
+            viewport={{ once: true }}
+          >
             <div className="mb-6">
               <h3 className="font-display text-3xl gold-foil-text font-light tracking-[0.2em]">
                 KALKI
               </h3>
-              <div className="divider-subtle mt-4 mb-5" />
             </div>
-            <p className="text-text-secondary text-sm leading-relaxed max-w-xs editorial-spacing">
+            <p className="text-text-secondary text-base leading-relaxed max-w-xs editorial-spacing">
               Where ancient Tantric geometry meets modern computational intelligence.
               Tantrik Intelligence. Sacred Architecture. Pattern Recognition.
             </p>
-            <p className="text-gold-dim text-[0.7rem] mt-5 tracking-[0.2em] uppercase font-ui">
+            <p className="text-gold-dim text-sm mt-4 tracking-[0.15em] uppercase font-ui">
               The Architecture of Karma.
             </p>
-          </div>
+          </motion.div>
 
           {/* Link columns */}
           {Object.entries(FOOTER_LINKS).map(([heading, links]) => (
-            <div key={heading}>
-              <h4 className="section-label mb-6" style={{ fontSize: '0.7rem' }}>{heading}</h4>
-              <ul className="space-y-3.5">
+            <motion.div
+              key={heading}
+              initial={reduced ? { opacity: 1 } : staggerItem.hidden}
+              whileInView={reduced ? { opacity: 1 } : staggerItem.visible}
+              viewport={{ once: true }}
+            >
+              <h4 className="section-label mb-6">{heading}</h4>
+              <ul className="space-y-4">
                 {links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-text-muted text-sm hover:text-gold transition-colors duration-500 tracking-wide"
+                      className="text-text-secondary text-base hover:text-gold transition-colors duration-500"
                     >
                       {link.label}
                     </Link>
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* Bottom bar — minimal and engraved */}
-        <div className="mt-20 pt-8 border-t border-gold/5 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-text-muted/40 text-[0.7rem] font-mono tracking-[0.15em] uppercase">
+        {/* Bindu divider */}
+        <motion.div
+          className="flex justify-center mt-20 mb-16"
+          initial={reduced ? { opacity: 1 } : { opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="w-12 h-12 border border-gold/15 rounded-full flex items-center justify-center">
+            <div className="w-2 h-2 bg-gold/30 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
+          </div>
+        </motion.div>
+
+        {/* Bottom bar */}
+        <motion.div
+          className="pt-8 border-t border-gold/5 flex flex-col md:flex-row justify-between items-center gap-4"
+          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+          whileInView={reduced ? { opacity: 1 } : fadeInUp.visible}
+          viewport={{ once: true }}
+        >
+          <p className="text-caption">
             Ancient Algorithms. Cosmic Law.
           </p>
-          <div className="flex items-center gap-3">
-            <div className="w-1.5 h-1.5 rounded-full bg-gold/30" />
-            <p className="text-text-muted/30 text-[0.65rem] font-mono tracking-[0.1em]">
-              &copy; 2025 KALKI. All rights reserved.
-            </p>
-          </div>
-        </div>
+          <p className="text-caption">
+            &copy; 2025 KALKI. All rights reserved.
+          </p>
+        </motion.div>
       </div>
     </footer>
   );
