@@ -12,8 +12,10 @@ const NAV_LINKS = [
   { href: '/patterns', label: 'Patterns' },
   { href: '/dossier', label: 'Dossier' },
   { href: '/practice', label: 'Tantra' },
+  { href: '/library', label: 'Library' },
   { href: '/aghoiri-tantra', label: 'Aghori Tantra' },
   { href: '/method', label: 'The Method' },
+  { href: '/consultations', label: 'Consult' },
   { href: '/codex', label: 'Codex' },
   { href: '/pricing', label: 'Membership' },
 ];
@@ -142,7 +144,7 @@ export function SacredNav() {
                 </span>
               </div>
               <div className="mb-5 text-center text-caption">Explore the archive</div>
-              <nav className="flex flex-col gap-1">
+              <nav className="flex flex-col gap-1" aria-label="Primary navigation — mobile">
                 {NAV_LINKS.map((link, i) => (
                   <motion.div
                     key={link.href}
@@ -170,8 +172,6 @@ export function SacredNav() {
                   </motion.div>
                 ))}
               </nav>
-
-              <p className="sr-only">Primary navigation</p>
 
               {/* Bottom tagline */}
               <motion.p

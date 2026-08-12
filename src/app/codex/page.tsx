@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { BackButton } from '@/components/nav/BackButton';
 const CodexExplainer = dynamic(() => import('@/components/ai/CodexExplainer').then(m => ({ default: m.CodexExplainer })), { ssr: false, loading: () => <div className="h-32" /> });
@@ -255,7 +256,7 @@ export default function CodexPage() {
   const reduced = useReducedMotion();
 
   return (
-    <main className="bg-deep-black min-h-screen">
+    <div className="bg-deep-black min-h-screen">
       {/* ── Cinematic Hero ── */}
       <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
@@ -397,6 +398,25 @@ export default function CodexPage() {
             transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
             style={{ transformOrigin: 'center' }}
           />
+
+          {/* ── Closing CTA ── */}
+          <motion.div
+            className="max-w-lg mx-auto mt-16 text-center"
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            whileInView={fadeInUp.visible}
+            viewport={{ once: true, margin: '-60px' }}
+          >
+            <p className="section-label mb-3">THE SYSTEM AWAITS</p>
+            <p className="font-display text-2xl md:text-3xl tracking-wide mb-3">Five parts. Three breaks. One system.</p>
+            <p className="text-text-muted mb-8 max-w-md mx-auto editorial-spacing">
+              The Codex maps the architecture. The Archive holds the data.
+              The patterns await recognition.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link href="/patterns" className="gold-cta">Explore Patterns</Link>
+              <Link href="/archive" className="ghost-cta">Browse the Archive</Link>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -423,6 +443,6 @@ export default function CodexPage() {
           </motion.p>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

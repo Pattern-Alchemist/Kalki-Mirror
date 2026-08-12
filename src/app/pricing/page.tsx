@@ -11,13 +11,13 @@ import { BackButton } from '@/components/nav/BackButton';
 import { PricingQuiz } from '@/components/ai/PricingQuiz';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { staggerContainer, staggerItem, fadeInUp } from '@/lib/motion/tokens';
+import { openWhatsApp } from '@/lib/utils/whatsapp';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import Link from 'next/link';
 
 const TIER_ORDER: Tier[] = ['prithvi', 'jal', 'agni', 'akash'];
-const WHATSAPP_NUMBER = '918920862931';
 
 type BillingCycle = 'monthly' | 'yearly';
 
@@ -78,10 +78,9 @@ function getHigherTierName(slug: Tier): string {
   return 'a higher tier';
 }
 
-function buildWhatsAppLink(tierName: string, priceStr: string, cycle: BillingCycle, cur: Currency): string {
+function handleTierWhatsApp(tierName: string, priceStr: string, cycle: BillingCycle, cur: Currency): void {
   const period = cycle === 'yearly' ? 'yr' : 'mo';
-  const msg = `I would like to subscribe to ${tierName} (${priceStr}/${period}). Currency: ${cur}`;
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  openWhatsApp(`I would like to subscribe to ${tierName} (${priceStr}/${period}). Currency: ${cur}`);
 }
 
 /* ── Tier card sub-component (no conditional JSX inside motion) ── */
@@ -194,12 +193,11 @@ export default function PricingPage() {
     if (!t) return;
     const price = billing === 'monthly' ? (currency === 'INR' ? t.priceINR : t.priceUSD) : (currency === 'INR' ? t.yearlyINR : t.yearlyUSD);
     const priceStr = formatPrice(price ?? 0, currency);
-    const waLink = buildWhatsAppLink(t.element, priceStr, billing, currency);
-    window.open(waLink, '_blank', 'noopener,noreferrer');
+    handleTierWhatsApp(t.element, priceStr, billing, currency);
   }, [billing, currency]);
 
   return (
-    <main className="bg-deep-black min-h-screen">
+    <div className="bg-deep-black min-h-screen">
 
       {/* ═══════════════ CINEMATIC HERO ═══════════════ */}
       <section className="relative min-h-[90vh] md:min-h-[100vh] overflow-hidden">
@@ -428,6 +426,6 @@ export default function PricingPage() {
           </p>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

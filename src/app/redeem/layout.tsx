@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import { canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: canonicalUrl('/redeem') },
   title: 'Key Redemption',
   description:
     'Activate your Golden Key to unlock deeper access to the Akashic Archive. Enter your KALKI key code to upgrade your covenant tier.',

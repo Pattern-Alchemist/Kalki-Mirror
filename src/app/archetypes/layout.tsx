@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import { canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: canonicalUrl('/archetypes') },
   title: 'The Ten Mahavidyas',
   description:
     'Decode the 16 archetypes of tantrik psychology — from Kali to Bhuvaneshvari. Discover your dominant patterns, shadow aspects, and growth pathways.',

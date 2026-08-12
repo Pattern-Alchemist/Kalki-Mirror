@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 
-const SITE_URL = 'https://astrokalki.com';
+import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: canonicalUrl('/patterns') },
   title: 'Pattern Atlas — The Mirror Method',
   description:
     '12 recurring human emotional patterns mapped through the Mirror Method. Recognize, confront, and dissolve the behavioral loops that run your life.',

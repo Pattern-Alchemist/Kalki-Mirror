@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import { canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: canonicalUrl('/practice/timer') },
   title: 'Silent Sitting Timer',
   description:
     'A minimal meditation timer for unstructured sitting practice. Presets from 5 to 60 minutes with a 528Hz bell on completion.',

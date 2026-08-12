@@ -109,7 +109,7 @@ export default function ArchetypesPage() {
   const supplementary = selected && selected.number > 10 ? selected : null;
 
   return (
-    <main className="bg-deep-black min-h-screen">
+    <div className="bg-deep-black min-h-screen">
       {/* ── Full-bleed Cinematic Hero ── */}
       <section className="relative min-h-[90vh] md:min-h-[100vh] overflow-hidden">
         <CinematicImage
@@ -356,6 +356,6 @@ export default function ArchetypesPage() {
           </p>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

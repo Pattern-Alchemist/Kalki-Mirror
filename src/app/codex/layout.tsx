@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import { canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: canonicalUrl('/codex') },
   title: 'The Codex',
   description:
     'The KALKI Codex — a five-part digital manifesto. Digitized palm-leaf manuscript covering the Shambhala Protocol, Mirror Method, and tantrik cosmology.',

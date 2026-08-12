@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import { canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: canonicalUrl('/dossier') },
   title: 'YANTRA Dossier',
   description:
     'AI-powered archetype analysis and personalized siddhi dossier. Receive your decoded birth chart, pattern intelligence report, and prescription blueprint.',

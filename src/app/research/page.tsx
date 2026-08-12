@@ -17,7 +17,7 @@ export default function ResearchPage() {
   const traditions = [...new Set(allSiddhis.map((s) => s.tradition))];
 
   return (
-    <main className="bg-deep-black min-h-screen">
+    <div className="bg-deep-black min-h-screen">
       {/* ═══ CINEMATIC HERO ═══ */}
       <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
@@ -408,6 +408,6 @@ export default function ResearchPage() {
           </p>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

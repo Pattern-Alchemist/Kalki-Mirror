@@ -332,7 +332,7 @@ export default function MethodPage() {
   }, []);
 
   return (
-    <main className="bg-deep-black min-h-screen">
+    <div className="bg-deep-black min-h-screen">
       {/* ═══ HERO ═══ */}
       <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
@@ -498,6 +498,6 @@ export default function MethodPage() {
           </p>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

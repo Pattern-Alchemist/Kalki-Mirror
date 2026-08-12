@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { allPatterns } from '@/lib/data/patterns';
 
-const SITE_URL = 'https://astrokalki.com';
+import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
 
 export async function generateMetadata({
   params,
@@ -23,6 +23,7 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: { canonical: canonicalUrl(`/patterns/${pattern.slug}`) },
     openGraph: {
       title,
       description,

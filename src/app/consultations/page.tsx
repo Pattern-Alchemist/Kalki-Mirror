@@ -198,7 +198,7 @@ export default function ConsultationsPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <main className="bg-deep-black min-h-screen">
+    <div className="bg-deep-black min-h-screen">
       {/* ═══════ CINEMATIC HERO ═══════ */}
       <section className="relative min-h-[90vh] md:min-h-[100vh] overflow-hidden">
         <CinematicImage
@@ -402,6 +402,6 @@ export default function ConsultationsPage() {
           </p>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

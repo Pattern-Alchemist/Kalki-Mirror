@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import { canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: canonicalUrl('/consultations') },
   title: 'Consult the Archivist',
   description:
     'Book a private consultation with the Archivist. Birth-chart analysis, pattern decoding, siddhi pathway mapping, and tantrik guidance — in person or remote.',

@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 
-const SITE_URL = 'https://astrokalki.com';
+import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: canonicalUrl('/archive') },
   title: 'The Akashic Archive',
   description:
     '48 siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access. Explore the complete siddhi database.',

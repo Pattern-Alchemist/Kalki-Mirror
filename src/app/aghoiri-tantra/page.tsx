@@ -5,6 +5,8 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { GatedContent } from '@/components/monetization/GatedContent';
+import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
+import Link from 'next/link';
 import { fadeInUp, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 import { TIER_LABELS, TIER_ELEMENTS, TIER_COLORS, TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
@@ -443,7 +445,7 @@ export default function AghoriTantraPage() {
   }, []);
 
   return (
-    <main className="bg-deep-black min-h-screen">
+    <div className="bg-deep-black min-h-screen">
       {/* Hero */}
       <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
@@ -555,6 +557,25 @@ export default function AghoriTantraPage() {
         </div>
       ))}
 
+      {/* ── Closing CTA ── */}
+      <motion.div
+        className="max-w-lg mx-auto mt-20 text-center"
+        initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+        whileInView={fadeInUp.visible}
+        viewport={{ once: true, margin: '-60px' }}
+      >
+        <p className="section-label mb-3">READY TO BEGIN</p>
+        <p className="font-display text-2xl md:text-3xl tracking-wide mb-3">The path is open.</p>
+        <p className="text-text-muted mb-8 max-w-md mx-auto editorial-spacing">
+          Eight phases. Fifty-four lessons. A lifetime of practice.
+          Speak with Kaustubh before entering the ashram.
+        </p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <WhatsAppCTA variant="inline" label="Consult Kaustubh" message="I am interested in beginning the Aghori Tantra course." className="" />
+          <Link href="/pricing" className="ghost-cta">View Membership</Link>
+        </div>
+      </motion.div>
+
       {/* Footer */}
       <footer className="relative pb-28 md:pb-20 mt-16">
         <div className="atmospheric-bg absolute inset-0 opacity-20" />
@@ -570,6 +591,6 @@ export default function AghoriTantraPage() {
           </p>
         </div>
       </footer>
-    </main>
+    </div>
   );
 }

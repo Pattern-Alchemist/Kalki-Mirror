@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 
-const SITE_URL = 'https://astrokalki.com';
+import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: canonicalUrl('/pricing') },
   title: 'Four Paths, One Purpose',
   description:
     'Four membership tiers — Seeker, Adept, Initiate, and Sovereign. Each unlocks deeper layers of the Akashic Archive, consultations, and live satsang.',

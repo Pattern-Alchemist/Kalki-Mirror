@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import { canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
+  alternates: { canonical: canonicalUrl('/practice') },
   title: 'Sadhana Instruments',
   description:
     'Breath timers, pranayama tools, and guided sadhana instruments calibrated to tantrik rhythms. Build your daily practice with precision.',

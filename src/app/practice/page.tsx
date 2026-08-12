@@ -227,7 +227,7 @@ export default function PracticePage() {
   }, []);
 
   return (
-    <main className="bg-deep-black min-h-screen">
+    <div className="bg-deep-black min-h-screen">
       {/* \u2550\u2550\u2550 HERO \u2550\u2550\u2550 */}
       <header className="relative min-h-[85vh] md:min-h-[95vh] flex items-end overflow-hidden">
         <CinematicImage
@@ -662,6 +662,6 @@ export default function PracticePage() {
           </p>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
