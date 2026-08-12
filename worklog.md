@@ -431,3 +431,24 @@ Stage Summary:
 - Tantra categories: computed stats, cross-references, primary texts, caution notes
 - Build: clean pass, SEO metadata for 2 new routes
 - Files modified: sadhana-library.ts, types.ts, tantra-categories.ts, siddhis-*.ts (6 files), page.tsx, pricing.ts, next.config.ts, .env, library/page.tsx, aghoiri-tantra/layout.tsx (new), library/layout.tsx (new)
+
+---
+Task ID: 1
+Agent: Main Agent
+Task: Generate refined KALKI Ontological Forensics Paranormal Research Proposal PDF
+
+Work Log:
+- Read and analyzed 1917-line handover specification document
+- Loaded PDF skill, read report brief and cover design system
+- Wrote comprehensive ReportLab body script (15 chapters, ~3500 words)
+- Generated cinematic cover HTML with KALKI dark brand aesthetic
+- Validated cover HTML with poster_validate.py and cover_validate.js
+- Rendered cover via html2poster.js, merged with body via pypdf
+- QA checked with pdf_qa.py, fixed page size to exact A4
+
+Stage Summary:
+- Final deliverable: /home/z/my-project/download/KALKI_Ontological_Forensics_Proposal.pdf
+- 19 pages, 256KB, dark cinematic KALKI brand aesthetic
+- 15 chapters covering: Executive Summary, Strategic Rationale, Ontological Forensics methodology, Seven-Layer Investigation Model, Evidence Classification (E0-E5), Epistemic Seal System, Response Architecture (Level 0-6), Four-Gate Service Architecture, Reality Matrix Audit, Content Ecosystem, Visual Identity & UX, Legal Strategy, SEO, Development Roadmap, Pricing, Acceptance Criteria
+- Cinematic cover with gold accents, grid pattern, yantra geometry
+- No implementation until user approves
