@@ -510,3 +510,21 @@ Stage Summary:
 - 3 BreadcrumbList JSON-LD added (practice, codex, dossier) — all 13 key pages now have breadcrumbs
 - 1 task blocked: 19 local images on /aghori-tantra and /archetypes need Cloudinary upload first
 - Files modified: 8 files (layout.tsx, archive/page.tsx, patterns/page.tsx, library/layout.tsx, CinematicImage.tsx, practice/layout.tsx, codex/layout.tsx, dossier/layout.tsx)
+
+---
+Task ID: 2
+Agent: main
+Task: Upload 21 local images to Cloudinary and replace all local paths
+
+Work Log:
+- Fixed Cloudinary API signing (params must be sorted alphabetically before SHA1)
+- Uploaded 21 unique images: 10 mahavidyas, 8 aghori course phases, 3 extras (hero, kapal, mahakali)
+- Replaced 23 local image references across 4 files with Cloudinary CDN URLs
+- All URLs use f_auto,q_auto:good,w_1920,c_limit transforms matching site convention
+- Verified zero local /assets/ or /mahavidyas/ references remain in src/
+- Committed and pushed to GitHub (31090c1)
+
+Stage Summary:
+- 21/21 images uploaded successfully to Cloudinary kalki-mirror/ folder
+- 23 references replaced in archetypes.ts, aghori-tantra-course.ts, siddhis-aghori.ts, aghori-tantra/page.tsx
+- All images now served from Cloudinary CDN — zero local image serves on /archetypes and /aghori-tantra
