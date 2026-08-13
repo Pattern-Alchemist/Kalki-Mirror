@@ -10,6 +10,25 @@ function cloudinaryUrl(cloudinaryId: string, width = 1920): string {
   return `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto:good,w_${width},c_limit/${cloudinaryId}`;
 }
 
+/**
+ * Generate responsive srcset for Cloudinary URLs.
+ * Parses a full Cloudinary URL, replaces the width transform,
+ * and returns srcset string with mobile-appropriate breakpoints.
+ */
+function buildResponsiveSrcset(src: string): string | undefined {
+  const match = src.match(/\/image\/upload\/([^/]+)\/(.+)/);
+  if (!match) return undefined;
+  const transforms = match[1];
+  const publicId = match[2];
+  // Extract existing quality/format if present
+  const hasFormat = transforms.includes('f_auto');
+  const baseTransforms = hasFormat ? transforms : `f_auto,${transforms}`;
+  const breakpoints = [640, 768, 1024, 1280, 1920];
+  return breakpoints
+    .map(w => `https://res.cloudinary.com/${CLOUD || 'b9oo5abp'}/image/upload/${baseTransforms.replace(/w_\d+/, `w_${w}`)}/${publicId} ${w}w`)
+    .join(', ');
+}
+
 interface CinematicImageProps {
   src?: string;
   cloudinaryId?: string;
@@ -74,10 +93,16 @@ export function CinematicImage({
 
   if (!resolvedSrc) return null;
 
+  // Build responsive srcset for Cloudinary images
+  const isCloudinary = resolvedSrc.includes('res.cloudinary.com');
+  const srcSet = isCloudinary ? buildResponsiveSrcset(resolvedSrc) : undefined;
+
   const imageEl = (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={resolvedSrc}
+      srcSet={srcSet}
+      sizes={fill ? '(max-width: 768px) 100vw, (max-width: 1280px) 80vw, 1400px' : undefined}
       alt={alt}
       loading={priority ? 'eager' : 'lazy'}
       decoding={priority ? 'sync' : 'async'}

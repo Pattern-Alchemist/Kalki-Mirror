@@ -380,6 +380,16 @@
   0%   { transform: scale(1)    translate(0, 0); }
   100% { transform: scale(1.12) translate(-1.5%, -1%); }
 }
+/* Disable Ken Burns on mobile — save GPU */
+@media (max-width: 767px) {
+  .ken-burns img, .ken-burns span img,
+  .ken-burns-slow img, .ken-burns-slow span img {
+    animation: none !important;
+  }
+  .film-grain::after {
+    display: none;
+  }
+}
 
 /* Film grain — ancient celluloid texture (uses ::after) */
 .film-grain::after {

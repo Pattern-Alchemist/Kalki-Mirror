@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -19,7 +19,7 @@ interface MagneticCardProps {
  * MagneticCard — wraps any card in a 3D tilt effect that follows the cursor.
  * Uses onMouseMove to compute rotateX/Y from cursor position relative to
  * the card center. Includes a subtle light glare that follows the cursor.
- * Respects prefers-reduced-motion.
+ * Respects prefers-reduced-motion and disables on touch devices.
  */
 export function MagneticCard({
   children,
@@ -32,10 +32,15 @@ export function MagneticCard({
   const ref = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState({ rotateX: 0, rotateY: 0, x: 0, y: 0, scale: 1 });
   const [glarePos, setGlarePos] = useState({ x: 50, y: 50, opacity: 0 });
+  // Detect touch device — disable 3D tilt on mobile/touch
+  const [isTouch, setIsTouch] = useState(false);
+  useEffect(() => {
+    setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (reduced) return;
+      if (reduced || isTouch) return;
       const el = ref.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
@@ -50,7 +55,7 @@ export function MagneticCard({
       setTransform({ rotateX, rotateY, x: pullX, y: pullY, scale: hoverScale });
       setGlarePos({ x: percentX * 100, y: percentY * 100, opacity: 1 });
     },
-    [reduced, tilt, hoverScale]
+    [reduced, tilt, hoverScale, isTouch]
   );
 
   const handleMouseLeave = useCallback(() => {
@@ -58,7 +63,7 @@ export function MagneticCard({
     setGlarePos({ x: 50, y: 50, opacity: 0 });
   }, []);
 
-  if (reduced) {
+  if (reduced || isTouch) {
     return <div className={className}>{children}</div>;
   }
 

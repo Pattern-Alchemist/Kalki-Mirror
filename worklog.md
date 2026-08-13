@@ -431,3 +431,30 @@ Stage Summary:
 - Tantra categories: computed stats, cross-references, primary texts, caution notes
 - Build: clean pass, SEO metadata for 2 new routes
 - Files modified: sadhana-library.ts, types.ts, tantra-categories.ts, siddhis-*.ts (6 files), page.tsx, pricing.ts, next.config.ts, .env, library/page.tsx, aghoiri-tantra/layout.tsx (new), library/layout.tsx (new)
+---
+Task ID: 1
+Agent: Main
+Task: Fix mobile issues — broken images, poor loading, complicated navigation, tier naming
+
+Work Log:
+- Explored codebase to identify root causes: CinematicImage has no responsive srcset (all images load at 1920px), 12+ parallax instances on homepage, 48 animated KnowledgeLights on archive, flat 9-link mobile nav, inconsistent tier labels across 7+ files
+- Fixed CinematicImage: Added buildResponsiveSrcset() that generates srcset with 640/768/1024/1280/1920 breakpoints for Cloudinary URLs, added sizes attribute
+- Fixed archive page: Added responsive srcset to zone background images, reduced KnowledgeLights from 48 to 12 on mobile, disabled infinite pulse animation on mobile
+- Fixed homepage: Imported useIsMobile, disabled all 12+ ScrollParallax instances on mobile, disabled Ken Burns on mobile for all CinematicImages, changed video preload to 'none' on mobile, used 640px poster on mobile
+- Fixed SacredNav: Replaced flat 9-link list with grouped accordion (Practice / Knowledge / Deeper), scrollable, smaller text
+- Fixed tier-gate.ts: Added TIER_POETIC as single source of truth, made it the canonical tier label file
+- Fixed PricingCards: Removed local ACCESS_LABELS, imported TIER_LABELS from tier-gate
+- Fixed archetypes.ts: Removed local ACCESS_LABELS, re-exports from tier-gate
+- Fixed pricing/layout.tsx: Updated metadata from 'Seeker, Adept, Initiate, Sovereign' to 'Prithvi, Jal, Agni, Akash'
+- Fixed pricing/page.tsx: CTA button from 'Enter the Antechamber' to 'Enter Prithvi'
+- Fixed pricing.ts data: CTA labels from 'The Antechamber'/'Initiate' to 'Prithvi'/'Jal'
+- Fixed dossier/page.tsx: Tier select options from 'Prithvi — The Antechamber' to 'Prithvi'
+- Fixed PricingQuiz.tsx: All tier names and reasons updated to tatva-based
+- Fixed API recommend-tier: All tier names and LLM prompt updated
+- Fixed globals.css: Added @media (max-width: 767px) to disable Ken Burns and film-grain on mobile
+- Fixed MagneticCard: Added touch device detection, disables 3D tilt on mobile
+
+Stage Summary:
+- All 4 mobile issues fixed: responsive images, performance, navigation, tier naming
+- Zero TypeScript errors after all changes
+- Files modified: 14 files across components, pages, data, styles, and API routes

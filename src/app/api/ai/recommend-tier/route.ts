@@ -43,22 +43,22 @@ const ANSWER_TIER_WEIGHTS: Record<string, Record<string, number>> = {
 const TIER_INFO: Record<string, { tierElement: string; reason: string; unlockedFeatures: string[] }> = {
   prithvi: {
     tierElement: 'Earth',
-    reason: 'Your curiosity and foundational interest in Vedic wisdom aligns with the Antechamber — the solid ground from which all deeper practice grows. This tier provides the essential maps and introductory practices to orient your trajectory.',
+    reason: 'Your curiosity and foundational interest in Vedic wisdom aligns with Prithvi — the solid earth from which all deeper practice grows. This tier provides the essential maps and introductory practices to orient your trajectory.',
     unlockedFeatures: ['Introductory practices', 'Foundational archetypes', 'Entry-level patterns', 'Basic breathwork sequences'],
   },
   jal: {
     tierElement: 'Water',
-    reason: 'Your commitment to establishing a regular practice places you in the Initiate stream — the flowing current that deepens with consistent effort. This tier provides structured sādhana protocols, detailed archetype analyses, and the mantra libraries your practice needs.',
+    reason: 'Your commitment to establishing a regular practice places you in the Jal stream — the flowing water that deepens with consistent effort. This tier provides structured sādhana protocols, detailed archetype analyses, and the mantra libraries your practice needs.',
     unlockedFeatures: ['Structured sādhana protocols', 'Full archetype analyses', 'Mantra library', 'Breathwork sequences', 'Pattern analysis tools'],
   },
   agni: {
     tierElement: 'Fire',
-    reason: 'Your depth of experience and appetite for advanced technique places you in the Practitioner stream — the transformative fire that burns through superficial understanding. This tier provides advanced siddhis, detailed transit interpretations, and yantra construction guides.',
+    reason: 'Your depth of experience and appetite for advanced technique places you in the Agni stream — the transformative fire that burns through superficial understanding. This tier provides advanced siddhis, detailed transit interpretations, and yantra construction guides.',
     unlockedFeatures: ['Advanced siddhis', 'Detailed transit interpretations', 'Pattern deep-dives', 'Yantra construction guides', 'Community consultations'],
   },
   akash: {
     tierElement: 'Space',
-    reason: 'Your pursuit of complete mastery places you in the Vault — the boundless space that contains all practices without restriction. This tier provides unrestricted access to sealed practices, research codices, and priority consultations.',
+    reason: 'Your pursuit of complete mastery places you in Akash — the boundless sky that contains all practices without restriction. This tier provides unrestricted access to sealed practices, research codices, and priority consultations.',
     unlockedFeatures: ['All content including sealed practices', 'Research codices', 'Advanced Mahavidya workings', 'Priority consultations', 'Early access to new content'],
   },
 };
@@ -84,7 +84,7 @@ function fallbackRecommendation(answers: string[]) {
  * Pricing page plan recommender — analyzes answers about interest in
  * Vedic wisdom and recommends the best membership tier.
  *
- * Tiers: prithvi (Antechamber), jal (Initiate), agni (Practitioner), akash (Vault).
+ * Tiers: prithvi (Prithvi), jal (Jal), agni (Agni), akash (Akash).
  *
  * Falls back to rule-based scoring when LLM is not configured or fails.
  *
@@ -118,10 +118,10 @@ export async function POST(request: NextRequest) {
 Based on these answers about their interest in Vedic wisdom, recommend which membership tier suits them best. Explain why. List specific content they'd unlock.
 
 Membership tiers:
-- prithvi (Antechamber): Foundation tier. Basic access to introductory practices, foundational archetypes, and entry-level patterns. Best for curious beginners.
-- jal (Initiate): Intermediate tier. Access to structured sādhana protocols, detailed archetype analyses, mantra libraries, and breathwork sequences. Best for committed practitioners establishing a daily practice.
-- agni (Practitioner): Advanced tier. Full access to advanced practices, detailed transit interpretations, pattern deep-dives, yantra construction guides, and community consultations. Best for experienced practitioners seeking depth.
-- akash (Vault): Master tier. Complete unrestricted access to all content including sealed practices, research codices, advanced Mahavidya workings, and priority consultations. Best for serious practitioners and scholars.
+- prithvi (Prithvi): Foundation tier. Basic access to introductory practices, foundational archetypes, and entry-level patterns. Best for curious beginners.
+- jal (Jal): Intermediate tier. Access to structured sādhana protocols, detailed archetype analyses, mantra libraries, and breathwork sequences. Best for committed practitioners establishing a daily practice.
+- agni (Agni): Advanced tier. Full access to advanced practices, detailed transit interpretations, pattern deep-dives, yantra construction guides, and community consultations. Best for experienced practitioners seeking depth.
+- akash (Akash): Master tier. Complete unrestricted access to all content including sealed practices, research codices, advanced Mahavidya workings, and priority consultations. Best for serious practitioners and scholars.
 
 Return JSON: { "recommendedTier": "<prithvi|jal|agni|akash>", "tierElement": "<element name: Earth|Water|Fire|Space>", "reason": "<2-3 sentence explanation of why this tier fits>", "unlockedFeatures": ["<feature1>", "<feature2>", ...] }`;
 

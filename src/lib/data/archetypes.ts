@@ -4,6 +4,8 @@
 // YANTRA classifies detected patterns under these archetypes.
 // =============================================================
 
+import { TIER_LABELS } from '@/lib/utils/tier-gate';
+
 export type CautionLevel = 'OPEN' | 'MODERATE' | 'HIGH' | 'SEALED';
 
 export interface Archetype {
@@ -319,13 +321,8 @@ export const PATTERN_ARCHETYPE_MAP: Record<string, string> = {
   'the-void': 'dhumavati',
 };
 
-// Access tier labels for the archive
-export const ACCESS_LABELS: Record<string, string> = {
-  prithvi: 'The Antechamber',
-  jal: 'The Initiate',
-  agni: 'The Practitioner',
-  akash: 'The Vault',
-};
+// Tier display labels — re-export from tier-gate.ts for backward compat
+export { TIER_LABELS as ACCESS_LABELS };
 
 export const CAUTION_LABELS: Record<CautionLevel, string> = {
   OPEN: 'Open',

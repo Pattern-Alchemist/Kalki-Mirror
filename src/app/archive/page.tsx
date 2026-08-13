@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import {
   motion,
@@ -27,10 +27,17 @@ import { CinematicImage } from '@/components/ui/CinematicImage';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 
 /* ─── Zone Images (Cloudinary) ──────────────────────────────────────── */
-const CLOUD = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror';
+const CLOUD_BASE = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good';
+
+function zoneSrc(w: number, path: string) {
+  return `${CLOUD_BASE},w_${w},c_limit/kalki-mirror/${path}`;
+}
+function zoneSrcSet(path: string) {
+  return [640, 768, 1024, 1280, 1920].map(w => `${zoneSrc(w, path)} ${w}w`).join(', ');
+}
 const ZONE_THRESHOLD = '/archive-zone/threshold.jpeg';
-const ZONE_READING_ROOM = `${CLOUD}/archive-zone/reading-room`;
-const ZONE_DEEP = `${CLOUD}/archive-zone/deep-archive`;
+const ZONE_READING_ROOM = 'archive-zone/reading-room';
+const ZONE_DEEP = 'archive-zone/deep-archive';
 
 const CATEGORIES = ['All', 'Mantra', 'Yantra', 'Prāṇāyāma', 'Pūjā', 'Tantra', 'Dhyāna', 'Dhāraṇā', 'Dhūni', 'Śmaśāna', 'Aghora'];
 const CAUTION_FILTERS: { value: string; label: string }[] = [
@@ -43,10 +50,10 @@ const CAUTION_FILTERS: { value: string; label: string }[] = [
 
 const TIER_FILTERS: { value: string; label: string }[] = [
   { value: 'all', label: 'All Tiers' },
-  { value: 'prithvi', label: 'Antechamber' },
-  { value: 'jal', label: 'Initiate' },
-  { value: 'agni', label: 'Practitioner' },
-  { value: 'akash', label: 'The Vault' },
+  { value: 'prithvi', label: 'Prithvi' },
+  { value: 'jal', label: 'Jal' },
+  { value: 'agni', label: 'Agni' },
+  { value: 'akash', label: 'Akash' },
 ];
 
 /* ─── Knowledge Light brightness by siddhi level ────────────────── */
@@ -57,11 +64,18 @@ const LIGHT_OPACITY: Record<SiddhiLevel, number> = {
   Restricted: 0.06,
 };
 
-/* ─── 48 Knowledge Lights ────────────────────────────────────────── */
+/* ─── Knowledge Lights (reduced on mobile for performance) ─────── */
 function KnowledgeLights({ siddhis }: { siddhis: typeof allSiddhis }) {
   const reduced = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef, { once: true, margin: '-10% 0px' });
+  // On mobile, only show Foundation lights (fewer animations)
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
+  const displaySiddhis = isMobile ? siddhis.filter(s => s.level === 'Foundation').slice(0, 12) : siddhis;
 
   const positions = useMemo(() => {
     const jitter = (s: string) => {
@@ -70,7 +84,7 @@ function KnowledgeLights({ siddhis }: { siddhis: typeof allSiddhis }) {
       return (Math.abs(h) % 100) / 100;
     };
 
-    return siddhis.map((s, i) => {
+    return displaySiddhis.map((s, i) => {
       const col = i % 12;
       const row = Math.floor(i / 12);
       const jx = (jitter(s.slug) - 0.5) * 6;
@@ -83,7 +97,7 @@ function KnowledgeLights({ siddhis }: { siddhis: typeof allSiddhis }) {
         size: s.level === 'Foundation' ? 3 : s.level === 'Restricted' ? 1.5 : 2,
       };
     });
-  }, [siddhis]);
+  }, [displaySiddhis]);
 
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -110,7 +124,7 @@ function KnowledgeLights({ siddhis }: { siddhis: typeof allSiddhis }) {
               duration: 1.2,
               ease: [0.22, 1, 0.36, 1],
             }}
-            {...(!reduced ? {
+            {...(!reduced && !isMobile ? {
               whileInView: {
                 opacity: [p.opacity * 0.6, p.opacity, p.opacity * 0.6],
                 transition: {
@@ -224,6 +238,8 @@ export default function ArchivePage() {
               src={ZONE_THRESHOLD}
               alt=""
               className="w-full h-full object-cover"
+              sizes="100vw"
+              srcSet={ZONE_THRESHOLD.includes('cloudinary') ? undefined : undefined}
               style={{ filter: 'contrast(1.05) saturate(0.8) brightness(0.90) sepia(0.04)' }}
               draggable={false}
             />
@@ -231,9 +247,11 @@ export default function ArchivePage() {
           <motion.div className="absolute inset-0" style={{ opacity: readingRoomOpacity, scale: bgScale }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={ZONE_READING_ROOM}
+              src={zoneSrc(1920, ZONE_READING_ROOM)}
               alt=""
               className="w-full h-full object-cover"
+              sizes="100vw"
+              srcSet={zoneSrcSet(ZONE_READING_ROOM)}
               style={{ filter: 'contrast(1.05) saturate(0.8) brightness(0.85) sepia(0.04)' }}
               draggable={false}
             />
@@ -241,9 +259,11 @@ export default function ArchivePage() {
           <motion.div className="absolute inset-0" style={{ opacity: deepOpacity, scale: bgScale }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={ZONE_DEEP}
+              src={zoneSrc(1920, ZONE_DEEP)}
               alt=""
               className="w-full h-full object-cover"
+              sizes="100vw"
+              srcSet={zoneSrcSet(ZONE_DEEP)}
               style={{ filter: 'contrast(1.08) saturate(0.75) brightness(0.78) sepia(0.06)' }}
               draggable={false}
             />

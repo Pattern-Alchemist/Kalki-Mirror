@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 
 /* ── Types ── */
@@ -26,10 +27,10 @@ type QuizState = 'intro' | 'quiz' | 'analyzing' | 'result' | 'error';
 
 /* ── Tier Display Names ── */
 const TIER_NAMES: Record<string, string> = {
-  prithvi: 'Antechamber',
-  jal: 'Initiate',
-  agni: 'Practitioner',
-  akash: 'Vault',
+  prithvi: 'Prithvi',
+  jal: 'Jal',
+  agni: 'Agni',
+  akash: 'Akash',
 };
 
 /* ── Questions ── */
@@ -83,25 +84,25 @@ const TIER_INFO: Record<string, TierResult> = {
   prithvi: {
     recommendedTier: 'prithvi',
     tierElement: 'Earth',
-    reason: 'Your curiosity and foundational interest in Vedic wisdom aligns with the Antechamber — the solid ground from which all deeper practice grows. This tier provides the essential maps and introductory practices to orient your trajectory.',
+    reason: 'Your curiosity and foundational interest in Vedic wisdom aligns with Prithvi — the solid earth from which all deeper practice grows. This tier provides the essential maps and introductory practices to orient your trajectory.',
     unlockedFeatures: ['Introductory practices', 'Foundational archetypes', 'Entry-level patterns', 'Basic breathwork sequences'],
   },
   jal: {
     recommendedTier: 'jal',
     tierElement: 'Water',
-    reason: 'Your commitment to establishing a regular practice places you in the Initiate stream — the flowing current that deepens with consistent effort. This tier provides structured sādhana protocols, detailed archetype analyses, and the mantra libraries your practice needs.',
+    reason: 'Your commitment to establishing a regular practice places you in the Jal stream — the flowing water that deepens with consistent effort. This tier provides structured sādhana protocols, detailed archetype analyses, and the mantra libraries your practice needs.',
     unlockedFeatures: ['Structured sādhana protocols', 'Full archetype analyses', 'Mantra library', 'Breathwork sequences', 'Pattern analysis tools'],
   },
   agni: {
     recommendedTier: 'agni',
     tierElement: 'Fire',
-    reason: 'Your depth of experience and appetite for advanced technique places you in the Practitioner stream — the transformative fire that burns through superficial understanding. This tier provides advanced siddhis, detailed transit interpretations, and yantra construction guides.',
+    reason: 'Your depth of experience and appetite for advanced technique places you in the Agni stream — the transformative fire that burns through superficial understanding. This tier provides advanced siddhis, detailed transit interpretations, and yantra construction guides.',
     unlockedFeatures: ['Advanced siddhis', 'Detailed transit interpretations', 'Pattern deep-dives', 'Yantra construction guides', 'Community consultations'],
   },
   akash: {
     recommendedTier: 'akash',
     tierElement: 'Space',
-    reason: 'Your pursuit of complete mastery places you in the Vault — the boundless space that contains all practices without restriction. This tier provides unrestricted access to sealed practices, research codices, and priority consultations.',
+    reason: 'Your pursuit of complete mastery places you in Akash — the boundless sky that contains all practices without restriction. This tier provides unrestricted access to sealed practices, research codices, and priority consultations.',
     unlockedFeatures: ['All content including sealed practices', 'Research codices', 'Advanced Mahavidya workings', 'Priority consultations', 'Early access to new content'],
   },
 };

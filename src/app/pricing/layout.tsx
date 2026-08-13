@@ -6,11 +6,11 @@ export const metadata: Metadata = {
   alternates: { canonical: canonicalUrl('/pricing') },
   title: 'Four Paths, One Purpose',
   description:
-    'Four membership tiers — Seeker, Adept, Initiate, and Sovereign. Each unlocks deeper layers of the Akashic Archive, consultations, and live satsang.',
+    'Four membership tiers — Prithvi, Jal, Agni, and Akash. Each unlocks deeper layers of the Akashic Archive, consultations, and live satsang.',
   openGraph: {
     title: 'Four Paths, One Purpose | KALKI',
     description:
-      'Four membership tiers — Seeker, Adept, Initiate, and Sovereign. Each unlocks deeper layers of the Akashic Archive, consultations, and live satsang.',
+      'Four membership tiers — Prithvi, Jal, Agni, and Akash. Each unlocks deeper layers of the Akashic Archive, consultations, and live satsang.',
     images: [
       {
         url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-labyrinth-alt',

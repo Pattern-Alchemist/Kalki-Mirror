@@ -2,6 +2,7 @@ import { Tier } from '@/lib/data/types';
 
 export const TIER_ORDER: Tier[] = ['prithvi', 'jal', 'agni', 'akash'];
 
+/** Tatva-based display names — the single source of truth for tier labels */
 export const TIER_LABELS: Record<Tier, string> = {
   prithvi: 'Prithvi',
   jal: 'Jal',
@@ -9,11 +10,20 @@ export const TIER_LABELS: Record<Tier, string> = {
   akash: 'Akash',
 };
 
+/** Element translations */
 export const TIER_ELEMENTS: Record<Tier, string> = {
   prithvi: 'Earth',
   jal: 'Water',
   agni: 'Fire',
   akash: 'Sky',
+};
+
+/** Poetic descriptors used in CTA buttons and prose */
+export const TIER_POETIC: Record<Tier, string> = {
+  prithvi: 'The Earth Foundation',
+  jal: 'The Water Path',
+  agni: 'The Fire Gate',
+  akash: 'The Sky Expanse',
 };
 
 export const TIER_COLORS: Record<Tier, string> = {

@@ -6,13 +6,7 @@ import { staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 import { pricingTiers } from '@/lib/data/pricing';
 import type { PricingTier } from '@/lib/data/types';
-
-const ACCESS_LABELS: Record<string, string> = {
-  prithvi: 'The Antechamber',
-  jal: 'The Initiate',
-  agni: 'The Practitioner',
-  akash: 'The Sovereign',
-};
+import { TIER_LABELS } from '@/lib/utils/tier-gate';
 
 function TierRow({ tier, index, reduced }: { tier: PricingTier; index: number; reduced: boolean }) {
   const isPaid = (tier.priceINR ?? 0) > 0;
@@ -38,7 +32,7 @@ function TierRow({ tier, index, reduced }: { tier: PricingTier; index: number; r
         </div>
         <div className="min-w-0">
           <h3 className="font-display text-xl text-foreground font-light tracking-wide group-hover:text-gold transition-colors duration-500 whitespace-normal">
-            {ACCESS_LABELS[tier.id] ?? tier.element}
+            {TIER_LABELS[tier.id as keyof typeof TIER_LABELS] ?? tier.element}
           </h3>
           <p className="font-mono text-[0.75rem] tracking-[0.12em] uppercase text-copper mt-1">
             {tier.elementSanskrit} {'\u00B7'} {tier.element}
