@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import { Inter, JetBrains_Mono, Cormorant_Garamond } from 'next/font/google';
 import "./globals.css";
-import { SacredNav } from "@/components/nav/SacredNav";
-import { SacredFooter } from "@/components/nav/SacredFooter";
-import { WhatsAppCTA } from "@/components/booking/WhatsAppCTA";
 import { TierProvider } from "@/components/layout/TierProvider";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
-import { PaywallModal } from "@/components/monetization/PaywallModal";
-import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { PublicShell } from "@/components/layout/PublicShell";
 import { Analytics } from "@vercel/analytics/react";
 
 /* ============================================================
@@ -75,7 +70,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-  /* twitter:* removed — X/Twitter falls back to openGraph, which is set dynamically per page */
   robots: {
     index: true,
     follow: true,
@@ -93,16 +87,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Detect admin routes at the layout level to strip public UI
-  const headersList = await headers();
-  const pathname = headersList.get('x-nextjs-pathname') || headersList.get('x-invoke-path') || '';
-  const isAdmin = pathname.startsWith('/admin');
-
   return (
     <html lang="en" suppressHydrationWarning className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
@@ -124,67 +113,10 @@ export default async function RootLayout({
             </nav>
           </div>
         </noscript>
-        {!isAdmin && (
-          <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-gold focus:text-deep-black focus:text-sm focus:font-ui focus:tracking-wider focus:uppercase focus:rounded-sm">Skip to content</a>
-        )}
         <TierProvider>
           <SmoothScroll>
-            {!isAdmin && (
-              <header role="banner">
-                <SacredNav />
-              </header>
-            )}
-            {!isAdmin && <ScrollProgress />}
-            <main id="main-content" className={!isAdmin ? 'pt-16 md:pt-20' : ''}>{children}</main>
-            {!isAdmin && <SacredFooter />}
-            {!isAdmin && (
-              <div className="fixed-bottom-stack">
-                <WhatsAppCTA variant="floating" />
-              </div>
-            )}
-            {!isAdmin && <PaywallModal />}
-            {!isAdmin && <div className="page-vignette" aria-hidden="true" />}
+            <PublicShell>{children}</PublicShell>
             <Analytics />
-
-            {/* JSON-LD Structured Data — public pages only */}
-            {!isAdmin && (
-              <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                  __html: JSON.stringify({
-                    '@context': 'https://schema.org',
-                    '@graph': [
-                      {
-                        '@type': 'WebSite',
-                        '@id': `${SITE_URL}/#website`,
-                        url: SITE_URL,
-                        name: 'KALKI',
-                        description: 'Tantrik Intelligence. Sacred Architecture. Pattern Recognition.',
-                        publisher: { '@id': `${SITE_URL}/#organization` },
-                        potentialAction: {
-                          '@type': 'SearchAction',
-                          target: `${SITE_URL}/archive?q={search_term_string}`,
-                          'query-input': 'required name=search_term_string',
-                        },
-                      },
-                      {
-                        '@type': 'Organization',
-                        '@id': `${SITE_URL}/#organization`,
-                        name: 'KALKI',
-                        url: SITE_URL,
-                        logo: `${SITE_URL}/favicon.svg`,
-                        description: 'Tantrik Intelligence. The Architecture of Karma.',
-                        founder: {
-                          '@type': 'Person',
-                          name: 'Kaustubh',
-                          jobTitle: 'Tantric Technologist',
-                        },
-                      },
-                    ],
-                  }),
-                }}
-              />
-            )}
           </SmoothScroll>
         </TierProvider>
       </body>
