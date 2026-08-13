@@ -342,6 +342,7 @@
    ========================================================== */
 .cinematic-wrap {
   overflow: hidden;
+  background: var(--deep-black);
 }
 /* Native img fill mode — replaces next/image fill */
 .cinematic-img-fill {

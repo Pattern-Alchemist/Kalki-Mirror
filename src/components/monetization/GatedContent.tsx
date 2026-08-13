@@ -25,7 +25,8 @@ export function GatedContent({ minTier, children, label, teaser }: GatedContentP
 
   const tier = pricingTiers.find((t) => t.id === minTier);
   const displayTitle = label ?? 'Premium Content';
-  const displayTeaser = teaser ?? `This practice is available to ${tier?.element ?? minTier} practitioners and above.`;
+  const tierLabel = tier?.id ? (tier.id.charAt(0).toUpperCase() + tier.id.slice(1)) : (minTier.charAt(0).toUpperCase() + minTier.slice(1));
+  const displayTeaser = teaser ?? `This practice is available to ${tierLabel} practitioners and above.`;
   const price = formatPrice(currency === 'INR' ? (tier?.priceINR ?? 0) : (tier?.priceUSD ?? 0), currency);
 
   const handleUnlock = () => requestUpgrade(displayTitle, minTier);
@@ -66,7 +67,7 @@ export function GatedContent({ minTier, children, label, teaser }: GatedContentP
                   <h3 className="font-display text-xl text-foreground">{displayTitle}</h3>
                   <p className="text-text-secondary text-sm leading-relaxed max-w-sm">{displayTeaser}</p>
                   <button onClick={handleUnlock} className="gold-cta mt-2 text-xs" aria-label={`Unlock ${displayTitle}`}>
-                    Unlock — {tier?.element ?? minTier}
+                    Unlock — {tierLabel}
                   </button>
                   <p className="text-text-muted text-xs">
                     Starting at <span className="text-gold-dim font-semibold">{price}</span>/ month

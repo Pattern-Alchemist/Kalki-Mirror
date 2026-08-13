@@ -1,14 +1,17 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useTier } from '@/components/layout/TierProvider';
 import { pricingTiers, formatPrice } from '@/lib/data/pricing';
 import { TIER_ORDER, TIER_LABELS } from '@/lib/utils/tier-gate';
-import { openWhatsApp } from '@/lib/utils/whatsapp';
+import type { Tier } from '@/lib/data/types';
+
+const WHATSAPP_NUMBER = '918920862931';
 
 export function PaywallModal() {
-  const { tier: currentTier, showPaywall: open, setShowPaywall: setOpen } = useTier();
+  const { tier: currentTier } = useTier();
+  const [open, setOpen] = useState(false);
   const reduced = useReducedMotion();
 
   const nextTierIdx = TIER_ORDER.indexOf(currentTier) + 1;
@@ -18,7 +21,9 @@ export function PaywallModal() {
   const handleUpgrade = useCallback(() => {
     if (!nextTierData) return;
     const priceStr = formatPrice(nextTierData.priceINR ?? 0, 'INR');
-    openWhatsApp(`I would like to upgrade to ${nextTierData.element} (${priceStr}/mo).`);
+    const tierName = nextTier ? TIER_LABELS[nextTier] : 'next';
+    const msg = `I would like to upgrade to ${tierName} (${priceStr}/mo).`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
   }, [nextTierData]);
 
   // Only show for users viewing gated content who are on prithvi or jal

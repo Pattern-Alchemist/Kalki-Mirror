@@ -95,7 +95,8 @@ export default function PricingPage() {
     if (!t) return;
     const price = billing === 'monthly' ? (currency === 'INR' ? t.priceINR : t.priceUSD) : (currency === 'INR' ? t.yearlyINR : t.yearlyUSD);
     const priceStr = formatPrice(price ?? 0, currency);
-    const waLink = buildWhatsAppLink(t.element, priceStr, billing, currency);
+    const tierLabel = TIER_LABELS[tierId];
+    const waLink = buildWhatsAppLink(tierLabel, priceStr, billing, currency);
     window.open(waLink, '_blank', 'noopener,noreferrer');
   }, [billing, currency]);
 

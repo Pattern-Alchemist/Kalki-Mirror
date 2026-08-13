@@ -45,7 +45,6 @@ const NAV_LINKS = NAV_GROUPS.flatMap(g => g.links);
 export function SacredNav() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const reduced = useReducedMotion();
 
@@ -57,7 +56,6 @@ export function SacredNav() {
 
   useEffect(() => {
     setMobileOpen(false);
-    setExpandedGroup(null);
   }, [pathname]);
 
   useEffect(() => {
@@ -66,10 +64,6 @@ export function SacredNav() {
   }, [mobileOpen]);
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
-
-  const toggleGroup = (groupLabel: string) => {
-    setExpandedGroup(prev => prev === groupLabel ? null : groupLabel);
-  };
 
   return (
     <>
@@ -168,76 +162,33 @@ export function SacredNav() {
                 </span>
               </div>
 
-              {/* Grouped navigation */}
+              {/* Flat navigation — no accordion, direct access */}
               <nav className="flex flex-col gap-1 flex-1">
-                {NAV_GROUPS.map((group, gi) => {
-                  const isExpanded = expandedGroup === group.label;
-                  const hasActive = group.links.some(l => isActive(l.href));
-
-                  return (
-                    <motion.div
-                      key={group.label}
-                      initial={reduced ? { opacity: 1 } : { opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{
-                        duration: 0.4,
-                        delay: reduced ? 0 : 0.06 * gi,
-                        ease: [0.22, 1, 0.36, 1],
-                      }}
+                {NAV_LINKS.map((link, li) => (
+                  <motion.div
+                    key={link.href}
+                    initial={reduced ? { opacity: 1 } : { opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.4,
+                      delay: reduced ? 0 : 0.04 * li,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={cn(
+                        'block py-3.5 px-1 text-lg tracking-[0.08em] font-light transition-colors duration-300',
+                        isActive(link.href)
+                          ? 'text-gold font-display'
+                          : 'text-text-muted hover:text-ivory'
+                      )}
                     >
-                      {/* Group header */}
-                      <button
-                        onClick={() => toggleGroup(group.label)}
-                        className={cn(
-                          'flex items-center justify-between w-full py-3 px-1 text-left',
-                          hasActive ? 'text-gold' : 'text-text-muted'
-                        )}
-                      >
-                        <span className="font-mono text-[0.65rem] tracking-[0.3em] uppercase">
-                          {group.label}
-                        </span>
-                        <motion.span
-                          className="text-gold/40 text-xs"
-                          animate={{ rotate: isExpanded ? 180 : 0 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          &#x25BC;
-                        </motion.span>
-                      </button>
-
-                      {/* Group links */}
-                      <AnimatePresence>
-                        {isExpanded && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                            className="overflow-hidden"
-                          >
-                            <div className="pl-2 border-l border-gold/10 ml-1">
-                              {group.links.map((link) => (
-                                <Link
-                                  key={link.href}
-                                  href={link.href}
-                                  onClick={() => setMobileOpen(false)}
-                                  className={cn(
-                                    'block py-2.5 pl-4 text-lg tracking-[0.08em] font-light transition-colors duration-300',
-                                    isActive(link.href)
-                                      ? 'text-gold font-display'
-                                      : 'text-text-muted hover:text-ivory'
-                                  )}
-                                >
-                                  {link.label}
-                                </Link>
-                              ))}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
-                  );
-                })}
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
               </nav>
 
               {/* Bottom tagline */}

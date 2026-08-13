@@ -1,6 +1,12 @@
 import type { Metadata } from 'next';
 import { canonicalUrl } from '@/lib/utils/metadata';
 
+// Skip static prerendering for all /practice routes.
+// Turbopack SSG has a useMemo resolution bug in the practice
+// page's import graph. All practice pages are fully interactive
+// (timers, state) and gain nothing from static generation.
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   alternates: { canonical: canonicalUrl('/practice') },
   title: 'The Practice Floor — Sadhana Logger',
