@@ -49,6 +49,7 @@ export function SacredFooter() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
+                      prefetch={false}
                       className="text-text-secondary text-base hover:text-gold transition-colors duration-500 inline-block py-1 min-h-[44px] leading-[44px]"
                     >
                       {link.label}

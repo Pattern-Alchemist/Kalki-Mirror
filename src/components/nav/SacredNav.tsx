@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-/* ─── Navigation structure with mobile-first grouping ─── */
+/* Navigation structure with mobile-first grouping */
 interface NavGroup {
   label: string;
   links: { href: string; label: string }[];
@@ -47,6 +47,7 @@ export function SacredNav() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const reduced = useReducedMotion();
@@ -71,7 +72,6 @@ export function SacredNav() {
       main?.setAttribute('inert', '');
       footer?.setAttribute('aria-hidden', 'true');
       footer?.setAttribute('inert', '');
-      // Focus the first menu link after animation
       const timer = setTimeout(() => {
         const firstLink = menuRef.current?.querySelector('a');
         firstLink?.focus();
@@ -83,29 +83,23 @@ export function SacredNav() {
       main?.removeAttribute('inert');
       footer?.removeAttribute('aria-hidden');
       footer?.removeAttribute('inert');
-      // Return focus to toggle button
       toggleRef.current?.focus();
     }
   }, [mobileOpen]);
 
-  // Focus trap: keep Tab within the mobile menu
+  // Focus trap
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (!mobileOpen || !menuRef.current) return;
-    if (e.key === 'Escape') {
-      setMobileOpen(false);
-      return;
-    }
+    if (e.key === 'Escape') { setMobileOpen(false); return; }
     if (e.key !== 'Tab') return;
     const focusable = menuRef.current.querySelectorAll<HTMLElement>('a[href], button, [tabindex]:not([tabindex="-1"])');
     if (focusable.length === 0) return;
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
     if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault();
-      last.focus();
+      e.preventDefault(); last.focus();
     } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus();
+      e.preventDefault(); first.focus();
     }
   }, [mobileOpen]);
 
@@ -115,22 +109,30 @@ export function SacredNav() {
   }, [handleKeyDown]);
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
-
   const toggleMenu = () => setMobileOpen(!mobileOpen);
+  const toggleGroup = (label: string) => setOpenGroups(prev => ({ ...prev, [label]: !prev[label] }));
+
+  // Auto-expand the group containing the active link
+  useEffect(() => {
+    if (!mobileOpen) return;
+    for (const g of NAV_GROUPS) {
+      if (g.links.some(l => isActive(l.href))) {
+        setOpenGroups({ [g.label]: true });
+        break;
+      }
+    }
+  }, [pathname, mobileOpen]);
 
   return (
     <>
       <nav
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-700',
-          scrolled
-            ? 'glass-nav'
-            : 'bg-transparent'
+          scrolled ? 'glass-nav' : 'bg-transparent'
         )}
       >
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo — KALKI wordmark */}
             <Link href="/" className="relative z-10 flex items-center gap-3 group">
               <span className="font-display text-lg md:text-xl tracking-[0.25em] gold-foil-text font-light">
                 KALKI
@@ -145,9 +147,7 @@ export function SacredNav() {
                   href={link.href}
                   className={cn(
                     'relative text-[0.8125rem] font-ui tracking-[0.18em] uppercase transition-colors duration-500 py-1 min-h-[44px] flex items-center neon-tab-glow',
-                    isActive(link.href)
-                      ? 'text-gold'
-                      : 'text-text-muted hover:text-ivory'
+                    isActive(link.href) ? 'text-gold' : 'text-text-muted hover:text-ivory'
                   )}
                 >
                   {link.label}
@@ -172,31 +172,16 @@ export function SacredNav() {
               aria-controls="mobile-menu"
             >
               <div className="relative w-5 h-4">
-                <span
-                  className={cn(
-                    'absolute left-0 h-px bg-gold transition-all duration-500',
-                    mobileOpen ? 'top-1/2 w-5 -translate-y-1/2 rotate-45' : 'top-0 w-4'
-                  )}
-                />
-                <span
-                  className={cn(
-                    'absolute left-0 top-1/2 h-px bg-gold transition-all duration-500',
-                    mobileOpen ? 'opacity-0 w-0' : 'w-5 -translate-y-1/2'
-                  )}
-                />
-                <span
-                  className={cn(
-                    'absolute left-0 h-px bg-gold transition-all duration-500',
-                    mobileOpen ? 'top-1/2 w-5 -translate-y-1/2 -rotate-45' : 'bottom-0 w-3'
-                  )}
-                />
+                <span className={cn('absolute left-0 h-px bg-gold transition-all duration-500', mobileOpen ? 'top-1/2 w-5 -translate-y-1/2 rotate-45' : 'top-0 w-4')} />
+                <span className={cn('absolute left-0 top-1/2 h-px bg-gold transition-all duration-500', mobileOpen ? 'opacity-0 w-0' : 'w-5 -translate-y-1/2')} />
+                <span className={cn('absolute left-0 h-px bg-gold transition-all duration-500', mobileOpen ? 'top-1/2 w-5 -translate-y-1/2 -rotate-45' : 'bottom-0 w-3')} />
               </div>
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Full-Screen Menu */}
+      {/* Mobile Full-Screen Menu with Accordion Groups */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -211,58 +196,92 @@ export function SacredNav() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            {/* Screen reader announcement */}
             <div aria-live="assertive" className="sr-only">
-              Navigation menu opened. {NAV_LINKS.length} links available. Press Escape to close.
+              Navigation menu opened. Press Escape to close.
             </div>
-            {/* Backdrop */}
             <div className="absolute inset-0 bg-deep-black/95 backdrop-blur-2xl" />
 
             <div className="relative z-10 flex flex-col h-full px-6 py-20 safe-area-x overflow-y-auto">
-              {/* KALKI wordmark */}
               <div className="mb-8 flex justify-center">
-                <span className="font-display text-3xl tracking-[0.3em] gold-foil-text font-light">
-                  KALKI
-                </span>
+                <span className="font-display text-3xl tracking-[0.3em] gold-foil-text font-light">KALKI</span>
               </div>
 
-              {/* Flat navigation */}
-              <nav className="flex flex-col gap-1 flex-1" aria-label="Mobile navigation">
-                {NAV_LINKS.map((link, li) => (
-                  <motion.div
-                    key={link.href}
-                    initial={reduced ? { opacity: 1 } : { opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      duration: 0.4,
-                      delay: reduced ? 0 : 0.04 * li,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  >
-                    <Link
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      className={cn(
-                        'block py-3.5 px-1 text-lg tracking-[0.08em] font-light transition-colors duration-300 min-h-[44px] leading-[44px]',
-                        isActive(link.href)
-                          ? 'text-gold font-display'
-                          : 'text-text-muted hover:text-ivory'
-                      )}
+              <div className="flex flex-col gap-2 flex-1">
+                {NAV_GROUPS.map((group, gi) => {
+                  const isOpen = !!openGroups[group.label];
+                  const hasActive = group.links.some(l => isActive(l.href));
+                  return (
+                    <motion.div
+                      key={group.label}
+                      initial={reduced ? { opacity: 1 } : { opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: reduced ? 0 : 0.06 * gi, ease: [0.22, 1, 0.36, 1] }}
                     >
-                      {link.label}
-                    </Link>
-                  </motion.div>
-                ))}
-              </nav>
+                      <button
+                        type="button"
+                        onClick={() => toggleGroup(group.label)}
+                        aria-expanded={isOpen}
+                        className={cn(
+                          'flex w-full items-center justify-between py-3 px-1 text-xs font-ui uppercase tracking-[0.2em] transition-colors duration-300 min-h-[44px]',
+                          hasActive ? 'text-gold' : 'text-text-muted/60 hover:text-text-muted'
+                        )}
+                      >
+                        {group.label}
+                        <ChevronIcon open={isOpen} />
+                      </button>
+                      <AnimatePresence>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                            className="overflow-hidden"
+                          >
+                            <div className="pl-3 pb-1 flex flex-col gap-0.5">
+                              {group.links.map((link) => (
+                                <Link
+                                  key={link.href}
+                                  href={link.href}
+                                  onClick={() => setMobileOpen(false)}
+                                  className={cn(
+                                    'block py-3 pl-3 border-l text-lg tracking-[0.08em] font-light transition-all duration-300 min-h-[44px] leading-[44px]',
+                                    isActive(link.href)
+                                      ? 'text-gold font-display border-gold/30'
+                                      : 'text-text-muted hover:text-ivory border-text-muted/10'
+                                  )}
+                                >
+                                  {link.label}
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  );
+                })}
+              </div>
 
-              {/* Bottom tagline */}
-              <p className="text-caption text-center pt-8">
-                Light for the Dark Age.
-              </p>
+              <p className="text-caption text-center pt-8">Light for the Dark Age.</p>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+function ChevronIcon({ open }: { open: boolean }) {
+  return (
+    <svg
+      className={cn('h-3.5 w-3.5 transition-transform duration-300', open && 'rotate-180')}
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+    </svg>
   );
 }
