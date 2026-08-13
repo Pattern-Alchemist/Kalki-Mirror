@@ -58,11 +58,18 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // A1: 2FA/TOTP fields
+  twoFactorSecret   String?   // Encrypted TOTP secret (base32)
+  twoFactorEnabled  Boolean  @default(false)
+  twoFactorBackupCodes String? // JSON array of backup codes
+
   // Relations
   streaks       SadhanaStreak[]
   resolutions    PatternResolution[]
   keysGenerated InviteCode[]  @relation("GeneratedKeys")
   keysUsed      InviteUsage[]    @relation("UsedKeys")
+  activeSessions ActiveSession[]
+  notifications  AdminNotification[]
 }
 
 // ============================================================
@@ -247,6 +254,66 @@ model Consultation {
 
   @@index([status, scheduledFor])
   @@index([phone])
+}
+
+// ============================================================
+// A3: ACTIVE SESSIONS — Concurrent session tracking
+// Detects when the same user logs in from multiple devices.
+// ============================================================
+
+model ActiveSession {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   // Hashed JWT jti or session identifier
+  ip        String?
+  userAgent String?
+  lastSeen  DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([tokenHash])
+}
+
+// ============================================================
+// A6: ADMIN NOTIFICATIONS — Persistent notification store
+// Replaces in-memory notification store with DB-backed persistence.
+// ============================================================
+
+model AdminNotification {
+  id        String   @id @default(cuid())
+  userId    String?  // Null = broadcast to all admins
+  title     String
+  body      String
+  type      String   @default("info") // info | warning | success | error
+  read      Boolean  @default(false)
+  href      String?  // Optional navigation link
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read, createdAt])
+}
+
+// ============================================================
+// A14: WEBHOOK CONFIGURATIONS — Outgoing webhook endpoints
+// Persisted webhook definitions for event-driven integrations.
+// ============================================================
+
+model Webhook {
+  id        String   @id @default(cuid())
+  url       String
+  events    String   // JSON array of event types
+  active    Boolean  @default(true)
+  secret    String?  // HMAC signing secret
+  lastTriggeredAt DateTime?
+  lastStatus    String? // last HTTP status code
+  createdBy String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active])
 }
 
 // ============================================================

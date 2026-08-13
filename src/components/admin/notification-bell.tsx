@@ -7,43 +7,43 @@ interface Notification {
   id: string;
   title: string;
   body: string;
-  type: 'info' | 'warning' | 'success';
-  time: Date;
+  type: 'info' | 'warning' | 'success' | 'error';
   read: boolean;
   href?: string;
-}
-
-// A6: In-memory notification store (demo; wire to WebSocket/polling for production)
-const notificationStore: Notification[] = [];
-let idCounter = 0;
-
-export function pushNotification(n: Omit<Notification, 'id' | 'read' | 'time'>) {
-  notificationStore.unshift({
-    ...n,
-    id: `n-${++idCounter}`,
-    read: false,
-    time: new Date(),
-  });
-  // Keep max 50
-  if (notificationStore.length > 50) notificationStore.length = 50;
+  createdAt: string;
 }
 
 export function NotificationBell() {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
   const router = useRouter();
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const refresh = useCallback(() => {
-    setNotifications([...notificationStore]);
+  const refresh = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/notifications');
+      if (res.ok) {
+        const data = await res.json();
+        setNotifications(data.notifications);
+        setUnreadCount(data.unreadCount);
+      }
+    } catch {
+      // Silently fail — notifications are non-critical
+    }
   }, []);
 
-  // Poll every 10s (replace with WebSocket in production)
+  // Poll every 15s
   useEffect(() => {
     refresh();
-    const interval = setInterval(refresh, 10_000);
+    const interval = setInterval(refresh, 15_000);
     return () => clearInterval(interval);
   }, [refresh]);
+
+  // Refresh when panel opens
+  useEffect(() => {
+    if (open) refresh();
+  }, [open, refresh]);
 
   // Close on outside click
   useEffect(() => {
@@ -57,16 +57,21 @@ export function NotificationBell() {
     return () => document.removeEventListener('mousedown', handler);
   }, [open]);
 
-  const unreadCount = notifications.filter(n => !n.read).length;
-
-  const markRead = (id: string) => {
-    const n = notificationStore.find(n => n.id === id);
-    if (n) n.read = true;
+  const markRead = async (id: string) => {
+    await fetch('/api/admin/notifications', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    });
     refresh();
   };
 
-  const markAllRead = () => {
-    notificationStore.forEach(n => { n.read = true; });
+  const markAllRead = async () => {
+    await fetch('/api/admin/notifications', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ markAll: true }),
+    });
     refresh();
   };
 
@@ -76,17 +81,19 @@ export function NotificationBell() {
     if (n.href) router.push(n.href);
   };
 
-  const typeIcon: Record<string, string> = {
+  const typeColors: Record<string, string> = {
     info: 'text-blue-400',
     warning: 'text-amber-400',
     success: 'text-emerald-400',
+    error: 'text-red-400',
   };
 
-  const timeAgo = (d: Date) => {
-    const s = Math.floor((Date.now() - d.getTime()) / 1000);
+  const timeAgo = (d: string) => {
+    const s = Math.floor((Date.now() - new Date(d).getTime()) / 1000);
     if (s < 60) return 'just now';
     if (s < 3600) return `${Math.floor(s / 60)}m ago`;
-    return `${Math.floor(s / 3600)}h ago`;
+    if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
+    return `${Math.floor(s / 86400)}d ago`;
   };
 
   return (
@@ -112,42 +119,42 @@ export function NotificationBell() {
           className="absolute right-0 top-full z-50 mt-2 w-80 rounded-xl border border-zinc-800 bg-zinc-900 shadow-2xl"
         >
           <div className="flex items-center justify-between border-b border-zinc-800 px-4 py-3">
-          <span className="text-sm font-medium text-zinc-200">Notifications</span>
-          {unreadCount > 0 && (
-            <button
-              onClick={markAllRead}
-              className="text-xs text-amber-500 hover:text-amber-400"
-            >
-              Mark all read
-            </button>
-          )}
-        </div>
-        <div className="max-h-80 overflow-y-auto">
-          {notifications.length === 0 ? (
-            <div className="px-4 py-8 text-center text-xs text-zinc-600">No notifications yet.</div>
-          ) : (
-            notifications.slice(0, 20).map(n => (
+            <span className="text-sm font-medium text-zinc-200">Notifications</span>
+            {unreadCount > 0 && (
               <button
-                key={n.id}
-                onClick={() => handleClick(n)}
-                className={`w-full text-left px-4 py-3 transition hover:bg-zinc-800/50 ${!n.read ? 'bg-amber-500/5' : ''}`}
+                onClick={markAllRead}
+                className="text-xs text-amber-500 hover:text-amber-400"
               >
-                <div className="flex items-start gap-2">
-                  <span className={`mt-0.5 text-xs ${typeIcon[n.type] || 'text-zinc-500'}`}>
-                    {n.type === 'warning' ? '●' : n.type === 'success' ? '●' : '●'}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-medium text-zinc-300">{n.title}</p>
-                    <p className="mt-0.5 text-[11px] text-zinc-500 line-clamp-2">{n.body}</p>
-                    <p className="mt-1 text-[10px] text-zinc-700">{timeAgo(n.time)}</p>
-                  </div>
-                </div>
+                Mark all read
               </button>
-            ))
-          )}
+            )}
+          </div>
+          <div className="max-h-80 overflow-y-auto">
+            {notifications.length === 0 ? (
+              <div className="px-4 py-8 text-center text-xs text-zinc-600">No notifications yet.</div>
+            ) : (
+              notifications.slice(0, 20).map(n => (
+                <button
+                  key={n.id}
+                  onClick={() => handleClick(n)}
+                  className={`w-full text-left px-4 py-3 transition hover:bg-zinc-800/50 ${!n.read ? 'bg-amber-500/5' : ''}`}
+                >
+                  <div className="flex items-start gap-2">
+                    <span className={`mt-0.5 text-xs ${typeColors[n.type] || 'text-zinc-500'}`}>
+                      {n.type === 'error' ? '●' : n.type === 'warning' ? '●' : n.type === 'success' ? '●' : '●'}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-medium text-zinc-300">{n.title}</p>
+                      <p className="mt-0.5 text-[11px] text-zinc-500 line-clamp-2">{n.body}</p>
+                      <p className="mt-1 text-[10px] text-zinc-700">{timeAgo(n.createdAt)}</p>
+                    </div>
+                  </div>
+                </button>
+              ))
+            )}
+          </div>
         </div>
-      </div>
-    )}
+      )}
     </>
   );
 }

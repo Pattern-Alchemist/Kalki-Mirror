@@ -188,6 +188,7 @@ export function ContentClient({
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
                     <button onClick={() => openEdit(entry)} disabled={isPending} className="text-xs text-amber-500 hover:text-amber-400 disabled:opacity-50">Edit</button>
+                    <button onClick={() => window.open(`/admin/content/preview?id=${entry.id}`, '_blank')} disabled={isPending} className="text-xs text-blue-400 hover:text-blue-300 disabled:opacity-50">Preview</button>
                     <button onClick={() => handleDelete(entry.id)} disabled={isPending} className="text-xs text-red-400 hover:text-red-300 disabled:opacity-50">Delete</button>
                   </div>
                 </td>

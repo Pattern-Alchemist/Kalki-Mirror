@@ -1,17 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useTransition, use } from "react";
+import { getWebhooks, createWebhook, toggleWebhook, deleteWebhook, testWebhook } from "./webhook-actions";
 
-/**
- * A14: Webhook integration panel.
- * Configure outgoing webhooks for Slack/Discord/custom endpoints.
- * Production: wire to a webhooks table in the database.
- */
 interface Webhook {
   id: string;
   url: string;
-  events: string[];
+  events: string;
   active: boolean;
+  secret: string | null;
+  lastTriggeredAt: string | null;
+  lastStatus: string | null;
   createdAt: string;
 }
 
@@ -24,14 +23,22 @@ const EVENT_OPTIONS = [
   { value: 'security.login_failed', label: 'Failed Login Attempt' },
 ];
 
-// Demo webhooks (replace with DB fetch)
-const demoWebhooks: Webhook[] = [];
-
 export function WebhookSection() {
-  const [webhooks, setWebhooks] = useState<Webhook[]>(demoWebhooks);
+  const [webhooks, setWebhooks] = useState<Webhook[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [url, setUrl] = useState("");
   const [events, setEvents] = useState<string[]>([]);
+  const [pending, startTransition] = useTransition();
+  const [testResult, setTestResult] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    loadWebhooks();
+  }, []);
+
+  async function loadWebhooks() {
+    const data = await getWebhooks();
+    setWebhooks(data as Webhook[]);
+  }
 
   const toggleEvent = (ev: string) => {
     setEvents(prev =>
@@ -41,28 +48,39 @@ export function WebhookSection() {
 
   const handleSave = () => {
     if (!url || events.length === 0) return;
-    const newWebhook: Webhook = {
-      id: `wh-${Date.now()}`,
-      url,
-      events,
-      active: true,
-      createdAt: new Date().toISOString(),
-    };
-    setWebhooks(prev => [...prev, newWebhook]);
-    setUrl("");
-    setEvents([]);
-    setShowForm(false);
-    // TODO: Call server action to persist
+    startTransition(async () => {
+      await createWebhook({ url, events });
+      setUrl("");
+      setEvents([]);
+      setShowForm(false);
+      await loadWebhooks();
+    });
   };
 
-  const toggleActive = (id: string) => {
-    setWebhooks(prev =>
-      prev.map(w => w.id === id ? { ...w, active: !w.active } : w)
-    );
+  const handleToggle = (id: string, active: boolean) => {
+    startTransition(async () => {
+      await toggleWebhook(id, !active);
+      await loadWebhooks();
+    });
   };
 
-  const remove = (id: string) => {
-    setWebhooks(prev => prev.filter(w => w.id !== id));
+  const handleDelete = (id: string) => {
+    if (!confirm('Delete this webhook?')) return;
+    startTransition(async () => {
+      await deleteWebhook(id);
+      await loadWebhooks();
+    });
+  };
+
+  const handleTest = (id: string) => {
+    startTransition(async () => {
+      try {
+        const result = await testWebhook(id);
+        setTestResult(prev => ({ ...prev, [id]: `Status ${result.status} - ${result.ok ? 'OK' : 'Failed'}` }));
+      } catch {
+        setTestResult(prev => ({ ...prev, [id]: 'Delivery failed' }));
+      }
+    });
   };
 
   return (
@@ -107,10 +125,10 @@ export function WebhookSection() {
           </div>
           <button
             onClick={handleSave}
-            disabled={!url || events.length === 0}
+            disabled={!url || events.length === 0 || pending}
             className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-zinc-950 transition hover:bg-amber-500 disabled:opacity-50"
           >
-            Save Webhook
+            {pending ? 'Saving...' : 'Save Webhook'}
           </button>
         </div>
       )}
@@ -122,31 +140,44 @@ export function WebhookSection() {
         </div>
       ) : (
         <div className="space-y-2">
-          {webhooks.map(wh => (
-            <div key={wh.id} className="flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-950 p-3">
-              <button
-                onClick={() => toggleActive(wh.id)}
-                className={`h-3 w-3 rounded-full transition ${wh.active ? 'bg-emerald-400' : 'bg-zinc-700'}`}
-                aria-label={wh.active ? 'Disable' : 'Enable'}
-              />
-              <div className="min-w-0 flex-1">
-                <p className="text-xs text-zinc-300 truncate font-mono">{wh.url}</p>
-                <div className="mt-1 flex gap-1 flex-wrap">
-                  {wh.events.map(ev => (
-                    <span key={ev} className="rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] text-zinc-500">
-                      {ev.split('.').pop()}
-                    </span>
-                  ))}
+          {webhooks.map(wh => {
+            const eventsList: string[] = JSON.parse(wh.events);
+            return (
+              <div key={wh.id} className="flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-950 p-3">
+                <button
+                  onClick={() => handleToggle(wh.id, wh.active)}
+                  className={`h-3 w-3 rounded-full transition ${wh.active ? 'bg-emerald-400' : 'bg-zinc-700'}`}
+                  aria-label={wh.active ? 'Disable' : 'Enable'}
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs text-zinc-300 truncate font-mono">{wh.url}</p>
+                  <div className="mt-1 flex gap-1 flex-wrap">
+                    {eventsList.map(ev => (
+                      <span key={ev} className="rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] text-zinc-500">
+                        {ev.split('.').pop()}
+                      </span>
+                    ))}
+                  </div>
+                  {wh.lastStatus && (
+                    <p className="mt-1 text-[10px] text-zinc-600">
+                      Last: {wh.lastStatus} {wh.lastTriggeredAt ? `at ${new Date(wh.lastTriggeredAt).toLocaleTimeString()}` : ''}
+                    </p>
+                  )}
+                  {testResult[wh.id] && (
+                    <p className={`mt-0.5 text-[10px] ${testResult[wh.id].includes('OK') ? 'text-emerald-400' : 'text-red-400'}`}>
+                      {testResult[wh.id]}
+                    </p>
+                  )}
                 </div>
+                <button onClick={() => handleTest(wh.id)} disabled={pending} className="text-xs text-blue-400 hover:text-blue-300 disabled:opacity-50">
+                  Test
+                </button>
+                <button onClick={() => handleDelete(wh.id)} disabled={pending} className="text-xs text-zinc-600 hover:text-red-400 transition">
+                  Remove
+                </button>
               </div>
-              <button
-                onClick={() => remove(wh.id)}
-                className="text-xs text-zinc-600 hover:text-red-400 transition"
-              >
-                Remove
-              </button>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </section>

@@ -2,12 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { useAdminSession } from "@/components/admin/session-provider";
+import { setup2FA, confirm2FA, remove2FA, get2FAStatus } from "./two-factor-actions";
 
-/**
- * A1: 2FA/TOTP setup section.
- * UI for enabling/disabling two-factor authentication.
- * Production: wire to a real TOTP library (e.g., otpauth, qrcode).
- */
 export function TwoFactorSection() {
   const { user } = useAdminSession();
   const [enabled, setEnabled] = useState(false);
@@ -15,13 +11,16 @@ export function TwoFactorSection() {
   const [code, setCode] = useState("");
   const [step, setStep] = useState<'idle' | 'scanning' | 'verifying'>('idle');
   const [error, setError] = useState("");
+  const [qrDataUrl, setQrDataUrl] = useState("");
+  const [backupCodes, setBackupCodes] = useState<string[]>([]);
+  const [backupCodesShown, setBackupCodesShown] = useState(false);
 
-  // In production: generate TOTP secret from server, display QR code
   const handleEnable = () => {
     startTransition(async () => {
       try {
-        // TODO: Call server action to generate TOTP secret
-        // const { secret, qrCodeUrl } = await generate2FASecret();
+        const result = await setup2FA();
+        setQrDataUrl(result.qrDataUrl);
+        setBackupCodes(result.backupCodes);
         setStep('scanning');
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to enable 2FA');
@@ -36,20 +35,27 @@ export function TwoFactorSection() {
     }
     startTransition(async () => {
       try {
-        // TODO: Call server action to verify and enable 2FA
-        // await verify2FA(code);
+        await confirm2FA(code);
         setEnabled(true);
         setStep('idle');
+        setCode('');
+        setBackupCodesShown(true);
       } catch (err) {
-        setError('Invalid code. Try again.');
+        setError(err instanceof Error ? err.message : 'Invalid code. Try again.');
       }
     });
   };
 
   const handleDisable = () => {
+    if (!confirm('Disable 2FA? You will need to set it up again.')) return;
     startTransition(async () => {
-      // TODO: Call server action to disable 2FA
-      setEnabled(false);
+      try {
+        await remove2FA();
+        setEnabled(false);
+        setBackupCodesShown(false);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to disable');
+      }
     });
   };
 
@@ -70,6 +76,20 @@ export function TwoFactorSection() {
               <p className="text-xs text-zinc-500">Your account requires a TOTP code on each login.</p>
             </div>
           </div>
+
+          {backupCodesShown && backupCodes.length > 0 && (
+            <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-4">
+              <p className="text-xs font-medium text-amber-400 mb-2">Backup Codes (save these now)</p>
+              <div className="grid grid-cols-2 gap-1">
+                {backupCodes.map((c, i) => (
+                  <code key={i} className="rounded bg-zinc-950 px-2 py-1 text-xs font-mono text-zinc-300">
+                    {c}
+                  </code>
+                ))}
+              </div>
+            </div>
+          )}
+
           <button
             onClick={handleDisable}
             disabled={pending}
@@ -82,11 +102,13 @@ export function TwoFactorSection() {
         <div className="space-y-4">
           <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-6 text-center space-y-4">
             <p className="text-sm text-zinc-300">Scan this QR code with your authenticator app</p>
-            {/* TODO: Replace with actual QR code image */}
-            <div className="mx-auto flex h-48 w-48 items-center justify-center rounded-xl border-2 border-dashed border-zinc-700 bg-zinc-900">
-              <span className="text-xs text-zinc-600">QR Code</span>
-            </div>
-            <p className="text-xs text-zinc-500 font-mono break-all">SECRET_PLACEHOLDER</p>
+            {qrDataUrl ? (
+              <img src={qrDataUrl} alt="2FA QR Code" className="mx-auto rounded-xl" width={200} height={200} />
+            ) : (
+              <div className="mx-auto flex h-48 w-48 items-center justify-center rounded-xl border-2 border-dashed border-zinc-700 bg-zinc-900">
+                <span className="text-xs text-zinc-600">Loading QR...</span>
+              </div>
+            )}
           </div>
           <div className="flex gap-3">
             <input
@@ -102,7 +124,7 @@ export function TwoFactorSection() {
               disabled={pending || code.length !== 6}
               className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-zinc-950 transition hover:bg-amber-500 disabled:opacity-50"
             >
-              {pending ? 'Verifying…' : 'Verify & Enable'}
+              {pending ? 'Verifying...' : 'Verify & Enable'}
             </button>
             <button
               onClick={() => { setStep('idle'); setCode(''); setError(''); }}
@@ -116,7 +138,7 @@ export function TwoFactorSection() {
       ) : (
         <div className="space-y-3">
           <p className="text-sm text-zinc-400">
-            Add an extra layer of security to your account. After enabling, you will need to enter a code from your authenticator app when logging in.
+            Add an extra layer of security to your account. After enabling, you will need to enter a code from your authenticator app (Google Authenticator, Authy, etc.) when logging in.
           </p>
           <button
             onClick={handleEnable}
@@ -125,6 +147,7 @@ export function TwoFactorSection() {
           >
             Enable 2FA
           </button>
+          {error && <p className="text-xs text-red-400">{error}</p>}
         </div>
       )}
     </section>

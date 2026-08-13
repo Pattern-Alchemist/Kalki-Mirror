@@ -7,6 +7,7 @@ import { AdminSessionProvider } from "@/components/admin/session-provider";
 import { MobileSidebarToggle } from "@/components/admin/mobile-sidebar-toggle";
 import { GlobalSearch } from "@/components/admin/global-search";
 import { NotificationBell } from "@/components/admin/notification-bell";
+import { ThemeToggle } from "@/components/admin/theme-toggle";
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +46,8 @@ export default async function AdminDashboardLayout({
           {/* Top bar with search + notifications */}
           <div className="sticky top-0 z-50 flex items-center gap-3 border-b border-zinc-800/50 bg-zinc-950/90 px-4 py-2 backdrop-blur-sm pl-14 lg:pl-6">
             <GlobalSearch />
-            <div className="ml-auto">
+            <div className="ml-auto flex items-center gap-1">
+              <ThemeToggle />
               <NotificationBell />
             </div>
           </div>

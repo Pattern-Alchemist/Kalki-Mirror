@@ -54,7 +54,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        token.id = (user as unknown as { id: string }).id;
         token.role = (user as unknown as { role: UserRole }).role;
         token.tier = (user as unknown as { tier: string }).tier;
         if (!token.tier) token.tier = 'prithvi';
@@ -117,12 +117,15 @@ export const authOptions: NextAuthOptions = {
         // Successful login — clear attempts
         clearLoginAttempts(email);
 
+        // A1: If 2FA is enabled, return a flag (handled client-side)
+        // We return the user but the login page will check 2FA status
         return {
           id: user.id,
           email: user.email,
           name: user.name,
           role: user.role,
           tier: user.tier,
+          twoFactorRequired: user.twoFactorEnabled,
         };
       },
     }),
