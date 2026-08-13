@@ -173,6 +173,17 @@ export default function HomePage() {
         </ScrollParallax>
       </section>
 
+      {/* ===== EDITORIAL BAND — What KALKI Is ===== */
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-16 md:py-20">
+        <p className="text-text-muted text-sm max-w-3xl mx-auto editorial-spacing leading-relaxed text-center">
+          KALKI is a precision instrument for inner transformation — not a marketplace of generic
+          spirituality content. Every practice in the Akashic Archive is sourced from recognized Tantric
+          texts, scored for authenticity, and linked to the specific psychological pattern it was designed
+          to address. The system draws from the Upaniṣads, Tantras, Āgamas, Haṭha Yoga Pradīpikā, and
+          living practitioner lineages across the Aghorī, Kashmiri Shaiva, and Vajrayāna traditions.
+        </p>
+      </div>
+
       {/* ===== CHAMBER III: EDITORIAL DIVIDER — The Mirror Method (with parallax text) ===== */}
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-28 md:py-40">
         <div className="divider-gold mb-20" />
@@ -184,7 +195,10 @@ export default function HomePage() {
           </p>
           <p className="text-editorial max-w-xl mx-auto">
             Every emotional loop, every recurring relationship dynamic — they map
-            to ancient sadhanas designed for exactly this.
+            to ancient sadhanas designed for exactly this. The KALKI system identifies
+            twelve core patterns drawn from the Aghorī, Kashmiri Shaiva, and Buddhist
+            Vajrayāna traditions, each one linked to specific siddhis and prescribed
+            practices from the living Tantric lineage.
           </p>
         </ParallaxText>
         <div className="divider-gold mt-20" />
@@ -436,11 +450,29 @@ className="section-label editorial-heading mb-6"
             No guesswork. No generic advice. Just precise, lineage-backed
             intervention designed for where you are right now.
           </p>
+          <p className="text-text-muted text-sm max-w-lg mx-auto mb-12 editorial-spacing leading-relaxed">
+            Each consultation begins with the Mirror Method diagnostic — identifying your
+            dominant karmic loop through behavioral pattern analysis — and culminates in a
+            prescribed sādhana drawn directly from the Archive. Sessions are conducted via
+            WhatsApp video call and include follow-up practice review.
+          </p>
           <div>
             <WhatsAppCTA variant="inline" label="Consult Kaustubh" />
           </div>
         </ParallaxText>
       </section>
     </div>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'KALKI — Tantrik Intelligence',
+          description: 'Precision instrument for inner transformation. 48 siddhis from the Akashic Archive, 12 emotional patterns mapped to specific tantric practices, and the Mirror Method framework for pattern dissolution.',
+          url: 'https://www.astrokalki.com',
+        }),
+      }}
+    />
   );
 }
