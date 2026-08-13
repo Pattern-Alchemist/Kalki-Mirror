@@ -182,6 +182,14 @@ export default function HomePage() {
           to address. The system draws from the Upaniṣads, Tantras, Āgamas, Haṭha Yoga Pradīpikā, and
           living practitioner lineages across the Aghorī, Kashmiri Shaiva, and Vajrayāna traditions.
         </p>
+        <p className="text-text-muted text-sm max-w-3xl mx-auto editorial-spacing leading-relaxed text-center mt-6">
+          Unlike aggregation platforms that flatten tradition into listicles, KALKI preserves the
+          internal architecture of each practice — the prerequisite sādhanas, the contraindications,
+          the specific lineage variations. The Archive contains 48 siddhis mapped across six evidence
+          categories, from primary textual attestation to living practitioner testimony, each scored
+          for authenticity on a transparent 0–100 scale. This is not wellness content. This is a
+          functioning diagnostic system built from the grammar of an unbroken tradition.
+        </p>
       </div>
 
       {/* ===== CHAMBER III: EDITORIAL DIVIDER — The Mirror Method (with parallax text) ===== */}
@@ -195,10 +203,14 @@ export default function HomePage() {
           </p>
           <p className="text-editorial max-w-xl mx-auto">
             Every emotional loop, every recurring relationship dynamic — they map
-            to ancient sadhanas designed for exactly this. The KALKI system identifies
+            to ancient sādhanas designed for exactly this. The KALKI system identifies
             twelve core patterns drawn from the Aghorī, Kashmiri Shaiva, and Buddhist
             Vajrayāna traditions, each one linked to specific siddhis and prescribed
-            practices from the living Tantric lineage.
+            practices from the living Tantric lineage. The framework is not derived
+            from modern psychology alone — it is a translation grid between behavioral
+            observation and the Tantric science of saṃskāra (mental impressions),
+            showing how patterns form, persist, and can be dissolved through precise
+            practice.
           </p>
         </ParallaxText>
         <div className="divider-gold mt-20" />
@@ -471,6 +483,11 @@ className="section-label editorial-heading mb-6"
           name: 'KALKI — Tantrik Intelligence',
           description: 'Precision instrument for inner transformation. 48 siddhis from the Akashic Archive, 12 emotional patterns mapped to specific tantric practices, and the Mirror Method framework for pattern dissolution.',
           url: 'https://www.astrokalki.com',
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: 'https://www.astrokalki.com/archive?q={search_term_string}',
+            'query-input': 'required name=search_term_string',
+          },
         }),
       }}
     />
