@@ -51,7 +51,7 @@ function formatTimerTime(totalSeconds: number): string {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
 
-/* ── Siddhi grouped by level — built once outside component ── */
+/* ── Siddhi grouped by level -- built once outside component ── */
 function buildSiddhisByLevel() {
   const grouped = new Map<string, Array<{ slug: string; name: string }>>();
   allSiddhis.forEach((s) => {
@@ -168,7 +168,6 @@ function CalendarHeatmap({ sessions }: { sessions: SessionRecord[] }) {
         <span className="section-label text-[0.65rem]">90-DAY PRACTICE MAP</span>
       </div>
 
-      {/* Legend */}
       <div className="flex items-center gap-2 mb-4 text-[0.6rem] font-mono text-text-muted">
         <span>Less</span>
         <div className="w-3 h-3 rounded-sm bg-zinc-800/40" />
@@ -178,10 +177,8 @@ function CalendarHeatmap({ sessions }: { sessions: SessionRecord[] }) {
         <span>More</span>
       </div>
 
-      {/* Grid */}
       <div className="overflow-x-auto pb-2">
         <div className="inline-grid gap-[3px] min-w-fit">
-          {/* Day labels */}
           <div className="flex flex-col gap-[3px] mr-1">
             {HEATMAP_DAY_LABELS.map((label, i) => (
               <div key={i} className="h-[10px] md:h-[12px] flex items-center">
@@ -191,7 +188,6 @@ function CalendarHeatmap({ sessions }: { sessions: SessionRecord[] }) {
               </div>
             ))}
           </div>
-          {/* Weeks */}
           {cells.map((week, wi) => (
             <div key={wi} className="flex flex-col gap-[3px]">
               {week.map((cell, di) => (
@@ -201,7 +197,7 @@ function CalendarHeatmap({ sessions }: { sessions: SessionRecord[] }) {
                     'w-[10px] md:w-[12px] h-[10px] md:h-[12px] rounded-sm transition-colors duration-200',
                     getCellColor(cell.count, cell.isFuture)
                   )}
-                  title={`${cell.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}${cell.isFuture ? ' (future)' : ` — ${cell.count} session${cell.count !== 1 ? 's' : ''}`}`}
+                  title={`${cell.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}${cell.isFuture ? ' (future)' : ` -- ${cell.count} session${cell.count !== 1 ? 's' : ''}`}`}
                 />
               ))}
             </div>
@@ -313,7 +309,6 @@ function SessionTimer({
         <span className="section-label text-[0.65rem]">SESSION TIMER</span>
       </div>
 
-      {/* Timer display */}
       <motion.div
         className="font-mono text-4xl md:text-5xl text-ivory tracking-widest mb-8 tabular-nums"
         key={seconds}
@@ -323,7 +318,6 @@ function SessionTimer({
         {formatTimerTime(seconds)}
       </motion.div>
 
-      {/* Controls */}
       <div className="flex items-center justify-center gap-3">
         {!isRunning ? (
           <button
@@ -383,7 +377,7 @@ function SessionTimer({
 function RecentSessionCard({ session }: { session: SessionRecord }) {
   const reduced = useReducedMotion();
   const moodLabel = (v: number | null) => {
-    if (v == null) return '—';
+    if (v == null) return '--';
     return MOOD_LABELS[v - 1];
   };
 
@@ -395,7 +389,6 @@ function RecentSessionCard({ session }: { session: SessionRecord }) {
       whileInView={reduced ? { opacity: 1 } : staggerItem.visible}
       viewport={{ once: true, margin: '-20px' }}
     >
-      {/* Header row */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <p className="text-sm font-display text-ivory truncate">
@@ -411,7 +404,6 @@ function RecentSessionCard({ session }: { session: SessionRecord }) {
         </div>
       </div>
 
-      {/* Mood row */}
       {(session.moodBefore != null || session.moodAfter != null) && (
         <div className="flex items-center gap-2 text-[0.6rem] font-mono tracking-wider">
           <span className="text-text-muted">{moodLabel(session.moodBefore)}</span>
@@ -420,7 +412,6 @@ function RecentSessionCard({ session }: { session: SessionRecord }) {
         </div>
       )}
 
-      {/* Journal excerpt */}
       {session.journal && (
         <p className="text-[0.7rem] text-text-muted leading-relaxed line-clamp-2 italic">
           &ldquo;{session.journal}&rdquo;
@@ -553,9 +544,7 @@ export default function PracticeLoggerPage() {
 
   return (
     <main className="min-h-screen bg-deep-black">
-      {/* ═══ HERO — The Practice Floor ═══ */}
       <section className="relative min-h-[90vh] md:min-h-[100vh] flex items-center atmospheric-bg overflow-hidden">
-        {/* Radial glow */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -582,12 +571,11 @@ export default function PracticeLoggerPage() {
             </h1>
             <p className="text-editorial text-lg md:text-xl text-text-secondary mt-6 max-w-xl leading-relaxed">
               Every session is a thread in the tapestry of transformation.
-              Track your sādhana with precision — duration, mood, continuity.
+              Track your sādhana with precision -- duration, mood, continuity.
               The data reveals what the mind cannot see.
             </p>
           </motion.div>
 
-          {/* Scroll indicator */}
           <motion.div
             className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
             initial={{ opacity: 0 }}
@@ -602,7 +590,6 @@ export default function PracticeLoggerPage() {
         </div>
       </section>
 
-      {/* ═══ STATS BAR ═══ */}
       {stats && (
         <section className="py-12 md:py-16">
           <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
@@ -632,46 +619,40 @@ export default function PracticeLoggerPage() {
         </section>
       )}
 
-      {/* ── EDITORIAL: The Practice Philosophy ── */
+      {/* ── EDITORIAL: The Practice Philosophy ── */}
       <div className="max-w-2xl mx-auto px-6 lg:px-10 py-10">
         <div className="space-y-4 text-text-secondary text-sm leading-relaxed editorial-spacing">
           <p>
-            In every living lineage of Tantra, practice is measured, not assumed. The guru does not ask &ldquo;have you been practicing?&rdquo; — they ask &ldquo;show me your notebook.&rdquo; The KALKI Practice Floor digitizes this ancient discipline: every session is logged with its duration, the siddhi practiced, your mood before and after, and an optional journal entry reflecting on the experience. Over time, this data reveals patterns that subjective memory cannot: which practices stabilize your mood, which ones create agitation, and what your true capacity for daily practice actually is versus what you imagine it to be.
+            In every living lineage of Tantra, practice is measured, not assumed. The guru does not ask &ldquo;have you been practicing?&rdquo; -- they ask &ldquo;show me your notebook.&rdquo; The KALKI Practice Floor digitizes this ancient discipline: every session is logged with its duration, the siddhi practiced, your mood before and after, and an optional journal entry reflecting on the experience. Over time, this data reveals patterns that subjective memory cannot: which practices stabilize your mood, which ones create agitation, and what your true capacity for daily practice actually is versus what you imagine it to be.
           </p>
           <p>
-            The 90-day heatmap is not a gamification feature. It is a consciousness cartography tool. In the tantrik understanding, consistent practice creates <em>saṃskāra</em> (subtle impressions) that compound over time — each session deepens the channel, making the next session more effective. The heatmap makes this compounding visible: you can see whether your practice is truly daily, whether it clusters around certain days (suggesting external resistance), and whether the cumulative intensity is sufficient to produce transformation. Research from both contemplative science and behavioral psychology shows that 40+ consecutive days of practice is the minimum threshold for neurological rewiring — the heatmap shows you exactly where you stand.
+            The 90-day heatmap is not a gamification feature. It is a consciousness cartography tool. In the tantrik understanding, consistent practice creates <em>saṃskāra</em> (subtle impressions) that compound over time -- each session deepens the channel, making the next session more effective. The heatmap makes this compounding visible: you can see whether your practice is truly daily, whether it clusters around certain days (suggesting external resistance), and whether the cumulative intensity is sufficient to produce transformation. Research from both contemplative science and behavioral psychology shows that 40+ consecutive days of practice is the minimum threshold for neurological rewiring -- the heatmap shows you exactly where you stand.
           </p>
           <p>
-            The session timer, integrated with the BreathTimer from the Prāṇāyāma Laboratory, lets you practice directly within the logger — start the timer, complete your sādhana, stop the timer, and log the session in one flow. The mood tracking (before and after each session) is drawn from clinical contemplative research: the shift from pre-practice to post-practice mood is one of the most reliable indicators of whether a practice is actually working for you. Over time, these micro-measurements create a dataset that is more valuable than any subjective self-assessment.
+            The session timer, integrated with the BreathTimer from the Prāṇāyāma Laboratory, lets you practice directly within the logger -- start the timer, complete your sādhana, stop the timer, and log the session in one flow. The mood tracking (before and after each session) is drawn from clinical contemplative research: the shift from pre-practice to post-practice mood is one of the most reliable indicators of whether a practice is actually working for you. Over time, these micro-measurements create a dataset that is more valuable than any subjective self-assessment.
           </p>
         </div>
         <div className="divider-gold max-w-[200px] mt-10" />
       </div>
 
-      {/* ═══ DIVIDER ═══ */}
       <div className="max-w-[200px] mx-auto">
         <div className="divider-gold" />
       </div>
 
-      {/* ═══ HEATMAP + TIMER ROW ═══ */}
       <section className="py-12 md:py-16">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr,360px] gap-4 md:gap-6">
-            {/* Calendar Heatmap */}
             <CalendarHeatmap sessions={sessions} />
 
-            {/* Session Timer */}
             <SessionTimer onTimerStop={handleTimerStop} />
           </div>
         </div>
       </section>
 
-      {/* ═══ DIVIDER ═══ */}
       <div className="max-w-[200px] mx-auto">
         <div className="divider-gold" />
       </div>
 
-      {/* ═══ QUICK LOG ═══ */}
       <section className="py-12 md:py-20">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <motion.div
@@ -694,7 +675,6 @@ export default function PracticeLoggerPage() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ delay: 0.1 }}
           >
-            {/* Siddhi Selector */}
             <div className="space-y-2">
               <label className="block text-[0.6rem] font-mono tracking-[0.15em] text-text-muted uppercase">
                 Practice
@@ -776,7 +756,6 @@ export default function PracticeLoggerPage() {
               </div>
             </div>
 
-            {/* Duration */}
             <div className="space-y-2">
               <label className="block text-[0.6rem] font-mono tracking-[0.15em] text-text-muted uppercase">
                 Duration
@@ -805,7 +784,6 @@ export default function PracticeLoggerPage() {
               )}
             </div>
 
-            {/* Mood Before / After */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <MoodSelector
                 label="Mood Before"
@@ -819,7 +797,6 @@ export default function PracticeLoggerPage() {
               />
             </div>
 
-            {/* Journal */}
             <div className="space-y-2">
               <label className="block text-[0.6rem] font-mono tracking-[0.15em] text-text-muted uppercase">
                 Journal <span className="text-text-muted/40">(optional)</span>
@@ -834,7 +811,6 @@ export default function PracticeLoggerPage() {
               />
             </div>
 
-            {/* Submit message */}
             <AnimatePresence>
               {submitMessage && (
                 <motion.p
@@ -851,7 +827,6 @@ export default function PracticeLoggerPage() {
               )}
             </AnimatePresence>
 
-            {/* Submit */}
             <button
               type="submit"
               disabled={!selectedSiddhi || isSubmitting}
@@ -863,12 +838,10 @@ export default function PracticeLoggerPage() {
         </div>
       </section>
 
-      {/* ═══ DIVIDER ═══ */}
       <div className="max-w-[200px] mx-auto">
         <div className="divider-gold" />
       </div>
 
-      {/* ═══ RECENT SESSIONS ═══ */}
       <section className="py-12 md:py-20">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <motion.div
@@ -917,9 +890,7 @@ export default function PracticeLoggerPage() {
         </div>
       </section>
 
-      {/* ═══ CINEMATIC STRIP — Closing Statement ═══ */}
       <section className="py-24 md:py-32 relative overflow-hidden">
-        {/* Background texture */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -938,7 +909,7 @@ export default function PracticeLoggerPage() {
               The practice floor does not judge.
               It receives. It records. And over time,
               it reveals the shape of your transformation
-              — one session at a time.
+              -- one session at a time.
             </p>
             <div className="divider-gold max-w-[120px] mx-auto mb-8" />
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

@@ -17,6 +17,8 @@
     "db:backup": "bash scripts/backup-db.sh"
   },
   "dependencies": {
+    "@libsql/client": "^0.17.4",
+    "@prisma/adapter-libsql": "^7.9.1",
     "@prisma/client": "^6.11.1",
     "@radix-ui/react-toast": "^1.2.14",
     "@reactuses/core": "^6.0.5",
@@ -37,6 +39,8 @@
     "qrcode": "^1.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-markdown": "^10.1.0",
+    "recharts": "^3.10.1",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
     "z-ai-web-dev-sdk": "^0.0.18"

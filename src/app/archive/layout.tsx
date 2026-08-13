@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { SITE_URL, pageAlternates } from '@/lib/utils/metadata';
+import { SITE_URL, pageAlternates, canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
   alternates: pageAlternates('/archive'),
