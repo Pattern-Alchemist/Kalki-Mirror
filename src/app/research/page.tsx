@@ -191,7 +191,7 @@ export default function ResearchPage() {
       <div className="mt-28">
         <ScrollParallax speed={-0.15} className="cinematic-strip">
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/manuscript-sacred-geometry.jpeg'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/'
             alt='Sacred manuscripts and geometric patterns'
             kenBurns="normal"
             filmGrain={false}
@@ -346,7 +346,7 @@ export default function ResearchPage() {
       <div className="mt-28">
         <ScrollParallax speed={-0.15} className="cinematic-strip">
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight.jpeg'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/'
             alt='Ancient temple at midnight'
             kenBurns="normal"
             filmGrain={false}
@@ -373,7 +373,7 @@ export default function ResearchPage() {
       <section className="relative py-24 md:py-36">
         <ScrollParallax speed={-0.06} disabled>
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-codex-scroll.jpeg'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/underground-library'
             alt='Ancient codex with golden illumination'
             className="absolute inset-0"
             scrim="full"

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
       'The ancient forbidden archive of consciousness. 48 siddhis, 16 archetypes, tiered access.',
     images: [
       {
-        url: '/archive-zone-reading-room.jpeg',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1344,c_limit/kalki-mirror/archive/sacred-geometry-manuscript',
         width: 1344,
         height: 768,
         alt: 'The Akashic Archive — KALKI',

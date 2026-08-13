@@ -178,7 +178,7 @@ export default function ConsultationsPage() {
       <section className="relative py-24 md:py-36">
         <ScrollParallax speed={-0.06} disabled>
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-codex-scroll.jpeg'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/underground-library'
             alt="Ancient codex scroll"
             className="absolute inset-0"
             scrim="full"

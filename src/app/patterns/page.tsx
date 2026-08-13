@@ -22,9 +22,9 @@ import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import Link from 'next/link';
 
 /* ── Zone Backgrounds ── */
-const ZONE_MIRROR = '/pattern-atlas/zone-mirror.jpeg';
-const ZONE_CONFRONTATION = '/pattern-atlas/zone-confrontation.png';
-const ZONE_DISSOLUTION = '/pattern-atlas/zone-dissolution.png';
+const ZONE_MIRROR = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/forgotten-chamber-yantras';
+const ZONE_CONFRONTATION = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/abandoned-temple';
+const ZONE_DISSOLUTION = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cremation-ground';
 
 /* ── Derived Data ── */
 const findSiddhi = (slug: string) => allSiddhis.find((s) => s.slug === slug)!;
@@ -187,7 +187,7 @@ export default function PatternsPage() {
     offset: ['start start', 'end end'],
   });
 
-  const ZONE_INTEGRATION = '/pattern-atlas/zone-integration.jpeg';
+  const ZONE_INTEGRATION = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/sri-yantra-himalayas';
 
   const mirrorOpacity = useTransform(scrollYProgress, [0, 0.06, 0.12], [1, 1, 0]);
   const confrontationOpacity = useTransform(
@@ -575,7 +575,7 @@ export default function PatternsPage() {
       <div className="mt-8">
         <ScrollParallax speed={-0.15} className="cinematic-strip">
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/hero/hero-shiva-abyss.jpeg'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/hero/sri-yantra-himalayas'
             alt='Deep meditative space'
             kenBurns="normal"
             filmGrain={false}
@@ -602,7 +602,7 @@ export default function PatternsPage() {
       <section className="relative py-24 md:py-36">
         <ScrollParallax speed={-0.06} disabled>
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/sri-yantra-sky.jpeg'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/sri-yantra-himalayas'
             alt='Sri Yantra against twilight sky'
             className="absolute inset-0"
             scrim="full"

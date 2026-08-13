@@ -35,9 +35,9 @@ function zoneSrc(w: number, path: string) {
 function zoneSrcSet(path: string) {
   return [640, 768, 1024, 1280, 1920].map(w => `${zoneSrc(w, path)} ${w}w`).join(', ');
 }
-const ZONE_THRESHOLD = '/archive-zone/threshold.jpeg';
-const ZONE_READING_ROOM = 'archive-zone/reading-room';
-const ZONE_DEEP = 'archive-zone/deep-archive';
+const ZONE_THRESHOLD = 'home/forgotten-forest-shrine';
+const ZONE_READING_ROOM = 'archive/sacred-geometry-manuscript';
+const ZONE_DEEP = 'tantra/ancient-observatory';
 
 const CATEGORIES = ['All', 'Mantra', 'Yantra', 'Prāṇāyāma', 'Pūjā', 'Tantra', 'Dhyāna', 'Dhāraṇā', 'Dhūni', 'Śmaśāna', 'Aghora'];
 const CAUTION_FILTERS: { value: string; label: string }[] = [
@@ -646,7 +646,7 @@ export default function ArchivePage() {
       <div className="mt-16">
         <ScrollParallax speed={-0.15} className="cinematic-strip">
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight.jpeg'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/'
             alt='Ancient temple corridor'
             kenBurns="normal"
             filmGrain={false}
@@ -659,7 +659,7 @@ export default function ArchivePage() {
       <section className="relative py-24 md:py-36">
         <ScrollParallax speed={-0.06} disabled>
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-codex-scroll.jpeg'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/underground-library'
             alt='Ancient codex with golden illumination'
             className="absolute inset-0"
             scrim="full"

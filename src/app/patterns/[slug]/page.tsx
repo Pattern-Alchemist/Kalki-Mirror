@@ -270,7 +270,7 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
       {/* ═══ CINEMATIC STRIP ═══ */}
       <ScrollParallax speed={-0.15} className="cinematic-strip">
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/meditation-platform-overlooking.jpeg'
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/'
           alt='Meditation platform overlooking the Himalayas'
           kenBurns="normal"
           filmGrain={false}
@@ -282,7 +282,7 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
       <section className="relative py-24 md:py-36">
         <ScrollParallax speed={-0.06} disabled>
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-codex-scroll.jpeg'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/underground-library'
             alt='Ancient codex'
             className="absolute inset-0"
             scrim="full"

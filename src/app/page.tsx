@@ -35,7 +35,7 @@ export default function HomePage() {
           playsInline
           preload="none"
           aria-hidden="true"
-          poster={`https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_${isMobile ? 640 : 1920},c_limit/kalki-mirror/home/ancient-temple-midnight.jpeg`}
+          poster={`https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_${isMobile ? 640 : 1920},c_limit/kalki-mirror/home/ancient-temple-midnight`}
           className="hero-video-bg absolute inset-0 w-full h-full object-cover"
           style={{ zIndex: 0, objectPosition: 'center' }}
         >
@@ -100,7 +100,7 @@ export default function HomePage() {
       {/* ===== CINEMATIC STRIP I — Cave yantras (with parallax) ===== */}
       <ScrollParallax speed={-0.2} disabled={isMobile} className="cinematic-strip">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/forgotten-forest-shrine.jpeg"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/forgotten-forest-shrine"
           alt="Ancient cave with flickering butter lamps illuminating carved yantras"
           kenBurns={isMobile ? 'none' : 'normal'}
           filmGrain={false}
@@ -114,7 +114,7 @@ export default function HomePage() {
         <ScrollParallax speed={-0.1} disabled={isMobile}>
           <Link href="/archive" className="group relative overflow-hidden block min-h-[70vh] md:min-h-[85vh]">
             <CinematicImage
-              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/manuscript-sacred-geometry.jpeg"
+              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/manuscript-sacred-geometry"
               alt="Cave with ancient yantra inscriptions and golden butter lamps — the repository of knowledge"
               kenBurns={isMobile ? 'none' : 'normal'}
               scrim="bottom"
@@ -138,7 +138,7 @@ export default function HomePage() {
         <ScrollParallax speed={0.1} disabled={isMobile}>
           <Link href="/practice" className="group relative overflow-hidden block min-h-[70vh] md:min-h-[85vh]">
             <CinematicImage
-              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/mountain-pass-trident.jpeg"
+              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/mountain-pass-trident"
               alt="Mountain pass with ritual trident under twilight sky — the path of practice"
               kenBurns={isMobile ? 'none' : 'normal'}
               scrim="bottom"
@@ -178,7 +178,7 @@ export default function HomePage() {
       {/* ===== CINEMATIC STRIP II — Sri Yantra sky (with parallax) ===== */}
       <ScrollParallax speed={-0.2} disabled={isMobile} className="cinematic-strip">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/pattern-intelligence-rescuer.jpeg"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/sri-yantra-himalayas"
           alt="Sri Yantra floating above Himalayan peaks at twilight"
           kenBurns={isMobile ? 'none' : 'normal'}
           filmGrain={false}
@@ -190,7 +190,7 @@ export default function HomePage() {
       <section className="relative py-20 md:py-32 section-scrim-dim">
         <ScrollParallax speed={-0.12} disabled={isMobile}>
           <CinematicImage
-            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/mandala-divine-masks.jpeg"
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/forgotten-chamber-yantras"
             alt="Forgotten forest shrine draped in mist and ancient light"
             scrim="full"
             vignette
@@ -233,7 +233,7 @@ className="section-label editorial-heading mb-6"
       <section className="relative py-28 md:py-40">
         <ScrollParallax speed={-0.1} disabled={isMobile}>
           <CinematicImage
-            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-codex-scroll.jpeg"
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/underground-library"
             alt="Forgotten chamber with volumetric god rays illuminating ancient yantras and sacred artifacts"
             scrim="full"
             vignette
@@ -275,7 +275,7 @@ className="section-label editorial-heading mb-6"
       {/* ===== CINEMATIC STRIP III — Underground library (with parallax) ===== */}
       <ScrollParallax speed={-0.2} disabled={isMobile} className="cinematic-strip">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-codex-scroll.jpeg"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/underground-library"
           alt="Vast underground library of ancient manuscripts and golden artifacts"
           kenBurns={isMobile ? 'none' : 'normal'}
           filmGrain={false}
@@ -336,7 +336,7 @@ className="section-label editorial-heading mb-6"
                 }}
               >
                 <CinematicImage
-                  src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ritual-items-altar.jpeg"
+                  src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/nadi-shuddhi-practice"
                   alt="Nadi Shuddhi channel purification — subtle energy pathways"
                 />
               </div>
@@ -350,7 +350,7 @@ className="section-label editorial-heading mb-6"
         {/* New background image — copper trident courtyard */}
         <ScrollParallax speed={-0.06} disabled={isMobile}>
           <CinematicImage
-            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/copper-trident-courtyard-2.jpeg"
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/copper-trident-courtyard"
             alt="Copper trident in ancient stone courtyard — the depth of commitment"
             className="absolute inset-0"
           />
@@ -378,7 +378,7 @@ className="section-label editorial-heading mb-6"
       {/* ===== CINEMATIC STRIP IV — Observatory (with parallax) ===== */}
       <ScrollParallax speed={-0.2} disabled={isMobile} className="cinematic-strip">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/meditation-platform-overlooking.jpeg"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/"
           alt="Ancient astronomical observatory with brass instruments under night sky"
           kenBurns={isMobile ? 'none' : 'normal'}
           filmGrain={false}
@@ -391,7 +391,7 @@ className="section-label editorial-heading mb-6"
         {/* New background — ancient temple midnight glow */}
         <ScrollParallax speed={-0.08} disabled={isMobile}>
           <CinematicImage
-            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight.jpeg"
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight"
             alt="Ancient temple at midnight with ethereal golden glow — the inner sanctum"
             className="absolute inset-0"
           />

@@ -23,7 +23,7 @@ const stages = [
     title: 'Pattern Recognition',
     titleSanskrit: 'Pratyakṣa Jñāna',
     text: 'The first step is naming the loop. Every recurring frustration, every self-sabotaging decision, every relationship that ends the same way — these are not random. They are patterns with names, origins, and specific sādhanas designed to address them. KALKI maps 12 core psychological patterns to specific tantric practices drawn from the Aghorī, Kashmiri Shaiva, and Buddhist Vajrayāna traditions. Until a pattern is named, it operates invisibly — shaping your choices from the shadows of unconscious habit. Recognition is the first act of freedom.',
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/manuscript-sacred-geometry.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/',
     icon: '◉',
     color: STAGE_ACCENT_COLORS.gold,
   },
@@ -32,7 +32,7 @@ const stages = [
     title: 'Emotional Origin',
     titleSanskrit: 'Kāraṇa Bhāva',
     text: 'Every pattern started somewhere. Not as a flaw, but as a survival strategy. The Rescuer pattern formed because love felt conditional on being useful. The Perfectionist formed because safety meant never making a mistake. The Victim pattern formed because power was taken, not given. Understanding the origin dissolves shame and replaces it with clarity — you see not a broken self, but a brilliant adaptation that has outlived its purpose. The Mirror Method traces each pattern back to its emotional root, often located in early formative experiences where the nervous system first learned to contract.',
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/',
     icon: '◎',
     color: STAGE_ACCENT_COLORS.teal,
   },
@@ -41,7 +41,7 @@ const stages = [
     title: 'Karmic Reinforcement',
     titleSanskrit: 'Saṃskāra Vṛtti',
     text: 'Patterns persist because they are reinforced by karma — not in the mystical sense, but in the neurological. Each repetition strengthens the neural pathway. Each time you choose the familiar pain over the unknown growth, you deepen the groove. The yogic concept of saṃskāra (mental imprint) maps precisely to modern neuroscience\'s understanding of neuroplasticity: repeated neural firing creates stable pathways that become the default mode of perception and reaction. The sādhanas are designed to create new grooves — new neural pathways that weaken the old pattern while strengthening a new, conscious response.',
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/pattern-intelligence-rescuer.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/sri-yantra-himalayas',
     icon: '◎',
     color: STAGE_ACCENT_COLORS.copper,
   },
@@ -50,7 +50,7 @@ const stages = [
     title: 'Behavioral Expression',
     titleSanskrit: 'Vyavahāra Prakāśa',
     text: 'Patterns do not stay in the mind. They express through behavior: the way you speak, the relationships you choose, the work you avoid, the anger you swallow, the boundaries you cannot set. Observing these expressions without judgment is itself a practice — and it is the gateway to change. The Mirror Method teaches you to witness your own behavioral expressions as a detached observer would, creating the critical gap between stimulus and response that Viktor Frankl described. In that gap lies your freedom. In that gap, the sādhana begins.',
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/mountain-pass-trident.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/',
     icon: '◉',
     color: STAGE_ACCENT_COLORS.violet,
   },
@@ -59,7 +59,7 @@ const stages = [
     title: 'Conscious Intervention',
     titleSanskrit: 'Sādhanā Praveśa',
     text: 'This is where the ancient meets the personal. With awareness of the pattern, its origin, its reinforcement, and its expression, you can now choose a different response. The specific sādhana prescribed for your pattern becomes the tool of intervention — not as an escape, but as a disciplined practice of rewiring. Mantra dissolves the emotional charge. Prāṇāyāma regulates the nervous system. Yantra meditation rewires spatial cognition. Each practice targets a specific layer of the pattern, creating a comprehensive intervention that addresses not just the symptom but the root. This is not self-improvement. This is self-dissolution — the systematic untying of knots you did not know you carried.',
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/copper-trident-courtyard-2.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/copper-trident-courtyard',
     icon: '◉',
     color: STAGE_ACCENT_COLORS.gold,
   },
@@ -336,7 +336,7 @@ export default function MethodPage() {
       {/* ═══ HERO ═══ */}
       <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/forgotten-forest-shrine.jpeg'
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/'
           alt='The Mirror Method — Architecture of Pattern Dissolution'
           kenBurns="slow"
           scrim="bottom"
@@ -410,7 +410,7 @@ export default function MethodPage() {
       {/* ═══ CINEMATIC STRIP I ═══ */}
       <ScrollParallax speed={-0.15} className="cinematic-strip">
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ritual-items-altar.jpeg'
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/nadi-shuddhi-practice'
           alt='Ceremonial altar with sacred instruments'
           kenBurns="normal"
           filmGrain={false}
@@ -448,7 +448,7 @@ export default function MethodPage() {
       {/* ═══ CINEMATIC STRIP II ═══ */}
       <ScrollParallax speed={-0.15} className="cinematic-strip">
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/meditation-platform-overlooking.jpeg'
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/'
           alt='Meditation platform overlooking the Himalayas'
           kenBurns="normal"
           filmGrain={false}
@@ -460,7 +460,7 @@ export default function MethodPage() {
       <section className="relative py-24 md:py-36 safe-bottom">
         <ScrollParallax speed={-0.06} disabled>
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-codex-scroll.jpeg'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/underground-library'
             alt='Ancient codex with golden illumination'
             className="absolute inset-0"
             scrim="full"

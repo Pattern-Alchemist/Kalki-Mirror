@@ -19,7 +19,7 @@ export const foundationSiddhis: Siddhi[] = [
     evidenceCount: 2,
     evidenceSources: [{"confidence":"high","title":"Māṇḍūkya Upaniṣad vv. 1–12 (primary)","url":"https://www.wisdomlib.org/hinduism/book/mandukya-upanishad"},{"confidence":"high","title":"Yoga Sūtras I.27–28 (primary)","url":"https://www.wisdomlib.org/hinduism/book/yoga-sutras-of-patanjali"}],
     minTier: "prithvi",
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/sri-yantra-sky',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/sri-yantra-himalayas',
     traditionalRef: 'Māṇḍūkya Upaniṣad vv. 1–12; Yoga Sūtras I.27–28',
     verbatimText: 'tasya vācakaḥ praṇavaḥ — "Its designator is Oṃ." (YS I.27)',
     practitionerCaveat: 'No siddhi is guaranteed — the tradition frames these as directions of practice, not outcomes. Oṃ repetition develops concentration and equanimity, not supernatural powers.',

@@ -199,7 +199,7 @@ export const intermediateSiddhis: Siddhi[] = [
     evidenceCount: 5,
     evidenceSources: [{"confidence":"high","title":"Kamalā Mahāvidyā (Goswami Prahlad Giri, Chowkhamba) (primary)","url":"https://archive.org/details/kamala-mahavidya-giri"},{"confidence":"high","title":"Śākta Praamoda (3 editions, Internet Archive) (primary)","url":"https://archive.org/details/sakta-pramoda"},{"confidence":"medium","title":"Daśa Mahāvidyā Tantra-Sāra (Yogiraj Yashpal) (primary)","url":"https://archive.org/details/dasa-mahavidya-tantra-sara"},{"confidence":"high","title":"D. Kinsley, Tantric Visions of the Divine Feminine (1997, ch. 9) (scholarly)","url":""},{"confidence":"high","title":"D. Kinsley, Hindu Goddesses (UC Press, 1986) (scholarly)","url":""}],
     minTier: "jal",
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/sri-yantra-sky',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/sri-yantra-himalayas',
     traditionalRef: 'Kamalā Mahāvidyā (Goswami Prahlad Giri, Chowkhamba); Śākta Praamoda',
     practitionerCaveat: 'Kamalā is sometimes conflated with Vaiṣṇava Lakṣmī worship — they share iconography but operate within distinct theological frameworks. The Mahāvidyā form is not a "prosperity mantra."',
   },
