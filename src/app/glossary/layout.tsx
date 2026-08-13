@@ -7,10 +7,10 @@ export const metadata: Metadata = {
   description:
     '50+ Sanskrit and Tantric terms defined in the KALKI framework. From Oṃ to Kuṇḍalinī, from Prāṇāyāma to the Mahāvidyās — the vocabulary of consciousness transformation.',
   openGraph: {
-    url: SITE_URL + '/glossary',
+    url: canonicalUrl('/glossary'),
     title: 'The Lexicon | KALKI',
     description:
-      '50+ Sanskrit and Tantric terms defined in the KALKI framework. The vocabulary of consciousness transformation.',
+      '50+ Sanskrit and Tantric terms defined in the KALKI framework. From Oṃ to Kuṇḍalinī, from Prāṇāyāma to the Mahāvidyās — the vocabulary of consciousness transformation.',
     images: [
       {
         url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-ancient-manuscripts',

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { canonicalUrl } from '@/lib/utils/metadata';
+import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
   alternates: { canonical: canonicalUrl('/method') },
@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     'The KALKI Mirror Method — a structured framework for self-inquiry drawn from tantrik psychology. Observe, decode, and transform your behavioral patterns.',
   openGraph: {
-    url: SITE_URL + '/method',
+    url: canonicalUrl('/method'),
     title: 'The Mirror Method | KALKI',
     description:
       'The KALKI Mirror Method — a structured framework for self-inquiry drawn from tantrik psychology. Observe, decode, and transform your behavioral patterns.',
@@ -22,6 +22,34 @@ export const metadata: Metadata = {
   },
 };
 
+const methodJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      name: 'The Mirror Method',
+      description: 'A structured framework for self-inquiry drawn from tantrik psychology. Observe, decode, and transform your behavioral patterns.',
+      url: `${SITE_URL}/method`,
+      isPartOf: { '@id': `${SITE_URL}/#website` },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
+        { '@type': 'ListItem', position: 2, name: 'The Mirror Method', item: `${SITE_URL}/method` },
+      ],
+    },
+  ],
+};
+
 export default function MethodLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(methodJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }

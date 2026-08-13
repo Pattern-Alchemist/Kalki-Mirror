@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Prāṇāyāma Laboratory | KALKI',
     description:
-      'Twelve breathwork patterns with animated visualizer — from Nāḍī Śuddhi to Kevala Kumbhaka.',
+      'Twelve prāṇāyāma techniques from foundational alternate-nostril breath to advanced kevala kumbhaka. Animated breathing visualizer with phase-by-phase guidance.',
     images: [
       {
         url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/cave-yantras',
@@ -24,19 +24,30 @@ export const metadata: Metadata = {
 
 const breathworkJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
-  name: 'Prāṇāyāma Laboratory',
-  description:
-    'Twelve prāṇāyāma techniques with animated breathing visualizer. From foundational alternate-nostril breath to advanced kevala kumbhaka.',
-  url: `${SITE_URL}/breathwork`,
-  isPartOf: { '@id': `${SITE_URL}/#website` },
-  about: {
-    '@type': 'Thing',
-    name: 'The Mirror Method',
-    description:
-      'A framework for recognizing, confronting, and dissolving recurring behavioral loops through traditional sādhana.',
-  },
-  numberOfItems: 12,
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      name: 'Prāṇāyāma Laboratory',
+      description:
+        'Twelve prāṇāyāma techniques with animated breathing visualizer. From foundational alternate-nostril breath to advanced kevala kumbhaka.',
+      url: `${SITE_URL}/breathwork`,
+      isPartOf: { '@id': `${SITE_URL}/#website` },
+      about: {
+        '@type': 'Thing',
+        name: 'The Mirror Method',
+        description:
+          'A framework for recognizing, confronting, and dissolving recurring behavioral loops through traditional sādhana.',
+      },
+      numberOfItems: 12,
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
+        { '@type': 'ListItem', position: 2, name: 'Prāṇāyāma Laboratory', item: `${SITE_URL}/breathwork` },
+      ],
+    },
+  ],
 };
 
 export default function BreathworkLayout({ children }: { children: React.ReactNode }) {

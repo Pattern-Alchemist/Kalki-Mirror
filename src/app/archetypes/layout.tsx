@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { canonicalUrl } from '@/lib/utils/metadata';
+import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
   alternates: { canonical: canonicalUrl('/archetypes') },
@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     'Decode the 16 archetypes of tantrik psychology — from Kali to Bhuvaneshvari. Discover your dominant patterns, shadow aspects, and growth pathways.',
   openGraph: {
-    url: SITE_URL + '/archetypes',
+    url: canonicalUrl('/archetypes'),
     title: 'The Ten Mahavidyas | KALKI',
     description:
       'Decode the 16 archetypes of tantrik psychology — from Kali to Bhuvaneshvari. Discover your dominant patterns, shadow aspects, and growth pathways.',
@@ -22,6 +22,35 @@ export const metadata: Metadata = {
   },
 };
 
+const archetypesJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      name: 'The Ten Mahāvidyās',
+      description: 'Decode the 16 archetypes of tantrik psychology — from Kali to Bhuvaneshvari.',
+      url: `${SITE_URL}/archetypes`,
+      isPartOf: { '@id': `${SITE_URL}/#website` },
+      numberOfItems: 16,
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
+        { '@type': 'ListItem', position: 2, name: 'The Ten Mahāvidyās', item: `${SITE_URL}/archetypes` },
+      ],
+    },
+  ],
+};
+
 export default function ArchetypesLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(archetypesJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }

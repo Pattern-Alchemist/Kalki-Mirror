@@ -178,7 +178,7 @@ export default function BreathworkPage() {
               transition={{ delay: 0.1, duration: 0.8 }}
             >
               Prāṇāyāma{' '}
-            <span style={{ display: 'block' }}>Laboratory
+            <span style={{ display: 'block' }}>Laboratory</span>
             </motion.h1>
             <motion.p
               className="font-display text-xl md:text-2xl lg:text-3xl text-text-secondary leading-relaxed mb-4"
@@ -289,8 +289,7 @@ export default function BreathworkPage() {
           <p className="section-label mb-6">Continue the Practice</p>
           <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
             The breath is mapped.{' '}
-            <span style={{ display: 'block' }}>
-            The sādhana awaits.
+            <span style={{ display: 'block' }}>The sādhana awaits.</span>
           </h2>
           <p
             className="text-foreground/70 text-lg mb-12 editorial-spacing"

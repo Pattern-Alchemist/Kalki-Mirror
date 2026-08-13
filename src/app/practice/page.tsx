@@ -578,7 +578,7 @@ export default function PracticeLoggerPage() {
             </span>
             <h1 className="hero-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
               The Practice{' '}
-            <span style={{ display: 'block' }}>Floor
+            <span style={{ display: 'block' }}>Floor</span>
             </h1>
             <p className="text-editorial text-lg md:text-xl text-text-secondary mt-6 max-w-xl leading-relaxed">
               Every session is a thread in the tapestry of transformation.

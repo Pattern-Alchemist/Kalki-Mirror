@@ -43,7 +43,7 @@ export function SiddhiCard({ siddhi, className }: SiddhiCardProps) {
           </div>
 
           {/* Summary */}
-          <p className="text-base text-text-secondary leading-relaxed line-clamp-3 editorial-spacing">
+          <p className="text-base text-text-secondary leading-relaxed line-clamp-5 editorial-spacing">
             {siddhi.summary}
           </p>
 

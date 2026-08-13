@@ -294,7 +294,7 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
           <p className="section-label mb-6">Continue the Investigation</p>
           <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
             The pattern is mapped.{' '}
-            <span style={{ display: 'block' }}>The sādhana awaits.
+            <span style={{ display: 'block' }}>The sādhana awaits.</span>
           </h2>
           <p className="text-foreground/70 text-lg mb-12 editorial-spacing" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>
             Book a session with Kaustubh for a precise prescription — or explore the Archive and Library to continue your own investigation.

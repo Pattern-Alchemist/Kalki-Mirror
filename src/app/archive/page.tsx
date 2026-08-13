@@ -671,7 +671,7 @@ export default function ArchivePage() {
           <p className="section-label mb-6">The Archive is Open</p>
           <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
             Every folio has a sādhana.{' '}
-            <span style={{ display: 'block' }}>Every sādhana has a gate.
+            <span style={{ display: 'block' }}>Every sādhana has a gate.</span>
           </h2>
           <p className="text-foreground/70 text-lg mb-12 editorial-spacing" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>
             The Archive is not a library. It is a living system of practice. Each siddhi is a door — and behind every door, a specific discipline awaits.

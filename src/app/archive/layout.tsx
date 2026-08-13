@@ -25,17 +25,28 @@ export const metadata: Metadata = {
 
 const archiveJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
-  name: 'The Akashic Archive',
-  description: '48 siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access.',
-  url: `${SITE_URL}/archive`,
-  isPartOf: { '@id': `${SITE_URL}/#website` },
-  about: {
-    '@type': 'Thing',
-    name: 'Siddhis',
-    description: 'Supernatural powers and abilities from the Tantric tradition, documented with evidence grading and scholarly provenance.',
-  },
-  numberOfItems: 48,
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      name: 'The Akashic Archive',
+      description: '48 siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access.',
+      url: `${SITE_URL}/archive`,
+      isPartOf: { '@id': `${SITE_URL}/#website` },
+      about: {
+        '@type': 'Thing',
+        name: 'Siddhis',
+        description: 'Supernatural powers and abilities from the Tantric tradition, documented with evidence grading and scholarly provenance.',
+      },
+      numberOfItems: 48,
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
+        { '@type': 'ListItem', position: 2, name: 'Akashic Archive', item: `${SITE_URL}/archive` },
+      ],
+    },
+  ],
 };
 
 export default function ArchiveLayout({ children }: { children: React.ReactNode }) {

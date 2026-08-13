@@ -1,26 +1,55 @@
 import type { Metadata } from 'next';
-import { canonicalUrl } from '@/lib/utils/metadata';
+import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
-  title: 'Aghorī Tantra Course \u2014 Eight Phases of Transformative Practice',
+  title: 'Aghorī Tantra Course — Eight Phases of Transformative Practice',
   description:
-    'Fifty-four lessons across eight phases \u2014 from foundational orientation through non-dual integration. The most comprehensive online Aghor\u012b Tantra course, grounded in living lineage and scholarly evidence.',
+    'Fifty-four lessons across eight phases — from foundational orientation through non-dual integration. The most comprehensive online Aghorī Tantra course, grounded in living lineage and scholarly evidence.',
   alternates: { canonical: canonicalUrl('/aghori-tantra') },
   openGraph: {
-    url: 'https://www.astrokalki.com/aghori-tantra',
-    title: 'Aghor\u012b Tantra Course | KALKI',
+    url: canonicalUrl('/aghori-tantra'),
+    title: 'Aghorī Tantra Course | KALKI',
     description:
-      'Fifty-four lessons across eight phases \u2014 from foundational orientation through non-dual integration.',
+      'Fifty-four lessons across eight phases — from foundational orientation through non-dual integration. The most comprehensive online Aghorī Tantra course, grounded in living lineage and scholarly evidence.',
     images: [
       {
         url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/bhairava-pathway',
         width: 1920,
-        alt: 'Aghor\u012b Tantra Course \u2014 KALKI',
+        alt: 'Aghorī Tantra Course — KALKI',
       },
     ],
   },
 };
 
+const aghoriJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Course',
+      name: 'Aghorī Tantra Course',
+      description: 'Fifty-four lessons across eight phases — from foundational orientation through non-dual integration.',
+      url: `${SITE_URL}/aghori-tantra`,
+      provider: { '@id': `${SITE_URL}/#organization` },
+      isPartOf: { '@id': `${SITE_URL}/#website` },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
+        { '@type': 'ListItem', position: 2, name: 'Aghorī Tantra Course', item: `${SITE_URL}/aghori-tantra` },
+      ],
+    },
+  ],
+};
+
 export default function AghoriTantraLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aghoriJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }

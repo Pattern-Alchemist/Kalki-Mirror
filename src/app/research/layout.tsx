@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     'Evidence-based research on siddhis, tantrik practices, and pattern intelligence. Cross-referenced sources, authenticity scores, and academic citations.',
   openGraph: {
-    url: SITE_URL + '/research',
+    url: canonicalUrl('/research'),
     title: 'Research | KALKI',
     description:
       'Evidence-based research on siddhis, tantrik practices, and pattern intelligence. Cross-referenced sources, authenticity scores, and academic citations.',

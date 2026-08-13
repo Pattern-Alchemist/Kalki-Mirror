@@ -151,8 +151,8 @@ export default function ResearchPage() {
         <ParallaxText speed={-0.05} className="max-w-3xl mx-auto text-center">
           <p className="text-sub-display text-foreground mb-6 engraved-heading">
             Six categories.{' '}
-            <span style={{ display: 'block' }}>Zero ambiguity.{' '}
-            <span style={{ display: 'block' }}>Every claim traced.
+            <span style={{ display: 'block' }}>Zero ambiguity.</span>{' '}
+            <span style={{ display: 'block' }}>Every claim traced.</span>
           </p>
           <p className="text-editorial max-w-xl mx-auto">
             The Archive does not rank sources by prestige — it classifies them by epistemic character. A practitioner's testimony and a palm-leaf manuscript are different kinds of evidence, both valued.
@@ -208,8 +208,8 @@ export default function ResearchPage() {
         <ParallaxText speed={-0.05} className="max-w-3xl mx-auto text-center">
           <p className="text-sub-display text-foreground mb-6 engraved-heading">
             Multiple darśanas.{' '}
-            <span style={{ display: 'block' }}>One rigorous framework.{' '}
-            <span style={{ display: 'block' }}>No conflation.
+            <span style={{ display: 'block' }}>One rigorous framework.</span>{' '}
+            <span style={{ display: 'block' }}>No conflation.</span>
           </p>
           <p className="text-editorial max-w-xl mx-auto">
             Where traditions overlap, we note it. Where they diverge, we preserve the distinction. The Archive is not a synthesis — it is a map.
@@ -365,8 +365,8 @@ export default function ResearchPage() {
         <ParallaxText speed={-0.05} className="max-w-3xl mx-auto text-center">
           <p className="text-sub-display text-foreground mb-6 engraved-heading">
             Three dimensions.{' '}
-            <span style={{ display: 'block' }}>One composite score.{' '}
-            <span style={{ display: 'block' }}>Full transparency.
+            <span style={{ display: 'block' }}>One composite score.</span>{' '}
+            <span style={{ display: 'block' }}>Full transparency.</span>
           </p>
           <p className="text-editorial max-w-xl mx-auto">
             Every authenticity score is calculable from its component parts. We publish the formula, not just the number. Question the score — that is the point.
@@ -391,7 +391,7 @@ export default function ResearchPage() {
           <p className="section-label mb-6">Explore the Archive</p>
           <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
             The sources are mapped.{' '}
-            <span style={{ display: 'block' }}>The claims are scored.
+            <span style={{ display: 'block' }}>The claims are scored.</span>
           </h2>
           <p className="text-foreground/70 text-lg mb-12 editorial-spacing" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>
             Every siddhi in the Archive carries a full provenance chain — from primary textual references to contemporary practitioner reports. Browse the evidence yourself.

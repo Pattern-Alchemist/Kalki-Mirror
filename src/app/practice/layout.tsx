@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description:
     'Track your daily sādhana with precision. Log practice sessions, track mood shifts, build streaks, and watch your 90-day practice heatmap illuminate the geometry of transformation.',
   openGraph: {
-    url: SITE_URL + '/practice',
+    url: canonicalUrl('/practice'),
     title: 'The Practice Floor — Sadhana Logger | KALKI',
     description:
       'Track your daily sādhana with precision. Log practice sessions, track mood shifts, build streaks, and watch your 90-day practice heatmap illuminate the geometry of transformation.',
