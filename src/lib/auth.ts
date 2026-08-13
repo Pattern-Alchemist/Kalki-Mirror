@@ -5,11 +5,17 @@ import crypto from "crypto";
 import { db } from "./db";
 import type { UserRole } from "@prisma/client";
 
-const secret = process.env.NEXTAUTH_SECRET;
-if (!secret) {
-  throw new Error(
-    "NEXTAUTH_SECRET is not set. Add it to your .env file or Vercel environment variables. Generate one with: openssl rand -base64 32"
-  );
+/** Lazy accessor — avoids top-level throw during `next build`.
+ *  NextAuth reads `secret` at request-time, not import-time,
+ *  so the env-var check is deferred until an actual auth request arrives. */
+function getAuthSecret(): string {
+  const s = process.env.NEXTAUTH_SECRET;
+  if (!s) {
+    throw new Error(
+      "NEXTAUTH_SECRET is not set. Add it to your .env file or Vercel environment variables. Generate one with: openssl rand -base64 32"
+    );
+  }
+  return s;
 }
 
 // ── Server-side brute-force protection ──
@@ -74,7 +80,7 @@ export function cleanupPreAuthTokens() {
 }
 
 export const authOptions: NextAuthOptions = {
-  secret,
+  get secret() { return getAuthSecret(); },
   pages: {
     signIn: "/admin/login",
   },
