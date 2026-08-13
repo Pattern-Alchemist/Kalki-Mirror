@@ -335,7 +335,7 @@ export default function GlossaryPage() {
         <div className="max-w-5xl mx-auto px-6 lg:px-10 mt-8">
           {/* ── Editorial intro ── */}
           <motion.p
-            className="text-text-secondary text-lg leading-relaxed max-w-3xl editorial-spacing mb-10"
+            className="text-text-secondary text-lg leading-relaxed max-w-3xl editorial-spacing mb-4"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             whileInView={fadeInUp.visible}
             viewport={{ once: true }}
@@ -345,6 +345,19 @@ export default function GlossaryPage() {
             a precise technical meaning that has no adequate English equivalent. A siddhi is not simply a "power"
             — it is a measurable, repeatable shift in the relationship between consciousness and matter.
             Understanding the vocabulary is the first step toward recognizing the patterns it describes.
+          </motion.p>
+          <motion.p
+            className="text-text-muted text-base leading-relaxed max-w-3xl editorial-spacing mb-10"
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            whileInView={fadeInUp.visible}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            Terms are organized by category — Core Concepts, Practice Terms, Archetypes, and Textual References
+            — and each entry includes its Sanskrit etymology, phonetic pronunciation, and connections to
+            related siddhis and patterns across the KALKI system. Cross-references are embedded throughout:
+            a term like "āvaraṇa" (enclosure) links directly to the siddhis designed to dissolve it, creating
+            a navigable web between language and practice.
           </motion.p>
 
           {/* ── Search & Filter Bar ── */}
@@ -479,7 +492,9 @@ export default function GlossaryPage() {
             <p className="font-display text-2xl md:text-3xl tracking-wide mb-3">The vocabulary shapes the vision.</p>
             <p className="text-text-muted mb-8 max-w-md mx-auto editorial-spacing">
               Every term in the Lexicon is a node in the network of consciousness.
-              Follow the links to explore the connections.
+              Follow the links to explore the connections — or visit the Deities
+              and Archetypes pages to see how these terms manifest as living
+              psychological patterns.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/deities" className="gold-cta">Explore the Pantheon</Link>

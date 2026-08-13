@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   alternates: pageAlternates('/practice'),
+  robots: { index: false, follow: true },
   title: 'The Practice Floor — Sadhana Logger',
   description:
     'Track your daily sādhana with precision. Log practice sessions, track mood shifts, build streaks, and watch your 90-day practice heatmap illuminate the geometry of transformation.',

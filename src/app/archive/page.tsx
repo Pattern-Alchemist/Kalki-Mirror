@@ -331,6 +331,17 @@ export default function ArchivePage() {
               >
                 {SIDDHI_COUNT} siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access.
               </p>
+              <p
+                className="text-text-muted text-base max-w-2xl mt-4 editorial-spacing text-shadow-deep leading-relaxed"
+              >
+                Each folio in the Akashic Archive represents a specific sādhana — a practice with a
+                traceable lineage, a defined methodology, and measurable outcomes. Unlike modern
+                self-help frameworks that generalize from anecdote, these techniques have been
+                field-tested across centuries of continuous practice within living Tantric traditions.
+                The Archive does not claim universality; it claims specificity — each siddhi is tagged
+                with its source text, its caution level, and the emotional pattern it was designed to
+                address. This is a reference system built for precision, not inspiration.
+              </p>
             </motion.div>
 
             {/* Stats ledger */}
@@ -370,7 +381,7 @@ export default function ArchivePage() {
         {/* ── Zone Divider 01→02 ── */}
         <ZoneDivider
           label="THE READING ROOM"
-          subtitle="Scrolls of practice, arranged by tradition. Each folio scored for authenticity and lineage."
+          subtitle="Scrolls of practice, arranged by tradition. Each folio scored for authenticity and lineage. Filter by category, caution level, or tier to find the sādhana that matches your current edge."
           index={1}
         />
 
@@ -564,7 +575,7 @@ export default function ArchivePage() {
         {/* ── Zone Divider 02→03 ── */}
         <ZoneDivider
           label="THE DEEP ARCHIVE"
-          subtitle="Beyond the folios, the architecture of consciousness itself. Ten karmic loops. Ten Mahāvidyās."
+          subtitle="Beyond the folios, the architecture of consciousness itself. Ten Mahāvidyās — ten faces of the same divine feminine principle — each governing a distinct karmic loop that shapes how you relate to power, desire, attachment, and dissolution."
           index={2}
         />
 
@@ -598,6 +609,20 @@ export default function ArchivePage() {
                 >
                   Ten Mahāvidyās{' — '} Ten Karmic Loops
                 </motion.h2>
+                <motion.p
+                  className="text-text-muted text-base max-w-xl mt-4 editorial-spacing text-shadow-deep leading-relaxed"
+                  initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+                  whileInView={fadeInUp.visible}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ delay: 0.15 }}
+                >
+                  In the KALKI framework, the ten Mahāvidyās are not deities to be worshipped — they are
+                  diagnostic archetypes. Each one maps a specific karmic loop: Kali governs dissolution
+                  and the fear of annihilation; Tara governs the hunger for rescue and the refusal to
+                  self-save; Bhuvaneshwari governs the need to control space and territory. Identifying
+                  your dominant Mahāvidyā is the first step toward prescribing the exact sādhana that
+                  dissolves that loop at its root.
+                </motion.p>
               </div>
               <motion.div
                 initial={reduced ? { opacity: 1 } : fadeInUp.hidden}

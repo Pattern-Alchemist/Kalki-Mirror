@@ -318,6 +318,19 @@ export default function PatternsPage() {
             >
               and the sādhanas designed to dissolve them.
             </motion.p>
+            <motion.p
+              className="text-text-muted/70 text-sm max-w-lg mx-auto mt-4 leading-relaxed"
+              style={{ textShadow: '0 1px 6px rgba(0,0,0,0.5)' }}
+              initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+              animate={fadeInUp.visible}
+              transition={{ delay: 0.4, duration: 0.8 }}
+            >
+              The KALKI system identifies twelve core emotional patterns — from the
+              Abandonment Loop to the Control Archetype — each one a recurring
+              behavioral script that operates beneath conscious awareness. Every pattern
+              links directly to specific siddhis from the Akashic Archive, creating a
+              traceable path from recognition to practice to transformation.
+            </motion.p>
             <motion.div
               className="mt-16"
               initial={{ opacity: 0 }}
@@ -523,6 +536,14 @@ export default function PatternsPage() {
               <p className="font-display text-lg md:text-xl text-text-secondary max-w-xl mx-auto leading-relaxed">
                 The mirror clears. What was pattern becomes awareness.
               </p>
+              <p className="text-text-muted/70 text-sm max-w-lg mx-auto mt-4 leading-relaxed">
+                Each pattern follows a three-stage arc: recognition (seeing the loop
+                for the first time), confrontation (choosing to engage rather than
+                bypass), and dissolution (the sādhana does its work). The Pattern Atlas
+                maps all twelve patterns to their corresponding siddhis, warning signs,
+                and archetypal roots — so you can move from intellectual understanding
+                to embodied practice.
+              </p>
               <div className="divider-gold max-w-[200px] mx-auto mt-8" />
             </motion.div>
             <motion.div
@@ -601,7 +622,7 @@ export default function PatternsPage() {
             <span style={{ display: 'block' }}>The path shows the practitioner.</span>
           </p>
           <p className="text-editorial max-w-xl mx-auto">
-            Twelve patterns. Three stages of transformation. Each one a doorway that was always open — you simply had not yet looked.
+            Twelve patterns. Three stages of transformation. Each one a doorway that was always open — you simply had not yet looked. The patterns are not weaknesses to fix but intelligences to understand: each one developed as a survival strategy, and each one can be redirected through precise, lineage-backed sādhana.
           </p>
         </ParallaxText>
         <div className="divider-gold mt-14" />

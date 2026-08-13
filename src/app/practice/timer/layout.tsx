@@ -3,6 +3,7 @@ import { canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
   alternates: pageAlternates('/practice/timer'),
+  robots: { index: false, follow: true },
   title: 'Silent Sitting Timer',
   description:
     'A minimal meditation timer for unstructured sitting practice. Presets from 5 to 60 minutes with a 528Hz bell on completion.',

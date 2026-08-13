@@ -3,6 +3,7 @@ import { canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
   alternates: pageAlternates('/practice/japa'),
+  robots: { index: false, follow: true },
   title: 'Japa Mala',
   description:
     'Count your mantra repetitions with the digital Japa Mala. Supports Om Namah Shivaya, Om Mani Padme Hum, Hare Krishna, and custom mantras. Target 54, 108, 216, or 1008 repetitions.',
