@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   description:
     'The Deity Compendium — 16 archetypal forces of the KALKI system. The Ten Mahāvidyās and six supplementary archetypes, each governing a specific karmic-loop pattern.',
   openGraph: {
+    url: SITE_URL + '/deities',
     title: 'The Pantheon | KALKI',
     description:
       '16 archetypal forces mapped: the Ten Mahāvidyās and six supplementary archetypes, each governing a karmic-loop pattern.',

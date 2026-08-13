@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   description:
     'Book a private consultation with the Archivist. Birth-chart analysis, pattern decoding, siddhi pathway mapping, and tantrik guidance — in person or remote.',
   openGraph: {
+    url: SITE_URL + '/consultations',
     title: 'Consult the Archivist | KALKI',
     description:
       'Book a private consultation with the Archivist. Birth-chart analysis, pattern decoding, siddhi pathway mapping, and tantrik guidance — in person or remote.',

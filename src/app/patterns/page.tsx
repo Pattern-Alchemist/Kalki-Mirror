@@ -589,7 +589,9 @@ export default function PatternsPage() {
         <div className="divider-gold mb-14" />
         <ParallaxText speed={-0.05} className="max-w-3xl mx-auto text-center">
           <p className="text-sub-display text-foreground mb-6 engraved-heading">
-            The mirror shows the pattern.<br/>The pattern shows the path.<br/>The path shows the practitioner.
+            The mirror shows the pattern.{' '}
+            <span style={{ display: 'block' }}>The pattern shows the path.{' '}
+            <span style={{ display: 'block' }}>The path shows the practitioner.
           </p>
           <p className="text-editorial max-w-xl mx-auto">
             Twelve patterns. Three stages of transformation. Each one a doorway that was always open — you simply had not yet looked.
@@ -613,7 +615,8 @@ export default function PatternsPage() {
         <ParallaxText speed={-0.04} className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">
           <p className="section-label mb-6">Begin the Unraveling</p>
           <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
-            You have seen the pattern.<br/>Now walk through it.
+            You have seen the pattern.{' '}
+            <span style={{ display: 'block' }}>Now walk through it.
           </h2>
           <p className="text-foreground/70 text-lg mb-12 editorial-spacing" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>
             Every pattern is linked to specific sādhanas — disciplines drawn from living traditions. The Archive holds the practices. The Archivist holds the context.

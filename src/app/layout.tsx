@@ -54,6 +54,9 @@ export const metadata: Metadata = {
   publisher: 'KALKI',
   alternates: {
     canonical: SITE_URL,
+    languages: {
+      'en': SITE_URL,
+    },
   },
   openGraph: {
     title: 'KALKI — Light for the Dark Age.',

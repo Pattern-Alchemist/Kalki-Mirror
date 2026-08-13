@@ -605,7 +605,8 @@ export default function BreathDetailPage({
         >
           <p className="section-label mb-6">Continue the Practice</p>
           <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
-            The breath is mapped.<br />
+            The breath is mapped.{' '}
+            <span style={{ display: 'block' }}>
             The sādhana awaits.
           </h2>
           <p

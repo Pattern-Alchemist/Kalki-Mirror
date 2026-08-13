@@ -216,7 +216,8 @@ export default function SequencesPage() {
               animate={fadeInUp.visible}
               transition={{ delay: 0.1, duration: 0.8 }}
             >
-              Practice<br />Sequences
+              Practice{' '}
+            <span style={{ display: 'block' }}>Sequences
             </motion.h1>
             <motion.p
               className="font-display text-xl md:text-2xl lg:text-3xl text-text-secondary leading-relaxed mb-4"
@@ -326,7 +327,8 @@ export default function SequencesPage() {
         >
           <p className="section-label mb-6">Continue the Investigation</p>
           <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
-            The sequence is mapped.<br />
+            The sequence is mapped.{' '}
+            <span style={{ display: 'block' }}>
             The sādhana awaits.
           </h2>
           <p

@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   description:
     'Decode the 16 archetypes of tantrik psychology — from Kali to Bhuvaneshvari. Discover your dominant patterns, shadow aspects, and growth pathways.',
   openGraph: {
+    url: SITE_URL + '/archetypes',
     title: 'The Ten Mahavidyas | KALKI',
     description:
       'Decode the 16 archetypes of tantrik psychology — from Kali to Bhuvaneshvari. Discover your dominant patterns, shadow aspects, and growth pathways.',

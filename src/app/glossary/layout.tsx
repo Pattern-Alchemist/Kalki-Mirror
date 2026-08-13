@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   description:
     '50+ Sanskrit and Tantric terms defined in the KALKI framework. From Oṃ to Kuṇḍalinī, from Prāṇāyāma to the Mahāvidyās — the vocabulary of consciousness transformation.',
   openGraph: {
+    url: SITE_URL + '/glossary',
     title: 'The Lexicon | KALKI',
     description:
       '50+ Sanskrit and Tantric terms defined in the KALKI framework. The vocabulary of consciousness transformation.',

@@ -337,7 +337,8 @@ export default function SequenceDetailPage({
         >
           <p className="section-label mb-6">Continue the Investigation</p>
           <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
-            The sequence is mapped.<br />
+            The sequence is mapped.{' '}
+            <span style={{ display: 'block' }}>
             The sādhana awaits.
           </h2>
           <p

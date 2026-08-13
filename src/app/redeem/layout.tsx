@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   description:
     'Activate your Golden Key to unlock deeper access to the Akashic Archive. Enter your KALKI key code to upgrade your covenant tier.',
   openGraph: {
+    url: SITE_URL + '/redeem',
     title: 'Key Redemption | KALKI',
     description:
       'Activate your Golden Key to unlock deeper access to the Akashic Archive.',

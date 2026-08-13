@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   description:
     'The KALKI Mirror Method — a structured framework for self-inquiry drawn from tantrik psychology. Observe, decode, and transform your behavioral patterns.',
   openGraph: {
+    url: SITE_URL + '/method',
     title: 'The Mirror Method | KALKI',
     description:
       'The KALKI Mirror Method — a structured framework for self-inquiry drawn from tantrik psychology. Observe, decode, and transform your behavioral patterns.',

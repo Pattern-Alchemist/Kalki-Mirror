@@ -117,7 +117,8 @@ export default function ConsultationsPage() {
           <div className="divider-gold mb-16" />
           <ParallaxText speed={-0.05} className="max-w-3xl mx-auto text-center">
             <p className="text-sub-display text-foreground mb-6 engraved-heading">
-              Not fortune-telling.<br/>Pattern intelligence.
+              Not fortune-telling.{' '}
+            <span style={{ display: 'block' }}>Pattern intelligence.
             </p>
           </ParallaxText>
           <div className="divider-gold mt-16" />
@@ -189,7 +190,8 @@ export default function ConsultationsPage() {
         <ParallaxText speed={-0.04} className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">
           <p className="section-label mb-6">The Archive is Open</p>
           <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
-            The map exists.<br/>The archivist is here.
+            The map exists.{' '}
+            <span style={{ display: 'block' }}>The archivist is here.
           </h2>
           <p className="text-foreground/70 text-lg mb-12 editorial-spacing">Book a session directly via WhatsApp. No intermediary. No scheduling platform. Just you and the pattern.</p>
           <div className="flex flex-wrap justify-center gap-4">

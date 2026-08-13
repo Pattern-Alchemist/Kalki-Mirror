@@ -332,7 +332,8 @@ export default function ArchetypesPage() {
         <ParallaxText speed={-0.04} className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">
           <p className="section-label mb-6">Discover Your Pattern</p>
           <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
-            Every pattern has a name.<br />Every name has a sādhana.
+            Every pattern has a name.{' '}
+            <span style={{ display: 'block' }}>Every name has a sādhana.
           </h2>
           <p className="text-foreground/70 text-lg mb-12 editorial-spacing">
             The Mahāvidyās are not deities to worship but mirrors to behold. YANTRA detects which archetype is running your loop. The consultation reveals the sādhana to dissolve it.
