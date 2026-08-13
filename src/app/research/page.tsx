@@ -117,7 +117,7 @@ export default function ResearchPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <div className="shrink-0 w-11 h-11 rounded-sm flex items-center justify-center border border-gold/10 group-hover:border-gold/25 transition-colors duration-500" style={{ backgroundColor: `var(--${cat.accent})`, opacity: 0.08 }}>
+                  <div className="shrink-0 w-11 h-11 rounded-sm flex items-center justify-center border border-gold/10 group-hover:border-gold/25 bg-gold/5 transition-colors duration-500">
                     <IconComp className="w-5 h-5" style={{ color: `var(--${cat.accent})`, opacity: 0.7 }} />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -192,7 +192,7 @@ export default function ResearchPage() {
       <div className="mt-28">
         <ScrollParallax speed={-0.15} className="cinematic-strip">
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/manuscript-sacred-geometry'
             alt='Sacred manuscripts and geometric patterns'
             kenBurns="normal"
             filmGrain={false}
@@ -349,7 +349,7 @@ export default function ResearchPage() {
       <div className="mt-28">
         <ScrollParallax speed={-0.15} className="cinematic-strip">
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight'
             alt='Ancient temple at midnight'
             kenBurns="normal"
             filmGrain={false}

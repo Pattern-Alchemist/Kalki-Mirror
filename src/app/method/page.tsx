@@ -23,7 +23,7 @@ const stages = [
     title: 'Pattern Recognition',
     titleSanskrit: 'Pratyakṣa Jñāna',
     text: 'The first step is naming the loop. Every recurring frustration, every self-sabotaging decision, every relationship that ends the same way — these are not random. They are patterns with names, origins, and specific sādhanas designed to address them. KALKI maps 12 core psychological patterns to specific tantric practices drawn from the Aghorī, Kashmiri Shaiva, and Buddhist Vajrayāna traditions. Until a pattern is named, it operates invisibly — shaping your choices from the shadows of unconscious habit. Recognition is the first act of freedom.',
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight',
     icon: '◉',
     color: STAGE_ACCENT_COLORS.gold,
   },
@@ -32,7 +32,7 @@ const stages = [
     title: 'Emotional Origin',
     titleSanskrit: 'Kāraṇa Bhāva',
     text: 'Every pattern started somewhere. Not as a flaw, but as a survival strategy. The Rescuer pattern formed because love felt conditional on being useful. The Perfectionist formed because safety meant never making a mistake. The Victim pattern formed because power was taken, not given. Understanding the origin dissolves shame and replaces it with clarity — you see not a broken self, but a brilliant adaptation that has outlived its purpose. The Mirror Method traces each pattern back to its emotional root, often located in early formative experiences where the nervous system first learned to contract.',
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ascetic-himalayan-overlook',
     icon: '◎',
     color: STAGE_ACCENT_COLORS.teal,
   },
@@ -50,7 +50,7 @@ const stages = [
     title: 'Behavioral Expression',
     titleSanskrit: 'Vyavahāra Prakāśa',
     text: 'Patterns do not stay in the mind. They express through behavior: the way you speak, the relationships you choose, the work you avoid, the anger you swallow, the boundaries you cannot set. Observing these expressions without judgment is itself a practice — and it is the gateway to change. The Mirror Method teaches you to witness your own behavioral expressions as a detached observer would, creating the critical gap between stimulus and response that Viktor Frankl described. In that gap lies your freedom. In that gap, the sādhana begins.',
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/manuscript-sacred-geometry',
     icon: '◉',
     color: STAGE_ACCENT_COLORS.violet,
   },
@@ -336,7 +336,7 @@ export default function MethodPage() {
       {/* ═══ HERO ═══ */}
       <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/'
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-dark-temple-interior'
           alt='The Mirror Method — Architecture of Pattern Dissolution'
           kenBurns="slow"
           scrim="bottom"
@@ -451,7 +451,7 @@ export default function MethodPage() {
       {/* ═══ CINEMATIC STRIP II ═══ */}
       <ScrollParallax speed={-0.15} className="cinematic-strip">
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/'
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/stone-gateway-ancient-forest'
           alt='Meditation platform overlooking the Himalayas'
           kenBurns="normal"
           filmGrain={false}

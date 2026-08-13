@@ -171,7 +171,7 @@ export default function PricingPage() {
                     <li key={fi} className="flex items-start gap-3"><span className="mt-0.5 shrink-0"><GoldCheckIcon /></span><span className="text-text-secondary text-sm leading-relaxed">{f}</span></li>
                   ))}
                   {(tier.gatedFeatures ?? []).map((f, gi) => (
-                    <li key={`g-${gi}`} className="flex items-start gap-3 opacity-40">
+                    <li key={`g-${gi}`} className="flex items-start gap-3 opacity-55">
                       <span className="mt-0.5 shrink-0"><LockIconSmall /></span>
                       <span className="text-text-muted text-sm leading-relaxed line-through">{f}</span>
                     </li>

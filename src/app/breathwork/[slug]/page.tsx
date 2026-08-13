@@ -576,7 +576,7 @@ export default function BreathDetailPage({
       {/* ═══ CINEMATIC STRIP ═══ */}
       <ScrollParallax speed={-0.15} className="cinematic-strip">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ascetic-walking-mountain-path"
           alt="Meditation platform overlooking the Himalayas"
           kenBurns="normal"
           filmGrain={false}
