@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useTransition } from "react";
 import Link from "next/link";
+import { exportAuditLogs } from "./actions";
 
 interface AuditLog {
   id: string;
   action: string;
   entity: string;
   entityId?: string | null;
+  before?: string | null;
   after?: string | null;
   createdAt: string;
   actor: { name: string | null; email: string | null } | null;
@@ -15,7 +17,7 @@ interface AuditLog {
 
 interface Props {
   initialLogs: AuditLog[];
- totalPages: number;
+  totalPages: number;
   currentPage: number;
   total: number;
 }
@@ -23,6 +25,8 @@ interface Props {
 export function AuditClient({ initialLogs, totalPages, currentPage, total }: Props) {
   const [actionFilter, setActionFilter] = useState("");
   const [entityFilter, setEntityFilter] = useState("");
+  const [isExporting, startExport] = useTransition();
+  const [exportStatus, setExportStatus] = useState("");
 
   // Extract unique values for filters
   const uniqueActions = useMemo(() => {
@@ -43,10 +47,32 @@ export function AuditClient({ initialLogs, totalPages, currentPage, total }: Pro
     });
   }, [initialLogs, actionFilter, entityFilter]);
 
+  // A5: Export handler
+  const handleExport = (format: 'csv' | 'json') => {
+    startExport(async () => {
+      try {
+        const result = await exportAuditLogs(format);
+        const blob = new Blob([result.data], {
+          type: format === 'json' ? 'application/json' : 'text/csv',
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = result.filename;
+        a.click();
+        URL.revokeObjectURL(url);
+        setExportStatus(`Exported ${format.toUpperCase()} successfully.`);
+        setTimeout(() => setExportStatus(""), 3000);
+      } catch (err) {
+        setExportStatus(`Export failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      }
+    });
+  };
+
   return (
     <div className="space-y-4">
-      {/* Filters — E5: audit log client-side filtering */}
-      <div className="flex flex-wrap gap-3">
+      {/* Filters + Export — E5 + A5 */}
+      <div className="flex flex-wrap items-center gap-3">
         <select
           value={actionFilter}
           onChange={(e) => setActionFilter(e.target.value)}
@@ -75,6 +101,27 @@ export function AuditClient({ initialLogs, totalPages, currentPage, total }: Pro
             Clear filters ({filteredLogs.length} results)
           </button>
         )}
+
+        {/* Export buttons */}
+        <div className="ml-auto flex items-center gap-2">
+          {exportStatus && (
+            <span className="text-[11px] text-emerald-400">{exportStatus}</span>
+          )}
+          <button
+            onClick={() => handleExport('csv')}
+            disabled={isExporting}
+            className="rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs text-zinc-300 transition hover:bg-zinc-800 disabled:opacity-50"
+          >
+            {isExporting ? 'Exporting…' : '↓ CSV'}
+          </button>
+          <button
+            onClick={() => handleExport('json')}
+            disabled={isExporting}
+            className="rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs text-zinc-300 transition hover:bg-zinc-800 disabled:opacity-50"
+          >
+            {isExporting ? 'Exporting…' : '↓ JSON'}
+          </button>
+        </div>
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-zinc-800">

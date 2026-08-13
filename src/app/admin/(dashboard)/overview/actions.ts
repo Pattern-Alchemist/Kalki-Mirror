@@ -52,6 +52,24 @@ export async function getOverviewStats() {
   // Pattern journey: recognized vs resolved
   const recognizedPatterns = await db.patternResolution.count();
 
+  // A9: Signup trends (last 12 weeks)
+  const twelveWeeksAgo = new Date(Date.now() - 12 * 7 * 24 * 60 * 60 * 1000);
+  const weeklySignups = await db.$queryRaw<Array<{ week: string; count: number }>>`
+    SELECT
+      date(createdAt) as week,
+      COUNT(*) as count
+    FROM User
+    WHERE createdAt >= ${twelveWeeksAgo.toISOString()}
+    GROUP BY date(createdAt)
+    ORDER BY week ASC
+  `;
+
+  // Consultation status distribution
+  const consultStatuses = await db.consultation.groupBy({
+    by: ["status"],
+    _count: true,
+  });
+
   return {
     members: {
       total: totalUsers,
@@ -75,10 +93,18 @@ export async function getOverviewStats() {
     },
     consultations: {
       pending: pendingConsultations,
+      statusDistribution: consultStatuses.map(s => ({
+        status: s.status,
+        count: s._count,
+      })),
     },
     content: {
       drafts: draftContent,
       inReview: reviewContent,
+    },
+    // A9: Chart data
+    charts: {
+      weeklySignups,
     },
   };
 }

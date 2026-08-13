@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { getMemberTimeline } from "../actions";
+import { MemberTimeline } from "./timeline-client";
 
 export const dynamic = "force-dynamic";
 
@@ -35,21 +37,29 @@ export default async function MemberDetailPage({
     notFound();
   }
 
-  const user = await db.user.findUnique({
-    where: { id },
-  include: {
-      streaks: { orderBy: { lastPracticedAt: "desc" } },
-      resolutions: { orderBy: { resolvedAt: "desc" } },
-      keysGenerated: {
-        orderBy: { createdAt: "desc" },
-        include: { _count: { select: { usages: true } } },
+  const [user, timeline] = await Promise.all([
+    db.user.findUnique({
+      where: { id },
+      include: {
+        streaks: { orderBy: { lastPracticedAt: "desc" } },
+        resolutions: { orderBy: { resolvedAt: "desc" } },
+        keysGenerated: {
+          orderBy: { createdAt: "desc" },
+          include: { _count: { select: { usages: true } } },
+        },
+        keysUsed: {
+          orderBy: { usedAt: "desc" },
+          include: { code: { select: { code: true } } },
+        },
       },
-      keysUsed: {
-        orderBy: { usedAt: "desc" },
-        include: { code: { select: { code: true } } },
-      },
-    },
-  });
+    }),
+    getMemberTimeline(id).catch(() => ({
+      auditEvents: [],
+      streaks: [],
+      resolutions: [],
+      keyUsages: [],
+    })),
+  ]);
 
   if (!user) {
     notFound();
@@ -110,6 +120,9 @@ export default async function MemberDetailPage({
           <Field label="Last Transmission" value={formatDate(user.lastTransmissionDate)} />
         </div>
       </section>
+
+      {/* ── A11: Activity Timeline ── */}
+      <MemberTimeline timeline={JSON.parse(JSON.stringify(timeline))} userId={id} />
 
       {/* ── Sadhana Streaks ── */}
       <section className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6">

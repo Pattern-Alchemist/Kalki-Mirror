@@ -3,6 +3,8 @@ import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getCorpusStats } from "@/lib/static-db";
 import { SecuritySection } from "./security-section";
+import { TwoFactorSection } from "./two-factor-section";
+import { WebhookSection } from "./webhook-section";
 
 export const dynamic = "force-dynamic";
 
@@ -39,6 +41,8 @@ export default async function SettingsPage() {
     },
   });
 
+  const isSuperAdmin = role === "SUPERADMIN";
+
   return (
     <div className="space-y-8">
       <div>
@@ -67,6 +71,12 @@ export default async function SettingsPage() {
 
       {/* Security section — E10 */}
       <SecuritySection audits={JSON.parse(JSON.stringify(recentAudits))} />
+
+      {/* A1: 2FA/TOTP */}
+      <TwoFactorSection />
+
+      {/* A14: Webhook integrations (SUPERADMIN only) */}
+      {isSuperAdmin && <WebhookSection />}
 
       {/* Database stats */}
       <section className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 space-y-4">
@@ -118,6 +128,8 @@ export default async function SettingsPage() {
           <EnvCheck name="TURSO_DATABASE_URL" isSet={!!process.env.TURSO_DATABASE_URL} />
           <EnvCheck name="TURSO_AUTH_TOKEN" isSet={!!process.env.TURSO_AUTH_TOKEN} />
           <EnvCheck name="CLOUDINARY_CLOUD_NAME" isSet={!!process.env.CLOUDINARY_CLOUD_NAME} />
+          <EnvCheck name="ALLOWED_ADMIN_IPS" isSet={!!process.env.ALLOWED_ADMIN_IPS} />
+          <EnvCheck name="SENTRY_DSN" isSet={!!process.env.SENTRY_DSN} />
         </div>
       </section>
     </div>

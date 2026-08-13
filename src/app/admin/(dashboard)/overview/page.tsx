@@ -1,5 +1,6 @@
 import { getOverviewStats } from "./actions";
 import { QuickActions } from "@/components/admin/quick-actions";
+import { DashboardCharts } from "./chart-client";
 
 const TIER_CONFIG: Record<string, { label: string; color: string; element: string }> = {
   prithvi: { label: "Prithvi", color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20", element: "Earth" },
@@ -52,9 +53,19 @@ export default async function OverviewPage() {
 
       <QuickActions />
 
+      {/* A9: Dashboard charts */}
+      <section className="space-y-4">
+        <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Analytics</h2>
+        <DashboardCharts
+          weeklySignups={JSON.parse(JSON.stringify(stats.charts.weeklySignups))}
+          tierDistribution={stats.members.tierDistribution}
+          consultStatuses={stats.consultations.statusDistribution}
+        />
+      </section>
+
       {/* Tier distribution */}
       <section className="space-y-4">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Tier Distribution</h2>
+        <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Tier Breakdown</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {stats.members.tierDistribution.map((t) => {
             const cfg = TIER_CONFIG[t.tier] || TIER_CONFIG.prithvi;

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { updateMemberTier, updateMemberRole, type MemberRow } from "./actions";
+import { updateMemberTier, updateMemberRole, bulkUpdateTier, type MemberRow } from "./actions";
 
 const TIERS = ["prithvi", "jal", "agni", "akash"];
 const ROLES = ["USER", "EDITOR", "REVIEWER", "ADMIN", "SUPERADMIN"];
@@ -31,6 +31,35 @@ export function MemberTable({
   const [isPending, startTransition] = useTransition();
   const [search, setSearch] = useState(currentQuery);
   const [tierFilter, setTierFilter] = useState(currentTier);
+
+  // A7: Bulk action state
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkTier, setBulkTier] = useState("");
+  const [bulkPending, startBulk] = useTransition();
+
+  const toggleSelect = (id: string) => {
+    const next = new Set(selectedIds);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelectedIds(next);
+  };
+
+  const toggleAll = () => {
+    if (selectedIds.size === members.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(members.map(m => m.id)));
+    }
+  };
+
+  const handleBulkTier = () => {
+    if (!bulkTier || selectedIds.size === 0) return;
+    startBulk(async () => {
+      await bulkUpdateTier(Array.from(selectedIds), bulkTier, "Bulk tier change");
+      setSelectedIds(new Set());
+      setBulkTier("");
+      router.refresh();
+    });
+  };
 
   function applyFilters() {
     const params = new URLSearchParams();
@@ -70,11 +99,49 @@ export function MemberTable({
         </button>
       </div>
 
+      {/* A7: Bulk actions bar */}
+      {selectedIds.size > 0 && (
+        <div className="flex items-center gap-3 rounded-lg border border-amber-500/20 bg-amber-500/5 px-4 py-2.5">
+          <span className="text-sm text-amber-400 font-medium">{selectedIds.size} selected</span>
+          <select
+            value={bulkTier}
+            onChange={e => setBulkTier(e.target.value)}
+            className="rounded-lg border border-zinc-800 bg-zinc-900 px-2 py-1.5 text-xs text-zinc-300 focus:border-amber-500/50 focus:outline-none"
+          >
+            <option value="">Set tier to…</option>
+            {TIERS.map(t => (
+              <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
+            ))}
+          </select>
+          <button
+            onClick={handleBulkTier}
+            disabled={bulkPending || !bulkTier}
+            className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-medium text-zinc-950 transition hover:bg-amber-500 disabled:opacity-50"
+          >
+            {bulkPending ? 'Applying…' : 'Apply'}
+          </button>
+          <button
+            onClick={() => setSelectedIds(new Set())}
+            className="ml-auto text-xs text-zinc-500 hover:text-zinc-300"
+          >
+            Clear selection
+          </button>
+        </div>
+      )}
+
       {/* Table */}
       <div className="overflow-x-auto rounded-xl border border-zinc-800">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-zinc-800 bg-zinc-900/50">
+              <th className="px-4 py-3 font-medium text-zinc-500">
+                <input
+                  type="checkbox"
+                  checked={selectedIds.size === members.length && members.length > 0}
+                  onChange={toggleAll}
+                  className="rounded border-zinc-700 bg-zinc-800 text-amber-500 focus:ring-amber-500/50"
+                />
+              </th>
               <th className="px-4 py-3 font-medium text-zinc-500">Member</th>
               <th className="px-4 py-3 font-medium text-zinc-500">Tier</th>
               <th className="px-4 py-3 font-medium text-zinc-500">Role</th>
@@ -87,13 +154,21 @@ export function MemberTable({
           <tbody className="divide-y divide-zinc-800/50">
             {members.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-12 text-center text-zinc-600">
+                <td colSpan={8} className="px-4 py-12 text-center text-zinc-600">
                   No members found.
                 </td>
               </tr>
             )}
             {members.map((m) => (
-              <tr key={m.id} className="transition hover:bg-zinc-900/30">
+              <tr key={m.id} className={`transition hover:bg-zinc-900/30 ${selectedIds.has(m.id) ? 'bg-amber-500/5' : ''}`}>
+                <td className="px-4 py-3">
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.has(m.id)}
+                    onChange={() => toggleSelect(m.id)}
+                    className="rounded border-zinc-700 bg-zinc-800 text-amber-500 focus:ring-amber-500/50"
+                  />
+                </td>
                 <td className="px-4 py-3">
                   <div>
                     <p className="font-medium text-zinc-200">{m.name || "—"}</p>
@@ -116,7 +191,12 @@ export function MemberTable({
                   {new Date(m.createdAt).toLocaleDateString()}
                 </td>
                 <td className="px-4 py-3">
-                  <button className="text-xs text-amber-500 hover:text-amber-400">Details</button>
+                  <button 
+                    onClick={() => router.push(`/admin/members/${m.id}`)}
+                    className="text-xs text-amber-500 hover:text-amber-400"
+                  >
+                    Details
+                  </button>
                 </td>
               </tr>
             ))}

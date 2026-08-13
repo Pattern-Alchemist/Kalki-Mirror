@@ -3,6 +3,9 @@
 import { db } from "@/lib/db";
 import { logAudit } from "@/lib/admin/audit";
 import { requireRole } from "@/lib/admin/require-role";
+import { withRateLimit } from "@/lib/admin/rate-limit";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { Prisma } from "@prisma/client";
 
 export type MemberRow = {
@@ -105,4 +108,62 @@ export async function updateMemberRole(userId: string, newRole: string, reason: 
   });
 
   return { success: true };
+}
+
+// A7: Bulk tier update
+export async function bulkUpdateTier(userIds: string[], newTier: string, reason: string) {
+  await requireRole('admin_plus');
+  const session = await getServerSession(authOptions);
+  const actorId = session?.user ? (session.user as unknown as { id: string }).id : 'unknown';
+
+  // A8: Rate limit
+  withRateLimit(`bulk:${actorId}`, 10);
+
+  const result = await db.user.updateMany({
+    where: { id: { in: userIds } },
+    data: { tier: newTier },
+  });
+
+  await logAudit({
+    action: "user.tier.bulk",
+    entity: "User",
+    actorId,
+    before: { count: userIds.length },
+    after: { tier: newTier, affected: result.count, reason },
+  });
+
+  return { success: true, affected: result.count };
+}
+
+// A11: Activity timeline for a member
+export async function getMemberTimeline(userId: string) {
+  await requireRole('any_staff');
+
+  const [auditEvents, streaks, resolutions, keyUsages] = await Promise.all([
+    db.adminAuditLog.findMany({
+      where: { entityId: userId },
+      orderBy: { createdAt: 'desc' },
+      take: 20,
+    }),
+    db.sadhanaStreak.findMany({
+      where: { userId },
+      orderBy: { updatedAt: 'desc' },
+      take: 10,
+      select: { practice: true, practiceName: true, currentStreak: true, longestStreak: true, updatedAt: true },
+    }),
+    db.patternResolution.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: 10,
+      select: { id: true, patternSlug: true, status: true, createdAt: true },
+    }),
+    db.inviteUsage.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: 10,
+      select: { id: true, inviteCode: true, createdAt: true },
+    }),
+  ]);
+
+  return { auditEvents, streaks, resolutions, keyUsages };
 }

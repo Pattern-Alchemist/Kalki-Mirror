@@ -5,6 +5,8 @@ import { AdminSidebar } from "@/components/admin/sidebar";
 import { AdminBreadcrumbs } from "@/components/admin/breadcrumbs";
 import { AdminSessionProvider } from "@/components/admin/session-provider";
 import { MobileSidebarToggle } from "@/components/admin/mobile-sidebar-toggle";
+import { GlobalSearch } from "@/components/admin/global-search";
+import { NotificationBell } from "@/components/admin/notification-bell";
 
 export const dynamic = "force-dynamic";
 
@@ -40,7 +42,14 @@ export default async function AdminDashboardLayout({
         </div>
         <main className="flex-1 overflow-y-auto">
           <MobileSidebarToggle />
-          <div className="mx-auto max-w-7xl px-4 py-8 pl-14 lg:px-6 lg:pl-6">
+          {/* Top bar with search + notifications */}
+          <div className="sticky top-0 z-50 flex items-center gap-3 border-b border-zinc-800/50 bg-zinc-950/90 px-4 py-2 backdrop-blur-sm pl-14 lg:pl-6">
+            <GlobalSearch />
+            <div className="ml-auto">
+              <NotificationBell />
+            </div>
+          </div>
+          <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
             <AdminBreadcrumbs />
             {children}
           </div>
