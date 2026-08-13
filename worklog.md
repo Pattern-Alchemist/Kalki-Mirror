@@ -528,3 +528,33 @@ Stage Summary:
 - 21/21 images uploaded successfully to Cloudinary kalki-mirror/ folder
 - 23 references replaced in archetypes.ts, aghori-tantra-course.ts, siddhis-aghori.ts, aghori-tantra/page.tsx
 - All images now served from Cloudinary CDN — zero local image serves on /archetypes and /aghori-tantra
+
+---
+Task ID: 3
+Agent: Main
+Task: Fix 4 critical admin audit findings + implement 15 admin enhancements
+
+Work Log:
+- FIXED: Added Disallow: /admin to robots.ts; deleted conflicting public/robots.txt
+- FIXED: Added X-Robots-Tag: noindex, nofollow + Referrer-Policy: no-referrer in middleware for ALL /admin routes
+- FIXED: Created admin/login/layout.tsx with metadata override (title, robots noindex, no OG, no canonical) + JSON-LD override
+- FIXED: Created admin/layout.tsx with blocking script to hide public nav/footer/WhatsAppCTA on all admin pages
+- FIXED: Added noscript fallback for login page accessibility
+- CREATED: AdminSessionProvider (session context, 30-min idle timeout modal, keyboard shortcuts 1-8 + Ctrl+K + Ctrl+Shift+L)
+- CREATED: AdminBreadcrumbs (auto-generated from pathname)
+- CREATED: MobileSidebarToggle (responsive hamburger drawer for < lg screens)
+- CREATED: QuickActions component on overview dashboard
+- CREATED: SecuritySection in settings (robots meta check, X-Robots-Tag check, referrer policy, CSRF status, session info, keyboard shortcuts reference, recent activity feed)
+- CREATED: Admin 403 forbidden page (replaces homepage redirect for unauthorized roles)
+- CREATED: AuditClient with client-side action/entity filtering
+- UPGRADED: Sidebar (user avatar + name + email + role badge, session timer, Ctrl+K palette trigger, number shortcut hints)
+- UPGRADED: Login page (show/hide password, password strength bar, rate limit progress bar, live lockout countdown, loading spinner)
+- UPDATED: Middleware to redirect unauthorized roles to /admin/forbidden instead of /
+- UPDATED: Dashboard layout (hidden sidebar on mobile, mobile toggle, breadcrumbs)
+
+Stage Summary:
+- 18 files changed, 1373 insertions, 183 deletions
+- 4 critical audit findings fixed: noindex, canonical/OG/JSON-LD leakage, SSR accessibility, nav exposure
+- 15 admin enhancements: session management, keyboard shortcuts, command palette, security dashboard, mobile responsive, login UX
+- Zero new TypeScript errors
+- Pushed to Pattern-Alchemist/Kalki-Mirror (main) as a9a52cd
