@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       'Minimal meditation timer for unstructured sitting practice with 528Hz completion bell.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-meditation-platform',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-meditation-platform',
         width: 1200,
         height: 630,
         alt: 'Silent Sitting Timer — KALKI',

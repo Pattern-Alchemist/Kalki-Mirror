@@ -20,7 +20,7 @@ export const metadata: Metadata = {
       'Track your daily sādhana with precision. Log practice sessions, track mood shifts, build streaks, and watch your 90-day practice heatmap illuminate the geometry of transformation.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/practice/water-practice-hero',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/practice/water-practice-hero',
         width: 1200,
         height: 630,
         alt: 'The Practice Floor — KALKI Sadhana Logger',

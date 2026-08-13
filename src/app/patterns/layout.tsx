@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       '20 recurring human emotional patterns mapped through the Mirror Method. Recognize, confront, dissolve, and integrate the behavioral loops that run your life.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/patterns/sadhu-ash-gold-hero',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/patterns/sadhu-ash-gold-hero',
         width: 1200,
         height: 630,
         alt: 'Pattern Atlas — The Mirror Method — KALKI',

@@ -171,12 +171,12 @@ export default function PricingPage() {
                     <li key={fi} className="flex items-start gap-3"><span className="mt-0.5 shrink-0"><GoldCheckIcon /></span><span className="text-text-secondary text-sm leading-relaxed">{f}</span></li>
                   ))}
                   {(tier.gatedFeatures ?? []).map((f, gi) => (
-                    <li key={`g-${gi}`} className="flex items-start gap-3 opacity-55">
+                    <li key={`g-${gi}`} className="flex items-start gap-3 opacity-75">
                       <span className="mt-0.5 shrink-0"><LockIconSmall /></span>
-                      <span className="text-text-muted text-sm leading-relaxed line-through">{f}</span>
+                      <span className="text-text-secondary text-sm leading-relaxed line-through" style={{ color: '#7A7A72' }}>{f}</span>
                     </li>
                   ))}
-                  {(tier.gatedFeatures ?? []).length > 0 && <li className="pl-7"><span className="text-text-muted/40 text-xs italic">Requires {getHigherTierName(tier.id)}</span></li>}
+                  {(tier.gatedFeatures ?? []).length > 0 && <li className="pl-7"><span className="text-xs italic" style={{ color: '#6A6A62' }}>Requires {getHigherTierName(tier.id)}</span></li>}
                 </ul>
                 {/* CTA */}
                 <div className="mt-auto">

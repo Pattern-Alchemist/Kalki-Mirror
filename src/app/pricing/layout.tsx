@@ -14,7 +14,7 @@ export const metadata: Metadata = {
       'Four membership tiers — Prithvi, Jal, Agni, and Akash. Each unlocks deeper layers of the Akashic Archive, consultations, and live satsang.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/pricing/fire-ritual-yantra-hero',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/pricing/fire-ritual-yantra-hero',
         width: 1200,
         height: 630,
         alt: 'Membership Tiers — KALKI',

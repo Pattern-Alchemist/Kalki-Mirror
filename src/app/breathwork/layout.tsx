@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       'Twelve prāṇāyāma techniques from foundational alternate-nostril breath to advanced kevala kumbhaka. Animated breathing visualizer with phase-by-phase guidance.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/practice/water-practice-hero',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/practice/water-practice-hero',
         width: 1200,
         height: 630,
         alt: 'Prāṇāyāma Laboratory — KALKI',

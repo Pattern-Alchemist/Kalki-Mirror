@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       'The Deity Compendium — 16 archetypal forces of the KALKI system. The Ten Mahāvidyās and six supplementary archetypes, each governing a specific karmic-loop pattern.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-dark-temple-interior',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-dark-temple-interior',
         width: 1200,
         height: 630,
         alt: 'The Pantheon — KALKI',

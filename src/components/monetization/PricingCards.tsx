@@ -49,9 +49,9 @@ function TierRow({ tier, index, reduced }: { tier: PricingTier; index: number; r
             </li>
           ))}
           {(tier.gatedFeatures ?? []).map((f, gi) => (
-            <li key={`g-${gi}`} className="flex items-start gap-3 opacity-30">
+            <li key={`g-${gi}`} className="flex items-start gap-3 opacity-50">
               <span className="mt-1.5 w-1 h-1 rounded-full border border-copper/40 shrink-0" />
-              <span className="text-text-muted text-base leading-relaxed line-through">{f}</span>
+              <span className="text-base leading-relaxed line-through" style={{ color: '#7A7A72' }}>{f}</span>
             </li>
           ))}
         </ul>
