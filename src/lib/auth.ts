@@ -1,6 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { db } from "./db";
 import type { UserRole } from "@prisma/client";
 
@@ -117,8 +118,16 @@ export const authOptions: NextAuthOptions = {
         // Successful login — clear attempts
         clearLoginAttempts(email);
 
-        // A1: If 2FA is enabled, return a flag (handled client-side)
-        // We return the user but the login page will check 2FA status
+        // A3: Track active session (fire-and-forget)
+        const sessionJti = crypto.randomUUID();
+        db.activeSession.create({
+          data: {
+            userId: user.id,
+            tokenHash: crypto.createHash('sha256').update(sessionJti).digest('hex').slice(0, 32),
+          },
+        }).catch(() => {}); // Non-blocking; DB may not have the table yet
+
+        // A1: If 2FA is enabled, include the flag
         return {
           id: user.id,
           email: user.email,

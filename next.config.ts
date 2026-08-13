@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withSentryConfig } from "@sentry/nextjs";
 
 const securityHeaders = [
   {
@@ -60,14 +61,13 @@ const nextConfig: NextConfig = {
         source: '/(.*)',
         headers: securityHeaders,
       },
-      // Long-lived cache for immutable static assets (fonts, SVGs, icons)
+      // Long-lived cache for immutable static assets
       {
         source: '/(.*)\\.(svg|ico|png|jpg|jpeg|webp|avif|woff2?|ttf|otf)$',
         headers: [
           { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
         ],
       },
-      // Next.js static chunks — versioned, immutable
       {
         source: '/_next/static/(.*)',
         headers: [
@@ -93,7 +93,6 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Clean up dead-end navigation links
   async redirects() {
     return [
       { source: '/tantra', destination: '/practice', permanent: true },
@@ -102,11 +101,16 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Vercel serverless: force-include the baked corpus
   outputFileTracingIncludes: {
     "/api/**": ["./db/**/*"],
     "/api/health": ["./db/**/*"],
   },
 };
 
-export default nextConfig;
+// I4: Sentry wrapper — only active when SENTRY_DSN is set
+export default withSentryConfig(nextConfig, {
+  silent: true,
+  hideSourceMaps: true,
+  disableLogger: true,
+  tunnelRoute: '/monitoring-tunnel',
+});

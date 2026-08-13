@@ -2,6 +2,8 @@
 
 import { db } from "@/lib/db";
 import { logAudit } from "@/lib/admin/audit";
+import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
+import { broadcastNotification } from "@/lib/admin/notifications";
 import { requireRole } from "@/lib/admin/require-role";
 import type { ContentRow } from "./constants";
 
@@ -54,6 +56,8 @@ export async function createContentEntry(data: {
     after: { type: data.type, slug: data.slug, title: data.title },
   });
 
+  await dispatchWebhooks('content.create', { id: entry.id, type: data.type, slug: data.slug, title: data.title });
+
   return entry;
 }
 
@@ -92,6 +96,17 @@ export async function updateContentEntry(
     after: data,
   });
 
+  // Fire webhook + notification on publish
+  if (data.status === 'PUBLISHED') {
+    await dispatchWebhooks('content.published', { id, title: data.title || entry.title, type: entry.type });
+    await broadcastNotification({
+      title: 'Content Published',
+      body: `"${data.title || entry.title}" is now live`,
+      type: 'success',
+      href: '/admin/content',
+    });
+  }
+
   return updated;
 }
 
@@ -107,6 +122,8 @@ export async function deleteContentEntry(id: string) {
     entityId: id,
     before: { title: entry.title, slug: entry.slug },
   });
+
+  await dispatchWebhooks('content.delete', { id, title: entry.title, slug: entry.slug });
 
   return { success: true };
 }

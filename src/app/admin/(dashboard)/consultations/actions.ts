@@ -2,6 +2,8 @@
 
 import { db } from "@/lib/db";
 import { logAudit } from "@/lib/admin/audit";
+import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
+import { broadcastNotification } from "@/lib/admin/notifications";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
@@ -87,6 +89,16 @@ export async function updateConsultationStatus(
     after: { status: newStatus, notes },
   });
 
+  await dispatchWebhooks('consultation.status', { consultationId, oldStatus, newStatus });
+  if (newStatus === 'SCHEDULED' || newStatus === 'COMPLETED') {
+    await broadcastNotification({
+      title: 'Consultation Updated',
+      body: `Status: ${oldStatus} → ${newStatus}`,
+      type: 'info',
+      href: '/admin/consultations',
+    });
+  }
+
   return { success: true };
 }
 
@@ -116,6 +128,14 @@ export async function scheduleConsultation(
     entityId: consultationId,
     before: { status: consultation.status },
     after: { status: "SCHEDULED", scheduledFor, notes },
+  });
+
+  await dispatchWebhooks('consultation.new', { consultationId, name: consultation.name, scheduledFor });
+  await broadcastNotification({
+    title: 'Consultation Scheduled',
+    body: `${consultation.name} scheduled for ${new Date(scheduledFor).toLocaleDateString()}`,
+    type: 'success',
+    href: '/admin/consultations',
   });
 
   return { success: true };

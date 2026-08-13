@@ -1,5 +1,12 @@
 import { NextResponse } from "next/server";
 
+/**
+ * GET /api — Health & info endpoint.
+ * Returns minimal info; the real health check is at /api/health.
+ */
 export async function GET() {
-  return NextResponse.json({ message: "Hello, world!" });
+  return NextResponse.json({
+    status: "ok",
+    timestamp: new Date().toISOString(),
+  });
 }

@@ -1,12 +1,21 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { useAdminSession } from "@/components/admin/session-provider";
 import { setup2FA, confirm2FA, remove2FA, get2FAStatus } from "./two-factor-actions";
 
 export function TwoFactorSection() {
   const { user } = useAdminSession();
   const [enabled, setEnabled] = useState(false);
+  const [backupCodesRemaining, setBackupCodesRemaining] = useState(0);
+
+  // Load initial 2FA state from server
+  useEffect(() => {
+    get2FAStatus().then(status => {
+      setEnabled(status.enabled);
+      setBackupCodesRemaining(status.backupCodesRemaining);
+    }).catch(() => {/* non-critical */});
+  }, []);
   const [pending, startTransition] = useTransition();
   const [code, setCode] = useState("");
   const [step, setStep] = useState<'idle' | 'scanning' | 'verifying'>('idle');
@@ -73,7 +82,7 @@ export function TwoFactorSection() {
             </span>
             <div>
               <p className="text-sm font-medium text-emerald-400">2FA Enabled</p>
-              <p className="text-xs text-zinc-500">Your account requires a TOTP code on each login.</p>
+              <p className="text-xs text-zinc-500">Your account requires a TOTP code on each login. {backupCodesRemaining > 0 && `(${backupCodesRemaining} backup codes remaining)`}</p>
             </div>
           </div>
 

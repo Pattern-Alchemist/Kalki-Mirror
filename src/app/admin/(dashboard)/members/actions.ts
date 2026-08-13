@@ -2,6 +2,8 @@
 
 import { db } from "@/lib/db";
 import { logAudit } from "@/lib/admin/audit";
+import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
+import { broadcastNotification } from "@/lib/admin/notifications";
 import { requireRole } from "@/lib/admin/require-role";
 import { withRateLimit } from "@/lib/admin/rate-limit";
 import { getServerSession } from "next-auth";
@@ -86,6 +88,14 @@ export async function updateMemberTier(userId: string, newTier: string, reason: 
     after: { tier: newTier, reason },
   });
 
+  await dispatchWebhooks('user.tier.change', { userId, oldTier, newTier, reason });
+  await broadcastNotification({
+    title: 'Tier Changed',
+    body: `${user.email}: ${oldTier} → ${newTier}`,
+    type: 'info',
+    href: '/admin/members',
+  });
+
   return { success: true };
 }
 
@@ -105,6 +115,14 @@ export async function updateMemberRole(userId: string, newRole: string, reason: 
     entityId: userId,
     before: { role: oldRole },
     after: { role: newRole, reason },
+  });
+
+  await dispatchWebhooks('user.role.change', { userId, oldRole, newRole, reason });
+  await broadcastNotification({
+    title: 'Role Changed',
+    body: `${user.email}: ${oldRole} → ${newRole}`,
+    type: 'warning',
+    href: '/admin/members',
   });
 
   return { success: true };
@@ -130,6 +148,14 @@ export async function bulkUpdateTier(userIds: string[], newTier: string, reason:
     actorId,
     before: { count: userIds.length },
     after: { tier: newTier, affected: result.count, reason },
+  });
+
+  await dispatchWebhooks('user.tier.bulk', { count: userIds.length, newTier, affected: result.count });
+  await broadcastNotification({
+    title: 'Bulk Tier Update',
+    body: `${result.count} members updated to ${newTier}`,
+    type: 'info',
+    href: '/admin/members',
   });
 
   return { success: true, affected: result.count };

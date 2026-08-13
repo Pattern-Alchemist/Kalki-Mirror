@@ -2,6 +2,8 @@
 
 import { db } from "@/lib/db";
 import { logAudit } from "@/lib/admin/audit";
+import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
+import { broadcastNotification } from "@/lib/admin/notifications";
 import { requireRole } from "@/lib/admin/require-role";
 import { Prisma } from "@prisma/client";
 
@@ -66,6 +68,14 @@ export async function generateKeys(count: number, tierGranted: string, maxUses: 
     after: { count, tierGranted, maxUses, expiresAt },
   });
 
+  await dispatchWebhooks('key.generate', { count, tierGranted, codes: codes.map(c => c.code) });
+  await broadcastNotification({
+    title: 'Keys Generated',
+    body: `${count} Golden Keys created (tier: ${tierGranted})`,
+    type: 'success',
+    href: '/admin/keys',
+  });
+
   return codes;
 }
 
@@ -83,6 +93,14 @@ export async function revokeKey(codeId: string) {
     entityId: codeId,
     before: { active: true, code: key.code },
     after: { active: false },
+  });
+
+  await dispatchWebhooks('key.revoke', { codeId, code: key.code });
+  await broadcastNotification({
+    title: 'Key Revoked',
+    body: `Golden Key ${key.code} revoked`,
+    type: 'warning',
+    href: '/admin/keys',
   });
 
   return { success: true };
