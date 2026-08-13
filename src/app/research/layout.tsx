@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
+import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
   alternates: pageAlternates('/research'),
@@ -22,6 +22,34 @@ export const metadata: Metadata = {
   },
 };
 
+const researchJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      name: 'Research',
+      description: 'Evidence-based research on siddhis, tantrik practices, and pattern intelligence. Cross-referenced sources and academic citations.',
+      url: `${SITE_URL}/research`,
+      isPartOf: { '@id': `${SITE_URL}/#website` },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Research', item: `${SITE_URL}/research` },
+      ],
+    },
+  ],
+};
+
 export default function ResearchLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(researchJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }
