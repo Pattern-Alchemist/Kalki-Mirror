@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getCorpusStats } from "@/lib/static-db";
+import { SecuritySection } from "./security-section";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +25,19 @@ export default async function SettingsPage() {
   }
 
   const role = (session?.user as unknown as { role: string })?.role || "—";
+
+  // Recent audit events for security section
+  const recentAudits = await db.adminAuditLog.findMany({
+    take: 10,
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      action: true,
+      entity: true,
+      actorId: true,
+      createdAt: true,
+    },
+  });
 
   return (
     <div className="space-y-8">
@@ -50,6 +64,9 @@ export default async function SettingsPage() {
           </div>
         </div>
       </section>
+
+      {/* Security section — E10 */}
+      <SecuritySection audits={JSON.parse(JSON.stringify(recentAudits))} />
 
       {/* Database stats */}
       <section className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 space-y-4">

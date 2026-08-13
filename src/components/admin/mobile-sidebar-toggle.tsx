@@ -1,83 +1,84 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
-import { useAdminSession } from "./session-provider";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { useAdminSession } from "./session-provider";
 
 const navigation = [
-  { name: "Overview", href: "/admin/overview", icon: OverviewIcon, shortcut: "1" },
-  { name: "Members", href: "/admin/members", icon: UsersIcon, shortcut: "2" },
-  { name: "Golden Keys", href: "/admin/keys", icon: KeyIcon, shortcut: "3" },
-  { name: "Content Studio", href: "/admin/content", icon: DocumentIcon, shortcut: "4" },
-  { name: "Folio Corpus", href: "/admin/folio", icon: BookIcon, shortcut: "5" },
-  { name: "Consultations", href: "/admin/consultations", icon: CalendarIcon, shortcut: "6" },
-  { name: "Audit Log", href: "/admin/audit", icon: ShieldIcon, shortcut: "7" },
-  { name: "Settings", href: "/admin/settings", icon: GearIcon, shortcut: "8" },
+  { name: "Overview", href: "/admin/overview", icon: OverviewIcon },
+  { name: "Members", href: "/admin/members", icon: UsersIcon },
+  { name: "Golden Keys", href: "/admin/keys", icon: KeyIcon },
+  { name: "Content Studio", href: "/admin/content", icon: DocumentIcon },
+  { name: "Folio Corpus", href: "/admin/folio", icon: BookIcon },
+  { name: "Consultations", href: "/admin/consultations", icon: CalendarIcon },
+  { name: "Audit Log", href: "/admin/audit", icon: ShieldIcon },
+  { name: "Settings", href: "/admin/settings", icon: GearIcon },
 ];
 
-export function AdminSidebar() {
+export function MobileSidebarToggle() {
+  const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const { user, logout } = useAdminSession();
-  const [sessionDuration, setSessionDuration] = useState(0);
-  const [cmdOpen, setCmdOpen] = useState(false);
-  const [cmdFilter, setCmdFilter] = useState("");
-  const cmdInputRef = useState<HTMLInputElement | null>(null)[0];
 
-  // Session timer
+  // Close on route change
   useEffect(() => {
-    const start = Date.now();
-    const interval = setInterval(() => {
-      setSessionDuration(Math.floor((Date.now() - start) / 1000));
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    setOpen(false);
+  }, [pathname]);
 
-  const formatDuration = (s: number) => {
-    const h = Math.floor(s / 3600);
-    const m = Math.floor((s % 3600) / 60);
-    if (h > 0) return `${h}h ${m}m`;
-    return `${m}m`;
-  };
-
-  // Cmd+K palette
+  // Lock body scroll when open
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault();
-        setCmdOpen((o) => !o);
-        setCmdFilter("");
-      }
-      if (e.key === "Escape" && cmdOpen) {
-        setCmdOpen(false);
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [cmdOpen]);
-
-  const filteredNav = cmdFilter
-    ? navigation.filter((n) =>
-        n.name.toLowerCase().includes(cmdFilter.toLowerCase())
-      )
-    : navigation;
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
 
   return (
     <>
-      <aside className="flex h-screen w-64 flex-col border-r border-zinc-800 bg-zinc-950">
-        {/* Brand */}
-        <div className="flex h-14 items-center gap-2 border-b border-zinc-800 px-4">
-          <div className="flex h-7 w-7 items-center justify-center rounded border border-amber-500/30 bg-amber-500/10">
-            <span className="text-xs font-bold text-amber-500">K</span>
+      {/* Hamburger button — visible on < lg screens */}
+      <button
+        onClick={() => setOpen(true)}
+        className="fixed top-3 left-3 z-[100] rounded-lg border border-zinc-800 bg-zinc-900 p-2 text-zinc-400 shadow-lg lg:hidden"
+        aria-label="Open navigation"
+      >
+        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+
+      {/* Overlay */}
+      {open && (
+        <div
+          className="fixed inset-0 z-[110] bg-black/60 backdrop-blur-sm lg:hidden"
+          onClick={() => setOpen(false)}
+        />
+      )}
+
+      {/* Drawer */}
+      <div
+        className={`fixed inset-y-0 left-0 z-[120] w-64 transform bg-zinc-950 border-r border-zinc-800 transition-transform duration-200 lg:hidden ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* Header */}
+        <div className="flex h-14 items-center justify-between border-b border-zinc-800 px-4">
+          <div className="flex items-center gap-2">
+            <div className="flex h-7 w-7 items-center justify-center rounded border border-amber-500/30 bg-amber-500/10">
+              <span className="text-xs font-bold text-amber-500">K</span>
+            </div>
+            <span className="text-sm font-semibold text-zinc-100">Console</span>
           </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-semibold text-zinc-100">Archivist Console</span>
-            <span className="text-[10px] text-zinc-600">Kalki Mirror</span>
-          </div>
+          <button
+            onClick={() => setOpen(false)}
+            className="rounded p-1 text-zinc-500 hover:text-zinc-300"
+            aria-label="Close navigation"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
 
-        {/* User info — E3: logged-in user display */}
+        {/* User info */}
         <div className="border-b border-zinc-800 px-4 py-3">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-500/10 text-xs font-bold text-amber-400">
@@ -88,24 +89,6 @@ export function AdminSidebar() {
               <p className="truncate text-[10px] text-zinc-600">{user.email}</p>
             </div>
           </div>
-          <div className="mt-2 flex items-center justify-between text-[10px] text-zinc-600">
-            <span className="rounded bg-zinc-800 px-1.5 py-0.5 font-mono">{user.role}</span>
-            <span>{formatDuration(sessionDuration)} active</span>
-          </div>
-        </div>
-
-        {/* Search trigger */}
-        <div className="border-b border-zinc-800 px-3 py-2">
-          <button
-            onClick={() => { setCmdOpen(true); setCmdFilter(""); }}
-            className="flex w-full items-center gap-2 rounded-md border border-zinc-800 bg-zinc-900/50 px-2.5 py-1.5 text-xs text-zinc-500 transition hover:border-zinc-700 hover:text-zinc-400"
-          >
-            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-            </svg>
-            Navigate...
-            <kbd className="ml-auto rounded border border-zinc-700 bg-zinc-800 px-1 py-0.5 text-[10px] font-mono">Ctrl K</kbd>
-          </button>
         </div>
 
         {/* Nav */}
@@ -117,7 +100,8 @@ export function AdminSidebar() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm transition ${
+                    onClick={() => setOpen(false)}
+                    className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition ${
                       isActive
                         ? "bg-amber-500/10 text-amber-400"
                         : "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200"
@@ -125,7 +109,6 @@ export function AdminSidebar() {
                   >
                     <item.icon className="h-4 w-4 shrink-0" />
                     {item.name}
-                    <kbd className={`ml-auto hidden text-[10px] font-mono ${isActive ? "text-amber-500/40" : "text-zinc-700"} group-hover:inline`}>{item.shortcut}</kbd>
                   </Link>
                 </li>
               );
@@ -139,68 +122,16 @@ export function AdminSidebar() {
             href="/"
             className="flex items-center gap-2 rounded-md px-3 py-2 text-xs text-zinc-500 transition hover:bg-zinc-900 hover:text-zinc-300"
           >
-            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-            </svg>
             View Site
           </Link>
           <button
             onClick={logout}
             className="mt-1 flex w-full items-center gap-2 rounded-md px-3 py-2 text-xs text-zinc-500 transition hover:bg-red-500/10 hover:text-red-400"
           >
-            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
-            </svg>
             Sign Out
           </button>
         </div>
-      </aside>
-
-      {/* Command Palette overlay — E6: keyboard navigation */}
-      {cmdOpen && (
-        <div
-          className="fixed inset-0 z-[150] flex items-start justify-center pt-[20vh] bg-black/50 backdrop-blur-sm"
-          onClick={() => setCmdOpen(false)}
-        >
-          <div
-            className="w-full max-w-sm rounded-xl border border-zinc-700 bg-zinc-900 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="border-b border-zinc-800 px-4 py-3">
-              <input
-                ref={(el) => { if (el) el.focus(); }}
-                type="text"
-                value={cmdFilter}
-                onChange={(e) => setCmdFilter(e.target.value)}
-                placeholder="Navigate to..."
-                className="w-full bg-transparent text-sm text-zinc-100 placeholder-zinc-500 outline-none"
-              />
-            </div>
-            <ul className="max-h-64 overflow-y-auto py-2">
-              {filteredNav.length === 0 && (
-                <li className="px-4 py-3 text-center text-xs text-zinc-600">No results</li>
-              )}
-              {filteredNav.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    onClick={() => setCmdOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-300 transition hover:bg-zinc-800"
-                  >
-                    <item.icon className="h-4 w-4 text-zinc-500" />
-                    {item.name}
-                    <kbd className="ml-auto text-[10px] font-mono text-zinc-600">{item.shortcut}</kbd>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <div className="border-t border-zinc-800 px-4 py-2 text-[10px] text-zinc-600">
-              <span className="mr-3"><kbd className="rounded border border-zinc-700 bg-zinc-800 px-1 py-0.5">Esc</kbd> close</span>
-              <span><kbd className="rounded border border-zinc-700 bg-zinc-800 px-1 py-0.5">Tab</kbd> navigate</span>
-            </div>
-          </div>
-        </div>
-      )}
+      </div>
     </>
   );
 }
@@ -212,7 +143,6 @@ function OverviewIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-
 function UsersIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -220,7 +150,6 @@ function UsersIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-
 function KeyIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -228,7 +157,6 @@ function KeyIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-
 function DocumentIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -236,7 +164,6 @@ function DocumentIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-
 function CalendarIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -244,7 +171,6 @@ function CalendarIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-
 function ShieldIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -252,7 +178,6 @@ function ShieldIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-
 function BookIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -260,7 +185,6 @@ function BookIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-
 function GearIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">

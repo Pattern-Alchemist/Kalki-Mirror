@@ -1,4 +1,5 @@
 import { getOverviewStats } from "./actions";
+import { QuickActions } from "@/components/admin/quick-actions";
 
 const TIER_CONFIG: Record<string, { label: string; color: string; element: string }> = {
   prithvi: { label: "Prithvi", color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20", element: "Earth" },
@@ -48,6 +49,8 @@ export default async function OverviewPage() {
           <StatCard label="Pending Consultations" value={stats.consultations.pending} sub="awaiting response" accent="rose" />
         </div>
       </section>
+
+      <QuickActions />
 
       {/* Tier distribution */}
       <section className="space-y-4">

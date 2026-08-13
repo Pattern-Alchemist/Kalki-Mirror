@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -24,11 +24,24 @@ export default function AdminLoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [loginState, setLoginState] = useState(getLoginState);
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
   const attemptTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const locked = loginState.lockedUntil > Date.now();
   const remainingMs = Math.max(0, loginState.lockedUntil - Date.now());
   const remainingSec = Math.ceil(remainingMs / 1000);
+
+  // Countdown ticker for lockout
+  const [, forceUpdate] = useState(0);
+  useEffect(() => {
+    if (!locked) return;
+    const interval = setInterval(() => forceUpdate((n) => n + 1), 1000);
+    return () => clearInterval(interval);
+  }, [locked]);
+
+  // Live countdown
+  const liveRemaining = locked ? Math.ceil(Math.max(0, loginState.lockedUntil - Date.now()) / 1000) : 0;
 
   // Clear lockout timer
   if (!locked && loginState.lockedUntil > 0) {
@@ -36,11 +49,23 @@ export default function AdminLoginPage() {
     try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
   }
 
+  // Password strength estimator (visual only — real auth is server-side)
+  const handlePasswordChange = useCallback((val: string) => {
+    setPassword(val);
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (val.length >= 12) score++;
+    if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    setPasswordStrength(Math.min(score, 4));
+  }, []);
+
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (locked) {
-      setError(`Too many attempts. Try again in ${remainingSec}s.`);
+      setError(`Too many attempts. Try again in ${liveRemaining}s.`);
       return;
     }
 
@@ -82,10 +107,25 @@ export default function AdminLoginPage() {
     } finally {
       setLoading(false);
     }
-  }, [email, password, locked, remainingSec, loginState, callbackUrl, router]);
+  }, [email, password, locked, liveRemaining, loginState, callbackUrl, router]);
+
+  const strengthLabels = ["", "Weak", "Fair", "Good", "Strong"];
+  const strengthColors = ["", "bg-red-500", "bg-amber-500", "bg-blue-500", "bg-emerald-500"];
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
+      <noscript>
+        <meta httpEquiv="refresh" content="0;url=/admin/login?js=disabled" />
+        <div style={{ padding: '2rem', textAlign: 'center', color: '#a1a1aa' }}>
+          <p style={{ fontSize: '1.125rem', fontWeight: 600, color: '#f4f4f5', marginBottom: '0.5rem' }}>
+            JavaScript Required
+          </p>
+          <p style={{ fontSize: '0.875rem' }}>
+            The Archivist Console requires JavaScript for authentication.
+            Please enable JavaScript and reload this page.
+          </p>
+        </div>
+      </noscript>
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10">
@@ -97,8 +137,34 @@ export default function AdminLoginPage() {
           <p className="mt-1 text-sm text-zinc-500">Kalki Mirror Administration</p>
         </div>
 
+        {/* Rate limit progress bar — E15 */}
+        {loginState.attempts > 0 && !locked && (
+          <div className="space-y-1">
+            <div className="flex justify-between text-[10px] text-zinc-600">
+              <span>Attempts used</span>
+              <span>{loginState.attempts}/{MAX_ATTEMPTS}</span>
+            </div>
+            <div className="h-1 w-full rounded-full bg-zinc-900">
+              <div
+                className={`h-full rounded-full transition-all duration-300 ${
+                  loginState.attempts >= 4 ? "bg-red-500" : loginState.attempts >= 2 ? "bg-amber-500" : "bg-zinc-600"
+                }`}
+                style={{ width: `${(loginState.attempts / MAX_ATTEMPTS) * 100}%` }}
+              />
+            </div>
+          </div>
+        )}
+
+        {locked && (
+          <div className="rounded-lg border border-red-500/20 bg-red-500/5 px-4 py-3 text-center">
+            <p className="text-sm font-medium text-red-400">Account Temporarily Locked</p>
+            <p className="mt-1 font-mono text-2xl tabular-nums text-red-300">{liveRemaining}s</p>
+            <p className="mt-1 text-xs text-zinc-600">Wait for the timer to expire or close this window to reset.</p>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-5">
-          {error && (
+          {error && !locked && (
             <div className="rounded-md border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
               {error}
             </div>
@@ -122,20 +188,49 @@ export default function AdminLoginPage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="password" className="block text-sm font-medium text-zinc-400">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              autoComplete="current-password"
-              disabled={locked}
-              className="block w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2.5 text-sm text-zinc-100 placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/50 disabled:opacity-50"
-              placeholder="••••••••"
-            />
+            <div className="flex items-center justify-between">
+              <label htmlFor="password" className="block text-sm font-medium text-zinc-400">
+                Password
+              </label>
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="text-xs text-zinc-600 transition hover:text-zinc-400"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+            <div className="relative">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => handlePasswordChange(e.target.value)}
+                required
+                autoComplete="current-password"
+                disabled={locked}
+                className="block w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2.5 text-sm text-zinc-100 placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/50 disabled:opacity-50"
+                placeholder="Enter password"
+              />
+            </div>
+            {/* Password strength bar — E14 */}
+            {password.length > 0 && (
+              <div className="flex items-center gap-2">
+                <div className="flex gap-0.5 flex-1">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div
+                      key={i}
+                      className={`h-0.5 flex-1 rounded-full transition-all duration-200 ${
+                        i <= passwordStrength ? strengthColors[passwordStrength] : "bg-zinc-800"
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className="text-[10px] text-zinc-600">
+                  {strengthLabels[passwordStrength] || ""}
+                </span>
+              </div>
+            )}
           </div>
 
           <button
@@ -143,7 +238,15 @@ export default function AdminLoginPage() {
             disabled={loading || locked}
             className="w-full rounded-lg bg-amber-600 px-4 py-2.5 text-sm font-medium text-zinc-950 transition hover:bg-amber-500 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {locked ? `Locked (${remainingSec}s)` : loading ? "Authenticating…" : "Enter the Sanctum"}
+            {locked ? `Locked (${liveRemaining}s)` : loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                Authenticating…
+              </span>
+            ) : "Enter the Sanctum"}
           </button>
         </form>
 
