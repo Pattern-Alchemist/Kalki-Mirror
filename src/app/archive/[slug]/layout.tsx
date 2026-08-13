@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { allSiddhis } from '@/lib/data/siddhis';
 
-import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
+import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export async function generateMetadata({
   params,
@@ -23,7 +23,7 @@ export async function generateMetadata({
   return {
     title,
     description: description.slice(0, 160),
-    alternates: { canonical: canonicalUrl(`/archive/${siddhi.slug}`) },
+    alternates: pageAlternates(`/archive/${siddhi.slug}`),
     openGraph: {
       title,
       description: description.slice(0, 160),

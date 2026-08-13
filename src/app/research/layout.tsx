@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { canonicalUrl } from '@/lib/utils/metadata';
+import { canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
-  alternates: { canonical: canonicalUrl('/research') },
+  alternates: pageAlternates('/research'),
   title: 'Research',
   description:
     'Evidence-based research on siddhis, tantrik practices, and pattern intelligence. Cross-referenced sources, authenticity scores, and academic citations.',

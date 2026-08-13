@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { canonicalUrl, SITE_URL } from '@/lib/utils/metadata';
+import { canonicalUrl, SITE_URL, pageAlternates } from '@/lib/utils/metadata';
 
 // Skip static prerendering for all /practice routes.
 // Turbopack SSG has a useMemo resolution bug in the practice
@@ -8,7 +8,7 @@ import { canonicalUrl, SITE_URL } from '@/lib/utils/metadata';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  alternates: { canonical: canonicalUrl('/practice') },
+  alternates: pageAlternates('/practice'),
   title: 'The Practice Floor — Sadhana Logger',
   description:
     'Track your daily sādhana with precision. Log practice sessions, track mood shifts, build streaks, and watch your 90-day practice heatmap illuminate the geometry of transformation.',

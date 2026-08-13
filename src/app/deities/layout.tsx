@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { canonicalUrl } from '@/lib/utils/metadata';
+import { canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
-  alternates: { canonical: canonicalUrl('/deities') },
+  alternates: pageAlternates('/deities'),
   title: 'The Pantheon',
   description:
     'The Deity Compendium — 16 archetypal forces of the KALKI system. The Ten Mahāvidyās and six supplementary archetypes, each governing a specific karmic-loop pattern.',

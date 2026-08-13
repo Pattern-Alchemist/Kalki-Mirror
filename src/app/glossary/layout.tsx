@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { canonicalUrl } from '@/lib/utils/metadata';
+import { canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
-  alternates: { canonical: canonicalUrl('/glossary') },
+  alternates: pageAlternates('/glossary'),
   title: 'The Lexicon',
   description:
     '50+ Sanskrit and Tantric terms defined in the KALKI framework. From Oṃ to Kuṇḍalinī, from Prāṇāyāma to the Mahāvidyās — the vocabulary of consciousness transformation.',

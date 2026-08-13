@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { canonicalUrl, SITE_URL } from '@/lib/utils/metadata';
+import { canonicalUrl, SITE_URL, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
-  alternates: { canonical: canonicalUrl('/dossier') },
+  alternates: pageAlternates('/dossier'),
+  robots: { index: false, follow: true },
   title: 'Consultation Dossier',
   description:
     'Retrieve your consultation dossier — pattern diagnosis, prescribed path, session notes, and outcome tracking. Your living record of evolution through the KALKI Archive.',

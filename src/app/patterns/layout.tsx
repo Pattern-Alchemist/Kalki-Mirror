@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
-import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
+import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
-  alternates: { canonical: canonicalUrl('/patterns') },
+  alternates: pageAlternates('/patterns'),
   title: 'Pattern Atlas — The Mirror Method',
   description:
     '20 recurring human emotional patterns mapped through the Mirror Method. Recognize, confront, dissolve, and integrate the behavioral loops that run your life.',

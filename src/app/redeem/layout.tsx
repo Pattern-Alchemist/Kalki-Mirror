@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { canonicalUrl } from '@/lib/utils/metadata';
+import { canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
-  alternates: { canonical: canonicalUrl('/redeem') },
+  alternates: pageAlternates('/redeem'),
   robots: { index: false, follow: true },
   title: 'Key Redemption',
   description:

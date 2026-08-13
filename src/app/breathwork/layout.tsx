@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
-import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
+import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
-  alternates: { canonical: canonicalUrl('/breathwork') },
+  alternates: pageAlternates('/breathwork'),
   title: 'Prāṇāyāma Laboratory — KALKI',
   description:
     'Twelve prāṇāyāma techniques from foundational alternate-nostril breath to advanced kevala kumbhaka. Animated breathing visualizer with phase-by-phase guidance.',

@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
+import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
   title: 'Aghorī Tantra Course — Eight Phases of Transformative Practice',
   description:
     'Fifty-four lessons across eight phases — from foundational orientation through non-dual integration. The most comprehensive online Aghorī Tantra course, grounded in living lineage and scholarly evidence.',
-  alternates: { canonical: canonicalUrl('/aghori-tantra') },
+  alternates: pageAlternates('/aghori-tantra'),
   openGraph: {
     url: canonicalUrl('/aghori-tantra'),
     title: 'Aghorī Tantra Course | KALKI',

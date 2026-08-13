@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
+import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
   title: 'The Sādhanā Library — Thirty Practice Protocols Across Thirteen Categories',
   description:
     'Structured practice protocols from living lineages — Mantra, Yantra, Nyāsa, Pūjā, Dhāraṇā, Prāṇāyāma, Dhyāna, Dhūni, Śmāśana, Bhasma, Japa, Kuṇḍalinī, Sevā. Evidence-graded. Step-by-step.',
-  alternates: { canonical: canonicalUrl('/library') },
+  alternates: pageAlternates('/library'),
   openGraph: {
     url: canonicalUrl('/library'),
     title: 'The Sādhanā Library | KALKI',

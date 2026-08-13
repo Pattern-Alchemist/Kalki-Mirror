@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { canonicalUrl, SITE_URL } from '@/lib/utils/metadata';
+import { canonicalUrl, SITE_URL, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
-  alternates: { canonical: canonicalUrl('/codex') },
+  alternates: pageAlternates('/codex'),
   title: 'The Codex',
   description:
     'The KALKI Codex — a five-part digital manifesto covering the Shambhala Protocol, Mirror Method, and tantrik cosmology. The foundational text of the KALKI system.',

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
-import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
+import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
-  alternates: { canonical: canonicalUrl('/sequences') },
+  alternates: pageAlternates('/sequences'),
   title: 'Practice Sequences — The Mirror Method',
   description:
     'Six curated multi-stage sādhana protocols that chain specific siddhis into coherent arcs designed to dissolve targeted emotional patterns.',

@@ -145,6 +145,7 @@ export function SacredNav() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  prefetch={false}
                   className={cn(
                     'relative text-[0.8125rem] font-ui tracking-[0.18em] uppercase transition-colors duration-500 py-1 min-h-[44px] flex items-center neon-tab-glow',
                     isActive(link.href) ? 'text-gold' : 'text-text-muted hover:text-ivory'

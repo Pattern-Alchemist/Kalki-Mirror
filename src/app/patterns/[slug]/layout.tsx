@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { allPatterns } from '@/lib/data/patterns';
 
-import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
+import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export async function generateMetadata({
   params,
@@ -23,7 +23,7 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: { canonical: canonicalUrl(`/patterns/${pattern.slug}`) },
+    alternates: pageAlternates(`/patterns/${pattern.slug}`),
     openGraph: {
       title,
       description,

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { allSequences } from '@/lib/data/sequences';
-import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
+import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: canonicalUrl(`/sequences/${slug}`) },
+    alternates: pageAlternates(`/sequences/${slug}`),
     openGraph: {
       title,
       description,
@@ -28,7 +28,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'article',
       siteName: 'KALKI',
     },
-    robots: { index: true, follow: true },
   };
 }
 

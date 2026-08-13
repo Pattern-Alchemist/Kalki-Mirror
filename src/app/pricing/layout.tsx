@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
-import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
+import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
-  alternates: { canonical: canonicalUrl('/pricing') },
+  alternates: pageAlternates('/pricing'),
   title: 'Four Paths, One Purpose',
   description:
     'Four membership tiers — Prithvi, Jal, Agni, and Akash. Each unlocks deeper layers of the Akashic Archive, consultations, and live satsang.',

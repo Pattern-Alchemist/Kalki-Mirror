@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { SITE_URL, canonicalUrl } from '@/lib/utils/metadata';
+import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
-  alternates: { canonical: canonicalUrl('/method') },
+  alternates: pageAlternates('/method'),
   title: 'The Mirror Method',
   description:
     'The KALKI Mirror Method — a structured framework for self-inquiry drawn from tantrik psychology. Observe, decode, and transform your behavioral patterns.',
