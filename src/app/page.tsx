@@ -33,7 +33,7 @@ export default function HomePage() {
           muted
           loop
           playsInline
-          preload={isMobile ? 'none' : 'metadata'}
+          preload="none"
           aria-hidden="true"
           poster={`https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_${isMobile ? 640 : 1920},c_limit/kalki-mirror/home/ancient-temple-midnight.jpeg`}
           className="hero-video-bg absolute inset-0 w-full h-full object-cover"

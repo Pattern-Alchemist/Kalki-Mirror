@@ -13,7 +13,15 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   typescript: { ignoreBuildErrors: true },
 
-  // ── Vercel serverless: force-include the baked corpus ──────────────
+  // Clean up dead-end navigation links
+  async redirects() {
+    return [
+      { source: '/tantra', destination: '/practice', permanent: true },
+      { source: '/consult', destination: '/consultations', permanent: true },
+    ];
+  },
+
+  // Vercel serverless: force-include the baked corpus ──────────────
   // The Node File Tracer (nft) often misses non-code assets read via
   // dynamic paths.  static-db.ts resolves db/custom.db at runtime —
   // without this, the .db file vanishes from the deployment bundle

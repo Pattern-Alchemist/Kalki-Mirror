@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     const tierOrder = ['prithvi', 'jal', 'agni', 'akash'];
     if (tierOrder.indexOf(user.tier) < 1) {
       return NextResponse.json(
-        { error: 'Only Initiate+ tier can transmit keys. The Antechamber does not have this authority.' },
+        { error: 'Only Jal+ tier can transmit keys. Prithvi does not have this authority.' },
         { status: 403 }
       );
     }

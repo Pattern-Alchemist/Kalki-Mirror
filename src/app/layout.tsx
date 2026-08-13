@@ -39,7 +39,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 });
 
-const SITE_URL = 'https://astrokalki.com';
+const SITE_URL = 'https://www.astrokalki.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     template: '%s | KALKI',
   },
   description:
-    'Tantrik Intelligence. Sacred Architecture. Pattern Recognition. Where ancient Tantric geometry meets modern computational intelligence. Discover siddhis, decode behavioral patterns, and walk the path of the Mahavidyas.',
+    'Tantrik Intelligence. Sacred Architecture. Pattern Recognition. Where ancient Tantric geometry meets modern computational intelligence.',
   keywords: ['kalki', 'siddhi', 'tantra', 'yantra', 'akasha', 'sadhana', 'pattern recognition', 'karma', 'shambhala', 'tantrik intelligence', 'mahavidya', 'ten mahavidyas', 'siddhi archive', 'behavioral patterns', 'tantric psychology'],
   authors: [{ name: 'Kaustubh', url: SITE_URL }],
   creator: 'Kaustubh',

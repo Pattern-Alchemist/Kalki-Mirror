@@ -390,6 +390,19 @@
   .film-grain::after {
     display: none;
   }
+  /* Scrollable filter rows on mobile */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  /* Make filter buttons snap-start and prevent wrapping */
+  .snap-x > button {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
 }
 
 /* Film grain — ancient celluloid texture (uses ::after) */

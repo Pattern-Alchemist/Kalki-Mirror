@@ -19,6 +19,37 @@ Stage Summary:
 - New files: src/lib/static-db.ts
 - Modified files: src/lib/db.ts, src/lib/rag/retrieval.ts, src/app/api/keys/route.ts, src/app/api/keys/redeem/route.ts, prisma/schema.prisma, .env
 - No migration needed for Turso: set TURSO_DATABASE_URL + TURSO_AUTH_TOKEN in Vercel env vars and prisma db push
+
+---
+Task ID: mobile-fix-round-2
+Agent: Main
+Task: Fix Vercel build failure + comprehensive mobile/SEO audit remediation
+
+Work Log:
+- Fixed Vercel build failure: added `export const dynamic = 'force-dynamic'` to /practice layout.tsx (Turbopack SSG has useMemo resolution bug in practice page import graph)
+- Fixed tier naming: replaced last old tier name in api/keys/route.ts ("Initiate/Antechamber" -> "Jal/Prithvi")
+- Fixed tier display in GatedContent.tsx: now uses tatva ID (capitalized) instead of English element name
+- Fixed tier display in PaywallModal.tsx: WhatsApp message now uses TIER_LABELS (tatva names)
+- Fixed tier display in pricing/page.tsx: WhatsApp link now uses TIER_LABELS
+- Simplified mobile navigation: SacredNav.tsx changed from 3-group accordion to flat 9-link list (1 tap instead of 2)
+- Fixed CinematicImage: added onError handler (hides broken images), added dark background fallback
+- Fixed video preload: changed from conditional `isMobile ? 'none' : 'metadata'` to always `'none'` (poster handles initial display)
+- Added mobile scrollbar-none CSS for archive filter buttons (overflow-x-auto with snap)
+- Made archive filter buttons scrollable on mobile (overflow-x-auto snap-x)
+- Fixed SEO: canonical URL changed from astrokalki.com to www.astrokalki.com across layout.tsx, sitemap.ts, robots.ts
+- Fixed SEO: trimmed homepage meta description to prevent truncation
+- Fixed SEO: added missing /library and /aghoiri-tantra to sitemap
+- Fixed navigation dead-ends: added next.config.ts redirects (/tantra -> /practice, /consult -> /consultations)
+- Verified srcset generation logic in CinematicImage.tsx is correct (buildResponsiveSrcset)
+- Verified Ken Burns and film grain CSS mobile disabling rules are correct
+
+Stage Summary:
+- ROOT CAUSE of audit failures: 10 local commits were never pushed to origin/main. Vercel builds from GitHub, so deployed site had none of the previous session's changes.
+- 8 files modified in this session (on top of 10 unpushed commits = 117 files, 2814 insertions, 180 deletions total unpushed)
+- All tier naming is now consistently tatva-based (prithvi/jal/agni/akash) across data, display, API, and WhatsApp messages
+- Mobile nav simplified to flat list
+- Responsive srcset, Ken Burns disable, film grain hide — all correct in code, will work once deployed
+- Critical next step: git add + commit + push to origin/main so Vercel can deploy
 - Next: Day 4 Dossier UI, then Days 5-6 Pulse (needs Turso live for streak writes)
 
 ---

@@ -399,8 +399,8 @@ export default function ArchivePage() {
                 />
               </div>
 
-              <div className="flex flex-col md:flex-row md:items-center gap-4">
-                <div className="flex flex-wrap gap-2">
+              <div className="md:flex md:items-center gap-4">
+                <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-1 px-1 snap-x snap-mandatory">
                   {CATEGORIES.map((cat) => (
                     <button
                       key={cat}
@@ -418,8 +418,8 @@ export default function ArchivePage() {
                 </div>
               </div>
 
-              <div className="flex flex-col md:flex-row md:items-center gap-4">
-                <div className="flex flex-wrap gap-2">
+              <div className="md:flex md:items-center gap-4">
+                <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-1 px-1 snap-x snap-mandatory">
                   {CAUTION_FILTERS.map((c) => (
                     <button
                       key={c.value}
@@ -438,7 +438,7 @@ export default function ArchivePage() {
 
                 <span className="hidden md:block text-text-muted/30">{'\u00B7'}</span>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-1 px-1 snap-x snap-mandatory">
                   {TIER_FILTERS.map((t) => (
                     <button
                       key={t.value}
