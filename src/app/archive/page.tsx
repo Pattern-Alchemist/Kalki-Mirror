@@ -235,11 +235,13 @@ export default function ArchivePage() {
           <motion.div className="absolute inset-0" style={{ opacity: thresholdOpacity, scale: bgScale }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={ZONE_THRESHOLD}
+              src={zoneSrc(1920, ZONE_THRESHOLD)}
               alt=""
+              width={1920}
+              height={1080}
               className="w-full h-full object-cover"
               sizes="100vw"
-              srcSet={ZONE_THRESHOLD.includes('cloudinary') ? undefined : undefined}
+              srcSet={zoneSrcSet(ZONE_THRESHOLD)}
               style={{ filter: 'contrast(1.05) saturate(0.8) brightness(0.90) sepia(0.04)' }}
               draggable={false}
             />
@@ -249,6 +251,8 @@ export default function ArchivePage() {
             <img
               src={zoneSrc(1920, ZONE_READING_ROOM)}
               alt=""
+              width={1920}
+              height={1080}
               className="w-full h-full object-cover"
               sizes="100vw"
               srcSet={zoneSrcSet(ZONE_READING_ROOM)}
@@ -261,6 +265,8 @@ export default function ArchivePage() {
             <img
               src={zoneSrc(1920, ZONE_DEEP)}
               alt=""
+              width={1920}
+              height={1080}
               className="w-full h-full object-cover"
               sizes="100vw"
               srcSet={zoneSrcSet(ZONE_DEEP)}

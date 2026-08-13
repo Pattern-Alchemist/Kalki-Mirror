@@ -74,12 +74,7 @@ export const metadata: Metadata = {
       },
     ],
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'KALKI — Light for the Dark Age.',
-    description: 'Tantrik Intelligence. Sacred Architecture. Pattern Recognition.',
-    images: ['https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-ritual-chamber-alt'],
-  },
+  /* twitter:* removed — X/Twitter falls back to openGraph, which is set dynamically per page */
   robots: {
     index: true,
     follow: true,

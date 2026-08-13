@@ -489,3 +489,24 @@ Stage Summary:
 - All 4 mobile issues fixed: responsive images, performance, navigation, tier naming
 - Zero TypeScript errors after all changes
 - Files modified: 14 files across components, pages, data, styles, and API routes
+
+---
+Task ID: 1
+Agent: main
+Task: Re-audit high-priority fixes — Twitter meta, archive broken image, library OG, CLS, BreadcrumbList
+
+Work Log:
+- Removed hardcoded twitter:* metadata from root layout (layout.tsx) — X/Twitter now falls back to per-page openGraph which is dynamically set
+- Fixed broken Cloudinary URL on /archive page: Zone 1 (ZONE_THRESHOLD) was using raw path string instead of zoneSrc() helper, causing 404. Also fixed dead-code srcSet that always evaluated to undefined
+- Added missing height:1080 to library/layout.tsx OG image object
+- Added width={1920} height={1080} to all 7 native <img> zone background tags (3 in archive, 4 in patterns)
+- Updated CinematicImage component to pass width/height as HTML attributes to <img> tag (defaults to 1920x1080 when fill=true)
+- Added BreadcrumbList JSON-LD + WebPage schema to practice/layout.tsx, codex/layout.tsx, dossier/layout.tsx
+- Verified: hero video exists on homepage (Cloudinary MP4, desktop-only with mobile poster fallback)
+- Verified: zero NEW TypeScript errors introduced (36 pre-existing errors unchanged)
+
+Stage Summary:
+- 4 high-priority fixes completed: Twitter meta, archive 404, library OG, CLS
+- 3 BreadcrumbList JSON-LD added (practice, codex, dossier) — all 13 key pages now have breadcrumbs
+- 1 task blocked: 19 local images on /aghori-tantra and /archetypes need Cloudinary upload first
+- Files modified: 8 files (layout.tsx, archive/page.tsx, patterns/page.tsx, library/layout.tsx, CinematicImage.tsx, practice/layout.tsx, codex/layout.tsx, dossier/layout.tsx)

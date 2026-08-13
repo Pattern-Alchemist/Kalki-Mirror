@@ -15,6 +15,7 @@ export const metadata: Metadata = {
       {
         url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/forgotten-chamber',
         width: 1920,
+        height: 1080,
         alt: 'The Sādhanā Library — KALKI',
       },
     ],

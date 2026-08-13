@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { canonicalUrl } from '@/lib/utils/metadata';
+import { canonicalUrl, SITE_URL } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
   alternates: { canonical: canonicalUrl('/codex') },
@@ -22,6 +22,34 @@ export const metadata: Metadata = {
   },
 };
 
+const codexJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      name: 'The Codex',
+      description: 'The KALKI Codex — a five-part digital manifesto covering the Shambhala Protocol, Mirror Method, and tantrik cosmology.',
+      url: canonicalUrl('/codex'),
+      isPartOf: { '@id': `${SITE_URL}/#website` },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+        { '@type': 'ListItem', position: 2, name: 'The Codex', item: canonicalUrl('/codex') },
+      ],
+    },
+  ],
+};
+
 export default function CodexLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(codexJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }

@@ -110,6 +110,8 @@ export function CinematicImage({
       srcSet={srcSet}
       sizes={fill ? '(max-width: 768px) 100vw, (max-width: 1280px) 80vw, 1400px' : undefined}
       alt={alt}
+      width={width || (fill ? 1920 : undefined)}
+      height={height || (fill ? 1080 : undefined)}
       loading={priority ? 'eager' : 'lazy'}
       decoding={priority ? 'sync' : 'async'}
       draggable={false}

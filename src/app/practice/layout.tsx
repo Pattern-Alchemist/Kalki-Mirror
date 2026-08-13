@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { canonicalUrl } from '@/lib/utils/metadata';
+import { canonicalUrl, SITE_URL } from '@/lib/utils/metadata';
 
 // Skip static prerendering for all /practice routes.
 // Turbopack SSG has a useMemo resolution bug in the practice
@@ -28,6 +28,34 @@ export const metadata: Metadata = {
   },
 };
 
+const practiceJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      name: 'The Practice Floor',
+      description: 'Track your daily sādhana with precision. Log practice sessions, track mood shifts, build streaks, and watch your 90-day practice heatmap.',
+      url: canonicalUrl('/practice'),
+      isPartOf: { '@id': `${SITE_URL}/#website` },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Practice Floor', item: canonicalUrl('/practice') },
+      ],
+    },
+  ],
+};
+
 export default function PracticeLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(practiceJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }

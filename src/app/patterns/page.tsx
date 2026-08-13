@@ -210,6 +210,8 @@ export default function PatternsPage() {
             <img
               src={ZONE_MIRROR}
               alt=""
+              width={1920}
+              height={1080}
               className="w-full h-full object-cover"
               style={{ filter: 'contrast(1.08) saturate(0.85) brightness(0.92) sepia(0.06)' }}
               draggable={false}
@@ -220,6 +222,8 @@ export default function PatternsPage() {
             <img
               src={ZONE_CONFRONTATION}
               alt=""
+              width={1920}
+              height={1080}
               className="w-full h-full object-cover"
               style={{ filter: 'contrast(1.08) saturate(0.85) brightness(0.88) sepia(0.06)' }}
               draggable={false}
@@ -230,6 +234,8 @@ export default function PatternsPage() {
             <img
               src={ZONE_DISSOLUTION}
               alt=""
+              width={1920}
+              height={1080}
               className="w-full h-full object-cover"
               style={{ filter: 'contrast(1.08) saturate(0.85) brightness(0.85) sepia(0.06)' }}
               draggable={false}
@@ -240,6 +246,8 @@ export default function PatternsPage() {
             <img
               src={ZONE_INTEGRATION}
               alt=""
+              width={1920}
+              height={1080}
               className="w-full h-full object-cover"
               style={{ filter: 'contrast(1.08) saturate(0.85) brightness(0.82) sepia(0.06)' }}
               draggable={false}

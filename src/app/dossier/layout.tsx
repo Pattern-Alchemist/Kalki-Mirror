@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { canonicalUrl } from '@/lib/utils/metadata';
+import { canonicalUrl, SITE_URL } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
   alternates: { canonical: canonicalUrl('/dossier') },
@@ -22,10 +22,38 @@ export const metadata: Metadata = {
   },
 };
 
+const dossierJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      name: 'Consultation Dossier',
+      description: 'Retrieve your consultation dossier — pattern diagnosis, prescribed path, session notes, and outcome tracking.',
+      url: canonicalUrl('/dossier'),
+      isPartOf: { '@id': `${SITE_URL}/#website` },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Dossier', item: canonicalUrl('/dossier') },
+      ],
+    },
+  ],
+};
+
 export default function DossierLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(dossierJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }
