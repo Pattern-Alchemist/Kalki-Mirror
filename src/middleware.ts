@@ -24,7 +24,17 @@ export async function middleware(request: NextRequest) {
           }
 
           if (!ADMIN_ROLES.includes(token.role as string)) {
-            return NextResponse.redirect(new URL("/admin/forbidden", request.url));
+            // Return 403 status instead of 307 redirect — avoids leaking
+            // the /admin/forbidden URL in browser history / referrer.
+            const forbiddenUrl = new URL(request.url);
+            forbiddenUrl.pathname = "/admin/forbidden";
+            return NextResponse.rewrite(forbiddenUrl, {
+              status: 403,
+              headers: {
+                "X-Robots-Tag": "noindex, nofollow",
+                "Referrer-Policy": "no-referrer",
+              },
+            });
           }
 
           return NextResponse.next();
