@@ -418,7 +418,7 @@ export default function RedeemPage() {
         <div className="relative pb-20 md:pb-16 mt-16 border-t border-gold/5">
           <div className="max-w-2xl mx-auto px-6 lg:px-10 text-center pt-12">
             <div className="w-12 h-12 mx-auto mb-6 border border-gold/20 rounded-full flex items-center justify-center">
-              <div className="w-2.5 h-2.5 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
+              <div className="w-2.5 h-2.5 bg-gold/40 rounded-full bindu-pulse" />
             </div>
             <p className="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-foreground/30">
               KALKI — KEY REDEMPTION

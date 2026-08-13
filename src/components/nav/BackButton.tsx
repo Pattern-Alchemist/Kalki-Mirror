@@ -20,6 +20,7 @@ export function BackButton({ href, label = 'Back', className = '' }: BackButtonP
     >
       <Link
         href={href}
+        prefetch={false}
         className="inline-flex items-center gap-2 text-gold-dim hover:text-gold text-xs font-ui tracking-[0.12em] uppercase transition-colors duration-300 group"
       >
         <svg

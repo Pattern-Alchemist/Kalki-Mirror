@@ -198,8 +198,7 @@ export default function DeitiesPage() {
             The Pantheon
           </motion.h1>
           <motion.p
-            className="text-foreground text-xl md:text-2xl max-w-3xl editorial-spacing"
-            style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
+            className="text-foreground text-xl md:text-2xl max-w-3xl editorial-spacing text-shadow-deep"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             animate={fadeInUp.visible}
             transition={{ delay: 0.2, duration: 0.8 }}
@@ -251,7 +250,7 @@ export default function DeitiesPage() {
               The Ten Mahāvidyās
             </p>
             <p className="font-display text-lg md:text-xl text-text-secondary max-w-xl mx-auto leading-relaxed">
-              The ten wisdom goddesses — each a karmic-loop archetype that governs a specific pattern of human bondage and liberation.
+              The ten wisdom goddesses — each a karmic-loop archetype that governs a specific pattern of human bondage and liberation. In the Tantric cosmological framework, these Mahāvidyās are not merely deities to be worshipped but living topologies of consciousness. Each one encodes a complete map of how a particular psychological pattern arises, sustains itself, and can be dissolved through structured sādhana.
             </p>
             <div className="divider-gold max-w-[200px] mx-auto mt-8" />
           </motion.div>
@@ -283,7 +282,7 @@ export default function DeitiesPage() {
               Supplementary Archetypes
             </p>
             <p className="font-display text-lg md:text-xl text-text-secondary max-w-xl mx-auto leading-relaxed">
-              Six additional archetypes from the Śaiva, Nāth, Vajrayāna, Atharvaṇa, and Aghora streams.
+              Six additional archetypes drawn from the Śaiva, Nāth, Vajrayāna, Atharvaṇa, and Aghora streams. While the ten Mahāvidyās form the primary typological framework, these supplementary forces capture karmic loops that the goddess matrix alone does not fully account for — including the guru-disciple transmission, the fire of tapasya, and the alchemy of internal heat. Together, all sixteen archetypes constitute the complete KALKI typology.
             </p>
             <div className="divider-gold max-w-[200px] mx-auto mt-8" />
           </motion.div>
@@ -341,7 +340,7 @@ export default function DeitiesPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
+            <div className="w-3 h-3 bg-gold/40 rounded-full bindu-pulse" />
           </motion.div>
           <motion.p
             className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper"

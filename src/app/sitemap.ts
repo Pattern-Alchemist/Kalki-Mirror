@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { allPatterns } from '@/lib/data/patterns';
+import { allBreathPatterns } from '@/lib/data/breath-patterns';
+import { allSequences } from '@/lib/data/sequences';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://www.astrokalki.com';
@@ -20,6 +22,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/codex`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${base}/practice/japa`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${base}/practice/timer`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${base}/breathwork`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/glossary`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${base}/deities`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${base}/sequences`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
   ];
 
   const siddhiPages: MetadataRoute.Sitemap = allSiddhis.map((s) => ({
@@ -36,5 +42,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...siddhiPages, ...patternPages];
+  const breathworkPages: MetadataRoute.Sitemap = allBreathPatterns.map((b) => ({
+    url: `${base}/breathwork/${b.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.5,
+  }));
+
+  const sequencePages: MetadataRoute.Sitemap = allSequences.map((s) => ({
+    url: `${base}/sequences/${s.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.5,
+  }));
+
+  return [...staticPages, ...siddhiPages, ...patternPages, ...breathworkPages, ...sequencePages];
 }

@@ -292,8 +292,7 @@ export default function SadhanaLibraryPage() {
             Thirteen Categories of Practice — Structured Protocols from Living Lineages
           </motion.p>
           <motion.p
-            className="text-foreground/70 text-base max-w-2xl leading-relaxed"
-            style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
+            className="text-foreground/70 text-base max-w-2xl leading-relaxed text-shadow-deep"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             animate={fadeInUp.visible}
             transition={{ delay: 0.2, duration: 0.8 }}
@@ -309,6 +308,21 @@ export default function SadhanaLibraryPage() {
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <BackButton href="/" label="Back to Home" />
+
+        {/* Editorial intro */}
+        <motion.p
+          className="text-text-secondary text-lg leading-relaxed max-w-3xl editorial-spacing mt-8 mb-12"
+          initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+          whileInView={fadeInUp.visible}
+          viewport={{ once: true }}
+        >
+          In the living traditions of Tantra, a sādhana is never improvised. It is received from a teacher,
+          practiced within a specific time frame, and measured by observable results. The Sādhanā Library
+          preserves this rigor: every protocol here is drawn from textual sources, oral lineage instructions,
+          or field-validated reconstructions, and each one is evidence-graded so you know exactly how much
+          weight to give it. This is not a collection of spiritual suggestions. It is a technical manual for
+          the systematic transformation of consciousness.
+        </motion.p>
 
         {/* Stats bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 mb-16">
@@ -454,7 +468,7 @@ export default function SadhanaLibraryPage() {
         <div className="atmospheric-bg absolute inset-0 opacity-20" />
         <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 text-center">
           <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
-            <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
+            <div className="w-3 h-3 bg-gold/40 rounded-full bindu-pulse" />
           </div>
           <p className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper">
             THE SĀDHANĀ LIBRARY — KNOWLEDGE ARCHITECTURE

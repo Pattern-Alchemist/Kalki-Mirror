@@ -74,6 +74,22 @@ const nextConfig: NextConfig = {
           { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
         ],
       },
+      // HTML pages — short TTL with stale-while-revalidate for ISR/SSR freshness
+      // Vercel CDN handles this natively, but explicit headers ensure correct
+      // behavior on other CDNs and during local development.
+      {
+        source: '/((?!api|admin|_next|favicon|manifest|robots|sitemap|.*\\.).*)',
+        headers: [
+          { key: 'Cache-Control', value: 'public, s-maxage=60, stale-while-revalidate=300' },
+        ],
+      },
+      // API routes — no store, always revalidate
+      {
+        source: '/api/(.*)',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store' },
+        ],
+      },
     ];
   },
 

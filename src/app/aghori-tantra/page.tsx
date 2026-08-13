@@ -485,8 +485,7 @@ export default function AghoriTantraPage() {
             {COURSE_META.subtitle}
           </motion.p>
           <motion.p
-            className="text-foreground/70 text-base md:text-lg max-w-2xl leading-relaxed"
-            style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
+            className="text-foreground/70 text-base md:text-lg max-w-2xl leading-relaxed text-shadow-deep"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             animate={fadeInUp.visible}
             transition={{ delay: 0.2, duration: 0.8 }}
@@ -581,7 +580,7 @@ export default function AghoriTantraPage() {
         <div className="atmospheric-bg absolute inset-0 opacity-20" />
         <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 text-center">
           <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
-            <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
+            <div className="w-3 h-3 bg-gold/40 rounded-full bindu-pulse" />
           </div>
           <p className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper">
             AGHORĪ TANTRA — THE ASHRAM PATH

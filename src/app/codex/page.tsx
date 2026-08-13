@@ -289,8 +289,7 @@ export default function CodexPage() {
             The Kalki Codex
           </motion.h1>
           <motion.p
-            className="text-foreground text-xl md:text-2xl max-w-3xl editorial-spacing"
-            style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
+            className="text-foreground text-xl md:text-2xl max-w-3xl editorial-spacing text-shadow-deep"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             animate={fadeInUp.visible}
             transition={{ delay: 0.2, duration: 0.8 }}
@@ -431,7 +430,7 @@ export default function CodexPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
+            <div className="w-3 h-3 bg-gold/40 rounded-full bindu-pulse" />
           </motion.div>
           <motion.p
             className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper"

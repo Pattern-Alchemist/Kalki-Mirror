@@ -558,3 +558,39 @@ Stage Summary:
 - 15 admin enhancements: session management, keyboard shortcuts, command palette, security dashboard, mobile responsive, login UX
 - Zero new TypeScript errors
 - Pushed to Pattern-Alchemist/Kalki-Mirror (main) as a9a52cd
+
+---
+Task ID: 4
+Agent: Main
+Task: Backlog clearance — remaining audit items (10 categories)
+
+Work Log:
+- VERIFIED: All 19 local images already uploaded to Cloudinary (105 entries in cloudinary-map.json, all page refs use CDN URLs)
+- DELETED: 36 orphaned local image files from public/ (archetypes/18, yantra/2, tiers/4, pattern-atlas/3, archive-zone/2, root/1) — reduced public/ to 5 essential files
+- FIXED: hreflang — removed redundant 'en' from root layout alternates.languages (kept only 'x-default' for single-language site)
+- FIXED: archive/layout.tsx — hardcoded OG url replaced with canonicalUrl(), mismatched OG description aligned, non-standard 1344x768 OG image normalized to 1200x630 with c_fill
+- FIXED: aghori-tantra/layout.tsx — added missing OG image height: 630, changed w_1920 to w_1200,h_630,c_fill
+- FIXED: library/layout.tsx — non-standard 1920x1080 OG image normalized to 1200x630 with c_fill
+- CREATED: breathwork/[slug]/layout.tsx — generateMetadata with dynamic title/description/canonical/OG from BreathPattern data
+- CREATED: sequences/[slug]/layout.tsx — generateMetadata with dynamic title/description/canonical/OG from PracticeSequence data
+- FIXED: sitemap.ts — added missing entries: /breathwork, /glossary, /deities, /sequences, all /breathwork/[slug] pages, all /sequences/[slug] pages
+- DEDUPLICATED: globals.css — removed redundant @media (max-width: 767px) Ken Burns/film-grain block at line 385 (superset existed at line 1390), merged scrollbar-none and snap-x rules into the comprehensive mobile block
+- EXTRACTED: 4 reusable CSS classes from repeated inline styles: .cta-overlay-dark (12 files), .bindu-pulse (26 files), .text-shadow-deep (18 files), .block-on-wrap (utility)
+- REPLACED: 58 inline style={{}} instances with CSS class names across 20 files via automated script
+- FIXED: 27 files with duplicate className props (artefact of the extraction script's combined className+style handling)
+- ADDED: Cache-Control headers in next.config.ts: HTML pages get s-maxage=60, stale-while-revalidate=300; API routes get no-store; static assets already had immutable caching
+- ADDED: prefetch={false} to mobile nav Links and BackButton component (low-priority navigation links)
+- ANALYZED: JS chunks — 30 unique lucide-react icons from tree-shakeable 42MB package (acceptable); framer-motion 4.2MB; no optimization action needed
+- EXPANDED: Content on 3 thin pages: deities (+80 words editorial for Mahavidyas intro, +70 words for supplementary intro), glossary (+75 words editorial intro about the Lexicon's purpose), library (+85 words editorial intro about evidence-graded sadhana methodology)
+- VERIFIED: Mobile nav accordion already implemented via AnimatePresence in SacredNav.tsx
+- VERIFIED: font-display: 'swap' already set on all 3 Google Fonts (Cormorant Garamond, Inter, JetBrains Mono)
+
+Stage Summary:
+- 26 files modified, 2 new files created (breathwork/[slug]/layout.tsx, sequences/[slug]/layout.tsx)
+- 36 orphaned images deleted, ~58 inline styles converted to CSS classes
+- 4 metadata inconsistencies fixed (archive, aghori-tantra, library OG images; archive hardcoded URL)
+- 2 dynamic metadata gaps closed (breathwork/[slug], sequences/[slug])
+- 5 missing sitemap entries added (+ dynamic breathwork and sequence pages)
+- Proper Cache-Control headers for HTML pages and API routes
+- RSC prefetch disabled for low-priority navigation
+- Content expanded on 3 data-driven pages to ensure >150 words of static editorial text

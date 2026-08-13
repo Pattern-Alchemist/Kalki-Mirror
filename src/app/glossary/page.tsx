@@ -295,8 +295,7 @@ export default function GlossaryPage() {
             The Lexicon
           </motion.h1>
           <motion.p
-            className="text-foreground text-xl md:text-2xl max-w-3xl editorial-spacing"
-            style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
+            className="text-foreground text-xl md:text-2xl max-w-3xl editorial-spacing text-shadow-deep"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             animate={fadeInUp.visible}
             transition={{ delay: 0.2, duration: 0.8 }}
@@ -334,6 +333,20 @@ export default function GlossaryPage() {
         </div>
 
         <div className="max-w-5xl mx-auto px-6 lg:px-10 mt-8">
+          {/* ── Editorial intro ── */}
+          <motion.p
+            className="text-text-secondary text-lg leading-relaxed max-w-3xl editorial-spacing mb-10"
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            whileInView={fadeInUp.visible}
+            viewport={{ once: true }}
+          >
+            The KALKI Lexicon is not a dictionary. It is a cartographic instrument — each term is a coordinate
+            in the map of tantrik psychology. Sanskrit is not used here for ornamentation; each word carries
+            a precise technical meaning that has no adequate English equivalent. A siddhi is not simply a "power"
+            — it is a measurable, repeatable shift in the relationship between consciousness and matter.
+            Understanding the vocabulary is the first step toward recognizing the patterns it describes.
+          </motion.p>
+
           {/* ── Search & Filter Bar ── */}
           <motion.div
             className="mb-8"
@@ -487,7 +500,7 @@ export default function GlossaryPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
+            <div className="w-3 h-3 bg-gold/40 rounded-full bindu-pulse" />
           </motion.div>
           <motion.p
             className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper"

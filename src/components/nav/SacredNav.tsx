@@ -243,6 +243,7 @@ export function SacredNav() {
                                 <Link
                                   key={link.href}
                                   href={link.href}
+                                  prefetch={false}
                                   onClick={() => setMobileOpen(false)}
                                   className={cn(
                                     'block py-3 pl-3 border-l text-lg tracking-[0.08em] font-light transition-all duration-300 min-h-[44px] leading-[44px]',

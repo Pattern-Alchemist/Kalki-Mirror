@@ -364,8 +364,7 @@ export default function MethodPage() {
             <span style={{ display: 'block' }}>Method</span>
           </motion.h1>
           <motion.p
-            className="text-foreground/70 text-lg md:text-xl max-w-2xl leading-relaxed"
-            style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
+            className="text-foreground/70 text-lg md:text-xl max-w-2xl leading-relaxed text-shadow-deep"
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             animate={fadeInUp.visible}
             transition={{ delay: 0.2, duration: 0.8 }}
@@ -471,14 +470,14 @@ export default function MethodPage() {
             vignette
           />
         </ScrollParallax>
-        <div className="absolute inset-0 pointer-events-none z-[1]" style={{ background: 'rgba(0,0,0,0.75)' }} />
+        <div className="absolute inset-0 pointer-events-none z-[1] cta-overlay-dark" />
         <ParallaxText speed={-0.04} className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">
           <p className="section-label mb-6">Begin the Dissolution</p>
           <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
             The Method is the Mirror.{' '}
             <span style={{ display: 'block' }}>The Practice is the Polishing.</span>
           </h2>
-          <p className="text-foreground/70 text-lg mb-12 editorial-spacing" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>
+          <p className="text-foreground/70 text-lg mb-12 editorial-spacing text-shadow-deep">
             Book a consultation with Kaustubh to discover your dominant pattern and receive a prescribed sādhana — or explore the Archive and Library to begin your own investigation.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -493,7 +492,7 @@ export default function MethodPage() {
         <div className="atmospheric-bg absolute inset-0 opacity-20" />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
           <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
-            <div className="w-3 h-3 bg-gold/40 rounded-full" style={{ animation: 'binduPulse 2s ease-in-out infinite' }} />
+            <div className="w-3 h-3 bg-gold/40 rounded-full bindu-pulse" />
           </div>
           <p className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper">
             THE MIRROR METHOD — PATTERN DISSOLUTION FRAMEWORK
