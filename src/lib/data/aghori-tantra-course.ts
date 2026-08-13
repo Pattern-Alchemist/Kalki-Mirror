@@ -58,7 +58,7 @@ export const aghoriCourse: CourseModule[] = [
     duration: 'Self-paced — minimum 7 days study before proceeding',
     difficulty: 'Foundational',
     minTier: 'prithvi',
-    image: '/assets/aghori/ashram/entering-path.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori/ashram/entering-path',
     lessons: [
       {
         id: 'what-is-aghora',
@@ -127,7 +127,7 @@ export const aghoriCourse: CourseModule[] = [
     duration: '40 days continuous — the traditional Aghori preparation period',
     difficulty: 'Intermediate',
     minTier: 'jal',
-    image: '/assets/aghori/ashram/ashram-interior.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori/ashram/ashram-interior',
     lessons: [
       {
         id: 'daily-architecture',
@@ -204,7 +204,7 @@ export const aghoriCourse: CourseModule[] = [
     duration: 'Begins during Phase II (daily japa) and continues throughout all subsequent phases',
     difficulty: 'Intermediate',
     minTier: 'jal',
-    image: '/assets/aghori/course/aghoiri-sadhu-meditation.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori/course/aghoiri-sadhu-meditation',
     lessons: [
       {
         id: 'mantra-mechanics',
@@ -293,7 +293,7 @@ export const aghoriCourse: CourseModule[] = [
     duration: 'Begins in Phase III and deepens through all subsequent phases',
     difficulty: 'Intermediate',
     minTier: 'jal',
-    image: '/assets/tantra/yantra/cave-yantras.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori/course/cave-yantras',
     lessons: [
       {
         id: 'yantra-fundamentals',
@@ -389,7 +389,7 @@ export const aghoriCourse: CourseModule[] = [
     duration: 'Ongoing study and contemplation throughout the path',
     difficulty: 'Intermediate',
     minTier: 'jal',
-    image: '/assets/aghori/course/bhairava-fierce-form.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori/course/bhairava-fierce-form',
     lessons: [
       {
         id: 'who-is-bhairava',
@@ -478,7 +478,7 @@ export const aghoriCourse: CourseModule[] = [
     duration: 'Begins after completion of Phase II (40 days) and Phase III (mantra proficiency)',
     difficulty: 'Advanced',
     minTier: 'agni',
-    image: '/assets/aghori/sadhana/smashana-meditation.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori/sadhana/smashana-meditation',
     lessons: [
       {
         id: 'impermanence',
@@ -576,7 +576,7 @@ export const aghoriCourse: CourseModule[] = [
     duration: 'Lifelong — these practices deepen over years, not days',
     difficulty: 'Forbidden',
     minTier: 'akash',
-    image: '/assets/aghori/course/ash-contemplation.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori/course/ash-contemplation',
     lessons: [
       {
         id: 'aversion-transcendence',
@@ -665,7 +665,7 @@ export const aghoriCourse: CourseModule[] = [
     duration: 'Lifelong',
     difficulty: 'Foundational',
     minTier: 'prithvi',
-    image: '/assets/aghori/visual/himalayan-overview.jpeg',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori/visual/himalayan-overview',
     lessons: [
       {
         id: 'seva-service',
