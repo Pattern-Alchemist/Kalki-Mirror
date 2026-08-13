@@ -7,6 +7,11 @@ const ADMIN_ROLES = ["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"];
 const LOGIN_RATE_LIMIT = 10; // per minute
 const loginAttempts = new Map<string, { timestamps: number[] }>();
 
+// A3: Session validation cache — avoid calling the validate endpoint on every request
+// Cache key: "jti" -> { validUntil: timestamp }
+const sessionCache = new Map<string, { validUntil: number }>();
+const SESSION_CACHE_TTL_MS = 30_000; // 30 seconds
+
 function checkLoginRateLimit(ip: string): boolean {
   const now = Date.now();
   const windowMs = 60_000;
@@ -55,6 +60,14 @@ function getClientIP(request: NextRequest): string {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Clean up expired session cache entries periodically
+  if (Math.random() < 0.01) { // ~1% of requests trigger cleanup
+    const now = Date.now();
+    for (const [key, val] of sessionCache) {
+      if (val.validUntil < now) sessionCache.delete(key);
+    }
+  }
 
   // ── Admin protection ──
   if (pathname.startsWith("/admin")) {
@@ -114,6 +127,44 @@ export async function middleware(request: NextRequest) {
                 "Referrer-Policy": "no-referrer",
               },
             });
+          }
+
+          // A3: Validate active session (check not evicted by concurrent limit)
+          const jti = token.jti as string | undefined;
+          if (jti) {
+            const cached = sessionCache.get(jti);
+            if (!cached || cached.validUntil < Date.now()) {
+              try {
+                const clientIP = getClientIP(request);
+                const userAgent = request.headers.get('user-agent') || undefined;
+                const validateUrl = new URL('/api/auth/session-validate', request.url);
+                const validateHeaders: Record<string, string> = {
+                  'X-Kalki-JTI': jti,
+                  'X-Kalki-User-Id': token.id as string,
+                };
+                if (userAgent) validateHeaders['X-Kalki-User-Agent'] = userAgent;
+                if (clientIP !== 'unknown') validateHeaders['X-Kalki-IP'] = clientIP;
+
+                const validateRes = await fetch(validateUrl.toString(), {
+                  headers: validateHeaders,
+                });
+
+                if (validateRes.status === 401) {
+                  // Session was evicted — redirect to login
+                  const loginUrl = new URL('/admin/login', request.url);
+                  loginUrl.searchParams.set('callbackUrl', pathname);
+                  loginUrl.searchParams.set('error', 'session_evicted');
+                  const redirect = NextResponse.redirect(loginUrl);
+                  redirect.cookies.delete('next-auth.session-token');
+                  return redirect;
+                }
+
+                // Cache the valid session
+                sessionCache.set(jti, { validUntil: Date.now() + SESSION_CACHE_TTL_MS });
+              } catch {
+                // Fail-open: if the validate endpoint is unreachable, allow the request
+              }
+            }
           }
 
           return NextResponse.next();

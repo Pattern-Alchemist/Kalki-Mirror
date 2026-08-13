@@ -43,6 +43,36 @@ function clearLoginAttempts(email: string) {
   loginAttempts.delete(email.toLowerCase());
 }
 
+// ── Pre-auth 2FA token store ──
+// Maps temporary tokens to userId for the 2FA verification step.
+// Tokens expire after 5 minutes.
+const preAuthTokens = new Map<string, { userId: string; expiresAt: number }>();
+const PRE_AUTH_TTL_MS = 5 * 60 * 1000;
+
+/** Create a temporary pre-auth token for 2FA flow */
+export function createPreAuthToken(userId: string): string {
+  const token = crypto.randomBytes(24).toString('hex');
+  preAuthTokens.set(token, { userId, expiresAt: Date.now() + PRE_AUTH_TTL_MS });
+  return token;
+}
+
+/** Validate and consume a pre-auth token, returning the userId */
+export function consumePreAuthToken(token: string): string | null {
+  const entry = preAuthTokens.get(token);
+  if (!entry) return null;
+  preAuthTokens.delete(token); // one-time use
+  if (entry.expiresAt < Date.now()) return null;
+  return entry.userId;
+}
+
+/** Clean up expired pre-auth tokens (call periodically) */
+export function cleanupPreAuthTokens() {
+  const now = Date.now();
+  for (const [key, val] of preAuthTokens) {
+    if (val.expiresAt < now) preAuthTokens.delete(key);
+  }
+}
+
 export const authOptions: NextAuthOptions = {
   secret,
   pages: {
@@ -59,6 +89,10 @@ export const authOptions: NextAuthOptions = {
         token.role = (user as unknown as { role: UserRole }).role;
         token.tier = (user as unknown as { tier: string }).tier;
         if (!token.tier) token.tier = 'prithvi';
+        // A3: Embed session JTI for active session tracking
+        if (!token.jti) {
+          token.jti = crypto.randomUUID();
+        }
       }
       return token;
     },
@@ -66,7 +100,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         (session.user as unknown as { id: string }).id = token.id as string;
         (session.user as unknown as { role: UserRole }).role = token.role as UserRole;
-        (session.user as unknown as { tier: string }).tier = (token.tier as string) || 'prithvi';
+        (session.user as unknown as { tier: string }).tier = token.tier as string || 'prithvi';
       }
       return session;
     },
@@ -87,7 +121,7 @@ export const authOptions: NextAuthOptions = {
         const { locked, remainingSec } = isLoginLocked(email);
         if (locked) {
           console.warn(`[AUTH] Login locked for ${email}. ${remainingSec}s remaining.`);
-          return null;
+          throw new Error(`LOCKED:${remainingSec}`);
         }
 
         const user = await db.user.findUnique({
@@ -115,9 +149,18 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        // Successful login — clear attempts
+        // Successful credential verification — clear attempts
         clearLoginAttempts(email);
 
+        // A1: If 2FA is enabled, gate login behind a pre-auth token
+        if (user.twoFactorEnabled) {
+          const preAuthToken = createPreAuthToken(user.id);
+          // Use a custom error to signal 2FA requirement.
+          // The error message carries the userId and token for the client.
+          throw new Error(`2FA_REQUIRED:${user.id}:${preAuthToken}`);
+        }
+
+        // No 2FA — proceed with normal login
         // A3: Track active session (fire-and-forget)
         const sessionJti = crypto.randomUUID();
         db.activeSession.create({
@@ -127,14 +170,12 @@ export const authOptions: NextAuthOptions = {
           },
         }).catch(() => {}); // Non-blocking; DB may not have the table yet
 
-        // A1: If 2FA is enabled, include the flag
         return {
           id: user.id,
           email: user.email,
           name: user.name,
           role: user.role,
           tier: user.tier,
-          twoFactorRequired: user.twoFactorEnabled,
         };
       },
     }),

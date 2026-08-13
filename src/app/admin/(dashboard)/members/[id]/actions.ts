@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { logAudit } from "@/lib/admin/audit";
+import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
 import { requireRole } from "@/lib/admin/require-role";
 
 export async function grantKeys(userId: string, amount: number, reason: string) {
@@ -21,6 +22,7 @@ export async function grantKeys(userId: string, amount: number, reason: string) 
     before: { goldKeysRemaining: previousKeys },
     after: { goldKeysRemaining: updated.goldKeysRemaining, amount, reason },
   });
+  dispatchWebhooks('user.keys.grant', { targetUserId: userId, amount, reason, newTotal: updated.goldKeysRemaining });
 
   return { success: true, goldKeysRemaining: updated.goldKeysRemaining };
 }

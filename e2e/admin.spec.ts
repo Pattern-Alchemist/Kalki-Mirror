@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, request } from '@playwright/test';
 
 /**
  * I1: E2E Tests — Admin Authentication & Navigation
- * Covers: login flow, protected routes, security headers
+ * Covers: login flow, protected routes, security headers, 2FA infrastructure
  */
 
 test.describe('Admin Authentication', () => {
@@ -61,5 +61,96 @@ test.describe('Public Pages', () => {
     expect(response?.headers()['x-frame-options']).toBe('DENY');
     expect(response?.headers()['x-content-type-options']).toBe('nosniff');
     expect(response?.headers()['strict-transport-security']).toContain('max-age');
+  });
+});
+
+test.describe('2FA Infrastructure', () => {
+  /**
+   * Test that the 2FA verify API route rejects requests without a pre-auth token.
+   * This validates the security fix: unauthenticated users cannot probe 2FA codes.
+   */
+  test('2FA verify rejects requests without pre-auth token', async ({ request }) => {
+    const response = await request.post('/api/auth/2fa-verify', {
+      data: {
+        userId: 'some-user-id',
+        code: '123456',
+      },
+    });
+
+    expect(response.status()).toBe(401);
+    const body = await response.json();
+    expect(body.error).toContain('Invalid or expired 2FA session');
+  });
+
+  /**
+   * Test that the 2FA verify API route rejects requests with an invalid code format.
+   */
+  test('2FA verify rejects invalid code format', async ({ request }) => {
+    const response = await request.post('/api/auth/2fa-verify', {
+      data: {
+        userId: 'some-user-id',
+        code: 'abc',
+        preAuthToken: 'invalid-token',
+      },
+    });
+
+    expect(response.status()).toBe(400);
+    const body = await response.json();
+    expect(body.error).toBe('Invalid request');
+  });
+
+  /**
+   * Test that the 2FA verify API route rejects requests with an invalid pre-auth token.
+   */
+  test('2FA verify rejects expired/invalid pre-auth token', async ({ request }) => {
+    const response = await request.post('/api/auth/2fa-verify', {
+      data: {
+        userId: 'some-user-id',
+        code: '123456',
+        preAuthToken: 'expired-or-fake-token-value',
+      },
+    });
+
+    expect(response.status()).toBe(401);
+    const body = await response.json();
+    expect(body.error).toContain('Invalid or expired 2FA session');
+  });
+
+  /**
+   * Test that the 2FA verify API route rejects requests with mismatched userId.
+   * Even if a valid pre-auth token exists for user A, using it with user B's ID should fail.
+   */
+  test('2FA verify rejects mismatched userId and pre-auth token', async ({ request }) => {
+    const response = await request.post('/api/auth/2fa-verify', {
+      data: {
+        userId: 'different-user-id',
+        code: '123456',
+        preAuthToken: 'random-invalid-token',
+      },
+    });
+
+    expect(response.status()).toBe(401);
+  });
+
+  /**
+   * Test that the 2FA verify API rejects empty payloads.
+   */
+  test('2FA verify rejects empty payload', async ({ request }) => {
+    const response = await request.post('/api/auth/2fa-verify', {
+      data: {},
+    });
+
+    expect(response.status()).toBe(400);
+  });
+
+  /**
+   * Test that the 2FA verify API rejects missing userId.
+   */
+  test('2FA verify rejects missing userId', async ({ request }) => {
+    const response = await request.post('/api/auth/2fa-verify', {
+      data: { code: '123456', preAuthToken: 'some-token' },
+    });
+
+    expect(response.status()).toBe(400);
   });
 });

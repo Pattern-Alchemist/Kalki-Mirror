@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { requireRole } from "@/lib/admin/require-role";
 import { logAudit } from "@/lib/admin/audit";
+import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
 import crypto from "crypto";
 
 export async function getWebhooks() {
@@ -34,6 +35,7 @@ export async function createWebhook(data: { url: string; events: string[]; secre
     entityId: webhook.id,
     after: { url: data.url, events: data.events },
   });
+  dispatchWebhooks('webhook.create', { webhookId: webhook.id, url: data.url, events: data.events });
 
   return webhook;
 }
@@ -50,6 +52,7 @@ export async function toggleWebhook(id: string, active: boolean) {
     entity: 'Webhook',
     entityId: id,
   });
+  dispatchWebhooks(active ? 'webhook.enable' : 'webhook.disable', { webhookId: id, active });
 
   return webhook;
 }
@@ -63,6 +66,7 @@ export async function deleteWebhook(id: string) {
     entity: 'Webhook',
     entityId: id,
   });
+  dispatchWebhooks('webhook.delete', { webhookId: id });
 }
 
 export async function testWebhook(id: string) {
@@ -105,6 +109,8 @@ export async function testWebhook(id: string) {
       data: { lastTriggeredAt: new Date(), lastStatus: String(response.status) },
     });
 
+    await logAudit({ action: 'webhook.test', entity: 'Webhook', entityId: id, after: { status: response.status } });
+    dispatchWebhooks('webhook.test', { webhookId: id, status: response.status });
     return { status: response.status, ok: response.ok };
   } catch (err) {
     clearTimeout(timeout);
@@ -112,6 +118,7 @@ export async function testWebhook(id: string) {
       where: { id },
       data: { lastTriggeredAt: new Date(), lastStatus: 'ERR' },
     });
+    await logAudit({ action: 'webhook.test.fail', entity: 'Webhook', entityId: id, after: { error: String(err) } });
     throw new Error('Webhook delivery failed');
   }
 }

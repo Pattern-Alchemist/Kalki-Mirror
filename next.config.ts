@@ -113,4 +113,30 @@ export default withSentryConfig(nextConfig, {
   hideSourceMaps: true,
   disableLogger: true,
   tunnelRoute: '/monitoring-tunnel',
+
+  // Webpack plugin configuration for production source map uploads & performance
+  sourcemaps: {
+    // Disable automatic source map uploads in development
+    disable: process.env.NODE_ENV !== 'production',
+  },
+
+  webpack: (config, { dev }) => {
+    // Only inject Sentry webpack plugin when DSN is configured
+    if (!process.env.SENTRY_DSN && !process.env.NEXT_PUBLIC_SENTRY_DSN) {
+      return config;
+    }
+
+    // Enable automatic server-side instrumentation in production
+    if (!dev) {
+      config.devtool = 'hidden-source-map';
+    }
+
+    return config;
+  },
+
+  // Automatic instrumentation options
+  automaticVercelMonitorsIntegration: false,
+
+  // Suppress duplicate warnings in dev
+  suppressErrors: true,
 });

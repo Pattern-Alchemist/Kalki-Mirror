@@ -4,7 +4,6 @@ import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { withRateLimit } from "@/lib/admin/rate-limit";
-import { getServerSession as gs } from "next-auth";
 
 export type AuditLogRow = {
   id: string;
@@ -79,16 +78,18 @@ export async function exportAuditLogs(format: 'csv' | 'json' = 'csv') {
     return {
       format: 'json',
       filename: `audit-log-${new Date().toISOString().slice(0, 10)}.json`,
-      data: JSON.stringify(logs.map(l => ({
-        timestamp: l.createdAt,
-        actor: actorMap.get(l.actorId)?.name || 'Unknown',
-        actorEmail: actorMap.get(l.actorId)?.email || '',
-        action: l.action,
-        entity: l.entity,
-        entityId: l.entityId,
-        before: l.before,
-        after: l.after,
-      })),
+      data: JSON.stringify(
+        logs.map(l => ({
+          timestamp: l.createdAt,
+          actor: actorMap.get(l.actorId)?.name || 'Unknown',
+          actorEmail: actorMap.get(l.actorId)?.email || '',
+          action: l.action,
+          entity: l.entity,
+          entityId: l.entityId,
+          before: l.before,
+          after: l.after,
+        }))
+      ),
     };
   }
 

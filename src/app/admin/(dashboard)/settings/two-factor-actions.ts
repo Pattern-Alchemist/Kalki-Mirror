@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { generate2FASecret, verify2FA, enable2FA, disable2FA } from "@/lib/admin/two-factor";
 import { requireRole } from "@/lib/admin/require-role";
 import { logAudit } from "@/lib/admin/audit";
+import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
 import { db } from "@/lib/db";
 
 export async function setup2FA() {
@@ -28,6 +29,7 @@ export async function confirm2FA(code: string) {
 
   await enable2FA(userId);
   await logAudit({ action: "security.2fa.enable", entity: "User", entityId: userId });
+  dispatchWebhooks('security.2fa.enable', { userId });
   return { success: true };
 }
 
@@ -39,6 +41,7 @@ export async function remove2FA() {
 
   await disable2FA(userId);
   await logAudit({ action: "security.2fa.disable", entity: "User", entityId: userId });
+  dispatchWebhooks('security.2fa.disable', { userId });
   return { success: true };
 }
 

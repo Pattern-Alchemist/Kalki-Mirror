@@ -44,6 +44,7 @@ export default function AdminLoginPage() {
   const [step, setStep] = useState<'credentials' | '2fa'>('credentials');
   const [twoFACode, setTwoFACode] = useState("");
   const [twoFAUserId, setTwoFAUserId] = useState("");
+  const [twoFAPreAuthToken, setTwoFAPreAuthToken] = useState("");
   const [twoFALoading, setTwoFALoading] = useState(false);
   const [twoFAError, setTwoFAError] = useState("");
 
@@ -94,6 +95,25 @@ export default function AdminLoginPage() {
         redirect: false,
       });
 
+      // Check for 2FA_REQUIRED signal from authorize()
+      if (result?.error && result.error.startsWith('2FA_REQUIRED:')) {
+        const parts = result.error.split(':');
+        const userId = parts[1];
+        const preAuthToken = parts[2];
+        setLoginState({ attempts: 0, lockedUntil: 0 });
+        try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
+        setTwoFAUserId(userId);
+        setTwoFAPreAuthToken(preAuthToken);
+        setStep('2fa');
+        return;
+      }
+
+      // Check for LOCKED signal
+      if (result?.error && result.error.startsWith('LOCKED:')) {
+        setError(`Account temporarily locked. Please try again later.`);
+        return;
+      }
+
       if (result?.error) {
         const newState = { ...loginState, attempts: loginState.attempts + 1 };
 
@@ -112,9 +132,7 @@ export default function AdminLoginPage() {
         setLoginState(newState);
         try { sessionStorage.setItem("kalki-login", JSON.stringify(newState)); } catch { /* */ }
       } else {
-        // Check if 2FA is required
-        // The authorize() returns the user, and we need to check if 2FA is enabled.
-        // Since NextAuth's signIn doesn't expose custom fields, we check via API.
+        // Credentials OK, no 2FA required — session already created
         setLoginState({ attempts: 0, lockedUntil: 0 });
         try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
         router.push(callbackUrl);
@@ -126,6 +144,15 @@ export default function AdminLoginPage() {
       setLoading(false);
     }
   }, [email, password, locked, liveRemaining, loginState, callbackUrl, router]);
+
+  // Reset 2FA state when going back
+  const handleBackToLogin = () => {
+    setStep('credentials');
+    setTwoFACode('');
+    setTwoFAError('');
+    setTwoFAUserId('');
+    setTwoFAPreAuthToken('');
+  };
 
   // A1: Handle 2FA verification
   const handle2FAVerify = async () => {
@@ -139,7 +166,7 @@ export default function AdminLoginPage() {
       const res = await fetch('/api/auth/2fa-verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: twoFAUserId, code: twoFACode }),
+        body: JSON.stringify({ userId: twoFAUserId, code: twoFACode, preAuthToken: twoFAPreAuthToken }),
       });
       const data = await res.json();
       if (data.valid) {
@@ -213,7 +240,7 @@ export default function AdminLoginPage() {
               </button>
             </div>
             <button
-              onClick={() => { setStep('credentials'); setTwoFACode(''); setTwoFAError(''); }}
+              onClick={handleBackToLogin}
               className="w-full text-center text-xs text-zinc-600 hover:text-zinc-400"
             >
               Back to login
