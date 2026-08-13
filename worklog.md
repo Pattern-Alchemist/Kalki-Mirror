@@ -594,3 +594,50 @@ Stage Summary:
 - Proper Cache-Control headers for HTML pages and API routes
 - RSC prefetch disabled for low-priority navigation
 - Content expanded on 3 data-driven pages to ensure >150 words of static editorial text
+---
+Task ID: 9
+Agent: Main
+Task: JS chunk analysis & optimization
+
+Work Log:
+- Completed dependency audit across all src/ files
+- framer-motion: 74 files, deeply embedded, shared chunk unavoidable
+- lucide-react: named imports only, tree-shakeable ✓
+- @radix-ui/react-toast: in lock files only, not imported in source (dead dep)
+- Admin deps (zod, react-hook-form, input-otp): confirmed route-isolated
+- No zustand, recharts, dnd-kit, lodash, axios, or date-fns in source
+- Clean dependency tree: only 16 production deps
+- Key fix: removed `useReducedMotion` import from template.tsx, replaced with native `matchMedia('(prefers-reduced-motion: reduce)')` — eliminates framer-motion from root template chunk
+- 5 pages already use next/dynamic for heavy components
+- lenis (SmoothScroll) is layout-level, loads once
+
+Stage Summary:
+- template.tsx: replaced framer-motion useReducedMotion with native matchMedia
+- No other actionable bundle optimizations — dependency tree is clean
+- Committed: c546704
+
+---
+Task ID: 10
+Agent: Main
+Task: Content expansion for 10 thin-content pages
+
+Work Log:
+- Audited all 24 public routes for thin content (under 150 words static prose)
+- Identified 10 thinnest pages, ranked by word count
+- Split into two categories: utility pages (noindex) vs SEO pages (content expansion)
+- Added noindex to 3 utility/tool pages: /practice, /practice/timer, /practice/japa
+- /redeem and /dossier already had noindex
+- Expanded editorial content on 3 SEO-relevant thin pages:
+  - /archive: +120 words (hero body paragraph, Mahāvidyā explanation, expanded zone subtitles)
+  - /patterns: +90 words (hero body paragraph, Understanding section expansion, editorial divider enrichment)
+  - /glossary: +80 words (intro expansion with category/cross-reference explanation, CTA expansion)
+- Total: ~290 words of new substantive editorial content
+- /sequences already had 3 strong editorial paragraphs (~150 words) — borderline acceptable
+- Homepage is cinematic by design with distributed text + data-driven card content
+
+Stage Summary:
+- 6 files changed, 69 insertions, 5 deletions
+- 3 utility pages now have noindex (robots: index false, follow true)
+- 3 SEO pages expanded with keyword-rich, thematically consistent editorial content
+- Committed: 6f5eaff, pushed as bb3cc04
+- Both backlog tasks (9 + 10) now complete
