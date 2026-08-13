@@ -521,7 +521,7 @@ export default function ArchivePage() {
             </p>
 
             {/* Siddhi Grid */}
-            <h2 className="sr-only">Archive Folios</h2>
+            <h2 className="font-display text-2xl md:text-3xl text-foreground tracking-wide mb-8 engraved-heading">Archive Folios</h2>
             <motion.div
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
               initial={reduced ? { opacity: 1 } : staggerContainer.hidden}

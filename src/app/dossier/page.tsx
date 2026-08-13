@@ -292,6 +292,10 @@ export default function DossierPage() {
             INPUT COORDINATES
           </p>
 
+          <form
+            onSubmit={(e) => { e.preventDefault(); runInitiation(); }}
+            className="contents"
+          >
           {/* Behavioral Query */}
           <div className="mb-6">
             <label
@@ -412,8 +416,8 @@ export default function DossierPage() {
 
           {/* Submit */}
           <button
-            type="button"
-            onClick={runInitiation}
+            type="submit"
+            onClick={(e) => { e.preventDefault(); runInitiation(); }}
             disabled={loading || (!query.trim() && !moonSign && !natalMoon)}
             tabIndex={loading || (!query.trim() && !moonSign && !natalMoon) ? -1 : 0}
             aria-disabled={loading || (!query.trim() && !moonSign && !natalMoon)}
@@ -421,6 +425,8 @@ export default function DossierPage() {
           >
             {loading ? 'COMPUTING GEOMETRY...' : 'INITIATE DOSSIER'}
           </button>
+
+          </form>
 
           {error && (
             <p className="mt-4 text-sm" style={{ color: 'var(--crimson)' }}>{error}</p>

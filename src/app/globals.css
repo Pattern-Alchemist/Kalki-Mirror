@@ -1267,6 +1267,13 @@
   outline-offset: 3px;
 }
 
+/* Disabled buttons should not be focusable */
+button:disabled,
+[aria-disabled="true"] {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 /* ==========================================================
    HERO PULSATING GOLD GLOW — KALKI wordmark neon radiance
    Medium-speed ~3s infinite ease-in-out pulse of layered gold

@@ -360,7 +360,8 @@ export default function MethodPage() {
             animate={fadeInUp.visible}
             transition={{ delay: 0.1, duration: 0.8 }}
           >
-            The Mirror<br />Method
+            The Mirror{' '}
+            <span style={{ display: 'block' }}>Method</span>
           </motion.h1>
           <motion.p
             className="text-foreground/70 text-lg md:text-xl max-w-2xl leading-relaxed"
@@ -423,7 +424,10 @@ export default function MethodPage() {
         <div className="divider-gold mb-16" />
         <ParallaxText speed={-0.05} className="max-w-3xl mx-auto text-center">
           <p className="text-sub-display text-foreground mb-6 engraved-heading">
-            Your patterns<br />have names.<br />Your sādhanas<br />are waiting.
+            Your patterns{' '}
+            <span style={{ display: 'block' }}>have names.</span>{' '}
+            Your sādhanas{' '}
+            <span style={{ display: 'block' }}>are waiting.</span>
           </p>
           <p className="text-editorial max-w-xl mx-auto">
             The Mirror Method is not a theory. It is a diagnostic framework drawn from three living tantric traditions, mapped to modern pattern recognition, and delivered through precise, graded sādhanas.
@@ -471,7 +475,8 @@ export default function MethodPage() {
         <ParallaxText speed={-0.04} className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10 text-center">
           <p className="section-label mb-6">Begin the Dissolution</p>
           <h2 className="font-display text-3xl md:text-5xl text-white mb-6 hero-heading tracking-wide">
-            The Method is the Mirror.<br />The Practice is the Polishing.
+            The Method is the Mirror.{' '}
+            <span style={{ display: 'block' }}>The Practice is the Polishing.</span>
           </h2>
           <p className="text-foreground/70 text-lg mb-12 editorial-spacing" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>
             Book a consultation with Kaustubh to discover your dominant pattern and receive a prescribed sādhana — or explore the Archive and Library to begin your own investigation.

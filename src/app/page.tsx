@@ -137,7 +137,8 @@ export default function HomePage() {
             <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 lg:p-16">
               <p className="section-label mb-4">YANTRA Decoded</p>
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 hero-heading tracking-wide">
-                {SIDDHI_COUNT} Siddhis.<br />Mapped.
+                {SIDDHI_COUNT} Siddhis.{' '}
+                <span style={{ display: 'block' }}>Mapped.</span>
               </h2>
               <p className="text-foreground text-base max-w-md editorial-spacing" style={{textShadow: '0 1px 8px rgba(0,0,0,0.7)'}}>
                 Decoded by YANTRA. Every mantra, every lineage, every warning.
@@ -161,7 +162,8 @@ export default function HomePage() {
             <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 lg:p-16">
               <p className="section-label mb-4">Sadhana Instruments</p>
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-white leading-[0.95] mb-3 hero-heading tracking-wide">
-                See Yourself.<br />Clearly.
+                See Yourself.{' '}
+                <span style={{ display: 'block' }}>Clearly.</span>
               </h2>
               <p className="text-foreground text-base max-w-md editorial-spacing" style={{textShadow: '0 1px 8px rgba(0,0,0,0.7)'}}>
                 Breathwork, japa, meditation — guided tools for inner work.
@@ -177,7 +179,8 @@ export default function HomePage() {
         <ParallaxText speed={-0.06} className="max-w-3xl mx-auto text-center">
           <p className="section-label mb-8">The Mirror Method</p>
           <p className="text-sub-display text-foreground mb-8 engraved-heading">
-            Your patterns<br />have names.
+            Your patterns{' '}
+            <span style={{ display: 'block' }}>have names.</span>
           </p>
           <p className="text-editorial max-w-xl mx-auto">
             Every emotional loop, every recurring relationship dynamic — they map
@@ -380,7 +383,8 @@ className="section-label editorial-heading mb-6"
           >
             <p className="section-label mb-6">Choose Your Depth</p>
             <h2 className="font-display text-4xl md:text-6xl text-white hero-heading tracking-[0.08em]">
-              Four paths.<br />One purpose.
+              Four paths.{' '}
+              <span style={{ display: 'block' }}>One purpose.</span>
             </h2>
           </motion.div>
           <PricingCards />

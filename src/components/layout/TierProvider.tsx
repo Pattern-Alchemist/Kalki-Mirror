@@ -39,6 +39,7 @@ const TierContext = createContext<TierContextValue>({
 // skip all future /api/user/tier calls for this session.
 let _isGuest = false;
 let _fetchPromise: Promise<Tier | null> | null = null;
+const GUEST_KEY = '__kalki_guest';
 
 /**
  * Fetches the authenticated user's real tier from the DB.
@@ -46,10 +47,21 @@ let _fetchPromise: Promise<Tier | null> | null = null;
  * Falls back to null if unauthenticated.
  *
  * Optimization: caches the promise to deduplicate concurrent calls,
- * and remembers guest status to skip future 401 round-trips.
+ * and remembers guest status via sessionStorage to survive RSC re-mounts.
  */
 async function fetchServerTier(): Promise<Tier | null> {
   // If we already know this session is unauthenticated, skip the call.
+  // Uses sessionStorage so the flag survives React strict-mode re-mounts
+  // and RSC boundary re-instantiations (the root cause of the 7x spam).
+  try {
+    if (sessionStorage.getItem(GUEST_KEY) === '1') {
+      _isGuest = true;
+      return null;
+    }
+  } catch {
+    // sessionStorage unavailable (SSR, private browsing) — fall through
+  }
+
   if (_isGuest) return null;
 
   // Deduplicate concurrent calls (e.g., multiple TierProvider mounts).
@@ -59,7 +71,8 @@ async function fetchServerTier(): Promise<Tier | null> {
     try {
       const res = await fetch('/api/user/tier');
       if (res.status === 401) {
-        _isGuest = true; // Remember: no auth token present.
+        _isGuest = true;
+        try { sessionStorage.setItem(GUEST_KEY, '1'); } catch { /* ignore */ }
         return null;
       }
       if (!res.ok) return null;
@@ -125,6 +138,7 @@ export function TierProvider({ children }: { children: ReactNode }) {
     // Reset guest cache so we actually try the fetch again
     // (e.g. after key redemption may have changed auth state).
     _isGuest = false;
+    try { sessionStorage.removeItem(GUEST_KEY); } catch { /* ignore */ }
     fetchServerTier().then((serverTier) => {
       if (serverTier) setTier(serverTier);
     });
