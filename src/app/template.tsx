@@ -1,6 +1,6 @@
 'use client';
 
-import { useReducedMotion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 /**
  * Root template — wraps every page in a subtle fade transition.
@@ -9,7 +9,15 @@ import { useReducedMotion } from 'framer-motion';
  * hydration mismatches and unnecessary JS.
  */
 export default function Template({ children }: { children: React.ReactNode }) {
-  const reduced = useReducedMotion();
+  const [reduced, setReduced] = useState(true);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduced(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setReduced(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   if (reduced) {
     return <>{children}</>;
