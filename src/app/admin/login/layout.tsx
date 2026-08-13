@@ -1,8 +1,21 @@
 import type { Metadata } from "next";
 
+/*
+ * Admin login metadata.
+ *
+ * CRITICAL: Next.js App Router MERGES child metadata into root metadata.
+ * Omitting a field does NOT remove the root's value — the root's OG/Twitter/
+ * canonical all cascade down. To actually suppress them, we must explicitly
+ * override with empty/minimal values.
+ *
+ * - title: { absolute: ... } prevents the root's template suffix
+ * - openGraph/twitter: explicit empty overrides kill root's values
+ * - alternates: not set here (root's canonical still leaks via metadataBase,
+ *   but X-Robots-Tag + meta robots noindex makes this irrelevant for indexing)
+ */
 export const metadata: Metadata = {
-  title: "Admin Login — KALKI",
-  description: "Archivist console login. Access restricted to authorized personnel.",
+  title: { absolute: 'Admin Login — KALKI' },
+  description: 'Archivist console login. Access restricted to authorized personnel.',
   robots: {
     index: false,
     follow: false,
@@ -11,12 +24,20 @@ export const metadata: Metadata = {
       follow: false,
     },
   },
-  /*
-   * Intentionally NO alternates.canonical, NO openGraph, NO twitter.
-   * Next.js metadata resolution: omitting these fields means the root layout's
-   * values will NOT cascade into this route segment. The page gets a bare
-   * <title> + robots noindex meta — nothing else leaks.
-   */
+  openGraph: {
+    title: 'Admin Login — KALKI',
+    description: 'Access restricted.',
+    url: 'https://www.astrokalki.com/admin/login',
+    siteName: 'KALKI',
+    type: 'website',
+    locale: 'en_US',
+    images: [],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Admin Login — KALKI',
+    description: 'Access restricted.',
+  },
 };
 
 export default function AdminLoginLayout({
@@ -24,32 +45,5 @@ export default function AdminLoginLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <>
-      {/*
-        Suppress the root layout's homepage JSON-LD (WebSite + Organization schema)
-        by rendering an empty script that overrides @graph with a no-op page reference.
-      */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "WebPage",
-                "@id": "https://www.astrokalki.com/admin/login#webpage",
-                "url": "https://www.astrokalki.com/admin/login",
-                "name": "Admin Login",
-                "isPartOf": {
-                  "@id": "https://www.astrokalki.com/#website"
-                },
-              },
-            ],
-          }),
-        }}
-      />
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }
