@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Aghor\u012b Tantra Course \u2014 Eight Phases of Transformative Practice | KALKI',
+  title: 'Aghorī Tantra Course \u2014 Eight Phases of Transformative Practice',
   description:
     'Fifty-four lessons across eight phases \u2014 from foundational orientation through non-dual integration. The most comprehensive online Aghor\u012b Tantra course, grounded in living lineage and scholarly evidence.',
   openGraph: {

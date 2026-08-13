@@ -3,7 +3,7 @@ import { canonicalUrl } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
   alternates: { canonical: canonicalUrl('/dossier') },
-  title: 'Consultation Dossier | KALKI',
+  title: 'Consultation Dossier',
   description:
     'Retrieve your consultation dossier — pattern diagnosis, prescribed path, session notes, and outcome tracking. Your living record of evolution through the KALKI Archive.',
   openGraph: {

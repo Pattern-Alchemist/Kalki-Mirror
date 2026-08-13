@@ -1,4 +1,4 @@
-const SITE_URL = 'https://astrokalki.com';
+const SITE_URL = 'https://www.astrokalki.com';
 
 /** Generate canonical URL for a given path */
 export function canonicalUrl(path: string): string {

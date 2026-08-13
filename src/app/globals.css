@@ -1453,3 +1453,16 @@
   white-space: nowrap;
   border-width: 0;
 }
+
+/* ==========================================================
+   PRINT STYLESHEET
+   ========================================================== */
+@media print {
+  *, *::before, *::after { background: white !important; color: black !important; box-shadow: none !important; text-shadow: none !important; filter: none !important; }
+  nav, footer, video, .fixed-bottom-stack, .scroll-progress, .page-vignette, .film-grain, .atmospheric-bg, .dust-overlay, [aria-hidden="true"], [role="dialog"] { display: none !important; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #666; }
+  a[href^="#"]::after { content: ""; }
+  body { font-size: 12pt; line-height: 1.5; }
+  section { page-break-inside: avoid; }
+  img { max-width: 100% !important; }
+}

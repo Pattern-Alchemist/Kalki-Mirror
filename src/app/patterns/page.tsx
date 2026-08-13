@@ -652,7 +652,7 @@ export default function PatternsPage() {
               '@type': 'ListItem',
               position: i + 1,
               name: p.name,
-              url: 'https://astrokalki.com/patterns/' + p.slug,
+              url: 'https://www.astrokalki.com/patterns/' + p.slug,
             };
           }),
         }),

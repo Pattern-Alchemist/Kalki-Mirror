@@ -97,10 +97,16 @@ export function CinematicImage({
   const isCloudinary = resolvedSrc.includes('res.cloudinary.com');
   const srcSet = isCloudinary ? buildResponsiveSrcset(resolvedSrc) : undefined;
 
+  // For mobile performance: use w_640 as the default src so mobile
+  // browsers don't download the w_1920 variant. srcset handles larger screens.
+  const mobileSrc = isCloudinary
+    ? resolvedSrc.replace(/w_\d+/, 'w_640')
+    : resolvedSrc;
+
   const imageEl = (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={resolvedSrc}
+      src={mobileSrc}
       srcSet={srcSet}
       sizes={fill ? '(max-width: 768px) 100vw, (max-width: 1280px) 80vw, 1400px' : undefined}
       alt={alt}

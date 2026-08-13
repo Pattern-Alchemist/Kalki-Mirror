@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -47,6 +47,8 @@ export function SacredNav() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
   const reduced = useReducedMotion();
 
   useEffect(() => {
@@ -59,12 +61,62 @@ export function SacredNav() {
     setMobileOpen(false);
   }, [pathname]);
 
+  // Body scroll lock + inert on main content
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    const main = document.getElementById('main-content');
+    const footer = document.querySelector('footer');
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+      main?.setAttribute('aria-hidden', 'true');
+      main?.setAttribute('inert', '');
+      footer?.setAttribute('aria-hidden', 'true');
+      footer?.setAttribute('inert', '');
+      // Focus the first menu link after animation
+      const timer = setTimeout(() => {
+        const firstLink = menuRef.current?.querySelector('a');
+        firstLink?.focus();
+      }, 100);
+      return () => clearTimeout(timer);
+    } else {
+      document.body.style.overflow = '';
+      main?.removeAttribute('aria-hidden');
+      main?.removeAttribute('inert');
+      footer?.removeAttribute('aria-hidden');
+      footer?.removeAttribute('inert');
+      // Return focus to toggle button
+      toggleRef.current?.focus();
+    }
   }, [mobileOpen]);
 
+  // Focus trap: keep Tab within the mobile menu
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (!mobileOpen || !menuRef.current) return;
+    if (e.key === 'Escape') {
+      setMobileOpen(false);
+      return;
+    }
+    if (e.key !== 'Tab') return;
+    const focusable = menuRef.current.querySelectorAll<HTMLElement>('a[href], button, [tabindex]:not([tabindex="-1"])');
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
+
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+
+  const toggleMenu = () => setMobileOpen(!mobileOpen);
 
   return (
     <>
@@ -92,7 +144,7 @@ export function SacredNav() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'relative text-[0.8125rem] font-ui tracking-[0.18em] uppercase transition-colors duration-500 py-1 neon-tab-glow',
+                    'relative text-[0.8125rem] font-ui tracking-[0.18em] uppercase transition-colors duration-500 py-1 min-h-[44px] flex items-center neon-tab-glow',
                     isActive(link.href)
                       ? 'text-gold'
                       : 'text-text-muted hover:text-ivory'
@@ -112,10 +164,12 @@ export function SacredNav() {
 
             {/* Mobile toggle */}
             <button
-              className="lg:hidden relative z-10 w-10 h-10 flex items-center justify-center"
-              onClick={() => setMobileOpen(!mobileOpen)}
+              ref={toggleRef}
+              className="lg:hidden relative z-10 w-11 h-11 flex items-center justify-center"
+              onClick={toggleMenu}
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
             >
               <div className="relative w-5 h-4">
                 <span
@@ -142,16 +196,25 @@ export function SacredNav() {
         </div>
       </nav>
 
-      {/* Mobile Full-Screen Menu — Grouped */}
+      {/* Mobile Full-Screen Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            ref={menuRef}
+            id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
             className="fixed inset-0 z-40 lg:hidden"
             initial={reduced ? { opacity: 1 } : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
+            {/* Screen reader announcement */}
+            <div aria-live="assertive" className="sr-only">
+              Navigation menu opened. {NAV_LINKS.length} links available. Press Escape to close.
+            </div>
             {/* Backdrop */}
             <div className="absolute inset-0 bg-deep-black/95 backdrop-blur-2xl" />
 
@@ -163,8 +226,8 @@ export function SacredNav() {
                 </span>
               </div>
 
-              {/* Flat navigation — no accordion, direct access */}
-              <nav className="flex flex-col gap-1 flex-1">
+              {/* Flat navigation */}
+              <nav className="flex flex-col gap-1 flex-1" aria-label="Mobile navigation">
                 {NAV_LINKS.map((link, li) => (
                   <motion.div
                     key={link.href}
@@ -180,7 +243,7 @@ export function SacredNav() {
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
                       className={cn(
-                        'block py-3.5 px-1 text-lg tracking-[0.08em] font-light transition-colors duration-300',
+                        'block py-3.5 px-1 text-lg tracking-[0.08em] font-light transition-colors duration-300 min-h-[44px] leading-[44px]',
                         isActive(link.href)
                           ? 'text-gold font-display'
                           : 'text-text-muted hover:text-ivory'

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'The Sādhanā Library — Thirty Practice Protocols Across Thirteen Categories | KALKI',
+  title: 'The Sādhanā Library — Thirty Practice Protocols Across Thirteen Categories',
   description:
     'Structured practice protocols from living lineages — Mantra, Yantra, Nyāsa, Pūjā, Dhāraṇā, Prāṇāyāma, Dhyāna, Dhūni, Śmāśana, Bhasma, Japa, Kuṇḍalinī, Sevā. Evidence-graded. Step-by-step.',
   openGraph: {

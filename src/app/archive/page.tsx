@@ -709,7 +709,7 @@ export default function ArchivePage() {
               '@type': 'ListItem',
               position: i + 1,
               name: s.name,
-              url: 'https://astrokalki.com/archive/' + s.slug,
+              url: 'https://www.astrokalki.com/archive/' + s.slug,
             };
           }),
         }),

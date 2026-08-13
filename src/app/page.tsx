@@ -27,20 +27,32 @@ export default function HomePage() {
     <div className="bg-deep-black">
       {/* ===== CHAMBER I: ARRIVAL — Hero with Video Background ===== */}
       <section className="relative min-h-[100svh] md:h-[120vh] flex items-end overflow-hidden">
-        {/* Video background — full bleed, behind scrim */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="none"
-          aria-hidden="true"
-          poster={`https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_${isMobile ? 640 : 1920},c_limit/kalki-mirror/home/ancient-temple-midnight`}
-          className="hero-video-bg absolute inset-0 w-full h-full object-cover"
-          style={{ zIndex: 0, objectPosition: 'center' }}
-        >
-          <source src="https://res.cloudinary.com/b9oo5abp/video/upload/q_auto/kalki-mirror/hero-kalki-avatar-riding.mp4" type="video/mp4" />
-        </video>
+        {/* Video background — desktop only, poster-only on mobile (saves 1.2 MB) */}
+        {!isMobile ? (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+            poster={`https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight`}
+            className="hero-video-bg absolute inset-0 w-full h-full object-cover"
+            style={{ zIndex: 0, objectPosition: 'center' }}
+          >
+            <source src="https://res.cloudinary.com/b9oo5abp/video/upload/q_auto/kalki-mirror/hero-kalki-avatar-riding.mp4" type="video/mp4" />
+          </video>
+        ) : (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{
+              zIndex: 0,
+              backgroundImage: 'url(https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_640,c_limit/kalki-mirror/home/ancient-temple-midnight)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          />
+        )}
         {/* Dark scrim ABOVE video, BELOW text */}
         <div className="absolute inset-0 z-[1] pointer-events-none"
           style={{
@@ -378,7 +390,7 @@ className="section-label editorial-heading mb-6"
       {/* ===== CINEMATIC STRIP IV — Observatory (with parallax) ===== */}
       <ScrollParallax speed={-0.2} disabled={isMobile} className="cinematic-strip">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/meditation-platform-overlooking"
           alt="Ancient astronomical observatory with brass instruments under night sky"
           kenBurns={isMobile ? 'none' : 'normal'}
           filmGrain={false}

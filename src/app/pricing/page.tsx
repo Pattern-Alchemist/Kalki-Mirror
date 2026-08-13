@@ -21,10 +21,10 @@ const WHATSAPP_NUMBER = '918920862931';
 type BillingCycle = 'monthly' | 'yearly';
 
 const ELEMENT_LABELS: Record<Tier, string> = {
-  prithvi: 'Prithvi / Earth',
-  jal: 'Jal / Water',
-  agni: 'Agni / Fire',
-  akash: 'Akash / Sky',
+  prithvi: 'Prithvi',
+  jal: 'Jal',
+  agni: 'Agni',
+  akash: 'Akash',
 };
 
 const TRUST_SIGNALS = [
