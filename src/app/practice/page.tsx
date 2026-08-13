@@ -632,6 +632,22 @@ export default function PracticeLoggerPage() {
         </section>
       )}
 
+      {/* ── EDITORIAL: The Practice Philosophy ── */
+      <div className="max-w-2xl mx-auto px-6 lg:px-10 py-10">
+        <div className="space-y-4 text-text-secondary text-sm leading-relaxed editorial-spacing">
+          <p>
+            In every living lineage of Tantra, practice is measured, not assumed. The guru does not ask &ldquo;have you been practicing?&rdquo; — they ask &ldquo;show me your notebook.&rdquo; The KALKI Practice Floor digitizes this ancient discipline: every session is logged with its duration, the siddhi practiced, your mood before and after, and an optional journal entry reflecting on the experience. Over time, this data reveals patterns that subjective memory cannot: which practices stabilize your mood, which ones create agitation, and what your true capacity for daily practice actually is versus what you imagine it to be.
+          </p>
+          <p>
+            The 90-day heatmap is not a gamification feature. It is a consciousness cartography tool. In the tantrik understanding, consistent practice creates <em>saṃskāra</em> (subtle impressions) that compound over time — each session deepens the channel, making the next session more effective. The heatmap makes this compounding visible: you can see whether your practice is truly daily, whether it clusters around certain days (suggesting external resistance), and whether the cumulative intensity is sufficient to produce transformation. Research from both contemplative science and behavioral psychology shows that 40+ consecutive days of practice is the minimum threshold for neurological rewiring — the heatmap shows you exactly where you stand.
+          </p>
+          <p>
+            The session timer, integrated with the BreathTimer from the Prāṇāyāma Laboratory, lets you practice directly within the logger — start the timer, complete your sādhana, stop the timer, and log the session in one flow. The mood tracking (before and after each session) is drawn from clinical contemplative research: the shift from pre-practice to post-practice mood is one of the most reliable indicators of whether a practice is actually working for you. Over time, these micro-measurements create a dataset that is more valuable than any subjective self-assessment.
+          </p>
+        </div>
+        <div className="divider-gold max-w-[200px] mt-10" />
+      </div>
+
       {/* ═══ DIVIDER ═══ */}
       <div className="max-w-[200px] mx-auto">
         <div className="divider-gold" />

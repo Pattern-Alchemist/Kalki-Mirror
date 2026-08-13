@@ -138,6 +138,20 @@ export default function ConsultationsPage() {
           </div>
         </ScrollParallax>
 
+        {/* ── EDITORIAL: What to Expect ── */}
+        <div className="max-w-2xl mb-16 space-y-4 text-text-secondary text-sm leading-relaxed editorial-spacing">
+          <h3 className="font-display text-xl text-foreground mb-4">What to Expect</h3>
+          <p>
+            A KALKI consultation is not a generic astrology reading. The session begins with Kaustubh analyzing your birth chart to identify the dominant planetary influences on your psychological patterns — not to predict events, but to map the <em>saṃskāras</em> (impressions) that shape your reactive tendencies. This chart analysis is cross-referenced with the KALKI pattern database to identify which of the 16 archetypes and 20 behavioral patterns are most active in your current life phase.
+          </p>
+          <p>
+            The second phase of the consultation focuses on the Mirror Method: you will be guided through a structured self-inquiry process to verify whether the patterns identified in the chart match your lived experience. This is crucial — the chart shows potential; your experience confirms reality. Where they align, a prescription is formulated: specific siddhis, breathwork patterns, and practice sequences designed to address the identified loop. The prescription is not generic — it is calibrated to your dominant archetype, your available practice time, and your current level of experience.
+          </p>
+          <p>
+            Sessions are conducted over WhatsApp video call. No preparation is required beyond knowing your exact time, date, and place of birth. After the session, you receive a written dossier accessible in the KALKI app that includes the full pattern diagnosis, your prescribed sādhana arc, and progress-tracking tools. Follow-up sessions review your practice data and adjust the prescription as your patterns evolve.
+          </p>
+        </div>
+
         {/* ═══════ SESSIONS ═══════ */}
         <motion.div className="space-y-6"
           initial={reduced ? { opacity: 1 } : staggerContainer.hidden}

@@ -279,6 +279,19 @@ export default function SequencesPage() {
               a deeper commitment.
             </p>
             <div className="divider-gold max-w-[200px] mt-8" />
+
+            {/* ── EDITORIAL: Sequence Methodology ── */}
+            <div className="mt-10 max-w-2xl space-y-4 text-text-secondary text-sm leading-relaxed editorial-spacing">
+              <p>
+                In the Tantric sādhana traditions, isolated techniques yield isolated results. A mantra chanted without preparatory purification is like planting a seed in barren soil — the intention may be pure, but the ground cannot sustain it. The KALKI practice sequences are designed to solve this problem by chaining specific siddhis into progressive arcs, where each stage prepares the nervous system, energetic body, and cognitive frame for the next.
+              </p>
+              <p>
+                Each sequence follows a three-phase structure drawn from classical Kaula paddhatis: <em>āvaraṇa-bhedana</em> (dissolving the outer shell — the pattern you are trapped in), <em>sādhana-āropaṇa</em> (installing the new practice — the siddhi that replaces the pattern), and <em>samādhi-samāpti</em> (integration — allowing the new pattern to stabilize through rest and reflective awareness). This is not a linear sequence of techniques but a topology of transformation, where each siddhi modifies the internal landscape to make the next one more effective.
+              </p>
+              <p>
+                The sequences are organized by the emotional pattern they target — not by tradition, lineage, or difficulty level. This is deliberate. The KALKI system identifies your dominant karmic loop through the Mirror Method, then prescribes the sequence that directly addresses that loop. The tier gating exists not as a paywall but as a safeguard: advanced sequences work with powerful psychological material that requires foundational stability to process safely.
+              </p>
+            </div>
           </motion.div>
 
           <motion.div

@@ -127,6 +127,16 @@ export default function PricingPage() {
           </div>
         </div>
 
+        {/* ── EDITORIAL: Access Philosophy ── */}
+        <div className="max-w-2xl mx-auto mb-16 space-y-4 text-text-secondary text-sm leading-relaxed editorial-spacing">
+          <p>
+            The KALKI access structure follows the Tantric principle of <em>adhikāra-bheda</em> — the distinction of qualification. In every living lineage, the guru does not teach the same practice to everyone. The beginner receives foundational purification; the intermediate practitioner receives transformative techniques; the advanced initiate receives direct transmission. This is not elitism but precision — giving a practitioner a technique they are not prepared for does not accelerate their growth, it creates energetic instability that can take months to correct.
+          </p>
+          <p>
+            The four tiers — Prithvi (Earth), Jal (Water), Agni (Fire), Akash (Space) — map to the classical <em>tattva</em> (element) progression found in both Śaiva and Śākta cosmologies. Prithvi establishes the ground: basic siddhis, foundational breathwork, and the Mirror Method framework. Jal deepens the current: intermediate siddhis, full archive access, and breathwork retention. Agni ignites transformation: advanced siddhis, live consultations, and guru sessions. Akash dissolves boundaries: unrestricted access, priority guidance, and personal practice design. Each tier is a complete stage — not a partial version of the next.
+          </p>
+        </div>
+
         {/* Tier cards */}
         <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" initial={reduced ? { opacity: 1 } : staggerContainer.hidden} animate={staggerContainer.visible}>
           {pricingTiers.map((tier) => {
@@ -236,6 +246,19 @@ export default function PricingPage() {
           viewport={{ once: true }}
         >
           <h3 className="font-display text-2xl text-foreground text-center mb-12 engraved-heading">Frequently Asked Questions</h3>
+
+          {/* ── Always-visible FAQ highlights for SEO ── */}
+          <div className="space-y-6 mb-12 text-text-secondary text-sm leading-relaxed editorial-spacing">
+            <div>
+              <h4 className="font-display text-base text-foreground mb-2">{FAQ_DATA[0].question}</h4>
+              <p>{FAQ_DATA[0].answer}</p>
+            </div>
+            <div>
+              <h4 className="font-display text-base text-foreground mb-2">{FAQ_DATA[2].question}</h4>
+              <p>{FAQ_DATA[2].answer}</p>
+            </div>
+          </div>
+
           <div>
             {FAQ_DATA.map((item, i) => (
               <div key={i} className="border-b border-gold/5">

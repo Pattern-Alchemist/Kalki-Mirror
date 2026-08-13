@@ -229,6 +229,22 @@ export default function DeitiesPage() {
         </div>
       </div>
 
+      {/* ── EDITORIAL: What Are Archetypes? ── */}
+      <div className="max-w-3xl mx-auto px-6 lg:px-10 mt-8 mb-8">
+        <div className="space-y-4 text-text-secondary text-sm leading-relaxed editorial-spacing">
+          <p>
+            In the KALKI framework, archetypes are not abstract psychological constructs — they are <em>structural forces</em> that organize human experience into repeating patterns. The concept draws from the Tantric understanding of <em>devatā</em> (deity as a form of consciousness) combined with the modern psychological insight that humans tend to cluster around predictable behavioral loops. Each archetype in this compendium maps a specific loop: the pattern that keeps you trapped, the mechanism by which it sustains itself, and the sādhana (structured practice) that can dissolve it.
+          </p>
+          <p>
+            The term "karmic loop" is used deliberately. In Buddhist psychology, <em>kleśa</em> (afflictive mental states) create repetitive patterns of perception and reaction — the same situation triggers the same response, which produces the same suffering, which reinforces the pattern. The Tantric approach does not seek to suppress these loops but to <em>enter</em> them fully, experience their structure from the inside, and dissolve them through direct awareness. Each archetype provides a complete topology: the trigger, the emotional signature, the cognitive distortion it produces, the siddhis (practices) that address it, and the related behavioral patterns it connects to.
+          </p>
+          <p>
+            The caution levels — Open, Moderate, High, and Sealed — indicate not the danger of the archetype itself but the depth of psychological material it accesses. High-caution archetypes (Kālī, Tārā, Chinnamastā, Bhairavī, Bagalāmukhī) deal with ego-dissolution, rescue-dependency, self-sacrifice, authority-wounding, and silencing — material that, when engaged without preparation, can destabilize rather than liberate. The tier system exists to ensure you have built sufficient foundational stability before engaging these forces. This is consistent with every living lineage: the guru does not give the advanced mantra until the vessel is prepared.
+          </p>
+        </div>
+        <div className="divider-gold max-w-[200px] mt-8" />
+      </div>
+
       {/* ── Main Content ── */}
       <section className="pb-32">
         <div className="max-w-5xl mx-auto px-6 lg:px-10">

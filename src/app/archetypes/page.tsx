@@ -177,6 +177,19 @@ export default function ArchetypesPage() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-16 md:py-24">
         <BackButton href="/" label="Back to Home" className="mb-10" />
 
+        {/* ── EDITORIAL: The Mahāvidyā System ── */}
+        <div className="max-w-2xl mx-auto my-12 space-y-4 text-text-secondary text-sm leading-relaxed editorial-spacing">
+          <p>
+            The Ten Mahāvidyās ("Ten Great Wisdoms") are a corpus of ten goddess forms from the Śrī Vidyā tradition of Śākta Tantra, first systematized in texts like the <em>Ṭoḍa Tantra</em>, the <em>Prānatoṣiṇī</em>, and the <em>Mahābhāgavata Purāṇa</em>. In the KALKI system, each Mahāvidyā is treated not as a deity to be worshipped in the devotional sense but as a <em>topological map</em> of a specific karmic loop — a recurring pattern of perception, desire, and action that creates suffering. Kālī maps the ego-attachment loop. Tārā maps the rescue-dependency loop. Chinnamastā maps the self-sacrifice loop. Each goddess encodes the complete structure: how the pattern arises, what sustains it, and what sādhana dissolves it.
+          </p>
+          <p>
+            This framework is combined with the Mirror Method, KALKI's structured self-inquiry system. The Mirror Method identifies which pattern is dominant in your current life phase through a combination of birth-chart analysis, behavioral self-assessment, and AI-driven pattern recognition. Once your dominant archetype is identified, the system prescribes specific siddhis (practices) that address the loop directly — not by suppressing it, but by entering it fully, experiencing its structure from the inside, and dissolving it through direct awareness. This approach is drawn from the Tantric principle of <em>āveśa</em> (entering into) — rather than <em>tyāga</em> (renouncing from outside).
+          </p>
+          <p>
+            The six supplementary archetypes — Pāśupata Ascetic, Nāth Alchemist, Vajrayoginī, Pratyaṅgirā, Ṣaṭ-karma, and Preta-Siddhi — extend the framework beyond the Mahāvidyā matrix to capture loops from Śaiva asceticism, Nāth alchemy, Buddhist Vajrayāna, Atharvaṇa protective rites, and the Aghora continuum. These supplementary archetypes address patterns that the goddess system alone does not fully account for: the loop of asceticism-as-identity, the collector's trap of accumulating techniques without embodiment, the bypass of peak experiences, and the hypervigilance that calcifies into permanent armor.
+          </p>
+        </div>
+
         {/* ── Editorial Divider with ParallaxText ── */}
         <div className="divider-gold my-12" />
         <ParallaxText speed={-0.06} className="my-12">

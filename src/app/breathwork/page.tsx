@@ -240,6 +240,19 @@ export default function BreathworkPage() {
               an animated visualizer for guided practice.
             </p>
             <div className="divider-gold max-w-[200px] mt-8" />
+
+            {/* ── EDITORIAL: Prāṇāyāma Tradition ── */}
+            <div className="mt-10 max-w-2xl space-y-4 text-text-secondary text-sm leading-relaxed editorial-spacing">
+              <p>
+                Prāṇāyāma — from <em>prāṇa</em> (vital breath, life-force) and <em>āyāma</em> (extension, expansion) — is the fourth limb of Patañjali's aṣṭāṅga yoga and one of the six purification techniques (<em>ṣaṭkarma</em>) in the Haṭha Yoga Pradīpikā. In the Tantric traditions, however, breathwork occupies a far more central role than mere preparation for meditation. The breath is understood as the gross visible wave of prāṇa — the subtle energy that animates consciousness itself. Working with the breath is not a relaxation technique but a direct intervention in the energetics of awareness.
+              </p>
+              <p>
+                The twelve patterns in this laboratory span four categories drawn from classical and field-attested sources. The foundational patterns — alternate-nostril breathing (<em>nāḍī śodhana</em>), abdominal breathing, and the victory breath (<em>ujjāyī</em>) — purify the nāḍī channels and establish the prāṇic baseline required for all subsequent work. The intermediate patterns introduce kumbhaka (breath retention), which is where prāṇāyāma becomes genuinely transformative: retention creates a controlled pressure differential in the energetic body that can dissolve blockages, activate dormant nāḍīs, and shift the dominant nostril cycle. Advanced patterns like kevala kumbhaka (spontaneous cessation of breath) represent the threshold where voluntary prāṇāyāma dissolves into the natural state of samādhi.
+              </p>
+              <p>
+                The animated visualizer is not cosmetic. In traditional transmission, the guru demonstrates the rhythm and ratio of each technique — the precise timing of inhalation, retention, and exhalation — because these ratios determine whether the practice is calming, stimulating, or balancing. The visualizer replaces this in-person demonstration, showing you the exact phase transitions and timing. Follow it precisely. The prāṇāyāma tradition is precise: a ratio of 1:4:2 (inhalation:retention:exhalation) produces a fundamentally different effect than 1:2:2. Do not improvise the ratios until you have practiced a pattern consistently for at least forty days.
+              </p>
+            </div>
           </motion.div>
 
           <motion.div

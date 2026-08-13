@@ -324,6 +324,19 @@ export default function SadhanaLibraryPage() {
           the systematic transformation of consciousness.
         </motion.p>
 
+        {/* ── EDITORIAL: How to Use This Library ── */}
+        <div className="max-w-3xl space-y-4 text-text-secondary text-sm leading-relaxed editorial-spacing mb-12">
+          <p>
+            Each protocol in this library follows a standardized structure: an evidence grade (TRADITIONAL, ORAL, FIELD, or RECONSTRUCTED), a list of required materials, a step-by-step practice procedure, the recommended duration and repetition count, and where applicable, contraindications and preparatory requirements. The thirteen categories — Mantra, Yantra, Nyāsa, Pūjā, Dhāraṇā, Prāṇāyāma, Dhyāna, Dhūni, Śmāśana, Bhasma, Japa, Kuṇḍalinī, and Sevā — are not arbitrary groupings but follow the classical aṅga (limb) system of tantrik practice, with additions from the Aghora and Nāth streams.
+          </p>
+          <p>
+            To use this library effectively, begin with the category that corresponds to your current practice focus. If you are new to structured practice, start with Mantra (japa repetition) or Prāṇāyāma (breath regulation) — these categories contain the most accessible protocols and require the least preparation. Each protocol includes its minimum access tier: Prithvi (free) protocols are open to all; Jal, Agni, and Akash protocols require corresponding membership tiers. This is not arbitrary restriction — higher-tier practices engage more powerful psychological and energetic material, and the tier system ensures you have built the necessary foundational stability.
+          </p>
+          <p>
+            Protocols marked as FIELD or RECONSTRUCTED are drawn from practitioner field manuals and fragmented textual sources. They have been assembled into complete, practiceable formats but may differ from specific living lineages. Protocols marked TRADITIONAL or ORAL carry the weight of verified transmission. The evidence grade is displayed on each protocol card and should inform how seriously you approach the practice — not as a measure of effectiveness, but as an indicator of how much verification exists behind it.
+          </p>
+        </div>
+
         {/* Stats bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 mb-16">
           <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-4">
