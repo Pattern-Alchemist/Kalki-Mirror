@@ -22,7 +22,7 @@ import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import Link from 'next/link';
 
 /* ── Zone Backgrounds ── */
-const ZONE_MIRROR = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/forgotten-chamber-yantras';
+const ZONE_MIRROR = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/patterns/sadhu-ash-gold-hero';
 const ZONE_CONFRONTATION = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/abandoned-temple';
 const ZONE_DISSOLUTION = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cremation-ground';
 

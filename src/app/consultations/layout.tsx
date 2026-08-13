@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       'Book a private consultation with the Archivist. Birth-chart analysis, pattern decoding, siddhi pathway mapping, and tantrik guidance — in person or remote.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-cremation-ground-alt',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/consult/contemplation-hero',
         width: 1200,
         height: 630,
         alt: 'Consultations — KALKI',

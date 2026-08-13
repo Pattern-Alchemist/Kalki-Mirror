@@ -22,8 +22,8 @@ export default function ConsultationsPage() {
       {/* ═══════ CINEMATIC HERO ═══════ */}
       <section className="relative min-h-[90vh] md:min-h-[100vh] overflow-hidden">
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-ritual-chamber-alt'
-          alt="Consult the Archivist — cinematic hero"
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/consult/contemplation-hero'
+          alt="Contemplative figure in sacred space — consult the archivist"
           fill
           kenBurns='slow'
           scrim='bottom'
@@ -179,8 +179,8 @@ export default function ConsultationsPage() {
       <section className="relative py-24 md:py-36">
         <ScrollParallax speed={-0.06} disabled>
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/underground-library'
-            alt="Ancient codex scroll"
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-stone-ashram-interior'
+            alt="Ancient stone ashram interior — the repository of forbidden tantric knowledge"
             className="absolute inset-0"
             scrim="full"
             vignette

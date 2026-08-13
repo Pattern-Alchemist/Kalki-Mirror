@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       'Fifty-four lessons across eight phases — from foundational orientation through non-dual integration. The most comprehensive online Aghorī Tantra course, grounded in living lineage and scholarly evidence.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/bhairava-pathway',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori-tantra/shmashana-hero',
         width: 1920,
         alt: 'Aghorī Tantra Course — KALKI',
       },

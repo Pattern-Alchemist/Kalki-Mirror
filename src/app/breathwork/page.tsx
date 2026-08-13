@@ -271,8 +271,8 @@ export default function BreathworkPage() {
       <section className="relative py-24 md:py-36">
         <ScrollParallax speed={-0.06} disabled>
           <CinematicImage
-            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/underground-library"
-            alt="Ancient codex"
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-stone-ashram-interior"
+            alt="Ancient stone ashram interior — the repository of forbidden tantric knowledge"
             className="absolute inset-0"
             scrim="full"
             vignette

@@ -59,7 +59,7 @@ const stages = [
     title: 'Conscious Intervention',
     titleSanskrit: 'Sādhanā Praveśa',
     text: 'This is where the ancient meets the personal. With awareness of the pattern, its origin, its reinforcement, and its expression, you can now choose a different response. The specific sādhana prescribed for your pattern becomes the tool of intervention — not as an escape, but as a disciplined practice of rewiring. Mantra dissolves the emotional charge. Prāṇāyāma regulates the nervous system. Yantra meditation rewires spatial cognition. Each practice targets a specific layer of the pattern, creating a comprehensive intervention that addresses not just the symptom but the root. This is not self-improvement. This is self-dissolution — the systematic untying of knots you did not know you carried.',
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/copper-trident-courtyard',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ascetic-ash-fire-contemplation',
     icon: '◉',
     color: STAGE_ACCENT_COLORS.gold,
   },
@@ -411,8 +411,8 @@ export default function MethodPage() {
       {/* ═══ CINEMATIC STRIP I ═══ */}
       <ScrollParallax speed={-0.15} className="cinematic-strip">
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/nadi-shuddhi-practice'
-          alt='Ceremonial altar with sacred instruments'
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ascetic-water-practice'
+          alt='Ascetic performing water ritual at Himalayan ghat — Nadi Shuddhi channel purification'
           kenBurns="normal"
           filmGrain={false}
         />
@@ -464,8 +464,8 @@ export default function MethodPage() {
       <section className="relative py-24 md:py-36 safe-bottom">
         <ScrollParallax speed={-0.06} disabled>
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/underground-library'
-            alt='Ancient codex with golden illumination'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-stone-ashram-interior'
+            alt='Ancient stone ashram interior — the repository of forbidden tantric knowledge'
             className="absolute inset-0"
             scrim="full"
             vignette

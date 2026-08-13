@@ -259,8 +259,8 @@ export default function SadhanaLibraryPage() {
       {/* Hero */}
       <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
-          src='/assets/aghori/course/forgotten-chamber.jpeg'
-          alt='The Sadhana Library — Structured Practice Protocols'
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/library/ashram-hero'
+          alt='Ancient ashram interior with firelight — the Sadhana Library'
           kenBurns="slow"
           scrim="bottom"
           vignette

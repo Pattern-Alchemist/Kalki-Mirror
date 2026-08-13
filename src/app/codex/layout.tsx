@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       'The KALKI Codex — a five-part digital manifesto covering the Shambhala Protocol, Mirror Method, and tantrik cosmology. The foundational text of the KALKI system.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-ritual-chamber-alt',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/codex/sanskrit-plate-hero',
         width: 1200,
         height: 630,
         alt: 'The Codex — KALKI',

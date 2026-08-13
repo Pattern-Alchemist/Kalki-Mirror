@@ -112,8 +112,8 @@ export default function HomePage() {
       {/* ===== CINEMATIC STRIP I — Cave yantras (with parallax) ===== */}
       <ScrollParallax speed={-0.2} disabled={isMobile} className="cinematic-strip">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/forgotten-forest-shrine"
-          alt="Ancient cave with flickering butter lamps illuminating carved yantras"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/stone-gateway-ancient-forest"
+          alt="Ancient stone gateway in forest with rudraksha mala, copper pot, and ritual trident — the entrance to practice"
           kenBurns={isMobile ? 'none' : 'normal'}
           filmGrain={false}
         />
@@ -151,8 +151,8 @@ export default function HomePage() {
         <ScrollParallax speed={0.1} disabled={isMobile}>
           <Link href="/practice" className="group relative overflow-hidden block min-h-[70vh] md:min-h-[85vh]">
             <CinematicImage
-              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/mountain-pass-trident"
-              alt="Mountain pass with ritual trident under twilight sky — the path of practice"
+              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ascetic-walking-mountain-path"
+              alt="Ascetic walking barefoot on a golden-hour Himalayan mountain path toward a distant temple — the path of practice"
               kenBurns={isMobile ? 'none' : 'normal'}
               scrim="bottom"
               volumetric
@@ -205,8 +205,8 @@ export default function HomePage() {
       <section className="relative py-20 md:py-32 section-scrim-dim">
         <ScrollParallax speed={-0.12} disabled={isMobile}>
           <CinematicImage
-            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/forgotten-chamber-yantras"
-            alt="Forgotten forest shrine draped in mist and ancient light"
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-stone-ashram-interior"
+            alt="Empty ancient stone ashram interior with firelight and smoke — the space where patterns are revealed"
             scrim="full"
             vignette
             className="absolute inset-0"
@@ -248,8 +248,8 @@ className="section-label editorial-heading mb-6"
       <section className="relative py-28 md:py-40">
         <ScrollParallax speed={-0.1} disabled={isMobile}>
           <CinematicImage
-            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/underground-library"
-            alt="Forgotten chamber with volumetric god rays illuminating ancient yantras and sacred artifacts"
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-stone-ashram-interior"
+            alt="Ancient stone ashram interior — the repository of forbidden tantric knowledge"
             scrim="full"
             vignette
             dust
@@ -290,7 +290,7 @@ className="section-label editorial-heading mb-6"
       {/* ===== CINEMATIC STRIP III — Underground library (with parallax) ===== */}
       <ScrollParallax speed={-0.2} disabled={isMobile} className="cinematic-strip">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/underground-library"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-stone-ashram-interior"
           alt="Vast underground library of ancient manuscripts and golden artifacts"
           kenBurns={isMobile ? 'none' : 'normal'}
           filmGrain={false}
@@ -351,8 +351,8 @@ className="section-label editorial-heading mb-6"
                 }}
               >
                 <CinematicImage
-                  src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/nadi-shuddhi-practice"
-                  alt="Nadi Shuddhi channel purification — subtle energy pathways"
+                  src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ascetic-water-practice"
+                  alt="Ascetic performing water ritual at Himalayan ghat steps with copper pot and rudraksha — Nadi Shuddhi channel purification"
                 />
               </div>
             </ScrollParallax>
@@ -365,8 +365,8 @@ className="section-label editorial-heading mb-6"
         {/* New background image — copper trident courtyard */}
         <ScrollParallax speed={-0.06} disabled={isMobile}>
           <CinematicImage
-            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/copper-trident-courtyard"
-            alt="Copper trident in ancient stone courtyard — the depth of commitment"
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ascetic-ash-fire-contemplation"
+            alt="Rudraksha, copper vessel, ash and fire — the earth element grounding of tantric practice"
             className="absolute inset-0"
           />
         </ScrollParallax>
@@ -394,8 +394,8 @@ className="section-label editorial-heading mb-6"
       {/* ===== CINEMATIC STRIP IV — Observatory (with parallax) ===== */}
       <ScrollParallax speed={-0.2} disabled={isMobile} className="cinematic-strip">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/meditation-platform-overlooking"
-          alt="Ancient astronomical observatory with brass instruments under night sky"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ascetic-himalayan-overlook"
+          alt="Ascetic performing smoke ritual at twilight overlooking Himalayan valleys — the water element of expansion"
           kenBurns={isMobile ? 'none' : 'normal'}
           filmGrain={false}
         />

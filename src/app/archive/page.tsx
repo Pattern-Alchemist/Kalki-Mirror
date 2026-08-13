@@ -35,7 +35,7 @@ function zoneSrc(w: number, path: string) {
 function zoneSrcSet(path: string) {
   return [640, 768, 1024, 1280, 1920].map(w => `${zoneSrc(w, path)} ${w}w`).join(', ');
 }
-const ZONE_THRESHOLD = 'home/forgotten-forest-shrine';
+const ZONE_THRESHOLD = 'archive/banyan-archive-hero';
 const ZONE_READING_ROOM = 'archive/sacred-geometry-manuscript';
 const ZONE_DEEP = 'tantra/ancient-observatory';
 
@@ -659,8 +659,8 @@ export default function ArchivePage() {
       <section className="relative py-24 md:py-36">
         <ScrollParallax speed={-0.06} disabled>
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/underground-library'
-            alt='Ancient codex with golden illumination'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-stone-ashram-interior'
+            alt='Ancient stone ashram interior — the repository of forbidden tantric knowledge'
             className="absolute inset-0"
             scrim="full"
             vignette
