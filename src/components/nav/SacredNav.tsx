@@ -27,12 +27,13 @@ const NAV_GROUPS: NavGroup[] = [
       { href: '/archetypes', label: 'Archetypes' },
       { href: '/codex', label: 'Codex' },
       { href: '/method', label: 'The Method' },
+      { href: '/research', label: 'Research' },
     ],
   },
   {
     label: 'Deeper',
     links: [
-      { href: '/aghoiri-tantra', label: 'Aghori Tantra' },
+      { href: '/aghori-tantra', label: 'Aghori Tantra' },
       { href: '/dossier', label: 'Dossier' },
       { href: '/pricing', label: 'Membership' },
     ],

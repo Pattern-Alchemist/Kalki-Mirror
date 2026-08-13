@@ -399,14 +399,73 @@ export default function ArchivePage() {
                 />
               </div>
 
-              <div className="md:flex md:items-center gap-4">
+              {/* Mobile: collapsible filter panel — 24 buttons is too many for horizontal scroll */}
+              <details className="md:hidden border border-gold/10 rounded-sm mb-4">
+                <summary className="px-4 py-3.5 text-sm font-ui tracking-[0.1em] uppercase text-text-muted cursor-pointer list-none flex items-center justify-between min-h-[44px]">
+                  <span>Filter Archive</span>
+                  <span className="text-gold/40 text-xs">{'\u25BC'}</span>
+                </summary>
+                <div className="px-4 pb-4 space-y-4">
+                  <div className="flex flex-wrap gap-2">
+                    {CATEGORIES.map((cat) => (
+                      <button
+                        key={cat}
+                        onClick={() => handleFilterChange(setFilter, cat)}
+                        className={cn(
+                          'px-3.5 py-2 text-[0.8125rem] font-ui tracking-[0.1em] uppercase rounded-sm transition-all duration-400 min-h-[44px]',
+                          filter === cat
+                            ? 'bg-gold text-deep-black'
+                            : 'bg-surface/30 text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
+                        )}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {CAUTION_FILTERS.map((c) => (
+                      <button
+                        key={c.value}
+                        onClick={() => handleFilterChange(setCautionFilter, c.value)}
+                        className={cn(
+                          'px-3.5 py-2 text-[0.8125rem] font-mono tracking-[0.1em] uppercase rounded-sm transition-all duration-400 min-h-[44px]',
+                          cautionFilter === c.value
+                            ? 'bg-gold text-deep-black'
+                            : 'text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
+                        )}
+                      >
+                        {c.label}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {TIER_FILTERS.map((t) => (
+                      <button
+                        key={t.value}
+                        onClick={() => handleFilterChange(setTierFilter, t.value)}
+                        className={cn(
+                          'px-3.5 py-2 text-[0.8125rem] font-mono tracking-[0.1em] uppercase rounded-sm transition-all duration-400 min-h-[44px]',
+                          tierFilter === t.value
+                            ? 'bg-gold text-deep-black'
+                            : 'text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
+                        )}
+                      >
+                        {t.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </details>
+
+              {/* Desktop: always-visible filter rows */}
+              <div className="hidden md:flex md:items-center gap-4">
                 <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-1 px-1 snap-x snap-mandatory">
                   {CATEGORIES.map((cat) => (
                     <button
                       key={cat}
                       onClick={() => handleFilterChange(setFilter, cat)}
                       className={cn(
-                        'px-3.5 py-2 text-[0.8125rem] font-ui tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
+                        'px-3.5 py-2 text-[0.8125rem] font-ui tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow min-h-[44px]',
                         filter === cat
                           ? 'bg-gold text-deep-black'
                           : 'bg-surface/30 text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
@@ -418,14 +477,14 @@ export default function ArchivePage() {
                 </div>
               </div>
 
-              <div className="md:flex md:items-center gap-4">
+              <div className="hidden md:flex md:items-center gap-4">
                 <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-1 px-1 snap-x snap-mandatory">
                   {CAUTION_FILTERS.map((c) => (
                     <button
                       key={c.value}
                       onClick={() => handleFilterChange(setCautionFilter, c.value)}
                       className={cn(
-                        'px-3.5 py-2 text-[0.8125rem] font-mono tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
+                        'px-3.5 py-2 text-[0.8125rem] font-mono tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow min-h-[44px]',
                         cautionFilter === c.value
                           ? 'bg-gold text-deep-black'
                           : 'text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
@@ -436,7 +495,7 @@ export default function ArchivePage() {
                   ))}
                 </div>
 
-                <span className="hidden md:block text-text-muted/30">{'\u00B7'}</span>
+                <span className="text-text-muted/30">{'\u00B7'}</span>
 
                 <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-1 px-1 snap-x snap-mandatory">
                   {TIER_FILTERS.map((t) => (
@@ -444,7 +503,7 @@ export default function ArchivePage() {
                       key={t.value}
                       onClick={() => handleFilterChange(setTierFilter, t.value)}
                       className={cn(
-                        'px-3.5 py-2 text-[0.8125rem] font-mono tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow',
+                        'px-3.5 py-2 text-[0.8125rem] font-mono tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow min-h-[44px]',
                         tierFilter === t.value
                           ? 'bg-gold text-deep-black'
                           : 'text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
@@ -462,6 +521,7 @@ export default function ArchivePage() {
             </p>
 
             {/* Siddhi Grid */}
+            <h2 className="sr-only">Archive Folios</h2>
             <motion.div
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
               initial={reduced ? { opacity: 1 } : staggerContainer.hidden}

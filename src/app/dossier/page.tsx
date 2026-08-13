@@ -412,9 +412,12 @@ export default function DossierPage() {
 
           {/* Submit */}
           <button
+            type="button"
             onClick={runInitiation}
             disabled={loading || (!query.trim() && !moonSign && !natalMoon)}
-            className="gold-cta w-full md:w-auto disabled:opacity-30 disabled:cursor-not-allowed"
+            tabIndex={loading || (!query.trim() && !moonSign && !natalMoon) ? -1 : 0}
+            aria-disabled={loading || (!query.trim() && !moonSign && !natalMoon)}
+            className="gold-cta w-full md:w-auto disabled:opacity-30 disabled:cursor-not-allowed min-h-[44px]"
           >
             {loading ? 'COMPUTING GEOMETRY...' : 'INITIATE DOSSIER'}
           </button>

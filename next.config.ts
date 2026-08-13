@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
     return [
       { source: '/tantra', destination: '/practice', permanent: true },
       { source: '/consult', destination: '/consultations', permanent: true },
+      { source: '/aghoiri-tantra', destination: '/aghori-tantra', permanent: true },
     ];
   },
 

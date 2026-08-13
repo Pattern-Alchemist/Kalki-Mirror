@@ -12,7 +12,7 @@ import { TIER_LABELS, TIER_ELEMENTS, TIER_COLORS, TIER_BADGE_STYLES } from '@/li
 import { TANTRA_CATEGORIES, getCategoryById } from '@/lib/data/tantra-categories';
 import { sadhanaLibrary, getSadhanasByCategory, SADHANA_COUNT } from '@/lib/data/sadhana-library';
 import { SIDDHI_COUNT } from '@/lib/data/siddhis';
-import { aghoriCourse } from '@/lib/data/aghoiri-tantra-course';
+import { aghoriCourse } from '@/lib/data/aghori-tantra-course';
 import type { Sadhana } from '@/lib/data/types';
 import type { Tier } from '@/lib/data/types';
 
@@ -219,7 +219,7 @@ function SadhanaCard({ sadhana, index }: { sadhana: Sadhana; index: number }) {
                 {/* Course link */}
                 {sadhana.relatedCoursePhase && (
                   <Link
-                    href="/aghoiri-tantra"
+                    href="/aghori-tantra"
                     className="inline-flex items-center gap-2 text-gold-dim hover:text-gold text-xs font-mono tracking-wider uppercase transition-colors"
                   >
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M7 17L17 7M17 7H7M17 7v10" /></svg>
@@ -401,7 +401,7 @@ export default function SadhanaLibraryPage() {
           {filteredSadhana.length === 0 && (
             <div className="text-center py-20">
               <p className="text-foreground/30 text-sm">No protocols yet in this category. Check the Aghori Tantra course for practices that will be added here.</p>
-              <Link href="/aghoiri-tantra" className="ghost-cta inline-block mt-6 text-sm">Go to Course</Link>
+              <Link href="/aghori-tantra" className="ghost-cta inline-block mt-6 text-sm">Go to Course</Link>
             </div>
           )}
         </motion.div>
@@ -419,7 +419,7 @@ export default function SadhanaLibraryPage() {
               <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors mb-1">Akashic Archive</p>
               <p className="text-foreground/40 text-xs">The complete siddhi database — {SIDDHI_COUNT} folios with evidence grading</p>
             </Link>
-            <Link href="/aghoiri-tantra" className="glass-chip p-5 group block hover:border-gold/20 transition-colors">
+            <Link href="/aghori-tantra" className="glass-chip p-5 group block hover:border-gold/20 transition-colors">
               <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors mb-1">Aghori Tantra Course</p>
               <p className="text-foreground/40 text-xs">Eight phases. Fifty-four lessons. A lifetime of practice.</p>
             </Link>

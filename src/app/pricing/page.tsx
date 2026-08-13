@@ -114,13 +114,13 @@ export default function PricingPage() {
 
         <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-20">
           <div className="glass-chip p-1 flex gap-1">
-            <button onClick={() => setCurrency('INR')} className={`px-6 py-2.5 rounded-sm text-[0.65rem] font-ui tracking-[0.15em] uppercase transition-all duration-400 ${currency === 'INR' ? 'bg-gold text-deep-black' : 'text-text-muted hover:text-gold-dim'}`}>INR</button>
-            <button onClick={() => setCurrency('USD')} className={`px-6 py-2.5 rounded-sm text-[0.65rem] font-ui tracking-[0.15em] uppercase transition-all duration-400 ${currency === 'USD' ? 'bg-gold text-deep-black' : 'text-text-muted hover:text-gold-dim'}`}>USD</button>
+            <button onClick={() => setCurrency('INR')} className={`min-h-[44px] px-6 py-2.5 rounded-sm text-[0.65rem] font-ui tracking-[0.15em] uppercase transition-all duration-400 ${currency === 'INR' ? 'bg-gold text-deep-black' : 'text-text-muted hover:text-gold-dim'}`}>INR</button>
+            <button onClick={() => setCurrency('USD')} className={`min-h-[44px] px-6 py-2.5 rounded-sm text-[0.65rem] font-ui tracking-[0.15em] uppercase transition-all duration-400 ${currency === 'USD' ? 'bg-gold text-deep-black' : 'text-text-muted hover:text-gold-dim'}`}>USD</button>
           </div>
-          <div className="flex items-center gap-4">
-            <button onClick={() => setBilling('monthly')} className={`text-sm transition-colors duration-400 ${billing === 'monthly' ? 'text-foreground font-medium' : 'text-text-muted hover:text-text-secondary'}`}>Monthly</button>
+          <div className="flex items-center gap-4" role="radiogroup" aria-label="Billing cycle">
+            <button role="radio" aria-checked={billing === 'monthly'} onClick={() => setBilling('monthly')} className={`min-h-[44px] px-3 text-sm transition-colors duration-400 ${billing === 'monthly' ? 'text-foreground font-medium' : 'text-text-muted hover:text-text-secondary'}`}>Monthly</button>
             <div className="w-px h-4 bg-gold/10" />
-            <button onClick={() => setBilling('yearly')} className={`text-sm transition-colors duration-400 flex items-center gap-3 ${billing === 'yearly' ? 'text-foreground font-medium' : 'text-text-muted hover:text-text-secondary'}`}>
+            <button role="radio" aria-checked={billing === 'yearly'} onClick={() => setBilling('yearly')} className={`min-h-[44px] px-3 text-sm transition-colors duration-400 flex items-center gap-3 ${billing === 'yearly' ? 'text-foreground font-medium' : 'text-text-muted hover:text-text-secondary'}`}>
               Yearly
               <span className="px-2.5 py-1 rounded-full bg-gold/10 text-gold text-[0.8125rem] font-bold uppercase tracking-wider">Save 17%</span>
             </button>
@@ -239,13 +239,13 @@ export default function PricingPage() {
           <div>
             {FAQ_DATA.map((item, i) => (
               <div key={i} className="border-b border-gold/5">
-                <button onClick={() => handleFAQToggle(i)} className="w-full flex items-center justify-between py-6 text-left group" aria-expanded={openFAQ === i}>
+                <button type="button" onClick={() => handleFAQToggle(i)} className="w-full flex items-center justify-between py-6 text-left group min-h-[44px]" aria-expanded={openFAQ === i} aria-controls={`faq-panel-${i}`}>
                   <span className="font-display text-lg text-foreground group-hover:text-gold transition-colors duration-500">{item.question}</span>
                   <span className={`text-gold-dim transition-transform duration-500 ${openFAQ === i ? 'rotate-180' : ''}`}>&#x25BC;</span>
                 </button>
                 <AnimatePresence initial={false}>
                   {openFAQ === i && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.4 }} className="overflow-hidden">
+                    <motion.div id={`faq-panel-${i}`} role="region" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.4 }} className="overflow-hidden">
                       <p className="text-editorial pb-6">{item.answer}</p>
                     </motion.div>
                   )}

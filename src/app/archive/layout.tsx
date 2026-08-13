@@ -7,8 +7,12 @@ export const metadata: Metadata = {
   title: 'The Akashic Archive',
   description:
     '48 siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access. Explore the complete siddhi database.',
+  alternates: {
+    canonical: 'https://www.astrokalki.com/archive',
+  },
   openGraph: {
     title: 'The Akashic Archive | KALKI',
+    url: 'https://www.astrokalki.com/archive',
     description:
       'The ancient forbidden archive of consciousness. 48 siddhis, 16 archetypes, tiered access.',
     images: [

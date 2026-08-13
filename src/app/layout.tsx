@@ -6,7 +6,6 @@ import { SacredFooter } from "@/components/nav/SacredFooter";
 import { WhatsAppCTA } from "@/components/booking/WhatsAppCTA";
 import { TierProvider } from "@/components/layout/TierProvider";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
-import { PageTransition } from "@/components/layout/PageTransition";
 import { PaywallModal } from "@/components/monetization/PaywallModal";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Analytics } from "@vercel/analytics/react";
@@ -48,7 +47,7 @@ export const metadata: Metadata = {
     template: '%s | KALKI',
   },
   description:
-    'Tantrik Intelligence. Sacred Architecture. Pattern Recognition. Where ancient Tantric geometry meets modern computational intelligence.',
+    'Tantrik Intelligence. Sacred Architecture. Pattern Recognition. Where ancient Tantric geometry meets modern computational intelligence. The Architecture of Karma.',
   keywords: ['kalki', 'siddhi', 'tantra', 'yantra', 'akasha', 'sadhana', 'pattern recognition', 'karma', 'shambhala', 'tantrik intelligence', 'mahavidya', 'ten mahavidyas', 'siddhi archive', 'behavioral patterns', 'tantric psychology'],
   authors: [{ name: 'Kaustubh', url: SITE_URL }],
   creator: 'Kaustubh',
@@ -104,15 +103,31 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <meta name="theme-color" content="#0B0C10" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className="min-h-screen bg-deep-black text-foreground antialiased">
+        <noscript>
+          <div style={{ background: '#0B0C10', color: '#d4d0c8', padding: '1rem 2rem', fontFamily: 'Inter, sans-serif', borderBottom: '1px solid rgba(212,175,55,0.2)' }}>
+            <p style={{ marginBottom: '0.5rem' }}>JavaScript is required for the full KALKI experience.</p>
+            <nav style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <a href="/" style={{ color: '#d4af37' }}>Home</a>
+              <a href="/archive" style={{ color: '#d4af37' }}>Archive</a>
+              <a href="/patterns" style={{ color: '#d4af37' }}>Patterns</a>
+              <a href="/practice" style={{ color: '#d4af37' }}>Practice</a>
+              <a href="/pricing" style={{ color: '#d4af37' }}>Membership</a>
+            </nav>
+          </div>
+        </noscript>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-gold focus:text-deep-black focus:text-sm focus:font-ui focus:tracking-wider focus:uppercase focus:rounded-sm">Skip to content</a>
         <TierProvider>
           <SmoothScroll>
-            <SacredNav />
+            <header role="banner">
+              <SacredNav />
+            </header>
             <ScrollProgress />
-            <main className="pt-16 md:pt-20">
-              <PageTransition>{children}</PageTransition>
-            </main>
+            <main id="main-content" className="pt-16 md:pt-20">{children}</main>
             <SacredFooter />
             <div className="fixed-bottom-stack">
               <WhatsAppCTA variant="floating" />

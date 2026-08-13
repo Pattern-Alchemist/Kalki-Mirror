@@ -10,8 +10,8 @@ import Link from 'next/link';
 import { fadeInUp, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 import { TIER_LABELS, TIER_ELEMENTS, TIER_COLORS, TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
-import { aghoriCourse, COURSE_META } from '@/lib/data/aghoiri-tantra-course';
-import type { CourseModule, CourseLesson } from '@/lib/data/aghoiri-tantra-course';
+import { aghoriCourse, COURSE_META } from '@/lib/data/aghori-tantra-course';
+import type { CourseModule, CourseLesson } from '@/lib/data/aghori-tantra-course';
 import type { Tier } from '@/lib/data/types';
 
 /* ─────────────────────────────────────────────────────────────

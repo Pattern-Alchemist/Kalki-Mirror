@@ -194,7 +194,7 @@ const stageDetails: Record<number, { heading: string; text: React.ReactNode; lin
   5: {
     heading: 'Prescribed Intervention',
     text: <p>Conscious intervention is not self-improvement — it is self-dissolution. The specific sādhana prescribed targets your pattern at multiple levels simultaneously: mantra dissolves emotional charge, prāṇāyāma regulates the nervous system, yantra meditation rewires spatial cognition, and specific rituals from the Aghorī tradition address the deepest karmic imprints. The <Link href="/library" className="text-gold hover:text-gold-bright transition-colors underline underline-offset-4 decoration-gold/30">Sādhanā Library</Link> contains 31 evidence-graded protocols for precise intervention.</p>,
-    links: <><Link href="/library" className="ghost-cta text-xs">Sādhanā Library</Link><Link href="/aghoiri-tantra" className="ghost-cta text-xs">Aghorī Tantra Course</Link></>,
+    links: <><Link href="/library" className="ghost-cta text-xs">Sādhanā Library</Link><Link href="/aghori-tantra" className="ghost-cta text-xs">Aghorī Tantra Course</Link></>,
   },
 };
 

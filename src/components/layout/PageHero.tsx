@@ -64,7 +64,6 @@ export function PageHero({
         {subtitle && (
           <motion.p
             className="text-foreground text-xl md:text-2xl max-w-3xl editorial-spacing"
-            style={{textShadow: '0 1px 8px rgba(0,0,0,0.6)'}}
             initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
             animate={fadeInUp.visible}
             transition={{ delay: 0.2, duration: 0.8 }}

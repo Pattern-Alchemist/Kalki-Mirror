@@ -35,23 +35,47 @@ const TierContext = createContext<TierContextValue>({
   upgrade: () => {},
 });
 
+// In-memory flag: once we know the user is unauthenticated,
+// skip all future /api/user/tier calls for this session.
+let _isGuest = false;
+let _fetchPromise: Promise<Tier | null> | null = null;
+
 /**
  * Fetches the authenticated user's real tier from the DB.
  * This is the SOLE source of truth — always fresh, not from a stale JWT.
  * Falls back to null if unauthenticated.
+ *
+ * Optimization: caches the promise to deduplicate concurrent calls,
+ * and remembers guest status to skip future 401 round-trips.
  */
 async function fetchServerTier(): Promise<Tier | null> {
-  try {
-    const res = await fetch('/api/user/tier');
-    if (!res.ok) return null;
-    const data = await res.json();
-    const valid: Tier[] = ['prithvi', 'jal', 'agni', 'akash'];
-    const t = data?.tier;
-    if (t && valid.includes(t)) return t;
-  } catch {
-    // Fetch failed — remain at default tier
-  }
-  return null;
+  // If we already know this session is unauthenticated, skip the call.
+  if (_isGuest) return null;
+
+  // Deduplicate concurrent calls (e.g., multiple TierProvider mounts).
+  if (_fetchPromise) return _fetchPromise;
+
+  _fetchPromise = (async () => {
+    try {
+      const res = await fetch('/api/user/tier');
+      if (res.status === 401) {
+        _isGuest = true; // Remember: no auth token present.
+        return null;
+      }
+      if (!res.ok) return null;
+      const data = await res.json();
+      const valid: Tier[] = ['prithvi', 'jal', 'agni', 'akash'];
+      const t = data?.tier;
+      if (t && valid.includes(t)) return t;
+    } catch {
+      // Fetch failed — remain at default tier
+    } finally {
+      _fetchPromise = null; // Allow future calls after login.
+    }
+    return null;
+  })();
+
+  return _fetchPromise;
 }
 
 // localStorage fallback REMOVED — tier is now server-authoritative only.
@@ -98,6 +122,9 @@ export function TierProvider({ children }: { children: ReactNode }) {
    * or any event that may have changed the tier server-side.
    */
   const refreshTier = useCallback(() => {
+    // Reset guest cache so we actually try the fetch again
+    // (e.g. after key redemption may have changed auth state).
+    _isGuest = false;
     fetchServerTier().then((serverTier) => {
       if (serverTier) setTier(serverTier);
     });
