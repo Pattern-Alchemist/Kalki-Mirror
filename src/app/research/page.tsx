@@ -21,7 +21,7 @@ export default function ResearchPage() {
       {/* ═══ CINEMATIC HERO ═══ */}
       <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-observatory-alt'
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/method/forest-path-hero'
           alt='Research & Sources — Epistemic Rigour'
           kenBurns="slow"
           scrim="bottom"
@@ -135,7 +135,7 @@ export default function ResearchPage() {
       <div className="mt-28">
         <ScrollParallax speed={-0.15} className="cinematic-strip">
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-dark-temple-interior'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/library/ashram-hero'
             alt='Ancient texts and observatory instruments'
             kenBurns="normal"
             filmGrain={false}
