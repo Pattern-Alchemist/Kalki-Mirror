@@ -22,6 +22,11 @@ export async function GET() {
     let dbStatus: 'ok' | 'error' = 'ok';
     let dbLatencyMs = 0;
     let dbError: string | null = null;
+    const envDebug = {
+      TURSO_DATABASE_URL: process.env.TURSO_DATABASE_URL ? process.env.TURSO_DATABASE_URL.slice(0, 30) + '...' : 'NOT SET',
+      TURSO_AUTH_TOKEN: process.env.TURSO_AUTH_TOKEN ? 'SET (' + process.env.TURSO_AUTH_TOKEN.length + ' chars)' : 'NOT SET',
+      DATABASE_URL: process.env.DATABASE_URL ? process.env.DATABASE_URL.slice(0, 30) + '...' : 'NOT SET',
+    };
     try {
       const dbStart = Date.now();
       await db.user.count();
@@ -38,6 +43,7 @@ export async function GET() {
     return NextResponse.json({
       status: isHealthy ? 'ok' : isDegraded || dbStatus === 'ok' ? 'degraded' : 'critical',
       corpus: stats,
+      envDebug,
       database: {
         status: dbStatus,
         latencyMs: dbLatencyMs,
