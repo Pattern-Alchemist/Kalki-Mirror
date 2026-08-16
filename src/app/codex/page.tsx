@@ -248,7 +248,7 @@ const parts = [
 
 /* Cinematic image strips inserted between codex parts */
 const cinematicBreaks = [
-  { after: 1, image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-dark-temple-interior', alt: 'Ancient temple interior — darkness and light' },
+  { after: 1, image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/codex/yantra-divider', alt: 'Ancient temple interior — darkness and light' },
   { after: 3, image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-cremation-ground-alt', alt: 'Cremation ground at twilight — transformation' },
 ];
 
@@ -260,7 +260,7 @@ export default function CodexPage() {
       {/* ── Cinematic Hero ── */}
       <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-ancient-manuscripts'
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/codex/sanskrit-plate-hero'
           alt="Ancient palm-leaf manuscripts"
           kenBurns="slow"
           scrim="bottom"
