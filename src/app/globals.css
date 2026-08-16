@@ -1334,6 +1334,15 @@ button:disabled,
   100% { transform: translateX(200%); }
 }
 
+/* Yantra loading pulse — subtle breathing glow */
+@keyframes yantra-pulse {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.25; transform: scale(1.03); }
+}
+.yantra-loading-pulse {
+  animation: yantra-pulse 3s ease-in-out infinite;
+}
+
 /* Hero video — mobile framing */
 .hero-video-bg {
   object-position: center;

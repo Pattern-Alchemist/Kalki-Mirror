@@ -6,6 +6,7 @@ import { SacredFooter } from "@/components/nav/SacredFooter";
 import { WhatsAppCTA } from "@/components/booking/WhatsAppCTA";
 import { PaywallModal } from "@/components/monetization/PaywallModal";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { PageTransition } from "@/components/layout/PageTransition";
 
 const SITE_URL = 'https://www.astrokalki.com';
 
@@ -34,7 +35,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       </header>
       <ScrollProgress />
       <main id="main-content" className="pt-16 md:pt-20">
-        {children}
+        <PageTransition>{children}</PageTransition>
       </main>
       <SacredFooter />
       <div className="fixed-bottom-stack">

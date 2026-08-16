@@ -200,7 +200,20 @@ export function SacredNav() {
             <div aria-live="assertive" className="sr-only">
               Navigation menu opened. Press Escape to close.
             </div>
-            <div className="absolute inset-0 bg-deep-black/95 backdrop-blur-2xl" />
+            {/* Textured background — dark stone with subtle depth */}
+            <div
+              className="absolute inset-0 bg-deep-black/90"
+              aria-hidden="true"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1280,c_limit/e_brightness:0.15/kalki-mirror/auth/dark-texture-bg`}
+                alt=""
+                className="w-full h-full object-cover opacity-30"
+                draggable={false}
+              />
+            </div>
+            <div className="absolute inset-0 bg-deep-black/60 backdrop-blur-2xl" />
 
             <div className="relative z-10 flex flex-col h-full px-6 py-20 safe-area-x overflow-y-auto">
               <div className="mb-8 flex justify-center">

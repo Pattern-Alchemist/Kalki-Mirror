@@ -117,6 +117,7 @@ export default function RootLayout({
               <a href="/archive" style={{ color: '#d4af37' }}>Archive</a>
               <a href="/patterns" style={{ color: '#d4af37' }}>Patterns</a>
               <a href="/practice" style={{ color: '#d4af37' }}>Practice</a>
+              <a href="/tantra" style={{ color: '#d4af37' }}>Tantra</a>
               <a href="/pricing" style={{ color: '#d4af37' }}>Membership</a>
             </nav>
           </div>

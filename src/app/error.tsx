@@ -4,6 +4,9 @@ import { useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { fadeInUp } from '@/lib/motion/tokens';
 
+const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'b9oo5abp';
+const ERROR_BG = `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto:good,w_1280,c_limit/e_brightness:0.15/kalki-mirror/ui/yantra-error`;
+
 export default function Error({
   error,
   reset,
@@ -19,9 +22,20 @@ export default function Error({
 
   return (
     <div className="min-h-screen bg-deep-black flex items-center justify-center px-6 relative overflow-hidden">
-      {/* Atmospheric background */}
-      <div className="atmospheric-bg absolute inset-0 opacity-40" aria-hidden="true" />
-      <div className="page-vignette absolute inset-0 pointer-events-none" aria-hidden="true" />
+      {/* Yantra error background — very subtle, darkened */}
+      <div className="absolute inset-0 z-0 opacity-15 blur-md" aria-hidden="true">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={ERROR_BG}
+          alt=""
+          className="w-full h-full object-cover"
+          draggable={false}
+        />
+      </div>
+
+      {/* Atmospheric overlays */}
+      <div className="atmospheric-bg absolute inset-0 opacity-40 z-[1]" aria-hidden="true" />
+      <div className="page-vignette absolute inset-0 pointer-events-none z-[2]" aria-hidden="true" />
 
       <div className="relative z-10 max-w-md text-center space-y-6">
         {/* Yantra spinner */}

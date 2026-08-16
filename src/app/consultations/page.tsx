@@ -186,7 +186,21 @@ export default function ConsultationsPage() {
         <div className="divider-gold my-20" />
 
         {/* ═══════ CONSULTATION INTAKE WIZARD ═══════ */}
-        <ConsultationWizard />
+        <div className="relative -mx-6 lg:-mx-10 px-6 lg:px-10 py-16 md:py-24 overflow-hidden">
+          {/* Cinematic form background — sacred ashram interior */}
+          <div className="absolute inset-0 z-0 opacity-10" aria-hidden="true">
+            <CinematicImage
+              cloudinaryId="kalki-mirror/consult/form-bg"
+              alt=""
+              fill
+              filmGrain={false}
+            />
+          </div>
+          <div className="absolute inset-0 z-[1] bg-gradient-to-b from-deep-black via-deep-black/60 to-deep-black" aria-hidden="true" />
+          <div className="relative z-10">
+            <ConsultationWizard />
+          </div>
+        </div>
       </div>
 
       {/* ═══════ CLOSING CTA ═══════ */}
