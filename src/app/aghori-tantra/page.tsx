@@ -449,7 +449,7 @@ export default function AghoriTantraPage() {
       {/* Hero */}
       <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori/course/hero-cremation-initiation'
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori-tantra/shmashana-hero'
           alt='Aghori Tantra — The Pathless Path of Bhairava'
           kenBurns="slow"
           scrim="bottom"
