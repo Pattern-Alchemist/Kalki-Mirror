@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
@@ -86,7 +87,7 @@ function CategoryCard({ cat, sadhanaCount, isSelected, onClick }: { cat: typeof 
 function SadhanaCard({ sadhana, index }: { sadhana: Sadhana; index: number }) {
   const [open, setOpen] = useState(false);
   const cat = getCategoryById(sadhana.categoryId as any);
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   return (
     <GatedContent minTier={sadhana.minTier} label={sadhana.name} teaser={`This practice requires the ${TIER_ELEMENTS[sadhana.minTier]} tier.`}>
@@ -238,7 +239,7 @@ function SadhanaCard({ sadhana, index }: { sadhana: Sadhana; index: number }) {
 
 /* ─── MAIN PAGE ─── */
 export default function SadhanaLibraryPage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const filteredSadhana = useMemo(() => {

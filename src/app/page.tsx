@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { SiddhiCard } from '@/components/archive/SiddhiCard';
 import { PatternCard } from '@/components/patterns/PatternCard';
@@ -19,7 +20,7 @@ const ResonanceToggle = dynamic(() => import('@/components/ui/ResonanceToggle').
 import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function HomePage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const isMobile = useIsMobile();
   const featured = allSiddhis.slice(0, 3);
   const patternPreview = allPatterns.slice(0, 4);

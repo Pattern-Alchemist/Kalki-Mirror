@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { meterFill } from '@/lib/motion/tokens';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 
@@ -9,7 +10,7 @@ interface AuthenticityMeterProps {
 }
 
 export function AuthenticityMeter({ score }: AuthenticityMeterProps) {
-  const prefersReduced = useReducedMotion();
+  const prefersReduced = useNativeReducedMotion();
   const clamped = Math.min(100, Math.max(0, score));
 
   return (

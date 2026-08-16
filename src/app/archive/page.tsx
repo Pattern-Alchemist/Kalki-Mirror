@@ -8,8 +8,8 @@ import {
   useTransform,
   useInView,
   AnimatePresence,
-  useReducedMotion,
 } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import Link from 'next/link';
 import { SiddhiCard } from '@/components/archive/SiddhiCard';
 import { CautionBadge, getCautionLevel } from '@/components/archive/CautionBadge';
@@ -66,7 +66,7 @@ const LIGHT_OPACITY: Record<SiddhiLevel, number> = {
 
 /* ─── Knowledge Lights (reduced on mobile for performance) ─────── */
 function KnowledgeLights({ siddhis }: { siddhis: typeof allSiddhis }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef, { once: true, margin: '-10% 0px' });
   // On mobile, only show Foundation lights (fewer animations)
@@ -145,7 +145,7 @@ function KnowledgeLights({ siddhis }: { siddhis: typeof allSiddhis }) {
 
 /* ─── Zone Divider ────────────────────────────────────────────────── */
 function ZoneDivider({ label, subtitle, index }: { label: string; subtitle: string; index: number }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   return (
     <motion.div
       className="py-16 md:py-24 text-center"
@@ -177,7 +177,7 @@ export default function ArchivePage() {
   const [cautionFilter, setCautionFilter] = useState('all');
   const [tierFilter, setTierFilter] = useState('all');
   const [showCount, setShowCount] = useState(12);
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
 
   /* ── Scroll-driven background crossfade ── */

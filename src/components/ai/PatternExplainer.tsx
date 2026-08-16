@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { AIBlockSkeleton } from '@/components/ui/Skeleton';
 import { AIIdleMessage } from '@/components/ui/AIIdleMessage';
@@ -24,7 +25,7 @@ interface PatternExplainerProps {
 
 /* ── Component ── */
 export function PatternExplainer({ patternSlug, context }: PatternExplainerProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [state, setState] = useState<ExplainerState>('collapsed');
   const [data, setData] = useState<PatternExplanation | null>(null);
   const [error, setError] = useState('');

@@ -1,7 +1,8 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'b9oo5abp';
 const SMOKE_BG = `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto:good,w_1280,c_limit/e_brightness:0.2/kalki-mirror/ui/smoke-transition`;
@@ -15,7 +16,7 @@ const SMOKE_BG = `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto
  */
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   return (
     <AnimatePresence mode="wait">

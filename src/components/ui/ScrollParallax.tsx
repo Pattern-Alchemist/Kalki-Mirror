@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 
 interface ScrollParallaxProps {
   children: React.ReactNode;
@@ -24,7 +25,7 @@ export function ScrollParallax({
   className = '',
   disabled = false,
 }: ScrollParallaxProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -85,7 +86,7 @@ export function ParallaxText({
   speed = -0.08,
   className = '',
 }: ParallaxTextProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({

@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, useReducedMotion, useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { PageHero } from '@/components/layout/PageHero';
 import { BackButton } from '@/components/nav/BackButton';
@@ -49,7 +50,7 @@ function formatTime(totalSeconds: number): string {
 }
 
 function AnimatedTimeDisplay({ seconds, phase }: { seconds: number; phase: string }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const m = Math.floor((seconds % 3600) / 60);
   const s = seconds % 60;
   const h = Math.floor(seconds / 3600);
@@ -69,7 +70,7 @@ function AnimatedTimeDisplay({ seconds, phase }: { seconds: number; phase: strin
 }
 
 export default function MeditationTimerPage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [totalSeconds, setTotalSeconds] = useState(PRESETS[1].seconds);
   const [remaining, setRemaining] = useState(PRESETS[1].seconds);
   const [running, setRunning] = useState(false);

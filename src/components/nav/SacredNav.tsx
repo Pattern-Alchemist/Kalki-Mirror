@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { cn } from '@/lib/utils';
 
 /* Navigation structure with mobile-first grouping */
@@ -50,7 +51,7 @@ export function SacredNav() {
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);

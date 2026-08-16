@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'b9oo5abp';
@@ -14,7 +15,7 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   useEffect(() => {
     console.error('[KALKI] Unhandled error:', error);

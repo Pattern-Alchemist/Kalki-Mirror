@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 
@@ -132,7 +133,7 @@ function Spinner() {
 
 /* ── Component ── */
 export function PricingQuiz() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [state, setState] = useState<QuizState>('intro');
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);

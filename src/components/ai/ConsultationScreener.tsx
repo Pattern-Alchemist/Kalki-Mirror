@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import Link from 'next/link';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { AIIdleMessage } from '@/components/ui/AIIdleMessage';
@@ -31,7 +32,7 @@ const URGENCY_STYLES: Record<string, string> = {
 
 /* ── Component ── */
 export function ConsultationScreener({ name, message, onResult }: ConsultationScreenerProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [state, setState] = useState<ScreenerState>('idle');
   const [result, setResult] = useState<ScreenResult | null>(null);
   const [error, setError] = useState('');

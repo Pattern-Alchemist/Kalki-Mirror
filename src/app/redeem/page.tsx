@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef, type FormEvent } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { BackButton } from '@/components/nav/BackButton';
 import { useTier } from '@/components/layout/TierProvider';
 import { TIER_LABELS, TIER_ELEMENTS } from '@/lib/utils/tier-gate';
@@ -80,7 +81,7 @@ function formatDate(dateStr: string | null): string {
 
 export default function RedeemPage() {
   const { tier: currentTier, refreshTier } = useTier();
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   const [code, setCode] = useState('');
   const [state, setState] = useState<RedeemState>('idle');

@@ -6,22 +6,8 @@ import { allPatterns } from '@/lib/data/patterns';
 import { ALL_ARCHETYPES } from '@/lib/data/archetypes';
 import { getClientIp } from '@/lib/api-auth';
 import { aiPatternExplainSchema } from '@/lib/validators/schemas';
+import { aiRateLimit } from '@/lib/rate-limit';
 
-// ── Rate limiter: 5 req/min per IP ──
-const rateLimitMap = new Map<string, number[]>();
-const RATE_LIMIT_WINDOW = 60_000;
-const RATE_LIMIT_MAX = 5;
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entries = rateLimitMap.get(ip) || [];
-  const recent = entries.filter(t => now - t < RATE_LIMIT_WINDOW);
-  rateLimitMap.set(ip, recent);
-  if (recent.length >= RATE_LIMIT_MAX) return true;
-  recent.push(now);
-  rateLimitMap.set(ip, recent);
-  return false;
-}
 
 /**
  * POST /api/ai/pattern-explain
@@ -70,7 +56,8 @@ export async function POST(request: NextRequest) {
     }
 
     const ip = getClientIp(request);
-    if (isRateLimited(ip)) {
+    const { limited } = await aiRateLimit(ip);
+    if (limited) {
       return NextResponse.json(
         { error: 'Too many requests. The geometry needs time to stabilize.' },
         { status: 429 }

@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import Link from 'next/link';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { AIIdleMessage } from '@/components/ui/AIIdleMessage';
@@ -20,7 +21,7 @@ export function AISearchBar() {
   const [state, setState] = useState<SearchState>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const search = useCallback(async (q: string) => {

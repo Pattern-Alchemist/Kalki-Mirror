@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 interface AcknowledgmentGateProps {
@@ -12,7 +13,7 @@ interface AcknowledgmentGateProps {
 
 export function AcknowledgmentGate({ title, cautionLevel, children }: AcknowledgmentGateProps) {
   const [acknowledged, setAcknowledged] = useState(false);
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   const handleAcknowledge = useCallback(() => {
     setAcknowledged(true);

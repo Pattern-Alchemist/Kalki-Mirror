@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { db } from "@/lib/db";
+import { rateLimit } from "@/lib/rate-limit";
 
 const ADMIN_ROLES = ["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"];
 
@@ -21,20 +22,11 @@ export async function GET(request: NextRequest) {
 
   const query = q.trim();
 
-  // A8: Rate limit this API endpoint
-  const rateLimitKey = `search:${token.id}`;
-  // Simple in-memory rate limit (production: use Redis)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const g = globalThis as any;
-  const searchCounts = g.__admin_search_counts || (g.__admin_search_counts = {});
-  const now = Date.now();
-  const windowMs = 60_000;
-  if (!searchCounts[rateLimitKey]) searchCounts[rateLimitKey] = [];
-  searchCounts[rateLimitKey] = searchCounts[rateLimitKey].filter((t: number) => now - t < windowMs);
-  if (searchCounts[rateLimitKey].length >= 20) {
+  // Rate limit: 20 req/min per admin user
+  const { limited } = await rateLimit({ key: `admin:search:${token.id}`, max: 20, window: 60, prefix: 'admin' });
+  if (limited) {
     return NextResponse.json({ error: "Rate limited" }, { status: 429 });
   }
-  searchCounts[rateLimitKey].push(now);
 
   const results: { type: string; id: string; title: string; subtitle: string; href: string }[] = [];
 

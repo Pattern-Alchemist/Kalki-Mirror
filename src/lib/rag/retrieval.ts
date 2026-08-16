@@ -99,10 +99,19 @@ export async function retrieveChunks(
     : TIER_TO_CAUTION[tier];
 
   // Fetch candidate chunks from DB
+  // Only fetch embedding column when we have an API key (saves ~60% payload per row)
+  const hasApiKey = !!process.env.OPENAI_API_KEY;
   const candidates = await staticDb.folioChunk.findMany({
     where: {
       caution: { in: allowedCautions },
       ...(sectionFilter ? { section: { in: sectionFilter } } : {}),
+    },
+    select: {
+      slug: true,
+      section: true,
+      caution: true,
+      text: true,
+      ...(hasApiKey ? { embedding: true } : {}),
     },
   });
 
@@ -118,7 +127,7 @@ export async function retrieveChunks(
 
     if (useEmbedding) {
       let emb: number[] = [];
-      try { emb = JSON.parse(c.embedding); } catch { /* */ }
+      try { emb = JSON.parse((c as Record<string, unknown>).embedding as string ?? '[]'); } catch { /* */ }
       similarity = cosineSim(queryEmb, emb);
     } else {
       similarity = keywordScore(query, c.text);

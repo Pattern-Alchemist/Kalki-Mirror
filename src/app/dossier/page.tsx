@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { BackButton } from '@/components/nav/BackButton';
 import { CautionBadge } from '@/components/archive/CautionBadge';
 import { CitationCard } from '@/components/dossier/CitationCard';
@@ -98,7 +99,7 @@ const MOON_SIGNS = [
 // ─── Page ───────────────────────────────────────────────────────────────────
 
 export default function DossierPage() {
-  const reduced = useReducedMotion() ?? false;
+  const reduced = useNativeReducedMotion() ?? false;
 
   // Form state
   const [query, setQuery] = useState('');

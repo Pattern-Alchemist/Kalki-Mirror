@@ -1,7 +1,7 @@
 'use client';
 
 import { useReducer, useEffect, useRef } from 'react';
-import { useReducedMotion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { cn } from '@/lib/utils';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
 
@@ -48,7 +48,7 @@ function timerReducer(state: TimerState, action: TimerAction): TimerState {
 }
 
 export function BreathTimer({ patternSlug, className }: BreathTimerProps) {
-  const prefersReduced = useReducedMotion();
+  const prefersReduced = useNativeReducedMotion();
   const pattern = allBreathPatterns.find((p) => p.slug === patternSlug);
 
   const durations = pattern?.phases.map((p) => p.duration) ?? [];

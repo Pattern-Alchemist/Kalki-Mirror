@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { AIIdleMessage } from '@/components/ui/AIIdleMessage';
 
@@ -48,7 +49,7 @@ const TIER_LABELS: Record<string, string> = {
 
 /* ── Component ── */
 export function AdminAIDraft({ type, title, context, onDraft }: AdminAIDraftProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [state, setState] = useState<DraftState>('idle');
   const [result, setResult] = useState<DraftResult | null>(null);
   const [error, setError] = useState('');

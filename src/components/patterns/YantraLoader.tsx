@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import Image from 'next/image';
 
 /**
@@ -26,7 +27,7 @@ interface YantraLoaderProps {
 
 export function YantraLoader({ patternName, onComplete }: YantraLoaderProps) {
   const [step, setStep] = useState(0);
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   useEffect(() => {
     const timers = [

@@ -7,26 +7,8 @@ import { ALL_ARCHETYPES } from '@/lib/data/archetypes';
 import type { Tier } from '@/lib/data/types';
 import { optionalAuth, getClientIp } from '@/lib/api-auth';
 import { yantraSchema } from '@/lib/validators/schemas';
+import { initiateRateLimit } from '@/lib/rate-limit';
 
-/**
- * In-memory rate limiter for /api/yantra.
- * Tracks IP → [{ timestamp }]. Allows 5 requests per minute.
- */
-const rateLimitMap = new Map<string, number[]>();
-const RATE_LIMIT_WINDOW = 60_000; // 1 minute
-const RATE_LIMIT_MAX = 5;
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entries = rateLimitMap.get(ip) || [];
-  // Prune old entries
-  const recent = entries.filter(t => now - t < RATE_LIMIT_WINDOW);
-  rateLimitMap.set(ip, recent);
-  if (recent.length >= RATE_LIMIT_MAX) return true;
-  recent.push(now);
-  rateLimitMap.set(ip, recent);
-  return false;
-}
 
 /**
  * POST /api/yantra
@@ -40,7 +22,8 @@ export async function POST(request: NextRequest) {
   try {
     // Rate limit
     const ip = getClientIp(request);
-    if (isRateLimited(ip)) {
+    const { limited } = await initiateRateLimit(ip);
+    if (limited) {
       return NextResponse.json(
         { error: 'Too many requests. The geometry needs time to stabilize.' },
         { status: 429 }

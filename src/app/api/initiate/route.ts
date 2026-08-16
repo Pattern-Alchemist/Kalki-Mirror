@@ -10,28 +10,15 @@ import { retrievePrescription, retrieveCitation } from '@/lib/rag/retrieval';
 import { buildYantraUserPrompt, YANTRA_SYSTEM_PROMPT } from '@/lib/ai/yantra-prompt';
 import { optionalAuth, getClientIp } from '@/lib/api-auth';
 import { initiateSchema } from '@/lib/validators/schemas';
+import { initiateRateLimit } from '@/lib/rate-limit';
 
-// ── In-memory rate limiter: 5 req/min per IP ──
-const rateLimitMap = new Map<string, number[]>();
-const RATE_WINDOW = 60_000;
-const RATE_MAX = 5;
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entries = rateLimitMap.get(ip) || [];
-  const recent = entries.filter(t => now - t < RATE_WINDOW);
-  rateLimitMap.set(ip, recent);
-  if (recent.length >= RATE_MAX) return true;
-  recent.push(now);
-  rateLimitMap.set(ip, recent);
-  return false;
-}
 
 export async function POST(request: NextRequest) {
   try {
     // Rate limit
     const ip = getClientIp(request);
-    if (isRateLimited(ip)) {
+    const { limited } = await initiateRateLimit(ip);
+    if (limited) {
       return NextResponse.json(
         { error: 'Too many requests. The geometry needs time to stabilize.' },
         { status: 429 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useReducedMotion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { cn } from '@/lib/utils';
 
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || '';
@@ -72,7 +72,7 @@ export function CinematicImage({
   dust = false,
   aspect,
 }: CinematicImageProps) {
-  const prefersReduced = useReducedMotion();
+  const prefersReduced = useNativeReducedMotion();
   const kbClass = prefersReduced
     ? ''
     : kenBurns === 'slow'

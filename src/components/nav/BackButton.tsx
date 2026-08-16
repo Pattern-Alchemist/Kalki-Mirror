@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 interface BackButtonProps {
@@ -11,7 +12,7 @@ interface BackButtonProps {
 }
 
 export function BackButton({ href, label = 'Back', className = '' }: BackButtonProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   return (
     <motion.div
       initial={reduced ? { opacity: 1 } : fadeInUp.hidden}

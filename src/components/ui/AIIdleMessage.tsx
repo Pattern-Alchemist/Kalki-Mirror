@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 /**
@@ -11,7 +12,7 @@ import { fadeInUp } from '@/lib/motion/tokens';
  * Pass children to override (e.g. AISearchBar's shorter variant).
  */
 export function AIIdleMessage({ children, className }: { children?: string; className?: string }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   return (
     <motion.p
       initial={reduced ? { opacity: 1 } : fadeInUp.hidden}

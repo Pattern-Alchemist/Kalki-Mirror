@@ -50,6 +50,43 @@ const pricingJsonLd = {
         { '@type': 'ListItem', position: 2, name: 'Membership', item: `${SITE_URL}/pricing` },
       ],
     },
+    {
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'What is included in the free Prithvi tier?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Prithvi gives you free access to foundational siddhis (Foundation level), the Mirror Method diagnostic, pattern identification, and the public archive. No payment or credit card required.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How do Golden Keys work?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Jal tier members and above receive 3 Golden Keys. Each key grants one person access to your tier level for 30 days. Share them with practitioners who would benefit.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Can I upgrade or downgrade my tier?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes. You can upgrade at any time through the pricing page. The new tier activates immediately. Downgrades take effect at the next billing cycle.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'What payment methods are accepted?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'We accept UPI, credit cards, debit cards, and net banking through our secure Razorpay integration. All prices are in Indian Rupees (INR).',
+          },
+        },
+      ],
+    },
   ],
 };
 

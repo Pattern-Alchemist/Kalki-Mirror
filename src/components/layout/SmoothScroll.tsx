@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import Lenis from 'lenis';
-import { useReducedMotion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 
 /**
  * Lenis smooth scroll — heavy, deliberate, cinematic.
@@ -10,7 +10,7 @@ import { useReducedMotion } from 'framer-motion';
  */
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
-  const prefersReduced = useReducedMotion();
+  const prefersReduced = useNativeReducedMotion();
 
   useEffect(() => {
     // Respect user preference — fall back to native scroll

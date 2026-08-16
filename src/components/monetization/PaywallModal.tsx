@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { useTier } from '@/components/layout/TierProvider';
 import { pricingTiers, formatPrice } from '@/lib/data/pricing';
 import { TIER_ORDER, TIER_LABELS } from '@/lib/utils/tier-gate';
@@ -12,7 +13,7 @@ const WHATSAPP_NUMBER = '918920862931';
 export function PaywallModal() {
   const { tier: currentTier } = useTier();
   const [open, setOpen] = useState(false);
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   const nextTierIdx = TIER_ORDER.indexOf(currentTier) + 1;
   const nextTier = nextTierIdx < TIER_ORDER.length ? TIER_ORDER[nextTierIdx] : null;

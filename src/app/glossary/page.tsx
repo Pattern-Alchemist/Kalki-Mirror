@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { Search, X, ChevronRight, Lock, Volume2, ArrowLeft } from 'lucide-react';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
@@ -77,7 +78,7 @@ function RelatedLinks({ terms }: { terms: string[] }) {
 
 /* ── Expanded card detail ── */
 function ExpandedCard({ entry, onClose }: { entry: GlossaryEntry; onClose: () => void }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   return (
     <motion.div
@@ -166,7 +167,7 @@ function GlossaryCard({
   entry: GlossaryEntry;
   onClick: () => void;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   return (
     <motion.button
@@ -231,7 +232,7 @@ function CardInner({ entry }: { entry: GlossaryEntry }) {
    THE LEXICON — Main Page
    ══════════════════════════════════════════════════════════════ */
 export default function GlossaryPage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('all');

@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 /**
@@ -14,7 +15,7 @@ import { fadeInUp } from '@/lib/motion/tokens';
  * (academics, systems thinkers) than any marketing copy.
  */
 export function UnattestedState() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   return (
     <motion.div

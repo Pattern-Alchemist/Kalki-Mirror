@@ -50,6 +50,35 @@ const consultationsJsonLd = {
         { '@type': 'ListItem', position: 2, name: 'Consultations', item: `${SITE_URL}/consultations` },
       ],
     },
+    {
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'What happens during a consultation?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'The consultation begins with the Mirror Method diagnostic — identifying your dominant karmic loop through behavioral pattern analysis. Based on your birth chart and behavioral query, you receive a prescribed sādhana drawn from the Akashic Archive, tailored to your specific pattern configuration.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How are consultations conducted?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Consultations are conducted via WhatsApp video call. After booking, you will receive a confirmation with the scheduled time. Sessions typically last 45-60 minutes and include follow-up practice review.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Do I need to be a paid member for a consultation?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Consultations are available to Agni tier members and above as part of their membership. Prithvi and Jal members can access the AI-powered dossier diagnostic, which provides pattern analysis and sādhana recommendations without a live session.',
+          },
+        },
+      ],
+    },
   ],
 };
 

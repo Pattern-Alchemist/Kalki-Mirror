@@ -1,7 +1,8 @@
 'use client';
 
 import { useMemo } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { ShieldAlert, ShieldCheck, ShieldBan, Link as LinkIcon, Flame, Zap } from 'lucide-react';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
@@ -55,7 +56,7 @@ function DeityCard({
   archetype: typeof ALL_ARCHETYPES[number];
   index: number;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const stats = getArchetypeStats(archetype.id);
   const CautionIcon = CAUTION_ICONS[archetype.cautionLevel];
   const isHighOrSealed = archetype.cautionLevel === 'HIGH' || archetype.cautionLevel === 'SEALED';
@@ -161,7 +162,7 @@ function DeityCard({
    THE PANTHEON — Main Page
    ══════════════════════════════════════════════════════════════ */
 export default function DeitiesPage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   const mahavidyas = useMemo(() => ALL_ARCHETYPES.slice(0, 10), []);
   const supplementary = useMemo(() => ALL_ARCHETYPES.slice(10), []);

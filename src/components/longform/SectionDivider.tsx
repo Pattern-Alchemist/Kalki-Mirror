@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 
 interface SectionDividerProps {
@@ -10,7 +11,7 @@ interface SectionDividerProps {
 }
 
 export function SectionDivider({ image, caption, alt }: SectionDividerProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   return (
     <motion.figure
       className="my-20 relative"

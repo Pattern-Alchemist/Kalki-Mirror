@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { staggerContainer, staggerItem } from '@/lib/motion/tokens';
 
 interface KnowledgeLink {
@@ -25,7 +26,7 @@ const TYPE_STYLES: Record<string, { label: string; color: string }> = {
 };
 
 export function KnowledgeLinks({ title = 'What should you explore next?', links }: KnowledgeLinksProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   return (
     <motion.section
       className="mt-24 pt-16 border-t border-gold-subtle"

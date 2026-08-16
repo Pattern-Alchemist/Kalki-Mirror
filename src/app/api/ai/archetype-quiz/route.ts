@@ -4,22 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { callLLM, isLLMConfigured, YANTRA_PERSONA } from '@/lib/ai/llm';
 import { getClientIp } from '@/lib/api-auth';
 import { archetypeQuizSchema } from '@/lib/validators/schemas';
+import { aiRateLimit } from '@/lib/rate-limit';
 
-// ── Rate limiter: 5 req/min per IP ──
-const rateLimitMap = new Map<string, number[]>();
-const RATE_LIMIT_WINDOW = 60_000;
-const RATE_LIMIT_MAX = 5;
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entries = rateLimitMap.get(ip) || [];
-  const recent = entries.filter(t => now - t < RATE_LIMIT_WINDOW);
-  rateLimitMap.set(ip, recent);
-  if (recent.length >= RATE_LIMIT_MAX) return true;
-  recent.push(now);
-  rateLimitMap.set(ip, recent);
-  return false;
-}
 
 // ── Rule-based fallback when LLM is not configured ──
 // Maps each answer value to weighted archetype scores
@@ -157,7 +143,8 @@ function normalizeArchetypeId(raw: string): string {
 export async function POST(request: NextRequest) {
   try {
     const ip = getClientIp(request);
-    if (isRateLimited(ip)) {
+    const { limited } = await aiRateLimit(ip);
+    if (limited) {
       return NextResponse.json(
         { error: 'Too many requests. The geometry needs time to stabilize.' },
         { status: 429 }

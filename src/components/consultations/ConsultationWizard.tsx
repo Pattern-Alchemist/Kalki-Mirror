@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { allPatterns } from '@/lib/data/patterns';
 import { fadeInUp, fadeIn } from '@/lib/motion/tokens';
 import { submitConsultation } from '@/app/consultations/actions';
@@ -447,7 +448,7 @@ function StepContactScheduling({
 /* ─── Main Wizard Component ─── */
 
 export default function ConsultationWizard() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [currentStep, setCurrentStep] = useState(0);
   const [form, setForm] = useState<WizardFormData>(INITIAL_FORM);
   const [submitted, setSubmitted] = useState(false);

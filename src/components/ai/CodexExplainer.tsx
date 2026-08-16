@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { AIBlockSkeleton } from '@/components/ui/Skeleton';
 import { AIIdleMessage } from '@/components/ui/AIIdleMessage';
@@ -20,7 +21,7 @@ interface CodexExplainerProps {
 
 /* ── Component ── */
 export function CodexExplainer({ initialText }: CodexExplainerProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [content, setContent] = useState(initialText || '');
   const [style, setStyle] = useState<'beginner' | 'technical'>('beginner');
   const [state, setState] = useState<ExplainerState>('idle');

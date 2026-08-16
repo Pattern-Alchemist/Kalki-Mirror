@@ -1,14 +1,15 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 
 export function ResonanceToggle() {
   const [active, setActive] = useState(false);
   const [visible, setVisible] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const nodesRef = useRef<{ gain: GainNode; osc1: OscillatorNode; osc2: OscillatorNode; lfo: OscillatorNode; lfoGain: GainNode } | null>(null);
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   useEffect(() => {
     const timer = setTimeout(() => setVisible(true), 4000);

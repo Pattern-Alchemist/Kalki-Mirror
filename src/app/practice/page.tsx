@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { BackButton } from '@/components/nav/BackButton';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { CinematicImage } from '@/components/ui/CinematicImage';
@@ -82,7 +83,7 @@ function StatCard({
   value: number;
   suffix?: string;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   return (
     <motion.div
       className="glass-panel p-4 md:p-6 flex flex-col items-center text-center gap-2"
@@ -104,7 +105,7 @@ function StatCard({
 
 /* ── Calendar Heatmap ── */
 function CalendarHeatmap({ sessions }: { sessions: SessionRecord[] }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const today = useMemo(() => {
     const d = new Date();
     d.setHours(0, 0, 0, 0);
@@ -259,7 +260,7 @@ function SessionTimer({
   const [isRunning, setIsRunning] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [elapsed, setElapsed] = useState(0);
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const handleStart = useCallback(() => {
@@ -377,7 +378,7 @@ function SessionTimer({
 
 /* ── Recent Session Card ── */
 function RecentSessionCard({ session }: { session: SessionRecord }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const moodLabel = (v: number | null) => {
     if (v == null) return '--';
     return MOOD_LABELS[v - 1];
@@ -428,7 +429,7 @@ function RecentSessionCard({ session }: { session: SessionRecord }) {
    ══════════════════════════════════════════════════════════════ */
 
 export default function PracticeLoggerPage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   // ── Data state ──
   const [stats, setStats] = useState<SessionStats | null>(null);

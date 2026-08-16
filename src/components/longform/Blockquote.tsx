@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 interface BlockquoteProps {
@@ -10,7 +11,7 @@ interface BlockquoteProps {
 }
 
 export function Blockquote({ children, attribution, source }: BlockquoteProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   return (
     <motion.blockquote
       className="relative border-l-2 border-gold-dim pl-8 py-2 my-12"

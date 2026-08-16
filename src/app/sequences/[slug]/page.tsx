@@ -3,7 +3,8 @@
 import { use } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { allSequences } from '@/lib/data/sequences';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { allPatterns } from '@/lib/data/patterns';
@@ -123,7 +124,7 @@ export default function SequenceDetailPage({
   const { slug } = use(params);
   const sequence = allSequences.find((s) => s.slug === slug);
   if (!sequence) notFound();
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   const tierLabel = TIER_LABELS[sequence.minTier];
   const targetPatternData = sequence.targetPatterns

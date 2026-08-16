@@ -1,9 +1,9 @@
 'use client';
 
-import { useReducedMotion } from 'framer-motion';
 import { motion } from 'framer-motion';
 import { staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 
 const STEPS = [
   'Pattern Recognition',
@@ -14,7 +14,7 @@ const STEPS = [
 ];
 
 export function MirrorMethodSteps({ className }: { className?: string }) {
-  const prefersReduced = useReducedMotion();
+  const prefersReduced = useNativeReducedMotion();
 
   return (
     <motion.div

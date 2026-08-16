@@ -2,22 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getTransitGeometry, formatTransitForPrompt } from '@/lib/ephemeris/transits';
 import { getClientIp } from '@/lib/api-auth';
 import { transitsSchema } from '@/lib/validators/schemas';
+import { transitRateLimit } from '@/lib/rate-limit';
 
-// ── In-memory rate limiter: 20 req/min per IP ──
-const rateLimitMap = new Map<string, number[]>();
-const RATE_WINDOW = 60_000;
-const RATE_MAX = 20;
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entries = rateLimitMap.get(ip) || [];
-  const recent = entries.filter(t => now - t < RATE_WINDOW);
-  rateLimitMap.set(ip, recent);
-  if (recent.length >= RATE_MAX) return true;
-  recent.push(now);
-  rateLimitMap.set(ip, recent);
-  return false;
-}
 
 /**
  * GET /api/transits?natalMoon=XXX
@@ -31,7 +17,8 @@ export async function GET(request: NextRequest) {
   try {
     // Rate limit
     const ip = getClientIp(request);
-    if (isRateLimited(ip)) {
+    const { limited } = await transitRateLimit(ip);
+    if (limited) {
       return NextResponse.json(
         { error: 'Too many requests. The geometry needs time to stabilize.' },
         { status: 429 }

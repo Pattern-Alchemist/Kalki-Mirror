@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef, useState, useCallback, useEffect } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { cn } from '@/lib/utils';
 
 interface MagneticCardProps {
@@ -28,7 +29,7 @@ export function MagneticCard({
   glare = 0.04,
   hoverScale = 1.02,
 }: MagneticCardProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState({ rotateX: 0, rotateY: 0, x: 0, y: 0, scale: 1 });
   const [glarePos, setGlarePos] = useState({ x: 50, y: 50, opacity: 0 });

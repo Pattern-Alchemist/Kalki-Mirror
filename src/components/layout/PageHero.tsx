@@ -1,7 +1,8 @@
 'use client';
 
 import { CinematicImage } from '@/components/ui/CinematicImage';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 
@@ -30,7 +31,7 @@ export function PageHero({
   volumetric = true,
   dust = true,
 }: PageHeroProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   return (
     <header className={cn('relative flex items-end', minH)}>
       <CinematicImage

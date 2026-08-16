@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { AIIdleMessage } from '@/components/ui/AIIdleMessage';
 
@@ -23,7 +24,7 @@ interface JapaGuideProps {
 
 /* ── Component ── */
 export function JapaGuide({ mantra, count }: JapaGuideProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [state, setState] = useState<GuideState>('collapsed');
   const [data, setData] = useState<JapaGuideResult | null>(null);
   const [error, setError] = useState('');

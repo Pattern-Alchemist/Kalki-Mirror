@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { CautionBadge } from '@/components/archive/CautionBadge';
 import type { Tier, CautionLevel } from '@/lib/data/types';
@@ -37,7 +38,7 @@ interface ArchiveRefsLedgerProps {
  * This drives upgrades by showing users exactly what they're missing.
  */
 export function ArchiveRefsLedger({ refs, refsCaution, userTier }: ArchiveRefsLedgerProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const userTierLevel = TIER_ORDER[userTier];
 
   if (refs.length === 0) return null;

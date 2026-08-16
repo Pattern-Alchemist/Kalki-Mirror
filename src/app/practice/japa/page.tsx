@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { motion, useReducedMotion, useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { PageHero } from '@/components/layout/PageHero';
 import { BackButton } from '@/components/nav/BackButton';
@@ -44,7 +45,7 @@ function saveState(state: JapaState) {
 }
 
 export default function JapaPage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [state, setState] = useState<JapaState>(loadState);
   const [customMantra, setCustomMantra] = useState('');
   const [showCustom, setShowCustom] = useState(false);

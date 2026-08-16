@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 
 interface Friction {
@@ -38,7 +39,7 @@ const SEVERITY_MAP: Record<string, string> = {
  * Styled like a classified telemetry printout.
  */
 export function TransitReadout({ frictions, positions }: TransitReadoutProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   if (frictions.length === 0 && !positions?.length) return null;
 

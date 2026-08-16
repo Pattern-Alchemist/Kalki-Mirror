@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
@@ -158,7 +159,7 @@ function LessonContent({ lesson, isOpen }: { lesson: CourseLesson; isOpen: boole
 function ModuleCard({ module, index }: { module: CourseModule; index: number }) {
   const [openLesson, setOpenLesson] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const isOpen = (id: string) => openLesson === id;
   const toggle = (id: string) => setOpenLesson(isOpen(id) ? null : id);
   const phaseNum = index + 1;
@@ -259,7 +260,7 @@ function ModuleCard({ module, index }: { module: CourseModule; index: number }) 
 
 /* ─── Phase Navigation Sidebar (Desktop) / Horizontal Scroll (Mobile) ─── */
 function PhaseNav({ activePhase }: { activePhase: number }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   return (
     <>
@@ -358,7 +359,7 @@ function PhaseNav({ activePhase }: { activePhase: number }) {
 
 /* ─── Ashram Progression Map ─── */
 function AshramProgressionMap() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const tierGroups = [
     { tier: 'prithvi' as Tier, label: 'PRITHVI — EARTH', phases: phaseNavData.filter(p => p.minTier === 'prithvi') },
     { tier: 'jal' as Tier, label: 'JAL — WATER', phases: phaseNavData.filter(p => p.minTier === 'jal') },
@@ -420,7 +421,7 @@ function AshramProgressionMap() {
 
 /* ─── MAIN PAGE ─── */
 export default function AghoriTantraPage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [activePhase, setActivePhase] = useState(0);
   const moduleRefs = useRef<(HTMLDivElement | null)[]>([]);
 

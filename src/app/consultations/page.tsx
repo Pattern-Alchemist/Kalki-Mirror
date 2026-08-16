@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { BackButton } from '@/components/nav/BackButton';
 import { consultationServices } from '@/lib/data/consultations';
@@ -15,7 +16,7 @@ const KAUSTUBH_IMG = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_
 /* ─── Main Page ─── */
 
 export default function ConsultationsPage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   return (
     <div className="bg-deep-black min-h-screen">

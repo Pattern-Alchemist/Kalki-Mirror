@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { TEN_MAHAVIDYAS, ALL_ARCHETYPES, type Archetype } from '@/lib/data/archetypes';
 import { allSiddhis, getSiddhiBySlug } from '@/lib/data/siddhis';
@@ -87,7 +88,7 @@ function ArchetypeDetail({ a }: { a: Archetype }) {
 
 export default function ArchetypesPage() {
   const [selected, setSelected] = useState<Archetype | null>(null);
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   // Auto-expand archetype card when navigated via hash (e.g., /archetypes#kali)
   useEffect(() => {

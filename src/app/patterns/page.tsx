@@ -3,11 +3,11 @@
 import { useState, useMemo, useRef } from 'react';
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useTransform,
   AnimatePresence,
 } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { PatternCard } from '@/components/patterns/PatternCard';
 import { allPatterns } from '@/lib/data/patterns';
 import { allSiddhis } from '@/lib/data/siddhis';
@@ -53,7 +53,7 @@ const ZONE_INTEGRATION_PATTERNS = allPatterns.slice(12, 20);
    ══════════════════════════════════════════════════════════════ */
 
 function ZoneDivider({ label, subtitle, index }: { label: string; subtitle: string; index: number }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   return (
     <motion.div
       className="py-16 md:py-24 text-center"
@@ -77,7 +77,7 @@ function ZoneDivider({ label, subtitle, index }: { label: string; subtitle: stri
 }
 
 function PatternZone({ patterns }: { patterns: typeof allPatterns }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   return (
     <motion.div
       className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6"
@@ -95,7 +95,7 @@ function PatternZone({ patterns }: { patterns: typeof allPatterns }) {
 }
 
 function FilteredGrid({ patterns, clearFilters }: { patterns: typeof allPatterns; clearFilters: () => void }) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   return (
     <AnimatePresence mode="wait">
       {patterns.length > 0 ? (
@@ -136,7 +136,7 @@ function FilteredGrid({ patterns, clearFilters }: { patterns: typeof allPatterns
    PATTERN ATLAS — Main Page
    ══════════════════════════════════════════════════════════════ */
 export default function PatternsPage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [search, setSearch] = useState('');

@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { PageHero } from '@/components/layout/PageHero';
 import { pricingTiers, formatPrice } from '@/lib/data/pricing';
 import { useTier } from '@/components/layout/TierProvider';
@@ -84,7 +85,7 @@ function buildWhatsAppLink(tierName: string, priceStr: string, cycle: BillingCyc
 }
 export default function PricingPage() {
   const { tier: currentTier, currency, setCurrency } = useTier();
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [billing, setBilling] = useState<BillingCycle>('monthly');
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
 

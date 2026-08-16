@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import Link from 'next/link';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
 import { BackButton } from '@/components/nav/BackButton';
@@ -112,7 +113,7 @@ function BreathCard({
    BREATHWORK — Main Page
    ══════════════════════════════════════════════════════════════ */
 export default function BreathworkPage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({

@@ -3,7 +3,8 @@
 import { use, useState, useCallback } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { allPatterns } from '@/lib/data/patterns';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { getArchetypeById, PATTERN_ARCHETYPE_MAP } from '@/lib/data/archetypes';
@@ -23,7 +24,7 @@ export default function PatternFolioPage({ params }: { params: Promise<{ slug: s
   const { slug } = use(params);
   const pattern = allPatterns.find((p) => p.slug === slug);
   if (!pattern) notFound();
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [loading, setLoading] = useState(true);
   const relatedSiddhis = allSiddhis.filter((s) => pattern.relatedSiddhis.includes(s.slug)).slice(0, 3);
   const archetypeId = PATTERN_ARCHETYPE_MAP[slug];

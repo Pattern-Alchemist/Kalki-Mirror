@@ -3,7 +3,8 @@
 import { use } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { allSiddhis, getSiddhiBySlug } from '@/lib/data/siddhis';
 import { allPatterns } from '@/lib/data/patterns';
 import { getArchetypeById, PATTERN_ARCHETYPE_MAP, ACCESS_LABELS } from '@/lib/data/archetypes';
@@ -31,7 +32,7 @@ export default function SiddhiFolioPage({ params }: { params: Promise<{ slug: st
   const { slug } = use(params);
   const siddhi = getSiddhiBySlug(slug);
   if (!siddhi) notFound();
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   const caution = getCautionLevel(siddhi.level);
   const requiresAcknowledgment = caution === 'HIGH' || caution === 'SEALED';

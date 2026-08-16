@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { CautionBadge } from '@/components/archive/CautionBadge';
 import type { CautionLevel } from '@/lib/data/types';
@@ -21,7 +22,7 @@ interface CitationCardProps {
  * will trigger the AcknowledgmentGate on the archive page.
  */
 export function CitationCard({ text, sourceSlug, caution }: CitationCardProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   // Truncate very long excerpts for the card display
   const displayText = text.length > 280 ? text.slice(0, 280) + '...' : text;

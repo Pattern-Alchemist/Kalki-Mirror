@@ -2,7 +2,8 @@
 
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { BackButton } from '@/components/nav/BackButton';
 const CodexExplainer = dynamic(() => import('@/components/ai/CodexExplainer').then(m => ({ default: m.CodexExplainer })), { ssr: false, loading: () => <div className="h-32" /> });
 import { CinematicImage } from '@/components/ui/CinematicImage';
@@ -253,7 +254,7 @@ const cinematicBreaks = [
 ];
 
 export default function CodexPage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   return (
     <div className="bg-deep-black min-h-screen">

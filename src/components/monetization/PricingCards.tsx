@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 import { pricingTiers } from '@/lib/data/pricing';
@@ -93,7 +94,7 @@ function TierRow({ tier, index, reduced }: { tier: PricingTier; index: number; r
 }
 
 export function PricingCards({ className }: { className?: string }) {
-  const prefersReduced = useReducedMotion() ?? false;
+  const prefersReduced = useNativeReducedMotion() ?? false;
 
   return (
     <motion.div

@@ -3,7 +3,8 @@
 import { use, useState, useEffect, useCallback, useRef } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
@@ -266,7 +267,7 @@ export default function BreathDetailPage({
   const pattern = allBreathPatterns.find((p) => p.slug === slug);
   if (!pattern) notFound();
 
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const tierLabel = TIER_LABELS[pattern.minTier];
 
   /* ── Timer state ── */

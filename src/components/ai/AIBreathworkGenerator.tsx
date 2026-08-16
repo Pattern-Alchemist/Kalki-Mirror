@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { AIIdleMessage } from '@/components/ui/AIIdleMessage';
 
@@ -42,7 +43,7 @@ function formatDuration(sec: number): string {
 
 /* ── Component ── */
 export function AIBreathworkGenerator() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [type, setType] = useState<string>('calming');
   const [duration, setDuration] = useState(10);
   const [state, setState] = useState<GeneratorState>('idle');

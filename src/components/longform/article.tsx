@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 interface ArticleSectionProps {
@@ -9,7 +10,7 @@ interface ArticleSectionProps {
 }
 
 export function ArticleSection({ children, className = '' }: ArticleSectionProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   return (
     <motion.section
       className={`max-w-3xl mx-auto px-6 py-0 ${className}`}

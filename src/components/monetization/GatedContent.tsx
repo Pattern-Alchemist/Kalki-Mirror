@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { useTier } from '@/components/layout/TierProvider';
 import { Tier } from '@/lib/data/types';
 import { pricingTiers, formatPrice } from '@/lib/data/pricing';
@@ -20,7 +21,7 @@ const overlayVariants = {
 
 export function GatedContent({ minTier, children, label, teaser }: GatedContentProps) {
   const { canAccess, tier: currentTier, currency, requestUpgrade } = useTier();
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const allowed = canAccess(minTier);
 
   const tier = pricingTiers.find((t) => t.id === minTier);

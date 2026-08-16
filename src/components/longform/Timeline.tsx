@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 
 interface TimelineEntry {
@@ -14,7 +15,7 @@ interface TimelineProps {
 }
 
 export function Timeline({ entries }: TimelineProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   return (
     <motion.div
       className="relative ml-4 md:ml-8"

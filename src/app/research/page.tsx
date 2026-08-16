@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { BackButton } from '@/components/nav/BackButton';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
@@ -11,7 +12,7 @@ import { BookOpen, Landmark, GraduationCap, Flame, PenTool, Cpu, Scale, FileChec
 import Link from 'next/link';
 
 export default function ResearchPage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const totalEvidence = allSiddhis.reduce((sum, s) => sum + s.evidenceCount, 0);
   const avgAuth = Math.round(allSiddhis.reduce((sum, s) => sum + s.authenticityScore, 0) / allSiddhis.length);
   const traditions = [...new Set(allSiddhis.map((s) => s.tradition))];

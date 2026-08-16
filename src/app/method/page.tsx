@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { STAGE_ACCENT_COLORS } from '@/lib/tier-colors';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
@@ -201,7 +202,7 @@ const stageDetails: Record<number, { heading: string; text: React.ReactNode; lin
 /* ─── Single Stage Block ─── */
 function StageBlock({ stage, index }: { stage: typeof stages[0]; index: number }) {
   const [expanded, setExpanded] = useState(false);
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const isEven = index % 2 === 0;
 
   return (
@@ -306,7 +307,7 @@ function StageBlock({ stage, index }: { stage: typeof stages[0]; index: number }
 
 /* ─── MAIN PAGE ─── */
 export default function MethodPage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const [activeStage, setActiveStage] = useState(0);
   const stageRefs = useRef<(HTMLDivElement | null)[]>([]);
 

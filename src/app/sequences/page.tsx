@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import Link from 'next/link';
 import { allSequences } from '@/lib/data/sequences';
 import { allSiddhis } from '@/lib/data/siddhis';
@@ -151,7 +152,7 @@ function SequenceCard({
    SEQUENCES — Main Page
    ══════════════════════════════════════════════════════════════ */
 export default function SequencesPage() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({

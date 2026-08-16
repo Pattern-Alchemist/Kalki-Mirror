@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 
 interface FootnoteProps {
   id: string;
@@ -10,7 +11,7 @@ interface FootnoteProps {
 
 export function Footnote({ id, children }: FootnoteProps) {
   const [open, setOpen] = useState(false);
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   return (
     <span className="relative inline-block">

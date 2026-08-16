@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { motion, useMotionValue, useTransform, animate, useInView, useReducedMotion } from 'framer-motion';
+import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 
 interface AnimatedCounterProps {
   target: number;
@@ -21,7 +22,7 @@ export function AnimatedCounter({
   duration = 1.6,
   className = '',
 }: AnimatedCounterProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
   const count = useMotionValue(0);

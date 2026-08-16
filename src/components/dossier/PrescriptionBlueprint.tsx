@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp } from '@/lib/motion/tokens';
 
 interface SadhanaItem {
@@ -28,7 +29,7 @@ interface PrescriptionBlueprintProps {
  * and a source slug metadata tag.
  */
 export function PrescriptionBlueprint({ sadhanas }: PrescriptionBlueprintProps) {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
 
   if (sadhanas.length === 0) return null;
 

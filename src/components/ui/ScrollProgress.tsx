@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useScroll, useReducedMotion, useSpring, useTransform } from 'framer-motion';
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 
 /**
  * ScrollProgress — a luminous gold progress bar fixed at the top of the viewport,
@@ -10,7 +11,7 @@ import { motion, useScroll, useReducedMotion, useSpring, useTransform } from 'fr
  * Respects prefers-reduced-motion (hidden entirely).
  */
 export function ScrollProgress() {
-  const reduced = useReducedMotion();
+  const reduced = useNativeReducedMotion();
   const { scrollYProgress } = useScroll();
 
   // Spring-smooth the progress for premium feel
