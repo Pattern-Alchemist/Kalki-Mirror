@@ -122,7 +122,9 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error('AUTH_FAIL:missing_credentials');
+        }
 
         const email = credentials.email as string;
 
@@ -137,17 +139,13 @@ export const authOptions: NextAuthOptions = {
           where: { email },
         });
 
-        console.log(`[AUTH] Login attempt for ${email}: user=${!!user} hasHash=${!!user?.passwordHash} role=${user?.role}`);
-
         if (!user || !user.passwordHash) {
-          recordFailedLogin(email);
-          return null;
+          throw new Error(`AUTH_FAIL:no_user email=${email} user=${!!user} hash=${!!user?.passwordHash}`);
         }
 
         const allowedRoles: UserRole[] = ["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"];
         if (!allowedRoles.includes(user.role)) {
-          recordFailedLogin(email);
-          return null;
+          throw new Error(`AUTH_FAIL:role_not_allowed role=${user.role}`);
         }
 
         const isValid = await bcrypt.compare(
@@ -156,8 +154,7 @@ export const authOptions: NextAuthOptions = {
         );
 
         if (!isValid) {
-          recordFailedLogin(email);
-          return null;
+          throw new Error('AUTH_FAIL:invalid_password');
         }
 
         // Successful credential verification — clear attempts
@@ -166,8 +163,6 @@ export const authOptions: NextAuthOptions = {
         // A1: If 2FA is enabled, gate login behind a pre-auth token
         if (user.twoFactorEnabled) {
           const preAuthToken = createPreAuthToken(user.id);
-          // Use a custom error to signal 2FA requirement.
-          // The error message carries the userId and token for the client.
           throw new Error(`2FA_REQUIRED:${user.id}:${preAuthToken}`);
         }
 
