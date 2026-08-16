@@ -128,7 +128,7 @@ export default function ConsultationsPage() {
         <ScrollParallax speed={-0.1} className="mb-20">
           <div className="cinematic-strip relative h-[30vh] md:h-[40vh] overflow-hidden">
             <CinematicImage
-              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-ritual-chamber"
+              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/consult/contemplation-hero"
               alt="Ritual chamber — the space between"
               fill
               scrim="full"
