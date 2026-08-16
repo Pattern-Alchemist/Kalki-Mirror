@@ -197,7 +197,7 @@ export default function PricingPage() {
         <ScrollParallax speed={-0.06}>
           <div className="relative h-[25vh] md:h-[30vh] overflow-hidden -mx-6 lg:-mx-10 my-16">
             <CinematicImage
-              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-ritual-chamber-alt'
+              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pricing/prithvi-card-bg'
               alt="The sacred path"
               kenBurns="slow"
               scrim="full"
@@ -218,7 +218,7 @@ export default function PricingPage() {
         <ScrollParallax speed={0.04}>
           <div className="relative h-[15vh] overflow-hidden -mx-6 lg:-mx-10 my-16">
             <CinematicImage
-              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/sri-yantra-himalayas'
+              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pricing/stone-yantra-divider'
               alt="Sri Yantra sky"
               kenBurns="slow"
               scrim="full"
