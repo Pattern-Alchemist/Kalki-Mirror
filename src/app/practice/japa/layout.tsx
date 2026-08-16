@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       'Digital Japa Mala counter for mantra repetition. Supports multiple mantras with session history persistence.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-meditation-platform',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/practice/water-practice-hero',
         width: 1200,
         height: 630,
         alt: 'Japa Mala — KALKI',

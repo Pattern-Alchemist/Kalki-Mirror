@@ -177,7 +177,7 @@ export default function JapaPage() {
         <ScrollParallax speed={-0.06}>
           <div className="relative h-[20vh] overflow-hidden -mx-6 lg:-mx-10 mb-16">
             <CinematicImage
-              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-dark-temple-interior'
+              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/temple-midnight'
               alt="Meditation chamber"
               kenBurns="slow"
               scrim="full"

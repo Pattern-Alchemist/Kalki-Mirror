@@ -333,7 +333,7 @@ export default function MeditationTimerPage() {
         <ScrollParallax speed={0.03}>
           <div className="relative h-[15vh] overflow-hidden -mx-6 lg:-mx-10 my-16">
             <CinematicImage
-              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-meditation-platform'
+              src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/practice/cave-meditation-bg'
               alt="Meditation platform"
               kenBurns="slow"
               scrim="full"

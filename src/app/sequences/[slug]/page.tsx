@@ -223,7 +223,7 @@ export default function SequenceDetailPage({
         <ScrollParallax speed={-0.1} className="-mx-6 lg:-mx-10">
           <div className="relative h-[30vh] md:h-[35vh] overflow-hidden">
             <CinematicImage
-              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/sri-yantra-mist"
+              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/archetypes/sri-yantra-mist"
               alt="Śrī Yantra emerging from mist"
               fill
               scrim="full"

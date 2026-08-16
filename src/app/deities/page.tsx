@@ -171,7 +171,7 @@ export default function DeitiesPage() {
       {/* ── Cinematic Hero ── */}
       <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-dark-temple-interior'
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/temple-midnight'
           alt="Dark temple interior lit by oil lamps"
           kenBurns="slow"
           scrim="bottom"
