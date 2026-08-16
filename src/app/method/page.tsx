@@ -23,7 +23,7 @@ const stages = [
     title: 'Pattern Recognition',
     titleSanskrit: 'Pratyakṣa Jñāna',
     text: 'The first step is naming the loop. Every recurring frustration, every self-sabotaging decision, every relationship that ends the same way — these are not random. They are patterns with names, origins, and specific sādhanas designed to address them. KALKI maps 12 core psychological patterns to specific tantric practices drawn from the Aghorī, Kashmiri Shaiva, and Buddhist Vajrayāna traditions. Until a pattern is named, it operates invisibly — shaping your choices from the shadows of unconscious habit. Recognition is the first act of freedom.',
-    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight',
+    image: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/method/forest-path-hero',
     icon: '◉',
     color: STAGE_ACCENT_COLORS.gold,
   },
@@ -336,7 +336,7 @@ export default function MethodPage() {
       {/* ═══ HERO ═══ */}
       <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-dark-temple-interior'
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori-tantra/philosophy-bg'
           alt='The Mirror Method — Architecture of Pattern Dissolution'
           kenBurns="slow"
           scrim="bottom"
