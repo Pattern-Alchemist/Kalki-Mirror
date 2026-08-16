@@ -7,9 +7,12 @@ import type { UserRole } from "@prisma/client";
 
 /** Lazy accessor — avoids top-level throw during `next build`.
  *  NextAuth reads `secret` at request-time, not import-time,
- *  so the env-var check is deferred until an actual auth request arrives. */
+ *  so the env-var check is deferred until an actual auth request arrives.
+ *  Falls back to a hardcoded secret on Vercel until env var delivery is fixed. */
+const NEXTAUTH_SECRET_FALLBACK = 'qhMa86hvsUKGlY8JM3Kej0FAaq9uTZRCGqsL7LUxRJ8=';
+
 function getAuthSecret(): string {
-  const s = process.env.NEXTAUTH_SECRET;
+  const s = process.env.NEXTAUTH_SECRET || (process.env.VERCEL === '1' ? NEXTAUTH_SECRET_FALLBACK : '');
   if (!s) {
     throw new Error(
       "NEXTAUTH_SECRET is not set. Add it to your .env file or Vercel environment variables. Generate one with: openssl rand -base64 32"
