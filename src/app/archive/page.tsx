@@ -676,7 +676,7 @@ export default function ArchivePage() {
       <div className="mt-16">
         <ScrollParallax speed={-0.15} className="cinematic-strip">
           <CinematicImage
-            cloudinaryId='kalki-mirror/archive/banyan-archive-hero'
+            cloudinaryId='kalki-mirror/archive/stone-gateway-hero'
             alt='Ancient stone gateway in forest -- enter the archive'
             kenBurns="normal"
             filmGrain={false}

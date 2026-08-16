@@ -397,7 +397,7 @@ export default function SadhanaLibraryPage() {
         {/* ── Cinematic Strip: Library ── */}
         <ScrollParallax speed={-0.15} className="cinematic-strip">
           <CinematicImage
-            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-library"
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/library/mantra-bg"
             alt="Ancient underground library with tantrik manuscripts and ritual objects"
             kenBurns="slow"
             filmGrain={false}
@@ -473,7 +473,7 @@ export default function SadhanaLibraryPage() {
       {/* ── Cinematic Strip: Cave Yantras ── */}
       <ScrollParallax speed={-0.15} className="cinematic-strip">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cave-yantras"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/library/mantra-bg"
           alt="Deep cave walls covered in ancient yantras and tantrik inscriptions"
           kenBurns="slow"
           filmGrain={false}

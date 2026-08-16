@@ -640,5 +640,389 @@
     "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/assets/incense-sticks-burning-darkness",
     "width": 1344,
     "height": 768
+  },
+  "/image-master-plan/stone-gateway-hero.jpeg": {
+    "publicId": "kalki-mirror/archive/stone-gateway-hero",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive/stone-gateway-hero",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/ashram-interior-bg.jpeg": {
+    "publicId": "kalki-mirror/archive/ashram-interior-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive/ashram-interior-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/section-divider.jpeg": {
+    "publicId": "kalki-mirror/aghori-tantra/section-divider",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori-tantra/section-divider",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/mirror-hero.jpeg": {
+    "publicId": "kalki-mirror/dossier/mirror-hero",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/dossier/mirror-hero",
+    "width": 2048,
+    "height": 2048
+  },
+  "/image-master-plan/form-bg.jpeg": {
+    "publicId": "kalki-mirror/consult/form-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/consult/form-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/mantra-bg.jpeg": {
+    "publicId": "kalki-mirror/library/mantra-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/library/mantra-bg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/cave-meditation-bg.jpeg": {
+    "publicId": "kalki-mirror/practice/cave-meditation-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/practice/cave-meditation-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/breathing-bg.jpeg": {
+    "publicId": "kalki-mirror/practice/breathing-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/practice/breathing-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/process-bg.jpeg": {
+    "publicId": "kalki-mirror/method/process-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/method/process-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/mantra-plate-bg.jpeg": {
+    "publicId": "kalki-mirror/auth/mantra-plate-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/auth/mantra-plate-bg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/home/stone-gateway-ancient-forest.jpeg": {
+    "publicId": "kalki-mirror/home/stone-gateway-ancient-forest",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/stone-gateway-ancient-forest",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/home/ascetic-walking-mountain-path.jpeg": {
+    "publicId": "kalki-mirror/home/ascetic-walking-mountain-path",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ascetic-walking-mountain-path",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/home/ancient-stone-ashram-interior.jpeg": {
+    "publicId": "kalki-mirror/home/ancient-stone-ashram-interior",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-stone-ashram-interior",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/home/ascetic-water-practice.jpeg": {
+    "publicId": "kalki-mirror/home/ascetic-water-practice",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ascetic-water-practice",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/home/ascetic-ash-fire-contemplation.jpeg": {
+    "publicId": "kalki-mirror/home/ascetic-ash-fire-contemplation",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ascetic-ash-fire-contemplation",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/home/ascetic-himalayan-overlook.jpeg": {
+    "publicId": "kalki-mirror/home/ascetic-himalayan-overlook",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ascetic-himalayan-overlook",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/home/charcoal-smoke-embers.jpeg": {
+    "publicId": "kalki-mirror/home/charcoal-smoke-embers",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/charcoal-smoke-embers",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/home/ascetic-fire-milky-way.jpeg": {
+    "publicId": "kalki-mirror/home/ascetic-fire-milky-way",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ascetic-fire-milky-way",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/pricing/fire-ritual-yantra-hero.jpeg": {
+    "publicId": "kalki-mirror/pricing/fire-ritual-yantra-hero",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pricing/fire-ritual-yantra-hero",
+    "width": 1024,
+    "height": 1024
+  },
+  "/image-master-plan/pricing/prithvi-card-bg.jpeg": {
+    "publicId": "kalki-mirror/pricing/prithvi-card-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pricing/prithvi-card-bg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/pricing/jal-card-bg.jpeg": {
+    "publicId": "kalki-mirror/pricing/jal-card-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pricing/jal-card-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/pricing/agni-card-bg.jpeg": {
+    "publicId": "kalki-mirror/pricing/agni-card-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pricing/agni-card-bg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/pricing/akash-card-bg.jpeg": {
+    "publicId": "kalki-mirror/pricing/akash-card-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pricing/akash-card-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/pricing/stone-yantra-divider.jpeg": {
+    "publicId": "kalki-mirror/pricing/stone-yantra-divider",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pricing/stone-yantra-divider",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/archive/stone-gateway-hero.jpeg": {
+    "publicId": "kalki-mirror/archive/stone-gateway-hero",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive/stone-gateway-hero",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/archive/aghori-tantra-card.jpeg": {
+    "publicId": "kalki-mirror/archive/aghori-tantra-card",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive/aghori-tantra-card",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/archive/tantra-foundations-card.jpeg": {
+    "publicId": "kalki-mirror/archive/tantra-foundations-card",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive/tantra-foundations-card",
+    "width": 1024,
+    "height": 1024
+  },
+  "/image-master-plan/archive/himalayan-mysticism-card.jpeg": {
+    "publicId": "kalki-mirror/archive/himalayan-mysticism-card",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive/himalayan-mysticism-card",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/archive/ritual-practices-card.jpeg": {
+    "publicId": "kalki-mirror/archive/ritual-practices-card",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive/ritual-practices-card",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/archive/kaula-path-card.jpeg": {
+    "publicId": "kalki-mirror/archive/kaula-path-card",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive/kaula-path-card",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/archive/mantra-japa-card.jpeg": {
+    "publicId": "kalki-mirror/archive/mantra-japa-card",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive/mantra-japa-card",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/archive/nadi-shuddhi-card.jpeg": {
+    "publicId": "kalki-mirror/archive/nadi-shuddhi-card",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive/nadi-shuddhi-card",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/archive/ashram-interior-bg.jpeg": {
+    "publicId": "kalki-mirror/archive/ashram-interior-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive/ashram-interior-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/aghori-tantra/shmashana-hero.jpeg": {
+    "publicId": "kalki-mirror/aghori-tantra/shmashana-hero",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori-tantra/shmashana-hero",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/aghori-tantra/philosophy-bg.jpeg": {
+    "publicId": "kalki-mirror/aghori-tantra/philosophy-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori-tantra/philosophy-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/aghori-tantra/practices-bg.jpeg": {
+    "publicId": "kalki-mirror/aghori-tantra/practices-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori-tantra/practices-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/aghori-tantra/lineage-bg.jpeg": {
+    "publicId": "kalki-mirror/aghori-tantra/lineage-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori-tantra/lineage-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/aghori-tantra/section-divider.jpeg": {
+    "publicId": "kalki-mirror/aghori-tantra/section-divider",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori-tantra/section-divider",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/codex/sanskrit-plate-hero.jpeg": {
+    "publicId": "kalki-mirror/codex/sanskrit-plate-hero",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/codex/sanskrit-plate-hero",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/codex/yantra-divider.jpeg": {
+    "publicId": "kalki-mirror/codex/yantra-divider",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/codex/yantra-divider",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/tantra/yantra-hero.jpeg": {
+    "publicId": "kalki-mirror/tantra/yantra-hero",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/yantra-hero",
+    "width": 1024,
+    "height": 1024
+  },
+  "/image-master-plan/tantra/left-hand-path-bg.jpeg": {
+    "publicId": "kalki-mirror/tantra/left-hand-path-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/left-hand-path-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/tantra/ritual-bg.jpeg": {
+    "publicId": "kalki-mirror/tantra/ritual-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/ritual-bg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/tantra/philosophy-bg.jpeg": {
+    "publicId": "kalki-mirror/tantra/philosophy-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/philosophy-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/patterns/mirror-hero.jpeg": {
+    "publicId": "kalki-mirror/patterns/mirror-hero",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/patterns/mirror-hero",
+    "width": 2048,
+    "height": 2048
+  },
+  "/image-master-plan/patterns/card-texture.jpeg": {
+    "publicId": "kalki-mirror/patterns/card-texture",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/patterns/card-texture",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/dossier/mirror-hero.jpeg": {
+    "publicId": "kalki-mirror/dossier/mirror-hero",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/dossier/mirror-hero",
+    "width": 2048,
+    "height": 2048
+  },
+  "/image-master-plan/dossier/form-bg.jpeg": {
+    "publicId": "kalki-mirror/dossier/form-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/dossier/form-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/consult/contemplation-hero.jpeg": {
+    "publicId": "kalki-mirror/consult/contemplation-hero",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/consult/contemplation-hero",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/consult/form-bg.jpeg": {
+    "publicId": "kalki-mirror/consult/form-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/consult/form-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/library/ashram-hero.jpeg": {
+    "publicId": "kalki-mirror/library/ashram-hero",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/library/ashram-hero",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/library/mantra-bg.jpeg": {
+    "publicId": "kalki-mirror/library/mantra-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/library/mantra-bg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/practice/water-practice-hero.jpeg": {
+    "publicId": "kalki-mirror/practice/water-practice-hero",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/practice/water-practice-hero",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/practice/cave-meditation-bg.jpeg": {
+    "publicId": "kalki-mirror/practice/cave-meditation-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/practice/cave-meditation-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/practice/breathing-bg.jpeg": {
+    "publicId": "kalki-mirror/practice/breathing-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/practice/breathing-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/method/forest-path-hero.jpeg": {
+    "publicId": "kalki-mirror/method/forest-path-hero",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/method/forest-path-hero",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/method/process-bg.jpeg": {
+    "publicId": "kalki-mirror/method/process-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/method/process-bg",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/auth/dark-texture-bg.jpeg": {
+    "publicId": "kalki-mirror/auth/dark-texture-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/auth/dark-texture-bg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/auth/mantra-plate-bg.jpeg": {
+    "publicId": "kalki-mirror/auth/mantra-plate-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/auth/mantra-plate-bg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/ui/yantra-loading.jpeg": {
+    "publicId": "kalki-mirror/ui/yantra-loading",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/ui/yantra-loading",
+    "width": 1024,
+    "height": 1024
+  },
+  "/image-master-plan/ui/smoke-transition.jpeg": {
+    "publicId": "kalki-mirror/ui/smoke-transition",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/ui/smoke-transition",
+    "width": 1376,
+    "height": 768
+  },
+  "/image-master-plan/ui/yantra-error.jpeg": {
+    "publicId": "kalki-mirror/ui/yantra-error",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/ui/yantra-error",
+    "width": 2400,
+    "height": 1792
+  },
+  "/image-master-plan/tiers/agni-fire.jpeg": {
+    "publicId": "kalki-mirror/tiers/agni-fire",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tiers/agni-fire",
+    "width": 2752,
+    "height": 1536
+  },
+  "/image-master-plan/tiers/akash-sky.jpeg": {
+    "publicId": "kalki-mirror/tiers/akash-sky",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tiers/akash-sky",
+    "width": 2400,
+    "height": 1792
   }
 }

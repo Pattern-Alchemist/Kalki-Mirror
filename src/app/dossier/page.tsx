@@ -149,8 +149,8 @@ export default function DossierPage() {
       {/* Cinematic hero background */}
       <div className="fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-forgotten-chamber"
-          alt="A forgotten ritual chamber deep within an ancient temple, candles and yantras scattered on stone surfaces"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/dossier/mirror-hero"
+          alt="Obsidian mirror with glowing ripples — the scrying surface of pattern recognition"
           scrim="full"
           filmGrain={false}
         />

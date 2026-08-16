@@ -548,8 +548,8 @@ export default function PracticeLoggerPage() {
     <main className="min-h-screen bg-deep-black">
       <section className="relative min-h-[90vh] md:min-h-[100vh] flex items-center overflow-hidden">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-meditation-platform"
-          alt="Ascetic in deep meditation on an ancient stone platform at dawn"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/practice/water-practice-hero"
+          alt="Ascetic performing water ritual practice at Himalayan ghat steps -- the gateway to sadhana"
           className="absolute inset-0"
           scrim="full"
           filmGrain={false}
@@ -630,8 +630,8 @@ export default function PracticeLoggerPage() {
 
       <ScrollParallax speed={-0.15} className="cinematic-strip">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/nadi-shuddhi"
-          alt="Nadi shuddhi breathwork practice at a cremation ground"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/practice/cave-meditation-bg"
+          alt="Practitioner meditating in a Himalayan cave -- focused inner practice"
           kenBurns="slow"
           filmGrain={false}
         />
@@ -911,8 +911,8 @@ export default function PracticeLoggerPage() {
 
       <section className="py-24 md:py-32 relative overflow-hidden">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/sacred-manuscript"
-          alt="Ancient sacred manuscript with tantrik diagrams and sanskrit text"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/practice/breathing-bg"
+          alt="Ascetic seated on a Himalayan overlook at twilight -- vast sky, the breath of expansion"
           scrim="full"
           filmGrain={false}
         />

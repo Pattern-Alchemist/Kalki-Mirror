@@ -22,7 +22,7 @@ import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import Link from 'next/link';
 
 /* ── Zone Backgrounds ── */
-const ZONE_MIRROR = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/patterns/sadhu-ash-gold-hero';
+const ZONE_MIRROR = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/patterns/mirror-hero';
 const ZONE_CONFRONTATION = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/abandoned-temple';
 const ZONE_DISSOLUTION = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cremation-ground';
 
@@ -603,7 +603,7 @@ export default function PatternsPage() {
       <div className="mt-8">
         <ScrollParallax speed={-0.15} className="cinematic-strip">
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/hero/sri-yantra-himalayas'
+            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/patterns/card-texture'
             alt='Deep meditative space'
             kenBurns="normal"
             filmGrain={false}

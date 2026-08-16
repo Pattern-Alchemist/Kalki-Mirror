@@ -552,7 +552,7 @@ export default function AghoriTantraPage() {
       {/* ── Cinematic strip: Cremation Ground ── */}
       <ScrollParallax speed={-0.15} className="cinematic-strip">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cremation-ground"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori-tantra/section-divider"
           alt="Aghori cremation ground at twilight with smoke rising from funeral pyres"
           kenBurns="slow"
           filmGrain={false}
@@ -571,7 +571,7 @@ export default function AghoriTantraPage() {
       {/* ── Cinematic strip: Bhairava Pathway ── */}
       <ScrollParallax speed={-0.15} className="cinematic-strip">
         <CinematicImage
-          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/bhairava-pathway"
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori-tantra/lineage-bg"
           alt="Dark pathway leading to a Bhairava shrine through dense forest"
           kenBurns="slow"
           filmGrain={false}
