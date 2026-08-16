@@ -598,21 +598,7 @@ export default function AghoriTantraPage() {
         </div>
       </motion.div>
 
-      {/* Footer */}
-      <footer className="relative pb-28 md:pb-20 mt-16">
-        <div className="atmospheric-bg absolute inset-0 opacity-20" />
-        <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 text-center">
-          <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
-            <div className="w-3 h-3 bg-gold/40 rounded-full bindu-pulse" />
-          </div>
-          <p className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper">
-            AGHORĪ TANTRA — THE ASHRAM PATH
-          </p>
-          <p className="text-foreground/30 text-xs mt-3 max-w-md mx-auto">
-            {COURSE_META.source}
-          </p>
-        </div>
-      </footer>
+
     </div>
   );
 }

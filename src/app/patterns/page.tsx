@@ -201,7 +201,7 @@ export default function PatternsPage() {
 
   return (
     <>
-    <main ref={containerRef} className="relative bg-deep-black min-h-screen">
+    <div ref={containerRef} className="relative bg-deep-black min-h-screen">
       {/* ═══ FIXED BACKGROUND LAYER ═══ */}
       {!reduced && (
         <div className="fixed inset-0 z-0 overflow-hidden">
@@ -668,7 +668,7 @@ export default function PatternsPage() {
           </p>
         </div>
       </div>
-    </main>
+    </div>
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{

@@ -227,7 +227,7 @@ export default function ArchivePage() {
 
   return (
     <>
-    <main ref={containerRef} className="relative bg-deep-black min-h-screen">
+    <div ref={containerRef} className="relative bg-deep-black min-h-screen">
 
       {/* ═══ FIXED BACKGROUND LAYER — Crossfading 3 zones ═══ */}
       {!reduced && (
@@ -725,7 +725,7 @@ export default function ArchivePage() {
           </p>
         </div>
       </div>
-    </main>
+    </div>
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{

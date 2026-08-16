@@ -351,18 +351,7 @@ export default function JapaPage() {
         )}
       </div>
 
-      {/* ── Page Footer ── */}
-      <footer className="relative pb-20 md:pb-28 mt-16">
-        <div className="atmospheric-bg absolute inset-0 opacity-20" />
-        <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-10 text-center">
-          <div className="w-16 h-16 mx-auto mb-8 border border-gold/20 rounded-full flex items-center justify-center">
-            <div className="w-3 h-3 bg-gold/40 rounded-full bindu-pulse" />
-          </div>
-          <p className="font-mono text-[0.75rem] tracking-[0.2em] uppercase text-copper">
-            JAPA MĀLĀ — MANTRA COUNTER
-          </p>
-        </div>
-      </footer>
+
     </div>
   );
 }

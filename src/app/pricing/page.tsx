@@ -102,7 +102,7 @@ export default function PricingPage() {
 
   return (
     <div className="bg-deep-black min-h-screen">
-      <PageHero image='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pricing/fire-ritual-yantra-hero' title="The Covenant" subtitle="Four access levels. One path to Shambhala. Each tier unlocks deeper layers of the Akashic Archive." sectionLabel="Sacred Offerings" />
+      <PageHero image='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pricing/fire-ritual-yantra-hero' title="The Covenant" subtitle="Four access levels. One path to Shambhala. Each tier unlocks deeper layers of the Akashic Archive." sectionLabel="Sacred Offerings" minH='min-h-[90vh] md:min-h-[100vh]' />
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28">
         <BackButton href="/" label="Back to Home" className="mb-10" />

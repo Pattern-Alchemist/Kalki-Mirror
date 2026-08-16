@@ -545,7 +545,7 @@ export default function PracticeLoggerPage() {
   const totalHours = stats ? Math.round((stats.totalMinutes / 60) * 10) / 10 : 0;
 
   return (
-    <main className="min-h-screen bg-deep-black">
+    <div className="min-h-screen bg-deep-black">
       <section className="relative min-h-[90vh] md:min-h-[100vh] flex items-center overflow-hidden">
         <CinematicImage
           src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/practice/water-practice-hero"
@@ -948,6 +948,6 @@ export default function PracticeLoggerPage() {
           </motion.div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
