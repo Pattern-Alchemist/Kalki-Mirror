@@ -56,7 +56,7 @@ export function WhatsAppCTA({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg shadow-[#25D366]/20 hover:scale-110 transition-transform ${className}`}
+      className={`w-11 h-11 rounded-full bg-[#1da851] flex items-center justify-center shadow-lg shadow-[#1da851]/20 hover:scale-110 transition-transform ${className}`}
       aria-label="Contact via WhatsApp"
     >
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white" aria-hidden="true">

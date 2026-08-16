@@ -176,7 +176,7 @@ export default function PricingPage() {
                       <span className="text-text-secondary text-sm leading-relaxed line-through" style={{ color: '#7A7A72' }}>{f}</span>
                     </li>
                   ))}
-                  {(tier.gatedFeatures ?? []).length > 0 && <li className="pl-7"><span className="text-xs italic" style={{ color: '#6A6A62' }}>Requires {getHigherTierName(tier.id)}</span></li>}
+                  {(tier.gatedFeatures ?? []).length > 0 && <li className="pl-7"><span className="text-xs italic" style={{ color: '#8A8A85' }}>Requires {getHigherTierName(tier.id)}</span></li>}
                 </ul>
                 {/* CTA */}
                 <div className="mt-auto">

@@ -247,20 +247,28 @@ export function ConsultationsClient({
         <div className="flex items-center justify-between text-sm text-zinc-500">
           <span>Page {currentPage} of {totalPages}</span>
           <div className="flex gap-2">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-              <button
-                key={p}
-                onClick={() => {
-                  const params = new URLSearchParams();
-                  if (statusFilter !== "ALL") params.set("status", statusFilter);
-                  if (p > 1) params.set("page", String(p));
-                  router.push(`/admin/consultations?${params.toString()}`);
-                }}
-                className={`rounded px-2.5 py-1 text-xs transition ${p === currentPage ? "bg-amber-500/10 text-amber-400" : "hover:bg-zinc-800 text-zinc-400"}`}
-              >
-                {p}
-              </button>
-            ))}
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 2)
+              .map((p, i, arr) => {
+                const prev = arr[i - 1];
+                const showEllipsis = prev && p - prev > 1;
+                return (
+                  <span key={p} className="flex items-center gap-2">
+                    {showEllipsis && <span className="text-zinc-700">...</span>}
+                    <button
+                      onClick={() => {
+                        const params = new URLSearchParams();
+                        if (statusFilter !== "ALL") params.set("status", statusFilter);
+                        if (p > 1) params.set("page", String(p));
+                        router.push(`/admin/consultations?${params.toString()}`);
+                      }}
+                      className={`rounded px-2.5 py-1 text-xs transition ${p === currentPage ? "bg-amber-500/10 text-amber-400" : "hover:bg-zinc-800 text-zinc-400"}`}
+                    >
+                      {p}
+                    </button>
+                  </span>
+                );
+              })}
           </div>
         </div>
       )}

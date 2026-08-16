@@ -9,12 +9,13 @@ import { SiddhiCard } from '@/components/archive/SiddhiCard';
 import { PatternCard } from '@/components/patterns/PatternCard';
 const PricingCards = dynamic(() => import('@/components/monetization/PricingCards').then(m => ({ default: m.PricingCards })), { ssr: false });
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
-import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
+const ScrollParallax = dynamic(() => import('@/components/ui/ScrollParallax').then(m => ({ default: m.ScrollParallax })), { ssr: false });
+const ParallaxText = dynamic(() => import('@/components/ui/ScrollParallax').then(m => ({ default: m.ParallaxText })), { ssr: false });
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { allSiddhis, SIDDHI_COUNT } from '@/lib/data/siddhis';
 import { allPatterns } from '@/lib/data/patterns';
-import { BreathTimer } from '@/components/practice/BreathTimer';
-import { ResonanceToggle } from '@/components/ui/ResonanceToggle';
+const BreathTimer = dynamic(() => import('@/components/practice/BreathTimer').then(m => ({ default: m.BreathTimer })), { ssr: false });
+const ResonanceToggle = dynamic(() => import('@/components/ui/ResonanceToggle').then(m => ({ default: m.ResonanceToggle })), { ssr: false });
 import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function HomePage() {
@@ -46,9 +47,10 @@ export default function HomePage() {
             className="absolute inset-0 w-full h-full object-cover"
             style={{
               zIndex: 0,
-              backgroundImage: 'url(https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_640,c_limit/kalki-mirror/home/ancient-temple-midnight)',
+              backgroundImage: 'url(https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_640,c_limit/kalki-mirror/home/ancient-temple-midnight)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
+              fetchPriority: 'high' as const,
             }}
           />
         )}

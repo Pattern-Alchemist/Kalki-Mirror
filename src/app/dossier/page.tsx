@@ -286,6 +286,24 @@ export default function DossierPage() {
           <p className="text-editorial max-w-2xl">
             A grounded psychological blueprint synthesized from your behavioral coordinates, transit geometry, and the Tantric archive. Every claim traces to a textual witness — or declares itself unattested.
           </p>
+          <p className="text-text-secondary text-sm leading-relaxed max-w-2xl mt-6 editorial-spacing">
+            The Dossier is the operational heart of the Mirror Method. It begins where conventional personality
+            systems end — not with a type label, but with a precise identification of the karmic loop (karmāśaya)
+            that generates your recurring experience. You provide two coordinates: a behavioral description of the
+            pattern you observe, and your natal Moon sign (rāśi), which in the Tantric framework governs the inner
+            emotional terrain — the manomaya kośa. These are cross-referenced against the Akashic Archive's
+            279 textual fragments spanning the Upaniṣads, Tantras, Āgamas, Haṭha Yoga Pradīpikā, and living
+            lineage protocols from the Aghorī, Kashmiri Shaiva, and Vajrayāna traditions.
+          </p>
+          <p className="text-text-muted text-sm leading-relaxed max-w-2xl mt-4 editorial-spacing">
+            The output is not AI-generated advice. It is a retrieval-grounded prescription: every pattern
+            identification, every mantra suggestion, every practice recommendation is traceable to a specific
+            textual witness in the Archive. Where the system has no attested source for a claim, it explicitly
+            declares the gap — this is the unattested state, and it is treated with the same rigor as a
+            textual citation. The Dossier also calculates transit-based activations — the current planetary
+            positions that may be amplifying or triggering your dominant pattern, drawn from the same
+            geometrical logic used in classical jyotiṣa but filtered through the KALKI behavioral lens.
+          </p>
         </motion.div>
       </div>
 

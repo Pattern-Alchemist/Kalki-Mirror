@@ -361,6 +361,7 @@ export default function AdminLoginPage() {
                 <label htmlFor="email" className="block text-sm font-medium text-zinc-400">Email</label>
                 <input
                   id="email"
+                  name="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -384,6 +385,7 @@ export default function AdminLoginPage() {
                 <div className="relative">
                   <input
                     id="password"
+                    name="password"
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => handlePasswordChange(e.target.value)}
