@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       'Evidence-based research on siddhis, tantrik practices, and pattern intelligence. Cross-referenced sources, authenticity scores, and academic citations.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-ritual-chamber-alt',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/method/forest-path-hero',
         width: 1200,
         height: 630,
         alt: 'Research — KALKI',
