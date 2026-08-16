@@ -634,5 +634,11 @@
     "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/auth/dark-texture-bg",
     "width": 1344,
     "height": 768
+  },
+  "/assets/incense-sticks-burning-darkness.png": {
+    "publicId": "kalki-mirror/assets/incense-sticks-burning-darkness",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/assets/incense-sticks-burning-darkness",
+    "width": 1344,
+    "height": 768
   }
 }

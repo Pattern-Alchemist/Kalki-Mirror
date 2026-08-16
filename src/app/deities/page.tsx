@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ShieldAlert, ShieldCheck, ShieldBan, Link as LinkIcon, Flame, Zap } from 'lucide-react';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
+import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { GatedContent } from '@/components/monetization/GatedContent';
 import { TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
 import { ALL_ARCHETYPES, CAUTION_LABELS, type CautionLevel } from '@/lib/data/archetypes';
@@ -282,6 +283,17 @@ export default function DeitiesPage() {
             ))}
           </motion.div>
         </div>
+
+        {/* ═══ CINEMATIC DIVIDER ═══ */}
+        <ScrollParallax speed={-0.15} className="cinematic-strip">
+          <CinematicImage
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-temple-doorway"
+            alt="Ancient temple doorway with intricate carvings leading into darkness"
+            kenBurns="slow"
+            filmGrain={false}
+          />
+          <div className="cinematic-strip-overlay" />
+        </ScrollParallax>
 
         {/* ═══ SUPPLEMENTARY ARCHETYPES ═══ */}
         <div className="max-w-5xl mx-auto px-6 lg:px-10 mt-24 md:mt-32">

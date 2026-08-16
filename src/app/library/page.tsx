@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
+import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { GatedContent } from '@/components/monetization/GatedContent';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
@@ -393,6 +394,17 @@ export default function SadhanaLibraryPage() {
 
         <div className="divider-gold mb-16" />
 
+        {/* ── Cinematic Strip: Library ── */}
+        <ScrollParallax speed={-0.15} className="cinematic-strip">
+          <CinematicImage
+            src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-library"
+            alt="Ancient underground library with tantrik manuscripts and ritual objects"
+            kenBurns="slow"
+            filmGrain={false}
+          />
+          <div className="cinematic-strip-overlay" />
+        </ScrollParallax>
+
         {/* Section: Practice Protocols */}
         <motion.div
           initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
@@ -457,6 +469,17 @@ export default function SadhanaLibraryPage() {
           </div>
         </motion.div>
       </div>
+
+      {/* ── Cinematic Strip: Cave Yantras ── */}
+      <ScrollParallax speed={-0.15} className="cinematic-strip">
+        <CinematicImage
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cave-yantras"
+          alt="Deep cave walls covered in ancient yantras and tantrik inscriptions"
+          kenBurns="slow"
+          filmGrain={false}
+        />
+        <div className="cinematic-strip-overlay" />
+      </ScrollParallax>
 
       {/* ── Closing CTA ── */}
       <motion.div

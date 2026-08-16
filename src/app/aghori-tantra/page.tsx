@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
+import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { GatedContent } from '@/components/monetization/GatedContent';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import Link from 'next/link';
@@ -548,6 +549,17 @@ export default function AghoriTantraPage() {
       {/* Phase Navigation */}
       <PhaseNav activePhase={activePhase} />
 
+      {/* ── Cinematic strip: Cremation Ground ── */}
+      <ScrollParallax speed={-0.15} className="cinematic-strip">
+        <CinematicImage
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cremation-ground"
+          alt="Aghori cremation ground at twilight with smoke rising from funeral pyres"
+          kenBurns="slow"
+          filmGrain={false}
+        />
+        <div className="cinematic-strip-overlay" />
+      </ScrollParallax>
+
       {/* Modules — with IntersectionObserver refs */}
       {aghoriCourse.map((module, i) => (
         <div key={module.id} ref={(el) => { moduleRefs.current[i] = el; }}>
@@ -555,6 +567,17 @@ export default function AghoriTantraPage() {
           <ModuleCard module={module} index={i} />
         </div>
       ))}
+
+      {/* ── Cinematic strip: Bhairava Pathway ── */}
+      <ScrollParallax speed={-0.15} className="cinematic-strip">
+        <CinematicImage
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/bhairava-pathway"
+          alt="Dark pathway leading to a Bhairava shrine through dense forest"
+          kenBurns="slow"
+          filmGrain={false}
+        />
+        <div className="cinematic-strip-overlay" />
+      </ScrollParallax>
 
       {/* ── Closing CTA ── */}
       <motion.div

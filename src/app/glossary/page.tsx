@@ -5,6 +5,7 @@ import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { Search, X, ChevronRight, Lock, Volume2, ArrowLeft } from 'lucide-react';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
+import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { GatedContent } from '@/components/monetization/GatedContent';
 import { TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
 import { glossaryEntries, CATEGORIES } from '@/lib/data/glossary';
@@ -480,6 +481,19 @@ export default function GlossaryPage() {
             transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
             style={{ transformOrigin: 'center' }}
           />
+
+          {/* ── Cinematic Break ── */}
+          <div className="my-16 md:my-24">
+            <ScrollParallax speed={-0.15} className="cinematic-strip">
+              <CinematicImage
+                src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-runes-manuscript"
+                alt="Ancient runes and tantrik manuscript inscriptions on weathered stone"
+                kenBurns="slow"
+                filmGrain={false}
+              />
+              <div className="cinematic-strip-overlay" />
+            </ScrollParallax>
+          </div>
 
           {/* ── Closing CTA ── */}
           <motion.div

@@ -146,8 +146,17 @@ export default function DossierPage() {
 
   return (
     <div className="bg-deep-black min-h-screen relative">
-      {/* Atmospheric background */}
-      <div className="atmospheric-bg fixed inset-0 pointer-events-none opacity-40" aria-hidden="true" />
+      {/* Cinematic hero background */}
+      <div className="fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+        <CinematicImage
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-forgotten-chamber"
+          alt="A forgotten ritual chamber deep within an ancient temple, candles and yantras scattered on stone surfaces"
+          scrim="full"
+          filmGrain={false}
+        />
+      </div>
+      {/* Atmospheric background — CSS gradients layered above the CinematicImage scrim */}
+      <div className="atmospheric-bg fixed inset-0 pointer-events-none opacity-40 z-[1]" aria-hidden="true" />
 
       {/* ═══════════════════════════════════════════════════════════════
           FULL-PAGE INITIATION CEREMONY OVERLAY

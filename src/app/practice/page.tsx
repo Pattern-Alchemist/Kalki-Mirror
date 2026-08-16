@@ -4,6 +4,8 @@ import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { BackButton } from '@/components/nav/BackButton';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
+import { CinematicImage } from '@/components/ui/CinematicImage';
+import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 import { allSiddhis } from '@/lib/data/siddhis';
@@ -544,9 +546,16 @@ export default function PracticeLoggerPage() {
 
   return (
     <main className="min-h-screen bg-deep-black">
-      <section className="relative min-h-[90vh] md:min-h-[100vh] flex items-center atmospheric-bg overflow-hidden">
+      <section className="relative min-h-[90vh] md:min-h-[100vh] flex items-center overflow-hidden">
+        <CinematicImage
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-meditation-platform"
+          alt="Ascetic in deep meditation on an ancient stone platform at dawn"
+          className="absolute inset-0"
+          scrim="full"
+          filmGrain={false}
+        />
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none z-[1]"
           style={{
             background:
               'radial-gradient(ellipse 60% 50% at 50% 40%, rgba(212,175,55,0.06) 0%, transparent 70%)',
@@ -618,6 +627,16 @@ export default function PracticeLoggerPage() {
           </div>
         </section>
       )}
+
+      <ScrollParallax speed={-0.15} className="cinematic-strip">
+        <CinematicImage
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/nadi-shuddhi"
+          alt="Nadi shuddhi breathwork practice at a cremation ground"
+          kenBurns="slow"
+          filmGrain={false}
+        />
+        <div className="cinematic-strip-overlay" />
+      </ScrollParallax>
 
       {/* ── EDITORIAL: The Practice Philosophy ── */}
       <div className="max-w-2xl mx-auto px-6 lg:px-10 py-10">
@@ -891,8 +910,14 @@ export default function PracticeLoggerPage() {
       </section>
 
       <section className="py-24 md:py-32 relative overflow-hidden">
+        <CinematicImage
+          src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/sacred-manuscript"
+          alt="Ancient sacred manuscript with tantrik diagrams and sanskrit text"
+          scrim="full"
+          filmGrain={false}
+        />
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none z-[1]"
           style={{
             background:
               'radial-gradient(ellipse 50% 60% at 50% 50%, rgba(212,175,55,0.04) 0%, transparent 70%)',

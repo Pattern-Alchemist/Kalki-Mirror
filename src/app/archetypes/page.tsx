@@ -311,18 +311,29 @@ export default function ArchetypesPage() {
         >
           {ALL_ARCHETYPES.filter(a => a.number > 10).map((a) => (
             <motion.div key={a.id} variants={staggerItem} id={a.id}>
-              <div className="glass-chip p-6 h-full">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-display text-xl text-foreground font-light">{a.name}</h3>
-                  <CautionBadge level={a.cautionLevel} />
+              <div className="glass-chip overflow-hidden h-full">
+                {/* Image strip */}
+                <div className="relative h-32 md:h-36 overflow-hidden">
+                  <CinematicImage
+                    src={a.image}
+                    alt={a.name}
+                    filmGrain={false}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-[5]" />
                 </div>
-                <p className="font-mono text-[0.75rem] text-gold-dim tracking-[0.1em] mb-3">{a.sanskrit}</p>
-                <p className="text-sm text-copper font-mono tracking-[0.06em] mb-4 italic line-clamp-2">{a.pattern}</p>
-                <p className="text-sm text-text-secondary leading-relaxed line-clamp-3 editorial-spacing">{a.description}</p>
-                <div className="mt-4 pt-4 border-t border-gold/5 flex items-center gap-2">
-                  <span className="font-mono text-[0.75rem] text-text-muted tracking-[0.1em]">{a.element}</span>
-                  <span className="font-mono text-[0.75rem] text-text-muted">{'·'}</span>
-                  <span className="font-mono text-[0.75rem] text-text-muted tracking-[0.1em]">{a.relatedSiddhiSlugs.length} FOLIOS</span>
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-display text-xl text-foreground font-light">{a.name}</h3>
+                    <CautionBadge level={a.cautionLevel} />
+                  </div>
+                  <p className="font-mono text-[0.75rem] text-gold-dim tracking-[0.1em] mb-3">{a.sanskrit}</p>
+                  <p className="text-sm text-copper font-mono tracking-[0.06em] mb-4 italic line-clamp-2">{a.pattern}</p>
+                  <p className="text-sm text-text-secondary leading-relaxed line-clamp-3 editorial-spacing">{a.description}</p>
+                  <div className="mt-4 pt-4 border-t border-gold/5 flex items-center gap-2">
+                    <span className="font-mono text-[0.75rem] text-text-muted tracking-[0.1em]">{a.element}</span>
+                    <span className="font-mono text-[0.75rem] text-text-muted">{'·'}</span>
+                    <span className="font-mono text-[0.75rem] text-text-muted tracking-[0.1em]">{a.relatedSiddhiSlugs.length} FOLIOS</span>
+                  </div>
                 </div>
               </div>
             </motion.div>

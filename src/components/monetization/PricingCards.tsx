@@ -8,6 +8,12 @@ import { pricingTiers } from '@/lib/data/pricing';
 import type { PricingTier } from '@/lib/data/types';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 
+const CLOUD = 'b9oo5abp';
+const TIER_BG: Record<string, string> = {
+  agni: `url(https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto:good,w_800,c_limit/kalki-mirror/tiers/agni-fire)`,
+  akash: `url(https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto:good,w_800,c_limit/kalki-mirror/tiers/akash-sky)`,
+};
+
 function TierRow({ tier, index, reduced }: { tier: PricingTier; index: number; reduced: boolean }) {
   const isPaid = (tier.priceINR ?? 0) > 0;
   const highlighted = tier.highlight;
@@ -15,12 +21,16 @@ function TierRow({ tier, index, reduced }: { tier: PricingTier; index: number; r
   return (
     <motion.div
       variants={reduced ? undefined : staggerItem}
-      className="group relative flex flex-col md:flex-row md:items-stretch gap-0"
+      className="group relative flex flex-col md:flex-row md:items-stretch gap-0 overflow-hidden"
       style={{
-        background: 'rgba(8, 8, 8, 0.92)',
+        background: TIER_BG[tier.id]
+          ? `rgba(8, 8, 8, 0.88) ${TIER_BG[tier.id]} no-repeat left center / cover`
+          : 'rgba(8, 8, 8, 0.92)',
         backdropFilter: 'blur(10px)',
         WebkitBackdropFilter: 'blur(10px)',
-        border: '1px solid rgba(212, 175, 55, 0.3)',
+        border: highlighted
+          ? '1px solid rgba(212, 175, 55, 0.5)'
+          : '1px solid rgba(212, 175, 55, 0.3)',
         borderRadius: 'var(--radius)',
       }}
     >
