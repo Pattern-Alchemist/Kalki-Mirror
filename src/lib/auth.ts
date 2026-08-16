@@ -137,6 +137,8 @@ export const authOptions: NextAuthOptions = {
           where: { email },
         });
 
+        console.log(`[AUTH] Login attempt for ${email}: user=${!!user} hasHash=${!!user?.passwordHash} role=${user?.role}`);
+
         if (!user || !user.passwordHash) {
           recordFailedLogin(email);
           return null;
