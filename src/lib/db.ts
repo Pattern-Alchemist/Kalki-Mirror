@@ -28,12 +28,6 @@ function createPrismaClient(): PrismaClient {
 
   if (tursoUrl) {
     // ── Production: Turso via libSQL adapter ──────────────────────────────
-    // Prisma validates DATABASE_URL from the schema even when an adapter
-    // overrides the connection. Ensure a valid placeholder exists.
-    if (!process.env.DATABASE_URL) {
-      process.env.DATABASE_URL = 'file:/tmp/kalki-dynamic.db';
-    }
-
     const adapter = new PrismaLibSql({
       url: tursoUrl,
       authToken: tursoAuthToken || undefined,
@@ -51,6 +45,11 @@ function createPrismaClient(): PrismaClient {
 
   // ── Development: local SQLite (DATABASE_URL from .env) ──────────────────
   return new PrismaClient({
+    datasources: {
+      db: {
+        url: process.env.DATABASE_URL || 'file:./db/custom.db',
+      },
+    },
     log: process.env.PRISMA_LOG === '1' ? ['query'] : [],
   });
 }
