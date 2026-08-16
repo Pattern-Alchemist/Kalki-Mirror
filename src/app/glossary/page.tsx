@@ -267,7 +267,7 @@ export default function GlossaryPage() {
       {/* ── Cinematic Hero ── */}
       <header className="relative min-h-[90vh] md:min-h-[100vh] flex items-end overflow-hidden">
         <CinematicImage
-          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/hero-sanskrit-manuscript'
+          src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/codex/sanskrit-plate-hero'
           alt="Ancient Sanskrit manuscript with golden lettering"
           kenBurns="slow"
           scrim="bottom"
