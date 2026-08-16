@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       'Structured practice protocols from living lineages — Mantra, Yantra, Nyāsa, Pūjā, Dhāraṇā, Prāṇāyāma, Dhyāna, Dhūni, Śmāśana, Bhasma, Japa, Kuṇḍalinī, Sevā. Evidence-graded. Step-by-step.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/forgotten-chamber',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/library/ashram-hero',
         width: 1200,
         height: 630,
         alt: 'The Sādhanā Library — KALKI',
