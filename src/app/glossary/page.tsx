@@ -25,7 +25,7 @@ const CATEGORY_STYLES: Record<string, string> = {
 };
 
 /* ── Pronunciation helper ── */
-function PronunciationButton({ pronunciation }: { pronunciation: string }) {
+function PronunciationButton({ pronunciation }: { pronunciation?: string }) {
   const [speaking, setSpeaking] = useState(false);
   if (!pronunciation) return null;
 

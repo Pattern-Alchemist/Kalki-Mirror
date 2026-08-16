@@ -181,13 +181,13 @@ export async function getMemberTimeline(userId: string) {
       where: { userId },
       orderBy: { createdAt: 'desc' },
       take: 10,
-      select: { id: true, patternSlug: true, status: true, createdAt: true },
+      select: { id: true, patternSlug: true, patternName: true, createdAt: true },
     }),
     db.inviteUsage.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'desc' },
+      where: { usedBy: userId },
+      orderBy: { usedAt: 'desc' },
       take: 10,
-      select: { id: true, inviteCode: true, createdAt: true },
+      select: { id: true, codeId: true, usedAt: true },
     }),
   ]);
 

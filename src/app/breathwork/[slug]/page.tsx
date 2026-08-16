@@ -434,7 +434,7 @@ export default function BreathDetailPage({
                 countdown={countdown}
                 isActive={isRunning}
                 isComplete={isComplete}
-                reduced={reduced}
+                reduced={!!reduced}
               />
             </div>
 

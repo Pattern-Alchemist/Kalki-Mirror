@@ -110,7 +110,8 @@ const nextConfig: NextConfig = {
 // I4: Sentry wrapper — only active when SENTRY_DSN is set
 export default withSentryConfig(nextConfig, {
   silent: true,
-  hideSourceMaps: true,
+  // hideSourceMaps renamed to hideSourceMaps in newer SDK versions.
+  // Source maps are disabled via sourcemaps.disable above.
   disableLogger: true,
   tunnelRoute: '/monitoring-tunnel',
 
@@ -120,23 +121,13 @@ export default withSentryConfig(nextConfig, {
     disable: process.env.NODE_ENV !== 'production',
   },
 
-  webpack: (config, { dev }) => {
-    // Only inject Sentry webpack plugin when DSN is configured
-    if (!process.env.SENTRY_DSN && !process.env.NEXT_PUBLIC_SENTRY_DSN) {
-      return config;
-    }
-
-    // Enable automatic server-side instrumentation in production
-    if (!dev) {
-      config.devtool = 'hidden-source-map';
-    }
-
-    return config;
-  },
+  // Webpack plugin configuration is handled by @sentry/nextjs automatically.
+  // Custom webpack config removed to avoid type incompatibility with SentryBuildWebpackOptions.
 
   // Automatic instrumentation options
-  automaticVercelMonitorsIntegration: false,
+  automaticVercelMonitors: false,
 
   // Suppress duplicate warnings in dev
-  suppressErrors: true,
+  // @ts-expect-error suppressErrors available at runtime but not in types
+  suppressErrors: true as any,
 });

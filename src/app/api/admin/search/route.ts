@@ -24,8 +24,9 @@ export async function GET(request: NextRequest) {
   // A8: Rate limit this API endpoint
   const rateLimitKey = `search:${token.id}`;
   // Simple in-memory rate limit (production: use Redis)
-  const searchCounts = (globalThis as Record<string, Record<string, number[]>>).__admin_search_counts ||
-    ((globalThis as Record<string, Record<string, number[]>>).__admin_search_counts = {});
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const g = globalThis as any;
+  const searchCounts = g.__admin_search_counts || (g.__admin_search_counts = {});
   const now = Date.now();
   const windowMs = 60_000;
   if (!searchCounts[rateLimitKey]) searchCounts[rateLimitKey] = [];
@@ -67,7 +68,7 @@ export async function GET(request: NextRequest) {
         { createdBy: { contains: query } },
       ],
     },
-    select: { id: true, code: true, active: true, usedCount: true },
+    select: { id: true, code: true, active: true, usesUsed: true },
     take: 5,
   });
   for (const k of keys) {
@@ -75,7 +76,7 @@ export async function GET(request: NextRequest) {
       type: "key",
       id: k.id,
       title: k.code,
-      subtitle: `${k.active ? 'Active' : 'Inactive'} · ${k.usedCount} uses`,
+      subtitle: `${k.active ? 'Active' : 'Inactive'} · ${k.usesUsed} uses`,
       href: `/admin/keys`,
     });
   }

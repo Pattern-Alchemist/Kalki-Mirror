@@ -14,7 +14,7 @@ export async function setup2FA() {
   const userId = (session?.user as unknown as { id: string })?.id;
   if (!userId) throw new Error("Not authenticated");
 
-  const result = await generate2FASecret(userId, session.user!.email!);
+  const result = await generate2FASecret(userId, session!.user!.email!);
   return { qrDataUrl: result.qrDataUrl, secret: result.secret, backupCodes: result.backupCodes };
 }
 

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useAdminSession } from "./session-provider";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type JSX } from "react";
 import { getVisibleNav, type NavItem } from "@/lib/admin/role-ui";
 import { NotificationBell } from "./notification-bell";
 

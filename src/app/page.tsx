@@ -50,7 +50,8 @@ export default function HomePage() {
               backgroundImage: 'url(https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_640,c_limit/kalki-mirror/home/ancient-temple-midnight)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              fetchPriority: 'high' as const,
+              // @ts-expect-error fetchPriority is experimental CSS
+              fetchPriority: 'high',
             }}
           />
         )}

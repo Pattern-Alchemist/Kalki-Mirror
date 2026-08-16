@@ -52,6 +52,10 @@ export interface Siddhi {
   verbatimText?: string;         // Key original-language quotation (Sanskrit, with translation)
   disputedClaims?: string;       // What modern/new-age claims exist that are NOT supported by tradition
   practitionerCaveat?: string;   // Caveat for practitioners about what the practice can/cannot do
+  // ── Extended practice fields (v3) ──
+  contraindications?: string[];  // Medical / psychological conditions requiring caution
+  integrations?: string[];       // Cross-practice integration notes
+  variantPractices?: { name: string; level: string; description: string }[];
 }
 
 export interface Pattern {
@@ -64,6 +68,9 @@ export interface Pattern {
   practice: string;
   relatedSiddhis: string[];
   imageSlug: string;
+  minTier?: Tier;
+  archetypeIntegration?: string;
+  advancedNotes?: string;
 }
 
 export interface PricingTier {
