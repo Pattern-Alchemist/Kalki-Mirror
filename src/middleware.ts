@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
+const AUTH_SECRET = process.env.NEXTAUTH_SECRET || 'qhMa86hvsUKGlY8JM3Kej0FAaq9uTZRCGqsL7LUxRJ8=';
+
 const ADMIN_ROLES = ["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"];
 
 // A4: Login rate limiting config
@@ -107,7 +109,7 @@ export async function middleware(request: NextRequest) {
       : await (async () => {
           const token = await getToken({
             req: request,
-            secret: process.env.NEXTAUTH_SECRET,
+            secret: AUTH_SECRET,
           });
 
           if (!token) {
@@ -182,7 +184,7 @@ export async function middleware(request: NextRequest) {
   ) {
     const token = await getToken({
       req: request,
-      secret: process.env.NEXTAUTH_SECRET,
+      secret: AUTH_SECRET,
     });
 
     const userTier = (token?.tier as string) || "prithvi";
