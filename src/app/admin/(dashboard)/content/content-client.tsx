@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import { createContentEntry, updateContentEntry, deleteContentEntry } from "./actions";
 import { CONTENT_TYPES, STATUSES, CAUTIONS, TIERS, type ContentRow } from "./constants";
-import { AdminAIDraft } from "@/components/ai/AdminAIDraft";
+import dynamic from "next/dynamic";
+
+const AdminAIDraft = dynamic(() => import("@/components/ai/AdminAIDraft").then(m => ({ default: m.AdminAIDraft })), { ssr: false, loading: () => <div className="h-32" /> });
 
 const STATUS_STYLES: Record<string, string> = {
   DRAFT: "bg-zinc-800 text-zinc-400",

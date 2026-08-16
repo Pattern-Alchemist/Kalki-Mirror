@@ -7,7 +7,7 @@ import { ShieldAlert, ShieldCheck, ShieldBan, Link as LinkIcon, Flame, Zap } fro
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
-import { GatedContent } from '@/components/monetization/GatedContent';
+import dynamic from 'next/dynamic';
 import { TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
 import { ALL_ARCHETYPES, CAUTION_LABELS, type CautionLevel } from '@/lib/data/archetypes';
 import { allPatterns } from '@/lib/data/patterns';
@@ -15,6 +15,8 @@ import { allSiddhis } from '@/lib/data/siddhis';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+
+const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
 
 /* ── Caution badge styles ── */
 const CAUTION_STYLES: Record<CautionLevel, string> = {

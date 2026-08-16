@@ -6,7 +6,7 @@ import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
-import { GatedContent } from '@/components/monetization/GatedContent';
+import dynamic from 'next/dynamic';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import Link from 'next/link';
 import { fadeInUp, staggerItem } from '@/lib/motion/tokens';
@@ -15,6 +15,8 @@ import { TIER_LABELS, TIER_ELEMENTS, TIER_COLORS, TIER_BADGE_STYLES } from '@/li
 import { aghoriCourse, COURSE_META } from '@/lib/data/aghori-tantra-course';
 import type { CourseModule, CourseLesson } from '@/lib/data/aghori-tantra-course';
 import type { Tier } from '@/lib/data/types';
+
+const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
 
 /* ─────────────────────────────────────────────────────────────
    AGHORĪ TANTRA — THE ASHRAM PATH

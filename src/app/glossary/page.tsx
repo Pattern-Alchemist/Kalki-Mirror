@@ -7,13 +7,15 @@ import { Search, X, ChevronRight, Lock, Volume2, ArrowLeft } from 'lucide-react'
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
-import { GatedContent } from '@/components/monetization/GatedContent';
+import dynamic from 'next/dynamic';
 import { TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
 import { glossaryEntries, CATEGORIES } from '@/lib/data/glossary';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import type { GlossaryEntry } from '@/lib/data/glossary';
+
+const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
 
 /* ── Category badge colors ── */
 const CATEGORY_STYLES: Record<string, string> = {

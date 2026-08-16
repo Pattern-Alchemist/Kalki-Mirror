@@ -11,11 +11,13 @@ import { allPatterns } from '@/lib/data/patterns';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
-import { GatedContent } from '@/components/monetization/GatedContent';
+import dynamic from 'next/dynamic';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { TIER_BADGE_STYLES, TIER_LABELS } from '@/lib/utils/tier-gate';
 import { cn } from '@/lib/utils';
 import { Clock, ArrowRight } from 'lucide-react';
+
+const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
 
 /* ── Derived Data ── */
 const findSiddhi = (slug: string) => allSiddhis.find((s) => s.slug === slug);

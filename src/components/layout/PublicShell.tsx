@@ -4,9 +4,11 @@ import { usePathname } from "next/navigation";
 import { SacredNav } from "@/components/nav/SacredNav";
 import { SacredFooter } from "@/components/nav/SacredFooter";
 import { WhatsAppCTA } from "@/components/booking/WhatsAppCTA";
-import { PaywallModal } from "@/components/monetization/PaywallModal";
+import dynamic from "next/dynamic";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { PageTransition } from "@/components/layout/PageTransition";
+
+const PaywallModal = dynamic(() => import("@/components/monetization/PaywallModal").then(m => ({ default: m.PaywallModal })), { ssr: false, loading: () => null });
 
 const SITE_URL = 'https://www.astrokalki.com';
 

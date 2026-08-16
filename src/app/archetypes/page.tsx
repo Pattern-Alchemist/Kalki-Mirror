@@ -9,15 +9,16 @@ import { TEN_MAHAVIDYAS, ALL_ARCHETYPES, type Archetype } from '@/lib/data/arche
 import { allSiddhis, getSiddhiBySlug } from '@/lib/data/siddhis';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { CautionBadge } from '@/components/archive/CautionBadge';
-import { GatedContent } from '@/components/monetization/GatedContent';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import Link from 'next/link';
 import { BackButton } from '@/components/nav/BackButton';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
-const ArchetypeQuiz = dynamic(() => import('@/components/ai/ArchetypeQuiz').then(m => ({ default: m.ArchetypeQuiz })), { ssr: false, loading: () => <div className="h-48" /> });
 import type { CautionLevel } from '@/lib/data/archetypes';
 import type { Tier } from '@/lib/data/types';
+
+const ArchetypeQuiz = dynamic(() => import('@/components/ai/ArchetypeQuiz').then(m => ({ default: m.ArchetypeQuiz })), { ssr: false, loading: () => <div className="h-48" /> });
+const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
 
 /* ── Extracted sub-component: avoids nested conditional JSX inside motion.div ── */
 function ArchetypeDetail({ a }: { a: Archetype }) {

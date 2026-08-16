@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
+import { allPatterns } from '@/lib/data/patterns';
 
 export const metadata: Metadata = {
   alternates: pageAlternates('/patterns'),
@@ -44,6 +45,20 @@ const patternsJsonLd = {
         { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
         { '@type': 'ListItem', position: 2, name: 'Pattern Atlas', item: `${SITE_URL}/patterns` },
       ],
+    },
+    {
+      '@type': 'ItemList',
+      name: 'Pattern Atlas — The Mirror Method',
+      description: '20 emotional patterns mapped to specific tantrik sadhanas',
+      numberOfItems: allPatterns.length,
+      itemListElement: allPatterns.map(function(p, i) {
+        return {
+          '@type': 'ListItem',
+          position: i + 1,
+          name: p.name,
+          url: 'https://www.astrokalki.com/patterns/' + p.slug,
+        };
+      }),
     },
   ],
 };

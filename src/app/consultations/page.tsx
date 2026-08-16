@@ -9,7 +9,9 @@ import { consultationServices } from '@/lib/data/consultations';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
-import ConsultationWizard from '@/components/consultations/ConsultationWizard';
+import dynamic from 'next/dynamic';
+
+const ConsultationWizard = dynamic(() => import('@/components/consultations/ConsultationWizard'), { ssr: false, loading: () => <div className="h-64" /> });
 
 const KAUSTUBH_IMG = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_800,c_limit/kalki-mirror/kaustubh-portrait';
 

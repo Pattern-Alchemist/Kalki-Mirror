@@ -10,11 +10,13 @@ import type { Tier } from '@/lib/data/types';
 import type { Currency } from '@/lib/data/pricing';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import { BackButton } from '@/components/nav/BackButton';
-import { PricingQuiz } from '@/components/ai/PricingQuiz';
+import dynamic from 'next/dynamic';
 import { staggerContainer, staggerItem, fadeInUp } from '@/lib/motion/tokens';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
+
+const PricingQuiz = dynamic(() => import('@/components/ai/PricingQuiz').then(m => ({ default: m.PricingQuiz })), { ssr: false, loading: () => <div className="h-48" /> });
 
 const TIER_ORDER: Tier[] = ['prithvi', 'jal', 'agni', 'akash'];
 const WHATSAPP_NUMBER = '918920862931';

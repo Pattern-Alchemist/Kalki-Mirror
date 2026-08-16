@@ -9,16 +9,18 @@ import { allPatterns } from '@/lib/data/patterns';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { getArchetypeById, PATTERN_ARCHETYPE_MAP } from '@/lib/data/archetypes';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
-import { PatternExplainer } from '@/components/ai/PatternExplainer';
+import dynamic from 'next/dynamic';
 import { YantraLoader } from '@/components/patterns/YantraLoader';
 import { CautionBadge } from '@/components/archive/CautionBadge';
-import { GatedContent } from '@/components/monetization/GatedContent';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
 import type { Tier } from '@/lib/data/types';
+
+const PatternExplainer = dynamic(() => import('@/components/ai/PatternExplainer').then(m => ({ default: m.PatternExplainer })), { ssr: false, loading: () => <div className="h-32" /> });
+const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
 
 export default function PatternFolioPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);

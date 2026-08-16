@@ -9,11 +9,13 @@ import { allBreathPatterns } from '@/lib/data/breath-patterns';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
-import { GatedContent } from '@/components/monetization/GatedContent';
+import dynamic from 'next/dynamic';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { TIER_BADGE_STYLES, TIER_LABELS } from '@/lib/utils/tier-gate';
 import { cn } from '@/lib/utils';
 import { Play, Pause, RotateCcw, Wind, Repeat, CheckCircle2 } from 'lucide-react';
+
+const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
 
 /* ── Phase type detection ── */
 type PhaseKind = 'inhale' | 'exhale' | 'retain';

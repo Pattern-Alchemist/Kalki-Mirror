@@ -10,8 +10,7 @@ import { allPatterns } from '@/lib/data/patterns';
 import { getArchetypeById, PATTERN_ARCHETYPE_MAP, ACCESS_LABELS } from '@/lib/data/archetypes';
 import { AuthenticityMeter } from '@/components/archive/AuthenticityMeter';
 import { CautionBadge, getCautionLevel } from '@/components/archive/CautionBadge';
-import { AcknowledgmentGate } from '@/components/archive/AcknowledgmentGate';
-import { GatedContent } from '@/components/monetization/GatedContent';
+import dynamic from 'next/dynamic';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import { BackButton } from '@/components/nav/BackButton';
@@ -20,6 +19,9 @@ import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { WHATSAPP_LINKS } from '@/lib/utils/whatsapp';
 import type { Tier } from '@/lib/data/types';
+
+const AcknowledgmentGate = dynamic(() => import('@/components/archive/AcknowledgmentGate').then(m => ({ default: m.AcknowledgmentGate })), { ssr: false, loading: () => <div className="min-h-[200px]" /> });
+const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
 
 function ConfidenceBadge({ confidence }: { confidence: string }) {
   const color = confidence === 'high' ? 'text-green-400 border-green-400/20 bg-green-400/8' :

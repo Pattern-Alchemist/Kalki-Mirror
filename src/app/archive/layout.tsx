@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { SITE_URL, pageAlternates, canonicalUrl } from '@/lib/utils/metadata';
+import { allSiddhis } from '@/lib/data/siddhis';
 
 export const metadata: Metadata = {
   alternates: pageAlternates('/archive'),
@@ -45,6 +46,20 @@ const archiveJsonLd = {
         { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
         { '@type': 'ListItem', position: 2, name: 'Akashic Archive', item: `${SITE_URL}/archive` },
       ],
+    },
+    {
+      '@type': 'ItemList',
+      name: 'The Akashic Archive — Siddhi Collection',
+      description: allSiddhis.length + ' siddhis across 16 archetypes',
+      numberOfItems: allSiddhis.length,
+      itemListElement: allSiddhis.slice(0, 20).map(function(s, i) {
+        return {
+          '@type': 'ListItem',
+          position: i + 1,
+          name: s.name,
+          url: 'https://www.astrokalki.com/archive/' + s.slug,
+        };
+      }),
     },
   ],
 };
