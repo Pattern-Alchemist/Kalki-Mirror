@@ -1,236 +1,638 @@
 {
-  "_generated": "2026-08-17",
-  "cloud_name": "b9oo5abp",
-  "images": {
-    "home/ascetic-fire-milky-way": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Homepage Akash tier, optional hero poster"
-    },
-    "home/ascetic-walking-mountain-path": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Homepage Mirror Method section"
-    },
-    "home/ancient-stone-ashram-interior": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Homepage Pattern Intelligence + Akashic Archive sections"
-    },
-    "home/ascetic-water-practice": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Homepage Practice Now section"
-    },
-    "home/ascetic-ash-fire-contemplation": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Homepage Prithvi tier card"
-    },
-    "home/ascetic-himalayan-overlook": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Homepage Jal tier card"
-    },
-    "home/charcoal-smoke-embers": {
-      "w": 2752,
-      "h": 1536,
-      "use": "Homepage Agni tier card"
-    },
-    "home/stone-gateway-ancient-forest": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Homepage Sadhana Instruments section"
-    },
-    "pricing/fire-ritual-yantra-hero": {
-      "w": 1024,
-      "h": 1024,
-      "use": "Pricing page hero"
-    },
-    "pricing/prithvi-card-bg": {
-      "w": 2752,
-      "h": 1536,
-      "use": "Pricing Prithvi card bg"
-    },
-    "pricing/jal-card-bg": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Pricing Jal card bg"
-    },
-    "pricing/agni-card-bg": {
-      "w": 2752,
-      "h": 1536,
-      "use": "Pricing Agni card bg"
-    },
-    "pricing/akash-card-bg": {
-      "w": 1536,
-      "h": 2752,
-      "use": "Pricing Akash card bg"
-    },
-    "pricing/stone-yantra-divider": {
-      "w": 2048,
-      "h": 2048,
-      "use": "Pricing section divider"
-    },
-    "archive/banyan-archive-hero": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Archive page hero"
-    },
-    "archive/sacred-geometry-manuscript": {
-      "w": 1920,
-      "h": 1280,
-      "use": "Archive reading room bg"
-    },
-    "archive/aghori-tantra-card": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Archive Aghori Tantra folio card"
-    },
-    "archive/tantra-foundations-card": {
-      "w": 1024,
-      "h": 1024,
-      "use": "Archive Tantra Foundations folio card"
-    },
-    "archive/himalayan-mysticism-card": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Archive Himalayan Mysticism folio card"
-    },
-    "archive/ritual-practices-card": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Archive Ritual Practices folio card"
-    },
-    "archive/kaula-path-card": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Archive Kaula/Left-Hand Path folio card"
-    },
-    "archive/mantra-japa-card": {
-      "w": 1920,
-      "h": 1280,
-      "use": "Archive Mantra & Japa folio card"
-    },
-    "archive/nadi-shuddhi-card": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Archive Nadi Shuddhi folio card"
-    },
-    "aghori-tantra/shmashana-hero": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Aghori Tantra page hero"
-    },
-    "aghori-tantra/philosophy-bg": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Aghori Tantra philosophy section"
-    },
-    "aghori-tantra/practices-bg": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Aghori Tantra practices section"
-    },
-    "aghori-tantra/lineage-bg": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Aghori Tantra lineage section"
-    },
-    "aghori-tantra/banyan-traveler-bg": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Aghori Tantra section divider"
-    },
-    "tantra/yantra-hero": {
-      "w": 1024,
-      "h": 1024,
-      "use": "Tantra page hero"
-    },
-    "tantra/left-hand-path-bg": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Tantra left-hand path section"
-    },
-    "tantra/ritual-bg": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Tantra ritual section"
-    },
-    "tantra/philosophy-bg": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Tantra philosophy section"
-    },
-    "patterns/sadhu-ash-gold-hero": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Patterns page hero"
-    },
-    "patterns/card-texture": {
-      "w": 2752,
-      "h": 1536,
-      "use": "Patterns card background texture"
-    },
-    "dossier/sadhu-ash-gold-hero": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Dossier page hero"
-    },
-    "dossier/form-bg": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Dossier form background"
-    },
-    "codex/sanskrit-plate-hero": {
-      "w": 1920,
-      "h": 1280,
-      "use": "Codex page hero"
-    },
-    "codex/yantra-divider": {
-      "w": 2048,
-      "h": 2048,
-      "use": "Codex section divider"
-    },
-    "library/ashram-hero": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Library page hero"
-    },
-    "practice/water-practice-hero": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Practice page hero"
-    },
-    "method/forest-path-hero": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Method page hero"
-    },
-    "consult/contemplation-hero": {
-      "w": 2400,
-      "h": 1792,
-      "use": "Consultations page hero"
-    },
-    "auth/dark-texture-bg": {
-      "w": 1920,
-      "h": 1080,
-      "use": "Admin login background"
-    },
-    "ui/yantra-loading": {
-      "w": 1024,
-      "h": 1024,
-      "use": "Loading spinner"
-    },
-    "ui/smoke-transition": {
-      "w": 2752,
-      "h": 1536,
-      "use": "Page transition bg"
-    },
-    "ui/yantra-error": {
-      "w": 2048,
-      "h": 2048,
-      "use": "Error state background"
-    }
+  "/pattern-atlas/zone-mirror.png": {
+    "publicId": "kalki-mirror/pattern-atlas/zone-mirror",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pattern-atlas/zone-mirror",
+    "width": 1344,
+    "height": 768
+  },
+  "/pattern-atlas/zone-confrontation.png": {
+    "publicId": "kalki-mirror/pattern-atlas/zone-confrontation",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pattern-atlas/zone-confrontation",
+    "width": 1344,
+    "height": 768
+  },
+  "/pattern-atlas/zone-dissolution.png": {
+    "publicId": "kalki-mirror/pattern-atlas/zone-dissolution",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pattern-atlas/zone-dissolution",
+    "width": 1344,
+    "height": 768
+  },
+  "/mahavidyas/kali.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/kali",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/kali",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/tara.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/tara",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/tara",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/chinnamasta.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/chinnamasta",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/chinnamasta",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/bhuvaneshvari.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/bhuvaneshvari",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/bhuvaneshvari",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/shodashi.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/shodashi",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/shodashi",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/bhairavi.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/bhairavi",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/bhairavi",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/dhumavati.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/dhumavati",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/dhumavati",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/bagalamukhi.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/bagalamukhi",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/bagalamukhi",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/matangi.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/matangi",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/matangi",
+    "width": 2560,
+    "height": 1440
+  },
+  "/mahavidyas/kamala.jpeg": {
+    "publicId": "kalki-mirror/mahavidyas/kamala",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/mahavidyas/kamala",
+    "width": 2560,
+    "height": 1440
+  },
+  "/assets/tantra/abandoned-temple.jpeg": {
+    "publicId": "kalki-mirror/tantra/abandoned-temple",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008690/kalki-mirror/tantra/abandoned-temple.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/archive-library.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/archive-library",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008690/kalki-mirror/tantra/archetypes/archive-library.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/bagalamukhi-pathway.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/bagalamukhi-pathway",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008690/kalki-mirror/tantra/archetypes/bagalamukhi-pathway.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/bhairavi-chamber.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/bhairavi-chamber",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008690/kalki-mirror/tantra/archetypes/bhairavi-chamber.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/bhuvaneshvari-submerged.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/bhuvaneshvari-submerged",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008690/kalki-mirror/tantra/archetypes/bhuvaneshvari-submerged.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/buddhist-meditation-platform.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/buddhist-meditation-platform",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008692/kalki-mirror/tantra/archetypes/buddhist-meditation-platform.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/cave-inscriptions-deep.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/cave-inscriptions-deep",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008692/kalki-mirror/tantra/archetypes/cave-inscriptions-deep.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/chinnamasta-labyrinth.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/chinnamasta-labyrinth",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008692/kalki-mirror/tantra/archetypes/chinnamasta-labyrinth.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/dhumavati-ruin.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/dhumavati-ruin",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008692/kalki-mirror/tantra/archetypes/dhumavati-ruin.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/ephemeris-observatory.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/ephemeris-observatory",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008692/kalki-mirror/tantra/archetypes/ephemeris-observatory.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/kali-monsoon.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/kali-monsoon",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008694/kalki-mirror/tantra/archetypes/kali-monsoon.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/kali-temple-dark.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/kali-temple-dark",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008694/kalki-mirror/tantra/archetypes/kali-temple-dark.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/kamala-observatory.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/kamala-observatory",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008694/kalki-mirror/tantra/archetypes/kamala-observatory.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/matangi-cremation.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/matangi-cremation",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008694/kalki-mirror/tantra/archetypes/matangi-cremation.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/natha-forest-shrine.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/natha-forest-shrine",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008694/kalki-mirror/tantra/archetypes/natha-forest-shrine.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/shaiva-mountain-pass.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/shaiva-mountain-pass",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008696/kalki-mirror/tantra/archetypes/shaiva-mountain-pass.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/shatkarma-labyrinth.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/shatkarma-labyrinth",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008696/kalki-mirror/tantra/archetypes/shatkarma-labyrinth.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/shodashi-sri-yantra.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/shodashi-sri-yantra",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008696/kalki-mirror/tantra/archetypes/shodashi-sri-yantra.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/sri-yantra-mist.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/sri-yantra-mist",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008696/kalki-mirror/tantra/archetypes/sri-yantra-mist.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/tara-cave.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/tara-cave",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008696/kalki-mirror/tantra/archetypes/tara-cave.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/temple-silhouette.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/temple-silhouette",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008698/kalki-mirror/tantra/archetypes/temple-silhouette.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/vault-ritual-chamber.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/vault-ritual-chamber",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008698/kalki-mirror/tantra/archetypes/vault-ritual-chamber.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archetypes/yantra-chamber-gold.jpeg": {
+    "publicId": "kalki-mirror/tantra/archetypes/yantra-chamber-gold",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008698/kalki-mirror/tantra/archetypes/yantra-chamber-gold.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/archivist-portrait.jpg": {
+    "publicId": "kalki-mirror/tantra/archivist-portrait",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008698/kalki-mirror/tantra/archivist-portrait.jpg",
+    "width": 1254,
+    "height": 1254
+  },
+  "/assets/tantra/bhairava-pathway.jpeg": {
+    "publicId": "kalki-mirror/tantra/bhairava-pathway",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008698/kalki-mirror/tantra/bhairava-pathway.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/cave-yantras.jpeg": {
+    "publicId": "kalki-mirror/tantra/cave-yantras",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008700/kalki-mirror/tantra/cave-yantras.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/cremation-ground.jpeg": {
+    "publicId": "kalki-mirror/tantra/cremation-ground",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008700/kalki-mirror/tantra/cremation-ground.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/dark-labyrinth.jpeg": {
+    "publicId": "kalki-mirror/tantra/dark-labyrinth",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008700/kalki-mirror/tantra/dark-labyrinth.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-archetypes-mandala.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-archetypes-mandala",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008700/kalki-mirror/tantra/hero-archetypes-mandala.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-bhairava-pathway-alt.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-bhairava-pathway-alt",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008700/kalki-mirror/tantra/hero-bhairava-pathway-alt.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-cave-yantras-alt.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-cave-yantras-alt",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008702/kalki-mirror/tantra/hero-cave-yantras-alt.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/hero-cave-yantras.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-cave-yantras",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008702/kalki-mirror/tantra/hero-cave-yantras.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/hero-cremation-alt2.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-cremation-alt2",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008702/kalki-mirror/tantra/hero-cremation-alt2.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-cremation-ground-alt.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-cremation-ground-alt",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008702/kalki-mirror/tantra/hero-cremation-ground-alt.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-fire.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-fire",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008702/kalki-mirror/tantra/hero-fire.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/hero-forest-shrine.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-forest-shrine",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008704/kalki-mirror/tantra/hero-forest-shrine.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-forgotten-chamber-alt.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-forgotten-chamber-alt",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008704/kalki-mirror/tantra/hero-forgotten-chamber-alt.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-forgotten-chamber.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-forgotten-chamber",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008704/kalki-mirror/tantra/hero-forgotten-chamber.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-kali-temple-monsoon.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-kali-temple-monsoon",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008704/kalki-mirror/tantra/hero-kali-temple-monsoon.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-labyrinth-alt.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-labyrinth-alt",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008704/kalki-mirror/tantra/hero-labyrinth-alt.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/hero-library.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-library",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008707/kalki-mirror/tantra/hero-library.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/hero-main.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-main",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008707/kalki-mirror/tantra/hero-main.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/hero-manuscript.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-manuscript",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008707/kalki-mirror/tantra/hero-manuscript.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/hero-meditation-platform-alt.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-meditation-platform-alt",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008707/kalki-mirror/tantra/hero-meditation-platform-alt.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-meditation-platform.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-meditation-platform",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008707/kalki-mirror/tantra/hero-meditation-platform.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-mountain-trident.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-mountain-trident",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008709/kalki-mirror/tantra/hero-mountain-trident.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/hero-mountain.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-mountain",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008709/kalki-mirror/tantra/hero-mountain.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/hero-observatory-alt.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-observatory-alt",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008709/kalki-mirror/tantra/hero-observatory-alt.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-observatory.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-observatory",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008709/kalki-mirror/tantra/hero-observatory.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-ritual-chamber-alt.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-ritual-chamber-alt",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008710/kalki-mirror/tantra/hero-ritual-chamber-alt.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/hero-ritual-chamber-alt2.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-ritual-chamber-alt2",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008713/kalki-mirror/tantra/hero-ritual-chamber-alt2.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-ritual-chamber.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-ritual-chamber",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008713/kalki-mirror/tantra/hero-ritual-chamber.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-runes-manuscript.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-runes-manuscript",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008712/kalki-mirror/tantra/hero-runes-manuscript.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-sri-yantra-sky-alt.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-sri-yantra-sky-alt",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008713/kalki-mirror/tantra/hero-sri-yantra-sky-alt.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-sri-yantra-sky.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-sri-yantra-sky",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008713/kalki-mirror/tantra/hero-sri-yantra-sky.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-submerged-temple.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-submerged-temple",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008715/kalki-mirror/tantra/hero-submerged-temple.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/hero-temple-doorway-alt.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-temple-doorway-alt",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008715/kalki-mirror/tantra/hero-temple-doorway-alt.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-temple-doorway.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-temple-doorway",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008714/kalki-mirror/tantra/hero-temple-doorway.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-temple-midnight-alt.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-temple-midnight-alt",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008714/kalki-mirror/tantra/hero-temple-midnight-alt.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-temple-ruins.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-temple-ruins",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008715/kalki-mirror/tantra/hero-temple-ruins.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-temple.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-temple",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008717/kalki-mirror/tantra/hero-temple.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/hero-underground-library.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-underground-library",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008717/kalki-mirror/tantra/hero-underground-library.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/hero-yantra-chamber-alt.jpeg": {
+    "publicId": "kalki-mirror/tantra/hero-yantra-chamber-alt",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008717/kalki-mirror/tantra/hero-yantra-chamber-alt.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/kali-temple.jpeg": {
+    "publicId": "kalki-mirror/tantra/kali-temple",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008717/kalki-mirror/tantra/kali-temple.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/meditation-bowl.jpeg": {
+    "publicId": "kalki-mirror/tantra/meditation-bowl",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008717/kalki-mirror/tantra/meditation-bowl.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/nadi-shuddhi-alt.jpeg": {
+    "publicId": "kalki-mirror/tantra/nadi-shuddhi-alt",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008719/kalki-mirror/tantra/nadi-shuddhi-alt.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/nadi-shuddhi.jpeg": {
+    "publicId": "kalki-mirror/tantra/nadi-shuddhi",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008719/kalki-mirror/tantra/nadi-shuddhi.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/pattern-controller.jpeg": {
+    "publicId": "kalki-mirror/tantra/pattern-controller",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008719/kalki-mirror/tantra/pattern-controller.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/pattern-ghost.jpeg": {
+    "publicId": "kalki-mirror/tantra/pattern-ghost",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008719/kalki-mirror/tantra/pattern-ghost.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/pattern-perfectionist.jpeg": {
+    "publicId": "kalki-mirror/tantra/pattern-perfectionist",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008719/kalki-mirror/tantra/pattern-perfectionist.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/pattern-rescuer.jpeg": {
+    "publicId": "kalki-mirror/tantra/pattern-rescuer",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008721/kalki-mirror/tantra/pattern-rescuer.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/ritual-altar-new.jpeg": {
+    "publicId": "kalki-mirror/tantra/ritual-altar-new",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008722/kalki-mirror/tantra/ritual-altar-new.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/ritual-altar.jpeg": {
+    "publicId": "kalki-mirror/tantra/ritual-altar",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008722/kalki-mirror/tantra/ritual-altar.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/ritual-chamber.jpeg": {
+    "publicId": "kalki-mirror/tantra/ritual-chamber",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008722/kalki-mirror/tantra/ritual-chamber.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/sacred-manuscript-new.jpeg": {
+    "publicId": "kalki-mirror/tantra/sacred-manuscript-new",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008722/kalki-mirror/tantra/sacred-manuscript-new.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/sacred-manuscript.jpeg": {
+    "publicId": "kalki-mirror/tantra/sacred-manuscript",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008725/kalki-mirror/tantra/sacred-manuscript.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/sadhu-ash-gold-new.jpeg": {
+    "publicId": "kalki-mirror/tantra/sadhu-ash-gold-new",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008725/kalki-mirror/tantra/sadhu-ash-gold-new.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/sadhu-ash-gold.jpeg": {
+    "publicId": "kalki-mirror/tantra/sadhu-ash-gold",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008725/kalki-mirror/tantra/sadhu-ash-gold.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/sri-yantra-sky.jpeg": {
+    "publicId": "kalki-mirror/tantra/sri-yantra-sky",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008725/kalki-mirror/tantra/sri-yantra-sky.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/stone-path-dog-new.jpeg": {
+    "publicId": "kalki-mirror/tantra/stone-path-dog-new",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008725/kalki-mirror/tantra/stone-path-dog-new.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/stone-path-dog.jpeg": {
+    "publicId": "kalki-mirror/tantra/stone-path-dog",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008728/kalki-mirror/tantra/stone-path-dog.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/temple-midnight.jpeg": {
+    "publicId": "kalki-mirror/tantra/temple-midnight",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008727/kalki-mirror/tantra/temple-midnight.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tantra/trident-courtyard-new.jpeg": {
+    "publicId": "kalki-mirror/tantra/trident-courtyard-new",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008728/kalki-mirror/tantra/trident-courtyard-new.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/trident-courtyard.jpeg": {
+    "publicId": "kalki-mirror/tantra/trident-courtyard",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008728/kalki-mirror/tantra/trident-courtyard.jpg",
+    "width": 2752,
+    "height": 1536
+  },
+  "/assets/tantra/yantra-chamber.jpeg": {
+    "publicId": "kalki-mirror/tantra/yantra-chamber",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008728/kalki-mirror/tantra/yantra-chamber.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tiers/agni-fire.jpg": {
+    "publicId": "kalki-mirror/tiers/agni-fire",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008730/kalki-mirror/tiers/agni-fire.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tiers/akash-sky.jpg": {
+    "publicId": "kalki-mirror/tiers/akash-sky",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008730/kalki-mirror/tiers/akash-sky.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tiers/jal-water.jpg": {
+    "publicId": "kalki-mirror/tiers/jal-water",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008730/kalki-mirror/tiers/jal-water.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/assets/tiers/prithvi-earth.jpg": {
+    "publicId": "kalki-mirror/tiers/prithvi-earth",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/v1786008731/kalki-mirror/tiers/prithvi-earth.jpg",
+    "width": 1376,
+    "height": 768
+  },
+  "/archive-zone-threshold.jpeg": {
+    "publicId": "kalki-mirror/archive-zone/threshold",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive-zone/threshold",
+    "width": 1920,
+    "height": 1080
+  },
+  "/archive-zone-reading-room.jpeg": {
+    "publicId": "kalki-mirror/archive-zone/reading-room",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive-zone/reading-room",
+    "width": 1920,
+    "height": 1080
+  },
+  "/archive-zone-deep.jpeg": {
+    "publicId": "kalki-mirror/archive-zone/deep-archive",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive-zone/deep-archive",
+    "width": 1920,
+    "height": 1080
+  },
+  "/assets/auth/dark-texture-bg.png": {
+    "publicId": "kalki-mirror/auth/dark-texture-bg",
+    "url": "https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/auth/dark-texture-bg",
+    "width": 1344,
+    "height": 768
   }
 }

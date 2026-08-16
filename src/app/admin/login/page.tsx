@@ -7,6 +7,16 @@ import { useRouter, useSearchParams } from "next/navigation";
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_MS = 5 * 60 * 1000;
 
+/* ------------------------------------------------------------------
+ * Admin login background — dark-texture-bg Cloudinary public ID.
+ * Served via CinematicImage-style native <img> with layered overlays.
+ * ------------------------------------------------------------------ */
+const AUTH_BG_CLOUDINARY_ID = "kalki-mirror/auth/dark-texture-bg";
+const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "b9oo5abp";
+function authBgUrl(w = 1920) {
+  return `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto:good,w_${w},c_limit/${AUTH_BG_CLOUDINARY_ID}`;
+}
+
 function getLoginState(): { attempts: number; lockedUntil: number } {
   try {
     const raw = sessionStorage.getItem("kalki-login");
@@ -186,7 +196,65 @@ export default function AdminLoginPage() {
   const strengthColors = ["", "bg-red-500", "bg-amber-500", "bg-blue-500", "bg-emerald-500"];
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
+    /* ----------------------------------------------------------------
+     * Full-screen cinematic background for admin login.
+     * Layers:  background image → dark scrim → vignette → noise grain → content
+     * The form sits in a glass-panel card, centered on top of everything.
+     * -------------------------------------------------------------- */
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4">
+      {/* Layer 0 — Background image (native <img>, covers viewport) */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={authBgUrl(1920)}
+        srcSet={`${authBgUrl(640)} 640w, ${authBgUrl(1024)} 1024w, ${authBgUrl(1440)} 1440w, ${authBgUrl(1920)} 1920w`}
+        sizes="100vw"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full object-cover"
+        draggable={false}
+        onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0'; }}
+      />
+
+      {/* Layer 1 — Deep dark scrim (makes the form readable) */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ zIndex: 1, background: 'linear-gradient(180deg, rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.78) 40%, rgba(5,5,5,0.85) 100%)' }}
+      />
+
+      {/* Layer 2 — Vignette (draws eye to center) */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ zIndex: 2, background: 'radial-gradient(ellipse 65% 55% at 50% 50%, transparent 40%, rgba(0,0,0,0.55) 100%)' }}
+      />
+
+      {/* Layer 3 — Subtle warm glow behind the form (brand amber at ~2%) */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          zIndex: 3,
+          top: '30%',
+          left: '35%',
+          width: '30%',
+          height: '40%',
+          background: 'radial-gradient(ellipse, rgba(197,160,89,0.04) 0%, transparent 70%)',
+          filter: 'blur(50px)',
+        }}
+      />
+
+      {/* Layer 4 — Film-grain noise texture */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          zIndex: 4,
+          opacity: 0.035,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundRepeat: 'repeat',
+          backgroundSize: '128px 128px',
+          mixBlendMode: 'overlay',
+        }}
+      />
+
+      {/* noscript fallback (above overlays, inside the container) */}
       <noscript>
         <meta httpEquiv="refresh" content="0;url=/admin/login?js=disabled" />
         <div style={{ padding: '2rem', textAlign: 'center', color: '#a1a1aa' }}>
@@ -199,7 +267,17 @@ export default function AdminLoginPage() {
           </p>
         </div>
       </noscript>
-      <div className="w-full max-w-sm space-y-8">
+
+      {/* Content — glass-panel card */}
+      <div
+        className="relative z-10 w-full max-w-sm space-y-8 rounded-xl border border-white/[0.06] px-6 py-10 sm:px-8"
+        style={{
+          background: 'rgba(8, 8, 8, 0.82)',
+          backdropFilter: 'blur(12px) saturate(1.2)',
+          WebkitBackdropFilter: 'blur(12px) saturate(1.2)',
+          boxShadow: '0 0 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03) inset',
+        }}
+      >
         <div className="text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10">
             <svg className="h-6 w-6 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
