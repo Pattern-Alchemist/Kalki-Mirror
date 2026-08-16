@@ -169,7 +169,7 @@ export default function SequencesPage() {
         <div className="fixed inset-0 z-0 overflow-hidden">
           <motion.div className="absolute inset-0" style={{ scale: bgScale }}>
             <CinematicImage
-              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cave-yantras"
+              src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/aghori-tantra/practices-bg"
               alt=""
               scrim="full"
               filmGrain={false}
