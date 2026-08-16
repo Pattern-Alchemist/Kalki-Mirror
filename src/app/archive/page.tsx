@@ -676,8 +676,8 @@ export default function ArchivePage() {
       <div className="mt-16">
         <ScrollParallax speed={-0.15} className="cinematic-strip">
           <CinematicImage
-            src='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/'
-            alt='Ancient temple corridor'
+            cloudinaryId='kalki-mirror/archive/banyan-archive-hero'
+            alt='Ancient stone gateway in forest -- enter the archive'
             kenBurns="normal"
             filmGrain={false}
           />
