@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       'Six curated multi-stage sādhana protocols that chain specific siddhis into coherent arcs designed to dissolve targeted emotional patterns.',
     images: [
       {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/patterns/sadhu-ash-gold-hero',
+        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/practice/water-practice-hero',
         width: 1200,
         height: 630,
         alt: 'Practice Sequences — KALKI',
