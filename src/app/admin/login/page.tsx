@@ -1,21 +1,10 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
-import { signIn } from "next-auth/react";
+import { useState, useRef, useCallback, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_MS = 5 * 60 * 1000;
-
-/* ------------------------------------------------------------------
- * Admin login background — dark-texture-bg Cloudinary public ID.
- * Served via CinematicImage-style native <img> with layered overlays.
- * ------------------------------------------------------------------ */
-const AUTH_BG_CLOUDINARY_ID = "kalki-mirror/auth/dark-texture-bg";
-const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "b9oo5abp";
-function authBgUrl(w = 1920) {
-  return `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto:good,w_${w},c_limit/${AUTH_BG_CLOUDINARY_ID}`;
-}
 
 function getLoginState(): { attempts: number; lockedUntil: number } {
   try {
@@ -36,18 +25,44 @@ function isSafeUrl(url: string): boolean {
   }
 }
 
-export default function AdminLoginPage() {
+function AdminLoginSkeleton() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
+      <div className="w-full max-w-sm space-y-8 animate-pulse">
+        <div className="text-center">
+          <div className="mx-auto mb-4 h-12 w-12 rounded-full border border-amber-500/30 bg-amber-500/10" />
+          <div className="mx-auto h-6 w-40 rounded bg-zinc-800" />
+          <div className="mx-auto mt-2 h-4 w-48 rounded bg-zinc-800/60" />
+        </div>
+        <div className="space-y-4">
+          <div className="h-10 rounded-lg bg-zinc-800" />
+          <div className="h-10 rounded-lg bg-zinc-800" />
+          <div className="h-10 rounded-lg bg-amber-600/40" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AdminLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const rawCallback = searchParams.get("callbackUrl") || "/admin/overview";
   const callbackUrl = isSafeUrl(rawCallback) ? rawCallback : "/admin/overview";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [loginState, setLoginState] = useState(getLoginState);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
+
+  // Initialize login state lazily on client only — avoids hydration mismatch
+  const [loginState, setLoginState] = useState({ attempts: 0, lockedUntil: 0 });
+  const [hydrated, setHydrated] = useState(false);
+  const [liveRemaining, setLiveRemaining] = useState(0);
+  const [locked, setLocked] = useState(false);
+
   const attemptTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   // A1: 2FA state
@@ -58,23 +73,38 @@ export default function AdminLoginPage() {
   const [twoFALoading, setTwoFALoading] = useState(false);
   const [twoFAError, setTwoFAError] = useState("");
 
-  const locked = loginState.lockedUntil > Date.now();
-  const remainingMs = Math.max(0, loginState.lockedUntil - Date.now());
-  const remainingSec = Math.ceil(remainingMs / 1000);
-
-  const [, forceUpdate] = useState(0);
+  // Hydration-safe: read sessionStorage only on mount
   useEffect(() => {
-    if (!locked) return;
-    const interval = setInterval(() => forceUpdate((n) => n + 1), 1000);
-    return () => clearInterval(interval);
-  }, [locked]);
+    const state = getLoginState();
+    setLoginState(state);
+    setHydrated(true);
+  }, []);
 
-  const liveRemaining = locked ? Math.ceil(Math.max(0, loginState.lockedUntil - Date.now()) / 1000) : 0;
+  // Lockout timer logic — all Date.now() usage in effects only
+  useEffect(() => {
+    if (!hydrated) return;
 
-  if (!locked && loginState.lockedUntil > 0) {
-    setLoginState({ attempts: 0, lockedUntil: 0 });
-    try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
-  }
+    const isLocked = loginState.lockedUntil > Date.now();
+    setLocked(isLocked);
+
+    if (isLocked) {
+      const tick = () => {
+        const remaining = Math.max(0, loginState.lockedUntil - Date.now());
+        setLiveRemaining(Math.ceil(remaining / 1000));
+        if (remaining <= 0) {
+          setLoginState({ attempts: 0, lockedUntil: 0 });
+          setLocked(false);
+          setLiveRemaining(0);
+          try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
+        }
+      };
+      tick();
+      const interval = setInterval(tick, 1000);
+      return () => clearInterval(interval);
+    } else {
+      setLiveRemaining(0);
+    }
+  }, [hydrated, loginState.lockedUntil]);
 
   const handlePasswordChange = useCallback((val: string) => {
     setPassword(val);
@@ -99,55 +129,79 @@ export default function AdminLoginPage() {
     setError("");
 
     try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
+      // Direct fetch to NextAuth credentials provider — bypasses broken next-auth/react v4
+      // next-auth v4 is incompatible with React 19 and crashes hydration.
+      // We call the credentials callback endpoint directly.
+      const csrfRes = await fetch('/api/auth/csrf');
+      const { csrfToken } = await csrfRes.json();
+
+      const res = await fetch('/api/auth/callback/credentials', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          email,
+          password,
+          callbackUrl,
+          csrfToken,
+        }),
+        redirect: 'manual',
       });
 
-      // Check for 2FA_REQUIRED signal from authorize()
-      if (result?.error && result.error.startsWith('2FA_REQUIRED:')) {
-        const parts = result.error.split(':');
-        const userId = parts[1];
-        const preAuthToken = parts[2];
+      // NextAuth returns 302 on success with Set-Cookie header.
+      // With redirect:'manual', fetch doesn't follow it.
+      if (res.status === 302 || res.status === 201) {
         setLoginState({ attempts: 0, lockedUntil: 0 });
         try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
-        setTwoFAUserId(userId);
-        setTwoFAPreAuthToken(preAuthToken);
+        router.push(callbackUrl);
+        router.refresh();
+        return;
+      }
+
+      // Try to parse error response
+      let errorMsg = '';
+      try {
+        const body = await res.json();
+        errorMsg = body.error || '';
+      } catch {
+        try { errorMsg = await res.text(); } catch { /* */ }
+      }
+
+      // Check for 2FA_REQUIRED signal from authorize()
+      if (errorMsg.startsWith('2FA_REQUIRED:')) {
+        const parts = errorMsg.split(':');
+        setLoginState({ attempts: 0, lockedUntil: 0 });
+        try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
+        setTwoFAUserId(parts[1] || '');
+        setTwoFAPreAuthToken(parts[2] || '');
         setStep('2fa');
         return;
       }
 
       // Check for LOCKED signal
-      if (result?.error && result.error.startsWith('LOCKED:')) {
-        setError(`Account temporarily locked. Please try again later.`);
+      if (errorMsg.startsWith('LOCKED:')) {
+        setError('Account temporarily locked. Please try again later.');
         return;
       }
 
-      if (result?.error) {
-        const newState = { ...loginState, attempts: loginState.attempts + 1 };
+      // Credentials failed
+      const newState = { ...loginState, attempts: loginState.attempts + 1 };
 
-        if (newState.attempts >= MAX_ATTEMPTS) {
-          newState.lockedUntil = Date.now() + LOCKOUT_MS;
-          setError(`Too many failed attempts. Locked for 5 minutes.`);
-          if (attemptTimerRef.current) clearTimeout(attemptTimerRef.current);
-          attemptTimerRef.current = setTimeout(() => {
-            setLoginState({ attempts: 0, lockedUntil: 0 });
-            try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
-          }, LOCKOUT_MS);
-        } else {
-          setError(`Invalid credentials. ${MAX_ATTEMPTS - newState.attempts} attempts remaining.`);
-        }
-
-        setLoginState(newState);
-        try { sessionStorage.setItem("kalki-login", JSON.stringify(newState)); } catch { /* */ }
+      if (newState.attempts >= MAX_ATTEMPTS) {
+        newState.lockedUntil = Date.now() + LOCKOUT_MS;
+        setError('Too many failed attempts. Locked for 5 minutes.');
+        if (attemptTimerRef.current) clearTimeout(attemptTimerRef.current);
+        attemptTimerRef.current = setTimeout(() => {
+          setLoginState({ attempts: 0, lockedUntil: 0 });
+          setLocked(false);
+          try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
+        }, LOCKOUT_MS);
       } else {
-        // Credentials OK, no 2FA required — session already created
-        setLoginState({ attempts: 0, lockedUntil: 0 });
-        try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
-        router.push(callbackUrl);
-        router.refresh();
+        setError(`Invalid credentials. ${MAX_ATTEMPTS - newState.attempts} attempts remaining.`);
       }
+
+      setLoginState(newState);
+      setLocked(newState.lockedUntil > Date.now());
+      try { sessionStorage.setItem("kalki-login", JSON.stringify(newState)); } catch { /* */ }
     } catch {
       setError("An error occurred during sign in.");
     } finally {
@@ -196,65 +250,7 @@ export default function AdminLoginPage() {
   const strengthColors = ["", "bg-red-500", "bg-amber-500", "bg-blue-500", "bg-emerald-500"];
 
   return (
-    /* ----------------------------------------------------------------
-     * Full-screen cinematic background for admin login.
-     * Layers:  background image → dark scrim → vignette → noise grain → content
-     * The form sits in a glass-panel card, centered on top of everything.
-     * -------------------------------------------------------------- */
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4">
-      {/* Layer 0 — Background image (native <img>, covers viewport) */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={authBgUrl(1920)}
-        srcSet={`${authBgUrl(640)} 640w, ${authBgUrl(1024)} 1024w, ${authBgUrl(1440)} 1440w, ${authBgUrl(1920)} 1920w`}
-        sizes="100vw"
-        alt=""
-        aria-hidden="true"
-        className="absolute inset-0 h-full w-full object-cover"
-        draggable={false}
-        onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0'; }}
-      />
-
-      {/* Layer 1 — Deep dark scrim (makes the form readable) */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ zIndex: 1, background: 'linear-gradient(180deg, rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.78) 40%, rgba(5,5,5,0.85) 100%)' }}
-      />
-
-      {/* Layer 2 — Vignette (draws eye to center) */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ zIndex: 2, background: 'radial-gradient(ellipse 65% 55% at 50% 50%, transparent 40%, rgba(0,0,0,0.55) 100%)' }}
-      />
-
-      {/* Layer 3 — Subtle warm glow behind the form (brand amber at ~2%) */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          zIndex: 3,
-          top: '30%',
-          left: '35%',
-          width: '30%',
-          height: '40%',
-          background: 'radial-gradient(ellipse, rgba(197,160,89,0.04) 0%, transparent 70%)',
-          filter: 'blur(50px)',
-        }}
-      />
-
-      {/* Layer 4 — Film-grain noise texture */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          zIndex: 4,
-          opacity: 0.035,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundRepeat: 'repeat',
-          backgroundSize: '128px 128px',
-          mixBlendMode: 'overlay',
-        }}
-      />
-
-      {/* noscript fallback (above overlays, inside the container) */}
+    <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
       <noscript>
         <meta httpEquiv="refresh" content="0;url=/admin/login?js=disabled" />
         <div style={{ padding: '2rem', textAlign: 'center', color: '#a1a1aa' }}>
@@ -267,17 +263,7 @@ export default function AdminLoginPage() {
           </p>
         </div>
       </noscript>
-
-      {/* Content — glass-panel card */}
-      <div
-        className="relative z-10 w-full max-w-sm space-y-8 rounded-xl border border-white/[0.06] px-6 py-10 sm:px-8"
-        style={{
-          background: 'rgba(8, 8, 8, 0.82)',
-          backdropFilter: 'blur(12px) saturate(1.2)',
-          WebkitBackdropFilter: 'blur(12px) saturate(1.2)',
-          boxShadow: '0 0 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03) inset',
-        }}
-      >
+      <div className="w-full max-w-sm space-y-8">
         <div className="text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10">
             <svg className="h-6 w-6 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
@@ -327,7 +313,7 @@ export default function AdminLoginPage() {
         ) : (
           /* Standard login form */
           <>
-            {loginState.attempts > 0 && !locked && (
+            {hydrated && loginState.attempts > 0 && !locked && (
               <div className="space-y-1">
                 <div className="flex justify-between text-[10px] text-zinc-600">
                   <span>Attempts used</span>
@@ -344,7 +330,7 @@ export default function AdminLoginPage() {
               </div>
             )}
 
-            {locked && (
+            {hydrated && locked && (
               <div className="rounded-lg border border-red-500/20 bg-red-500/5 px-4 py-3 text-center">
                 <p className="text-sm font-medium text-red-400">Account Temporarily Locked</p>
                 <p className="mt-1 font-mono text-2xl tabular-nums text-red-300">{liveRemaining}s</p>
@@ -361,7 +347,6 @@ export default function AdminLoginPage() {
                 <label htmlFor="email" className="block text-sm font-medium text-zinc-400">Email</label>
                 <input
                   id="email"
-                  name="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -385,7 +370,6 @@ export default function AdminLoginPage() {
                 <div className="relative">
                   <input
                     id="password"
-                    name="password"
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => handlePasswordChange(e.target.value)}
@@ -435,5 +419,13 @@ export default function AdminLoginPage() {
         <p className="text-center text-xs text-zinc-700">Access restricted to authorized archivists only.</p>
       </div>
     </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={<AdminLoginSkeleton />}>
+      <AdminLoginForm />
+    </Suspense>
   );
 }
