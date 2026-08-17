@@ -56,6 +56,7 @@ const nextConfig: NextConfig = {
   },
   reactStrictMode: true,
   typescript: { ignoreBuildErrors: true },
+  poweredByHeader: false,
 
   // Security & performance headers
   async headers() {

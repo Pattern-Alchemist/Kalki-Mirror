@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 import { logAudit } from "@/lib/admin/audit";
 import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
 import { broadcastNotification } from "@/lib/admin/notifications";
@@ -103,5 +104,7 @@ export async function revokeKey(codeId: string) {
     href: '/admin/keys',
   });
 
+  revalidatePath('/admin/overview');
+  revalidatePath('/admin/keys');
   return { success: true };
 }

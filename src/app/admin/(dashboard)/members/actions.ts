@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 import { logAudit } from "@/lib/admin/audit";
 import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
 import { broadcastNotification } from "@/lib/admin/notifications";
@@ -95,6 +96,8 @@ export async function updateMemberTier(userId: string, newTier: string, reason: 
     href: '/admin/members',
   });
 
+  revalidatePath('/admin/overview');
+  revalidatePath('/admin/members');
   return { success: true };
 }
 
@@ -124,6 +127,8 @@ export async function updateMemberRole(userId: string, newRole: string, reason: 
     href: '/admin/members',
   });
 
+  revalidatePath('/admin/overview');
+  revalidatePath('/admin/members');
   return { success: true };
 }
 
@@ -157,6 +162,8 @@ export async function bulkUpdateTier(userIds: string[], newTier: string, reason:
     href: '/admin/members',
   });
 
+  revalidatePath('/admin/overview');
+  revalidatePath('/admin/members');
   return { success: true, affected: result.count };
 }
 

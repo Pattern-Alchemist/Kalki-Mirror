@@ -15,6 +15,7 @@
 import { PrismaClient } from '@prisma/client';
 import { copyFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
+import { unstable_cache } from 'next/cache';
 
 // ─── Paths ──────────────────────────────────────────────────────────────────
 
@@ -90,27 +91,32 @@ if (process.env.NODE_ENV !== 'production') {
 
 // ─── Health check ───────────────────────────────────────────────────────────
 
-export async function getCorpusStats(): Promise<{
-  total: number;
-  withEmbeddings: number;
-  cautionBreakdown: Record<string, number>;
-  source: string;
-}> {
-  const [total, withEmbeddings, allChunks] = await Promise.all([
-    staticDb.folioChunk.count(),
-    staticDb.folioChunk.count({ where: { embedding: { not: '[]' } } }),
-    staticDb.folioChunk.findMany({ select: { caution: true } }),
-  ]);
+/**
+ * Cached corpus stats using Next.js unstable_cache.
+ * The corpus DB never changes at runtime (read-only baked asset),
+ * so a 5-minute TTL is safe — eliminates redundant SQLite queries
+ * across concurrent serverless invocations.
+ */
+export const getCorpusStats = unstable_cache(
+  async () => {
+    const [total, withEmbeddings, allChunks] = await Promise.all([
+      staticDb.folioChunk.count(),
+      staticDb.folioChunk.count({ where: { embedding: { not: '[]' } } }),
+      staticDb.folioChunk.findMany({ select: { caution: true } }),
+    ]);
 
-  const cautionBreakdown: Record<string, number> = {};
-  for (const c of allChunks) {
-    cautionBreakdown[c.caution] = (cautionBreakdown[c.caution] || 0) + 1;
-  }
+    const cautionBreakdown: Record<string, number> = {};
+    for (const c of allChunks) {
+      cautionBreakdown[c.caution] = (cautionBreakdown[c.caution] || 0) + 1;
+    }
 
-  return {
-    total,
-    withEmbeddings,
-    cautionBreakdown,
-    source: isServerless ? '/tmp/kalki-corpus.db (serverless)' : corpusPath,
-  };
-}
+    return {
+      total,
+      withEmbeddings,
+      cautionBreakdown,
+      source: isServerless ? '/tmp/kalki-corpus.db (serverless)' : corpusPath,
+    };
+  },
+  ['corpus-stats'],
+  { revalidate: 300, tags: ['corpus'] }
+);

@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 import { logAudit } from "@/lib/admin/audit";
 import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
 import { broadcastNotification } from "@/lib/admin/notifications";
@@ -98,6 +99,8 @@ export async function updateConsultationStatus(
     });
   }
 
+  revalidatePath('/admin/overview');
+  revalidatePath('/admin/consultations');
   return { success: true };
 }
 
@@ -137,5 +140,7 @@ export async function scheduleConsultation(
     href: '/admin/consultations',
   });
 
+  revalidatePath('/admin/overview');
+  revalidatePath('/admin/consultations');
   return { success: true };
 }

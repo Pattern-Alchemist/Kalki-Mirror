@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 import { logAudit } from "@/lib/admin/audit";
 import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
 import { broadcastNotification } from "@/lib/admin/notifications";
@@ -125,5 +126,7 @@ export async function deleteContentEntry(id: string) {
 
   await dispatchWebhooks('content.delete', { id, title: entry.title, slug: entry.slug });
 
+  revalidatePath('/admin/overview');
+  revalidatePath('/admin/content');
   return { success: true };
 }
