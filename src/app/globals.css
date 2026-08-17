@@ -1329,6 +1329,14 @@ button:disabled,
   }
 }
 
+/* Pure-CSS page enter fade — no JS required. Respects reduced-motion via media query. */
+.page-enter-fade {
+  animation: pageEnter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-enter-fade { animation: none; }
+}
+
 @keyframes skeleton-shimmer {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(200%); }

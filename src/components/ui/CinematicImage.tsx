@@ -117,6 +117,7 @@ export function CinematicImage({
       draggable={false}
       onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0'; }}
       className={fill ? 'cinematic-img-fill' : 'cinematic-img-sized'}
+      {...(priority ? { fetchPriority: 'high' as const } : {})}
     />
   );
 

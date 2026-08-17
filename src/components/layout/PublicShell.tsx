@@ -4,11 +4,20 @@ import { usePathname } from "next/navigation";
 import { SacredNav } from "@/components/nav/SacredNav";
 import { SacredFooter } from "@/components/nav/SacredFooter";
 import { WhatsAppCTA } from "@/components/booking/WhatsAppCTA";
-import dynamic from "next/dynamic";
-import { ScrollProgress } from "@/components/ui/ScrollProgress";
-import { PageTransition } from "@/components/layout/PageTransition";
+import dynamic from 'next/dynamic';
 
-const PaywallModal = dynamic(() => import("@/components/monetization/PaywallModal").then(m => ({ default: m.PaywallModal })), { ssr: false, loading: () => null });
+// ── Performance: dynamically import heavy animation components ──
+// These pull in framer-motion (~40KB) — keep them out of the critical
+// render path so the initial paint is not blocked by JS download/parse.
+const ScrollProgress = dynamic(
+  () => import('@/components/ui/ScrollProgress').then(m => ({ default: m.ScrollProgress })),
+  { ssr: false }
+);
+
+const PaywallModal = dynamic(
+  () => import('@/components/monetization/PaywallModal').then(m => ({ default: m.PaywallModal })),
+  { ssr: false, loading: () => null }
+);
 
 const SITE_URL = 'https://www.astrokalki.com';
 
@@ -17,11 +26,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
   const isAdmin = pathname.startsWith('/admin');
 
   if (isAdmin) {
-    return (
-      <>
-        {children}
-      </>
-    );
+    return <>{children}</>;
   }
 
   return (
@@ -37,7 +42,8 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       </header>
       <ScrollProgress />
       <main id="main-content" className="pt-16 md:pt-20">
-        <PageTransition>{children}</PageTransition>
+        {/* PageTransition removed — template.tsx already provides CSS-only fade */}
+        {children}
       </main>
       <SacredFooter />
       <div className="fixed-bottom-stack">
@@ -46,7 +52,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       <PaywallModal />
       <div className="page-vignette" aria-hidden="true" />
 
-      {/* JSON-LD Structured Data — public pages only */}
+      {/* JSON-LD Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -73,11 +79,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
                 url: SITE_URL,
                 logo: `${SITE_URL}/favicon.svg`,
                 description: 'Tantrik Intelligence. The Architecture of Karma.',
-                founder: {
-                  '@type': 'Person',
-                  name: 'Kaustubh',
-                  jobTitle: 'Tantric Technologist',
-                },
+                founder: { '@type': 'Person', name: 'Kaustubh', jobTitle: 'Tantric Technologist' },
               },
             ],
           }),

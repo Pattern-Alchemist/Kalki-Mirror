@@ -44,6 +44,9 @@ const NAV_GROUPS: NavGroup[] = [
 // Flat list for desktop
 const NAV_LINKS = NAV_GROUPS.flatMap(g => g.links);
 
+/* Links to prefetch — top-visited pages that benefit from instant navigation */
+const PREFETCH_LINKS = new Set(['/archive', '/patterns', '/practice', '/pricing']);
+
 export function SacredNav() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -146,7 +149,7 @@ export function SacredNav() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  prefetch={false}
+                  prefetch={PREFETCH_LINKS.has(link.href)}
                   className={cn(
                     'relative text-[0.8125rem] font-ui tracking-[0.18em] uppercase transition-colors duration-500 py-1 min-h-[44px] flex items-center neon-tab-glow',
                     isActive(link.href) ? 'text-gold' : 'text-text-muted hover:text-ivory'
