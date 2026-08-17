@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { requireAuth } from '@/lib/api-auth';
 import { redeemKeySchema } from '@/lib/validators/schemas';
+import { afterAudit } from '@/lib/after-audit';
 
 /**
  * POST /api/keys/redeem
@@ -87,6 +88,14 @@ export async function POST(request: NextRequest) {
         });
       }
     }
+
+    afterAudit({
+      action: 'KEY_REDEEMED',
+      entity: 'inviteCode',
+      entityId: invite.code,
+      actorId: userId,
+      after: { tierGranted: invite.tierGranted },
+    });
 
     return NextResponse.json({
       status: 'key_redeemed',

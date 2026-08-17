@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { requireAuth } from '@/lib/api-auth';
 import { generateKeySchema } from '@/lib/validators/schemas';
+import { afterAudit } from '@/lib/after-audit';
 
 /**
  * POST /api/keys/generate
@@ -64,6 +65,14 @@ export async function POST(request: NextRequest) {
     await db.user.update({
       where: { id: userId },
       data: { goldKeysRemaining: { decrement: 1 } },
+    });
+
+    afterAudit({
+      action: 'KEY_GENERATED',
+      entity: 'inviteCode',
+      entityId: invite.code,
+      actorId: userId,
+      after: { tierGranted, remainingKeys: user.goldKeysRemaining - 1 },
     });
 
     return NextResponse.json({
