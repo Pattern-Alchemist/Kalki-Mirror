@@ -57,7 +57,6 @@ function AdminLoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
 
-  // Initialize login state lazily on client only — avoids hydration mismatch
   const [loginState, setLoginState] = useState({ attempts: 0, lockedUntil: 0 });
   const [hydrated, setHydrated] = useState(false);
   const [liveRemaining, setLiveRemaining] = useState(0);
@@ -73,20 +72,16 @@ function AdminLoginForm() {
   const [twoFALoading, setTwoFALoading] = useState(false);
   const [twoFAError, setTwoFAError] = useState("");
 
-  // Hydration-safe: read sessionStorage only on mount
   useEffect(() => {
     const state = getLoginState();
     setLoginState(state);
     setHydrated(true);
   }, []);
 
-  // Lockout timer logic — all Date.now() usage in effects only
   useEffect(() => {
     if (!hydrated) return;
-
     const isLocked = loginState.lockedUntil > Date.now();
     setLocked(isLocked);
-
     if (isLocked) {
       const tick = () => {
         const remaining = Math.max(0, loginState.lockedUntil - Date.now());
@@ -119,7 +114,6 @@ function AdminLoginForm() {
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (locked) {
       setError(`Too many attempts. Try again in ${liveRemaining}s.`);
       return;
@@ -129,47 +123,19 @@ function AdminLoginForm() {
     setError("");
 
     try {
-      // Step 1: Get CSRF token from NextAuth
-      const csrfRes = await fetch('/api/auth/csrf');
-      if (!csrfRes.ok) {
-        setError('Authentication service unavailable.');
-        return;
-      }
-      const { csrfToken } = await csrfRes.json();
+      // Lazy-import signIn to avoid next-auth/react v4 crashing React 19 hydration.
+      // The module is only loaded when the user clicks submit, never during render.
+      const { signIn } = await import("next-auth/react");
 
-      // Step 2: POST to the signin endpoint (not callback directly)
-      // NextAuth v4 expects the signin endpoint for JSON responses with redirect:false
-      const res = await fetch('/api/auth/signin/credentials', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' },
-        body: new URLSearchParams({
-          email,
-          password,
-          csrfToken,
-          callbackUrl,
-          json: 'true',
-        }),
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
       });
 
-      const data = await res.json().catch(() => null);
-
-      // NextAuth v4 signin endpoint returns:
-      // On success: { url: "https://..." } with status 200
-      // On error: { error: "CredentialsSignin" } or custom error string
-      if (data?.url) {
-        // Success — NextAuth set the session cookie via Set-Cookie header
-        setLoginState({ attempts: 0, lockedUntil: 0 });
-        try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
-        router.push(callbackUrl);
-        router.refresh();
-        return;
-      }
-
-      // Check for custom error signals from authorize()
-      const errorMsg = data?.error || '';
-
-      if (errorMsg.startsWith('2FA_REQUIRED:')) {
-        const parts = errorMsg.split(':');
+      // Check for 2FA_REQUIRED signal from authorize()
+      if (result?.error && result.error.startsWith('2FA_REQUIRED:')) {
+        const parts = result.error.split(':');
         setLoginState({ attempts: 0, lockedUntil: 0 });
         try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
         setTwoFAUserId(parts[1] || '');
@@ -178,38 +144,45 @@ function AdminLoginForm() {
         return;
       }
 
-      if (errorMsg.startsWith('LOCKED:')) {
+      // Check for LOCKED signal
+      if (result?.error && result.error.startsWith('LOCKED:')) {
         setError('Account temporarily locked. Please try again later.');
         return;
       }
 
-      // Credentials failed
-      const newState = { ...loginState, attempts: loginState.attempts + 1 };
-
-      if (newState.attempts >= MAX_ATTEMPTS) {
-        newState.lockedUntil = Date.now() + LOCKOUT_MS;
-        setError('Too many failed attempts. Locked for 5 minutes.');
-        if (attemptTimerRef.current) clearTimeout(attemptTimerRef.current);
-        attemptTimerRef.current = setTimeout(() => {
-          setLoginState({ attempts: 0, lockedUntil: 0 });
-          setLocked(false);
-          try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
-        }, LOCKOUT_MS);
+      if (result?.error) {
+        const newState = { ...loginState, attempts: loginState.attempts + 1 };
+        if (newState.attempts >= MAX_ATTEMPTS) {
+          newState.lockedUntil = Date.now() + LOCKOUT_MS;
+          setError('Too many failed attempts. Locked for 5 minutes.');
+          if (attemptTimerRef.current) clearTimeout(attemptTimerRef.current);
+          attemptTimerRef.current = setTimeout(() => {
+            setLoginState({ attempts: 0, lockedUntil: 0 });
+            setLocked(false);
+            try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
+          }, LOCKOUT_MS);
+        } else {
+          setError(`Invalid credentials. ${MAX_ATTEMPTS - newState.attempts} attempts remaining.`);
+        }
+        setLoginState(newState);
+        setLocked(newState.lockedUntil > Date.now());
+        try { sessionStorage.setItem("kalki-login", JSON.stringify(newState)); } catch { /* */ }
       } else {
-        setError(`Invalid credentials. ${MAX_ATTEMPTS - newState.attempts} attempts remaining.`);
+        // Success — session cookie set by NextAuth
+        setLoginState({ attempts: 0, lockedUntil: 0 });
+        try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
+        router.push(callbackUrl);
+        router.refresh();
       }
-
-      setLoginState(newState);
-      setLocked(newState.lockedUntil > Date.now());
-      try { sessionStorage.setItem("kalki-login", JSON.stringify(newState)); } catch { /* */ }
-    } catch {
-      setError("An error occurred during sign in.");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Unknown error';
+      console.error('[KALKI Login]', msg);
+      setError(`Login error: ${msg}`);
     } finally {
       setLoading(false);
     }
   }, [email, password, locked, liveRemaining, loginState, callbackUrl, router]);
 
-  // Reset 2FA state when going back
   const handleBackToLogin = () => {
     setStep('credentials');
     setTwoFACode('');
@@ -218,7 +191,6 @@ function AdminLoginForm() {
     setTwoFAPreAuthToken('');
   };
 
-  // A1: Handle 2FA verification
   const handle2FAVerify = async () => {
     if (twoFACode.length !== 6) {
       setTwoFAError('Enter 6-digit code');
@@ -277,7 +249,6 @@ function AdminLoginForm() {
         </div>
 
         {step === '2fa' ? (
-          /* A1: 2FA verification step */
           <div className="space-y-5">
             {twoFAError && (
               <div className="rounded-md border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">{twoFAError}</div>
@@ -311,7 +282,6 @@ function AdminLoginForm() {
             </button>
           </div>
         ) : (
-          /* Standard login form */
           <>
             {hydrated && loginState.attempts > 0 && !locked && (
               <div className="space-y-1">
