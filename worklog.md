@@ -692,3 +692,26 @@ Stage Summary:
 - 15 actual fixes applied (10 double-footers eliminated, 5 nested mains fixed, 1 hero height standardized)
 - 6 audit items confirmed already resolved in prior work sessions
 - All 44 HIGH-severity issues from design-audit-report.md now resolved
+
+---
+Task ID: 1
+Agent: main
+Task: Implement P0/P1 PageSpeed performance optimizations for astrokalki.com
+
+Work Log:
+- Read all public page files to identify CSR vs SSG status
+- Identified 8 public pages using 'use client' with direct framer-motion imports (consultations, method, deities, codex, research, aghori-tantra, pricing, dossier)
+- Created Client component files for each page (e.g. ConsultationsPageClient.tsx)
+- Rewrote each page.tsx as a server component with Metadata export + dynamic() import of Client component
+- Rewrote ScrollParallax/ParallaxText to render children immediately in plain div, only attaching framer-motion wrapper after hydration via useState
+- Added Cloudinary image preload hint for archive hero
+- Fixed missing get-token-safe module that was blocking builds
+- Verified clean build with bunx next build (21.4s compile, 124 static pages)
+- Committed and pushed to origin/main
+
+Stage Summary:
+- 8 pages converted from CSR to server-page + dynamic import pattern
+- ScrollParallax made non-blocking (hydration-safe)
+- Build passes cleanly
+- Pushed to GitHub, Vercel deploy triggered automatically
+- Expected: significant LCP/FCP/Speed Index improvement from deferred framer-motion
