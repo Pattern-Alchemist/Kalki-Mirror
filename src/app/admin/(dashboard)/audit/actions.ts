@@ -1,8 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { safeGetToken } from "@/lib/get-token-safe";
 import { withRateLimit } from "@/lib/admin/rate-limit";
 
 export type AuditLogRow = {
@@ -18,8 +17,8 @@ export type AuditLogRow = {
 };
 
 export async function getAuditLogs(page: number = 1) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) throw new Error("Unauthorized");
+  const session = await safeGetToken();
+  if (!session?.id) throw new Error("Unauthorized");
   const take = 30;
   const skip = (page - 1) * take;
 
@@ -52,10 +51,10 @@ export async function getAuditLogs(page: number = 1) {
 
 // A5: Export audit logs as CSV or JSON
 export async function exportAuditLogs(format: 'csv' | 'json' = 'csv') {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) throw new Error("Unauthorized");
+  const session = await safeGetToken();
+  if (!session?.id) throw new Error("Unauthorized");
 
-  const userId = (session.user as unknown as { id: string }).id;
+  const userId = session.id!;
   // A8: Rate limit exports
   withRateLimit(`export:${userId}`, 5);
 

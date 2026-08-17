@@ -6,8 +6,7 @@ import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
 import { broadcastNotification } from "@/lib/admin/notifications";
 import { requireRole } from "@/lib/admin/require-role";
 import { withRateLimit } from "@/lib/admin/rate-limit";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { safeGetToken } from "@/lib/get-token-safe";
 import { Prisma } from "@prisma/client";
 
 export type MemberRow = {
@@ -131,8 +130,8 @@ export async function updateMemberRole(userId: string, newRole: string, reason: 
 // A7: Bulk tier update
 export async function bulkUpdateTier(userIds: string[], newTier: string, reason: string) {
   await requireRole('admin_plus');
-  const session = await getServerSession(authOptions);
-  const actorId = session?.user ? (session.user as unknown as { id: string }).id : 'unknown';
+  const session = await safeGetToken();
+  const actorId = session?.id || 'unknown';
 
   // A8: Rate limit
   withRateLimit(`bulk:${actorId}`, 10);
@@ -181,13 +180,13 @@ export async function getMemberTimeline(userId: string) {
       where: { userId },
       orderBy: { createdAt: 'desc' },
       take: 10,
-      select: { id: true, patternSlug: true, patternName: true, createdAt: true },
+      select: { id: true, patternSlug: true, status: true, createdAt: true },
     }),
     db.inviteUsage.findMany({
-      where: { usedBy: userId },
-      orderBy: { usedAt: 'desc' },
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
       take: 10,
-      select: { id: true, codeId: true, usedAt: true },
+      select: { id: true, inviteCode: true, createdAt: true },
     }),
   ]);
 

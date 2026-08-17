@@ -4,13 +4,12 @@ import { db } from "@/lib/db";
 import { logAudit } from "@/lib/admin/audit";
 import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
 import { broadcastNotification } from "@/lib/admin/notifications";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { safeGetToken } from "@/lib/get-token-safe";
 
 async function requireAdmin() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) throw new Error("Unauthorized");
-  const role = (session.user as unknown as { role: string }).role;
+  const session = await safeGetToken();
+  if (!session?.id) throw new Error("Unauthorized");
+  const role = (session.role as string);
   if (!["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"].includes(role)) {
     throw new Error("Forbidden");
   }

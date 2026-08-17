@@ -1,13 +1,12 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { safeGetToken } from "@/lib/get-token-safe";
 
 async function requireAdmin() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) throw new Error("Unauthorized");
-  const role = (session.user as unknown as { role: string }).role;
+  const session = await safeGetToken();
+  if (!session?.id) throw new Error("Unauthorized");
+  const role = (session.role as string);
   if (!["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"].includes(role)) {
     throw new Error("Forbidden");
   }
@@ -32,7 +31,7 @@ export async function getOverviewStats() {
     db.inviteCode.count({ where: { active: true } }),
     db.inviteUsage.count(),
     db.consultation.count({ where: { status: "NEW" } }),
-    db.patternResolution.count({ where: { resolvedAt: { not: null as never } } }),
+    db.patternResolution.count({ where: { resolvedAt: { gte: new Date("1970-01-01T00:00:00Z") } } }),
     db.contentEntry.count({ where: { status: "DRAFT" } }),
     db.contentEntry.count({ where: { status: "IN_REVIEW" } }),
   ]);

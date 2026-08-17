@@ -121,35 +121,18 @@ function AdminLoginForm() {
     setError("");
 
     try {
-      // Fetch CSRF token
-      const csrfRes = await fetch('/api/auth/csrf');
-      const { csrfToken } = await csrfRes.json();
-
-      // POST to NextAuth credentials callback with redirect:manual
-      // This is the EXACT same request next-auth/react signIn() makes internally.
-      // redirect:'manual' prevents fetch from following the 302,
-      // so we can check the Set-Cookie header for the session token.
-      const res = await fetch('/api/auth/callback/credentials', {
+      // POST to custom JSON login endpoint
+      // This avoids fetch() not exposing Set-Cookie headers (browser security restriction)
+      const res = await fetch('/api/auth/admin-login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        redirect: 'manual',
-        body: new URLSearchParams({
-          email,
-          password,
-          csrfToken,
-          callbackUrl: window.location.origin + callbackUrl,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
       });
+      const data = await res.json();
 
-      // Check if NextAuth set a session cookie (success)
-      // On success: 302 to callbackUrl with Set-Cookie: next-auth.session-token=...
-      // On failure: 302 back to signIn page WITHOUT session cookie
-      const setCookie = res.headers.get('set-cookie') || '';
-      const hasSession = setCookie.includes('next-auth.session-token') ||
-                          setCookie.includes('next-auth.session-token=');
-
-      if (hasSession) {
-        // Success — cookie is already set by the browser
+      // Check response from custom login endpoint
+      if (data.success) {
+        // Server set the session cookie via Set-Cookie header
         setLoginState({ attempts: 0, lockedUntil: 0 });
         try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
         router.push(callbackUrl);
@@ -157,32 +140,17 @@ function AdminLoginForm() {
         return;
       }
 
-      // No session cookie — auth failed
-      // Read response body for any error info
-      let body = '';
-      try { body = await res.text(); } catch { /* */ }
-
-      // Check for custom errors from authorize() thrown via Error()
-      // NextAuth v4 includes them in the redirect URL or response body
-      const urlMatch = body.match(/error=([^&\s"]+)/);
-      const errorCode = urlMatch ? decodeURIComponent(urlMatch[1]) : '';
-
-      if (errorCode.startsWith('2FA_REQUIRED:')) {
-        const parts = errorCode.split(':');
+      // 2FA required
+      if (data.requires2FA) {
         setLoginState({ attempts: 0, lockedUntil: 0 });
         try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
-        setTwoFAUserId(parts[1] || '');
-        setTwoFAPreAuthToken(parts[2] || '');
+        setTwoFAUserId(data.userId || '');
+        setTwoFAPreAuthToken(data.preAuthToken || '');
         setStep('2fa');
         return;
       }
 
-      if (errorCode.startsWith('LOCKED:')) {
-        setError('Account temporarily locked. Please try again later.');
-        return;
-      }
-
-      // Standard credentials failure
+      // Credential failure
       const newState = { ...loginState, attempts: loginState.attempts + 1 };
       if (newState.attempts >= MAX_ATTEMPTS) {
         newState.lockedUntil = Date.now() + LOCKOUT_MS;
@@ -194,7 +162,7 @@ function AdminLoginForm() {
           try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
         }, LOCKOUT_MS);
       } else {
-        setError(`Invalid credentials. ${MAX_ATTEMPTS - newState.attempts} attempts remaining.`);
+        setError(`${data.error || 'Invalid credentials.'} ${MAX_ATTEMPTS - newState.attempts} attempts remaining.`);
       }
       setLoginState(newState);
       setLocked(newState.lockedUntil > Date.now());

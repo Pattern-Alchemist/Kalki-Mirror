@@ -1,7 +1,6 @@
 "use server";
 
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { safeGetToken } from "@/lib/get-token-safe";
 import { db } from "@/lib/db";
 import { requireRole } from "@/lib/admin/require-role";
 import { logAudit } from "@/lib/admin/audit";
@@ -17,8 +16,8 @@ export async function getWebhooks() {
 
 export async function createWebhook(data: { url: string; events: string[]; secret?: string }) {
   await requireRole("superadmin_only");
-  const session = await getServerSession(authOptions);
-  const userId = (session?.user as unknown as { id: string })?.id;
+  const session = await safeGetToken();
+  const userId = session?.id;
 
   const webhook = await db.webhook.create({
     data: {

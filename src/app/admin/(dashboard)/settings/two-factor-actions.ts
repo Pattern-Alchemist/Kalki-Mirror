@@ -1,7 +1,6 @@
 "use server";
 
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { safeGetToken } from "@/lib/get-token-safe";
 import { generate2FASecret, verify2FA, enable2FA, disable2FA } from "@/lib/admin/two-factor";
 import { requireRole } from "@/lib/admin/require-role";
 import { logAudit } from "@/lib/admin/audit";
@@ -10,18 +9,18 @@ import { db } from "@/lib/db";
 
 export async function setup2FA() {
   await requireRole("any_staff");
-  const session = await getServerSession(authOptions);
-  const userId = (session?.user as unknown as { id: string })?.id;
+  const session = await safeGetToken();
+  const userId = session?.id;
   if (!userId) throw new Error("Not authenticated");
 
-  const result = await generate2FASecret(userId, session!.user!.email!);
+  const result = await generate2FASecret(userId, session!.email!);
   return { qrDataUrl: result.qrDataUrl, secret: result.secret, backupCodes: result.backupCodes };
 }
 
 export async function confirm2FA(code: string) {
   await requireRole("any_staff");
-  const session = await getServerSession(authOptions);
-  const userId = (session?.user as unknown as { id: string })?.id;
+  const session = await safeGetToken();
+  const userId = session?.id;
   if (!userId) throw new Error("Not authenticated");
 
   const result = await verify2FA(userId, code);
@@ -35,8 +34,8 @@ export async function confirm2FA(code: string) {
 
 export async function remove2FA() {
   await requireRole("any_staff");
-  const session = await getServerSession(authOptions);
-  const userId = (session?.user as unknown as { id: string })?.id;
+  const session = await safeGetToken();
+  const userId = session?.id;
   if (!userId) throw new Error("Not authenticated");
 
   await disable2FA(userId);
@@ -47,8 +46,8 @@ export async function remove2FA() {
 
 export async function get2FAStatus() {
   await requireRole("any_staff");
-  const session = await getServerSession(authOptions);
-  const userId = (session?.user as unknown as { id: string })?.id;
+  const session = await safeGetToken();
+  const userId = session?.id;
   if (!userId) throw new Error("Not authenticated");
 
   const user = await db.user.findUnique({

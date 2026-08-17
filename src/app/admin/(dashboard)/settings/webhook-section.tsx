@@ -37,7 +37,7 @@ export function WebhookSection() {
 
   async function loadWebhooks() {
     const data = await getWebhooks();
-    setWebhooks(data as unknown as Webhook[]);
+    setWebhooks(data as Webhook[]);
   }
 
   const toggleEvent = (ev: string) => {
