@@ -5,7 +5,6 @@ import { CinematicImage } from '@/components/ui/CinematicImage';
 import { SiddhiCard } from '@/components/archive/SiddhiCard';
 import { PatternCard } from '@/components/patterns/PatternCard';
 import HomeClientIslands from './HomeClientIslands';
-import { Suspense } from 'react';
 
 /* ── Static data resolved at build/request time on the server ── */
 const featured = allSiddhis.slice(0, 3);
@@ -32,7 +31,30 @@ export default function HomePage() {
         </div>
 
         <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-10 hero-content-safe">
-          <HomeClientIslands.HeroText />
+          {/* Server-rendered hero text — visible immediately, no JS required.
+              CSS animation replaces framer-motion motion.div which was
+              rendering initial={{ opacity: 0 }} and hiding LCP element. */}
+          <div className="hero-text-entrance">
+            <div className="hero-glow-container relative inline-block">
+              <h1 className="hero-glow-text font-display text-white hero-heading tracking-[0.08em] uppercase"
+                style={{ fontSize: 'clamp(3.5rem, 10vw, 8rem)', lineHeight: 1 }}
+              >
+                KALKI
+              </h1>
+            </div>
+            <p className="font-ui text-base md:text-lg tracking-[0.35em] uppercase mt-4 mb-10"
+              style={{
+                color: 'var(--gold-label)',
+                textShadow: '0 2px 18px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8), 0 0 30px rgba(212,175,55,0.15)',
+              }}
+            >
+              Tantrik Intelligence
+            </p>
+          </div>
+          <div className="hero-actions-entrance flex flex-wrap gap-4 mt-4">
+            <Link href="/archive" className="gold-cta">Akashic</Link>
+            <Link href="/practice" className="ghost-cta">Tantra</Link>
+          </div>
         </div>
       </section>
 

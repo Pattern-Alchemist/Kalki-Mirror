@@ -3,22 +3,11 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { motion } from 'framer-motion';
-import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 
 const PricingCards = dynamic(() => import('@/components/monetization/PricingCards').then(m => ({ default: m.PricingCards })), { ssr: false });
 const BreathTimer = dynamic(() => import('@/components/practice/BreathTimer').then(m => ({ default: m.BreathTimer })), { ssr: false });
 const ResonanceToggle = dynamic(() => import('@/components/ui/ResonanceToggle').then(m => ({ default: m.ResonanceToggle })), { ssr: false });
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
-};
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
-};
 
 /* ── Hero Background: video on desktop, static bg on mobile ── */
 export function HeroBackground() {
@@ -60,46 +49,7 @@ export function HeroBackground() {
   );
 }
 
-/* ── Hero text with entrance animation ── */
-export function HeroText() {
-  const reduced = useNativeReducedMotion();
-
-  return (
-    <>
-      <motion.div
-        initial={reduced ? { opacity: 1 } : { opacity: 0, y: 60 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-      >
-        <div className="hero-glow-container relative inline-block">
-          <h1 className="hero-glow-text font-display text-white hero-heading tracking-[0.08em] uppercase"
-            style={{ fontSize: 'clamp(3.5rem, 10vw, 8rem)', lineHeight: 1 }}
-          >
-            KALKI
-          </h1>
-        </div>
-        <p className="font-ui text-base md:text-lg tracking-[0.35em] uppercase mt-4 mb-10"
-          style={{
-            color: 'var(--gold-label)',
-            textShadow: '0 2px 18px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8), 0 0 30px rgba(212,175,55,0.15)',
-          }}
-        >
-          Tantrik Intelligence
-        </p>
-      </motion.div>
-
-      <motion.div
-        className="hero-actions flex flex-wrap gap-4 mt-4"
-        initial={reduced ? { opacity: 1 } : { opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <Link href="/archive" className="gold-cta">Akashic</Link>
-        <Link href="/practice" className="ghost-cta">Tantra</Link>
-      </motion.div>
-    </>
-  );
-}
+/* ── Hero text is now server-rendered in page.tsx for instant LCP ── */
 
 /* ── Breath practice section ── */
 export function BreathSection() {
@@ -113,24 +63,17 @@ export function BreathSection() {
   );
 }
 
-/* ── Pricing section with animation ── */
+/* ── Pricing section — CSS animation instead of framer-motion ── */
 export function PricingSection() {
-  const reduced = useNativeReducedMotion();
-
   return (
     <>
-      <motion.div
-        className="text-center mb-20"
-        initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
-        whileInView={fadeInUp.visible}
-        viewport={{ once: true }}
-      >
+      <div className="text-center mb-20 pricing-section-entrance">
         <p className="section-label mb-6">Choose Your Depth</p>
         <h2 className="font-display text-4xl md:text-6xl text-white hero-heading tracking-[0.08em]">
           Four paths.{' '}
           <span style={{ display: 'block' }}>One purpose.</span>
         </h2>
-      </motion.div>
+      </div>
       <PricingCards />
     </>
   );
@@ -144,7 +87,6 @@ export function WhatsAppInline() {
 /* ── Default export for convenience ── */
 const HomeClientIslands = {
   HeroBackground,
-  HeroText,
   BreathSection,
   PricingSection,
   WhatsAppInline,

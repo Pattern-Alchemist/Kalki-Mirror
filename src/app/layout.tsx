@@ -66,7 +66,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     <html lang={locale} suppressHydrationWarning className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        {/* Mobile hero image preload — LCP element on home page */}
         <link rel="preload" as="image" href="https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_640,c_limit/kalki-mirror/home/ancient-temple-midnight" media="(max-width: 768px)" />
+        {/* Archive page hero — most visited landing page after home */}
+        <link rel="preload" as="image" href="https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_640,c_limit/kalki-mirror/tantra/hero-ritual-chamber-alt" media="(max-width: 768px)" />
         <meta name="theme-color" content="#0B0C10" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

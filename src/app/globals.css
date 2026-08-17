@@ -331,9 +331,62 @@
   }
 }
 
+/* CSS-only nav active underline — replaces framer-motion layoutId */
+.nav-active-underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  animation: navActivePulse 3s ease-in-out infinite;
+}
+
+/* Mobile menu accordion items — staggered entrance */
+.nav-accordion-item {
+  animation: navAccordionIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes navAccordionIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Nav logo extra glow */
 .nav-logo-glow {
   filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.15));
+}
+
+/* Hero text entrance — replaces framer-motion motion.div that was
+   rendering initial={{ opacity: 0 }} and hiding the LCP element.
+   Transform-only: text is always visible for LCP, animation is progressive enhancement. */
+.hero-text-entrance {
+  animation: heroTextIn 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+@keyframes heroTextIn {
+  from { transform: translateY(30px); }
+  to   { transform: translateY(0); }
+}
+.hero-actions-entrance {
+  animation: heroActionsIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s both;
+}
+@keyframes heroActionsIn {
+  from { transform: translateY(15px); }
+  to   { transform: translateY(0); }
+}
+
+/* Pricing section entrance — CSS-only, no JS. Triggers when scrolled into view via IntersectionObserver in the component, or just uses a simple animation. */
+.pricing-section-entrance {
+  animation: pricingIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes pricingIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ==========================================================
@@ -1205,7 +1258,12 @@
   }
   .neon-tab-glow,
   .neon-chip-glow,
-  .nav-link-active {
+  .nav-link-active,
+  .nav-active-underline,
+  .nav-accordion-item,
+  .hero-text-entrance,
+  .hero-actions-entrance,
+  .pricing-section-entrance {
     animation: none !important;
   }
   .glass-nav::after {

@@ -4,9 +4,7 @@
  * No JS execution required — zero client overhead.
  */
 export default function Template({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="page-enter-fade">
-      {children}
-    </div>
-  );
+  // page-enter-fade removed: 0.5s CSS opacity animation was blocking first paint.
+  // Navigation transitions are handled by Next.js router + minimal JS.
+  return <>{children}</>;
 }

@@ -3,8 +3,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { cn } from '@/lib/utils';
 
 /* Navigation structure with mobile-first grouping */
@@ -54,7 +52,6 @@ export function SacredNav() {
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
-  const reduced = useNativeReducedMotion();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -156,12 +153,9 @@ export function SacredNav() {
                   )}
                 >
                   {link.label}
+                  {/* CSS-only active underline — replaces framer-motion layoutId */}
                   {isActive(link.href) && (
-                    <motion.span
-                      className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent"
-                      layoutId="nav-underline"
-                      transition={{ type: 'spring', stiffness: 200, damping: 30 }}
-                    />
+                    <span className="nav-active-underline" aria-hidden="true" />
                   )}
                 </Link>
               ))}
@@ -186,107 +180,98 @@ export function SacredNav() {
         </div>
       </nav>
 
-      {/* Mobile Full-Screen Menu with Accordion Groups */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            ref={menuRef}
-            id="mobile-menu"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Navigation menu"
-            className="fixed inset-0 z-40 lg:hidden"
-            initial={reduced ? { opacity: 1 } : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div aria-live="assertive" className="sr-only">
-              Navigation menu opened. Press Escape to close.
-            </div>
-            {/* Textured background — dark stone with subtle depth */}
-            <div
-              className="absolute inset-0 bg-deep-black/90"
-              aria-hidden="true"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={`https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1280,c_limit/e_brightness:0.15/kalki-mirror/auth/dark-texture-bg`}
-                alt=""
-                className="w-full h-full object-cover opacity-30"
-                draggable={false}
-              />
-            </div>
-            <div className="absolute inset-0 bg-deep-black/60 backdrop-blur-2xl" />
-
-            <div className="relative z-10 flex flex-col h-full px-6 py-20 safe-area-x overflow-y-auto">
-              <div className="mb-8 flex justify-center">
-                <span className="font-display text-3xl tracking-[0.3em] gold-foil-text font-light">KALKI</span>
-              </div>
-
-              <div className="flex flex-col gap-2 flex-1">
-                {NAV_GROUPS.map((group, gi) => {
-                  const isOpen = !!openGroups[group.label];
-                  const hasActive = group.links.some(l => isActive(l.href));
-                  return (
-                    <motion.div
-                      key={group.label}
-                      initial={reduced ? { opacity: 1 } : { opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: reduced ? 0 : 0.06 * gi, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => toggleGroup(group.label)}
-                        aria-expanded={isOpen}
-                        className={cn(
-                          'flex w-full items-center justify-between py-3 px-1 text-xs font-ui uppercase tracking-[0.2em] transition-colors duration-300 min-h-[44px]',
-                          hasActive ? 'text-gold' : 'text-text-muted/60 hover:text-text-muted'
-                        )}
-                      >
-                        {group.label}
-                        <ChevronIcon open={isOpen} />
-                      </button>
-                      <AnimatePresence>
-                        {isOpen && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                            className="overflow-hidden"
-                          >
-                            <div className="pl-3 pb-1 flex flex-col gap-0.5">
-                              {group.links.map((link) => (
-                                <Link
-                                  key={link.href}
-                                  href={link.href}
-                                  prefetch={false}
-                                  onClick={() => setMobileOpen(false)}
-                                  className={cn(
-                                    'block py-3 pl-3 border-l text-lg tracking-[0.08em] font-light transition-all duration-300 min-h-[44px] leading-[44px]',
-                                    isActive(link.href)
-                                      ? 'text-gold font-display border-gold/30'
-                                      : 'text-text-muted hover:text-ivory border-text-muted/10'
-                                  )}
-                                >
-                                  {link.label}
-                                </Link>
-                              ))}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              <p className="text-caption text-center pt-8">Light for the Dark Age.</p>
-            </div>
-          </motion.div>
+      {/* Mobile Full-Screen Menu with Accordion Groups — CSS transitions only */}
+      <div
+        ref={menuRef}
+        id="mobile-menu"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
+        className={cn(
+          'fixed inset-0 z-40 lg:hidden transition-opacity duration-500',
+          mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
-      </AnimatePresence>
+        style={{ visibility: mobileOpen ? 'visible' : 'hidden' }}
+      >
+        <div aria-live="assertive" className="sr-only">
+          Navigation menu opened. Press Escape to close.
+        </div>
+        {/* Textured background */}
+        <div
+          className="absolute inset-0 bg-deep-black/90"
+          aria-hidden="true"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1280,c_limit/e_brightness:0.15/kalki-mirror/auth/dark-texture-bg`}
+            alt=""
+            className="w-full h-full object-cover opacity-30"
+            draggable={false}
+          />
+        </div>
+        <div className="absolute inset-0 bg-deep-black/60 backdrop-blur-2xl" />
+
+        <div className="relative z-10 flex flex-col h-full px-6 py-20 safe-area-x overflow-y-auto">
+          <div className="mb-8 flex justify-center">
+            <span className="font-display text-3xl tracking-[0.3em] gold-foil-text font-light">KALKI</span>
+          </div>
+
+          <div className="flex flex-col gap-2 flex-1">
+            {NAV_GROUPS.map((group, gi) => {
+              const isOpen = !!openGroups[group.label];
+              const hasActive = group.links.some(l => isActive(l.href));
+              return (
+                <div
+                  key={group.label}
+                  className="nav-accordion-item"
+                  style={{ animationDelay: `${0.06 * gi}s` }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => toggleGroup(group.label)}
+                    aria-expanded={isOpen}
+                    className={cn(
+                      'flex w-full items-center justify-between py-3 px-1 text-xs font-ui uppercase tracking-[0.2em] transition-colors duration-300 min-h-[44px]',
+                      hasActive ? 'text-gold' : 'text-text-muted/60 hover:text-text-muted'
+                    )}
+                  >
+                    {group.label}
+                    <ChevronIcon open={isOpen} />
+                  </button>
+                  {/* CSS accordion — replaces framer-motion AnimatePresence */}
+                  <div
+                    className={cn(
+                      'nav-accordion-content overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]',
+                      isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                    )}
+                  >
+                    <div className="pl-3 pb-1 flex flex-col gap-0.5">
+                      {group.links.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          prefetch={false}
+                          onClick={() => setMobileOpen(false)}
+                          className={cn(
+                            'block py-3 pl-3 border-l text-lg tracking-[0.08em] font-light transition-all duration-300 min-h-[44px] leading-[44px]',
+                            isActive(link.href)
+                              ? 'text-gold font-display border-gold/30'
+                              : 'text-text-muted hover:text-ivory border-text-muted/10'
+                          )}
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <p className="text-caption text-center pt-8">Light for the Dark Age.</p>
+        </div>
+      </div>
     </>
   );
 }
