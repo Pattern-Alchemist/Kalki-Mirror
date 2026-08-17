@@ -1,0 +1,25 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel Deploy
+        run: |
+          curl -s -X POST "https://api.vercel.com/v13/deployments" \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "name": "kalki-fix",
+              "project": "${{ secrets.VERCEL_PROJECT_ID }}",
+              "gitSource": {
+                "type": "github",
+                "ref": "main",
+                "repoId": 1323034824,
+                "org": "Pattern-Alchemist"
+              }
+            }' | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('id','ERROR') if 'id' in d and d['id'] else d.get('error',{}).get('message','unknown error'))"
