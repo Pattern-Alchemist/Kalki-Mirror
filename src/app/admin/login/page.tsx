@@ -121,44 +121,35 @@ function AdminLoginForm() {
     setError("");
 
     try {
-      // Step 1: Fetch CSRF token from NextAuth
+      // Fetch CSRF token
       const csrfRes = await fetch('/api/auth/csrf');
-      if (!csrfRes.ok) {
-        setError('Authentication service unavailable.');
-        return;
-      }
       const { csrfToken } = await csrfRes.json();
 
-      // Step 2: POST to /api/auth/signin/credentials with json=true
-      // This is the endpoint NextAuth's own signIn() function calls.
-      // With json=true, it returns {url: "..."} on success or {error: "..."} on failure.
-      const res = await fetch('/api/auth/signin/credentials', {
+      // POST to NextAuth credentials callback with redirect:manual
+      // This is the EXACT same request next-auth/react signIn() makes internally.
+      // redirect:'manual' prevents fetch from following the 302,
+      // so we can check the Set-Cookie header for the session token.
+      const res = await fetch('/api/auth/callback/credentials', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        redirect: 'manual',
         body: new URLSearchParams({
           email,
           password,
           csrfToken,
           callbackUrl: window.location.origin + callbackUrl,
-          json: 'true',
         }),
       });
 
-      let data: Record<string, string> | null = null;
-      const contentType = res.headers.get('content-type') || '';
-      if (contentType.includes('application/json')) {
-        data = await res.json();
-      } else {
-        // Non-JSON response — might be an HTML redirect page
-        const text = await res.text();
-        console.warn('[KALKI Login] Non-JSON response:', res.status, text.substring(0, 200));
-      }
+      // Check if NextAuth set a session cookie (success)
+      // On success: 302 to callbackUrl with Set-Cookie: next-auth.session-token=...
+      // On failure: 302 back to signIn page WITHOUT session cookie
+      const setCookie = res.headers.get('set-cookie') || '';
+      const hasSession = setCookie.includes('next-auth.session-token') ||
+                          setCookie.includes('next-auth.session-token=');
 
-      // Success: NextAuth returns { url: "https://..." } with session cookie set
-      if (data?.url) {
+      if (hasSession) {
+        // Success — cookie is already set by the browser
         setLoginState({ attempts: 0, lockedUntil: 0 });
         try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
         router.push(callbackUrl);
@@ -166,12 +157,18 @@ function AdminLoginForm() {
         return;
       }
 
-      // Error handling
-      const errorMsg = data?.error || '';
+      // No session cookie — auth failed
+      // Read response body for any error info
+      let body = '';
+      try { body = await res.text(); } catch { /* */ }
 
-      // Check for custom error signals from authorize()
-      if (errorMsg.startsWith('2FA_REQUIRED:')) {
-        const parts = errorMsg.split(':');
+      // Check for custom errors from authorize() thrown via Error()
+      // NextAuth v4 includes them in the redirect URL or response body
+      const urlMatch = body.match(/error=([^&\s"]+)/);
+      const errorCode = urlMatch ? decodeURIComponent(urlMatch[1]) : '';
+
+      if (errorCode.startsWith('2FA_REQUIRED:')) {
+        const parts = errorCode.split(':');
         setLoginState({ attempts: 0, lockedUntil: 0 });
         try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
         setTwoFAUserId(parts[1] || '');
@@ -180,12 +177,12 @@ function AdminLoginForm() {
         return;
       }
 
-      if (errorMsg.startsWith('LOCKED:')) {
+      if (errorCode.startsWith('LOCKED:')) {
         setError('Account temporarily locked. Please try again later.');
         return;
       }
 
-      // Standard credentials failure (error is "CredentialsSignin" or similar)
+      // Standard credentials failure
       const newState = { ...loginState, attempts: loginState.attempts + 1 };
       if (newState.attempts >= MAX_ATTEMPTS) {
         newState.lockedUntil = Date.now() + LOCKOUT_MS;
