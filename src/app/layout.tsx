@@ -5,6 +5,8 @@ import { TierProvider } from "@/components/layout/TierProvider";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { Analytics } from "@vercel/analytics/react";
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
 
 /* ============================================================
    TYPOGRAPHY — The Inscriptions of Time
@@ -94,13 +96,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en" suppressHydrationWarning className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang={locale} suppressHydrationWarning className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
         <link rel="preload" as="image" href="https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_640,c_limit/kalki-mirror/home/ancient-temple-midnight" media="(max-width: 768px)" />
@@ -122,12 +127,14 @@ export default function RootLayout({
             </nav>
           </div>
         </noscript>
-        <TierProvider>
-          <SmoothScroll>
-            <PublicShell>{children}</PublicShell>
-            <Analytics />
-          </SmoothScroll>
-        </TierProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <TierProvider>
+            <SmoothScroll>
+              <PublicShell>{children}</PublicShell>
+              <Analytics />
+            </SmoothScroll>
+          </TierProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

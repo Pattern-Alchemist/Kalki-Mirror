@@ -1,0 +1,1458 @@
+openapi: '3.0.3'
+
+info:
+  title: Kalki-Mirror API
+  version: 0.2.1
+  description: >-
+    REST API for the KALKI Tantrik Intelligence Platform.
+    Pattern recognition, transit geometry, AI-powered Vedic content,
+    and membership management.
+  contact:
+    name: KALKI Platform
+    url: https://www.astrokalki.com
+  license:
+    name: Proprietary
+
+servers:
+  - url: https://www.astrokalki.com
+    description: Production
+
+tags:
+  - name: Health
+    description: Liveness and health probes
+  - name: Transits
+    description: Real-time planetary transit data
+  - name: Initiate
+    description: Session initiation with natal context
+  - name: Yantra
+    description: Query-grounded prompt construction
+  - name: AI
+    description: AI-powered Vedic content endpoints
+  - name: Auth
+    description: Authentication and 2FA
+  - name: Keys
+    description: API key generation and redemption
+  - name: User
+    description: User profile and tier
+  - name: Admin
+    description: Administrative search and notifications
+
+paths:
+  # ── Health ────────────────────────────────────────────────
+  /api:
+    get:
+      operationId: livenessProbe
+      tags: [Health]
+      summary: Liveness probe
+      description: Returns a simple status check. No authentication or rate limiting.
+      responses:
+        '200':
+          description: Service is alive
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LivenessResponse'
+
+  /api/health:
+    get:
+      operationId: healthCheck
+      tags: [Health]
+      summary: Health check with subsystem status
+      description: >-
+        Returns detailed health information including corpus stats,
+        database latency, environment, and cold-start timing.
+        No authentication or rate limiting.
+      responses:
+        '200':
+          description: Service is healthy (or degraded)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Service is degraded or critical
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  # ── Transits ─────────────────────────────────────────────
+  /api/transits:
+    get:
+      operationId: getTransits
+      tags: [Transits]
+      summary: Current planetary transit positions
+      description: >-
+        Returns current planetary longitudes, nakshatra placements,
+        retrograde status, and psychological friction analysis.
+        Rate limited to 20 requests/min/IP.
+      parameters:
+        - name: natalMoonDeg
+          in: query
+          description: Natal Moon longitude in degrees (0-360). Coerced from string.
+          required: false
+          schema:
+            type: number
+            minimum: 0
+            maximum: 360
+      responses:
+        '200':
+          description: Transit data with friction analysis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransitResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  # ── Initiate ─────────────────────────────────────────────
+  /api/initiate:
+    post:
+      operationId: initiateSession
+      tags: [Initiate]
+      summary: Initiate a session with natal or behavioral context
+      description: >-
+        Accepts birth data, natal moon degree, or a behavioral query
+        and returns transit positions, patterns, archetypes, raga mapping,
+        and siddhis. At least one of `natalMoonDeg`, `behavioralQuery`,
+        or `birthDate` is required. Optional auth (falls back to prithvi tier).
+        Rate limited to 5 requests/min/IP.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiateRequest'
+      responses:
+        '200':
+          description: Session initiated with full analysis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  # ── Yantra ───────────────────────────────────────────────
+  /api/yantra:
+    post:
+      operationId: buildYantra
+      tags: [Yantra]
+      summary: Build a grounded prompt with retrieval injection
+      description: >-
+        Takes a user query and optional context (patterns, transit, streaks, tier)
+        and returns a retrieval-grounded system+user prompt pair. Optional auth.
+        Rate limited to 5 requests/min/IP.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/YantraRequest'
+      responses:
+        '200':
+          description: Grounded prompt ready
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/YantraResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  # ── AI Routes ────────────────────────────────────────────
+  /api/ai/search:
+    post:
+      operationId: aiSearch
+      tags: [AI]
+      summary: AI semantic search
+      description: >-
+        Semantic search over the corpus. No auth required.
+        Rate limited to 5/min/IP. Returns 503 if LLM is not configured.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [query]
+              properties:
+                query:
+                  type: string
+                  minLength: 3
+                  maxLength: 500
+                limit:
+                  type: integer
+                  minimum: 1
+                  maximum: 20
+                  default: 5
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/ai/japa-guide:
+    post:
+      operationId: aiJapaGuide
+      tags: [AI]
+      summary: AI japa (mantra repetition) guide
+      description: >-
+        Generates a personalized japa guide for a given mantra.
+        No auth. Rate limited 5/min/IP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [mantra]
+              properties:
+                mantra:
+                  type: string
+                  minLength: 2
+                count:
+                  type: integer
+                  minimum: 1
+                  default: 108
+                experience:
+                  type: string
+                  maxLength: 1000
+      responses:
+        '200':
+          description: Japa guide generated
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/ai/consultation-screen:
+    post:
+      operationId: aiConsultationScreen
+      tags: [AI]
+      summary: AI consultation screening
+      description: >-
+        Screens a user's consultation message before routing.
+        No auth. Rate limited 5/min/IP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, message]
+              properties:
+                name:
+                  type: string
+                  minLength: 2
+                  maxLength: 200
+                message:
+                  type: string
+                  minLength: 10
+                  maxLength: 5000
+      responses:
+        '200':
+          description: Screening result
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/ai/archetype-quiz:
+    post:
+      operationId: aiArchetypeQuiz
+      tags: [AI]
+      summary: AI archetype quiz analysis
+      description: >-
+        Analyzes archetype quiz answers to determine dominant patterns.
+        No auth. Rate limited 5/min/IP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [answers]
+              properties:
+                answers:
+                  type: array
+                  items:
+                    type: string
+                    minLength: 5
+                  minItems: 5
+                  maxItems: 10
+      responses:
+        '200':
+          description: Archetype analysis result
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/ai/explain:
+    post:
+      operationId: aiExplain
+      tags: [AI]
+      summary: AI content explanation
+      description: >-
+        Explains Vedic/tantrik content in beginner or technical style.
+        No auth. Rate limited 5/min/IP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [content]
+              properties:
+                content:
+                  type: string
+                  minLength: 20
+                  maxLength: 10000
+                style:
+                  type: string
+                  enum: [beginner, technical]
+                  default: beginner
+      responses:
+        '200':
+          description: Explanation generated
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/ai/breathwork:
+    post:
+      operationId: aiBreathwork
+      tags: [AI]
+      summary: AI breathwork session generator
+      description: >-
+        Generates a guided breathwork session of the specified type and duration.
+        No auth. Rate limited 5/min/IP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [type]
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - calming
+                    - energizing
+                    - focus
+                    - nadi-shuddhi
+                    - bhramari
+                    - custom
+                duration:
+                  type: integer
+                  minimum: 3
+                  maximum: 60
+                  default: 15
+                  description: Session duration in minutes
+      responses:
+        '200':
+          description: Breathwork session generated
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/ai/pattern-explain:
+    post:
+      operationId: aiPatternExplain
+      tags: [AI]
+      summary: AI pattern explanation
+      description: >-
+        Explains a specific pattern by its slug with optional context.
+        No auth. Rate limited 5/min/IP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [patternSlug]
+              properties:
+                patternSlug:
+                  type: string
+                  minLength: 1
+                context:
+                  type: string
+                  maxLength: 500
+      responses:
+        '200':
+          description: Pattern explanation generated
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/ai/recommend-tier:
+    post:
+      operationId: aiRecommendTier
+      tags: [AI]
+      summary: AI tier recommendation
+      description: >-
+        Recommends a membership tier based on quiz answers.
+        No auth. Rate limited 5/min/IP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [answers]
+              properties:
+                answers:
+                  type: array
+                  items:
+                    type: string
+                    minLength: 5
+                  minItems: 3
+                  maxItems: 5
+      responses:
+        '200':
+          description: Tier recommendation
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/ai/transit-interpretation:
+    post:
+      operationId: aiTransitInterpretation
+      tags: [AI]
+      summary: AI transit interpretation
+      description: >-
+        Generates an interpretation for given planetary positions.
+        No auth. Rate limited 5/min/IP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [positions]
+              properties:
+                positions:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/TransitPositionInput'
+                  minItems: 1
+      responses:
+        '200':
+          description: Transit interpretation generated
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/ai/draft:
+    post:
+      operationId: aiDraft
+      tags: [AI]
+      summary: AI content draft generation
+      description: >-
+        Generates a content draft for practice, archetype, pattern, research, or codex.
+        **Requires authentication.** Rate limited 5/min/IP.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DraftRequest'
+      responses:
+        '200':
+          description: Draft generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DraftResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  # ── User ─────────────────────────────────────────────────
+  /api/user/tier:
+    get:
+      operationId: getUserTier
+      tags: [User]
+      summary: Get current user tier
+      description: Returns the authenticated user's tier and remaining gold keys.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User tier info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserTierResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # ── Keys ─────────────────────────────────────────────────
+  /api/keys:
+    get:
+      operationId: getKeys
+      tags: [Keys]
+      summary: List keys for a vault
+      description: >-
+        Lists keys for the authenticated user's vault, or another vault
+        if the user is ADMIN/SUPERADMIN. The `vault` query param is an optional
+        userId — only the owner or admin roles may access.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: vault
+          in: query
+          description: Optional userId to inspect (owner-only unless ADMIN/SUPERADMIN)
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Key listing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeysListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    post:
+      operationId: createKey
+      tags: [Keys]
+      summary: Generate a new invite key
+      description: >-
+        Generates a new key (format `KALKI-XXXX-XXXX`).
+        Requires Jal tier or above and `goldKeysRemaining > 0`.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tierGranted:
+                  type: string
+                  enum: [prithvi, jal, agni, akash]
+                  default: jal
+                  description: Tier granted by the generated key
+      responses:
+        '200':
+          description: Key generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateKeyResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/keys/redeem:
+    post:
+      operationId: redeemKey
+      tags: [Keys]
+      summary: Redeem an invite key
+      description: >-
+        Redeems a key code to grant the user the associated tier.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [code]
+              properties:
+                code:
+                  type: string
+                  minLength: 1
+                  maxLength: 30
+      responses:
+        '200':
+          description: Key redeemed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedeemKeyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Gone'
+
+  # ── Auth ─────────────────────────────────────────────────
+  /api/auth/2fa-verify:
+    post:
+      operationId: verify2FA
+      tags: [Auth]
+      summary: Verify 2FA code
+      description: >-
+        Verifies a 6-digit 2FA code using a pre-auth token.
+        On success, sets a `next-auth.session-token` cookie.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TwoFARequest'
+      responses:
+        '200':
+          description: 2FA verified
+          headers:
+            Set-Cookie:
+              description: Sets next-auth.session-token cookie
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TwoFAResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/auth/session-validate:
+    get:
+      operationId: validateSession
+      tags: [Auth]
+      summary: Validate JWT session
+      description: >-
+        Validates a JWT session using custom headers. The token must
+        contain both `id` and `jti` claims.
+      security: []
+      parameters:
+        - name: X-Kalki-JTI
+          in: header
+          required: true
+          schema:
+            type: string
+          description: JWT ID claim
+        - name: X-Kalki-User-Id
+          in: header
+          required: true
+          schema:
+            type: string
+          description: User ID claim
+        - name: X-Kalki-User-Agent
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Client user agent
+        - name: X-Kalki-IP
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Client IP address
+      responses:
+        '200':
+          description: Session is valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionValidateResponse'
+        '401':
+          description: Session invalid or evicted
+          headers:
+            X-Session-Invalid:
+              description: Present with value 'evicted' when session was evicted
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionInvalidResponse'
+
+  # ── Admin ────────────────────────────────────────────────
+  /api/admin/search:
+    get:
+      operationId: adminSearch
+      tags: [Admin]
+      summary: Admin global search
+      description: >-
+        Searches across members, keys, and consultations.
+        Requires ADMIN, SUPERADMIN, EDITOR, or REVIEWER role.
+        Rate limited to 20 requests/min/user.
+      security:
+        - adminAuth: []
+      parameters:
+        - name: q
+          in: query
+          description: >-
+            Search query. Must be at least 2 characters after trimming;
+            returns empty results otherwise.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminSearchResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /api/admin/notifications:
+    get:
+      operationId: getAdminNotifications
+      tags: [Admin]
+      summary: List admin notifications
+      description: >-
+        Returns notifications for the admin dashboard.
+        Requires ADMIN, SUPERADMIN, EDITOR, or REVIEWER role.
+      security:
+        - adminAuth: []
+      parameters:
+        - name: since
+          in: query
+          description: ISO 8601 date string to filter notifications after this time
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Notifications listed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationsResponse'
+
+    post:
+      operationId: createAdminNotification
+      tags: [Admin]
+      summary: Create an admin notification
+      description: >-
+        Creates a new notification. Set `broadcast: true` to notify all users.
+        Requires ADMIN, SUPERADMIN, EDITOR, or REVIEWER role.
+      security:
+        - adminAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNotificationRequest'
+      responses:
+        '201':
+          description: Notification created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateNotificationResponse'
+
+    patch:
+      operationId: patchAdminNotification
+      tags: [Admin]
+      summary: Mark notification(s) as read
+      description: >-
+        Marks a single notification or all notifications as read.
+        Requires ADMIN, SUPERADMIN, EDITOR, or REVIEWER role.
+      security:
+        - adminAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchNotificationRequest'
+      responses:
+        '200':
+          description: Notifications marked as read
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchNotificationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+# ── Components ──────────────────────────────────────────────
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        NextAuth JWT via Bearer token (cookie-based).
+        Used for standard authenticated routes.
+    adminAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        NextAuth JWT with ADMIN, SUPERADMIN, EDITOR, or REVIEWER role required.
+
+  # ── Reusable Responses ──────────────────────────────────
+  responses:
+    BadRequest:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    Unauthorized:
+      description: Unauthorized — missing or invalid token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    Forbidden:
+      description: Forbidden — insufficient role or tier
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    Conflict:
+      description: Conflict — resource already exists or state conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    Gone:
+      description: Gone — resource has expired
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    ServiceUnavailable:
+      description: LLM not configured or returned invalid JSON
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  # ── Schemas ─────────────────────────────────────────────
+  schemas:
+
+    # Shared
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+
+    # Health
+    LivenessResponse:
+      type: object
+      required: [status, timestamp]
+      properties:
+        status:
+          type: string
+          example: ok
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp
+
+    HealthStatus:
+      type: string
+      enum: [ok, degraded, critical]
+
+    HealthCorpus:
+      type: object
+      required: [total, withEmbeddings, cautionBreakdown, source]
+      properties:
+        total:
+          type: integer
+        withEmbeddings:
+          type: integer
+        cautionBreakdown:
+          type: object
+          additionalProperties:
+            type: integer
+          description: Map of caution level to count
+        source:
+          type: string
+
+    HealthDatabase:
+      type: object
+      required: [status, latencyMs]
+      properties:
+        status:
+          type: string
+          enum: [ok, error]
+        latencyMs:
+          type: integer
+        error:
+          type: string
+          nullable: true
+
+    HealthTiming:
+      type: object
+      required: [coldStartMs, isServerless]
+      properties:
+        coldStartMs:
+          type: integer
+        isServerless:
+          type: boolean
+
+    HealthResponse:
+      type: object
+      required: [status, corpus, database, environment, timing, timestamp]
+      properties:
+        status:
+          $ref: '#/components/schemas/HealthStatus'
+        corpus:
+          $ref: '#/components/schemas/HealthCorpus'
+        database:
+          $ref: '#/components/schemas/HealthDatabase'
+        environment:
+          type: string
+          enum: [local, serverless]
+        timing:
+          $ref: '#/components/schemas/HealthTiming'
+        timestamp:
+          type: string
+
+    # Transits
+    TransitPlanet:
+      type: object
+      required: [planet, sanskrit, longitude, nakshatra, nakshatraPada, retrograde]
+      properties:
+        planet:
+          type: string
+        sanskrit:
+          type: string
+        longitude:
+          type: number
+        nakshatra:
+          type: string
+        nakshatraPada:
+          type: integer
+        retrograde:
+          type: boolean
+
+    FrictionSeverity:
+      type: string
+      enum: [critical, moderate, subtle]
+
+    TransitFriction:
+      type: object
+      required: [type, planet1, planet2, orb, severity, psychologicalFriction, prescribedMicroSadhana]
+      properties:
+        type:
+          type: string
+        planet1:
+          type: string
+        planet2:
+          type: string
+        orb:
+          type: number
+        severity:
+          $ref: '#/components/schemas/FrictionSeverity'
+        psychologicalFriction:
+          type: string
+        prescribedMicroSadhana:
+          type: string
+
+    TransitResponse:
+      type: object
+      required: [timestamp, positions, frictions, yantra_context]
+      properties:
+        timestamp:
+          type: string
+        positions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransitPlanet'
+        frictions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransitFriction'
+        yantra_context:
+          type: string
+
+    # Initiate
+    InitiateRequest:
+      type: object
+      properties:
+        birthDate:
+          type: string
+          description: Date of birth (YYYY-MM-DD or similar)
+        birthTime:
+          type: string
+          description: Time of birth
+        birthPlace:
+          type: string
+          maxLength: 200
+        natalMoonDeg:
+          type: number
+          minimum: 0
+          maximum: 360
+          description: Natal Moon longitude in degrees
+        behavioralQuery:
+          type: string
+          maxLength: 2000
+      description: >-
+        At least one of `natalMoonDeg`, `behavioralQuery`, or `birthDate` is required.
+
+    InitiateResponse:
+      type: object
+      required: [transit, patterns, archetypes, rag, siddhis]
+      properties:
+        transit:
+          type: object
+        patterns:
+          type: array
+          maxItems: 3
+          items:
+            type: object
+        archetypes:
+          type: array
+          items:
+            type: object
+        rag:
+          type: object
+        siddhis:
+          type: array
+          items:
+            type: object
+
+    # Yantra
+    SadhanaStreak:
+      type: object
+      required: [practice, days]
+      properties:
+        practice:
+          type: string
+        days:
+          type: integer
+
+    YantraContext:
+      type: object
+      properties:
+        dominantPatterns:
+          type: array
+          items:
+            type: string
+        currentTransit:
+          type: string
+        sadhanaStreaks:
+          type: array
+          items:
+            $ref: '#/components/schemas/SadhanaStreak'
+        tier:
+          type: string
+
+    YantraRequest:
+      type: object
+      required: [query]
+      properties:
+        query:
+          type: string
+          minLength: 10
+          maxLength: 2000
+        context:
+          $ref: '#/components/schemas/YantraContext'
+
+    YantraResponse:
+      type: object
+      required:
+        - status
+        - retrieval_method
+        - folio_blocks_injected
+        - archive_refs
+        - system_prompt_length
+        - user_prompt_length
+        - user_prompt
+      properties:
+        status:
+          type: string
+          example: grounded_prompt_ready
+        retrieval_method:
+          type: string
+        folio_blocks_injected:
+          type: integer
+        archive_refs:
+          type: array
+          items:
+            type: string
+        system_prompt_length:
+          type: integer
+        user_prompt_length:
+          type: integer
+        user_prompt:
+          type: string
+
+    # AI shared
+    TransitPositionInput:
+      type: object
+      required: [planet, sign, degree]
+      properties:
+        planet:
+          type: string
+          minLength: 1
+        sign:
+          type: string
+          minLength: 1
+        degree:
+          type: number
+          minimum: 0
+          maximum: 360
+
+    DraftType:
+      type: string
+      enum: [practice, archetype, pattern, research, codex]
+
+    CautionLevel:
+      type: string
+      enum: [OPEN, MODERATE, HIGH, SEALED]
+
+    Tier:
+      type: string
+      enum: [prithvi, jal, agni, akash]
+
+    DraftRequest:
+      type: object
+      required: [type, title]
+      properties:
+        type:
+          $ref: '#/components/schemas/DraftType'
+        title:
+          type: string
+          minLength: 3
+          maxLength: 300
+        context:
+          type: string
+          maxLength: 2000
+
+    DraftResponse:
+      type: object
+      required: [draft, suggestedCaution, suggestedTier, relatedSiddhis]
+      properties:
+        draft:
+          type: string
+        suggestedCaution:
+          $ref: '#/components/schemas/CautionLevel'
+        suggestedTier:
+          $ref: '#/components/schemas/Tier'
+        relatedSiddhis:
+          type: array
+          maxItems: 5
+          items:
+            type: string
+
+    # User
+    UserTierResponse:
+      type: object
+      required: [tier, goldKeysRemaining]
+      properties:
+        tier:
+          $ref: '#/components/schemas/Tier'
+        goldKeysRemaining:
+          type: integer
+
+    # Keys
+    KeysListResponse:
+      type: object
+      required: [tier, remainingKeys, vault]
+      properties:
+        tier:
+          type: string
+        remainingKeys:
+          type: integer
+        vault:
+          type: array
+          items:
+            type: object
+
+    CreateKeyResponse:
+      type: object
+      required: [key, tierGranted, expiresAt, remainingKeys]
+      properties:
+        key:
+          type: string
+          pattern: '^KALKI-[A-Z0-9]{4}-[A-Z0-9]{4}$'
+          example: KALKI-A7F2-B9C1
+        tierGranted:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+        remainingKeys:
+          type: integer
+
+    RedeemKeyResponse:
+      type: object
+      required: [status, tierGranted, message]
+      properties:
+        status:
+          type: string
+          example: key_redeemed
+        tierGranted:
+          type: string
+        message:
+          type: string
+
+    # Auth
+    TwoFARequest:
+      type: object
+      required: [userId, code, preAuthToken]
+      properties:
+        userId:
+          type: string
+        code:
+          type: string
+          minLength: 6
+          maxLength: 6
+          description: Exactly 6-character 2FA code
+        preAuthToken:
+          type: string
+
+    TwoFAResponse:
+      type: object
+      required: [valid, required]
+      properties:
+        valid:
+          type: boolean
+          example: true
+        required:
+          type: boolean
+
+    SessionValidateResponse:
+      type: object
+      required: [valid]
+      properties:
+        valid:
+          type: boolean
+          example: true
+
+    SessionInvalidReason:
+      type: string
+      enum: [no_token, session_evicted]
+
+    SessionInvalidResponse:
+      type: object
+      required: [valid, reason]
+      properties:
+        valid:
+          type: boolean
+          example: false
+        reason:
+          $ref: '#/components/schemas/SessionInvalidReason'
+
+    # Admin
+    AdminSearchResultType:
+      type: string
+      enum: [member, key, consultation]
+
+    AdminSearchResultItem:
+      type: object
+      required: [type, id, title, subtitle, href]
+      properties:
+        type:
+          $ref: '#/components/schemas/AdminSearchResultType'
+        id:
+          type: string
+        title:
+          type: string
+        subtitle:
+          type: string
+        href:
+          type: string
+
+    AdminSearchResponse:
+      type: object
+      required: [results]
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminSearchResultItem'
+
+    NotificationType:
+      type: string
+      default: info
+
+    CreateNotificationRequest:
+      type: object
+      required: [title, body]
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        type:
+          $ref: '#/components/schemas/NotificationType'
+        href:
+          type: string
+        broadcast:
+          type: boolean
+          default: false
+
+    CreateNotificationResponse:
+      type: object
+      required: [notification]
+      properties:
+        notification:
+          type: object
+
+    NotificationsResponse:
+      type: object
+      required: [notifications, unreadCount]
+      properties:
+        notifications:
+          type: array
+          items:
+            type: object
+        unreadCount:
+          type: integer
+
+    PatchNotificationRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Single notification ID to mark as read
+        markAll:
+          type: boolean
+          description: Set to true to mark all as read
+      description: >-
+        Provide either `id` or `markAll`. If neither or both are provided,
+        returns a 400 error.
+
+    PatchNotificationResponse:
+      type: object
+      required: [success]
+      properties:
+        success:
+          type: boolean
+          example: true

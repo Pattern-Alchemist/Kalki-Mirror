@@ -36,6 +36,7 @@
     "lucide-react": "^0.525.0",
     "next": "^16.2.12",
     "next-auth": "^4.24.11",
+    "next-intl": "^4.13.6",
     "otpauth": "^9.5.1",
     "prisma": "^6.11.1",
     "qrcode": "^1.5.4",

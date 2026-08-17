@@ -1,0 +1,155 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "noResults": "No results found",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "signOut": "Sign Out"
+  },
+  "nav": {
+    "home": "Home",
+    "archive": "Archive",
+    "patterns": "Patterns",
+    "practice": "Practice",
+    "library": "Library",
+    "glossary": "Glossary",
+    "breathwork": "Breathwork",
+    "deities": "Deities",
+    "sequences": "Sequences",
+    "consultations": "Consultations",
+    "pricing": "Membership",
+    "method": "Method",
+    "codex": "Codex",
+    "research": "Research",
+    "archetypes": "Archetypes",
+    "aghoriTantra": "Aghori Tantra",
+    "redeem": "Redeem",
+    "signIn": "Sign In",
+    "dossier": "Dossier",
+    "admin": "Admin"
+  },
+  "hero": {
+    "tagline": "Tantrik Intelligence. Sacred Architecture. Pattern Recognition.",
+    "subtitle": "Where ancient Tantric geometry meets modern computational intelligence.",
+    "cta": "Begin Your Dossier",
+    "ctaAlt": "Explore the Archive"
+  },
+  "footer": {
+    "tagline": "The Architecture of Karma",
+    "description": "Where ancient Tantric geometry meets modern computational intelligence.",
+    "copyright": "\u00a9 {year} KALKI. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact"
+  },
+  "tiers": {
+    "prithvi": "Prithvi",
+    "prithviElement": "Earth",
+    "prithviDesc": "Foundation access to open practices and pattern intelligence.",
+    "jal": "Jal",
+    "jalElement": "Water",
+    "jalDesc": "Deeper pattern analysis, moderate sādhana, and AI-guided practice.",
+    "agni": "Agni",
+    "agniElement": "Fire",
+    "agniDesc": "Advanced sādhana protocols, high-caution content, and priority consultations.",
+    "akash": "Akash",
+    "akashElement": "Sky",
+    "akashDesc": "Complete archive access including sealed and restricted content."
+  },
+  "archive": {
+    "title": "Siddhi Archive",
+    "subtitle": "A living catalogue of Tantrik technologies, indexed by caution level and lineage.",
+    "foundation": "Foundation",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "restricted": "Restricted",
+    "viewEntry": "View Entry",
+    "searchPlaceholder": "Search the archive...",
+    "acknowledge": "I acknowledge the risks and wish to proceed",
+    "gatedContent": "This content requires {tier} membership or higher."
+  },
+  "patterns": {
+    "title": "Behavioral Patterns",
+    "subtitle": "The recurring architectures of human experience, mapped through the lens of Tantric psychology.",
+    "searchPlaceholder": "Search patterns...",
+    "relatedSiddhis": "Related Siddhis",
+    "relatedArchetypes": "Related Archetypes"
+  },
+  "practice": {
+    "title": "Sādhana Lab",
+    "subtitle": "Your daily practice space. Japa, prāṇāyāma, and guided sādhana protocols.",
+    "japa": "Japa",
+    "timer": "Timer",
+    "startPractice": "Start Practice",
+    "pausePractice": "Pause",
+    "resetPractice": "Reset",
+    "completePractice": "Complete"
+  },
+  "consultations": {
+    "title": "Consultations",
+    "subtitle": "Direct guidance through the pattern intelligence framework.",
+    "bookSession": "Book a Session",
+    "namePlaceholder": "Your name",
+    "messagePlaceholder": "Describe your pattern or question...",
+    "whatsappLabel": "WhatsApp Number",
+    "submitConsultation": "Send Request"
+  },
+  "ai": {
+    "searchPlaceholder": "Ask about siddhis, patterns, or practices...",
+    "explaining": "Explaining with Pattern Intelligence...",
+    "generatingBreathwork": "Generating breathwork protocol...",
+    "analyzingArchetype": "Analyzing your archetype...",
+    "screeningConsultation": "Screening your consultation request...",
+    "generatingDraft": "Generating content draft...",
+    "noLLM": "AI features are currently unavailable. Please try again later.",
+    "rateLimited": "Too many requests. Please wait a moment.",
+    "archetypeQuizTitle": "Discover Your Mahāvidyā Archetype",
+    "archetypeQuizDesc": "Answer honestly — the pattern intelligence maps your responses to one of the Ten Mahāvidyās.",
+    "tierQuizTitle": "Find Your Path",
+    "tierQuizDesc": "Answer three questions to discover which membership tier aligns with your sādhana trajectory."
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "email": "Email",
+    "password": "Password",
+    "twoFactorCode": "2FA Code",
+    "verify2FA": "Verify",
+    "sessionEvicted": "Your session was ended because you logged in from another device.",
+    "invalidCredentials": "Invalid email or password."
+  },
+  "errors": {
+    "rateLimited": "Too many requests. Please slow down.",
+    "unauthorized": "Authentication required.",
+    "forbidden": "You do not have access to this resource.",
+    "notFound": "The requested resource was not found.",
+    "serverError": "An internal error occurred. Please try again.",
+    "llmUnavailable": "AI services are temporarily unavailable."
+  },
+  "health": {
+    "ok": "All systems operational",
+    "degraded": "Partial degradation detected",
+    "critical": "Critical system failure"
+  },
+  "caution": {
+    "OPEN": "Open",
+    "MODERATE": "Moderate",
+    "HIGH": "High",
+    "SEALED": "Sealed",
+    "openDesc": "Safe for all practitioners.",
+    "moderateDesc": "Requires guidance. Not for solo beginners.",
+    "highDesc": "Advanced practice with real risk. Qualified guidance mandatory.",
+    "sealedDesc": "Lineage-restricted. Documented for scholarly completeness only."
+  }
+}
