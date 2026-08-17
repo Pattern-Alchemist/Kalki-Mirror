@@ -129,27 +129,35 @@ function AdminLoginForm() {
     setError("");
 
     try {
-      // Direct fetch to NextAuth credentials provider — bypasses broken next-auth/react v4
-      // next-auth v4 is incompatible with React 19 and crashes hydration.
-      // We call the credentials callback endpoint directly.
+      // Step 1: Get CSRF token from NextAuth
       const csrfRes = await fetch('/api/auth/csrf');
+      if (!csrfRes.ok) {
+        setError('Authentication service unavailable.');
+        return;
+      }
       const { csrfToken } = await csrfRes.json();
 
-      const res = await fetch('/api/auth/callback/credentials', {
+      // Step 2: POST to the signin endpoint (not callback directly)
+      // NextAuth v4 expects the signin endpoint for JSON responses with redirect:false
+      const res = await fetch('/api/auth/signin/credentials', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' },
         body: new URLSearchParams({
           email,
           password,
-          callbackUrl,
           csrfToken,
+          callbackUrl,
+          json: 'true',
         }),
-        redirect: 'manual',
       });
 
-      // NextAuth returns 302 on success with Set-Cookie header.
-      // With redirect:'manual', fetch doesn't follow it.
-      if (res.status === 302 || res.status === 201) {
+      const data = await res.json().catch(() => null);
+
+      // NextAuth v4 signin endpoint returns:
+      // On success: { url: "https://..." } with status 200
+      // On error: { error: "CredentialsSignin" } or custom error string
+      if (data?.url) {
+        // Success — NextAuth set the session cookie via Set-Cookie header
         setLoginState({ attempts: 0, lockedUntil: 0 });
         try { sessionStorage.removeItem("kalki-login"); } catch { /* */ }
         router.push(callbackUrl);
@@ -157,16 +165,9 @@ function AdminLoginForm() {
         return;
       }
 
-      // Try to parse error response
-      let errorMsg = '';
-      try {
-        const body = await res.json();
-        errorMsg = body.error || '';
-      } catch {
-        try { errorMsg = await res.text(); } catch { /* */ }
-      }
+      // Check for custom error signals from authorize()
+      const errorMsg = data?.error || '';
 
-      // Check for 2FA_REQUIRED signal from authorize()
       if (errorMsg.startsWith('2FA_REQUIRED:')) {
         const parts = errorMsg.split(':');
         setLoginState({ attempts: 0, lockedUntil: 0 });
@@ -177,7 +178,6 @@ function AdminLoginForm() {
         return;
       }
 
-      // Check for LOCKED signal
       if (errorMsg.startsWith('LOCKED:')) {
         setError('Account temporarily locked. Please try again later.');
         return;
