@@ -1,0 +1,19 @@
+# KALKI — robots.txt
+# https://www.astrokalki.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Admin panel — never index
+Disallow: /admin/
+
+# API routes — no index
+Disallow: /api/
+
+# Gated/personal pages — no index
+Disallow: /practice
+Disallow: /redeem
+Disallow: /dossier
+
+# Sitemap
+Sitemap: https://www.astrokalki.com/sitemap.xml

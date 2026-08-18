@@ -22,6 +22,34 @@ const TURSO_TOKEN_FALLBACK = process.env.VERCEL === '1'
   ? 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3ODY5MDk3MDksImlkIjoiMDFhMDBjMWQtMWUwMS03YzFiLTlhYmItODUyZDgwOGRmMWVlIiwia2lkIjoiRHRnLUxVWDlCZ0VHbXVReEk5WVUzWnFqMjRPTUlGQllHZHpqYTBkT0VuUSIsInJpZCI6IjE5MjA2MDJkLTJmNTYtNDA2Yi05MDI2LWUyNTc4ZjUyMDgyMyJ9.0AavPuqz6W7qQtaHgYHscL21-1YgxlRt0DwRLBi-mHjDGemOrNX9gVkP9Ie2Zl7OXLicEDLBV29ZvHdNb9aNAQ'
   : '';
 
+// ─── Retry wrapper for Turso cold starts ─────────────────────────────
+const MAX_RETRIES = 2;
+const RETRY_DELAY_MS = 500;
+
+async function withRetry<T>(fn: () => Promise<T>, retries = MAX_RETRIES): Promise<T> {
+  let lastErr: unknown;
+  for (let i = 0; i <= retries; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      if (i < retries) await new Promise(r => setTimeout(r, RETRY_DELAY_MS * (i + 1)));
+    }
+  }
+  throw lastErr;
+}
+
+/**
+ * Health-check wrapper: pings the DB on first use to catch cold-start
+ * connection failures early, with retries.
+ */
+let healthChecked = false;
+async function ensureConnection(client: PrismaClient) {
+  if (healthChecked) return;
+  await withRetry(() => client.user.count());
+  healthChecked = true;
+}
+
 // ─── Client factory ─────────────────────────────────────────────────────────
 
 const globalForPrisma = globalThis as unknown as {
@@ -39,14 +67,20 @@ function createPrismaClient(): PrismaClient {
       authToken: tursoAuthToken || undefined,
     });
 
-    console.log(
-      `[db] Turso adapter active — ${tursoUrl.replace(/\/\/[^@]+@/, '//***@')}`
-    );
+    const maskedUrl = tursoUrl.replace(/\/\/[^@]+@/, '//***@');
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`[db] Turso adapter active — ${maskedUrl}`);
+    }
 
-    return new PrismaClient({
+    const client = new PrismaClient({
       adapter,
       log: process.env.PRISMA_LOG === '1' ? ['query'] : [],
     });
+
+    // Fire-and-forget health check (won't block first real query)
+    ensureConnection(client).catch(() => { healthChecked = false; });
+
+    return client;
   }
 
   // ── Development: local SQLite (DATABASE_URL from .env) ──────────────────

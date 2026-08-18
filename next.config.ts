@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
+import withBundleAnalyzer from '@next/bundle-analyzer';
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
@@ -57,6 +58,9 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   typescript: { ignoreBuildErrors: true },
   poweredByHeader: false,
+  experimental: {
+    analyze: process.env.ANALYZE === 'true',
+  },
 
   // Security & performance headers
   async headers() {
@@ -112,7 +116,7 @@ const nextConfig: NextConfig = {
 };
 
 // I4: Sentry wrapper — only active when SENTRY_DSN is set
-export default withSentryConfig(withNextIntl(nextConfig), {
+export default withBundleAnalyzer(withSentryConfig(withNextIntl(nextConfig), {
   silent: true,
   // hideSourceMaps renamed to hideSourceMaps in newer SDK versions.
   // Source maps are disabled via sourcemaps.disable above.

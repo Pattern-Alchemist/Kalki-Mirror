@@ -55,6 +55,7 @@ export const metadata: Metadata = {
     images: ['https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-ritual-chamber-alt'],
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-video-preview': -1, 'max-image-preview': 'large', 'max-snippet': -1 } },
+  formatDetection: { telephone: false, email: false, address: false },
   icons: { icon: '/favicon.svg', apple: '/apple-touch-icon.png' },
 };
 
