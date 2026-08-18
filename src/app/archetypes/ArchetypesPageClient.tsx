@@ -5,8 +5,7 @@ import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
-import { TEN_MAHAVIDYAS, ALL_ARCHETYPES, type Archetype } from '@/lib/data/archetypes';
-import { allSiddhis, getSiddhiBySlug } from '@/lib/data/siddhis';
+import type { Archetype } from '@/lib/data/archetypes';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { CautionBadge } from '@/components/archive/CautionBadge';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
@@ -14,14 +13,19 @@ import Link from 'next/link';
 import { BackButton } from '@/components/nav/BackButton';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
-import type { CautionLevel } from '@/lib/data/archetypes';
 import type { Tier } from '@/lib/data/types';
+
+export interface ArchetypesPageProps {
+  tenMahavidyas: Archetype[];
+  allArchetypes: Archetype[];
+  siddhiLookup: Record<string, { name: string; tradition: string; level: string }>;
+}
 
 const ArchetypeQuiz = dynamic(() => import('@/components/ai/ArchetypeQuiz').then(m => ({ default: m.ArchetypeQuiz })), { ssr: false, loading: () => <div className="h-48" /> });
 const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
 
 /* ── Extracted sub-component: avoids nested conditional JSX inside motion.div ── */
-function ArchetypeDetail({ a }: { a: Archetype }) {
+function ArchetypeDetail({ a, siddhiLookup }: { a: Archetype; siddhiLookup: Record<string, { name: string; tradition: string; level: string }> }) {
   return (
     <div className="glass-panel p-8 md:p-10 mt-2">
       <p className="text-editorial mb-8">{a.description}</p>
@@ -37,7 +41,7 @@ function ArchetypeDetail({ a }: { a: Archetype }) {
       </p>
       <div className="space-y-3 mb-8">
         {a.relatedSiddhiSlugs.map((sSlug) => {
-          const s = getSiddhiBySlug(sSlug);
+          const s = siddhiLookup[sSlug];
           if (!s) return null;
           return (
             <Link
@@ -87,7 +91,7 @@ function ArchetypeDetail({ a }: { a: Archetype }) {
   );
 }
 
-export default function ArchetypesPage() {
+export default function ArchetypesPage({ tenMahavidyas, allArchetypes, siddhiLookup }: ArchetypesPageProps) {
   const [selected, setSelected] = useState<Archetype | null>(null);
   const reduced = useNativeReducedMotion();
 
@@ -95,7 +99,7 @@ export default function ArchetypesPage() {
   useEffect(() => {
     const hash = window.location.hash.replace('#', '');
     if (hash) {
-      const match = ALL_ARCHETYPES.find(a => a.id === hash);
+      const match = allArchetypes.find(a => a.id === hash);
       if (match) {
         setSelected(match);
         // Scroll to the card after a brief delay for render
@@ -212,7 +216,7 @@ export default function ArchetypesPage() {
           initial={reduced ? { opacity: 1 } : staggerContainer.hidden}
           animate={staggerContainer.visible}
         >
-          {TEN_MAHAVIDYAS.map((a, i) => (
+          {tenMahavidyas.map((a, i) => (
             <motion.div
               key={a.id}
               id={a.id}
@@ -276,7 +280,7 @@ export default function ArchetypesPage() {
                     transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     className="overflow-hidden"
                   >
-                    <ArchetypeDetail a={a} />
+                    <ArchetypeDetail a={a} siddhiLookup={siddhiLookup} />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -311,7 +315,7 @@ export default function ArchetypesPage() {
           whileInView={staggerContainer.visible}
           viewport={{ once: true }}
         >
-          {ALL_ARCHETYPES.filter(a => a.number > 10).map((a) => (
+          {allArchetypes.filter(a => a.number > 10).map((a) => (
             <motion.div key={a.id} variants={staggerItem} id={a.id}>
               <div className="glass-chip overflow-hidden h-full">
                 {/* Image strip */}

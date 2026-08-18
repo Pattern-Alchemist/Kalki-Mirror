@@ -9,14 +9,17 @@ import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import dynamic from 'next/dynamic';
 import { TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
-import { ALL_ARCHETYPES, CAUTION_LABELS, type CautionLevel } from '@/lib/data/archetypes';
-import { allPatterns } from '@/lib/data/patterns';
-import { allSiddhis } from '@/lib/data/siddhis';
+import type { Archetype, CautionLevel } from '@/lib/data/archetypes';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
+
+interface DeitiesPageProps {
+  archetypes: Archetype[];
+  cautionLabels: Record<CautionLevel, string>;
+}
 
 /* ── Caution badge styles ── */
 const CAUTION_STYLES: Record<CautionLevel, string> = {
@@ -39,9 +42,7 @@ interface ArchetypeStats {
   relatedPatternCount: number;
 }
 
-function getArchetypeStats(id: string): ArchetypeStats {
-  const archetype = ALL_ARCHETYPES.find((a) => a.id === id);
-  if (!archetype) return { relatedSiddhiCount: 0, relatedPatternCount: 0 };
+function getArchetypeStats(archetype: Archetype): ArchetypeStats {
   return {
     relatedSiddhiCount: archetype.relatedSiddhiSlugs.length,
     relatedPatternCount: archetype.relatedPatternSlugs.length,
@@ -54,12 +55,14 @@ function getArchetypeStats(id: string): ArchetypeStats {
 function DeityCard({
   archetype,
   index,
+  cautionLabels,
 }: {
-  archetype: typeof ALL_ARCHETYPES[number];
+  archetype: Archetype;
   index: number;
+  cautionLabels: Record<CautionLevel, string>;
 }) {
   const reduced = useNativeReducedMotion();
-  const stats = getArchetypeStats(archetype.id);
+  const stats = getArchetypeStats(archetype);
   const CautionIcon = CAUTION_ICONS[archetype.cautionLevel];
   const isHighOrSealed = archetype.cautionLevel === 'HIGH' || archetype.cautionLevel === 'SEALED';
 
@@ -87,7 +90,7 @@ function DeityCard({
           CAUTION_STYLES[archetype.cautionLevel]
         )}>
           <CautionIcon className="w-3 h-3" />
-          {CAUTION_LABELS[archetype.cautionLevel]}
+          {cautionLabels[archetype.cautionLevel]}
         </span>
       </div>
 
@@ -163,11 +166,11 @@ function DeityCard({
 /* ══════════════════════════════════════════════════════════════
    THE PANTHEON — Main Page
    ══════════════════════════════════════════════════════════════ */
-export default function DeitiesPageClient() {
+export default function DeitiesPageClient({ archetypes: ALL_ARCHETYPES, cautionLabels: CAUTION_LABELS }: DeitiesPageProps) {
   const reduced = useNativeReducedMotion();
 
-  const mahavidyas = useMemo(() => ALL_ARCHETYPES.slice(0, 10), []);
-  const supplementary = useMemo(() => ALL_ARCHETYPES.slice(10), []);
+  const mahavidyas = useMemo(() => ALL_ARCHETYPES.slice(0, 10), [ALL_ARCHETYPES]);
+  const supplementary = useMemo(() => ALL_ARCHETYPES.slice(10), [ALL_ARCHETYPES]);
 
   return (
     <div className="bg-deep-black min-h-screen">
@@ -282,7 +285,7 @@ export default function DeitiesPageClient() {
             viewport={{ once: true, margin: '-60px' }}
           >
             {mahavidyas.map((archetype, i) => (
-              <DeityCard key={archetype.id} archetype={archetype} index={i} />
+              <DeityCard key={archetype.id} archetype={archetype} index={i} cautionLabels={CAUTION_LABELS} />
             ))}
           </motion.div>
         </div>
@@ -325,7 +328,7 @@ export default function DeitiesPageClient() {
             viewport={{ once: true, margin: '-60px' }}
           >
             {supplementary.map((archetype, i) => (
-              <DeityCard key={archetype.id} archetype={archetype} index={i} />
+              <DeityCard key={archetype.id} archetype={archetype} index={i} cautionLabels={CAUTION_LABELS} />
             ))}
           </motion.div>
         </div>

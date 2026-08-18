@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import { ALL_ARCHETYPES, CAUTION_LABELS } from '@/lib/data/archetypes';
+import type { Archetype, CautionLevel } from '@/lib/data/archetypes';
 
 export const metadata: Metadata = {
   title: 'Archetypes — Ten Mahāvidyās | KALKI',
@@ -28,5 +30,5 @@ const DeitiesPageClient = dynamic(
 );
 
 export default function DeitiesPage() {
-  return <DeitiesPageClient />;
+  return <DeitiesPageClient archetypes={ALL_ARCHETYPES} cautionLabels={CAUTION_LABELS} />;
 }

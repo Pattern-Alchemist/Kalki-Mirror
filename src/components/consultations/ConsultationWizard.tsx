@@ -3,9 +3,14 @@
 import { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
-import { allPatterns } from '@/lib/data/patterns';
 import { fadeInUp, fadeIn } from '@/lib/motion/tokens';
 import { submitConsultation } from '@/app/consultations/actions';
+
+interface PatternSummary {
+  slug: string;
+  name: string;
+  signs: string[];
+}
 
 /* ─── Types ─── */
 
@@ -168,9 +173,11 @@ function GoldSlider({
 function StepPatternAssessment({
   selected,
   onToggle,
+  patterns,
 }: {
   selected: string[];
   onToggle: (slug: string) => void;
+  patterns: PatternSummary[];
 }) {
   const canSelect = selected.length < 3;
 
@@ -181,7 +188,7 @@ function StepPatternAssessment({
         you are navigating. Each card shows the primary sign.
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1 scrollbar-thin">
-        {allPatterns.map((p) => {
+        {patterns.map((p) => {
           const isSelected = selected.includes(p.slug);
           const isDisabled = !isSelected && !canSelect;
           return (
@@ -339,9 +346,11 @@ function StepModality({
 function StepContactScheduling({
   form,
   onChange,
+  patterns,
 }: {
   form: WizardFormData;
   onChange: <K extends keyof WizardFormData>(key: K, val: WizardFormData[K]) => void;
+  patterns: PatternSummary[];
 }) {
   const summary = useMemo(() => {
     const lines: string[] = [];
@@ -349,7 +358,7 @@ function StepContactScheduling({
     // Patterns
     if (form.selectedPatterns.length > 0) {
       const names = form.selectedPatterns
-        .map((slug) => allPatterns.find((p) => p.slug === slug)?.name)
+        .map((slug) => patterns.find((p) => p.slug === slug)?.name)
         .filter(Boolean);
       lines.push(`▸ Resonant Patterns: ${names.join(', ')}`);
     }
@@ -447,7 +456,7 @@ function StepContactScheduling({
 
 /* ─── Main Wizard Component ─── */
 
-export default function ConsultationWizard() {
+export default function ConsultationWizard({ patterns }: { patterns: PatternSummary[] }) {
   const reduced = useNativeReducedMotion();
   const [currentStep, setCurrentStep] = useState(0);
   const [form, setForm] = useState<WizardFormData>(INITIAL_FORM);
@@ -506,7 +515,7 @@ export default function ConsultationWizard() {
     // Patterns
     if (form.selectedPatterns.length > 0) {
       const names = form.selectedPatterns
-        .map((slug) => allPatterns.find((p) => p.slug === slug)?.name)
+        .map((slug) => patterns.find((p) => p.slug === slug)?.name)
         .filter(Boolean);
       lines.push(`Resonant Patterns: ${names.join(', ')}`);
     }
@@ -627,7 +636,7 @@ export default function ConsultationWizard() {
               exit="exit"
             >
               {currentStep === 0 && (
-                <StepPatternAssessment selected={form.selectedPatterns} onToggle={togglePattern} />
+                <StepPatternAssessment selected={form.selectedPatterns} onToggle={togglePattern} patterns={patterns} />
               )}
               {currentStep === 1 && (
                 <StepEmotionalLandscape form={form} onChange={updateField} />
@@ -639,7 +648,7 @@ export default function ConsultationWizard() {
                 <StepModality selected={form.preferredModalities} onToggle={toggleModality} />
               )}
               {currentStep === 4 && (
-                <StepContactScheduling form={form} onChange={updateField} />
+                <StepContactScheduling form={form} onChange={updateField} patterns={patterns} />
               )}
             </motion.div>
           </AnimatePresence>

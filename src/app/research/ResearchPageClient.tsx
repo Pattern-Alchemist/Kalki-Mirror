@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
-import { allSiddhis } from '@/lib/data/siddhis';
 import { BackButton } from '@/components/nav/BackButton';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
@@ -11,11 +10,15 @@ import { fadeInUp } from '@/lib/motion/tokens';
 import { BookOpen, Landmark, GraduationCap, Flame, PenTool, Cpu, Scale, FileCheck, Eye, ShieldCheck, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
-export default function ResearchPageClient() {
+interface ResearchPageProps {
+  totalEvidence: number;
+  avgAuth: number;
+  traditions: string[];
+  siddhiCount: number;
+}
+
+export default function ResearchPageClient({ totalEvidence, avgAuth, traditions, siddhiCount }: ResearchPageProps) {
   const reduced = useNativeReducedMotion();
-  const totalEvidence = allSiddhis.reduce((sum, s) => sum + s.evidenceCount, 0);
-  const avgAuth = Math.round(allSiddhis.reduce((sum, s) => sum + s.authenticityScore, 0) / allSiddhis.length);
-  const traditions = [...new Set(allSiddhis.map((s) => s.tradition))];
 
   return (
     <div className="bg-deep-black min-h-screen">
@@ -65,7 +68,7 @@ export default function ResearchPageClient() {
         <div className="grid grid-cols-3 gap-4">
           <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-5 text-center">
             <p className="font-display text-3xl md:text-4xl text-gold font-light">
-              <AnimatedCounter target={allSiddhis.length} />
+              <AnimatedCounter target={siddhiCount} />
             </p>
             <p className="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-foreground/40 mt-1">Siddhis Catalogued</p>
           </div>

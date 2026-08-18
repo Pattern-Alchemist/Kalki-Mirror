@@ -1,13 +1,31 @@
 import type { Metadata } from 'next';
 import { allSiddhis, SIDDHI_COUNT } from '@/lib/data/siddhis';
+import { TANTRA_CATEGORIES } from '@/lib/data/tantra-categories';
+import { TEN_MAHAVIDYAS } from '@/lib/data/archetypes';
 import dynamic from 'next/dynamic';
+import type { ArchivePageProps } from './ArchivePageClient';
 
 export const metadata: Metadata = {
   title: `The Akashic Archive — ${SIDDHI_COUNT} Siddhis | KALKI`,
   description: `${SIDDHI_COUNT} siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access. The complete Tantric practice reference.`,
 };
 
-// Dynamic import defers framer-motion (~40KB) + all data imports out of
+// Pre-compute resolveCategory map so client doesn't need the TANTRA_CATEGORIES data
+const resolveCategoryMap: Record<string, string> = {};
+for (const cat of TANTRA_CATEGORIES) {
+  for (const alias of cat.siddhiAlias) {
+    resolveCategoryMap[alias.toLowerCase()] = cat.id;
+  }
+}
+
+const pageProps: ArchivePageProps = {
+  siddhis: allSiddhis,
+  siddhiCount: SIDDHI_COUNT,
+  mahaVidyas: TEN_MAHAVIDYAS,
+  resolveCategoryMap,
+};
+
+// Dynamic import defers framer-motion (~40KB) out of
 // the critical rendering path. SSR HTML is sacrificed for faster FCP/LCP;
 // metadata export handles SEO for search engines.
 const ArchivePageClient = dynamic(
@@ -32,5 +50,5 @@ const ArchivePageClient = dynamic(
 );
 
 export default function ArchivePage() {
-  return <ArchivePageClient />;
+  return <ArchivePageClient {...pageProps} />;
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { glossaryEntries } from '@/lib/data/glossary';
+import { glossaryEntries, CATEGORIES } from '@/lib/data/glossary';
 import dynamic from 'next/dynamic';
+import type { GlossaryEntry } from '@/lib/data/glossary';
 
 export const metadata: Metadata = {
   title: `The Lexicon — ${glossaryEntries.length} Tantric Terms | KALKI`,
@@ -25,5 +26,5 @@ const GlossaryPageClient = dynamic(
 );
 
 export default function GlossaryPage() {
-  return <GlossaryPageClient />;
+  return <GlossaryPageClient entries={glossaryEntries} categories={CATEGORIES} />;
 }

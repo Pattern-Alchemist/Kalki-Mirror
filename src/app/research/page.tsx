@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import { allSiddhis } from '@/lib/data/siddhis';
 
 export const metadata: Metadata = {
   title: 'Research & Sources — Epistemic Rigour | KALKI',
@@ -28,5 +29,17 @@ const ResearchPageClient = dynamic(
 );
 
 export default function ResearchPage() {
-  return <ResearchPageClient />;
+  const totalEvidence = allSiddhis.reduce((sum, s) => sum + s.evidenceCount, 0);
+  const avgAuth = Math.round(allSiddhis.reduce((sum, s) => sum + s.authenticityScore, 0) / allSiddhis.length);
+  const traditions = [...new Set(allSiddhis.map((s) => s.tradition))];
+  const siddhiCount = allSiddhis.length;
+
+  return (
+    <ResearchPageClient
+      totalEvidence={totalEvidence}
+      avgAuth={avgAuth}
+      traditions={traditions}
+      siddhiCount={siddhiCount}
+    />
+  );
 }

@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import { allSequences } from '@/lib/data/sequences';
+import { allSiddhis } from '@/lib/data/siddhis';
+import { allPatterns } from '@/lib/data/patterns';
 
 export const metadata: Metadata = {
   title: 'Practice Sequences — Sādhana Protocols | KALKI',
@@ -26,5 +29,5 @@ const SequencesPageClient = dynamic(
 );
 
 export default function SequencesPage() {
-  return <SequencesPageClient />;
+  return <SequencesPageClient sequences={allSequences} siddhis={allSiddhis} patterns={allPatterns} />;
 }

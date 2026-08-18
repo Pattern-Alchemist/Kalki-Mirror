@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { useTier } from '@/components/layout/TierProvider';
-import { Tier } from '@/lib/data/types';
+import type { Tier } from '@/lib/data/types';
 import { pricingTiers, formatPrice } from '@/lib/data/pricing';
 
 interface GatedContentProps {

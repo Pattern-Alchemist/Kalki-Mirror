@@ -5,11 +5,16 @@ import { motion } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { BackButton } from '@/components/nav/BackButton';
-import { consultationServices } from '@/lib/data/consultations';
+import type { ConsultationService } from '@/lib/data/types';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import dynamic from 'next/dynamic';
+
+export interface ConsultationsPageProps {
+  consultationServices: ConsultationService[];
+  patterns: { slug: string; name: string; signs: string[] }[];
+}
 
 const ConsultationWizard = dynamic(() => import('@/components/consultations/ConsultationWizard'), { ssr: false, loading: () => <div className="h-64" /> });
 
@@ -17,7 +22,7 @@ const KAUSTUBH_IMG = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_
 
 /* ─── Main Page ─── */
 
-export default function ConsultationsPageClient() {
+export default function ConsultationsPageClient({ consultationServices, patterns }: ConsultationsPageProps) {
   const reduced = useNativeReducedMotion();
 
   return (
@@ -160,7 +165,7 @@ export default function ConsultationsPageClient() {
           initial={reduced ? { opacity: 1 } : staggerContainer.hidden}
           animate={staggerContainer.visible}
         >
-          {consultationServices.map((service) => (
+          {consultationServices.map((service: ConsultationService) => (
             <motion.div key={service.slug} variants={staggerItem}
               className={`glass-panel p-8 md:p-10 flex flex-col md:flex-row md:items-center gap-6 ${
                 service.popular ? 'border-gold' : ''
@@ -201,7 +206,7 @@ export default function ConsultationsPageClient() {
           </div>
           <div className="absolute inset-0 z-[1] bg-gradient-to-b from-deep-black via-deep-black/60 to-deep-black" aria-hidden="true" />
           <div className="relative z-10">
-            <ConsultationWizard />
+            <ConsultationWizard patterns={patterns} />
           </div>
         </div>
       </div>

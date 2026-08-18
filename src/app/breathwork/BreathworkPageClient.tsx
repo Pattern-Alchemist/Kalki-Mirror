@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import Link from 'next/link';
-import { allBreathPatterns } from '@/lib/data/breath-patterns';
+import type { BreathPattern } from '@/lib/data/types';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
@@ -13,6 +13,10 @@ import { TIER_BADGE_STYLES, TIER_LABELS } from '@/lib/utils/tier-gate';
 import { cn } from '@/lib/utils';
 import { Wind, ArrowRight, Repeat } from 'lucide-react';
 
+export interface BreathworkPageProps {
+  breathPatterns: BreathPattern[];
+}
+
 /* ══════════════════════════════════════════════════════════════
    BREATH PATTERN CARD
    ══════════════════════════════════════════════════════════════ */
@@ -20,7 +24,7 @@ function BreathCard({
   pattern,
   index,
 }: {
-  pattern: (typeof allBreathPatterns)[number];
+  pattern: BreathPattern;
   index: number;
 }) {
   const tierLabel = TIER_LABELS[pattern.minTier];
@@ -112,7 +116,7 @@ function BreathCard({
 /* ══════════════════════════════════════════════════════════════
    BREATHWORK — Main Page
    ══════════════════════════════════════════════════════════════ */
-export default function BreathworkPage() {
+export default function BreathworkPage({ breathPatterns: allBreathPatterns }: BreathworkPageProps) {
   const reduced = useNativeReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
 

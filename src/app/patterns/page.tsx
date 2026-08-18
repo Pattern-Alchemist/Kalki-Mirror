@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { allPatterns } from '@/lib/data/patterns';
+import { allSiddhis } from '@/lib/data/siddhis';
 import dynamic from 'next/dynamic';
+import type { Pattern } from '@/lib/data/types';
+import type { Siddhi } from '@/lib/data/types';
 
 export const metadata: Metadata = {
   title: 'Pattern Atlas — 12 Emotional Patterns | KALKI',
@@ -27,5 +30,5 @@ const PatternsPageClient = dynamic(
 );
 
 export default function PatternsPage() {
-  return <PatternsPageClient />;
+  return <PatternsPageClient patterns={allPatterns} siddhis={allSiddhis} />;
 }

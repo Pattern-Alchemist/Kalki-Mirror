@@ -9,11 +9,15 @@ import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import dynamic from 'next/dynamic';
 import { TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
-import { glossaryEntries, CATEGORIES } from '@/lib/data/glossary';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import type { GlossaryEntry } from '@/lib/data/glossary';
+
+interface GlossaryPageProps {
+  entries: GlossaryEntry[];
+  categories: readonly { value: string; label: string }[];
+}
 
 const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
 
@@ -233,7 +237,7 @@ function CardInner({ entry }: { entry: GlossaryEntry }) {
 /* ══════════════════════════════════════════════════════════════
    THE LEXICON — Main Page
    ══════════════════════════════════════════════════════════════ */
-export default function GlossaryPage() {
+export default function GlossaryPage({ entries: glossaryEntries, categories: CATEGORIES }: GlossaryPageProps) {
   const reduced = useNativeReducedMotion();
 
   const [search, setSearch] = useState('');

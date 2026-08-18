@@ -4,8 +4,8 @@ import { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
-import { allSiddhis } from '@/lib/data/siddhis';
-import { getArchetypeById, PATTERN_ARCHETYPE_MAP } from '@/lib/data/archetypes';
+import type { Archetype } from '@/lib/data/archetypes';
+import type { Siddhi, Pattern, Tier } from '@/lib/data/types';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import dynamic from 'next/dynamic';
 import { YantraLoader } from '@/components/patterns/YantraLoader';
@@ -15,19 +15,18 @@ import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
-import type { Pattern } from '@/lib/data/types';
-import type { Tier } from '@/lib/data/types';
 
 const PatternExplainer = dynamic(() => import('@/components/ai/PatternExplainer').then(m => ({ default: m.PatternExplainer })), { ssr: false, loading: () => <div className="h-32" /> });
 const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
 
-export default function PatternFolioClient({ pattern }: { pattern: Pattern }) {
+export default function PatternFolioClient({ pattern, relatedSiddhis, archetype }: {
+  pattern: Pattern;
+  relatedSiddhis: Siddhi[];
+  archetype: Archetype | null;
+}) {
   const slug = pattern.slug;
   const reduced = useNativeReducedMotion();
   const [loading, setLoading] = useState(true);
-  const relatedSiddhis = allSiddhis.filter((s) => pattern.relatedSiddhis.includes(s.slug)).slice(0, 3);
-  const archetypeId = PATTERN_ARCHETYPE_MAP[slug];
-  const archetype = archetypeId ? getArchetypeById(archetypeId) : null;
   const patternTier = pattern.minTier as Tier | undefined;
 
   const handleLoadComplete = useCallback(() => setLoading(false), []);

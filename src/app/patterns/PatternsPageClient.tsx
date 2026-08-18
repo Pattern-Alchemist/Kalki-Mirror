@@ -9,8 +9,8 @@ import {
 } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { PatternCard } from '@/components/patterns/PatternCard';
-import { allPatterns } from '@/lib/data/patterns';
-import { allSiddhis } from '@/lib/data/siddhis';
+import type { Pattern } from '@/lib/data/types';
+import type { Siddhi } from '@/lib/data/types';
 import { BackButton } from '@/components/nav/BackButton';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
@@ -26,31 +26,31 @@ const ZONE_MIRROR = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_a
 const ZONE_CONFRONTATION = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/abandoned-temple';
 const ZONE_DISSOLUTION = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cremation-ground';
 
-/* ── Derived Data ── */
-const findSiddhi = (slug: string) => allSiddhis.find((s) => s.slug === slug)!;
-
-const allArchetypes = Array.from(
-  new Set(
-    allPatterns.flatMap((p) => {
-      const siddhis = p.relatedSiddhis
-        .map(findSiddhi)
-        .filter(Boolean);
-      return siddhis.map((s) => s.category);
-    })
-  )
-).filter(Boolean);
-
-const siddhiSlugSet = new Set(allPatterns.flatMap((p) => p.relatedSiddhis));
-
-/* Split patterns into narrative zones */
-const ZONE_RECOGNITION = allPatterns.slice(0, 4);
-const ZONE_CONFRONTATION_PATTERNS = allPatterns.slice(4, 8);
-const ZONE_DISSOLUTION_PATTERNS = allPatterns.slice(8, 12);
-const ZONE_INTEGRATION_PATTERNS = allPatterns.slice(12, 20);
+interface PatternsPageProps {
+  patterns: Pattern[];
+  siddhis: Siddhi[];
+}
 
 /* ══════════════════════════════════════════════════════════════
    SUB-COMPONENTS
    ══════════════════════════════════════════════════════════════ */
+
+/* ── Derived Data Helpers ── */
+function buildDerivedData(patterns: Pattern[], siddhis: Siddhi[]) {
+  const findSiddhi = (slug: string) => siddhis.find((s) => s.slug === slug)!;
+  const allArchetypes = Array.from(
+    new Set(
+      patterns.flatMap((p) => {
+        const relatedSiddhis = p.relatedSiddhis
+          .map(findSiddhi)
+          .filter(Boolean);
+        return relatedSiddhis.map((s) => s.category);
+      })
+    )
+  ).filter(Boolean);
+  const siddhiSlugSet = new Set(patterns.flatMap((p) => p.relatedSiddhis));
+  return { findSiddhi, allArchetypes, siddhiSlugSet };
+}
 
 function ZoneDivider({ label, subtitle, index }: { label: string; subtitle: string; index: number }) {
   const reduced = useNativeReducedMotion();
@@ -76,7 +76,7 @@ function ZoneDivider({ label, subtitle, index }: { label: string; subtitle: stri
   );
 }
 
-function PatternZone({ patterns }: { patterns: typeof allPatterns }) {
+function PatternZone({ patterns }: { patterns: Pattern[] }) {
   const reduced = useNativeReducedMotion();
   return (
     <motion.div
@@ -94,7 +94,7 @@ function PatternZone({ patterns }: { patterns: typeof allPatterns }) {
   );
 }
 
-function FilteredGrid({ patterns, clearFilters }: { patterns: typeof allPatterns; clearFilters: () => void }) {
+function FilteredGrid({ patterns, clearFilters }: { patterns: Pattern[]; clearFilters: () => void }) {
   const reduced = useNativeReducedMotion();
   return (
     <AnimatePresence mode="wait">
@@ -135,7 +135,12 @@ function FilteredGrid({ patterns, clearFilters }: { patterns: typeof allPatterns
 /* ══════════════════════════════════════════════════════════════
    PATTERN ATLAS — Main Page
    ══════════════════════════════════════════════════════════════ */
-export default function PatternsPage() {
+export default function PatternsPageClient({ patterns: allPatterns, siddhis }: PatternsPageProps) {
+  const { findSiddhi, allArchetypes, siddhiSlugSet } = buildDerivedData(allPatterns, siddhis);
+  const ZONE_RECOGNITION = allPatterns.slice(0, 4);
+  const ZONE_CONFRONTATION_PATTERNS = allPatterns.slice(4, 8);
+  const ZONE_DISSOLUTION_PATTERNS = allPatterns.slice(8, 12);
+  const ZONE_INTEGRATION_PATTERNS = allPatterns.slice(12, 20);
   const reduced = useNativeReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
 

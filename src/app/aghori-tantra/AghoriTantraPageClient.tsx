@@ -12,9 +12,15 @@ import Link from 'next/link';
 import { fadeInUp, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 import { TIER_LABELS, TIER_ELEMENTS, TIER_COLORS, TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
-import { aghoriCourse, COURSE_META } from '@/lib/data/aghori-tantra-course';
 import type { CourseModule, CourseLesson } from '@/lib/data/aghori-tantra-course';
 import type { Tier } from '@/lib/data/types';
+
+type CourseMeta = typeof import('@/lib/data/aghori-tantra-course').COURSE_META;
+
+interface AghoriTantraPageProps {
+  aghoriCourse: CourseModule[];
+  courseMeta: CourseMeta;
+}
 
 const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
 
@@ -51,16 +57,18 @@ const evidenceColor: Record<string, string> = {
 };
 
 /* ─── Phase Navigation Data ─── */
-const phaseNavData = aghoriCourse.map((m, i) => ({
-  id: m.id,
-  phase: m.phase,
-  phaseSanskrit: m.phaseSanskrit,
-  shortTitle: m.phase.replace('Phase ', ''),
-  lessonCount: m.lessons.length,
-  difficulty: m.difficulty,
-  minTier: m.minTier as Tier,
-  element: TIER_ELEMENTS[m.minTier as Tier],
-}));
+function buildPhaseNavData(course: CourseModule[]) {
+  return course.map((m, i) => ({
+    id: m.id,
+    phase: m.phase,
+    phaseSanskrit: m.phaseSanskrit,
+    shortTitle: m.phase.replace('Phase ', ''),
+    lessonCount: m.lessons.length,
+    difficulty: m.difficulty,
+    minTier: m.minTier as Tier,
+    element: TIER_ELEMENTS[m.minTier as Tier],
+  }));
+}
 
 /* ─── Tier Badge Component ─── */
 function TierBadge({ tier, showElement = true, compact = false }: { tier: string; showElement?: boolean; compact?: boolean }) {
@@ -158,7 +166,7 @@ function LessonContent({ lesson, isOpen }: { lesson: CourseLesson; isOpen: boole
 }
 
 /* ─── Module Card (single phase) ─── */
-function ModuleCard({ module, index }: { module: CourseModule; index: number }) {
+function ModuleCard({ module, index, totalPhases }: { module: CourseModule; index: number; totalPhases: number }) {
   const [openLesson, setOpenLesson] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useNativeReducedMotion();
@@ -217,7 +225,7 @@ function ModuleCard({ module, index }: { module: CourseModule; index: number }) 
         <div className="flex items-center gap-4 mb-8 text-xs font-mono text-foreground/30">
           <span>{module.lessons.length} Lessons</span>
           <span className="w-1 h-1 rounded-full bg-foreground/20" />
-          <span>Phase {phaseNum} of {aghoriCourse.length}</span>
+          <span>Phase {phaseNum} of {totalPhases}</span>
         </div>
 
         {/* Gated lesson list */}
@@ -260,8 +268,11 @@ function ModuleCard({ module, index }: { module: CourseModule; index: number }) 
   );
 }
 
+/* ─── Phase Navigation Data type ─── */
+type PhaseNavItem = ReturnType<typeof buildPhaseNavData>[number];
+
 /* ─── Phase Navigation Sidebar (Desktop) / Horizontal Scroll (Mobile) ─── */
-function PhaseNav({ activePhase }: { activePhase: number }) {
+function PhaseNav({ activePhase, phaseNavData }: { activePhase: number; phaseNavData: PhaseNavItem[] }) {
   const reduced = useNativeReducedMotion();
 
   return (
@@ -360,7 +371,7 @@ function PhaseNav({ activePhase }: { activePhase: number }) {
 }
 
 /* ─── Ashram Progression Map ─── */
-function AshramProgressionMap() {
+function AshramProgressionMap({ phaseNavData }: { phaseNavData: PhaseNavItem[] }) {
   const reduced = useNativeReducedMotion();
   const tierGroups = [
     { tier: 'prithvi' as Tier, label: 'PRITHVI — EARTH', phases: phaseNavData.filter(p => p.minTier === 'prithvi') },
@@ -422,7 +433,8 @@ function AshramProgressionMap() {
 }
 
 /* ─── MAIN PAGE ─── */
-export default function AghoriTantraPageClient() {
+export default function AghoriTantraPageClient({ aghoriCourse, courseMeta: COURSE_META }: AghoriTantraPageProps) {
+  const phaseNavData = buildPhaseNavData(aghoriCourse);
   const reduced = useNativeReducedMotion();
   const [activePhase, setActivePhase] = useState(0);
   const moduleRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -547,10 +559,10 @@ export default function AghoriTantraPageClient() {
 
       {/* Ashram Progression Map */}
       <div className="divider-gold max-w-3xl mx-auto" />
-      <AshramProgressionMap />
+      <AshramProgressionMap phaseNavData={phaseNavData} />
 
       {/* Phase Navigation */}
-      <PhaseNav activePhase={activePhase} />
+      <PhaseNav activePhase={activePhase} phaseNavData={phaseNavData} />
 
       {/* ── Cinematic strip: Cremation Ground ── */}
       <ScrollParallax speed={-0.15} className="cinematic-strip">
@@ -567,7 +579,7 @@ export default function AghoriTantraPageClient() {
       {aghoriCourse.map((module, i) => (
         <div key={module.id} ref={(el) => { moduleRefs.current[i] = el; }}>
           {i > 0 && <div className="divider-gold max-w-3xl mx-auto" />}
-          <ModuleCard module={module} index={i} />
+          <ModuleCard module={module} index={i} totalPhases={aghoriCourse.length} />
         </div>
       ))}
 

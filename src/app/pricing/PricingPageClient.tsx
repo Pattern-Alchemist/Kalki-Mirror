@@ -4,9 +4,9 @@ import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { PageHero } from '@/components/layout/PageHero';
-import { pricingTiers, formatPrice } from '@/lib/data/pricing';
+import { formatPrice } from '@/lib/data/pricing';
+import type { Tier, PricingTier } from '@/lib/data/types';
 import { useTier } from '@/components/layout/TierProvider';
-import type { Tier } from '@/lib/data/types';
 import type { Currency } from '@/lib/data/pricing';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import { BackButton } from '@/components/nav/BackButton';
@@ -15,6 +15,10 @@ import { staggerContainer, staggerItem, fadeInUp } from '@/lib/motion/tokens';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
+
+interface PricingPageProps {
+  pricingTiers: PricingTier[];
+}
 
 const PricingQuiz = dynamic(() => import('@/components/ai/PricingQuiz').then(m => ({ default: m.PricingQuiz })), { ssr: false, loading: () => <div className="h-48" /> });
 
@@ -85,7 +89,7 @@ function buildWhatsAppLink(tierName: string, priceStr: string, cycle: BillingCyc
   const msg = `I would like to subscribe to ${tierName} (${priceStr}/${period}). Currency: ${cur}`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
-export default function PricingPageClient() {
+export default function PricingPageClient({ pricingTiers: tiers }: PricingPageProps) {
   const { tier: currentTier, currency, setCurrency } = useTier();
   const reduced = useNativeReducedMotion();
   const [billing, setBilling] = useState<BillingCycle>('monthly');
@@ -94,7 +98,7 @@ export default function PricingPageClient() {
   const handleFAQToggle = useCallback((idx: number) => setOpenFAQ((prev) => (prev === idx ? null : idx)), []);
 
   const handleCTA = useCallback((tierId: Tier) => {
-    const t = pricingTiers.find((x) => x.id === tierId);
+    const t = tiers.find((x) => x.id === tierId);
     if (!t) return;
     const price = billing === 'monthly' ? (currency === 'INR' ? t.priceINR : t.priceUSD) : (currency === 'INR' ? t.yearlyINR : t.yearlyUSD);
     const priceStr = formatPrice(price ?? 0, currency);
@@ -142,7 +146,7 @@ export default function PricingPageClient() {
 
         {/* Tier cards */}
         <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" initial={reduced ? { opacity: 1 } : staggerContainer.hidden} animate={staggerContainer.visible}>
-          {pricingTiers.map((tier) => {
+          {tiers.map((tier) => {
             const isCurrent = currentTier === tier.id;
             const isPaid = (tier.priceINR ?? 0) > 0;
             const price = billing === 'monthly' ? (currency === 'INR' ? tier.priceINR : tier.priceUSD) : (currency === 'INR' ? tier.yearlyINR : tier.yearlyUSD);

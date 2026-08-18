@@ -3,9 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
-import { allSiddhis } from '@/lib/data/siddhis';
-import { allPatterns } from '@/lib/data/patterns';
-import { getArchetypeById, PATTERN_ARCHETYPE_MAP } from '@/lib/data/archetypes';
+import type { Archetype } from '@/lib/data/archetypes';
 import { AuthenticityMeter } from '@/components/archive/AuthenticityMeter';
 import { CautionBadge, getCautionLevel } from '@/components/archive/CautionBadge';
 import dynamic from 'next/dynamic';
@@ -16,8 +14,7 @@ import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { WHATSAPP_LINKS } from '@/lib/utils/whatsapp';
-import type { Siddhi } from '@/lib/data/types';
-import type { Tier } from '@/lib/data/types';
+import type { Siddhi, Tier, Pattern } from '@/lib/data/types';
 
 const AcknowledgmentGate = dynamic(() => import('@/components/archive/AcknowledgmentGate').then(m => ({ default: m.AcknowledgmentGate })), { ssr: false, loading: () => <div className="min-h-[200px]" /> });
 const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
@@ -29,23 +26,17 @@ function ConfidenceBadge({ confidence }: { confidence: string }) {
   return <span className={`text-[0.8125rem] px-2.5 py-1 rounded-sm border tracking-wider uppercase ${color}`}>{confidence}</span>;
 }
 
-export default function SiddhiFolioClient({ siddhi }: { siddhi: Siddhi }) {
+export default function SiddhiFolioClient({ siddhi, relatedSiddhis, relatedPatterns, activeArchetype }: {
+  siddhi: Siddhi;
+  relatedSiddhis: Siddhi[];
+  relatedPatterns: Pattern[];
+  activeArchetype?: Archetype;
+}) {
   const reduced = useNativeReducedMotion();
 
   const caution = getCautionLevel(siddhi.level);
   const requiresAcknowledgment = caution === 'HIGH' || caution === 'SEALED';
   const isSealed = caution === 'SEALED';
-
-  const archetype = siddhi.archetypeId
-    ? getArchetypeById(siddhi.archetypeId)
-    : undefined;
-
-  const related = allSiddhis.filter((s) => s.slug !== siddhi.slug && s.category === siddhi.category).slice(0, 3);
-  const relPatterns = allPatterns.filter((p) => p.relatedSiddhis.includes(siddhi.slug)).slice(0, 4);
-  const patternArchetype = relPatterns.length > 0
-    ? getArchetypeById(PATTERN_ARCHETYPE_MAP[relPatterns[0].slug])
-    : undefined;
-  const activeArchetype = archetype || patternArchetype;
 
   return (
     <div className="bg-deep-black min-h-screen">
@@ -256,11 +247,11 @@ export default function SiddhiFolioClient({ siddhi }: { siddhi: Siddhi }) {
           )}
 
           {/* Connected Patterns */}
-          {relPatterns.length > 0 && (
+          {relatedPatterns.length > 0 && (
             <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
               <p className="section-label mb-8">Mirror Method Connections</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {relPatterns.map((p) => (
+                {relatedPatterns.map((p) => (
                   <Link key={p.slug} href={`/patterns/${p.slug}`} className="glass-chip p-5 group">
                     <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors duration-500">{p.name}</p>
                     <p className="text-xs text-text-muted mt-1 italic">{p.subtitle}</p>
@@ -271,11 +262,11 @@ export default function SiddhiFolioClient({ siddhi }: { siddhi: Siddhi }) {
           )}
 
           {/* Related Siddhis */}
-          {related.length > 0 && (
+          {relatedSiddhis.length > 0 && (
             <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
               <p className="section-label mb-8">Related in the Archive</p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                {related.map((s) => (
+                {relatedSiddhis.map((s) => (
                   <Link key={s.slug} href={`/archive/${s.slug}`} className="glass-chip p-5 group">
                     <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors duration-500 mb-1 font-light">{s.name}</p>
                     <p className="font-mono text-[0.75rem] tracking-[0.15em] uppercase text-copper">{s.level}</p>

@@ -4,9 +4,9 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import Link from 'next/link';
-import { allSequences } from '@/lib/data/sequences';
-import { allSiddhis } from '@/lib/data/siddhis';
-import { allPatterns } from '@/lib/data/patterns';
+import type { Siddhi } from '@/lib/data/types';
+import type { Pattern } from '@/lib/data/types';
+import type { PracticeSequence } from '@/lib/data/sequences';
 import { BackButton } from '@/components/nav/BackButton';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
@@ -15,9 +15,19 @@ import { TIER_BADGE_STYLES, TIER_LABELS } from '@/lib/utils/tier-gate';
 import { cn } from '@/lib/utils';
 import { Clock, ArrowRight } from 'lucide-react';
 
+interface SequencesPageProps {
+  sequences: PracticeSequence[];
+  siddhis: Siddhi[];
+  patterns: Pattern[];
+}
+
 /* ── Derived Data ── */
-const findSiddhi = (slug: string) => allSiddhis.find((s) => s.slug === slug);
-const findPattern = (slug: string) => allPatterns.find((p) => p.slug === slug);
+function createFindSiddhi(siddhis: Siddhi[]) {
+  return (slug: string) => siddhis.find((s) => s.slug === slug);
+}
+function createFindPattern(patterns: Pattern[]) {
+  return (slug: string) => patterns.find((p) => p.slug === slug);
+}
 
 /* ══════════════════════════════════════════════════════════════
    SEQUENCE CARD
@@ -25,9 +35,13 @@ const findPattern = (slug: string) => allPatterns.find((p) => p.slug === slug);
 function SequenceCard({
   sequence,
   index,
+  findSiddhi,
+  findPattern,
 }: {
-  sequence: (typeof allSequences)[number];
+  sequence: PracticeSequence;
   index: number;
+  findSiddhi: (slug: string) => Siddhi | undefined;
+  findPattern: (slug: string) => Pattern | undefined;
 }) {
   const tierLabel = TIER_LABELS[sequence.minTier];
 
@@ -151,7 +165,9 @@ function SequenceCard({
 /* ══════════════════════════════════════════════════════════════
    SEQUENCES — Main Page
    ══════════════════════════════════════════════════════════════ */
-export default function SequencesPage() {
+export default function SequencesPageClient({ sequences: allSequences, siddhis, patterns }: SequencesPageProps) {
+  const findSiddhi = createFindSiddhi(siddhis);
+  const findPattern = createFindPattern(patterns);
   const reduced = useNativeReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -302,7 +318,7 @@ export default function SequencesPage() {
             viewport={{ once: true, margin: '-60px' }}
           >
             {allSequences.map((seq, i) => (
-              <SequenceCard key={seq.slug} sequence={seq} index={i} />
+              <SequenceCard key={seq.slug} sequence={seq} index={i} findSiddhi={findSiddhi} findPattern={findPattern} />
             ))}
           </motion.div>
         </section>

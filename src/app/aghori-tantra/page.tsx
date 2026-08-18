@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import { aghoriCourse, COURSE_META } from '@/lib/data/aghori-tantra-course';
 
 export const metadata: Metadata = {
   title: 'Aghorī Tantra — The Ashram Path | KALKI',
@@ -28,5 +29,5 @@ const AghoriTantraPageClient = dynamic(
 );
 
 export default function AghoriTantraPage() {
-  return <AghoriTantraPageClient />;
+  return <AghoriTantraPageClient aghoriCourse={aghoriCourse} courseMeta={COURSE_META} />;
 }

@@ -13,11 +13,9 @@ import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import Link from 'next/link';
 import { SiddhiCard } from '@/components/archive/SiddhiCard';
 import { CautionBadge, getCautionLevel } from '@/components/archive/CautionBadge';
-import { allSiddhis, SIDDHI_COUNT } from '@/lib/data/siddhis';
-import { resolveCategory } from '@/lib/data/tantra-categories';
-import { TEN_MAHAVIDYAS } from '@/lib/data/archetypes';
+import type { Siddhi, SiddhiLevel } from '@/lib/data/types';
+import type { Archetype } from '@/lib/data/archetypes';
 import { staggerContainer, staggerItem, fadeInUp } from '@/lib/motion/tokens';
-import type { SiddhiLevel } from '@/lib/data/types';
 import { cn } from '@/lib/utils';
 import { BackButton } from '@/components/nav/BackButton';
 const AISearchBar = dynamic(() => import('@/components/ai/AISearchBar').then(m => ({ default: m.AISearchBar })), { ssr: false, loading: () => <div className="h-12" /> });
@@ -25,6 +23,13 @@ import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
+
+export interface ArchivePageProps {
+  siddhis: Siddhi[];
+  siddhiCount: number;
+  mahaVidyas: Archetype[];
+  resolveCategoryMap: Record<string, string>;
+}
 
 /* ─── Zone Images (Cloudinary) ──────────────────────────────────────── */
 const CLOUD_BASE = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good';
@@ -65,7 +70,7 @@ const LIGHT_OPACITY: Record<SiddhiLevel, number> = {
 };
 
 /* ─── Knowledge Lights (reduced on mobile for performance) ─────── */
-function KnowledgeLights({ siddhis }: { siddhis: typeof allSiddhis }) {
+function KnowledgeLights({ siddhis }: { siddhis: Siddhi[] }) {
   const reduced = useNativeReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef, { once: true, margin: '-10% 0px' });
@@ -171,7 +176,7 @@ function ZoneDivider({ label, subtitle, index }: { label: string; subtitle: stri
 /* ══════════════════════════════════════════════════════════════
    AKASHIC ARCHIVE — Main Page
    ══════════════════════════════════════════════════════════════ */
-export default function ArchivePage() {
+export default function ArchivePage({ siddhis: allSiddhis, siddhiCount, mahaVidyas, resolveCategoryMap }: ArchivePageProps) {
   const [filter, setFilter] = useState('All');
   const [search, setSearch] = useState('');
   const [cautionFilter, setCautionFilter] = useState('all');
@@ -201,7 +206,7 @@ export default function ArchivePage() {
 
   const filtered = useMemo(() => {
     return allSiddhis.filter((s) => {
-      const matchCat = filter === 'All' || s.category === filter || resolveCategory(s.category) === filter.toLowerCase();
+      const matchCat = filter === 'All' || s.category === filter || resolveCategoryMap[s.category.toLowerCase()] === filter.toLowerCase();
       const q = search.toLowerCase();
       const matchSearch = !q || s.name.toLowerCase().includes(q) || s.sanskrit.toLowerCase().includes(q);
       const caution = getCautionLevel(s.level);
@@ -329,7 +334,7 @@ export default function ArchivePage() {
               <p
                 className="text-text-secondary text-lg md:text-xl max-w-2xl editorial-spacing text-shadow-deep"
               >
-                {SIDDHI_COUNT} siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access.
+                {siddhiCount} siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access.
               </p>
               <p
                 className="text-text-muted text-base max-w-2xl mt-4 editorial-spacing text-shadow-deep leading-relaxed"
@@ -645,7 +650,7 @@ export default function ArchivePage() {
               whileInView={staggerContainer.visible}
               viewport={{ once: true, margin: '-40px' }}
             >
-              {TEN_MAHAVIDYAS.map((a, i) => (
+              {mahaVidyas.map((a, i) => (
                 <motion.div key={a.id} variants={staggerItem}>
                   <Link
                     href={`/archetypes#${a.id}`}

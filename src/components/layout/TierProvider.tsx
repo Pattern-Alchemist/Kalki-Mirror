@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { Tier } from '@/lib/data/types';
-import { detectCurrency, formatPrice, pricingTiers } from '@/lib/data/pricing';
+import { detectCurrency } from '@/lib/data/pricing';
 import type { Currency } from '@/lib/data/pricing';
 
 const TIER_ORDER: Tier[] = ['prithvi', 'jal', 'agni', 'akash'];

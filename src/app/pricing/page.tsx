@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import { pricingTiers } from '@/lib/data/pricing';
 
 export const metadata: Metadata = {
   title: 'The Covenant — Four Tiers | KALKI',
@@ -28,5 +29,5 @@ const PricingPageClient = dynamic(
 );
 
 export default function PricingPage() {
-  return <PricingPageClient />;
+  return <PricingPageClient pricingTiers={pricingTiers} />;
 }

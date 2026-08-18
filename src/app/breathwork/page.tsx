@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
 import dynamic from 'next/dynamic';
+import type { BreathworkPageProps } from './BreathworkPageClient';
 
 export const metadata: Metadata = {
   title: 'Breathwork — Prāṇāyāma Protocols | KALKI',
@@ -26,6 +27,10 @@ const BreathworkPageClient = dynamic(
   }
 );
 
+const pageProps: BreathworkPageProps = {
+  breathPatterns: allBreathPatterns,
+};
+
 export default function BreathworkPage() {
-  return <BreathworkPageClient />;
+  return <BreathworkPageClient {...pageProps} />;
 }
