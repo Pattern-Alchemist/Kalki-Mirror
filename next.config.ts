@@ -1,6 +1,5 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
-import withBundleAnalyzer from '@next/bundle-analyzer';
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
@@ -116,7 +115,7 @@ const nextConfig: NextConfig = {
 };
 
 // I4: Sentry wrapper — only active when SENTRY_DSN is set
-export default withBundleAnalyzer(withSentryConfig(withNextIntl(nextConfig), {
+export default withSentryConfig(withNextIntl(nextConfig), {
   silent: true,
   // hideSourceMaps renamed to hideSourceMaps in newer SDK versions.
   // Source maps are disabled via sourcemaps.disable above.
