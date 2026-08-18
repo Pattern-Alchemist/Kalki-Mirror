@@ -57,9 +57,6 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   typescript: { ignoreBuildErrors: true },
   poweredByHeader: false,
-  experimental: {
-    analyze: process.env.ANALYZE === 'true',
-  },
 
   // Security & performance headers
   async headers() {
