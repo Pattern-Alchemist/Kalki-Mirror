@@ -1,6 +1,6 @@
 // =============================================================
 // KALKI — THE LEXICON
-// 50+ Sanskrit / Tantric terms used across the KALKI system.
+// 86 Sanskrit / Tantric terms used across the KALKI system (count enforced in src/lib/canonical.ts).
 // Sorted by category, then alphabetically within each category.
 // =============================================================
 

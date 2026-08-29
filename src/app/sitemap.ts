@@ -7,6 +7,10 @@ import { allSequences } from '@/lib/data/sequences';
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://www.astrokalki.com';
 
+  // Kit refinement (Dossier No. 03 §3.1): patterns carry the strongest
+  // search intent (US queries like “emotional pattern”, “people pleasing
+  // roots”) and rise to 0.75; folio deep pages rise to 0.7.
+
   // Only indexable public pages — excluded: /practice, /practice/*, /redeem, /dossier (noindexed)
   const staticPages: MetadataRoute.Sitemap = [
     { url: base, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
@@ -30,14 +34,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${base}/archive/${s.slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
-    priority: 0.6,
+    priority: 0.7,
   }));
 
   const patternPages: MetadataRoute.Sitemap = allPatterns.map((p) => ({
     url: `${base}/patterns/${p.slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
-    priority: 0.6,
+    priority: 0.75,
   }));
 
   const breathworkPages: MetadataRoute.Sitemap = allBreathPatterns.map((b) => ({

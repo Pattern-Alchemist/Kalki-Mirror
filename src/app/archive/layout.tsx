@@ -2,17 +2,18 @@ import type { Metadata } from 'next';
 
 import { SITE_URL, pageAlternates, canonicalUrl } from '@/lib/utils/metadata';
 import { allSiddhis } from '@/lib/data/siddhis';
+import { CANONICAL } from '@/lib/canonical';
+
+const ARCHIVE_DESC = `${CANONICAL.folios} siddhis across ${CANONICAL.pantheonForces} archetypes — evidence sources, authenticity scores, lineage, and tiered access. Explore the complete siddhi database.`;
 
 export const metadata: Metadata = {
   alternates: pageAlternates('/archive'),
   title: 'The Akashic Archive',
-  description:
-    '48 siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access. Explore the complete siddhi database.',
+  description: ARCHIVE_DESC,
   openGraph: {
     title: 'The Akashic Archive | KALKI',
     url: canonicalUrl('/archive'),
-    description:
-      '48 siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access. Explore the complete siddhi database.',
+    description: ARCHIVE_DESC,
     images: [
       {
         url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/archive/sacred-geometry-manuscript',
@@ -30,7 +31,7 @@ const archiveJsonLd = {
     {
       '@type': 'CollectionPage',
       name: 'The Akashic Archive',
-      description: '48 siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access.',
+      description: ARCHIVE_DESC,
       url: `${SITE_URL}/archive`,
       isPartOf: { '@id': `${SITE_URL}/#website` },
       about: {

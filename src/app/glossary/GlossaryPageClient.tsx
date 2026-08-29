@@ -308,7 +308,7 @@ export default function GlossaryPage({ entries: glossaryEntries, categories: CAT
             animate={fadeInUp.visible}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
-            50+ Sanskrit & Tantric terms decoded in the KALKI framework
+            {glossaryEntries.length} Sanskrit & Tantric terms decoded in the KALKI framework
           </motion.p>
         </div>
       </header>

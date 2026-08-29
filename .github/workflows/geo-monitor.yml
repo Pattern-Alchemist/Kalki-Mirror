@@ -1,0 +1,35 @@
+name: GEO Monitor
+
+# KALKI self-checking machine — Dossier No. 03, Part VI.
+# Daily D-checks of the addressable surface. Any flip from pass to
+# fail is a 48-hour fix by rule, because drift compounds.
+
+on:
+  schedule:
+    - cron: '30 6 * * *'   # 12:00 IST daily
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Target URL (default: production)'
+        required: false
+        default: 'https://www.astrokalki.com'
+
+jobs:
+  monitor:
+    name: GEO surface checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run geo-monitor
+        run: python3 scripts/geo-ops/geo-monitor.py
+        env:
+          GEO_TARGET: ${{ github.event.inputs.target || 'https://www.astrokalki.com' }}
+
+      - name: Archive monitor log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: geo-monitor-${{ github.run_id }}
+          path: scripts/geo-ops/logs/
+          retention-days: 90

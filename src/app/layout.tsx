@@ -37,11 +37,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: 'KALKI — Light for the Dark Age.', template: '%s | KALKI' },
   description: 'Tantrik Intelligence. Sacred Architecture. Pattern Recognition. Where ancient Tantric geometry meets modern computational intelligence. The Architecture of Karma.',
-  keywords: ['kalki', 'siddhi', 'tantra', 'yantra', 'akasha', 'sadhana', 'pattern recognition', 'karma', 'shambhala', 'tantrik intelligence', 'mahavidya', 'ten mahavidyas', 'siddhi archive', 'behavioral patterns', 'tantric psychology'],
+  keywords: ['kalki', 'siddhi', 'tantra', 'authentic tantra', 'tantra teacher', 'yantra', 'akasha', 'sadhana', 'pattern recognition', 'karma', 'shambhala', 'tantrik intelligence', 'mahavidya', 'ten mahavidyas', 'siddhi archive', 'behavioral patterns', 'tantric psychology', 'kashmir shaivism', 'spiritual practice online'],
   authors: [{ name: 'Kaustubh', url: SITE_URL }],
   creator: 'Kaustubh',
   publisher: 'KALKI',
-  alternates: { canonical: SITE_URL, languages: { 'x-default': SITE_URL, en: SITE_URL } },
+  alternates: { canonical: SITE_URL, languages: { 'x-default': SITE_URL, 'en-US': SITE_URL } },
   openGraph: {
     title: 'KALKI — Light for the Dark Age.',
     description: 'Tantrik Intelligence. Sacred Architecture. Pattern Recognition. The Architecture of Karma.',
@@ -62,9 +62,13 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const locale = await getLocale();
   const messages = await getMessages();
+  // US-market layer: the site is authored in US English — declare the
+  // regional variant so search engines route US seekers here. The 'hi'
+  // locale (cookie-based) keeps its own tag when active.
+  const htmlLang = locale === 'en' ? 'en-US' : locale;
 
   return (
-    <html lang={locale} suppressHydrationWarning className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang={htmlLang} suppressHydrationWarning className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
         {/* Mobile hero image preload — LCP element on home page */}

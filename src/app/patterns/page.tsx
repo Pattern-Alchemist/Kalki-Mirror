@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import { allPatterns } from '@/lib/data/patterns';
 import { allSiddhis } from '@/lib/data/siddhis';
+import { CANONICAL } from '@/lib/canonical';
 import dynamic from 'next/dynamic';
 import type { Pattern } from '@/lib/data/types';
 import type { Siddhi } from '@/lib/data/types';
 
 export const metadata: Metadata = {
-  title: 'Pattern Atlas — 12 Emotional Patterns | KALKI',
-  description: 'Twelve core patterns drawn from Aghorī, Kashmiri Shaiva, and Buddhist Vajrayāna traditions — each linked to specific siddhis and prescribed practices.',
+  title: `Pattern Atlas — ${CANONICAL.patterns} Emotional Patterns | KALKI`,
+  description: `${CANONICAL.patterns} core patterns drawn from Aghorī, Kashmiri Shaiva, and Buddhist Vajrayāna traditions — each linked to specific siddhis and prescribed practices.`,
 };
 
 const PatternsPageClient = dynamic(
@@ -21,7 +22,7 @@ const PatternsPageClient = dynamic(
             Pattern Intelligence
           </h1>
           <p className="text-text-muted text-base md:text-lg max-w-xl mx-auto leading-relaxed">
-            12 emotional patterns decoded — loading&hellip;
+            {CANONICAL.patterns} emotional patterns decoded — loading&hellip;
           </p>
         </div>
       </div>

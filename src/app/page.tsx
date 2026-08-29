@@ -1,12 +1,17 @@
 import Link from 'next/link';
-import { allSiddhis, SIDDHI_COUNT } from '@/lib/data/siddhis';
+import { allSiddhis } from '@/lib/data/siddhis';
 import { allPatterns } from '@/lib/data/patterns';
+import { CANONICAL } from '@/lib/canonical';
 import type { Metadata } from 'next';
 import HomePageShell from './HomePageShell';
 
 export const metadata: Metadata = {
-  title: 'KALKI — Tantrik Intelligence. Sacred Architecture. Pattern Recognition.',
-  description: 'Where ancient Tantric geometry meets modern computational intelligence. 48 siddhis, 12 emotional patterns, and the Mirror Method framework.',
+  // absolute — the root layout template would append "| KALKI" to a
+  // brand-first title and produce a double suffix. (GEO kit, fix #2)
+  title: {
+    absolute: 'KALKI — Tantrik Intelligence. Sacred Architecture. Pattern Recognition.',
+  },
+  description: `Where ancient Tantric geometry meets modern computational intelligence. ${CANONICAL.folios} siddhi folios, ${CANONICAL.patterns} emotional patterns, and the Mirror Method framework for pattern dissolution.`,
 };
 
 /* ── Static data resolved at build/request time, passed to client shell ── */
@@ -62,19 +67,12 @@ export default function HomePage() {
       </section>
 
       {/* ═══ REMAINING SECTIONS — loaded client-side via shell ═══ */}
-      <HomePageShell featured={featured} patternPreview={patternPreview} siddhiCount={SIDDHI_COUNT} />
+      <HomePageShell featured={featured} patternPreview={patternPreview} siddhiCount={CANONICAL.folios} />
     </div>
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'WebSite',
-          name: 'KALKI -- Tantrik Intelligence',
-          description: 'Precision instrument for inner transformation. 48 siddhis from the Akashic Archive, 12 emotional patterns mapped to specific tantric practices, and the Mirror Method framework for pattern dissolution.',
-          url: 'https://www.astrokalki.com',
-        }),
-      }}
-    /></>
+    {/* NOTE: the site-wide consolidated @graph (one WebSite, one
+        Organization, one Person) lives in PublicShell — this page
+        previously emitted a second, competing WebSite node with
+        drifted counts. Removed per GEO kit fix #3 (duplicate schema). */}
+    </>
   );
 }

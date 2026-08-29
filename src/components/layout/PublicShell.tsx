@@ -52,7 +52,9 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       <PaywallModal />
       <div className="page-vignette" aria-hidden="true" />
 
-      {/* JSON-LD Structured Data */}
+      {/* JSON-LD Structured Data — the ONE consolidated @graph.
+          Engine II · Entity: exactly one WebSite, one Organization,
+          one Person. No page may emit a competing WebSite node. */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -65,6 +67,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
                 url: SITE_URL,
                 name: 'KALKI',
                 description: 'Tantrik Intelligence. Sacred Architecture. Pattern Recognition.',
+                inLanguage: 'en-US',
                 publisher: { '@id': `${SITE_URL}/#organization` },
                 potentialAction: {
                   '@type': 'SearchAction',
@@ -79,7 +82,20 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
                 url: SITE_URL,
                 logo: `${SITE_URL}/favicon.svg`,
                 description: 'Tantrik Intelligence. The Architecture of Karma.',
-                founder: { '@type': 'Person', name: 'Kaustubh', jobTitle: 'Tantric Technologist' },
+                founder: { '@id': `${SITE_URL}/#person` },
+              },
+              {
+                '@type': 'Person',
+                '@id': `${SITE_URL}/#person`,
+                name: 'Kaustubh',
+                jobTitle: 'Tantric Technologist',
+                url: `${SITE_URL}/method`,
+                description:
+                  'Founder of KALKI. Tantric technologist working with the Mahavidya pantheon, evidence-graded sadhana, and pattern-based spiritual psychology.',
+                // Entity cross-references generative engines use to verify
+                // authority. Add public profiles here as they come online
+                // (LinkedIn, X, YouTube) — never invent URLs.
+                sameAs: ['https://github.com/Pattern-Alchemist'],
               },
             ],
           }),

@@ -715,3 +715,27 @@ Stage Summary:
 - Build passes cleanly
 - Pushed to GitHub, Vercel deploy triggered automatically
 - Expected: significant LCP/FCP/Speed Index improvement from deferred framer-motion
+
+---
+Task ID: geo-phase0-us
+Agent: Super Z (lead engineer)
+Task: Ship the GEO Phase 0 kit + US-market layer — Engine I (Address) and Engine II (Entity) per Dossier No. 03, with the US-first positioning decision recorded.
+
+Work Log:
+- Audited live production surface: llms.txt 404, no AI-crawler policy, homepage description drifting "48 siddhis, 12 emotional patterns" (canonical 56/20), two competing WebSite schema nodes, no Person entity, glossary copy at "50+" (actual 86), duplicate pantheon metadata (/deities vs /archetypes).
+- Created src/lib/canonical.ts — every canonical count derived from the data modules at build time (single source of truth; drift now structurally impossible).
+- llms.txt route handler (src/app/llms.txt/route.ts): 110 curated links in 10 sections + AI usage notes; prerendered static; content-type text/plain; counts auto-derived.
+- robots.ts: 14 AI crawlers welcomed by name (GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-User, anthropic-ai, PerplexityBot, Perplexity-User, Google-Extended, Applebot-Extended, CCBot, Meta-ExternalAgent, Amazonbot, cohere-ai); private surfaces still disallowed; deleted conflicting public/robots.txt.
+- Consolidated @graph in PublicShell: one WebSite (inLanguage en-US) + one Organization + top-level Person (Kaustubh, sameAs GitHub); removed the competing standalone WebSite block from the homepage.
+- Glossary: DefinedTermSet with all 86 terms; copy fixed from "50+" to derived count.
+- Sitemap intent tuning: patterns 0.75, folios 0.7.
+- US layer: lang="en-US", hreflang en-US + x-default, US-intent keywords (authentic tantra, tantra teacher, kashmir shaivism).
+- Count drift eliminated everywhere (homepage, archive, patterns, glossary hero, comments) — all now derive from CANONICAL.
+- Self-checking machine: scripts/geo-ops/geo-monitor.py (11 checks, stdlib only) + .github/workflows/geo-monitor.yml (daily 12:00 IST).
+- docs/geo/us-market-positioning.md — the market decision record + next phases.
+- Checks: build PASS (/llms.txt static); lint delta ZERO (45 pre-existing problems unchanged); vitest delta ZERO (126 pass, 3 pre-existing env failures unchanged); geo-monitor 11/11 PASS against local production build.
+
+Stage Summary:
+- Phase 0 kit deployed exactly per Dossier No. 03 §3.1 + the US-market layer on top.
+- The five live monitor failures recorded in the dossier (llms.txt 404, AI policy silent, count drift, duplicate WebSite, no Person) all flip to PASS.
+- Runtime remains zero external API.
