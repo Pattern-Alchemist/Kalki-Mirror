@@ -164,3 +164,183 @@ export async function addSubscriber(email: string, source?: string): Promise<Sub
     return { ok: false, status: 'unavailable' };
   }
 }
+
+// ─── Read path — founder analytics dashboard (admin only) ─────────────────
+
+/**
+ * Event dictionary metadata (TGA §12 two-lattice dictionary, rendered
+ * for humans). Every one of the 15 events carries a label + group so
+ * the dashboard can teach the founder what each number means.
+ */
+export const EVENT_META: Record<
+  EventName,
+  { label: string; group: 'Discovery' | 'Education' | 'Practice' | 'Conversion' | 'Retention' }
+> = {
+  folio_viewed: { label: 'Siddhi folio opened', group: 'Discovery' },
+  pattern_viewed: { label: 'Pattern page opened', group: 'Discovery' },
+  glossary_term_viewed: { label: 'Lexicon term opened', group: 'Discovery' },
+  search_performed: { label: 'Site search used', group: 'Discovery' },
+  archetype_viewed: { label: 'Archetype page opened', group: 'Discovery' },
+  karma_page_viewed: { label: 'Karma map opened (US front door)', group: 'Discovery' },
+  aghori_phase_viewed: { label: 'Course phase opened', group: 'Education' },
+  aghori_lesson_viewed: { label: 'Course lesson opened', group: 'Education' },
+  breathwork_viewed: { label: 'Breath practice opened', group: 'Practice' },
+  sequence_viewed: { label: 'Practice sequence opened', group: 'Practice' },
+  pricing_viewed: { label: 'Pricing viewed', group: 'Conversion' },
+  dossier_started: { label: 'Assessment started', group: 'Conversion' },
+  dossier_completed: { label: 'Assessment completed', group: 'Conversion' },
+  consultation_started: { label: 'Consultation intent (WhatsApp)', group: 'Conversion' },
+  email_subscribed: { label: 'Newsletter signup', group: 'Retention' },
+};
+
+export interface AnalyticsSnapshot {
+  /** false when the event store is unreachable (e.g. local dev without Turso) */
+  available: boolean;
+  totals: {
+    events: number;
+    events7d: number;
+    events30d: number;
+    sessions30d: number;
+    subscribers: number;
+    subscribers30d: number;
+  };
+  /** last 30 days, oldest first */
+  daily: Array<{ day: string; count: number }>;
+  /** all 15 dictionary events with windowed counts, sorted by 30d desc */
+  events: Array<{
+    event: EventName;
+    label: string;
+    group: string;
+    count7d: number;
+    count30d: number;
+    countAll: number;
+  }>;
+  /** top content slugs by views, last 30 days */
+  topContent: Array<{ slug: string; views: number }>;
+  funnel: {
+    dossierStarted: number;
+    dossierCompleted: number;
+    pricingViewed: number;
+    consultationStarted: number;
+  };
+  recentSubscribers: Array<{ email: string; source: string | null; createdAt: string }>;
+}
+
+const EMPTY_SNAPSHOT: AnalyticsSnapshot = {
+  available: false,
+  totals: { events: 0, events7d: 0, events30d: 0, sessions30d: 0, subscribers: 0, subscribers30d: 0 },
+  daily: [],
+  events: [],
+  topContent: [],
+  funnel: { dossierStarted: 0, dossierCompleted: 0, pricingViewed: 0, consultationStarted: 0 },
+  recentSubscribers: [],
+};
+
+function num(v: unknown): number {
+  const n = typeof v === 'number' ? v : Number(v);
+  return Number.isFinite(n) ? n : 0;
+}
+
+/**
+ * Full read-side snapshot for the founder analytics dashboard.
+ * Never throws — returns available:false when storage is unreachable
+ * so the UI can explain itself instead of erroring.
+ */
+export async function getAnalyticsSnapshot(): Promise<AnalyticsSnapshot> {
+  try {
+    await ensureTables();
+    const c = getClient();
+    if (!c) return EMPTY_SNAPSHOT;
+
+    const [totalsRes, dailyRes, eventRes, topRes, subRes, subListRes] = await Promise.all([
+      c.execute(`
+        SELECT
+          COUNT(*) AS events,
+          SUM(CASE WHEN createdAt >= datetime('now', '-7 days') THEN 1 ELSE 0 END) AS events7d,
+          SUM(CASE WHEN createdAt >= datetime('now', '-30 days') THEN 1 ELSE 0 END) AS events30d,
+          COUNT(DISTINCT CASE WHEN createdAt >= datetime('now', '-30 days') THEN sessionId END) AS sessions30d
+        FROM AnalyticsEvent
+      `),
+      c.execute(`
+        SELECT date(createdAt) AS day, COUNT(*) AS count
+        FROM AnalyticsEvent
+        WHERE createdAt >= datetime('now', '-30 days')
+        GROUP BY day ORDER BY day ASC
+      `),
+      c.execute(`
+        SELECT
+          event,
+          SUM(CASE WHEN createdAt >= datetime('now', '-7 days') THEN 1 ELSE 0 END) AS c7,
+          SUM(CASE WHEN createdAt >= datetime('now', '-30 days') THEN 1 ELSE 0 END) AS c30,
+          COUNT(*) AS ctotal
+        FROM AnalyticsEvent
+        GROUP BY event
+      `),
+      c.execute(`
+        SELECT slug, COUNT(*) AS views
+        FROM AnalyticsEvent
+        WHERE slug IS NOT NULL
+          AND createdAt >= datetime('now', '-30 days')
+          AND event IN ('folio_viewed','pattern_viewed','glossary_term_viewed',
+                        'archetype_viewed','aghori_lesson_viewed','aghori_phase_viewed',
+                        'breathwork_viewed','sequence_viewed','karma_page_viewed')
+        GROUP BY slug ORDER BY views DESC LIMIT 10
+      `),
+      c.execute(`
+        SELECT
+          COUNT(*) AS total,
+          SUM(CASE WHEN createdAt >= datetime('now', '-30 days') THEN 1 ELSE 0 END) AS recent
+        FROM Subscriber
+      `),
+      c.execute(`
+        SELECT email, source, createdAt
+        FROM Subscriber ORDER BY createdAt DESC LIMIT 20
+      `),
+    ]);
+
+    const t = totalsRes.rows[0] ?? {};
+    const s = subRes.rows[0] ?? {};
+    const funnelOf = (name: EventName) =>
+      num(eventRes.rows.find((r) => r.event === name)?.c30);
+
+    const events: AnalyticsSnapshot['events'] = EVENT_NAMES.map((name) => {
+      const row = eventRes.rows.find((r) => r.event === name);
+      return {
+        event: name,
+        label: EVENT_META[name].label,
+        group: EVENT_META[name].group,
+        count7d: num(row?.c7),
+        count30d: num(row?.c30),
+        countAll: num(row?.ctotal),
+      };
+    }).sort((a, b) => b.count30d - a.count30d || b.countAll - a.countAll);
+
+    return {
+      available: true,
+      totals: {
+        events: num(t.events),
+        events7d: num(t.events7d),
+        events30d: num(t.events30d),
+        sessions30d: num(t.sessions30d),
+        subscribers: num(s.total),
+        subscribers30d: num(s.recent),
+      },
+      daily: dailyRes.rows.map((r) => ({ day: String(r.day), count: num(r.count) })),
+      events,
+      topContent: topRes.rows.map((r) => ({ slug: String(r.slug), views: num(r.views) })),
+      funnel: {
+        dossierStarted: funnelOf('dossier_started'),
+        dossierCompleted: funnelOf('dossier_completed'),
+        pricingViewed: funnelOf('pricing_viewed'),
+        consultationStarted: funnelOf('consultation_started'),
+      },
+      recentSubscribers: subListRes.rows.map((r) => ({
+        email: String(r.email),
+        source: r.source == null ? null : String(r.source),
+        createdAt: String(r.createdAt),
+      })),
+    };
+  } catch {
+    return EMPTY_SNAPSHOT;
+  }
+}
