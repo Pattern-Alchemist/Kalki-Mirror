@@ -22,8 +22,14 @@ test.describe('Admin Authentication', () => {
 
   test('has noscript fallback', async ({ page }) => {
     await page.goto('/admin/login');
-    const noscript = page.locator('noscript');
-    await expect(noscript).toContainText('JavaScript Required');
+    // Two noscript elements render: the root layout's global JS-required
+    // banner and the login page's own fallback. With JavaScript enabled,
+    // noscript content is raw text — read textContent of all instances
+    // (strict-mode locators and hasText filters see nothing here because
+    // noscript content is never rendered).
+    const texts = await page.locator('noscript').allTextContents();
+    expect(texts.length).toBeGreaterThanOrEqual(1);
+    expect(texts.join('\n')).toContain('The Archivist Console requires JavaScript');
   });
 
   test('locks after 5 failed attempts', async ({ page }) => {

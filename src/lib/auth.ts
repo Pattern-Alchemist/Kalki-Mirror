@@ -8,7 +8,7 @@ import type { UserRole } from "@prisma/client";
  *  Falls back to a hardcoded secret on Vercel until env var delivery is fixed. */
 const NEXTAUTH_SECRET_FALLBACK = 'qhMa86hvsUKGlY8JM3Kej0FAaq9uTZRCGqsL7LUxRJ8=';
 
-function getAuthSecret(): string {
+export function getAuthSecret(): string {
   const s = process.env.NEXTAUTH_SECRET || (process.env.VERCEL === '1' ? NEXTAUTH_SECRET_FALLBACK : '');
   if (!s) {
     throw new Error(
@@ -22,7 +22,7 @@ function getAuthSecret(): string {
 const TURSO_URL = 'libsql://kalki-mirror-pattern-alchemist.aws-ap-south-1.turso.io';
 const TURSO_TOKEN = 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3ODY5MDk3MDksImlkIjoiMDFhMDBjMWQtMWUwMS03YzFiLTlhYmItODUyZDgwOGRmMWVlIiwia2lkIjoiRHRnLUxVWDlCZ0VHbXVReEk5WVUzWnFqMjRPTUlGQllHZHpqYTBkT0VuUSIsInJpZCI6IjE5MjA2MDJkLTJmNTYtNDA2Yi05MDI2LWUyNTc4ZjUyMDgyMyJ9.0AavPuqz6W7qQtaHgYHscL21-1YgxlRt0DwRLBi-mHjDGemOrNX9gVkP9Ie2Zl7OXLicEDLBV29ZvHdNb9aNAQ';
 
-async function getUserFromTurso(email: string): Promise<{ id: string; email: string; name: string | null; passwordHash: string; role: string; tier: string; twoFactorEnabled: boolean } | null> {
+export async function getUserFromTurso(email: string): Promise<{ id: string; email: string; name: string | null; passwordHash: string; role: string; tier: string; twoFactorEnabled: boolean } | null> {
   const { createClient } = await import('@libsql/client');
   const client = createClient({ url: TURSO_URL, authToken: TURSO_TOKEN });
   const res = await client.execute({
@@ -66,6 +66,8 @@ export function cleanupPreAuthTokens() {
     if (val.expiresAt < now) preAuthTokens.delete(key);
   }
 }
+
+export const ADMIN_ALLOWED_ROLES: UserRole[] = ["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"];
 
 export const authOptions: NextAuthOptions = {
   get secret() { return getAuthSecret(); },
@@ -115,7 +117,7 @@ export const authOptions: NextAuthOptions = {
         const user = await getUserFromTurso(email);
         if (!user || !user.passwordHash) return null;
 
-        const allowedRoles: UserRole[] = ["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"];
+        const allowedRoles: UserRole[] = ADMIN_ALLOWED_ROLES;
         if (!allowedRoles.includes(user.role as UserRole)) return null;
 
         const isValid = await bcrypt.compare(password, user.passwordHash);

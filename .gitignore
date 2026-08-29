@@ -65,3 +65,7 @@ cloudinary-map.json.open-next/
 
 # download artifacts (design mockups, proposals, screenshots)
 /download/
+
+# Playwright E2E artifacts
+playwright-report/
+test-results/
