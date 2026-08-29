@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { tryGetAuthSecret } from '@/lib/auth-secret';
 import { isSessionValid, trackSession } from '@/lib/admin/sessions';
 
 /**
@@ -19,7 +20,7 @@ export async function GET(request: NextRequest) {
   try {
     const token = await getToken({
       req: request,
-      secret: process.env.NEXTAUTH_SECRET,
+      secret: tryGetAuthSecret(),
     });
 
     if (!token?.id || !token.jti) {

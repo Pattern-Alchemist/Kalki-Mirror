@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { tryGetAuthSecret } from "@/lib/auth-secret";
 import { db } from "@/lib/db";
 import { rateLimit } from "@/lib/rate-limit";
 
@@ -8,7 +9,7 @@ const ADMIN_ROLES = ["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"];
 export async function GET(request: NextRequest) {
   const token = await getToken({
     req: request,
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: tryGetAuthSecret(),
   });
 
   if (!token || !ADMIN_ROLES.includes(token.role as string)) {

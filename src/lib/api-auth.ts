@@ -1,4 +1,5 @@
 import { getToken } from "next-auth/jwt";
+import { tryGetAuthSecret } from "./auth-secret";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
@@ -11,7 +12,7 @@ export async function authenticateRequest(
   try {
     const token = await getToken({
       req: request,
-      secret: process.env.NEXTAUTH_SECRET,
+      secret: tryGetAuthSecret(),
     });
     return token;
   } catch {

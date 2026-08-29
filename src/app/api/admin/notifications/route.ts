@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { tryGetAuthSecret } from '@/lib/auth-secret';
 import { db } from '@/lib/db';
 
 const ADMIN_ROLES = ['ADMIN', 'SUPERADMIN', 'EDITOR', 'REVIEWER'];
 
 /** GET /api/admin/notifications — Fetch notifications for current user */
 export async function GET(request: NextRequest) {
-  const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({ req: request, secret: tryGetAuthSecret() });
   if (!token || !ADMIN_ROLES.includes(token.role as string)) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
@@ -44,7 +45,7 @@ export async function GET(request: NextRequest) {
 
 /** POST /api/admin/notifications — Create a notification */
 export async function POST(request: NextRequest) {
-  const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({ req: request, secret: tryGetAuthSecret() });
   if (!token || !ADMIN_ROLES.includes(token.role as string)) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
@@ -71,7 +72,7 @@ export async function POST(request: NextRequest) {
 
 /** PATCH /api/admin/notifications — Mark as read */
 export async function PATCH(request: NextRequest) {
-  const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({ req: request, secret: tryGetAuthSecret() });
   if (!token || !ADMIN_ROLES.includes(token.role as string)) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }

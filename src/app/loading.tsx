@@ -1,7 +1,7 @@
 import { SiddhiCardSkeleton } from '@/components/ui/Skeleton';
 
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'b9oo5abp';
-const LOADING_IMG = `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto:good,w_640,c_limit/e_brightness:0.3/kalki-mirror/ui/yantra-loading`;
+const LOADING_IMG = `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto:good,w_640,c_limit/e_brightness:30/kalki-mirror/ui/yantra-loading`;
 
 export default function Loading() {
   return (

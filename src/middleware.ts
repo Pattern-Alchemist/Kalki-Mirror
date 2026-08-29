@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { tryGetAuthSecret } from "@/lib/auth-secret";
 
-const AUTH_SECRET = process.env.NEXTAUTH_SECRET;
+// Same resolution as every session-minting route (env var, Vercel fallback
+// until G-10 rotation). A missing secret must mean "unauthenticated", never
+// a 500 — hence the try-variant.
+const AUTH_SECRET = tryGetAuthSecret();
 
 const ADMIN_ROLES = ["ADMIN", "SUPERADMIN", "EDITOR", "REVIEWER"];
 
@@ -147,6 +151,15 @@ export async function middleware(request: NextRequest) {
                 if (userAgent) validateHeaders['X-Kalki-User-Agent'] = userAgent;
                 if (clientIP !== 'unknown') validateHeaders['X-Kalki-IP'] = clientIP;
 
+                // CRITICAL: forward the session cookie. The validate route
+                // decodes the JWT itself via getToken(), which reads the
+                // cookie from the request — fetch() does NOT attach cookies
+                // automatically, so without this header every validation
+                // returned 401 (no_token) and every admin page redirected
+                // to login as "session_evicted".
+                const cookieHeader = request.headers.get('cookie');
+                if (cookieHeader) validateHeaders['Cookie'] = cookieHeader;
+
                 const validateRes = await fetch(validateUrl.toString(), {
                   headers: validateHeaders,
                 });
@@ -157,7 +170,10 @@ export async function middleware(request: NextRequest) {
                   loginUrl.searchParams.set('callbackUrl', pathname);
                   loginUrl.searchParams.set('error', 'session_evicted');
                   const redirect = NextResponse.redirect(loginUrl);
+                  // Clear BOTH cookie spellings — the browser may hold either
+                  // depending on which route minted it historically.
                   redirect.cookies.delete('next-auth.session-token');
+                  redirect.cookies.delete('__Secure-next-auth.session-token');
                   return redirect;
                 }
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { validate2FALogin } from '@/lib/admin/two-factor';
 import { consumePreAuthToken } from '@/lib/auth';
+import { tryGetAuthSecret, sessionCookieName, sessionCookieSecure } from '@/lib/auth-secret';
 import crypto from 'crypto';
 import { db } from '@/lib/db';
 import { encode } from 'next-auth/jwt';
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
     }).catch(() => {});
 
     // Create NextAuth JWT
-    const jwtSecret = process.env.NEXTAUTH_SECRET;
+    const jwtSecret = tryGetAuthSecret();
     if (!jwtSecret) {
       return NextResponse.json(
         { error: 'Server misconfigured' },
@@ -82,9 +83,10 @@ export async function POST(request: NextRequest) {
     });
 
     const response = NextResponse.json({ valid: true, required: result.required });
-    response.cookies.set('next-auth.session-token', token, {
+    // Cookie name must match next-auth's getToken() lookup (https → __Secure- prefix)
+    response.cookies.set(sessionCookieName(request.url), token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: sessionCookieSecure(request.url),
       sameSite: 'lax',
       path: '/',
       maxAge: 12 * 60 * 60,

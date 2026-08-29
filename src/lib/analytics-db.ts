@@ -10,6 +10,24 @@
  */
 
 import { createClient, type Client } from '@libsql/client';
+import {
+  EVENT_NAMES,
+  EVENT_META,
+  GROUP_NAMES,
+  normalizeRange,
+  referrerDomain,
+  csvEscape,
+  type EventName,
+  type EventPayload,
+  type EventGroup,
+  type AnalyticsRange,
+  type AnalyticsSnapshot,
+} from './analytics-shared';
+
+// Re-exported so every existing `@/lib/analytics-db` import (tests, API
+// routes, client type imports) keeps working — the pure dictionary data now
+// lives in analytics-shared.ts, which is safe for the client bundle.
+export * from './analytics-shared';
 
 // Same credential resolution as src/lib/db.ts (rotated together — G-10).
 const TURSO_URL_FALLBACK = 'libsql://kalki-mirror-pattern-alchemist.aws-ap-south-1.turso.io';
@@ -74,37 +92,9 @@ async function ensureTables(): Promise<void> {
 }
 
 // ─── Event dictionary (TGA §12 — 15 events) ────────────────────────────────
-
-export const EVENT_NAMES = [
-  'folio_viewed',
-  'pattern_viewed',
-  'glossary_term_viewed',
-  'search_performed',
-  'archetype_viewed',
-  'karma_page_viewed',
-  'aghori_lesson_viewed',
-  'aghori_phase_viewed',
-  'breathwork_viewed',
-  'sequence_viewed',
-  'pricing_viewed',
-  'dossier_started',
-  'dossier_completed',
-  'consultation_started',
-  'email_subscribed',
-] as const;
-
-export type EventName = (typeof EVENT_NAMES)[number];
+// Dictionary data (EVENT_NAMES, EVENT_META, types) lives in analytics-shared.ts.
 
 const EVENT_SET = new Set<string>(EVENT_NAMES);
-
-export interface EventPayload {
-  event: string;
-  path?: string;
-  slug?: string;
-  properties?: Record<string, unknown>;
-  referrer?: string;
-  sessionId?: string;
-}
 
 /** Record an event. Never throws — returns false when storage is unavailable. */
 export async function recordEvent(payload: EventPayload): Promise<boolean> {
@@ -167,141 +157,164 @@ export async function addSubscriber(email: string, source?: string): Promise<Sub
 
 // ─── Read path — founder analytics dashboard (admin only) ─────────────────
 
-/**
- * Event dictionary metadata (TGA §12 two-lattice dictionary, rendered
- * for humans). Every one of the 15 events carries a label + group so
- * the dashboard can teach the founder what each number means.
- */
-export const EVENT_META: Record<
-  EventName,
-  { label: string; group: 'Discovery' | 'Education' | 'Practice' | 'Conversion' | 'Retention' }
-> = {
-  folio_viewed: { label: 'Siddhi folio opened', group: 'Discovery' },
-  pattern_viewed: { label: 'Pattern page opened', group: 'Discovery' },
-  glossary_term_viewed: { label: 'Lexicon term opened', group: 'Discovery' },
-  search_performed: { label: 'Site search used', group: 'Discovery' },
-  archetype_viewed: { label: 'Archetype page opened', group: 'Discovery' },
-  karma_page_viewed: { label: 'Karma map opened (US front door)', group: 'Discovery' },
-  aghori_phase_viewed: { label: 'Course phase opened', group: 'Education' },
-  aghori_lesson_viewed: { label: 'Course lesson opened', group: 'Education' },
-  breathwork_viewed: { label: 'Breath practice opened', group: 'Practice' },
-  sequence_viewed: { label: 'Practice sequence opened', group: 'Practice' },
-  pricing_viewed: { label: 'Pricing viewed', group: 'Conversion' },
-  dossier_started: { label: 'Assessment started', group: 'Conversion' },
-  dossier_completed: { label: 'Assessment completed', group: 'Conversion' },
-  consultation_started: { label: 'Consultation intent (WhatsApp)', group: 'Conversion' },
-  email_subscribed: { label: 'Newsletter signup', group: 'Retention' },
-};
 
-export interface AnalyticsSnapshot {
-  /** false when the event store is unreachable (e.g. local dev without Turso) */
-  available: boolean;
-  totals: {
-    events: number;
-    events7d: number;
-    events30d: number;
-    sessions30d: number;
-    subscribers: number;
-    subscribers30d: number;
+function emptySnapshot(range: AnalyticsRange): AnalyticsSnapshot {
+  return {
+    available: false,
+    range,
+    generatedAt: new Date().toISOString(),
+    totals: {
+      events: 0, eventsWindow: 0, eventsPrevWindow: 0, events7d: 0, events30d: 0,
+      sessionsWindow: 0, sessionsPrevWindow: 0, subscribers: 0, subscribersWindow: 0,
+    },
+    daily: [],
+    events: [],
+    topContent: [],
+    topReferrers: [],
+    funnel: { dossierStarted: 0, dossierCompleted: 0, pricingViewed: 0, consultationStarted: 0 },
+    recentEvents: [],
+    recentSubscribers: [],
   };
-  /** last 30 days, oldest first */
-  daily: Array<{ day: string; count: number }>;
-  /** all 15 dictionary events with windowed counts, sorted by 30d desc */
-  events: Array<{
-    event: EventName;
-    label: string;
-    group: string;
-    count7d: number;
-    count30d: number;
-    countAll: number;
-  }>;
-  /** top content slugs by views, last 30 days */
-  topContent: Array<{ slug: string; views: number }>;
-  funnel: {
-    dossierStarted: number;
-    dossierCompleted: number;
-    pricingViewed: number;
-    consultationStarted: number;
-  };
-  recentSubscribers: Array<{ email: string; source: string | null; createdAt: string }>;
 }
-
-const EMPTY_SNAPSHOT: AnalyticsSnapshot = {
-  available: false,
-  totals: { events: 0, events7d: 0, events30d: 0, sessions30d: 0, subscribers: 0, subscribers30d: 0 },
-  daily: [],
-  events: [],
-  topContent: [],
-  funnel: { dossierStarted: 0, dossierCompleted: 0, pricingViewed: 0, consultationStarted: 0 },
-  recentSubscribers: [],
-};
 
 function num(v: unknown): number {
   const n = typeof v === 'number' ? v : Number(v);
   return Number.isFinite(n) ? n : 0;
 }
 
+/** Content events that carry a meaningful slug for the Top Content rollup. */
+const CONTENT_EVENTS: readonly EventName[] = [
+  'folio_viewed', 'pattern_viewed', 'glossary_term_viewed',
+  'archetype_viewed', 'aghori_lesson_viewed', 'aghori_phase_viewed',
+  'breathwork_viewed', 'sequence_viewed', 'karma_page_viewed',
+];
+
+/**
+ * Builds the per-group SUM(CASE…) columns for the daily query, derived from
+ * EVENT_META so the dictionary can never drift from the chart. Event names
+ * come from the closed EVENT_NAMES set — safe to interpolate.
+ */
+export function groupColumnSql(): string {
+  return GROUP_NAMES.map((g) => {
+    const names = EVENT_NAMES.filter((n) => EVENT_META[n].group === g);
+    const list = names.map((n) => `'${n}'`).join(', ');
+    return `SUM(CASE WHEN event IN (${list}) THEN 1 ELSE 0 END) AS "${g}"`;
+  }).join(', ');
+}
+
+/** Zero-fills a windowed daily series so sparse traffic renders gap-free. */
+function zeroFillDaily(
+  rows: Array<{ day: string; count: number } & Record<EventGroup, number>>,
+  range: AnalyticsRange,
+): AnalyticsSnapshot['daily'] {
+  const byDay = new Map(rows.map((r) => [r.day, r]));
+  const out: AnalyticsSnapshot['daily'] = [];
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  for (let i = range - 1; i >= 0; i--) {
+    const d = new Date(today.getTime() - i * 86_400_000);
+    const key = d.toISOString().slice(0, 10);
+    const row = byDay.get(key);
+    out.push({
+      day: key,
+      count: row?.count ?? 0,
+      Discovery: row?.Discovery ?? 0,
+      Education: row?.Education ?? 0,
+      Practice: row?.Practice ?? 0,
+      Conversion: row?.Conversion ?? 0,
+      Retention: row?.Retention ?? 0,
+    });
+  }
+  return out;
+}
+
 /**
  * Full read-side snapshot for the founder analytics dashboard.
+ * `range` selects the primary window (7/30/90 days); every windowed metric
+ * also computes the previous equal-length window so the UI can show trends.
  * Never throws — returns available:false when storage is unreachable
  * so the UI can explain itself instead of erroring.
  */
-export async function getAnalyticsSnapshot(): Promise<AnalyticsSnapshot> {
+export async function getAnalyticsSnapshot(
+  range: AnalyticsRange = 30,
+): Promise<AnalyticsSnapshot> {
+  const R = normalizeRange(range);
   try {
     await ensureTables();
     const c = getClient();
-    if (!c) return EMPTY_SNAPSHOT;
+    if (!c) return emptySnapshot(R);
+    const R2 = R * 2;
 
-    const [totalsRes, dailyRes, eventRes, topRes, subRes, subListRes] = await Promise.all([
-      c.execute(`
-        SELECT
-          COUNT(*) AS events,
-          SUM(CASE WHEN createdAt >= datetime('now', '-7 days') THEN 1 ELSE 0 END) AS events7d,
-          SUM(CASE WHEN createdAt >= datetime('now', '-30 days') THEN 1 ELSE 0 END) AS events30d,
-          COUNT(DISTINCT CASE WHEN createdAt >= datetime('now', '-30 days') THEN sessionId END) AS sessions30d
-        FROM AnalyticsEvent
-      `),
-      c.execute(`
-        SELECT date(createdAt) AS day, COUNT(*) AS count
-        FROM AnalyticsEvent
-        WHERE createdAt >= datetime('now', '-30 days')
-        GROUP BY day ORDER BY day ASC
-      `),
-      c.execute(`
-        SELECT
-          event,
-          SUM(CASE WHEN createdAt >= datetime('now', '-7 days') THEN 1 ELSE 0 END) AS c7,
-          SUM(CASE WHEN createdAt >= datetime('now', '-30 days') THEN 1 ELSE 0 END) AS c30,
-          COUNT(*) AS ctotal
-        FROM AnalyticsEvent
-        GROUP BY event
-      `),
-      c.execute(`
-        SELECT slug, COUNT(*) AS views
-        FROM AnalyticsEvent
-        WHERE slug IS NOT NULL
-          AND createdAt >= datetime('now', '-30 days')
-          AND event IN ('folio_viewed','pattern_viewed','glossary_term_viewed',
-                        'archetype_viewed','aghori_lesson_viewed','aghori_phase_viewed',
-                        'breathwork_viewed','sequence_viewed','karma_page_viewed')
-        GROUP BY slug ORDER BY views DESC LIMIT 10
-      `),
-      c.execute(`
-        SELECT
-          COUNT(*) AS total,
-          SUM(CASE WHEN createdAt >= datetime('now', '-30 days') THEN 1 ELSE 0 END) AS recent
-        FROM Subscriber
-      `),
-      c.execute(`
-        SELECT email, source, createdAt
-        FROM Subscriber ORDER BY createdAt DESC LIMIT 20
-      `),
-    ]);
+    const [totalsRes, dailyRes, eventRes, topRes, refRes, subRes, subListRes, recentRes] =
+      await Promise.all([
+        c.execute(`
+          SELECT
+            COUNT(*) AS events,
+            SUM(CASE WHEN createdAt >= datetime('now', '-7 days') THEN 1 ELSE 0 END) AS events7d,
+            SUM(CASE WHEN createdAt >= datetime('now', '-30 days') THEN 1 ELSE 0 END) AS events30d,
+            SUM(CASE WHEN createdAt >= datetime('now', '-${R} days') THEN 1 ELSE 0 END) AS eventsWindow,
+            SUM(CASE WHEN createdAt >= datetime('now', '-${R2} days') AND createdAt < datetime('now', '-${R} days') THEN 1 ELSE 0 END) AS eventsPrevWindow,
+            COUNT(DISTINCT CASE WHEN createdAt >= datetime('now', '-${R} days') THEN sessionId END) AS sessionsWindow,
+            COUNT(DISTINCT CASE WHEN createdAt >= datetime('now', '-${R2} days') AND createdAt < datetime('now', '-${R} days') THEN sessionId END) AS sessionsPrevWindow
+          FROM AnalyticsEvent
+        `),
+        c.execute(`
+          SELECT
+            date(createdAt) AS day,
+            COUNT(*) AS count,
+            ${groupColumnSql()}
+          FROM AnalyticsEvent
+          WHERE createdAt >= datetime('now', '-${R} days')
+          GROUP BY day ORDER BY day ASC
+        `),
+        c.execute(`
+          SELECT
+            event,
+            SUM(CASE WHEN createdAt >= datetime('now', '-7 days') THEN 1 ELSE 0 END) AS c7,
+            SUM(CASE WHEN createdAt >= datetime('now', '-30 days') THEN 1 ELSE 0 END) AS c30,
+            SUM(CASE WHEN createdAt >= datetime('now', '-${R} days') THEN 1 ELSE 0 END) AS cw,
+            COUNT(*) AS ctotal
+          FROM AnalyticsEvent
+          GROUP BY event
+        `),
+        c.execute({
+          sql: `
+            SELECT slug, event, COUNT(*) AS views
+            FROM AnalyticsEvent
+            WHERE slug IS NOT NULL AND slug != ''
+              AND createdAt >= datetime('now', '-${R} days')
+              AND event IN (${CONTENT_EVENTS.map((e) => `'${e}'`).join(', ')})
+            GROUP BY slug, event ORDER BY views DESC LIMIT 10
+          `,
+        }),
+        c.execute(`
+          SELECT referrer, COUNT(*) AS visits, COUNT(DISTINCT sessionId) AS sessions
+          FROM AnalyticsEvent
+          WHERE createdAt >= datetime('now', '-${R} days')
+          GROUP BY referrer
+          ORDER BY visits DESC
+          LIMIT 500
+        `),
+        c.execute(`
+          SELECT
+            COUNT(*) AS total,
+            SUM(CASE WHEN createdAt >= datetime('now', '-${R} days') THEN 1 ELSE 0 END) AS recent
+          FROM Subscriber
+        `),
+        c.execute(`
+          SELECT email, source, createdAt
+          FROM Subscriber ORDER BY createdAt DESC LIMIT 20
+        `),
+        c.execute(`
+          SELECT event, path, slug, referrer, sessionId, createdAt
+          FROM AnalyticsEvent ORDER BY createdAt DESC LIMIT 15
+        `),
+      ]);
 
     const t = totalsRes.rows[0] ?? {};
     const s = subRes.rows[0] ?? {};
-    const funnelOf = (name: EventName) =>
-      num(eventRes.rows.find((r) => r.event === name)?.c30);
+    const windowOf = (name: EventName) =>
+      num(eventRes.rows.find((r) => r.event === name)?.cw);
 
     const events: AnalyticsSnapshot['events'] = EVENT_NAMES.map((name) => {
       const row = eventRes.rows.find((r) => r.event === name);
@@ -312,28 +325,73 @@ export async function getAnalyticsSnapshot(): Promise<AnalyticsSnapshot> {
         count7d: num(row?.c7),
         count30d: num(row?.c30),
         countAll: num(row?.ctotal),
+        countWindow: num(row?.cw),
       };
-    }).sort((a, b) => b.count30d - a.count30d || b.countAll - a.countAll);
+    }).sort((a, b) => b.countWindow - a.countWindow || b.countAll - a.countAll);
+
+    // Roll raw referrer URLs up to domains (top 8 by visits).
+    const refRollup = new Map<string, { visits: number; sessions: number }>();
+    for (const r of refRes.rows) {
+      const domain = referrerDomain(r.referrer == null ? null : String(r.referrer));
+      const agg = refRollup.get(domain) ?? { visits: 0, sessions: 0 };
+      agg.visits += num(r.visits);
+      agg.sessions += num(r.sessions);
+      refRollup.set(domain, agg);
+    }
+    const topReferrers = [...refRollup.entries()]
+      .map(([domain, v]) => ({ domain, ...v }))
+      .sort((a, b) => b.visits - a.visits)
+      .slice(0, 8);
+
+    const dailyRaw = dailyRes.rows.map((r) => ({
+      day: String(r.day),
+      count: num(r.count),
+      Discovery: num(r.Discovery),
+      Education: num(r.Education),
+      Practice: num(r.Practice),
+      Conversion: num(r.Conversion),
+      Retention: num(r.Retention),
+    }));
 
     return {
       available: true,
+      range: R,
+      generatedAt: new Date().toISOString(),
       totals: {
         events: num(t.events),
+        eventsWindow: num(t.eventsWindow),
+        eventsPrevWindow: num(t.eventsPrevWindow),
         events7d: num(t.events7d),
         events30d: num(t.events30d),
-        sessions30d: num(t.sessions30d),
+        sessionsWindow: num(t.sessionsWindow),
+        sessionsPrevWindow: num(t.sessionsPrevWindow),
         subscribers: num(s.total),
-        subscribers30d: num(s.recent),
+        subscribersWindow: num(s.recent),
       },
-      daily: dailyRes.rows.map((r) => ({ day: String(r.day), count: num(r.count) })),
+      daily: zeroFillDaily(dailyRaw, R),
       events,
-      topContent: topRes.rows.map((r) => ({ slug: String(r.slug), views: num(r.views) })),
+      topContent: topRes.rows.map((r) => ({
+        slug: String(r.slug),
+        event: String(r.event) as EventName,
+        views: num(r.views),
+      })),
+      topReferrers,
       funnel: {
-        dossierStarted: funnelOf('dossier_started'),
-        dossierCompleted: funnelOf('dossier_completed'),
-        pricingViewed: funnelOf('pricing_viewed'),
-        consultationStarted: funnelOf('consultation_started'),
+        dossierStarted: windowOf('dossier_started'),
+        dossierCompleted: windowOf('dossier_completed'),
+        pricingViewed: windowOf('pricing_viewed'),
+        consultationStarted: windowOf('consultation_started'),
       },
+      recentEvents: recentRes.rows.map((r) => ({
+        event: String(r.event) as EventName,
+        label: EVENT_META[String(r.event) as EventName]?.label ?? String(r.event),
+        group: EVENT_META[String(r.event) as EventName]?.group ?? 'Discovery',
+        path: r.path == null ? null : String(r.path),
+        slug: r.slug == null ? null : String(r.slug),
+        referrer: r.referrer == null ? null : String(r.referrer),
+        sessionId: r.sessionId == null ? null : String(r.sessionId),
+        createdAt: String(r.createdAt),
+      })),
       recentSubscribers: subListRes.rows.map((r) => ({
         email: String(r.email),
         source: r.source == null ? null : String(r.source),
@@ -341,6 +399,30 @@ export async function getAnalyticsSnapshot(): Promise<AnalyticsSnapshot> {
       })),
     };
   } catch {
-    return EMPTY_SNAPSHOT;
+    return emptySnapshot(R);
+  }
+}
+
+/**
+ * Full subscriber list as CSV (mailing-list export). Returns null when the
+ * store is unreachable — the route turns that into a 503.
+ */
+export async function getAllSubscribersCsv(): Promise<string | null> {
+  try {
+    await ensureTables();
+    const c = getClient();
+    if (!c) return null;
+    const res = await c.execute(
+      'SELECT email, source, createdAt, confirmed FROM Subscriber ORDER BY createdAt DESC',
+    );
+    const header = 'email,source,joined_at,confirmed';
+    const rows = res.rows.map((r) =>
+      [r.email, r.source, r.createdAt, num(r.confirmed) === 1 ? 'yes' : 'no']
+        .map(csvEscape)
+        .join(','),
+    );
+    return [header, ...rows].join('\r\n');
+  } catch {
+    return null;
   }
 }

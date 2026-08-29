@@ -248,7 +248,7 @@ export function SacredNav() {
         >
           { }
           <img
-            src={`https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1280,c_limit/e_brightness:0.15/kalki-mirror/auth/dark-texture-bg`}
+            src={`https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1280,c_limit/e_brightness:15/kalki-mirror/auth/dark-texture-bg`}
             alt=""
             className="w-full h-full object-cover opacity-30"
             draggable={false}

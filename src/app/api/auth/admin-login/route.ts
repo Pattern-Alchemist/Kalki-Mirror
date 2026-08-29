@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { encode } from 'next-auth/jwt';
 import { getUserFromTurso, createPreAuthToken, getAuthSecret, ADMIN_ALLOWED_ROLES } from '@/lib/auth';
+import { sessionCookieName, sessionCookieSecure } from '@/lib/auth-secret';
 import { db } from '@/lib/db';
 import { rateLimit } from '@/lib/rate-limit';
 import type { UserRole } from '@prisma/client';
@@ -28,11 +29,15 @@ export const runtime = 'nodejs';
  *   429 { error }                             — rate limited
  *
  * Session creation mirrors /api/auth/2fa-verify exactly: NextAuth JWT
- * (12h) in next-auth.session-token cookie + ActiveSession row with the
+ * (12h) in the NextAuth session cookie + ActiveSession row with the
  * JTI hash for concurrent-session tracking (A3).
+ *
+ * The cookie NAME must match what next-auth's getToken() looks for:
+ * `__Secure-next-auth.session-token` on HTTPS/Vercel, the bare name on
+ * plain HTTP. Setting the bare name on production used to strand every
+ * console session in an infinite login redirect.
  */
 
-const SESSION_COOKIE = 'next-auth.session-token';
 const SESSION_MAX_AGE = 12 * 60 * 60; // 12 hours — matches NextAuth config
 
 function clientIp(request: NextRequest): string {
@@ -129,9 +134,9 @@ export async function POST(request: NextRequest) {
     });
 
     const response = NextResponse.json({ success: true });
-    response.cookies.set(SESSION_COOKIE, token, {
+    response.cookies.set(sessionCookieName(request.url), token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: sessionCookieSecure(request.url),
       sameSite: 'lax',
       path: '/',
       maxAge: SESSION_MAX_AGE,

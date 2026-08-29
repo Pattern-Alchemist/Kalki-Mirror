@@ -3,20 +3,12 @@ import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import type { UserRole } from "@prisma/client";
+import { NEXTAUTH_SECRET_FALLBACK, getAuthSecret } from "./auth-secret";
 
-/** Lazy accessor — avoids top-level throw during `next build`.
- *  Falls back to a hardcoded secret on Vercel until env var delivery is fixed. */
-const NEXTAUTH_SECRET_FALLBACK = 'qhMa86hvsUKGlY8JM3Kej0FAaq9uTZRCGqsL7LUxRJ8=';
-
-export function getAuthSecret(): string {
-  const s = process.env.NEXTAUTH_SECRET || (process.env.VERCEL === '1' ? NEXTAUTH_SECRET_FALLBACK : '');
-  if (!s) {
-    throw new Error(
-      "NEXTAUTH_SECRET is not set."
-    );
-  }
-  return s;
-}
+// Single source of truth for the secret (+ fallback) lives in auth-secret.ts,
+// shared with the middleware and every route that mints or validates sessions.
+export { getAuthSecret, NEXTAUTH_SECRET_FALLBACK };
+export { sessionCookieName, sessionCookieSecure } from "./auth-secret";
 
 // ── Direct Turso connection for auth (bypasses Prisma singleton issues) ──
 const TURSO_URL = 'libsql://kalki-mirror-pattern-alchemist.aws-ap-south-1.turso.io';

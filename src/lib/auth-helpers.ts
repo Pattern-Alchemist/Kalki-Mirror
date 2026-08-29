@@ -1,4 +1,5 @@
 import { getToken } from "next-auth/jwt";
+import { tryGetAuthSecret } from "./auth-secret";
 import { NextRequest } from "next/server";
 import { Tier } from "./data/types";
 import { TIER_ORDER } from "./utils/tier-gate";
@@ -14,7 +15,7 @@ export async function getServerTier(
     if (!request) return 'prithvi';
     const token = await getToken({
       req: request,
-      secret: process.env.NEXTAUTH_SECRET,
+      secret: tryGetAuthSecret(),
     });
     if (token?.tier && TIER_ORDER.includes(token.tier as Tier)) {
       return token.tier as Tier;
