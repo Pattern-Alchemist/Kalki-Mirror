@@ -17,6 +17,9 @@ const NAV_GROUPS: NavGroup[] = [
     links: [
       { href: '/archive', label: 'Akashic' },
       { href: '/patterns', label: 'Patterns' },
+      { href: '/breathwork', label: 'Breathwork' },
+      { href: '/sequences', label: 'Sequences' },
+      { href: '/library', label: 'Sādhanā Library' },
       { href: '/practice', label: 'Tantra' },
     ],
   },
@@ -25,6 +28,7 @@ const NAV_GROUPS: NavGroup[] = [
     links: [
       { href: '/archetypes', label: 'Archetypes' },
       { href: '/codex', label: 'Codex' },
+      { href: '/glossary', label: 'Lexicon' },
       { href: '/method', label: 'The Method' },
       { href: '/research', label: 'Research' },
     ],
@@ -33,14 +37,12 @@ const NAV_GROUPS: NavGroup[] = [
     label: 'Deeper',
     links: [
       { href: '/aghori-tantra', label: 'Aghori Tantra' },
+      { href: '/consultations', label: 'Consultations' },
       { href: '/dossier', label: 'Dossier' },
       { href: '/pricing', label: 'Membership' },
     ],
   },
 ];
-
-// Flat list for desktop
-const NAV_LINKS = NAV_GROUPS.flatMap(g => g.links);
 
 /* Links to prefetch — top-visited pages that benefit from instant navigation */
 const PREFETCH_LINKS = new Set(['/archive', '/patterns', '/practice', '/pricing']);
@@ -146,25 +148,60 @@ export function SacredNav() {
               </span>
             </Link>
 
-            {/* Desktop links */}
-            <div className="hidden lg:flex items-center gap-10">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  prefetch={PREFETCH_LINKS.has(link.href)}
-                  className={cn(
-                    'relative text-[0.8125rem] font-ui tracking-[0.18em] uppercase transition-colors duration-500 py-1 min-h-[44px] flex items-center neon-tab-glow',
-                    isActive(link.href) ? 'text-gold' : 'text-text-muted hover:text-ivory'
-                  )}
-                >
-                  {link.label}
-                  {/* CSS-only active underline — replaces framer-motion layoutId */}
-                  {isActive(link.href) && (
-                    <span className="nav-active-underline" aria-hidden="true" />
-                  )}
-                </Link>
-              ))}
+            {/* Desktop — grouped dropdown menus (CSS-only: hover + focus-within, keyboard accessible) */}
+            <div className="hidden lg:flex items-center gap-9">
+              {NAV_GROUPS.map((group) => {
+                const groupActive = group.links.some((l) => isActive(l.href));
+                return (
+                  <div key={group.label} className="relative group">
+                    <button
+                      type="button"
+                      aria-haspopup="true"
+                      className={cn(
+                        'relative text-[0.8125rem] font-ui tracking-[0.18em] uppercase transition-colors duration-500 py-1 min-h-[44px] flex items-center gap-1.5 cursor-pointer',
+                        groupActive ? 'text-gold' : 'text-text-muted hover:text-ivory'
+                      )}
+                    >
+                      {group.label}
+                      <svg
+                        className={cn(
+                          'w-2 h-2 opacity-60 transition-transform duration-300 group-hover:rotate-180',
+                          groupActive && 'rotate-180'
+                        )}
+                        viewBox="0 0 10 6"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      {/* CSS-only active underline */}
+                      {groupActive && (
+                        <span className="nav-active-underline" aria-hidden="true" />
+                      )}
+                    </button>
+                    {/* Dropdown panel — opens on hover and on keyboard focus */}
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 z-50 opacity-0 invisible translate-y-1 transition-all duration-200 ease-out group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0">
+                      <div className="glass-nav rounded-md border border-gold/15 shadow-2xl shadow-black/60 py-2 min-w-[230px]">
+                        {group.links.map((link) => (
+                          <Link
+                            key={link.href}
+                            href={link.href}
+                            prefetch={PREFETCH_LINKS.has(link.href)}
+                            className={cn(
+                              'block px-6 py-2.5 text-[0.8125rem] font-ui tracking-[0.14em] uppercase whitespace-nowrap transition-colors duration-300',
+                              isActive(link.href)
+                                ? 'text-gold bg-gold/5'
+                                : 'text-text-muted hover:text-gold hover:bg-gold/[0.04]'
+                            )}
+                          >
+                            {link.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Mobile toggle */}

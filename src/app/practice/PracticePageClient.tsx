@@ -929,12 +929,21 @@ export default function PracticeLoggerPage({ siddhisByLevel }: { siddhisByLevel:
               -- one session at a time.
             </p>
             <div className="divider-gold max-w-[120px] mx-auto mb-8" />
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3">
               <Link href="/practice/timer" className="gold-cta text-sm">
                 Silent Sitting Timer
               </Link>
               <Link href="/practice/japa" className="ghost-cta text-sm">
                 Japa Mala Counter
+              </Link>
+              <Link href="/breathwork" className="ghost-cta text-sm">
+                Breathwork Protocols
+              </Link>
+              <Link href="/sequences" className="ghost-cta text-sm">
+                Practice Sequences
+              </Link>
+              <Link href="/library" className="ghost-cta text-sm">
+                Sādhana Library
               </Link>
             </div>
           </motion.div>

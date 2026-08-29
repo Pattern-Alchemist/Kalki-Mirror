@@ -3,11 +3,18 @@ import Link from 'next/link';
 const FOOTER_LINKS = {
   Navigate: [
     { href: '/archive', label: 'The Akashic Archive' },
-    { href: '/archetypes', label: 'Mahāvidyā Archetypes' },
     { href: '/patterns', label: 'Pattern Atlas' },
-    { href: '/practice', label: 'Sādhana Instruments' },
+    { href: '/archetypes', label: 'Mahāvidyā Archetypes' },
+    { href: '/glossary', label: 'The Lexicon' },
     { href: '/method', label: 'The Mirror Method' },
     { href: '/codex', label: 'The Kalki Codex' },
+  ],
+  Practice: [
+    { href: '/breathwork', label: 'Prāṇāyāma Protocols' },
+    { href: '/sequences', label: 'Practice Sequences' },
+    { href: '/library', label: 'Sādhana Library' },
+    { href: '/practice', label: 'Sādhana Instruments' },
+    { href: '/aghori-tantra', label: 'Aghorī Tantra Course' },
   ],
   System: [
     { href: '/research', label: 'Epistemic Sources' },
@@ -23,7 +30,7 @@ export function SacredFooter() {
       <div className="divider-gold max-w-[1400px] mx-auto" />
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
           {/* Brand column */}
           <div>
             <div className="mb-6">

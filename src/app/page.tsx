@@ -89,9 +89,9 @@ export default function HomePage() {
               behavioral patterns — the loops that quietly run your relationships, ambition, and fear —
               each mapped to the specific sādhanas classical Tantra designed to dissolve it. The
               {CANONICAL.pantheonForces} forces of the Mahāvidyā pantheon act as diagnostic archetypes,
-              and the Lexicon defines {CANONICAL.lexiconTerms} Sanskrit terms with scholarly precision.
-              For seekers who want to begin with the body, {CANONICAL.breathwork} guided prāṇāyāma
-              practices and {CANONICAL.sequences} structured sequences are available with no prior
+              and the <Link href="/glossary" className="text-gold underline underline-offset-4 decoration-gold/40 hover:decoration-gold">Lexicon</Link> defines {CANONICAL.lexiconTerms} Sanskrit terms with scholarly precision.
+              For seekers who want to begin with the body, <Link href="/breathwork" className="text-gold underline underline-offset-4 decoration-gold/40 hover:decoration-gold">{CANONICAL.breathwork} guided prāṇāyāma
+              practices</Link> and <Link href="/sequences" className="text-gold underline underline-offset-4 decoration-gold/40 hover:decoration-gold">{CANONICAL.sequences} structured sequences</Link> are available with no prior
               experience required.
             </p>
             <p className="text-editorial text-foreground/90 editorial-spacing leading-relaxed">
@@ -99,6 +99,7 @@ export default function HomePage() {
               the international seeker who wants depth over decoration — source texts over slogans,
               evidence over hype, and a direct, respectful path into the world&rsquo;s most
               misunderstood spiritual tradition. Explore the <Link href="/archive" className="text-gold underline underline-offset-4 decoration-gold/40 hover:decoration-gold">Akashic Archive</Link>,
+              study the <Link href="/patterns" className="text-gold underline underline-offset-4 decoration-gold/40 hover:decoration-gold">Pattern Atlas</Link>,
               take the <Link href="/archetypes" className="text-gold underline underline-offset-4 decoration-gold/40 hover:decoration-gold">archetype diagnostic</Link>,
               or read the <Link href="/method" className="text-gold underline underline-offset-4 decoration-gold/40 hover:decoration-gold">Mirror Method</Link> in full.
             </p>
