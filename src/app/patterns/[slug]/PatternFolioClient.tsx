@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
@@ -11,6 +11,8 @@ import dynamic from 'next/dynamic';
 import { YantraLoader } from '@/components/patterns/YantraLoader';
 import { CautionBadge } from '@/components/archive/CautionBadge';
 import { BackButton } from '@/components/nav/BackButton';
+import { TermText } from '@/components/longform/TermText';
+import { track } from '@/lib/analytics/track';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp } from '@/lib/motion/tokens';
@@ -24,6 +26,7 @@ export default function PatternFolioClient({ pattern, relatedSiddhis, archetype 
   relatedSiddhis: Siddhi[];
   archetype: Archetype | null;
 }) {
+  useEffect(() => { track('pattern_viewed', { slug: pattern.slug }); }, [pattern.slug]);
   const slug = pattern.slug;
   const reduced = useNativeReducedMotion();
   const [loading, setLoading] = useState(true);
@@ -92,7 +95,7 @@ export default function PatternFolioClient({ pattern, relatedSiddhis, archetype 
 
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-4">Overview</p>
-          <p className="text-text-secondary text-lg leading-relaxed editorial-spacing">{pattern.description}</p>
+          <p className="text-text-secondary text-lg leading-relaxed editorial-spacing"><TermText text={pattern.description} /></p>
         </motion.section>
 
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
@@ -119,7 +122,7 @@ export default function PatternFolioClient({ pattern, relatedSiddhis, archetype 
 
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-4">Origin</p>
-          <p className="text-editorial">{pattern.origin}</p>
+          <p className="text-editorial"><TermText text={pattern.origin} /></p>
         </motion.section>
 
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>

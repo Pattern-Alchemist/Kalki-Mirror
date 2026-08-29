@@ -57,6 +57,10 @@ function generateLlmsTxt(): string {
     ),
   ]);
 
+  const karma = section('Karma — The Complete Map', [
+    ['What Is Karma', '/karma', 'The complete KALKI karma map: what karma actually means in Tantric psychology (saṃskāra, vāsanā, and the loop that runs a life), the shaṭ-karma six acts, the 20 patterns as karmic loops, and the practices that dissolve each one.'],
+  ]);
+
   const pantheon = section(`The Pantheon — ${C.pantheonForces} Forces`, [
     ['The Pantheon (Compendium)', '/archetypes', `The ${C.pantheonForces} archetypal forces of the KALKI system — the Ten Mahāvidyās and ${C.pantheonForces - C.mahavidyas} supplementary archetypes, each governing a specific karmic-loop pattern.`],
     ['The Ten Mahāvidyās', '/archetypes', `The great wisdom goddesses — Kālī to Kamalā — decoded as forces of tantrik psychology: dominant patterns, shadow aspects, growth pathways.`],
@@ -85,10 +89,19 @@ function generateLlmsTxt(): string {
   const library = section('The Library & Codex', [
     ['The Library', '/library', 'The sadhana library — curated practice texts and reading paths.'],
     ['The Codex', '/codex', 'The codex — structural maps of the KALKI system.'],
+    ['About the Founder', '/about', 'Kaustubh — Tantric Technologist and lineage-holder: the story and standing behind KALKI.'],
   ]);
 
   const practice = section('Practice & Courses', [
     ['The Aghorī Path', '/aghori-tantra', 'The complete Aghorī Tantra course — the left-hand path taught progressively with full safety architecture.'],
+    ['Phase I — Entering the Path', '/aghori-tantra/entering-the-path', 'Orientation, discipline, and the guru-siṣya framework: what Aghora actually is (a-ghora, not-terrible), lineage from Svacchanda Bhairava to Aghoreshwar Bhagwan Ramji, and ethical foundations.'],
+    ['Phase II — The Body as Temple', '/aghori-tantra/body-as-temple', 'Purification, the five mahābhūtas, and physical discipline as the foundation of every later practice.'],
+    ['Phase III — Mantra & Nāda', '/aghori-tantra/mantra-nada', 'Sound as instrument: mantra mechanics, the guru mantra, and the stages of japa from vaikharī to ajapā.'],
+    ['Phase IV — Yantra & Dṛṣṭi', '/aghori-tantra/yantra-drishtri', 'Sacred geometry as cognitive technology: yantra construction, bhūta-śuddhi, and trāṭaka.'],
+    ['Phase V — Bhairava & Śakti', '/aghori-tantra/bhairava-shakti', 'The dynamics of consciousness: Bhairava protocols, Kuṇḍalinī work, and the union of polarities.'],
+    ['Phase VI — Śmaśāna Contemplation', '/aghori-tantra/smashana-contemplation', 'The cremation-ground practices: avadhūta discipline, śmaśāna sādhana, and death-contemplation done safely.'],
+    ['Phase VII — Non-Dual Practice', '/aghori-tantra/non-dual-practice', 'Living Advaita: the practices that dissolve the observer-observed distinction in daily life.'],
+    ['Phase VIII — Integration', '/aghori-tantra/integration', 'Return to the marketplace: integration, service, and the Aghori principle of transcendence-through-engagement.'],
   ]);
 
   const dossier = section('The Dossier — Rite of Entry', [
@@ -113,6 +126,7 @@ ${platform}
 ${archive}
 
 ${patterns}
+${karma}
 
 ${pantheon}
 

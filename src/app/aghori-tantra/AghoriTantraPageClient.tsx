@@ -82,7 +82,7 @@ function TierBadge({ tier, showElement = true, compact = false }: { tier: string
 }
 
 /* ─── Lesson Content ─── */
-function LessonContent({ lesson, isOpen }: { lesson: CourseLesson; isOpen: boolean }) {
+function LessonContent({ lesson, isOpen, phaseId }: { lesson: CourseLesson; isOpen: boolean; phaseId: string }) {
   if (!isOpen) return null;
   return (
     <AnimatePresence>
@@ -159,6 +159,14 @@ function LessonContent({ lesson, isOpen }: { lesson: CourseLesson; isOpen: boole
               ))}
             </div>
           )}
+          <div className="pt-2">
+            <Link
+              href={`/aghori-tantra/${phaseId}/${lesson.id}`}
+              className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.15em] uppercase text-copper hover:text-gold transition-colors"
+            >
+              Open as standalone lesson page →
+            </Link>
+          </div>
         </div>
       </motion.div>
     </AnimatePresence>
@@ -257,7 +265,7 @@ function ModuleCard({ module, index, totalPhases }: { module: CourseModule; inde
                   >+</motion.span>
                 </button>
                 <div className="px-5">
-                  <LessonContent lesson={lesson} isOpen={isOpen(lesson.id)} />
+                  <LessonContent lesson={lesson} isOpen={isOpen(lesson.id)} phaseId={module.id} />
                 </div>
               </motion.div>
             ))}

@@ -26,6 +26,7 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: 'Knowledge',
     links: [
+      { href: '/karma', label: 'Karma' },
       { href: '/archetypes', label: 'Archetypes' },
       { href: '/codex', label: 'Codex' },
       { href: '/glossary', label: 'Lexicon' },
@@ -40,6 +41,7 @@ const NAV_GROUPS: NavGroup[] = [
       { href: '/consultations', label: 'Consultations' },
       { href: '/dossier', label: 'Dossier' },
       { href: '/pricing', label: 'Membership' },
+      { href: '/about', label: 'About' },
     ],
   },
 ];

@@ -1,6 +1,7 @@
 'use client';
 
 import { notFound } from 'next/navigation';
+import { track } from '@/lib/analytics/track';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
@@ -118,6 +119,7 @@ function StepTimelineItem({
    SEQUENCE DETAIL CLIENT
    ══════════════════════════════════════════════════════════════ */
 export default function SequenceFolioClient({ sequence, stepSiddhis, targetPatterns }: SequenceFolioClientProps) {
+  useEffect(() => { track('sequence_viewed', { slug: sequence.slug }); }, [sequence.slug]);
   const reduced = useNativeReducedMotion();
   const tierLabel = TIER_LABELS[sequence.minTier];
 

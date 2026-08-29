@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { track } from '@/lib/analytics/track';
 import { motion } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
@@ -23,6 +24,7 @@ const KAUSTUBH_IMG = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_
 /* ─── Main Page ─── */
 
 export default function ConsultationsPageClient({ consultationServices, patterns }: ConsultationsPageProps) {
+  useEffect(() => { track('consultation_started'); }, []);
   const reduced = useNativeReducedMotion();
 
   return (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { Search, X, ChevronRight, Lock, Volume2, ArrowLeft } from 'lucide-react';
@@ -9,6 +9,8 @@ import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import dynamic from 'next/dynamic';
 import { TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
+import { termAnchor } from '@/lib/utils/term-anchor';
+import { track } from '@/lib/analytics/track';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
@@ -177,10 +179,11 @@ function GlossaryCard({
 
   return (
     <motion.button
+      id={termAnchor(entry.term)}
       variants={staggerItem}
       onClick={onClick}
       className={cn(
-        'glass-panel p-5 text-left w-full cursor-pointer group',
+        'glass-panel p-5 text-left w-full cursor-pointer group scroll-mt-28',
         'hover:border-gold/20 transition-colors duration-300',
         'focus:outline-none focus-visible:ring-1 focus-visible:ring-gold/30'
       )}
@@ -241,8 +244,16 @@ export default function GlossaryPage({ entries: glossaryEntries, categories: CAT
   const reduced = useNativeReducedMotion();
 
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    if (search.trim().length >= 3) track('search_performed', { properties: { query: search.trim().slice(0, 100) } });
+  }, [search]);
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [expandedEntry, setExpandedEntry] = useState<GlossaryEntry | null>(null);
+
+  useEffect(() => {
+    if (expandedEntry) track('glossary_term_viewed', { slug: expandedEntry.term });
+  }, [expandedEntry?.term]);
 
   const filtered = useMemo(() => {
     let result = [...glossaryEntries];

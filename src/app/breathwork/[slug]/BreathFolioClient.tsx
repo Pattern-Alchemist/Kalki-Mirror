@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { track } from '@/lib/analytics/track';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
@@ -145,6 +146,7 @@ function PhaseTimeline({ phases, currentPhaseIndex, isActive }: {
    BREATH FOLIO CLIENT
    ══════════════════════════════════════════════════════════════ */
 export default function BreathFolioClient({ pattern }: { pattern: BreathPattern }) {
+  useEffect(() => { track('breathwork_viewed', { slug: pattern.slug }); }, [pattern.slug]);
   const reduced = useNativeReducedMotion();
   const tierLabel = TIER_LABELS[pattern.minTier];
 

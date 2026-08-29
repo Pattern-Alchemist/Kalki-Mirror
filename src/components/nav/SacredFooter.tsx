@@ -1,7 +1,9 @@
 import Link from 'next/link';
+import { NewsletterSignup } from '@/components/nav/NewsletterSignup';
 
 const FOOTER_LINKS = {
   Navigate: [
+    { href: '/karma', label: 'Karma — The Complete Map' },
     { href: '/archive', label: 'The Akashic Archive' },
     { href: '/patterns', label: 'Pattern Atlas' },
     { href: '/archetypes', label: 'Mahāvidyā Archetypes' },
@@ -17,6 +19,7 @@ const FOOTER_LINKS = {
     { href: '/aghori-tantra', label: 'Aghorī Tantra Course' },
   ],
   System: [
+    { href: '/about', label: 'About the Founder' },
     { href: '/research', label: 'Epistemic Sources' },
     { href: '/pricing', label: 'Membership Tiers' },
     { href: '/consultations', label: 'Consultations' },
@@ -42,9 +45,10 @@ export function SacredFooter() {
               Where ancient Tantric geometry meets modern computational intelligence.
               Tantrik Intelligence. Sacred Architecture. Pattern Recognition.
             </p>
-            <p className="text-gold-dim text-sm mt-4 tracking-[0.15em] uppercase font-ui">
+            <p className="text-gold-dim text-sm mt-4 tracking-[0.15em] uppercase font-ui mb-8">
               The Architecture of Karma.
             </p>
+            <NewsletterSignup source="footer" />
           </div>
 
           {/* Link columns */}

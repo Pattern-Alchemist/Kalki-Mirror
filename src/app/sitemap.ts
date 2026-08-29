@@ -3,6 +3,7 @@ import { allSiddhis } from '@/lib/data/siddhis';
 import { allPatterns } from '@/lib/data/patterns';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
 import { allSequences } from '@/lib/data/sequences';
+import { aghoriCourse } from '@/lib/data/aghori-tantra-course';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://www.astrokalki.com';
@@ -28,6 +29,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/breathwork`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/glossary`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${base}/sequences`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/karma`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
   ];
 
   const siddhiPages: MetadataRoute.Sitemap = allSiddhis.map((s) => ({
@@ -51,6 +54,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
+  // Aghorī Tantra course — 8 phase indexes + 54 standalone lesson pages
+  const aghoriPhasePages: MetadataRoute.Sitemap = aghoriCourse.map((m) => ({
+    url: `${base}/aghori-tantra/${m.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
+  const aghoriLessonPages: MetadataRoute.Sitemap = aghoriCourse.flatMap((m) =>
+    m.lessons.map((l) => ({
+      url: `${base}/aghori-tantra/${m.id}/${l.id}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    }))
+  );
+
   const sequencePages: MetadataRoute.Sitemap = allSequences.map((s) => ({
     url: `${base}/sequences/${s.slug}`,
     lastModified: new Date(),
@@ -58,5 +78,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...staticPages, ...siddhiPages, ...patternPages, ...breathworkPages, ...sequencePages];
+  return [...staticPages, ...siddhiPages, ...patternPages, ...breathworkPages, ...sequencePages, ...aghoriPhasePages, ...aghoriLessonPages];
 }

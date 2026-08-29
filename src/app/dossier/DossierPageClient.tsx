@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { track } from '@/lib/analytics/track';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { BackButton } from '@/components/nav/BackButton';
@@ -99,6 +100,7 @@ const MOON_SIGNS = [
 // ─── Page ───────────────────────────────────────────────────────────────────
 
 export default function DossierPageClient() {
+  useEffect(() => { track('dossier_started'); }, []);
   const reduced = useNativeReducedMotion() ?? false;
 
   // Form state
@@ -138,6 +140,8 @@ export default function DossierPageClient() {
       if (!res.ok) throw new Error(data.error || 'Initiation failed');
 
       setDossier(data);
+      track('dossier_completed');
+
     } catch (err) {
       setError(err instanceof Error ? err.message : 'The geometry requires recalibration.');
     } finally {

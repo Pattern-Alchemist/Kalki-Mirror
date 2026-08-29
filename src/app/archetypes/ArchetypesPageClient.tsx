@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { track } from '@/lib/analytics/track';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSyncExternalStore } from 'react';
@@ -105,6 +106,7 @@ function getServerHashSnapshot() {
 }
 
 export default function ArchetypesPage({ tenMahavidyas, allArchetypes, siddhiLookup }: ArchetypesPageProps) {
+  useEffect(() => { track('archetype_viewed'); }, []);
   // Auto-expand archetype card when navigated via hash (e.g., /archetypes#kali)
   const hash = useSyncExternalStore(subscribeHash, getHashSnapshot, getServerHashSnapshot);
   const hashSlug = hash.replace('#', '');

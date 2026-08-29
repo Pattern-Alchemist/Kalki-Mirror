@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
@@ -10,6 +11,8 @@ import dynamic from 'next/dynamic';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import { BackButton } from '@/components/nav/BackButton';
+import { TermText } from '@/components/longform/TermText';
+import { track } from '@/lib/analytics/track';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp } from '@/lib/motion/tokens';
@@ -32,6 +35,7 @@ export default function SiddhiFolioClient({ siddhi, relatedSiddhis, relatedPatte
   relatedPatterns: Pattern[];
   activeArchetype?: Archetype;
 }) {
+  useEffect(() => { track('folio_viewed', { slug: siddhi.slug }); }, [siddhi.slug]);
   const reduced = useNativeReducedMotion();
 
   const caution = getCautionLevel(siddhi.level);
@@ -93,7 +97,7 @@ export default function SiddhiFolioClient({ siddhi, relatedSiddhis, relatedPatte
           {/* Overview */}
           <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
             <p className="section-label mb-6">Overview</p>
-            <p className="text-editorial">{siddhi.summary}</p>
+            <p className="text-editorial"><TermText text={siddhi.summary} /></p>
           </motion.section>
 
           {/* Archetype connection */}

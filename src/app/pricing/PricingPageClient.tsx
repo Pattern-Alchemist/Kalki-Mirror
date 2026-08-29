@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { track } from '@/lib/analytics/track';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { PageHero } from '@/components/layout/PageHero';
@@ -90,6 +91,7 @@ function buildWhatsAppLink(tierName: string, priceStr: string, cycle: BillingCyc
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 export default function PricingPageClient({ pricingTiers: tiers }: PricingPageProps) {
+  useEffect(() => { track('pricing_viewed'); }, []);
   const { tier: currentTier, currency, setCurrency } = useTier();
   const reduced = useNativeReducedMotion();
   const [billing, setBilling] = useState<BillingCycle>('monthly');
