@@ -69,3 +69,4 @@ cloudinary-map.json.open-next/
 # Playwright E2E artifacts
 playwright-report/
 test-results/
+bun.lock
