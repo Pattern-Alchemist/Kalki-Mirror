@@ -169,3 +169,5 @@ export const transitRateLimit = createRateLimiter({ max: 20, window: 60, prefix:
 export const keyRateLimit = createRateLimiter({ max: 10, window: 60, prefix: 'key' });
 
 export const subscribeRateLimit = createRateLimiter({ max: 5, window: 300, prefix: 'subscribe' });
+
+export const yantraRateLimit = createRateLimiter({ max: 20, window: 60, prefix: 'yantra' });
