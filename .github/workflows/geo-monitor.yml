@@ -25,6 +25,11 @@ jobs:
         run: python3 scripts/geo-ops/geo-monitor.py
         env:
           GEO_TARGET: ${{ github.event.inputs.target || 'https://www.astrokalki.com' }}
+          # Search Console claim state (optional — see
+          # docs/geo/search-console-us-targeting.md). Empty until the
+          # founder verifies ownership; the check WARNs meanwhile.
+          GSC_VERIFY_METHOD: ${{ secrets.GSC_VERIFY_METHOD }}
+          GSC_VERIFICATION_TOKEN: ${{ secrets.GSC_VERIFICATION_TOKEN }}
 
       - name: Archive monitor log
         if: always()

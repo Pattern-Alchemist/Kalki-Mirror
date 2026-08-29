@@ -19,6 +19,21 @@ import { allSequences } from '@/lib/data/sequences';
 import { glossaryEntries } from '@/lib/data/glossary';
 import { TEN_MAHAVIDYAS, SUPPLEMENTARY_ARCHETYPES } from '@/lib/data/archetypes';
 
+// -------------------------------------------------------------
+// SITE_LASTMOD — the date of the last meaningful public-content
+// change (Search Console sitemap quality). Served verbatim as the
+// <lastmod> of every sitemap URL. Google ignores per-build
+// timestamps (uniform "generated just now" dates train it to
+// distrust the signal); a stable, human-bumped date keeps lastmod
+// meaningful. Bump this constant whenever corpus or marketing
+// pages materially change — nothing else.
+// -------------------------------------------------------------
+// NOTE: date-only strings parse as UTC midnight — keep this at or
+// before the current UTC date, never "today" in IST terms before
+// 05:30 IST, or lastmod lands in the future (protocol violation;
+// the geo-monitor's sitemap_lastmod check FAILs on future dates).
+export const SITE_LASTMOD = '2026-08-29'; // karma front door + Aghorī lesson routes + founder page shipped
+
 export const CANONICAL = {
   /** Folios in the Akashic Archive (siddhi entries). */
   folios: allSiddhis.length,

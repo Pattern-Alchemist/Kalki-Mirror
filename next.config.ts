@@ -111,6 +111,17 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  // Google Search Console HTML-file verification: expose the env-backed
+  // verification file at /google<token>.html (docs/geo/search-console-us-
+  // targeting.md). Path-param destination — Next 16 does not interpolate
+  // params into query-string destinations. The route is fail-closed:
+  // without GSC_VERIFICATION_TOKEN configured, every path 404s normally.
+  async rewrites() {
+    return [
+      { source: '/google:token.html', destination: '/api/gsc-verification/:token' },
+    ];
+  },
+
   outputFileTracingIncludes: {
     "/api/**": ["./db/**/*"],
     "/api/health": ["./db/**/*"],

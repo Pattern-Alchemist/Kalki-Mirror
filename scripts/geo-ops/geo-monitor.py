@@ -2,8 +2,10 @@
 """
 KALKI geo-monitor — the self-checking machine (Dossier No. 03, Part VI).
 
-Eleven checks against the live public surface. Python standard library
-only; no credentials required. Exit code 1 if any check FAILs.
+Eleven core checks plus the Search Console readiness layer
+(hreflang, GSC verification, sitemap lastmod quality) against the
+live public surface. Python standard library only; no credentials
+required. Exit code 1 if any check FAILs.
 
 Usage:
     GEO_TARGET=https://www.astrokalki.com python3 geo-monitor.py
@@ -240,6 +242,108 @@ def sitemap_size():
         record("sitemap_size", "FAIL", f"sitemap collapsed to {len(urls)} URLs")
 
 
+@check("hreflang_us")
+def hreflang_us():
+    """US targeting layer: every indexable page must declare
+    hreflang en-US + x-default (self-referencing). Checked on the
+    homepage and one representative deep page."""
+    problems = []
+    for path in ("/", "/patterns"):
+        _, body, _ = fetch(BASE + path)
+        # HTML attributes are ASCII case-insensitive; Next.js renders
+        # the camelCase form (hrefLang). Match both.
+        alternates = re.findall(
+            r'<link[^>]*rel="alternate"[^>]*>', body, re.I)
+        hreflangs = " ".join(alternates).lower()
+        has_us = 'hreflang="en-us"' in hreflangs
+        has_default = 'hreflang="x-default"' in hreflangs
+        if not (has_us and has_default):
+            problems.append(f"{path or '/'}: en-US={has_us}, x-default={has_default}")
+    if problems:
+        record("hreflang_us", "FAIL", "; ".join(problems) +
+               " — US routing signal lost")
+    else:
+        record("hreflang_us", "PASS", "en-US + x-default on / and /patterns")
+
+
+@check("gsc_verification")
+def gsc_verification():
+    """Search Console ownership verification readiness.
+    GSC_VERIFY_METHOD=dns  -> PASS (Domain property via DNS TXT; the
+                               HTML-file check is moot by design)
+    GSC_VERIFICATION_TOKEN -> fetch /google<token>.html and require
+                               the exact verification body
+    neither set            -> WARN (site not yet claimed in GSC)"""
+    method = os.environ.get("GSC_VERIFY_METHOD", "").strip().lower()
+    token = os.environ.get("GSC_VERIFICATION_TOKEN", "").strip()
+    if method == "dns":
+        record("gsc_verification", "PASS",
+               "DNS TXT method declared — HTML-file check skipped by design")
+        return
+    if not token:
+        record("gsc_verification", "WARN",
+               "not claimed yet — verify in GSC and set GSC_VERIFY_METHOD=dns "
+               "or GSC_VERIFICATION_TOKEN (docs/geo/search-console-us-targeting.md)")
+        return
+    path = f"/google{token}.html"
+    try:
+        status, body, _ = fetch(BASE + path)
+    except Exception as exc:  # noqa: BLE001
+        record("gsc_verification", "FAIL", f"{path}: probe error {exc}")
+        return
+    expected = f"google-site-verification: google{token}.html"
+    if status == 200 and expected in body:
+        record("gsc_verification", "PASS", f"{path} serves the verification body")
+    else:
+        record("gsc_verification", "FAIL",
+               f"{path}: HTTP {status}, body does not contain {expected!r}")
+
+
+@check("sitemap_lastmod")
+def sitemap_lastmod():
+    """lastmod quality for Search Console: dates must be stable
+    content dates, not per-build timestamps. Uniform dates in the
+    last 24h usually mean new Date() crept back in (or a legitimate
+    SITE_LASTMOD bump today — recheck tomorrow); future dates are
+    always wrong."""
+    _, body, _ = fetch(BASE + "/sitemap.xml")
+    entries = re.findall(r"<url>(.*?)</url>", body, re.S)
+    if not entries:
+        record("sitemap_lastmod", "FAIL", "no <url> entries in sitemap")
+        return
+    missing = sum(1 for e in entries if "<lastmod>" not in e)
+    dates = re.findall(r"<lastmod>([^<]+)</lastmod>", body)
+    now = datetime.datetime.now(datetime.timezone.utc)
+    future = []
+    fresh = []
+    for d in dates:
+        try:
+            dt = datetime.datetime.fromisoformat(d.replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if dt > now:
+            future.append(d)
+        elif (now - dt).total_seconds() < 24 * 3600:
+            fresh.append(d)
+    problems = []
+    if missing:
+        problems.append(f"{missing}/{len(entries)} URLs missing lastmod")
+    if future:
+        problems.append(f"{len(future)} future dates")
+    if problems:
+        record("sitemap_lastmod", "FAIL", "; ".join(problems))
+    elif fresh and dates and len(fresh) == len(dates):
+        record("sitemap_lastmod", "WARN",
+               "all lastmod dates within 24h — SITE_LASTMOD bumped today "
+               "(legitimate) or per-build timestamps returned (defect)")
+    elif fresh:
+        record("sitemap_lastmod", "WARN", f"{len(fresh)} of {len(dates)} dates within 24h")
+    else:
+        sample = dates[0][:10] if dates else "?"
+        record("sitemap_lastmod", "PASS",
+               f"{len(dates)} stable lastmod dates (e.g. {sample})")
+
+
 def main():
     print(f"KALKI geo-monitor — {datetime.datetime.now(datetime.timezone.utc).isoformat()}")
     print(f"target: {BASE}\n")
@@ -254,6 +358,9 @@ def main():
     jsonld_website_single()
     person_entity()
     sitemap_size()
+    hreflang_us()
+    gsc_verification()
+    sitemap_lastmod()
 
     passed = sum(1 for r in results if r["status"] == "PASS")
     warned = sum(1 for r in results if r["status"] == "WARN")
