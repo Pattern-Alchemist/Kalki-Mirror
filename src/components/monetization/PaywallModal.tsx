@@ -25,7 +25,7 @@ export function PaywallModal() {
     const tierName = nextTier ? TIER_LABELS[nextTier] : 'next';
     const msg = `I would like to upgrade to ${tierName} (${priceStr}/mo).`;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
-  }, [nextTierData]);
+  }, [nextTierData, nextTier]);
 
   // Only show for users viewing gated content who are on prithvi or jal
   const shouldShow = currentTier === 'prithvi' || currentTier === 'jal';

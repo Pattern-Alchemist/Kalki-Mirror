@@ -96,6 +96,20 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
                 // authority. Add public profiles here as they come online
                 // (LinkedIn, X, YouTube) — never invent URLs.
                 sameAs: ['https://github.com/Pattern-Alchemist'],
+                // Factual domains of expertise drawn from the corpus itself —
+                // strengthens topical-authority signals for the Person entity.
+                knowsAbout: [
+                  'Tantra',
+                  'Kashmiri Shaivism',
+                  'Vajrayāna Buddhism',
+                  'Aghorī tradition',
+                  'Haṭha Yoga',
+                  'Prāṇāyāma',
+                  'Mahāvidyās',
+                  'Sanskrit tantric texts',
+                  'Tantric psychology',
+                  'Meditation and sādhana practice',
+                ],
               },
             ],
           }),

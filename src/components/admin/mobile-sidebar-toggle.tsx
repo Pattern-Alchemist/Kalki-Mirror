@@ -14,10 +14,13 @@ export function MobileSidebarToggle() {
   // A15: Role-based navigation
   const navigation = getVisibleNav(user.role);
 
-  // Close on route change
-  useEffect(() => {
+  // Close on route change — adjusted during render (canonical React
+  // pattern; avoids setState-in-effect cascading re-render)
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   // Lock body scroll when open
   useEffect(() => {

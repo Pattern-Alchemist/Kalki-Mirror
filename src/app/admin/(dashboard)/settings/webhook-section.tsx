@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useTransition, use } from "react";
+import { useState, useEffect, useTransition, useCallback } from "react";
 import { getWebhooks, createWebhook, toggleWebhook, deleteWebhook, testWebhook } from "./webhook-actions";
 
 interface Webhook {
@@ -31,14 +31,20 @@ export function WebhookSection() {
   const [pending, startTransition] = useTransition();
   const [testResult, setTestResult] = useState<Record<string, string>>({});
 
-  useEffect(() => {
-    loadWebhooks();
-  }, []);
-
-  async function loadWebhooks() {
+  const loadWebhooks = useCallback(async () => {
     const data = await getWebhooks();
     setWebhooks(data as Webhook[]);
-  }
+  }, []);
+
+  // Initial fetch: setState happens in an async continuation, never
+  // synchronously in the effect body.
+  useEffect(() => {
+    let cancelled = false;
+    getWebhooks().then((data) => {
+      if (!cancelled) setWebhooks(data as Webhook[]);
+    });
+    return () => { cancelled = true; };
+  }, []);
 
   const toggleEvent = (ev: string) => {
     setEvents(prev =>

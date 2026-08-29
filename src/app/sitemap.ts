@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: base, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
     { url: `${base}/archive`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${base}/archetypes`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.85 },
+    // /deities canonicalized to /archetypes (308) — removed from sitemap
     { url: `${base}/patterns`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${base}/method`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/research`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
@@ -26,7 +27,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/codex`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${base}/breathwork`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/glossary`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${base}/deities`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${base}/sequences`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
   ];
 

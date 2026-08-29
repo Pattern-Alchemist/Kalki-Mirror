@@ -60,14 +60,14 @@ describe('API Auth Helpers', () => {
 
   it('getClientIp falls back to x-real-ip', async () => {
     const { getClientIp } = await import('@/lib/api-auth');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const req = { headers: { get: (n: string) => n === 'x-real-ip' ? '10.0.0.1' : null } } as any;
     expect(getClientIp(req)).toBe('10.0.0.1');
   });
 
   it('getClientIp returns unknown when no headers', async () => {
     const { getClientIp } = await import('@/lib/api-auth');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const req = { headers: { get: () => null } } as any;
     expect(getClientIp(req)).toBe('unknown');
   });

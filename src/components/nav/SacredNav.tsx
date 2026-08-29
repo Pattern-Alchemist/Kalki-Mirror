@@ -53,15 +53,33 @@ export function SacredNav() {
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
+  // Close mobile menu on route change + auto-expand the active group
+  // when the menu opens — state adjusted during render (canonical React
+  // pattern; avoids setState-in-effect cascading re-renders).
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  const [prevOpen, setPrevOpen] = useState(mobileOpen);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setMobileOpen(false);
+  }
+  if (mobileOpen !== prevOpen) {
+    setPrevOpen(mobileOpen);
+    if (mobileOpen) {
+      for (const g of NAV_GROUPS) {
+        if (g.links.some(l => isActive(l.href))) {
+          setOpenGroups({ [g.label]: true });
+          break;
+        }
+      }
+    }
+  }
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
 
   // Body scroll lock + inert on main content
   useEffect(() => {
@@ -109,20 +127,8 @@ export function SacredNav() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
   const toggleMenu = () => setMobileOpen(!mobileOpen);
   const toggleGroup = (label: string) => setOpenGroups(prev => ({ ...prev, [label]: !prev[label] }));
-
-  // Auto-expand the group containing the active link
-  useEffect(() => {
-    if (!mobileOpen) return;
-    for (const g of NAV_GROUPS) {
-      if (g.links.some(l => isActive(l.href))) {
-        setOpenGroups({ [g.label]: true });
-        break;
-      }
-    }
-  }, [pathname, mobileOpen]);
 
   return (
     <>
@@ -201,7 +207,7 @@ export function SacredNav() {
           className="absolute inset-0 bg-deep-black/90"
           aria-hidden="true"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
+          { }
           <img
             src={`https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1280,c_limit/e_brightness:0.15/kalki-mirror/auth/dark-texture-bg`}
             alt=""

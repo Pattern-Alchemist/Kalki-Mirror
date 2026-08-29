@@ -105,7 +105,7 @@ export default function PricingPageClient({ pricingTiers: tiers }: PricingPagePr
     const tierLabel = TIER_LABELS[tierId];
     const waLink = buildWhatsAppLink(tierLabel, priceStr, billing, currency);
     window.open(waLink, '_blank', 'noopener,noreferrer');
-  }, [billing, currency]);
+  }, [billing, currency, tiers]);
 
   return (
     <div className="bg-deep-black min-h-screen">

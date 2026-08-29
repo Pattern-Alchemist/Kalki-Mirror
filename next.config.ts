@@ -102,6 +102,12 @@ const nextConfig: NextConfig = {
       { source: '/tantra', destination: '/practice', permanent: true },
       { source: '/consult', destination: '/consultations', permanent: true },
       { source: '/aghoiri-tantra', destination: '/aghori-tantra', permanent: true },
+      // Canonicalization (GEO Phase 1): /deities and /archetypes previously
+      // served duplicate pantheon content. Route-level permanent redirects emit
+      // true HTTP 308s (edge-handled on Vercel) — rendering-level redirects are
+      // unreliable here because the root loading.tsx Suspense boundary commits
+      // a 200 shell before the page renders.
+      { source: '/deities', destination: '/archetypes', permanent: true },
     ];
   },
 

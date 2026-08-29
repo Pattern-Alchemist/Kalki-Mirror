@@ -1,8 +1,9 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
+import { useHydrated } from '@/hooks/useClientEnv';
 
 interface ScrollParallaxProps {
  children: React.ReactNode;
@@ -29,8 +30,7 @@ export function ScrollParallax({
  const reduced = useNativeReducedMotion();
  const ref = useRef<HTMLDivElement>(null);
  // After hydration, enable the motion wrapper. Before hydration, render children plain.
- const [hydrated, setHydrated] = useState(false);
- useEffect(() => { setHydrated(true); }, []);
+ const hydrated = useHydrated();
 
  // When disabled, reduced motion, or not yet hydrated, render children in a plain div
  if (disabled || reduced || !hydrated) {
@@ -84,8 +84,7 @@ export function ParallaxText({
 }: ParallaxTextProps) {
  const reduced = useNativeReducedMotion();
  const ref = useRef<HTMLDivElement>(null);
- const [hydrated, setHydrated] = useState(false);
- useEffect(() => { setHydrated(true); }, []);
+ const hydrated = useHydrated();
 
  if (reduced || !hydrated) {
  return <div className={className}>{children}</div>;

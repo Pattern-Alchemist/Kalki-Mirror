@@ -104,7 +104,7 @@ export function CinematicImage({
     : resolvedSrc;
 
   const imageEl = (
-    // eslint-disable-next-line @next/next/no-img-element
+     
     <img
       src={mobileSrc}
       srcSet={srcSet}

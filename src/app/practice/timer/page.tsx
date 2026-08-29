@@ -119,34 +119,37 @@ export default function MeditationTimerPage() {
     if (intervalRef.current) clearInterval(intervalRef.current);
   }, [totalSeconds]);
 
-  // Save stats when session completes
-  useEffect(() => {
-    if (phase === 'complete') {
-      const newSessions = sessionsCompleted + 1;
-      const newMinutes = totalMinutesSat + Math.round(totalSeconds / 60);
-      setSessionsCompleted(newSessions);
-      setTotalMinutesSat(newMinutes);
-      saveTimerStats({ sessionsCompleted: newSessions, totalMinutesSat: newMinutes });
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase]);
+  // Record a completed session: localStorage is the source of truth,
+  // updated atomically together with the mirrored React state. Runs in
+  // event (timeout) context — never synchronously in an effect body.
+  const recordSession = useCallback(() => {
+    const stats = loadTimerStats();
+    const newSessions = stats.sessionsCompleted + 1;
+    const newMinutes = stats.totalMinutesSat + Math.round(totalSeconds / 60);
+    setSessionsCompleted(newSessions);
+    setTotalMinutesSat(newMinutes);
+    saveTimerStats({ sessionsCompleted: newSessions, totalMinutesSat: newMinutes });
+  }, [totalSeconds]);
 
   useEffect(() => {
     if (running && remaining > 0) {
+      // Interval is re-created on each `remaining` change, so the callback
+      // always closes over the current value. Completion (remaining === 1)
+      // is handled inside the tick — an event context where setState is safe.
       intervalRef.current = setInterval(() => {
-        setRemaining(prev => {
-          if (prev <= 1) {
-            setRunning(false);
-            setPhase('complete');
-            playBell();
-            return 0;
-          }
-          return prev - 1;
-        });
+        if (remaining <= 1) {
+          setRemaining(0);
+          setRunning(false);
+          setPhase('complete');
+          playBell();
+          recordSession();
+        } else {
+          setRemaining(remaining - 1);
+        }
       }, 1000);
     }
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, [running, playBell, totalSeconds]);
+  }, [running, remaining, playBell, recordSession]);
 
   const setPreset = useCallback((seconds: number) => {
     setRunning(false);

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSyncExternalStore } from 'react';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import type { Archetype } from '@/lib/data/archetypes';
@@ -91,25 +92,39 @@ function ArchetypeDetail({ a, siddhiLookup }: { a: Archetype; siddhiLookup: Reco
   );
 }
 
+/* Location hash as an external store (SSR snapshot: empty string) */
+function subscribeHash(onChange: () => void) {
+  window.addEventListener('hashchange', onChange);
+  return () => window.removeEventListener('hashchange', onChange);
+}
+function getHashSnapshot() {
+  return window.location.hash;
+}
+function getServerHashSnapshot() {
+  return '';
+}
+
 export default function ArchetypesPage({ tenMahavidyas, allArchetypes, siddhiLookup }: ArchetypesPageProps) {
-  const [selected, setSelected] = useState<Archetype | null>(null);
+  // Auto-expand archetype card when navigated via hash (e.g., /archetypes#kali)
+  const hash = useSyncExternalStore(subscribeHash, getHashSnapshot, getServerHashSnapshot);
+  const hashSlug = hash.replace('#', '');
+  const hashMatch = hashSlug ? allArchetypes.find(a => a.id === hashSlug) ?? null : null;
+
+  // User selection overrides the hash target until the next hash change;
+  // `undefined` = untouched (hash wins), `null` = explicitly closed.
+  const [userSelected, setUserSelected] = useState<Archetype | null | undefined>(undefined);
+  const selected = userSelected !== undefined ? userSelected : hashMatch;
   const reduced = useNativeReducedMotion();
 
-  // Auto-expand archetype card when navigated via hash (e.g., /archetypes#kali)
+  // Smooth-scroll to the hash target after it expands (DOM side-effect only)
   useEffect(() => {
-    const hash = window.location.hash.replace('#', '');
-    if (hash) {
-      const match = allArchetypes.find(a => a.id === hash);
-      if (match) {
-        setSelected(match);
-        // Scroll to the card after a brief delay for render
-        setTimeout(() => {
-          const el = document.getElementById(hash);
-          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-      }
-    }
-  }, []);
+    if (!hashSlug) return;
+    const t = setTimeout(() => {
+      const el = document.getElementById(hashSlug);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+    return () => clearTimeout(t);
+  }, [hashSlug]);
 
   const maha = selected && selected.number <= 10 ? selected : null;
   const supplementary = selected && selected.number > 10 ? selected : null;
@@ -224,7 +239,7 @@ export default function ArchetypesPage({ tenMahavidyas, allArchetypes, siddhiLoo
               className="relative"
             >
               <button
-                onClick={() => setSelected(selected?.id === a.id ? null : a)}
+                onClick={() => setUserSelected(selected?.id === a.id ? null : a)}
                 className={`w-full text-left glass-chip overflow-hidden group transition-all duration-500 ${selected?.id === a.id ? 'ring-1 ring-gold/30' : ''}`}
                 style={selected?.id === a.id ? { borderColor: a.color + '44' } : undefined}
               >

@@ -71,11 +71,11 @@ export function TransitReadout({ frictions, positions }: TransitReadoutProps) {
               >
                 <div className="flex flex-wrap items-center gap-3">
                   <span style={{ color: 'var(--ivory)' }}>{f.planet1.toUpperCase()}</span>
-                  <span style={{ color: 'var(--text-muted)' }}>//</span>
+                  <span style={{ color: 'var(--text-muted)' }}>{'//'}</span>
                   <span style={{ color: 'var(--text-secondary)' }}>{f.planet2}</span>
                   {f.orb !== undefined && (
                     <>
-                      <span style={{ color: 'var(--text-muted)' }}>//</span>
+                      <span style={{ color: 'var(--text-muted)' }}>{'//'}</span>
                       <span style={{ color: 'var(--text-secondary)' }}>{f.orb.toFixed(1)}° orb</span>
                     </>
                   )}

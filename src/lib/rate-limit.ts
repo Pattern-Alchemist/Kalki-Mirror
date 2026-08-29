@@ -40,7 +40,7 @@ const kvUrl = process.env.KV_REST_API_URL;
 const kvToken = process.env.KV_REST_API_TOKEN;
 const hasKV = !!(kvUrl && kvToken);
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 let kvClient: any = null;
 let kvInitFailed = false;
 
@@ -77,7 +77,7 @@ async function kvRateLimit(cfg: RateLimitConfig): Promise<RateLimitResult> {
     const results = await pipeline.exec();
 
     // results is an array of [error, value] tuples
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const res = results as any[];
     const count = res[2]?.[1] ?? 1;
     const ttl = res[3]?.[1] ?? windowMs;

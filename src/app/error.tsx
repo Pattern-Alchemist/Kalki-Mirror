@@ -25,7 +25,7 @@ export default function Error({
     <div className="min-h-screen bg-deep-black flex items-center justify-center px-6 relative overflow-hidden">
       {/* Yantra error background — very subtle, darkened */}
       <div className="absolute inset-0 z-0 opacity-15 blur-md" aria-hidden="true">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
+        { }
         <img
           src={ERROR_BG}
           alt=""

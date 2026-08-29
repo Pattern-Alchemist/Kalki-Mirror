@@ -211,7 +211,7 @@ export default function PatternsPageClient({ patterns: allPatterns, siddhis }: P
       {!reduced && (
         <div className="fixed inset-0 z-0 overflow-hidden">
           <motion.div className="absolute inset-0" style={{ opacity: mirrorOpacity, scale: bgScale }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            { }
             <img
               src={ZONE_MIRROR}
               alt=""
@@ -223,7 +223,7 @@ export default function PatternsPageClient({ patterns: allPatterns, siddhis }: P
             />
           </motion.div>
           <motion.div className="absolute inset-0" style={{ opacity: confrontationOpacity, scale: bgScale }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            { }
             <img
               src={ZONE_CONFRONTATION}
               alt=""
@@ -235,7 +235,7 @@ export default function PatternsPageClient({ patterns: allPatterns, siddhis }: P
             />
           </motion.div>
           <motion.div className="absolute inset-0" style={{ opacity: dissolutionOpacity, scale: bgScale }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            { }
             <img
               src={ZONE_DISSOLUTION}
               alt=""
@@ -247,7 +247,7 @@ export default function PatternsPageClient({ patterns: allPatterns, siddhis }: P
             />
           </motion.div>
           <motion.div className="absolute inset-0" style={{ opacity: integrationOpacity, scale: bgScale }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            { }
             <img
               src={ZONE_INTEGRATION}
               alt=""

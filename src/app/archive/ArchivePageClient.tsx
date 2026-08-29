@@ -10,6 +10,7 @@ import {
   AnimatePresence,
 } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
+import { useMediaQuery } from '@/hooks/useClientEnv';
 import Link from 'next/link';
 import { SiddhiCard } from '@/components/archive/SiddhiCard';
 import { CautionBadge, getCautionLevel } from '@/components/archive/CautionBadge';
@@ -75,10 +76,7 @@ function KnowledgeLights({ siddhis }: { siddhis: Siddhi[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef, { once: true, margin: '-10% 0px' });
   // On mobile, only show Foundation lights (fewer animations)
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-  }, []);
+  const isMobile = useMediaQuery('(max-width: 767px)');
 
   const displaySiddhis = isMobile ? siddhis.filter(s => s.level === 'Foundation').slice(0, 12) : siddhis;
 
@@ -214,7 +212,7 @@ export default function ArchivePage({ siddhis: allSiddhis, siddhiCount, mahaVidy
       const matchTier = tierFilter === 'all' || s.minTier === tierFilter;
       return matchCat && matchSearch && matchCaution && matchTier;
     });
-  }, [filter, search, cautionFilter, tierFilter]);
+  }, [filter, search, cautionFilter, tierFilter, allSiddhis, resolveCategoryMap]);
 
   const visible = useMemo(() => filtered.slice(0, showCount), [filtered, showCount]);
   const hasMore = showCount < filtered.length;
@@ -228,7 +226,7 @@ export default function ArchivePage({ siddhis: allSiddhis, siddhiCount, mahaVidy
     const c: Record<string, number> = { OPEN: 0, MODERATE: 0, HIGH: 0, SEALED: 0 };
     allSiddhis.forEach(s => { c[getCautionLevel(s.level)]++; });
     return c;
-  }, []);
+  }, [allSiddhis]);
 
   return (
     <>
@@ -238,7 +236,7 @@ export default function ArchivePage({ siddhis: allSiddhis, siddhiCount, mahaVidy
       {!reduced && (
         <div className="fixed inset-0 z-0 overflow-hidden">
           <motion.div className="absolute inset-0" style={{ opacity: thresholdOpacity, scale: bgScale }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            { }
             <img
               src={zoneSrc(1920, ZONE_THRESHOLD)}
               alt=""
@@ -252,7 +250,7 @@ export default function ArchivePage({ siddhis: allSiddhis, siddhiCount, mahaVidy
             />
           </motion.div>
           <motion.div className="absolute inset-0" style={{ opacity: readingRoomOpacity, scale: bgScale }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            { }
             <img
               src={zoneSrc(1920, ZONE_READING_ROOM)}
               alt=""
@@ -266,7 +264,7 @@ export default function ArchivePage({ siddhis: allSiddhis, siddhiCount, mahaVidy
             />
           </motion.div>
           <motion.div className="absolute inset-0" style={{ opacity: deepOpacity, scale: bgScale }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            { }
             <img
               src={zoneSrc(1920, ZONE_DEEP)}
               alt=""

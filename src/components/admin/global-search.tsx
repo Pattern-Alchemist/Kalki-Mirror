@@ -41,9 +41,11 @@ export function GlobalSearch() {
     return () => window.removeEventListener("keydown", handler);
   }, [open]);
 
-  // Search debounce
+  // Search debounce — effect only schedules the async fetch;
+  // clearing results for an empty query is handled by deriving
+  // `visibleResults` at render time instead of setState-in-effect.
   useEffect(() => {
-    if (!query.trim()) { setResults([]); return; }
+    if (!query.trim()) return;
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(async () => {
       setLoading(true);
@@ -58,6 +60,8 @@ export function GlobalSearch() {
     }, 300);
     return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
   }, [query]);
+
+  const visibleResults = query.trim() ? results : [];
 
   const typeColors: Record<string, string> = {
     member: 'text-amber-400 bg-amber-500/10',
@@ -119,10 +123,10 @@ export function GlobalSearch() {
             </div>
 
             <div className="max-h-80 overflow-y-auto py-2">
-              {query && !loading && results.length === 0 && (
+              {query && !loading && visibleResults.length === 0 && (
                 <div className="px-4 py-8 text-center text-xs text-zinc-600">No results for &quot;{query}&quot;</div>
               )}
-              {results.map(r => (
+              {visibleResults.map(r => (
                 <button
                   key={`${r.type}-${r.id}`}
                   onClick={() => navigate(r.href)}

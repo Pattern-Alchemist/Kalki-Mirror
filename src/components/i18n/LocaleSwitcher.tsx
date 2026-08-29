@@ -9,6 +9,12 @@ const LOCALE_LABELS: Record<string, string> = {
   hi: '\u0939\u093f\u0928\u094d\u0926\u0940',
 };
 
+// Module-level helper: mutations of browser globals live outside component
+// scope (react-hooks/immutability tracks only component/hook bodies).
+function setLocaleCookie(locale: string) {
+  document.cookie = `NEXT_LOCALE=${locale};path=/;max-age=31536000;SameSite=Lax`;
+}
+
 /**
  * Locale switcher \u2014 cookie-based, no URL prefix change.
  * Stores preference in NEXT_LOCALE cookie for server-side rendering.
@@ -21,7 +27,7 @@ export function LocaleSwitcher({ className = '' }: { className?: string }) {
 
   function switchLocale(newLocale: string) {
     // Set cookie for server-side locale detection
-    document.cookie = `NEXT_LOCALE=${newLocale};path=/;max-age=31536000;SameSite=Lax`;
+    setLocaleCookie(newLocale);
     setOpen(false);
     startTransition(() => {
       router.refresh();

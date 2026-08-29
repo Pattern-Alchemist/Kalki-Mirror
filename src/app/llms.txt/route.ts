@@ -58,7 +58,7 @@ function generateLlmsTxt(): string {
   ]);
 
   const pantheon = section(`The Pantheon — ${C.pantheonForces} Forces`, [
-    ['The Pantheon (Compendium)', '/deities', `The ${C.pantheonForces} archetypal forces of the KALKI system — the Ten Mahāvidyās and ${C.pantheonForces - C.mahavidyas} supplementary archetypes, each governing a specific karmic-loop pattern.`],
+    ['The Pantheon (Compendium)', '/archetypes', `The ${C.pantheonForces} archetypal forces of the KALKI system — the Ten Mahāvidyās and ${C.pantheonForces - C.mahavidyas} supplementary archetypes, each governing a specific karmic-loop pattern.`],
     ['The Ten Mahāvidyās', '/archetypes', `The great wisdom goddesses — Kālī to Kamalā — decoded as forces of tantrik psychology: dominant patterns, shadow aspects, growth pathways.`],
   ]);
 

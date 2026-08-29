@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
+import { useMediaQuery } from '@/hooks/useClientEnv';
 import type { Siddhi } from '@/lib/data/types';
 import type { Pattern } from '@/lib/data/types';
 
@@ -16,10 +16,7 @@ const PatternCard = dynamic(() => import('@/components/patterns/PatternCard').th
 
 /* ── Hero Background: video on desktop, static bg on mobile ── */
 export function HeroBackground() {
-  const [isMobile, setIsMobile] = useState(true);
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-  }, []);
+  const isMobile = useMediaQuery('(max-width: 767px)');
 
   return (
     <>

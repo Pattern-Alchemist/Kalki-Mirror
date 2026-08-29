@@ -382,7 +382,7 @@ function StepContactScheduling({
     }
 
     return lines.join('\n');
-  }, [form]);
+  }, [form, patterns]);
 
   return (
     <div className="space-y-6">
@@ -543,7 +543,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
     }
 
     return lines.join('\n');
-  }, [form]);
+  }, [form, patterns]);
 
   const handleSubmit = useCallback(async () => {
     setFormError('');

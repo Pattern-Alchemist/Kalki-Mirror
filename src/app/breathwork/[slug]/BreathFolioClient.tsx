@@ -196,7 +196,9 @@ export default function BreathFolioClient({ pattern }: { pattern: BreathPattern 
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [isRunning, isComplete, tick]);
 
-  useEffect(() => { if (isComplete) setIsRunning(false); }, [isComplete]);
+  // isComplete implies isRunning=false everywhere: the tick() function
+  // already stops the timer when it sets completion, and handleStart()
+  // resets both together — no sync effect needed.
 
   return (
     <div className="bg-deep-black min-h-screen">

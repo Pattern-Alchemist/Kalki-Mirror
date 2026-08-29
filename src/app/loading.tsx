@@ -8,7 +8,7 @@ export default function Loading() {
     <div className="min-h-screen bg-deep-black relative overflow-hidden">
       {/* Yantra loading background — subtle, darkened */}
       <div className="absolute inset-0 z-0 opacity-20 blur-sm">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
+        { }
         <img
           src={LOADING_IMG}
           alt=""

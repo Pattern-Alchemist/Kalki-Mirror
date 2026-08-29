@@ -261,7 +261,7 @@ export default function GlossaryPage({ entries: glossaryEntries, categories: CAT
       );
     }
     return result;
-  }, [search, activeCategory]);
+  }, [search, activeCategory, glossaryEntries]);
 
   const clearFilters = () => {
     setSearch('');
@@ -518,7 +518,7 @@ export default function GlossaryPage({ entries: glossaryEntries, categories: CAT
               psychological patterns.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/deities" className="gold-cta">Explore the Pantheon</Link>
+              <Link href="/archetypes" className="gold-cta">Explore the Pantheon</Link>
               <Link href="/codex" className="ghost-cta">Return to Codex</Link>
             </div>
           </motion.div>

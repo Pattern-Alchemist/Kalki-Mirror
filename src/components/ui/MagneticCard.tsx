@@ -1,8 +1,9 @@
 'use client';
 
-import { useRef, useState, useCallback, useEffect } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
+import { useIsTouchDevice } from '@/hooks/useClientEnv';
 import { cn } from '@/lib/utils';
 
 interface MagneticCardProps {
@@ -34,10 +35,7 @@ export function MagneticCard({
   const [transform, setTransform] = useState({ rotateX: 0, rotateY: 0, x: 0, y: 0, scale: 1 });
   const [glarePos, setGlarePos] = useState({ x: 50, y: 50, opacity: 0 });
   // Detect touch device — disable 3D tilt on mobile/touch
-  const [isTouch, setIsTouch] = useState(false);
-  useEffect(() => {
-    setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0);
-  }, []);
+  const isTouch = useIsTouchDevice();
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
