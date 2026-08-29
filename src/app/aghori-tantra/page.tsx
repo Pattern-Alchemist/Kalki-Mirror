@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import { aghoriCourse, COURSE_META } from '@/lib/data/aghori-tantra-course';
+import { aghoriCourse, COURSE_LESSON_COUNT, COURSE_META } from '@/lib/data/aghori-tantra-course';
 
 export const metadata: Metadata = {
-  title: 'Aghorī Tantra — The Ashram Path | KALKI',
-  description: 'Eight phases. Fifty-four lessons. A lifetime of practice. The complete Aghorī Tantra course from foundational purification to advanced practice.',
+  title: 'Aghorī Tantra — The Ashram Path',
+  description: `Eight phases. ${COURSE_LESSON_COUNT} lessons. A lifetime of practice. The complete Aghorī Tantra course from foundational purification to advanced practice.`,
 };
 
 const AghoriTantraPageClient = dynamic(
@@ -20,7 +20,7 @@ const AghoriTantraPageClient = dynamic(
             Aghorī Tantra
           </h1>
           <p className="text-foreground text-xl md:text-2xl max-w-3xl editorial-spacing text-shadow-deep">
-            Eight phases. Fifty-four lessons.&hellip;
+            Eight phases. {COURSE_LESSON_COUNT} lessons.&hellip;
           </p>
         </div>
       </div>

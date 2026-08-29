@@ -1,28 +1,32 @@
 import type { Metadata } from 'next';
 import { allSiddhis, SIDDHI_COUNT } from '@/lib/data/siddhis';
-import { TANTRA_CATEGORIES } from '@/lib/data/tantra-categories';
+import { siddhiCategoryLabel } from '@/lib/data/tantra-categories';
 import { TEN_MAHAVIDYAS } from '@/lib/data/archetypes';
 import dynamic from 'next/dynamic';
 import type { ArchivePageProps } from './ArchivePageClient';
 
 export const metadata: Metadata = {
-  title: `The Akashic Archive — ${SIDDHI_COUNT} Siddhis | KALKI`,
+  title: `The Akashic Archive — ${SIDDHI_COUNT} Siddhis`,
   description: `${SIDDHI_COUNT} siddhis across 16 archetypes — evidence sources, authenticity scores, lineage, and tiered access. The complete Tantric practice reference.`,
 };
 
-// Pre-compute resolveCategory map so client doesn't need the TANTRA_CATEGORIES data
-const resolveCategoryMap: Record<string, string> = {};
-for (const cat of TANTRA_CATEGORIES) {
-  for (const alias of cat.siddhiAlias) {
-    resolveCategoryMap[alias.toLowerCase()] = cat.id;
-  }
+// Facet counts: public category label -> number of siddhis.
+// Only categories that actually hold folios become filter chips —
+// this eliminates dead-end filters that render "Showing 0 of 0".
+const categoryCounts: Record<string, number> = {};
+for (const s of allSiddhis) {
+  const label = siddhiCategoryLabel(s.category);
+  categoryCounts[label] = (categoryCounts[label] ?? 0) + 1;
 }
+const categoryFacets = Object.entries(categoryCounts)
+  .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+  .map(([name, count]) => ({ name, count }));
 
 const pageProps: ArchivePageProps = {
   siddhis: allSiddhis,
   siddhiCount: SIDDHI_COUNT,
   mahaVidyas: TEN_MAHAVIDYAS,
-  resolveCategoryMap,
+  categoryFacets,
 };
 
 // Dynamic import defers framer-motion (~40KB) out of

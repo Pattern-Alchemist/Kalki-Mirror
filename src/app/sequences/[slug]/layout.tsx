@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const sequence = allSequences.find((s) => s.slug === slug);
 
   if (!sequence) {
-    return { title: 'Sequence Not Found | KALKI' };
+    return { title: 'Sequence Not Found' };
   }
 
   const title = `${sequence.name}${sequence.sanskrit ? ` — ${sequence.sanskrit}` : ''} | KALKI`;

@@ -14,6 +14,7 @@ import { useMediaQuery } from '@/hooks/useClientEnv';
 import Link from 'next/link';
 import { SiddhiCard } from '@/components/archive/SiddhiCard';
 import { CautionBadge, getCautionLevel } from '@/components/archive/CautionBadge';
+import { siddhiCategoryLabel } from '@/lib/data/tantra-categories';
 import type { Siddhi, SiddhiLevel } from '@/lib/data/types';
 import type { Archetype } from '@/lib/data/archetypes';
 import { staggerContainer, staggerItem, fadeInUp } from '@/lib/motion/tokens';
@@ -25,11 +26,17 @@ import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 
+export interface CategoryFacet {
+  name: string;
+  count: number;
+}
+
 export interface ArchivePageProps {
   siddhis: Siddhi[];
   siddhiCount: number;
   mahaVidyas: Archetype[];
-  resolveCategoryMap: Record<string, string>;
+  /** Data-derived category facets — only categories that hold folios. */
+  categoryFacets: CategoryFacet[];
 }
 
 /* ─── Zone Images (Cloudinary) ──────────────────────────────────────── */
@@ -45,7 +52,6 @@ const ZONE_THRESHOLD = 'archive/banyan-archive-hero';
 const ZONE_READING_ROOM = 'archive/sacred-geometry-manuscript';
 const ZONE_DEEP = 'tantra/ancient-observatory';
 
-const CATEGORIES = ['All', 'Mantra', 'Yantra', 'Prāṇāyāma', 'Pūjā', 'Tantra', 'Dhyāna', 'Dhāraṇā', 'Dhūni', 'Śmaśāna', 'Aghora'];
 const CAUTION_FILTERS: { value: string; label: string }[] = [
   { value: 'all', label: 'All Levels' },
   { value: 'OPEN', label: 'Open' },
@@ -61,6 +67,46 @@ const TIER_FILTERS: { value: string; label: string }[] = [
   { value: 'agni', label: 'Agni' },
   { value: 'akash', label: 'Akash' },
 ];
+
+/* ─── Filter chip — shared by every facet row ─────────────────────── */
+function FilterPill({
+  active, onClick, label, count, mono = false, className,
+}: {
+  active: boolean;
+  onClick: () => void;
+  label: string;
+  count?: number;
+  mono?: boolean;
+  className?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={cn(
+        'inline-flex items-center gap-2 px-3.5 py-2 text-[0.8125rem] rounded-sm border whitespace-nowrap transition-all duration-300 active:scale-[0.97] min-h-[44px]',
+        mono ? 'font-mono tracking-[0.08em] uppercase' : 'font-ui tracking-[0.08em] uppercase',
+        active
+          ? 'bg-gold text-deep-black border-gold font-medium shadow-[0_0_18px_rgba(212,175,55,0.22)]'
+          : 'bg-surface/40 text-foreground/75 border-gold/15 hover:text-gold-dim hover:border-gold/40 hover:bg-surface/60',
+        className,
+      )}
+    >
+      <span>{label}</span>
+      {typeof count === 'number' && (
+        <span
+          className={cn(
+            'text-[0.6875rem] font-mono leading-none px-1.5 py-1 rounded-sm tabular-nums',
+            active ? 'bg-deep-black/15 text-deep-black/80' : 'bg-gold/10 text-gold-dim',
+          )}
+        >
+          {count}
+        </span>
+      )}
+    </button>
+  );
+}
 
 /* ─── Knowledge Light brightness by siddhi level ────────────────── */
 const LIGHT_OPACITY: Record<SiddhiLevel, number> = {
@@ -174,12 +220,13 @@ function ZoneDivider({ label, subtitle, index }: { label: string; subtitle: stri
 /* ══════════════════════════════════════════════════════════════
    AKASHIC ARCHIVE — Main Page
    ══════════════════════════════════════════════════════════════ */
-export default function ArchivePage({ siddhis: allSiddhis, siddhiCount, mahaVidyas, resolveCategoryMap }: ArchivePageProps) {
+export default function ArchivePage({ siddhis: allSiddhis, siddhiCount, mahaVidyas, categoryFacets }: ArchivePageProps) {
   const [filter, setFilter] = useState('All');
   const [search, setSearch] = useState('');
   const [cautionFilter, setCautionFilter] = useState('all');
   const [tierFilter, setTierFilter] = useState('all');
   const [showCount, setShowCount] = useState(12);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const reduced = useNativeReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -202,23 +249,61 @@ export default function ArchivePage({ siddhis: allSiddhis, siddhiCount, mahaVidy
   // Subtle slow zoom across entire scroll
   const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
 
-  const filtered = useMemo(() => {
-    return allSiddhis.filter((s) => {
-      const matchCat = filter === 'All' || s.category === filter || resolveCategoryMap[s.category.toLowerCase()] === filter.toLowerCase();
-      const q = search.toLowerCase();
-      const matchSearch = !q || s.name.toLowerCase().includes(q) || s.sanskrit.toLowerCase().includes(q);
-      const caution = getCautionLevel(s.level);
-      const matchCaution = cautionFilter === 'all' || caution === cautionFilter;
-      const matchTier = tierFilter === 'all' || s.minTier === tierFilter;
-      return matchCat && matchSearch && matchCaution && matchTier;
+  /* Filtered set + live facet counts. Each facet row's counts reflect the
+     OTHER two dimensions (standard faceted-search semantics), so a visitor
+     always sees what each chip would yield before tapping it — no more
+     dead-end "Showing 0 of 0" surprises. */
+  const { filtered, catCounts, cautionCounts, tierCounts } = useMemo(() => {
+    const q = search.toLowerCase();
+    const matchSearch = (s: Siddhi) =>
+      !q || s.name.toLowerCase().includes(q) || s.sanskrit.toLowerCase().includes(q);
+    const catOf = (s: Siddhi) => siddhiCategoryLabel(s.category);
+    const cautionOf = (s: Siddhi) => getCautionLevel(s.level);
+
+    const catCounts: Record<string, number> = {};
+    const cautionCounts: Record<string, number> = {};
+    const tierCounts: Record<string, number> = {};
+
+    for (const s of allSiddhis) {
+      if (!matchSearch(s)) continue;
+      const passCat = filter === 'All' || catOf(s) === filter;
+      const passCaution = cautionFilter === 'all' || cautionOf(s) === cautionFilter;
+      const passTier = tierFilter === 'all' || s.minTier === tierFilter;
+      if (passCaution && passTier) catCounts[catOf(s)] = (catCounts[catOf(s)] ?? 0) + 1;
+      if (passCat && passTier) cautionCounts[cautionOf(s)] = (cautionCounts[cautionOf(s)] ?? 0) + 1;
+      if (passCat && passCaution) tierCounts[s.minTier] = (tierCounts[s.minTier] ?? 0) + 1;
+    }
+
+    const filtered = allSiddhis.filter((s) => {
+      if (!matchSearch(s)) return false;
+      if (filter !== 'All' && catOf(s) !== filter) return false;
+      if (cautionFilter !== 'all' && cautionOf(s) !== cautionFilter) return false;
+      if (tierFilter !== 'all' && s.minTier !== tierFilter) return false;
+      return true;
     });
-  }, [filter, search, cautionFilter, tierFilter, allSiddhis, resolveCategoryMap]);
+
+    return {
+      filtered,
+      catCounts,
+      cautionCounts,
+      tierCounts,
+    };
+  }, [filter, search, cautionFilter, tierFilter, allSiddhis]);
 
   const visible = useMemo(() => filtered.slice(0, showCount), [filtered, showCount]);
   const hasMore = showCount < filtered.length;
 
   const handleFilterChange = (setter: (v: string) => void, value: string) => {
     setter(value);
+    setShowCount(12);
+  };
+
+  const hasActiveFilters = filter !== 'All' || cautionFilter !== 'all' || tierFilter !== 'all' || search !== '';
+  const clearAllFilters = () => {
+    setFilter('All');
+    setCautionFilter('all');
+    setTierFilter('all');
+    setSearch('');
     setShowCount(12);
   };
 
@@ -418,159 +503,191 @@ export default function ArchivePage({ siddhis: allSiddhis, siddhiCount, mahaVidy
                 />
               </div>
 
-              {/* Mobile: collapsible filter panel — 24 buttons is too many for horizontal scroll */}
-              <details className="md:hidden border border-gold/10 rounded-sm mb-4">
-                <summary className="px-4 py-3.5 text-sm font-ui tracking-[0.1em] uppercase text-text-muted cursor-pointer list-none flex items-center justify-between min-h-[44px]">
-                  <span>Filter Archive</span>
-                  <span className="text-gold/40 text-xs">{'\u25BC'}</span>
-                </summary>
-                <div className="px-4 pb-4 space-y-4">
-                  <div className="flex flex-wrap gap-2">
-                    {CATEGORIES.map((cat) => (
-                      <button
-                        key={cat}
-                        onClick={() => handleFilterChange(setFilter, cat)}
-                        className={cn(
-                          'px-3.5 py-2 text-[0.8125rem] font-ui tracking-[0.1em] uppercase rounded-sm transition-all duration-400 min-h-[44px]',
-                          filter === cat
-                            ? 'bg-gold text-deep-black'
-                            : 'bg-surface/30 text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
-                        )}
-                      >
-                        {cat}
-                      </button>
-                    ))}
+              {/* ── Faceted filter panel ─────────────────────────────
+                  Data-driven chips with live counts; only categories that
+                  hold folios are offered, and every chip shows what it
+                  yields. Identical groups render on mobile (disclosure)
+                  and desktop (always visible). */}
+              {(() => {
+                const filterGroups = (
+                  <div className="flex flex-col gap-5">
+                    {/* Category row */}
+                    <div>
+                      <p className="font-mono text-[0.625rem] tracking-[0.2em] uppercase text-foreground/50 mb-2">Tradition</p>
+                      <div className="flex flex-wrap gap-2">
+                        <FilterPill
+                          active={filter === 'All'}
+                          onClick={() => handleFilterChange(setFilter, 'All')}
+                          label="All"
+                          count={categoryFacets.reduce((n, f) => n + (catCounts[f.name] ?? 0), 0)}
+                        />
+                        {categoryFacets.map((f) => (
+                          <FilterPill
+                            key={f.name}
+                            active={filter === f.name}
+                            onClick={() => handleFilterChange(setFilter, f.name)}
+                            label={f.name}
+                            count={catCounts[f.name] ?? 0}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    {/* Caution row */}
+                    <div>
+                      <p className="font-mono text-[0.625rem] tracking-[0.2em] uppercase text-foreground/50 mb-2">Caution Level</p>
+                      <div className="flex flex-wrap gap-2">
+                        {CAUTION_FILTERS.map((c) => (
+                          <FilterPill
+                            key={c.value}
+                            mono
+                            active={cautionFilter === c.value}
+                            onClick={() => handleFilterChange(setCautionFilter, c.value)}
+                            label={c.label}
+                            count={c.value === 'all'
+                              ? CAUTION_FILTERS.slice(1).reduce((n, c2) => n + (cautionCounts[c2.value] ?? 0), 0)
+                              : cautionCounts[c.value] ?? 0}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    {/* Tier row */}
+                    <div>
+                      <p className="font-mono text-[0.625rem] tracking-[0.2em] uppercase text-foreground/50 mb-2">Access Tier</p>
+                      <div className="flex flex-wrap gap-2">
+                        {TIER_FILTERS.map((t) => (
+                          <FilterPill
+                            key={t.value}
+                            mono
+                            active={tierFilter === t.value}
+                            onClick={() => handleFilterChange(setTierFilter, t.value)}
+                            label={t.label}
+                            count={t.value === 'all'
+                              ? TIER_FILTERS.slice(1).reduce((n, t2) => n + (tierCounts[t2.value] ?? 0), 0)
+                              : tierCounts[t.value] ?? 0}
+                          />
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {CAUTION_FILTERS.map((c) => (
+                );
+
+                return (
+                  <>
+                    {/* Mobile: disclosure toggle — reliable button-based
+                        (native <details> felt unresponsive on iOS) with a
+                        live result count always visible. */}
+                    <div className="md:hidden">
                       <button
-                        key={c.value}
-                        onClick={() => handleFilterChange(setCautionFilter, c.value)}
-                        className={cn(
-                          'px-3.5 py-2 text-[0.8125rem] font-mono tracking-[0.1em] uppercase rounded-sm transition-all duration-400 min-h-[44px]',
-                          cautionFilter === c.value
-                            ? 'bg-gold text-deep-black'
-                            : 'text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
-                        )}
+                        type="button"
+                        onClick={() => setMobileFiltersOpen((v) => !v)}
+                        aria-expanded={mobileFiltersOpen}
+                        aria-controls="archive-filter-panel"
+                        className="w-full flex items-center justify-between gap-3 px-4 py-3.5 min-h-[44px] border border-gold/20 bg-surface/40 rounded-sm text-sm font-ui tracking-[0.12em] uppercase text-foreground/85 active:scale-[0.99] transition-all"
                       >
-                        {c.label}
+                        <span className="flex items-center gap-2.5">
+                          Filters
+                          {hasActiveFilters && (
+                            <span className="inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-gold text-deep-black text-[0.625rem] font-mono font-semibold">
+                              {[filter !== 'All', cautionFilter !== 'all', tierFilter !== 'all', search !== ''].filter(Boolean).length}
+                            </span>
+                          )}
+                        </span>
+                        <span className="flex items-center gap-3">
+                          <span className="font-mono text-[0.6875rem] tracking-[0.1em] text-gold-dim normal-case">{filtered.length} folios</span>
+                          <span className={cn('text-gold/60 text-xs transition-transform duration-300', mobileFiltersOpen && 'rotate-180')}>{'\u25BC'}</span>
+                        </span>
                       </button>
-                    ))}
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {TIER_FILTERS.map((t) => (
-                      <button
-                        key={t.value}
-                        onClick={() => handleFilterChange(setTierFilter, t.value)}
-                        className={cn(
-                          'px-3.5 py-2 text-[0.8125rem] font-mono tracking-[0.1em] uppercase rounded-sm transition-all duration-400 min-h-[44px]',
-                          tierFilter === t.value
-                            ? 'bg-gold text-deep-black'
-                            : 'text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
-                        )}
-                      >
-                        {t.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </details>
-
-              {/* Desktop: always-visible filter rows */}
-              <div className="hidden md:flex md:items-center gap-4">
-                <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-1 px-1 snap-x snap-mandatory">
-                  {CATEGORIES.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => handleFilterChange(setFilter, cat)}
-                      className={cn(
-                        'px-3.5 py-2 text-[0.8125rem] font-ui tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow min-h-[44px]',
-                        filter === cat
-                          ? 'bg-gold text-deep-black'
-                          : 'bg-surface/30 text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
+                      {mobileFiltersOpen && (
+                        <div id="archive-filter-panel" className="mt-3 p-4 border border-gold/15 bg-deep-black/60 rounded-sm">
+                          {filterGroups}
+                          {hasActiveFilters && (
+                            <button
+                              type="button"
+                              onClick={clearAllFilters}
+                              className="mt-5 w-full py-2.5 min-h-[44px] border border-gold/25 rounded-sm text-[0.75rem] font-mono tracking-[0.15em] uppercase text-gold-dim active:scale-[0.99] transition-transform"
+                            >
+                              Clear all filters
+                            </button>
+                          )}
+                        </div>
                       )}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-              </div>
+                    </div>
 
-              <div className="hidden md:flex md:items-center gap-4">
-                <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-1 px-1 snap-x snap-mandatory">
-                  {CAUTION_FILTERS.map((c) => (
-                    <button
-                      key={c.value}
-                      onClick={() => handleFilterChange(setCautionFilter, c.value)}
-                      className={cn(
-                        'px-3.5 py-2 text-[0.8125rem] font-mono tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow min-h-[44px]',
-                        cautionFilter === c.value
-                          ? 'bg-gold text-deep-black'
-                          : 'text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
-                      )}
-                    >
-                      {c.label}
-                    </button>
-                  ))}
-                </div>
+                    {/* Desktop: always-visible rows */}
+                    <div className="hidden md:block">{filterGroups}</div>
+                  </>
+                );
+              })()}
 
-                <span className="text-text-muted/30">{'\u00B7'}</span>
-
-                <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-1 px-1 snap-x snap-mandatory">
-                  {TIER_FILTERS.map((t) => (
-                    <button
-                      key={t.value}
-                      onClick={() => handleFilterChange(setTierFilter, t.value)}
-                      className={cn(
-                        'px-3.5 py-2 text-[0.8125rem] font-mono tracking-[0.1em] uppercase rounded-sm transition-all duration-400 neon-chip-glow min-h-[44px]',
-                        tierFilter === t.value
-                          ? 'bg-gold text-deep-black'
-                          : 'text-text-muted hover:text-gold-dim border border-gold/5 hover:border-gold/20'
-                      )}
-                    >
-                      {t.label}
-                    </button>
-                  ))}
-                </div>
+              {/* Result line + active filter summary */}
+              <div className="flex flex-wrap items-center gap-3">
+                <p className="font-mono text-[0.75rem] tracking-[0.12em] uppercase text-foreground/60">
+                  Showing <span className="text-gold-dim">{visible.length}</span> of{' '}
+                  <span className="text-gold-dim">{filtered.length}</span> {filtered.length === 1 ? 'folio' : 'folios'}
+                </p>
+                {hasActiveFilters && (
+                  <button
+                    type="button"
+                    onClick={clearAllFilters}
+                    className="font-mono text-[0.6875rem] tracking-[0.15em] uppercase text-gold-dim/90 hover:text-gold underline underline-offset-4 decoration-gold/30 transition-colors"
+                  >
+                    Clear filters ×
+                  </button>
+                )}
               </div>
             </div>
 
-            <p className="text-caption mb-12">
-              Showing {visible.length} of {filtered.length}
-            </p>
-
             {/* Siddhi Grid */}
             <h2 className="font-display text-2xl md:text-3xl text-foreground tracking-wide mb-8 engraved-heading">Archive Folios</h2>
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-              initial={reduced ? { opacity: 1 } : staggerContainer.hidden}
-              animate={staggerContainer.visible}
-            >
-              <AnimatePresence mode="popLayout">
-                {visible.map((s) => (
-                  <motion.div
-                    key={s.slug}
-                    layout
-                    variants={staggerItem}
-                    initial="hidden"
-                    animate="visible"
-                    exit={{ opacity: 0, scale: 0.96 }}
-                  >
-                    <SiddhiCard siddhi={s} />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </motion.div>
 
-            {hasMore && (
-              <div className="mt-10 text-center">
-                <button
-                  onClick={() => setShowCount(prev => prev + 12)}
-                  className="ghost-cta text-sm"
-                >
-                  Load More ({filtered.length - visible.length} remaining)
+            {filtered.length === 0 ? (
+              /* Empty state — explains WHY the shelf is empty and offers a
+                 one-tap way back instead of a silent "Showing 0 of 0". */
+              <div className="border border-gold/15 bg-surface/20 rounded-sm px-6 py-16 text-center max-w-xl mx-auto">
+                <p className="font-display text-2xl md:text-3xl text-foreground tracking-wide mb-4 engraved-heading">The shelf is empty here</p>
+                <p className="text-text-secondary text-sm leading-relaxed editorial-spacing mb-8">
+                  The Akashic Archive holds {allSiddhis.length} folios, but none match every
+                  filter you have selected. Loosen one filter — or clear them all — to
+                  see what the reading room offers.
+                </p>
+                <button type="button" onClick={clearAllFilters} className="gold-cta text-sm">
+                  Clear All Filters
                 </button>
               </div>
+            ) : (
+              <>
+                <motion.div
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  initial={reduced ? { opacity: 1 } : staggerContainer.hidden}
+                  animate={staggerContainer.visible}
+                >
+                  <AnimatePresence mode="popLayout">
+                    {visible.map((s) => (
+                      <motion.div
+                        key={s.slug}
+                        layout
+                        variants={staggerItem}
+                        initial="hidden"
+                        animate="visible"
+                        exit={{ opacity: 0, scale: 0.96 }}
+                      >
+                        <SiddhiCard siddhi={s} />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
+
+                {hasMore && (
+                  <div className="mt-10 text-center">
+                    <button
+                      onClick={() => setShowCount(prev => prev + 12)}
+                      className="ghost-cta text-sm"
+                    >
+                      Load More ({filtered.length - visible.length} remaining)
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </section>

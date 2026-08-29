@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 
 export const metadata: Metadata = {
-  title: 'The Kalki Codex — Digital Manifesto | KALKI',
+  title: 'The Kalki Codex — Digital Manifesto',
   description: 'A Five-Part Digital Manifesto on the Architecture of Consciousness, Pattern, and Sovereign Awareness. Classified. Shambhala Protocol.',
 };
 

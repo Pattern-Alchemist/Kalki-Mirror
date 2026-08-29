@@ -12,7 +12,7 @@ export async function generateMetadata({
   const pattern = allPatterns.find((p) => p.slug === slug);
 
   if (!pattern) {
-    return { title: 'Pattern Not Found | KALKI' };
+    return { title: 'Pattern Not Found' };
   }
 
   const title = `${pattern.name} — ${pattern.subtitle} | KALKI`;

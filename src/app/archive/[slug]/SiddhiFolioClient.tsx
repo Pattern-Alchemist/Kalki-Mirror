@@ -10,6 +10,7 @@ import { CautionBadge, getCautionLevel } from '@/components/archive/CautionBadge
 import dynamic from 'next/dynamic';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
+import { siddhiCategoryLabel } from '@/lib/data/tantra-categories';
 import { BackButton } from '@/components/nav/BackButton';
 import { TermText } from '@/components/longform/TermText';
 import { track } from '@/lib/analytics/track';
@@ -54,7 +55,7 @@ export default function SiddhiFolioClient({ siddhi, relatedSiddhis, relatedPatte
               initial={reduced ? { opacity: 1 } : fadeInUp.hidden} 
               animate={fadeInUp.visible}
             >
-              [ {siddhi.category.toUpperCase()} / {siddhi.tradition.toUpperCase()} ]
+              [ {siddhiCategoryLabel(siddhi.category).toUpperCase()} / {siddhi.tradition.toUpperCase()} ]
             </motion.p>
             <CautionBadge level={caution} />
           </div>

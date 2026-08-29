@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import type { ArchetypesPageProps } from './ArchetypesPageClient';
 
 export const metadata: Metadata = {
-  title: 'Archetypes — Ten Mahāvidyās | KALKI',
+  title: 'Archetypes — Ten Mahāvidyās',
   description: 'The ten Mahāvidyās as diagnostic archetypes — each governing a specific karmic loop. Kali, Tara, Bhuvaneshwari, and the architecture of consciousness.',
 };
 

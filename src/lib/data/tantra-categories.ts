@@ -218,6 +218,20 @@ export const TANTRA_CATEGORIES: TantraCategory[] = [
   },
 ];
 
+/** Public Sanskrit display labels for legacy English category names used in
+ *  siddhi data. Applied everywhere a category is shown to users (filter chips,
+ *  SiddhiCard footer, folio breadcrumb) so the label a visitor filters by is
+ *  exactly the label they see on the card. */
+export const SIDDHI_CATEGORY_DISPLAY: Record<string, string> = {
+  Ritual: 'Pūjā',
+  Meditation: 'Dhyāna',
+};
+
+/** Resolve the public-facing label for a siddhi's raw data category. */
+export function siddhiCategoryLabel(rawCategory: string): string {
+  return SIDDHI_CATEGORY_DISPLAY[rawCategory] ?? rawCategory;
+}
+
 /** Map any legacy category string to a TantraCategoryId */
 export function resolveCategory(legacy: string): TantraCategoryId | null {
   const lower = legacy.toLowerCase();
@@ -253,9 +267,10 @@ export function computeCategoryStats(
 /** Pre-computed stats (populated at module load from static data) */
 export const TANTRA_CATEGORY_STATS = computeCategoryStats();
 
-/** Get display-friendly categories for the archive filter (subset) */
+/** Categories that actually hold folios in the siddhi data (see archive/page.tsx
+ *  for the live facet computation). Kept for reference; the archive filter is
+ *  now data-driven so it can never offer an empty category again. */
 export const ARCHIVE_FILTER_CATEGORIES = [
   'All',
-  'Mantra', 'Yantra', 'Prāṇāyāma', 'Pūjā', 'Tantra', 'Dhyāna', 'Dhāraṇā',
-  'Dhūni', 'Śmaśāna', 'Aghora',
+  'Tantra', 'Mantra', 'Aghora', 'Prāṇāyāma', 'Pūjā', 'Dhyāna', 'Dhāraṇā', 'Yantra',
 ] as const;

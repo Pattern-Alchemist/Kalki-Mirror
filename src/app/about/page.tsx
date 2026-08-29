@@ -4,7 +4,7 @@ import { CANONICAL } from '@/lib/canonical';
 import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 
 export const metadata: Metadata = {
-  title: 'About Kaustubh — Tantric Technologist & Lineage-Holder | KALKI',
+  title: 'About Kaustubh — Tantric Technologist & Lineage-Holder',
   description:
     'KALKI was founded by Kaustubh, a Tantric Technologist and practicing lineage-holder — for the international seeker who wants depth over decoration. The story, the standing, and the standard of evidence behind the platform.',
   alternates: pageAlternates('/about'),

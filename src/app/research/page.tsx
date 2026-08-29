@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import { allSiddhis } from '@/lib/data/siddhis';
 
 export const metadata: Metadata = {
-  title: 'Research & Sources — Epistemic Rigour | KALKI',
+  title: 'Research & Sources — Epistemic Rigour',
   description: 'Epistemic transparency: every claim sourced, every score explained. Six evidence categories, three scoring dimensions, full provenance chains.',
 };
 

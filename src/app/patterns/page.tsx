@@ -7,7 +7,7 @@ import type { Pattern } from '@/lib/data/types';
 import type { Siddhi } from '@/lib/data/types';
 
 export const metadata: Metadata = {
-  title: `Pattern Atlas — ${CANONICAL.patterns} Emotional Patterns | KALKI`,
+  title: `Pattern Atlas — ${CANONICAL.patterns} Emotional Patterns`,
   description: `${CANONICAL.patterns} core patterns drawn from Aghorī, Kashmiri Shaiva, and Buddhist Vajrayāna traditions — each linked to specific siddhis and prescribed practices.`,
 };
 

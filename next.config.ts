@@ -32,6 +32,7 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "img-src 'self' data: blob: https://res.cloudinary.com https://*.vercel-insights.com",
+      "media-src 'self' blob: https://res.cloudinary.com",
       "font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com",
       "connect-src 'self' https://res.cloudinary.com https://vitals.vercel-insights.com https://va.vercel-scripts.com",
       "frame-ancestors 'none'",

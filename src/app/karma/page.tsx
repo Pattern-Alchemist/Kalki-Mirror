@@ -4,11 +4,12 @@ import { allPatterns } from '@/lib/data/patterns';
 import { allSiddhis, getSiddhiBySlug } from '@/lib/data/siddhis';
 import { glossaryEntries } from '@/lib/data/glossary';
 import { CANONICAL } from '@/lib/canonical';
+import { COURSE_LESSON_COUNT } from '@/lib/data/aghori-tantra-course';
 import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 import { TrackView } from '@/components/analytics/TrackView';
 
 export const metadata: Metadata = {
-  title: 'What Is Karma? The Complete Tantric Map — Meaning, Patterns & Dissolution | KALKI',
+  title: 'What Is Karma? The Complete Tantric Map — Meaning, Patterns & Dissolution',
   description:
     'Karma is not cosmic punishment — it is the loop of saṃskāra and vāsanā that runs your reactions on autopilot. The complete evidence-graded map: what karma means in Tantric psychology, the ṣaṭ-karma six acts, 20 karmic patterns, and the practices that dissolve each one.',
   alternates: pageAlternates('/karma'),
@@ -269,7 +270,7 @@ export default function KarmaPage() {
               >
                 <p className="font-mono text-xs text-gold tracking-[0.15em] uppercase mb-1">The Deep Path</p>
                 <h3 className="text-foreground text-base font-medium leading-snug">
-                  Aghorī Tantra Course — Eight Phases, 54 Lessons
+                  Aghorī Tantra Course — Eight Phases, {COURSE_LESSON_COUNT} Lessons
                 </h3>
               </Link>
             </div>

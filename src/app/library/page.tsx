@@ -6,7 +6,7 @@ import { aghoriCourse } from '@/lib/data/aghori-tantra-course';
 import LibraryPageClient from './LibraryPageClient';
 
 export const metadata: Metadata = {
-  title: 'The Sādhanā Library — 13 Categories of Practice | KALKI',
+  title: 'The Sādhanā Library — 13 Categories of Practice',
   description: `${SADHANA_COUNT} structured practice protocols across 13 categories of tantrik practice — Mantra, Yantra, Nyāsa, Pūjā, and beyond. Evidence-graded, lineage-traced.`,
 };
 

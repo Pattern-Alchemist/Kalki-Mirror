@@ -12,7 +12,7 @@ export async function generateMetadata({
   const siddhi = allSiddhis.find((s) => s.slug === slug);
 
   if (!siddhi) {
-    return { title: 'Siddhi Not Found | KALKI' };
+    return { title: 'Siddhi Not Found' };
   }
 
   const title = `${siddhi.name} — ${siddhi.sanskrit || 'Siddhi'} | KALKI Archive`;

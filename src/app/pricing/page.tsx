@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import { pricingTiers } from '@/lib/data/pricing';
 
 export const metadata: Metadata = {
-  title: 'The Covenant — Four Tiers | KALKI',
+  title: 'The Covenant — Four Tiers',
   description: 'Four access levels. One path to Shambhala. Prithvi, Jal, Agni, Akash — each tier unlocks deeper layers of the Akashic Archive.',
 };
 

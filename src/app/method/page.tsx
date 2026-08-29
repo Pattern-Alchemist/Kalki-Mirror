@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 
 export const metadata: Metadata = {
-  title: 'The Mirror Method — Pattern Dissolution | KALKI',
+  title: 'The Mirror Method — Pattern Dissolution',
   description: 'Five stages of pattern dissolution — from recognition to liberation. The Mirror Method maps your recurring behavioral loops to specific tantric practices from the Aghorī, Kashmiri Shaiva, and Vajrayāna traditions.',
 };
 

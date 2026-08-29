@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pattern = allBreathPatterns.find((p) => p.slug === slug);
 
   if (!pattern) {
-    return { title: 'Technique Not Found | KALKI' };
+    return { title: 'Technique Not Found' };
   }
 
   const title = `${pattern.name} — Prāṇāyāma Laboratory | KALKI`;

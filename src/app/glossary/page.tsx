@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import type { GlossaryEntry } from '@/lib/data/glossary';
 
 export const metadata: Metadata = {
-  title: `The Lexicon — ${glossaryEntries.length} Tantric Terms | KALKI`,
+  title: `The Lexicon — ${glossaryEntries.length} Tantric Terms`,
   description: `${glossaryEntries.length} Sanskrit & Tantric terms decoded in the KALKI framework. A cartographic instrument — each term is a coordinate in the map of tantrik psychology.`,
 };
 

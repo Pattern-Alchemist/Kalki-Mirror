@@ -1,5 +1,6 @@
 'use client';
 
+import { useCallback, useRef, useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
@@ -14,39 +15,52 @@ const CinematicImage = dynamic(() => import('@/components/ui/CinematicImage').th
 const SiddhiCard = dynamic(() => import('@/components/archive/SiddhiCard').then(m => ({ default: m.SiddhiCard })), { ssr: false });
 const PatternCard = dynamic(() => import('@/components/patterns/PatternCard').then(m => ({ default: m.PatternCard })), { ssr: false });
 
-/* ── Hero Background: video on desktop, static bg on mobile ── */
+/* ── Hero Background: the Kalki avatar video on every viewport ──
+   Mobile previously fell back to a static temple photo, so phones never
+   saw the rider at all. Now the video plays everywhere: the server
+   HTML still paints the static temple image instantly (LCP), this
+   component mounts a <video> with that same image as poster, and the
+   clip fades in once it can play. Mobile requests a 640px-wide
+   rendition to stay bandwidth-friendly. */
+const HERO_POSTER = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_640,c_limit/kalki-mirror/home/ancient-temple-midnight';
+const HERO_VIDEO_DESKTOP = 'https://res.cloudinary.com/b9oo5abp/video/upload/q_auto/kalki-mirror/hero-kalki-avatar-riding.mp4';
+const HERO_VIDEO_MOBILE = 'https://res.cloudinary.com/b9oo5abp/video/upload/q_auto,w_640/kalki-mirror/hero-kalki-avatar-riding.mp4';
+
 export function HeroBackground() {
   const isMobile = useMediaQuery('(max-width: 767px)');
+  const [canPlay, setCanPlay] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Media events (canplay, loadeddata) do not bubble, and a cached video can
+  // pass "ready to play" before React's direct listeners see an event — so
+  // the ref callback also inspects readyState once, keeping the fade-in from
+  // ever getting stuck at opacity 0.
+  const attachVideo = useCallback((el: HTMLVideoElement | null) => {
+    videoRef.current = el;
+    if (el && el.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) setCanPlay(true);
+  }, []);
 
   return (
-    <>
-      {!isMobile ? (
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          aria-hidden="true"
-          poster={`https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ancient-temple-midnight`}
-          className="hero-video-bg absolute inset-0 w-full h-full object-cover"
-          style={{ zIndex: 0, objectPosition: 'center' }}
-        >
-          <source src="https://res.cloudinary.com/b9oo5abp/video/upload/q_auto/kalki-mirror/hero-kalki-avatar-riding.mp4" type="video/mp4" />
-        </video>
-      ) : (
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{
-            zIndex: 0,
-            backgroundImage: 'url(https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_640,c_limit/kalki-mirror/home/ancient-temple-midnight)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            fetchPriority: 'high',
-          }}
-        />
-      )}
-    </>
+    <video
+      ref={attachVideo}
+      autoPlay
+      muted
+      loop
+      playsInline
+      aria-hidden="true"
+      poster={HERO_POSTER}
+      preload="metadata"
+      onCanPlay={() => setCanPlay(true)}
+      onLoadedData={() => setCanPlay(true)}
+      className="hero-video-bg absolute inset-0 w-full h-full object-cover transition-opacity duration-[1200ms] ease-out"
+      style={{
+        zIndex: 0,
+        objectPosition: 'center',
+        opacity: canPlay ? 1 : 0,
+      }}
+    >
+      <source src={isMobile ? HERO_VIDEO_MOBILE : HERO_VIDEO_DESKTOP} type="video/mp4" />
+    </video>
   );
 }
 

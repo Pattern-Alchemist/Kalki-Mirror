@@ -732,10 +732,18 @@ export const aghoriCourse: CourseModule[] = [
   },
 ];
 
+/** Phase count — derived, never hardcoded downstream. */
+export const COURSE_PHASE_COUNT = aghoriCourse.length;
+
+/** Total lesson count across all phases — derived, never hardcoded downstream.
+ *  Every "N lessons" claim on the site must come from this constant (or be
+ *  computed from aghoriCourse directly) so display can never drift from data. */
+export const COURSE_LESSON_COUNT = aghoriCourse.reduce((n, p) => n + p.lessons.length, 0);
+
 export const COURSE_META = {
   title: 'Aghorī Tantra',
   subtitle: 'The Pathless Path of Bhairava',
-  description: 'The most comprehensive Aghora course ever assembled for online study — from first principles to sealed esoteric practices. Eight phases. Fifty-four lessons. A lifetime of practice.',
+  description: `The most comprehensive Aghora course ever assembled for online study — from first principles to sealed esoteric practices. Eight phases. ${COURSE_LESSON_COUNT} lessons. A lifetime of practice.`,
   totalDuration: 'Phase I: 7 days orientation | Phase II: 40 days intensive | Phases III–VIII: Lifelong daily practice',
   tradition: 'Aghora / Aghoreshwar / Bhairava / Śaiva',
   source: 'Compiled from Aghora Sampradāya oral tradition, Aghoreshwar Bhagwan Ramji teachings, Govinda Das Aghori (aghori.it), field manuals, and classical Śaiva Āgama sources',

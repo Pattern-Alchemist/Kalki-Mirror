@@ -5,6 +5,7 @@ import { Lock, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Siddhi } from '@/lib/data/types';
 import { TIER_ORDER } from '@/lib/utils/tier-gate';
+import { siddhiCategoryLabel } from '@/lib/data/tantra-categories';
 import { AuthenticityMeter } from './AuthenticityMeter';
 import { CautionBadge, getCautionLevel } from './CautionBadge';
 import { MagneticCard } from '@/components/ui/MagneticCard';
@@ -50,7 +51,7 @@ export function SiddhiCard({ siddhi, className }: SiddhiCardProps) {
           {/* Bottom row: Metadata ledger */}
           <div className="flex items-center gap-3 mt-auto pt-4 border-t border-gold/5">
             <CautionBadge level={caution} />
-            <span className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-text-muted">{siddhi.category}</span>
+            <span className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-text-muted">{siddhiCategoryLabel(siddhi.category)}</span>
             <div className="flex-1" />
             <AuthenticityMeter score={siddhi.authenticityScore} />
           </div>

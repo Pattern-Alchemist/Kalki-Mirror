@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import type { ConsultationsPageProps } from './ConsultationsPageClient';
 
 export const metadata: Metadata = {
-  title: 'Consultations — Consult the Archivist | KALKI',
+  title: 'Consultations — Consult the Archivist',
   description: 'Book a consultation with Kaustubh — Tantric Technologist & Pattern Intelligence Architect. Mirror Method diagnostic, personalized sādhana prescriptions, and WhatsApp video sessions.',
 };
 

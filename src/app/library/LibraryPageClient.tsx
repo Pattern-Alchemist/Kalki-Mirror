@@ -14,6 +14,7 @@ import { TIER_LABELS, TIER_ELEMENTS, TIER_COLORS, TIER_BADGE_STYLES } from '@/li
 import type { Sadhana } from '@/lib/data/types';
 import type { Tier } from '@/lib/data/types';
 import type { TantraCategory } from '@/lib/data/tantra-categories';
+import { COURSE_LESSON_COUNT } from '@/lib/data/aghori-tantra-course';
 
 export interface LibraryPageProps {
   tantraCategories: TantraCategory[];
@@ -469,7 +470,7 @@ export default function SadhanaLibraryPage({ tantraCategories, sadhanaLibrary, s
             </Link>
             <Link href="/aghori-tantra" className="glass-chip p-5 group block hover:border-gold/20 transition-colors">
               <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors mb-1">Aghori Tantra Course</p>
-              <p className="text-foreground/40 text-xs">Eight phases. Fifty-four lessons. A lifetime of practice.</p>
+              <p className="text-foreground/40 text-xs">Eight phases. {COURSE_LESSON_COUNT} lessons. A lifetime of practice.</p>
             </Link>
             <Link href="/archetypes" className="glass-chip p-5 group block hover:border-gold/20 transition-colors">
               <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors mb-1">Mahavidya Archetypes</p>

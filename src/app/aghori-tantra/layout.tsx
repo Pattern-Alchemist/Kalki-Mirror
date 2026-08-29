@@ -1,16 +1,18 @@
 import type { Metadata } from 'next';
 import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
+import { COURSE_LESSON_COUNT } from '@/lib/data/aghori-tantra-course';
+
+const COURSE_DESCRIPTION =
+  `${COURSE_LESSON_COUNT} lessons across eight phases — from foundational orientation through non-dual integration. The most comprehensive online Aghorī Tantra course, grounded in living lineage and scholarly evidence.`;
 
 export const metadata: Metadata = {
   title: 'Aghorī Tantra Course — Eight Phases of Transformative Practice',
-  description:
-    'Fifty-four lessons across eight phases — from foundational orientation through non-dual integration. The most comprehensive online Aghorī Tantra course, grounded in living lineage and scholarly evidence.',
+  description: COURSE_DESCRIPTION,
   alternates: pageAlternates('/aghori-tantra'),
   openGraph: {
     url: canonicalUrl('/aghori-tantra'),
     title: 'Aghorī Tantra Course | KALKI',
-    description:
-      'Fifty-four lessons across eight phases — from foundational orientation through non-dual integration. The most comprehensive online Aghorī Tantra course, grounded in living lineage and scholarly evidence.',
+    description: COURSE_DESCRIPTION,
     images: [
       {
         url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/aghori-tantra/shmashana-hero',
@@ -28,7 +30,7 @@ const aghoriJsonLd = {
     {
       '@type': 'Course',
       name: 'Aghorī Tantra Course',
-      description: 'Fifty-four lessons across eight phases — from foundational orientation through non-dual integration.',
+      description: `${COURSE_LESSON_COUNT} lessons across eight phases — from foundational orientation through non-dual integration.`,
       url: `${SITE_URL}/aghori-tantra`,
       provider: { '@id': `${SITE_URL}/#organization` },
       isPartOf: { '@id': `${SITE_URL}/#website` },

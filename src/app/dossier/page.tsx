@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 
 export const metadata: Metadata = {
-  title: 'Dossier — Your Pattern Diagnosis | KALKI',
+  title: 'Dossier — Your Pattern Diagnosis',
   description: 'Your personal pattern dossier — Mirror Method diagnosis, prescribed sādhana arc, and progress tracking.',
 };
 

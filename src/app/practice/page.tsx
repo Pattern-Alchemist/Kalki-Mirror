@@ -3,7 +3,7 @@ import { allSiddhis } from '@/lib/data/siddhis';
 import PracticeLoggerPage from './PracticePageClient';
 
 export const metadata: Metadata = {
-  title: 'Practice Instruments — The Inner Laboratory | KALKI',
+  title: 'Practice Instruments — The Inner Laboratory',
   description: 'Timer, session logger, and practice tracker. Track your sādhana with precision.',
 };
 

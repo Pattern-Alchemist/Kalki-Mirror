@@ -5,7 +5,7 @@ import { allSiddhis } from '@/lib/data/siddhis';
 import { allPatterns } from '@/lib/data/patterns';
 
 export const metadata: Metadata = {
-  title: 'Practice Sequences — Sādhana Protocols | KALKI',
+  title: 'Practice Sequences — Sādhana Protocols',
   description: 'Multi-stage sādhana protocols chaining specific siddhis into coherent arcs designed to dissolve targeted emotional patterns.',
 };
 

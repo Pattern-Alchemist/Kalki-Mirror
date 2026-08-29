@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { fadeInUp, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 import { TIER_LABELS, TIER_ELEMENTS, TIER_COLORS, TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
-import type { CourseModule, CourseLesson } from '@/lib/data/aghori-tantra-course';
+import { COURSE_LESSON_COUNT, type CourseModule, type CourseLesson } from '@/lib/data/aghori-tantra-course';
 import type { Tier } from '@/lib/data/types';
 
 type CourseMeta = typeof import('@/lib/data/aghori-tantra-course').COURSE_META;
@@ -74,8 +74,8 @@ function buildPhaseNavData(course: CourseModule[]) {
 function TierBadge({ tier, showElement = true, compact = false }: { tier: string; showElement?: boolean; compact?: boolean }) {
   const t = tier as Tier;
   return (
-    <span className={cn('inline-flex items-center gap-1.5 rounded border font-mono tracking-wider', TIER_BADGE_STYLES[t as Tier] || TIER_BADGE_STYLES.prithvi, compact ? 'px-2 py-0.5 text-[0.6rem]' : 'px-2.5 py-1 text-[0.65rem]')}>
-      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: TIER_COLORS[t] }} />
+    <span className={cn('inline-flex items-center gap-1.5 rounded border font-mono tracking-wider whitespace-nowrap max-w-full', TIER_BADGE_STYLES[t as Tier] || TIER_BADGE_STYLES.prithvi, compact ? 'px-2 py-0.5 text-[0.6rem]' : 'px-2.5 py-1 text-[0.65rem]')}>
+      <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: TIER_COLORS[t] }} />
       {TIER_LABELS[t]}{showElement && <span className="opacity-50">· {TIER_ELEMENTS[t]}</span>}
     </span>
   );
@@ -536,15 +536,17 @@ export default function AghoriTantraPageClient({ aghoriCourse, courseMeta: COURS
           </div>
           <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-4">
             <p className="text-caption text-xs mb-1">Phases</p>
-            <p className="text-foreground text-sm font-medium">{aghoriCourse.length} Phases · 54 Lessons</p>
+            <p className="text-foreground text-sm font-medium">{aghoriCourse.length} Phases · {COURSE_LESSON_COUNT} Lessons</p>
           </div>
-          <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-4">
+          {/* Access tiers: full-width on mobile so the four badges wrap
+              inside the card instead of running outside its border. */}
+          <div className="bg-foreground/5 border border-foreground/10 rounded-lg p-4 col-span-2 md:col-span-1">
             <p className="text-caption text-xs mb-1">Access Tiers</p>
-            <div className="flex gap-2 mt-1">
-              <TierBadge tier="prithvi" compact />
-              <TierBadge tier="jal" compact />
-              <TierBadge tier="agni" compact />
-              <TierBadge tier="akash" compact />
+            <div className="flex flex-wrap gap-2 mt-1">
+              <TierBadge tier="prithvi" compact showElement={false} />
+              <TierBadge tier="jal" compact showElement={false} />
+              <TierBadge tier="agni" compact showElement={false} />
+              <TierBadge tier="akash" compact showElement={false} />
             </div>
           </div>
         </div>
@@ -612,7 +614,7 @@ export default function AghoriTantraPageClient({ aghoriCourse, courseMeta: COURS
         <p className="section-label mb-3">READY TO BEGIN</p>
         <p className="font-display text-2xl md:text-3xl tracking-wide mb-3">The path is open.</p>
         <p className="text-text-muted mb-8 max-w-md mx-auto editorial-spacing">
-          Eight phases. Fifty-four lessons. A lifetime of practice.
+          Eight phases. {COURSE_LESSON_COUNT} lessons. A lifetime of practice.
           Speak with Kaustubh before entering the ashram.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

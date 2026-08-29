@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import type { BreathworkPageProps } from './BreathworkPageClient';
 
 export const metadata: Metadata = {
-  title: 'Breathwork — Prāṇāyāma Protocols | KALKI',
+  title: 'Breathwork — Prāṇāyāma Protocols',
   description: `Guided prāṇāyāma protocols from the Tantric tradition. ${allBreathPatterns.length} breath patterns for channel purification, energetic activation, and meditative absorption.`,
 };
 

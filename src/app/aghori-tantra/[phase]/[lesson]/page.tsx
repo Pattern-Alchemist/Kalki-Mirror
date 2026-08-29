@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { aghoriCourse, COURSE_META } from '@/lib/data/aghori-tantra-course';
+import { aghoriCourse, COURSE_LESSON_COUNT, COURSE_META } from '@/lib/data/aghori-tantra-course';
 import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 import { TrackView } from '@/components/analytics/TrackView';
 
@@ -220,7 +220,7 @@ export default async function LessonPage({ params }: { params: Promise<{ phase: 
               {COURSE_META.subtitle}
             </p>
             <p className="text-editorial text-sm text-foreground/70 leading-relaxed max-w-xl mx-auto mb-5">
-              This lesson is part of the {COURSE_META.title} course — eight phases, fifty-four lessons,
+              This lesson is part of the {COURSE_META.title} course — eight phases, {COURSE_LESSON_COUNT} lessons,
               from first principles to sealed esoteric practice, with evidence grading throughout.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

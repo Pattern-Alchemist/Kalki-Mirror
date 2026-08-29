@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Page Not Found | KALKI',
+  title: 'Page Not Found',
   description: 'The path you seek does not exist in this archive.',
   robots: { index: false, follow: true },
 };
