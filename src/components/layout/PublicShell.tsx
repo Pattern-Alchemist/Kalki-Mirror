@@ -97,16 +97,15 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
                 disambiguatingDescription:
                   'AstroKalki is the platform home of KALKI, the Tantrik intelligence system founded by Kaustubh, published at astrokalki.com. Distinct from and not affiliated with Astrotalk (astrotalk.com), a separate astrology-services company.',
                 founder: { '@id': `${SITE_URL}/#person` },
-                // Entity cross-references. Add real public profiles here as
-                // they come online (YouTube channel, Instagram, LinkedIn) —
-                // never invent URLs. Each sameAs entry is a brand-entity
-                // anchor Google uses to bind "AstroKalki" to this domain.
+                // Entity cross-references. Only real, verified public
+                // profiles (YouTube audit 2026-08-30: @AstroKalki; Instagram
+                // main account per Task-11 reversal: @unfilteredbuddy_).
+                // Each sameAs entry is a brand-entity anchor Google uses to
+                // bind "AstroKalki" to this domain.
                 sameAs: [
                   'https://github.com/Pattern-Alchemist',
-                  // TODO(owner): append YouTube + Instagram profile URLs
-                  // branded exactly "AstroKalki", e.g.
-                  // 'https://www.youtube.com/@astrokalki',
-                  // 'https://www.instagram.com/astrokalki',
+                  'https://www.youtube.com/@AstroKalki',
+                  'https://www.instagram.com/unfilteredbuddy_/',
                 ],
               },
               {
@@ -118,9 +117,12 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
                 description:
                   'Founder of KALKI. Tantric technologist working with the Mahavidya pantheon, evidence-graded sadhana, and pattern-based spiritual psychology.',
                 // Entity cross-references generative engines use to verify
-                // authority. Add public profiles here as they come online
-                // (LinkedIn, X, YouTube) — never invent URLs.
-                sameAs: ['https://github.com/Pattern-Alchemist'],
+                // authority. Verified public profiles only — never invent URLs.
+                sameAs: [
+                  'https://github.com/Pattern-Alchemist',
+                  'https://www.youtube.com/@AstroKalki',
+                  'https://www.instagram.com/unfilteredbuddy_/',
+                ],
                 // Factual domains of expertise drawn from the corpus itself —
                 // strengthens topical-authority signals for the Person entity.
                 knowsAbout: [

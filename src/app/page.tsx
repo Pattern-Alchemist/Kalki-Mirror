@@ -8,12 +8,15 @@ import HomePageShell from './HomePageShell';
 import { HeroBackground } from './HomeClientIslands';
 
 export const metadata: Metadata = {
-  // absolute — the root layout template would append "| KALKI" to a
-  // brand-first title and produce a double suffix. (GEO kit, fix #2)
+  // absolute — the root layout template would append a second "| AstroKalki —
+  // KALKI" suffix to a brand-first title. (Brand-entity binding, 2026-08-31:
+  // the HOMEPAGE is the page Google serves for the "astrokalki" brand query,
+  // so it must carry the AstroKalki token itself, not inherit a KALKI-only
+  // title — that gap is what fed the astrotalk auto-correction.)
   title: {
-    absolute: 'KALKI — Tantrik Intelligence. Sacred Architecture. Pattern Recognition.',
+    absolute: 'AstroKalki — KALKI | Tantrik Intelligence. Sacred Architecture.',
   },
-  description: `Where ancient Tantric geometry meets modern computational intelligence. ${CANONICAL.folios} siddhi folios, ${CANONICAL.patterns} emotional patterns, and the Mirror Method framework for pattern dissolution.`,
+  description: `AstroKalki is the home of KALKI — where ancient Tantric geometry meets modern computational intelligence. ${CANONICAL.folios} siddhi folios, ${CANONICAL.patterns} emotional patterns, and the Mirror Method framework for pattern dissolution.`,
 };
 
 /* ── Static data resolved at build/request time, passed to client shell ── */
