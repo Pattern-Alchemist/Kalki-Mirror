@@ -20,6 +20,8 @@
     "db:seed": "npx tsx prisma/seed.ts",
     "test:e2e": "npx playwright test",
     "db:backup": "bash scripts/backup-db.sh",
+    "ping:indexnow": "bash scripts/ping-indexnow.sh",
+    "ping:indexnow:cron": "curl -fsS -H \"Authorization: Bearer ${CRON_SECRET}\" \"${SITE_URL:-https://www.astrokalki.com}/api/indexnow\"",
     "test": "vitest run",
     "test:watch": "vitest"
   },

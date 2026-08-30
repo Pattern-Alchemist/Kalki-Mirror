@@ -83,6 +83,24 @@ A `/google<token>.html` route is already deployed and fail-closed:
 > apex or subdomain coverage in GSC, add the Domain property (Path A) later — both can
 > coexist.
 
+### Path C — URL-prefix property via the meta tag (zero-DNS, zero-file)
+
+A third method wired into the site itself — useful when GSC offers the **HTML tag**
+option instead of the file:
+
+1. In GSC: **Add property** → **URL prefix** → `https://www.astrokalki.com`.
+2. Verification methods → **HTML tag**. Copy the `content` value of the suggested
+   meta tag — the token after `content=`, e.g. `AbC123...`.
+3. Vercel dashboard → project → **Settings → Environment Variables**:
+   - Name: `GOOGLE_SITE_VERIFICATION` · Value: the token (token only, not the
+     full `<meta>` snippet, not including `google-site-verification=`)
+4. **Deployments → ⋯ → Redeploy**. The tag then renders sitewide via
+   `src/app/layout.tsx` metadata (`verification.google`).
+5. Back in GSC → **Verify**.
+
+> Paths B and C are both live-capable and independent — whichever env var you set,
+> that method verifies. Nothing conflicts if both end up configured.
+
 ---
 
 ## 2. Submit the sitemap (2 minutes)
@@ -144,7 +162,45 @@ top entry pages, US share of total impressions rising above 40%.
 
 ---
 
-## 5. What NOT to do
+## 6. IndexNow — instant indexing beyond Google (fully automated)
+
+Google is not part of IndexNow; **Bing, Yandex, Seznam and Naver are** — and Bing
+feeds ChatGPT-era search surfaces plus DuckDuckGo. The whole loop now runs itself:
+
+| Piece | Where | State |
+|---|---|---|
+| Ownership key file `/<key>.txt` | `public/82b322319a121d16e788612d3fbb1e79.txt` | ✅ live |
+| Ping API — `GET /api/indexnow` (full sitemap), `POST` (targeted URLs), `?dryRun=1` (safe test) | `src/app/api/indexnow/route.ts` | ✅ shipped |
+| Daily cron — full-surface ping at 02:00 UTC | `vercel.json` → `/api/indexnow` | ✅ wired (needs `CRON_SECRET` env, see below) |
+| Manual full ping | `npm run ping:indexnow` (direct protocol) or `npm run ping:indexnow:cron` (through the API) | ✅ shipped |
+
+**One-time setup (2 minutes):** add `CRON_SECRET` in Vercel env vars (any strong
+random string, e.g. `openssl rand -hex 24`). Vercel automatically sends it as
+`Authorization: Bearer …` on every cron invocation — the endpoint accepts either
+that header or the IndexNow key. Without it the cron 401s (fail-closed, no noise).
+
+**After publishing or materially editing content**, ping instantly instead of
+waiting for the daily cron:
+
+```bash
+# targeted (recommend: always ping the edited URL + its hub)
+curl -fsS -X POST "https://www.astrokalki.com/api/indexnow?key=82b322319a121d16e788612d3fbb1e79" \
+  -H 'Content-Type: application/json' \
+  -d '{"urls":["https://www.astrokalki.com/guhya","https://www.astrokalki.com/"]}'
+```
+
+Responses: `200/202 ok:true` = accepted by the fan-out; `422` = URL outside the
+host (rejected locally); `401` = auth missing/wrong; `502` = fan-out unreachable
+(retry later — the daily cron self-heals).
+
+**Acceptance check:** 200/202 means *queued*, not *indexed*. Bing typically
+crawls within minutes-to-hours; check **Bing Webmaster Tools → URL Inspection**
+for the landed state (Bing WMT also accepts the same sitemap — worth a one-time
+import from GSC).
+
+---
+
+## 7. What NOT to do
 
 - **Don't set any legacy "geographic target" to India** — it doesn't exist anymore,
   but older SEO guides still suggest it. There is no country knob to turn; hreflang
@@ -160,7 +216,7 @@ top entry pages, US share of total impressions rising above 40%.
 
 ---
 
-## 6. Division of labor & current state
+## 8. Division of labor & current state
 
 | Item | Owner | State |
 |---|---|---|
@@ -168,8 +224,10 @@ top entry pages, US share of total impressions rising above 40%.
 | Sitemap: 172 URLs, priorities, stable `SITE_LASTMOD` | Super Z | ✅ live, monitor-guarded (`sitemap_lastmod`) |
 | robots.txt `Sitemap:` directive, AI-crawler policy | Super Z | ✅ live, monitor-guarded (`robots_ai_policy`) |
 | HTML-file verification route (`/google<token>.html`) | Super Z | ✅ live, fail-closed until token set |
+| Meta-tag verification (`GOOGLE_SITE_VERIFICATION` env) | Super Z | ✅ live-capable, renders when env set |
+| IndexNow key file + ping API + daily cron + npm scripts | Super Z | ✅ shipped — cron needs `CRON_SECRET` env once |
 | GSC monitor checks + optional repo secrets wiring | Super Z | ✅ shipped (`gsc_verification`) |
-| **Create + verify the GSC property (Path A or B)** | **Founder** | ⏳ this runbook, §1 |
+| **Create + verify the GSC property (Path A, B, or C)** | **Founder** | ⏳ this runbook, §1 |
 | **Submit sitemap.xml** | **Founder** | ⏳ §2 |
 | **Request indexing ×8 priority URLs** | **Founder** | ⏳ §3 |
 | **Weekly US performance read** | **Founder** | ⏳ §4 |

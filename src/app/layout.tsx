@@ -65,6 +65,15 @@ export const metadata: Metadata = {
     images: ['https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-ritual-chamber-alt'],
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-video-preview': -1, 'max-image-preview': 'large', 'max-snippet': -1 } },
+  // Google Search Console — meta-tag verification method (Path C in
+  // docs/geo/search-console-us-targeting.md). Set GOOGLE_SITE_VERIFICATION
+  // to the TOKEN ONLY (the part after google-site-verification= in GSC's
+  // meta tag, e.g. "AbC123..."). Rendered as
+  // <meta name="google-site-verification" content="…"> on every page.
+  // Runs parallel to the HTML-file route (/google<token>.html via
+  // GSC_VERIFICATION_TOKEN) and the DNS TXT method — use whichever
+  // path GSC offers first; all three can coexist safely.
+  verification: { google: process.env.GOOGLE_SITE_VERIFICATION || undefined },
   formatDetection: { telephone: false, email: false, address: false },
   icons: { icon: '/favicon.svg', apple: '/apple-touch-icon.png' },
 };

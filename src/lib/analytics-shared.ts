@@ -26,6 +26,9 @@ export const EVENT_NAMES = [
   'dossier_started',
   'dossier_completed',
   'consultation_started',
+  'wizard_step_completed',
+  'wizard_submitted',
+  'whatsapp_handoff_clicked',
   'email_subscribed',
 ] as const;
 
@@ -33,7 +36,7 @@ export type EventName = (typeof EVENT_NAMES)[number];
 
 /**
  * Event dictionary metadata (TGA §12 two-lattice dictionary, rendered
- * for humans). Every one of the 15 events carries a label + group so
+ * for humans). Every one of the 18 events carries a label + group so
  * the dashboard can teach the founder what each number means.
  */
 export const EVENT_META: Record<
@@ -53,7 +56,10 @@ export const EVENT_META: Record<
   pricing_viewed: { label: 'Pricing viewed', group: 'Conversion' },
   dossier_started: { label: 'Assessment started', group: 'Conversion' },
   dossier_completed: { label: 'Assessment completed', group: 'Conversion' },
-  consultation_started: { label: 'Consultation intent (WhatsApp)', group: 'Conversion' },
+  consultation_started: { label: 'Consultation page opened', group: 'Conversion' },
+  wizard_step_completed: { label: 'Wizard step passed', group: 'Conversion' },
+  wizard_submitted: { label: 'Intake submitted (lead captured)', group: 'Conversion' },
+  whatsapp_handoff_clicked: { label: 'WhatsApp handoff clicked', group: 'Conversion' },
   email_subscribed: { label: 'Newsletter signup', group: 'Retention' },
 };
 

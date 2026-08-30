@@ -24,6 +24,10 @@ const EVENT_NAMES = [
   'dossier_started',
   'dossier_completed',
   'consultation_started',
+  // Consultation-wizard funnel (lead-capture pipeline):
+  'wizard_step_completed',
+  'wizard_submitted',
+  'whatsapp_handoff_clicked',
   'email_subscribed',
 ] as const;
 
