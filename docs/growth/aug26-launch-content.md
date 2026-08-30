@@ -297,3 +297,118 @@ link, use `utm_medium=dm` so the pipeline shows you the mechanic works:
 ```
 https://www.astrokalki.com/consultations?utm_source=instagram&utm_medium=dm&utm_campaign=aug26-launch
 ```
+
+---
+
+## 9 · YouTube — @AstroKalki audit + fix (paste-ready)
+
+**Inventory (recon Aug 30, 2026):** ~44 Shorts + 10 long videos. Voice:
+Hinglish, dark-contrarian hooks ("EXPOSED", "Dark Truth", "System Error"),
+themes map 1:1 to the platform — karmic loops, generational karma, parental
+conditioning, relationships. THE MIRROR METHOD™ already framed with 5 stages.
+Channel keywords are strong — keep them.
+
+**CRITICAL — the About section is a dead funnel.** All four resource URLs
+404 (`/email-course`, `/birth-chart`, `/services`, `/membership`) and the IG
+handle points to `@unfilteredbuddy_`. Every viewer who clicks any link hits
+a dead page. Fix first, post second.
+
+### About section — rewrite (paste into YT Studio → Customization → Basic info)
+
+```
+AstroKalki is where Vedic Astrology meets Depth Psychology.
+
+We don't predict your future. We help you understand why the same patterns keep repeating in your life.
+Through real case studies, psychology, and Vedic wisdom, we decode relationship trauma, self-sabotage, emotional wounds, parental conditioning, and karmic loops.
+
+THE MIRROR METHOD™
+
+• Pattern Recognition
+• Emotional Origin
+• Karmic Reinforcement
+• Behavioural Expression
+• Conscious Intervention
+
+WORK WITH US
+✦ Consultations: https://www.astrokalki.com/consultations?utm_source=youtube&utm_medium=about&utm_campaign=aug26-launch
+✦ Pattern Atlas: https://www.astrokalki.com/patterns
+
+THE ARCHIVE
+✦ 56 evidence-graded siddhi folios: https://www.astrokalki.com/archive
+✦ GUHYA — paranormal case files with verdicts: https://www.astrokalki.com/guhya
+
+CONNECT
+✦ WhatsApp: +91 8920862931
+✦ Email: astrokalki.sos@gmail.com
+✦ Instagram: @lokhandekaustubh
+
+No spiritual bypassing. No sugar-coated motivation. Just the truth behind your patterns.
+```
+
+*(Only live URLs. If you later build `/email-course` or a lead magnet, add it
+back with `utm_medium=about` — the tagged consultations link above already
+shows you YT's true conversion count.)*
+
+### Per-video description template
+
+```
+[HOOK LINE — first 2 lines show in search; repeat the video's core claim here]
+
+In this episode: [3 bullet points]
+
+Work with us — Mirror Method diagnostic + sādhana prescription:
+https://www.astrokalki.com/consultations?utm_source=youtube&utm_medium=description&utm_campaign=aug26-launch
+
+The Pattern Atlas: https://www.astrokalki.com/patterns
+
+#karmicloops #patternrecognition #vedicastrology
+```
+
+### Pinned comment (every video)
+
+```
+The pattern in this video is one of 20 in the Atlas. Which one is running you?
+Book the diagnostic → https://www.astrokalki.com/consultations?utm_source=youtube&utm_medium=comment&utm_campaign=aug26-launch
+```
+
+---
+
+## 10 · Second wave — `navratri-oct26` (approved)
+
+**The concept:** Sharadiya Navratri (window Oct 11–20, 2026 — confirm tithi
+closer to date). Ten nights, ten Mahāvidyās, ten karmic loops — the site
+already frames the Mahāvidyā wheel as "ten doors". This is the calendar's
+biggest alignment between content and product.
+
+**Pre-launch (Oct 1–10):** one IG carousel + one short: "10 doors. 10
+goddesses. 10 patterns that keep you stuck. This Navratri, we open all of
+them." Tag: `utm_campaign=navratri-oct26`.
+
+**Daily short series — titles in the channel's own voice:**
+
+| Night | Mahāvidyā | Working title |
+|---|---|---|
+| 1 | Kālī | The Version of You That Has to Die This Navratri |
+| 2 | Tārā | You Don't Need Motivation. You Need a Guide Through the Dark |
+| 3 | Tripura Sundarī | What You Desire Is Running Your Life (EXPOSED) |
+| 4 | Bhuvaneśvarī | The Watcher Behind Your Anxiety |
+| 5 | Bhairavī | Your Anger Is Not the Problem. Where You Point It Is |
+| 6 | Chhinnamastā | The Cost of Feeding Everyone But Yourself |
+| 7 | Dhūmāvatī | The Void: Why Success Still Feels Empty |
+| 8 | Bagalāmukhī | Freeze: The Ancient Art of Shutting a Toxic Mouth |
+| 9 | Mātaṅgī | The Outcast Pattern: Rejection That Runs in the Family |
+| 10 | Kamalā | Money Shame Is a Karmic Loop. Here's the Door Out |
+
+**Format:** 45–60s, Hinglish hook in first 3 seconds, one pattern per night,
+end on: "Door N of 10. Tomorrow night, [goddess]." Pinned comment →
+`/archetypes?utm_source=youtube&utm_medium=comment&utm_campaign=navratri-oct26`,
+conversion nights (1, 5, 10) pin the consultations link instead.
+
+**Vijayadashami (last day) = the money post:** "Dussehra: burn the pattern,
+not just the effigy." Cross-post IG + community post + WhatsApp broadcast.
+Consultations link everywhere, `utm_campaign=navratri-oct26`.
+
+**Why this will outperform aug26-launch:** audience already primed by the
+channel's karmic-loop content; the festival gives a 10-day narrative arc
+with a built-in cliffhanger; and the Mahāvidyā framing is yours — nobody
+else in this niche runs evidence-graded goddess psychology.
