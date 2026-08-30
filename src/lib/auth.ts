@@ -11,8 +11,10 @@ export { getAuthSecret, NEXTAUTH_SECRET_FALLBACK };
 export { sessionCookieName, sessionCookieSecure } from "./auth-secret";
 
 // ── Direct Turso connection for auth (bypasses Prisma singleton issues) ──
-const TURSO_URL = 'libsql://kalki-mirror-pattern-alchemist.aws-ap-south-1.turso.io';
-const TURSO_TOKEN = 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3ODY5MDk3MDksImlkIjoiMDFhMDBjMWQtMWUwMS03YzFiLTlhYmItODUyZDgwOGRmMWVlIiwia2lkIjoiRHRnLUxVWDlCZ0VHbXVReEk5WVUzWnFqMjRPTUlGQllHZHpqYTBkT0VuUSIsInJpZCI6IjE5MjA2MDJkLTJmNTYtNDA2Yi05MDI2LWUyNTc4ZjUyMDgyMyJ9.0AavPuqz6W7qQtaHgYHscL21-1YgxlRt0DwRLBi-mHjDGemOrNX9gVkP9Ie2Zl7OXLicEDLBV29ZvHdNb9aNAQ';
+// Env-first so a future credential rotation is a Vercel env-var change, not a
+// code deploy. The inline value is the same fallback db.ts carries (G-10 debt).
+const TURSO_URL = process.env.TURSO_DATABASE_URL || 'libsql://kalki-mirror-pattern-alchemist.aws-ap-south-1.turso.io';
+const TURSO_TOKEN = process.env.TURSO_AUTH_TOKEN || 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3ODY5MDk3MDksImlkIjoiMDFhMDBjMWQtMWUwMS03YzFiLTlhYmItODUyZDgwOGRmMWVlIiwia2lkIjoiRHRnLUxVWDlCZ0VHbXVReEk5WVUzWnFqMjRPTUlGQllHZHpqYTBkT0VuUSIsInJpZCI6IjE5MjA2MDJkLTJmNTYtNDA2Yi05MDI2LWUyNTc4ZjUyMDgyMyJ9.0AavPuqz6W7qQtaHgYHscL21-1YgxlRt0DwRLBi-mHjDGemOrNX9gVkP9Ie2Zl7OXLicEDLBV29ZvHdNb9aNAQ';
 
 export async function getUserFromTurso(email: string): Promise<{ id: string; email: string; name: string | null; passwordHash: string; role: string; tier: string; twoFactorEnabled: boolean } | null> {
   const { createClient } = await import('@libsql/client');

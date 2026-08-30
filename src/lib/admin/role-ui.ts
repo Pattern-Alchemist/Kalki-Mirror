@@ -28,6 +28,7 @@ const ROLE_ORDER: Record<AdminRole, number> = {
  */
 export const ADMIN_NAV: NavItem[] = [
   { name: 'Overview', href: '/admin/overview', shortcut: '1', minRole: 'REVIEWER' },
+  { name: 'War Room', href: '/admin/war-room', shortcut: '0', minRole: 'ADMIN' },
   { name: 'Members', href: '/admin/members', shortcut: '2', minRole: 'ADMIN' },
   { name: 'Golden Keys', href: '/admin/keys', shortcut: '3', minRole: 'ADMIN' },
   { name: 'Content Studio', href: '/admin/content', shortcut: '4', minRole: 'EDITOR' },

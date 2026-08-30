@@ -90,6 +90,8 @@ export default function ConsultationsPage() {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<ConsultationRow | null>(null);
   const [savingStatus, setSavingStatus] = useState(false);
+  const [countryFilter, setCountryFilter] = useState("ALL");
+  const [kindFilter, setKindFilter] = useState("ALL");
 
   const loadPipeline = useCallback(async () => {
     setLoading(true);
@@ -113,14 +115,23 @@ export default function ConsultationsPage() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return leads;
-    return leads.filter(
-      (c) =>
+    return leads.filter((c) => {
+      if (countryFilter !== "ALL" && (c.country ?? "??") !== countryFilter) return false;
+      if (kindFilter !== "ALL" && leadSource(c).kind !== kindFilter) return false;
+      if (!q) return true;
+      return (
         c.name.toLowerCase().includes(q) ||
         c.phone.toLowerCase().includes(q) ||
-        c.request.toLowerCase().includes(q),
-    );
-  }, [leads, query]);
+        c.request.toLowerCase().includes(q)
+      );
+    });
+  }, [leads, query, countryFilter, kindFilter]);
+
+  const countries = useMemo(() => {
+    const set = new Set<string>();
+    for (const c of leads) set.add(c.country ?? "??");
+    return [...set].sort();
+  }, [leads]);
 
   const byStatus = useMemo(() => {
     const map: Record<string, ConsultationRow[]> = {};
@@ -203,6 +214,13 @@ export default function ConsultationsPage() {
             placeholder="Search name, phone, intake…"
             className="w-56 rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-amber-500/40 focus:outline-none"
           />
+          <a
+            href="/api/admin/consultations/export"
+            className="rounded-lg border border-zinc-800 px-3 py-2 text-xs font-medium text-zinc-400 transition-colors hover:border-amber-500/30 hover:text-amber-300"
+            title="Download every lead as CSV (ADMIN+; audit-logged)"
+          >
+            Export CSV
+          </a>
           <button
             onClick={loadPipeline}
             className="rounded-lg border border-zinc-800 px-3 py-2 text-xs font-medium text-zinc-400 transition-colors hover:border-amber-500/30 hover:text-amber-300"
@@ -233,6 +251,36 @@ export default function ConsultationsPage() {
         <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</p>
       )}
       {loading && <p className="text-sm text-zinc-500">Loading pipeline…</p>}
+
+      {/* Geo + source-kind filter chips (client-side over the loaded board) */}
+      {!loading && leads.length > 0 && (
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-zinc-600">Geo:</span>
+            {(["ALL", ...countries] as string[]).map((c) => (
+              <button
+                key={c}
+                onClick={() => setCountryFilter(c)}
+                className={`rounded-full border px-2 py-0.5 transition ${countryFilter === c ? "border-amber-500/40 bg-amber-500/10 text-amber-300" : "border-zinc-800 text-zinc-500 hover:text-zinc-300"}`}
+              >
+                {c === "ALL" ? "all" : c === "??" ? "unknown" : c}
+              </button>
+            ))}
+          </div>
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-zinc-600">Source:</span>
+            {(["ALL", "organic", "referral", "paid", "direct"] as const).map((kind) => (
+              <button
+                key={kind}
+                onClick={() => setKindFilter(kind)}
+                className={`rounded-full border px-2 py-0.5 capitalize transition ${kindFilter === kind ? "border-amber-500/40 bg-amber-500/10 text-amber-300" : "border-zinc-800 text-zinc-500 hover:text-zinc-300"}`}
+              >
+                {kind.toLowerCase()}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Kanban board — horizontal snap-scroll on small screens, 5-col grid on xl */}
       <div className="overflow-x-auto pb-2 snap-x snap-mandatory xl:overflow-visible">
@@ -330,7 +378,16 @@ function LeadDrawer({
   onDelete: () => void;
 }) {
   const [notes, setNotes] = useState(lead.notes ?? "");
-  useEffect(() => setNotes(lead.notes ?? ""), [lead.id, lead.notes]);
+  // Render-time state adjustment (react-hooks/set-state-in-effect): reset the
+  // draft when a different lead is opened or its server-side notes change —
+  // same semantics as the previous effect-based reset, without the effect.
+  const [prevId, setPrevId] = useState(lead.id);
+  const [prevNotes, setPrevNotes] = useState<string | null>(lead.notes);
+  if (prevId !== lead.id || prevNotes !== lead.notes) {
+    setPrevId(lead.id);
+    setPrevNotes(lead.notes);
+    setNotes(lead.notes ?? "");
+  }
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
