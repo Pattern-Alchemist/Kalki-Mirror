@@ -24,7 +24,7 @@
   --color-granite: var(--granite);
   --color-copper: var(--copper);
   --color-crimson: var(--crimson);
-  --font-display: var(--font-cormorant), 'Cormorant Garamond', 'Georgia', serif;
+  --font-display: var(--font-cinzel), var(--font-cormorant), 'Cormorant Garamond', 'Georgia', serif;
   --font-body: var(--font-inter), 'Inter', system-ui, sans-serif;
   --font-ui: var(--font-inter), 'Inter', system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), 'JetBrains Mono', 'IBM Plex Mono', monospace;
@@ -116,7 +116,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 300;
+    font-weight: 500;
     font-feature-settings: 'kern' 1, 'liga' 1, 'dlig' 1;
   }
 
@@ -489,34 +489,44 @@
    BUTTONS — Engraved Brass & Wax Seal
    ========================================================== */
 
-/* Gold CTA — solid brass button with lightning hover */
+/* Gold CTA — beveled metallic plate. The corner cut + glyph-shaped glow
+   (drop-shadow, which survives clip-path where box-shadow cannot) give it
+   a forged, modern presence; the lightning sweep stays on hover. */
 .gold-cta {
+  --bevel: 9px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--bevel)) 0,
+    100% var(--bevel),
+    100% 100%,
+    var(--bevel) 100%,
+    0 calc(100% - var(--bevel))
+  );
   background: linear-gradient(
     135deg,
-    var(--gold-bright) 0%,
-    var(--gold) 50%,
-    var(--bronze) 100%
+    #f0d878 0%,
+    var(--gold-bright) 22%,
+    var(--gold) 55%,
+    #b08a3e 100%
   );
   background-size: 200% 200%;
-  color: var(--deep-black);
+  color: #14100a;
   font-family: var(--font-ui);
-  font-weight: 600;
-  font-size: 0.8125rem;
-  letter-spacing: 0.12em;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  padding: 1.1rem clamp(1rem, 3vw, 3rem);
-  min-height: 44px;
+  padding: 1.05rem clamp(1.4rem, 2.6vw, 2.6rem);
+  min-height: 48px;
   white-space: nowrap;
   text-align: center;
-  border-radius: 2px;
+  border-radius: 0;
   border: none;
   cursor: pointer;
   position: relative;
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  box-shadow:
-    0 2px 20px rgba(212, 175, 55, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  filter: drop-shadow(0 3px 14px rgba(212, 175, 55, 0.28));
 }
 .gold-cta::before {
   content: '';
@@ -525,7 +535,7 @@
   background: linear-gradient(
     135deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.14) 50%,
     transparent 100%
   );
   background-size: 200% 200%;
@@ -542,9 +552,9 @@
   background: linear-gradient(
     105deg,
     transparent 20%,
-    rgba(255, 255, 255, 0.35) 45%,
-    rgba(255, 255, 255, 0.55) 50%,
-    rgba(255, 255, 255, 0.35) 55%,
+    rgba(255, 255, 255, 0.4) 45%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.4) 55%,
     transparent 80%
   );
   transform: skewX(-15deg);
@@ -553,11 +563,9 @@
   pointer-events: none;
 }
 .gold-cta:hover {
-  box-shadow:
-    0 4px 40px rgba(212, 175, 55, 0.4),
-    0 0 80px rgba(212, 175, 55, 0.15),
-    0 0 120px rgba(232, 200, 85, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  filter:
+    drop-shadow(0 6px 22px rgba(212, 175, 55, 0.5))
+    drop-shadow(0 0 40px rgba(232, 200, 85, 0.25));
   transform: translateY(-2px);
   animation: lightningPulse 0.6s ease-out;
 }
@@ -569,34 +577,47 @@
   opacity: 1;
 }
 .gold-cta:active {
-  transform: translateY(0);
-  box-shadow:
-    0 1px 10px rgba(212, 175, 55, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transform: translateY(0) scale(0.985);
+  filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.25));
 }
 .gold-cta:disabled {
   opacity: 0.3;
   cursor: not-allowed;
   transform: none;
-  box-shadow: none;
+  filter: none;
 }
 
-/* Ghost CTA — metallic outline with lightning hover */
+/* Ghost CTA — temple glass: blurred vitrine with a hairline gold edge.
+   Same bevel language as the gold plate; the hover fills with light. */
 .ghost-cta {
-  background: transparent;
-  color: var(--gold);
+  --bevel: 9px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--bevel)) 0,
+    100% var(--bevel),
+    100% 100%,
+    var(--bevel) 100%,
+    0 calc(100% - var(--bevel))
+  );
+  background: rgba(250, 250, 245, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--gold-label);
   font-family: var(--font-ui);
-  font-weight: 500;
-  font-size: 0.8125rem;
-  letter-spacing: 0.14em;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  padding: 1.1rem 3rem;
-  border-radius: 2px;
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  padding: 1.05rem clamp(1.4rem, 2.6vw, 2.6rem);
+  min-height: 48px;
+  white-space: nowrap;
+  border-radius: 0;
+  border: 1px solid rgba(212, 175, 55, 0.28);
   cursor: pointer;
   position: relative;
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
 }
 /* Lightning sweep for ghost button */
 .ghost-cta::after {
@@ -620,10 +641,10 @@
   pointer-events: none;
 }
 .ghost-cta:hover {
-  border-color: var(--gold);
+  border-color: var(--gold-bright);
   color: var(--gold-bright);
-  background: rgba(212, 175, 55, 0.06);
-  box-shadow: 0 0 30px rgba(212, 175, 55, 0.12), inset 0 0 30px rgba(212, 175, 55, 0.04);
+  background: rgba(212, 175, 55, 0.1);
+  filter: drop-shadow(0 4px 18px rgba(212, 175, 55, 0.3));
   animation: lightningPulseGhost 0.6s ease-out;
 }
 .ghost-cta:hover::after {
@@ -634,14 +655,15 @@
   transform: translateY(0);
 }
 
-/* Lightning pulse — brief amber glow flash on CTA hover */
+/* Lightning pulse — brief amber glow flash on CTA hover.
+   drop-shadow only: box-shadow cannot survive clip-path. */
 @keyframes lightningPulse {
-  0%   { box-shadow: 0 2px 20px rgba(245,158,11,0.5), 0 0 60px rgba(245,158,11,0.25), inset 0 1px 0 rgba(255,255,255,0.15); }
-  100% { box-shadow: 0 4px 40px rgba(212,175,55,0.4), 0 0 80px rgba(212,175,55,0.15), 0 0 120px rgba(232,200,85,0.08), inset 0 1px 0 rgba(255,255,255,0.2); }
+  0%   { filter: drop-shadow(0 3px 18px rgba(245,158,11,0.55)) drop-shadow(0 0 34px rgba(245,158,11,0.3)); }
+  100% { filter: drop-shadow(0 6px 22px rgba(212,175,55,0.5)) drop-shadow(0 0 40px rgba(232,200,85,0.25)); }
 }
 @keyframes lightningPulseGhost {
-  0%   { box-shadow: 0 0 40px rgba(245,158,11,0.2), inset 0 0 40px rgba(245,158,11,0.06); }
-  100% { box-shadow: 0 0 30px rgba(212,175,55,0.12), inset 0 0 30px rgba(212,175,55,0.04); }
+  0%   { filter: drop-shadow(0 3px 16px rgba(245,158,11,0.35)); }
+  100% { filter: drop-shadow(0 4px 18px rgba(212,175,55,0.3)); }
 }
 
 /* ==========================================================
@@ -897,6 +919,25 @@
    ========================================================== */
 
 /* Hero headings — pure white + deep shadow, never lost over images */
+/* Hero title — inscribed gold. Gradient metal + glow that follows the
+   glyph shapes (drop-shadow survives background-clip: text). */
+.hero-title-gold {
+  background: linear-gradient(
+    168deg,
+    #f4e2a0 0%,
+    var(--gold-bright) 26%,
+    var(--gold) 52%,
+    #a8863d 74%,
+    var(--gold-bright) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter:
+    drop-shadow(0 2px 14px rgba(0, 0, 0, 0.85))
+    drop-shadow(0 0 30px rgba(212, 175, 55, 0.3));
+}
+
 .hero-heading {
   color: #FFFFFF !important;
   font-weight: 700 !important;
@@ -1067,17 +1108,27 @@
   flex-direction: column;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.8rem 1.15rem 0.9rem;
+  padding: 0;
   text-align: center;
-  border: 1px solid rgba(212, 175, 55, 0.16);
-  background: linear-gradient(180deg, rgba(5, 5, 5, 0.55), rgba(5, 5, 5, 0.22));
-  backdrop-filter: blur(7px);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  /* De-boxed: floating inscription instead of a panel that cuts the video.
+     Hairline rules keep the 'sacred architecture' feel without a visible card. */
+  border: none;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+.hero-brand-lockup::before,
+.hero-brand-lockup::after {
+  content: '';
+  width: 3.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.45), transparent);
 }
 .hero-brand-name {
   color: var(--ivory);
   font-family: var(--font-display);
   font-size: clamp(1.2rem, 3vw, 2.1rem);
+  font-weight: 600;
   letter-spacing: 0.22em;
   line-height: 1;
   text-shadow: var(--hero-shadow), 0 0 28px rgba(212, 175, 55, 0.18);
@@ -1122,20 +1173,10 @@
 }
 
 @media (max-width: 767px) {
+  /* Too much chrome stole the video on phones — the lockup rests here.
+     Desktop keeps the floating inscription; mobile keeps the rider. */
   .hero-brand-lockup {
-    top: 5rem;
-    width: calc(100% - 2rem);
-    padding: 0.7rem 0.6rem 0.75rem;
-  }
-
-  .hero-brand-name {
-    font-size: 1rem;
-    letter-spacing: 0.13em;
-  }
-
-  .hero-brand-subtitle {
-    font-size: 0.44rem;
-    letter-spacing: 0.1em;
+    display: none;
   }
 
   .hero-content-safe {
@@ -1163,9 +1204,9 @@
   .hero-actions .ghost-cta {
     flex: 1 1 0;
     min-width: 0;
-    padding: 0.75rem 0.65rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
+    padding: 0.9rem 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
   }
 
   .cinematic-strip {

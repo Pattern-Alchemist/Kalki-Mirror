@@ -36,7 +36,7 @@ export default function HomePage() {
           }}
         />
         <div className="absolute inset-0 z-[1] pointer-events-none"
-          style={{ background: 'linear-gradient(180deg, rgba(5,5,5,0.55) 0%, rgba(5,5,5,0.65) 40%, rgba(5,5,5,0.82) 100%)' }}
+          style={{ background: 'linear-gradient(180deg, rgba(5,5,5,0.5) 0%, rgba(5,5,5,0.22) 36%, rgba(5,5,5,0.38) 66%, rgba(5,5,5,0.85) 100%)' }}
         />
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-deep-black/60 to-transparent z-[2] pointer-events-none" />
 
@@ -48,11 +48,11 @@ export default function HomePage() {
         <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-10 hero-content-safe">
           <div className="hero-text-entrance">
             <div className="hero-glow-container relative inline-block">
-              <h1 className="hero-glow-text font-display text-white hero-heading tracking-[0.08em] uppercase"
-                style={{ fontSize: 'clamp(3.5rem, 10vw, 8rem)', lineHeight: 1 }}
+              <h1 className="hero-title-gold font-display tracking-[0.1em] uppercase"
+                style={{ fontSize: 'clamp(4rem, 13vw, 9rem)', lineHeight: 0.95, fontWeight: 700 }}
               >KALKI</h1>
             </div>
-            <p className="font-ui text-base md:text-lg tracking-[0.35em] uppercase mt-4 mb-10"
+            <p className="font-ui text-sm md:text-lg tracking-[0.35em] uppercase mt-4 mb-8 md:mb-10"
               style={{
                 color: 'var(--gold-label)',
                 textShadow: '0 2px 18px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8), 0 0 30px rgba(212,175,55,0.15)',

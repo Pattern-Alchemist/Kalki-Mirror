@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Cormorant_Garamond } from 'next/font/google';
+import { Inter, JetBrains_Mono, Cormorant_Garamond, Cinzel } from 'next/font/google';
 import "./globals.css";
 import { TierProvider } from "@/components/layout/TierProvider";
 import { PublicShell } from "@/components/layout/PublicShell";
@@ -10,6 +10,16 @@ import { getLocale, getMessages } from 'next-intl/server';
 /* ============================================================
    TYPOGRAPHY
    ============================================================ */
+
+/* Cinzel — Roman-inscription capitals. The monumental brand voice for
+   display type (hero, section headings, lockups). Cormorant remains
+   available as the elegant fallback under --font-cormorant. */
+const cinzel = Cinzel({
+  subsets: ['latin'],
+  variable: '--font-cinzel',
+  display: 'swap',
+  weight: ['400', '500', '600', '700', '800', '900'],
+});
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -68,7 +78,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const htmlLang = locale === 'en' ? 'en-US' : locale;
 
   return (
-    <html lang={htmlLang} suppressHydrationWarning className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang={htmlLang} suppressHydrationWarning className={`${cinzel.variable} ${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
         {/* Mobile hero image preload — LCP element on home page */}

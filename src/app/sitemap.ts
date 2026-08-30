@@ -28,6 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/pricing`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/consultations`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/aghori-tantra`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.75 },
+    { url: `${base}/guhya`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/library`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/codex`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${base}/breathwork`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.7 },

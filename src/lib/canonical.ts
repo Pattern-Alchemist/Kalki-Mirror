@@ -32,7 +32,7 @@ import { TEN_MAHAVIDYAS, SUPPLEMENTARY_ARCHETYPES } from '@/lib/data/archetypes'
 // before the current UTC date, never "today" in IST terms before
 // 05:30 IST, or lastmod lands in the future (protocol violation;
 // the geo-monitor's sitemap_lastmod check FAILs on future dates).
-export const SITE_LASTMOD = '2026-08-29'; // karma front door + Aghorī lesson routes + founder page shipped
+export const SITE_LASTMOD = '2026-08-30'; // Guhya wing (Hidden Files) + hero typography/CTA modernization shipped
 
 export const CANONICAL = {
   /** Folios in the Akashic Archive (siddhi entries). */

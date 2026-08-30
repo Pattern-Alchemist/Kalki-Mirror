@@ -38,6 +38,7 @@ const NAV_GROUPS: NavGroup[] = [
     label: 'Deeper',
     links: [
       { href: '/aghori-tantra', label: 'Aghori Tantra' },
+      { href: '/guhya', label: 'Guhya · Hidden Files' },
       { href: '/consultations', label: 'Consultations' },
       { href: '/dossier', label: 'Dossier' },
       { href: '/pricing', label: 'Membership' },
