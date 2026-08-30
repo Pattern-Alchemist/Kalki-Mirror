@@ -187,15 +187,31 @@ export async function getMemberTimeline(userId: string) {
       where: { userId },
       orderBy: { createdAt: 'desc' },
       take: 10,
-      select: { id: true, patternSlug: true, status: true, createdAt: true },
+      select: { id: true, patternSlug: true, patternName: true, resolvedAt: true, createdAt: true },
     }),
+    // InviteUsage schema fields: usedBy (not userId), usedAt (not createdAt),
+    // and the code relation is selected as `code` (not inviteCode).
     db.inviteUsage.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'desc' },
+      where: { usedBy: userId },
+      orderBy: { usedAt: 'desc' },
       take: 10,
-      select: { id: true, inviteCode: true, createdAt: true },
+      select: { id: true, code: true, usedAt: true },
     }),
   ]);
 
-  return { auditEvents, streaks, resolutions, keyUsages };
+  // Preserve the timeline contract the member console renders
+  // (status / inviteCode / createdAt) while sourcing from the real fields.
+  return {
+    auditEvents,
+    streaks,
+    resolutions: resolutions.map((r) => ({
+      ...r,
+      status: r.resolvedAt ? ('RESOLVED' as const) : ('TRACKED' as const),
+    })),
+    keyUsages: keyUsages.map((k) => ({
+      id: k.id,
+      inviteCode: k.code,
+      createdAt: k.usedAt,
+    })),
+  };
 }

@@ -1,7 +1,14 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../src/generated/prisma/client';
+import { PrismaLibSql } from '@prisma/adapter-libsql';
 import bcrypt from 'bcryptjs';
 
-const prisma = new PrismaClient();
+// Prisma 7: driver adapters are mandatory. Seed targets the same dynamic
+// store the schema's datasource declares (file:/tmp/kalki-dynamic.db).
+const prisma = new PrismaClient({
+  adapter: new PrismaLibSql({
+    url: process.env.DATABASE_URL || 'file:/tmp/kalki-dynamic.db',
+  }),
+});
 
 async function main() {
   console.log('Seeding database...');

@@ -9,9 +9,11 @@ interface Webhook {
   events: string;
   active: boolean;
   secret: string | null;
-  lastTriggeredAt: string | null;
+  // Server actions serialize Date objects across the RSC boundary,
+  // so both shapes arrive depending on the caller.
+  lastTriggeredAt: string | Date | null;
   lastStatus: string | null;
-  createdAt: string;
+  createdAt: string | Date;
 }
 
 const EVENT_OPTIONS = [
@@ -33,7 +35,7 @@ export function WebhookSection() {
 
   const loadWebhooks = useCallback(async () => {
     const data = await getWebhooks();
-    setWebhooks(data as Webhook[]);
+    setWebhooks(data as unknown as Webhook[]);
   }, []);
 
   // Initial fetch: setState happens in an async continuation, never
@@ -41,7 +43,7 @@ export function WebhookSection() {
   useEffect(() => {
     let cancelled = false;
     getWebhooks().then((data) => {
-      if (!cancelled) setWebhooks(data as Webhook[]);
+      if (!cancelled) setWebhooks(data as unknown as Webhook[]);
     });
     return () => { cancelled = true; };
   }, []);

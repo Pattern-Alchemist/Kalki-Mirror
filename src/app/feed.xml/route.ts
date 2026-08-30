@@ -13,10 +13,12 @@ export async function GET() {
   for (let i = 0; i < maxLength; i++) {
     if (i < siddhis.length) {
       const s = siddhis[i];
-      const title = s.title ?? s.name ?? 'Siddhi';
-      const slug = s.slug ?? String(i);
-      const link = `${BASE_URL}/siddhis/${slug}`;
-      const description = (s.description ?? '').slice(0, 200);
+      // Siddhi fields: name + summary. Folio URLs live under /archive/
+      // (matches sitemap.ts — the old /siddhis/ prefix was a 404).
+      const title = s.name;
+      const slug = s.slug;
+      const link = `${BASE_URL}/archive/${slug}`;
+      const description = s.summary.slice(0, 200);
       items.push(`
     <item>
       <title>${escapeXml(title)}</title>
@@ -28,10 +30,10 @@ export async function GET() {
     }
     if (i < patterns.length) {
       const p = patterns[i];
-      const title = p.title ?? p.name ?? 'Pattern';
-      const slug = p.slug ?? String(i);
+      const title = p.name;
+      const slug = p.slug;
       const link = `${BASE_URL}/patterns/${slug}`;
-      const description = (p.description ?? '').slice(0, 200);
+      const description = p.description.slice(0, 200);
       items.push(`
     <item>
       <title>${escapeXml(title)}</title>

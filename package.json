@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "next dev --turbopack -p 3000 2>&1 | tee dev.log",
-    "build": "next build",
+    "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
     "analyze": "ANALYZE=true next build",
     "start": "next start",
     "lint": "eslint .",
@@ -25,7 +26,7 @@
   "dependencies": {
     "@libsql/client": "^0.17.4",
     "@prisma/adapter-libsql": "^7.9.1",
-    "@prisma/client": "^6.11.1",
+    "@prisma/client": "^7.10.0",
     "@radix-ui/react-toast": "^1.2.14",
     "@reactuses/core": "^6.0.5",
     "@sentry/nextjs": "^10.70.0",
@@ -41,7 +42,7 @@
     "next-auth": "^4.24.11",
     "next-intl": "^4.13.6",
     "otpauth": "^9.5.1",
-    "prisma": "^6.11.1",
+    "prisma": "^7.10.0",
     "qrcode": "^1.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -70,6 +71,7 @@
   "overrides": {
     "postcss": "^8.5.23",
     "sharp": "^0.35.0",
-    "uuid": "^11.1.1"
+    "uuid": "^11.1.1",
+    "deepmerge-ts": "^8.0.0"
   }
 }

@@ -56,7 +56,9 @@ const nextConfig: NextConfig = {
     ],
   },
   reactStrictMode: true,
-  typescript: { ignoreBuildErrors: true },
+  // TypeScript errors now fail the build — the admin-dashboard type debt
+  // that motivated this mask was fully repaid in this release.
+  // typescript: { ignoreBuildErrors: true },
   poweredByHeader: false,
 
   // Security & performance headers

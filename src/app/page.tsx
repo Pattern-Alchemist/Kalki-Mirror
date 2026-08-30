@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { allPatterns } from '@/lib/data/patterns';
 import { CANONICAL } from '@/lib/canonical';
+import { FAQ, FAQ_JSONLD } from '@/lib/data/faq';
 import type { Metadata } from 'next';
 import HomePageShell from './HomePageShell';
 
@@ -102,6 +103,39 @@ export default function HomePage() {
               study the <Link href="/patterns" className="text-gold underline underline-offset-4 decoration-gold/40 hover:decoration-gold">Pattern Atlas</Link>,
               take the <Link href="/archetypes" className="text-gold underline underline-offset-4 decoration-gold/40 hover:decoration-gold">archetype diagnostic</Link>,
               or read the <Link href="/method" className="text-gold underline underline-offset-4 decoration-gold/40 hover:decoration-gold">Mirror Method</Link> in full.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ FAQ — server-rendered questions + FAQPage schema ═══
+          Direct-answer blocks targeting the questions seekers actually
+          ask AI engines and Google ("what is kalki", "is tantra safe
+          for beginners", "ten mahavidyas list"). Visible content and
+          FAQPage JSON-LD derive from ONE dataset (src/lib/data/faq.ts). */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSONLD) }}
+      />
+      <section className="relative py-16 md:py-24" aria-labelledby="faq-heading">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+          <div className="max-w-3xl mx-auto">
+            <p className="section-label mb-8">Questions Seekers Ask</p>
+            <h2 id="faq-heading" className="font-display text-2xl md:text-4xl text-foreground leading-tight tracking-wide mb-12 hero-heading">
+              Straight answers, before you commit to anything.
+            </h2>
+            <div>
+              {FAQ.map((item) => (
+                <div key={item.q} className="border-t border-gold/15 py-7 last:border-b">
+                  <h3 className="font-display text-lg md:text-xl text-foreground tracking-wide mb-3">{item.q}</h3>
+                  <p className="text-editorial text-foreground/85 leading-relaxed">{item.a}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-sm text-foreground/60 mt-8 text-center">
+              Something more specific?{' '}
+              <Link href="/consultations" className="text-gold underline underline-offset-4 decoration-gold/40 hover:decoration-gold">Request a consultation</Link>
+              {' '}or explore the <Link href="/method" className="text-gold underline underline-offset-4 decoration-gold/40 hover:decoration-gold">Mirror Method</Link>.
             </p>
           </div>
         </div>

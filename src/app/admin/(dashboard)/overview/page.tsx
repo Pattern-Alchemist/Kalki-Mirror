@@ -28,8 +28,25 @@ function StatCard({ label, value, sub, accent }: { label: string; value: string 
   );
 }
 
+// Explicit contract for /api/admin/stats. The previous
+// Awaited<ReturnType<typeof fetchStats>> typing referenced the const
+// before declaration, collapsing to `never` and poisoning every property
+// access below (the 20 'never' type errors this fixes).
+interface OverviewStats {
+  members: {
+    total: number;
+    new: number;
+    activeStreaks: number;
+    tierDistribution: { tier: string; count: number }[];
+  };
+  patterns: { resolved: number; recognized: number };
+  consultations: { pending: number };
+  keys: { active: number; total: number; redeemed: number; redemptionRate: number };
+  content: { drafts: number; inReview: number };
+}
+
 export default function OverviewPage() {
-  const [stats, setStats] = useState<Awaited<ReturnType<typeof fetchStats>> | null>(null);
+  const [stats, setStats] = useState<OverviewStats | null>(null);
   const [err, setErr] = useState("");
 
   const fetchStats = useCallback(async () => {

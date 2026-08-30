@@ -1,6 +1,7 @@
 import { allSequences, getSequenceBySlug } from '@/lib/data/sequences';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { allPatterns } from '@/lib/data/patterns';
+import type { Pattern } from '@/lib/data/types';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import SequenceFolioClient from './SequenceFolioClient';
@@ -33,7 +34,7 @@ export default async function SequenceDetailPage({ params }: { params: Promise<{
 
   const targetPatternData = sequence.targetPatterns
     .map(slug => allPatterns.find(p => p.slug === slug))
-    .filter(Boolean);
+    .filter((p): p is Pattern => p !== undefined);
 
   return (
     <SequenceFolioClient

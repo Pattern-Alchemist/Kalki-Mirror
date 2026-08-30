@@ -13,7 +13,7 @@
  * FolioChunk reads go through src/lib/static-db.ts (baked corpus).
  */
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@/generated/prisma/client';
 import { PrismaLibSql } from '@prisma/adapter-libsql';
 
 // ─── Turso fallback config (until Vercel env var delivery is fixed) ───
@@ -83,13 +83,15 @@ function createPrismaClient(): PrismaClient {
     return client;
   }
 
-  // ── Development: local SQLite (DATABASE_URL from .env) ──────────────────
+  // ── Development: local SQLite via the libSQL adapter. Prisma 7 removed
+  //    the Rust query engine — every connection requires a driver adapter.
+  //    ─────────────────────────────────────────────────────────────────────
+  const localUrl = process.env.DATABASE_URL || 'file:./db/custom.db';
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`[db] Local SQLite adapter active — ${localUrl}`);
+  }
   return new PrismaClient({
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL || 'file:./db/custom.db',
-      },
-    },
+    adapter: new PrismaLibSql({ url: localUrl }),
     log: process.env.PRISMA_LOG === '1' ? ['query'] : [],
   });
 }

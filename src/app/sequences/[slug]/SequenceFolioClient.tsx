@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { notFound } from 'next/navigation';
 import { track } from '@/lib/analytics/track';
 import Link from 'next/link';

@@ -12,7 +12,8 @@
  * All runtime writes (User, Streaks, Keys) go through src/lib/db.ts → Turso.
  */
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@/generated/prisma/client';
+import { PrismaLibSql } from '@prisma/adapter-libsql';
 import { copyFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { unstable_cache } from 'next/cache';
@@ -78,9 +79,8 @@ const globalForStatic = globalThis as unknown as {
 export const staticDb =
   globalForStatic.staticDb ??
   new PrismaClient({
-    datasources: {
-      db: { url: `file:${corpusPath}` },
-    },
+    // Prisma 7: driver adapters are mandatory — the Rust engine is gone.
+    adapter: new PrismaLibSql({ url: `file:${corpusPath}` }),
     log: process.env.PRISMA_LOG === '1' ? ['query'] : [],
   });
 

@@ -25,11 +25,27 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const [auditEvents, streaks, resolutions, keyUsages] = await Promise.all([
       db.adminAuditLog.findMany({ where: { entityId: id }, orderBy: { createdAt: "desc" }, take: 20 }),
       db.sadhanaStreak.findMany({ where: { userId: id }, orderBy: { updatedAt: "desc" }, take: 10, select: { practice: true, practiceName: true, currentStreak: true, longestStreak: true, updatedAt: true } }),
-      db.patternResolution.findMany({ where: { userId: id }, orderBy: { createdAt: "desc" }, take: 10, select: { id: true, patternSlug: true, status: true, createdAt: true } }),
-      db.inviteUsage.findMany({ where: { userId: id }, orderBy: { createdAt: "desc" }, take: 10, select: { id: true, inviteCode: true, createdAt: true } }),
+      db.patternResolution.findMany({ where: { userId: id }, orderBy: { createdAt: "desc" }, take: 10, select: { id: true, patternSlug: true, patternName: true, resolvedAt: true, createdAt: true } }),
+      // Schema fields: usedBy / usedAt / code (was userId / createdAt / inviteCode).
+      db.inviteUsage.findMany({ where: { usedBy: id }, orderBy: { usedAt: "desc" }, take: 10, select: { id: true, code: true, usedAt: true } }),
     ]);
 
-    return NextResponse.json({ user, timeline: { auditEvents, streaks, resolutions, keyUsages } });
+    return NextResponse.json({
+      user,
+      timeline: {
+        auditEvents,
+        streaks,
+        resolutions: resolutions.map((r) => ({
+          ...r,
+          status: r.resolvedAt ? ("RESOLVED" as const) : ("TRACKED" as const),
+        })),
+        keyUsages: keyUsages.map((k) => ({
+          id: k.id,
+          inviteCode: k.code,
+          createdAt: k.usedAt,
+        })),
+      },
+    });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json({ error: msg }, { status: 500 });

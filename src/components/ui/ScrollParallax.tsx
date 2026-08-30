@@ -42,7 +42,7 @@ export function ScrollParallax({
 
 /** Inner component that uses framer-motion hooks — only mounted after hydration */
 function ScrollParallaxInner({
- children, speed, className, ref,
+ children, speed = -0.15, className, ref,
 }: ScrollParallaxProps & { ref: React.RefObject<HTMLDivElement | null> }) {
  const { scrollYProgress } = useScroll({
  target: ref,
@@ -94,7 +94,7 @@ export function ParallaxText({
 }
 
 function ParallaxTextInner({
- children, speed, className, ref,
+ children, speed = -0.08, className, ref,
 }: ParallaxTextProps & { ref: React.RefObject<HTMLDivElement | null> }) {
  const { scrollYProgress } = useScroll({
  target: ref,

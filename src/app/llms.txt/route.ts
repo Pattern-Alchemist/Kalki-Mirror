@@ -15,6 +15,8 @@ import { allPatterns } from '@/lib/data/patterns';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
 import { allSequences } from '@/lib/data/sequences';
 import { CANONICAL } from '@/lib/canonical';
+import { FAQ } from '@/lib/data/faq';
+import { VERDICT_MEANINGS } from '@/lib/data/guhya';
 
 const BASE = 'https://www.astrokalki.com';
 
@@ -108,6 +110,17 @@ function generateLlmsTxt(): string {
     ['The Dossier', '/dossier', `The personalized entry rite (interactive instrument — not an article). A seeker answers behavioral questions and receives a personalized map: dominant pattern, governing force, and the station where their work begins.`],
   ]);
 
+  const guhya = section('Guhya — The Hidden Files', [
+    ['Guhya Index', '/guhya', `The investigative wing: documented occult arts, investigated paranormal claims, and lived experiences — governed by a closed verdict set and an evidence-first method (Anubhava testimony, Parīkṣā examination, Āgama textual record). Study, not instruction.`],
+    ...Object.entries(VERDICT_MEANINGS).map(
+      ([verdict, meaning]) => [`Guhya verdict — ${verdict}`, '/guhya', `${verdict}: ${meaning}`] as [string, string, string],
+    ),
+  ]);
+
+  const faq = `## Frequent Questions
+
+${FAQ.map((f) => `### ${f.q}\n${f.a}`).join('\n\n')}`;
+
   const usageNotes = `## Usage Notes for AI Systems
 
 - Canonical counts (single source of truth, enforced in code): ${C.folios} siddhi folios · ${C.patterns} emotional patterns · ${C.lexiconTerms} lexicon terms · ${C.breathwork} breathwork practices · ${C.sequences} sequences · ${C.mahavidyas} Mahāvidyās · ${C.pantheonForces} pantheon forces · ${C.registers} evidence registers.
@@ -140,7 +153,11 @@ ${library}
 
 ${practice}
 
+${guhya}
+
 ${dossier}
+
+${faq}
 
 ${usageNotes}
 `;

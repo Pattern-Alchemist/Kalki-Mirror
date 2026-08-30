@@ -12,7 +12,9 @@ export default function ConsultationsPage() {
   const [status, setStatus] = useState("ALL");
   const [loading, setLoading] = useState(true);
 
-  const fetch = useCallback(async () => {
+  // NOTE: never name this callback `fetch` — it would shadow window.fetch
+  // and recurse into itself (the bug this rename fixes).
+  const loadConsultations = useCallback(async () => {
     setLoading(true);
     try {
       const r = await fetch(`/api/admin/consultations?status=${status}&page=${page}`);
@@ -21,7 +23,7 @@ export default function ConsultationsPage() {
     } catch {} finally { setLoading(false); }
   }, [status, page]);
 
-  useEffect(() => { fetch(); }, [fetch]);
+  useEffect(() => { loadConsultations(); }, [loadConsultations]);
 
   return (
     <div className="space-y-6">

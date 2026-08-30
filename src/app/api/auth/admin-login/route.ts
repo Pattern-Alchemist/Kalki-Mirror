@@ -6,7 +6,7 @@ import { getUserFromTurso, createPreAuthToken, getAuthSecret, ADMIN_ALLOWED_ROLE
 import { sessionCookieName, sessionCookieSecure } from '@/lib/auth-secret';
 import { db } from '@/lib/db';
 import { rateLimit } from '@/lib/rate-limit';
-import type { UserRole } from '@prisma/client';
+import type { UserRole } from '@/generated/prisma/enums';
 
 export const runtime = 'nodejs';
 
@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
         id: user.id,
         email: user.email,
         name: user.name,
-        role: user.role,
+        role: user.role as UserRole, // getUserFromTurso returns a loose row type
         tier: user.tier || 'prithvi',
         jti: sessionJti, // A3: embed session JTI for concurrent session tracking
       },

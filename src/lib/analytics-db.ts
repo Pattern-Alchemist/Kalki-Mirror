@@ -418,7 +418,7 @@ export async function getAllSubscribersCsv(): Promise<string | null> {
     const header = 'email,source,joined_at,confirmed';
     const rows = res.rows.map((r) =>
       [r.email, r.source, r.createdAt, num(r.confirmed) === 1 ? 'yes' : 'no']
-        .map(csvEscape)
+        .map((v) => csvEscape(String(v ?? '')))
         .join(','),
     );
     return [header, ...rows].join('\r\n');
