@@ -46,23 +46,28 @@ const SITE_URL = 'https://www.astrokalki.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: 'KALKI — Light for the Dark Age.', template: '%s | KALKI' },
-  description: 'Tantrik Intelligence. Sacred Architecture. Pattern Recognition. Where ancient Tantric geometry meets modern computational intelligence. The Architecture of Karma.',
-  keywords: ['kalki', 'siddhi', 'tantra', 'authentic tantra', 'tantra teacher', 'yantra', 'akasha', 'sadhana', 'pattern recognition', 'karma', 'shambhala', 'tantrik intelligence', 'mahavidya', 'ten mahavidyas', 'siddhi archive', 'behavioral patterns', 'tantric psychology', 'kashmir shaivism', 'spiritual practice online'],
+  // Brand-token strategy (2026-08-31): every title carries BOTH tokens.
+  // "AstroKalki" (the domain token users search) leads the brand slot;
+  // "KALKI" (the display brand) follows. Before this change Google had
+  // zero on-page anchor binding astrokalki.com → the query "astrokalki",
+  // so its spell-correction served Astrotalk results instead.
+  title: { default: 'AstroKalki — KALKI | Tantrik Intelligence. Sacred Architecture.', template: '%s | AstroKalki — KALKI' },
+  description: 'AstroKalki is the home of KALKI — where ancient Tantric geometry meets modern computational intelligence. 56 siddhi folios, 20 emotional patterns, and the Mirror Method. The Architecture of Karma.',
+  keywords: ['astrokalki', 'astro kalki', 'astrokalki.com', 'kalki', 'siddhi', 'tantra', 'authentic tantra', 'tantra teacher', 'yantra', 'akasha', 'sadhana', 'pattern recognition', 'karma', 'shambhala', 'tantrik intelligence', 'mahavidya', 'ten mahavidyas', 'siddhi archive', 'behavioral patterns', 'tantric psychology', 'kashmir shaivism', 'spiritual practice online'],
   authors: [{ name: 'Kaustubh', url: SITE_URL }],
   creator: 'Kaustubh',
-  publisher: 'KALKI',
+  publisher: 'AstroKalki — KALKI',
   alternates: { canonical: SITE_URL, languages: { 'x-default': SITE_URL, 'en-US': SITE_URL } },
   openGraph: {
-    title: 'KALKI — Light for the Dark Age.',
-    description: 'Tantrik Intelligence. Sacred Architecture. Pattern Recognition. The Architecture of Karma.',
-    siteName: 'KALKI', type: 'website', locale: 'en_US', url: SITE_URL,
+    title: 'AstroKalki — KALKI | Tantrik Intelligence. Sacred Architecture.',
+    description: 'AstroKalki is the home of KALKI — Tantrik Intelligence. Sacred Architecture. Pattern Recognition. The Architecture of Karma.',
+    siteName: 'AstroKalki — KALKI', type: 'website', locale: 'en_US', url: SITE_URL,
     images: [{ url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-ritual-chamber-alt', width: 1200, height: 630, alt: 'KALKI — Tantrik Intelligence' }],
   },
   twitter: {
     card: 'summary_large_image' as const,
-    title: 'KALKI — Light for the Dark Age.',
-    description: 'Tantrik Intelligence. Sacred Architecture. Pattern Recognition. The Architecture of Karma.',
+    title: 'AstroKalki — KALKI | Tantrik Intelligence. Sacred Architecture.',
+    description: 'AstroKalki is the home of KALKI — Tantrik Intelligence. Sacred Architecture. Pattern Recognition. The Architecture of Karma.',
     images: ['https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/tantra/hero-ritual-chamber-alt'],
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-video-preview': -1, 'max-image-preview': 'large', 'max-snippet': -1 } },

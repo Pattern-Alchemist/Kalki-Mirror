@@ -65,7 +65,14 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
                 '@type': 'WebSite',
                 '@id': `${SITE_URL}/#website`,
                 url: SITE_URL,
-                name: 'KALKI',
+                // Brand-token alignment (2026-08-31): the DOMAIN is
+                // astrokalki.com, so the machine-readable site name must
+                // carry the same token users type into Google — otherwise
+                // the query "astrokalki" has no on-site brand anchor and
+                // Google's spell-correction routes it to "astrotalk".
+                // alternateName preserves the display brand KALKI.
+                name: 'AstroKalki',
+                alternateName: 'KALKI',
                 description: 'Tantrik Intelligence. Sacred Architecture. Pattern Recognition.',
                 inLanguage: 'en-US',
                 publisher: { '@id': `${SITE_URL}/#organization` },
@@ -79,10 +86,28 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
                 '@type': 'Organization',
                 '@id': `${SITE_URL}/#organization`,
                 name: 'KALKI',
+                alternateName: 'AstroKalki',
                 url: SITE_URL,
                 logo: `${SITE_URL}/favicon.svg`,
                 description: 'Tantrik Intelligence. The Architecture of Karma.',
+                // Entity separation for both classical search and
+                // generative engines: state what the brand IS NOT.
+                // Complaint on record (2026-08-31): Google auto-corrects
+                // "astrokalki" to "astrotalk" and LLMs conflate the two.
+                disambiguatingDescription:
+                  'AstroKalki is the platform home of KALKI, the Tantrik intelligence system founded by Kaustubh, published at astrokalki.com. Distinct from and not affiliated with Astrotalk (astrotalk.com), a separate astrology-services company.',
                 founder: { '@id': `${SITE_URL}/#person` },
+                // Entity cross-references. Add real public profiles here as
+                // they come online (YouTube channel, Instagram, LinkedIn) —
+                // never invent URLs. Each sameAs entry is a brand-entity
+                // anchor Google uses to bind "AstroKalki" to this domain.
+                sameAs: [
+                  'https://github.com/Pattern-Alchemist',
+                  // TODO(owner): append YouTube + Instagram profile URLs
+                  // branded exactly "AstroKalki", e.g.
+                  // 'https://www.youtube.com/@astrokalki',
+                  // 'https://www.instagram.com/astrokalki',
+                ],
               },
               {
                 '@type': 'Person',

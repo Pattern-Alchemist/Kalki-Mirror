@@ -40,6 +40,13 @@ export function SacredFooter() {
               <span className="font-display text-3xl gold-foil-text font-light tracking-[0.2em]">
                 KALKI
               </span>
+              {/* Visible brand bridge (2026-08-31): Google had zero
+                  on-page "AstroKalki" text to bind the domain token to a
+                  brand, so the query "astrokalki" auto-corrected to
+                  "astrotalk". This line is the crawlable anchor. */}
+              <p className="text-text-secondary text-xs mt-3 tracking-[0.25em] uppercase font-ui">
+                An AstroKalki property · astrokalki.com
+              </p>
             </div>
             <p className="text-text-secondary text-base leading-relaxed max-w-xs editorial-spacing">
               Where ancient Tantric geometry meets modern computational intelligence.
@@ -78,7 +85,7 @@ export function SacredFooter() {
             Ancient Algorithms. Cosmic Law.
           </p>
           <p className="text-caption">
-            &copy; 2025 KALKI. All rights reserved.
+            &copy; 2025–2026 KALKI · An AstroKalki property · www.astrokalki.com
           </p>
         </div>
       </div>
