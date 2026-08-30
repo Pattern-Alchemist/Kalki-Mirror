@@ -1,24 +1,37 @@
 # GSC Property — The 10-Minute Runbook
 
-> **STATUS (2026-08-30): DNS TXT record is LIVE and all three verification
-> surfaces are armed.** The record visible in public DNS at the apex:
+> **STATUS (2026-08-30): ✅ PROPERTY VERIFIED.**
+> `sc-domain:astrokalki.com` — owner **astrokalki.sos@gmail.com** (Verified, via DNS TXT).
+>
+> Active token (wired into BOTH the meta tag and the file route on Vercel,
+> deployed and verified live):
 >
 > ```
-> astrokalki.com.  TXT  "google-site-verification=s6lC7I_1OZI6LHndjBGWwxP2dvsrX0NBVh39YN9lYrQ"
+> google-site-verification=_WftyBS7isUB8pb7EWp-k0JVTGdMCXlkocyMmrNNuW4
 > ```
 >
-| Surface | State |
-|---|---|
-| DNS TXT (Hostinger, ns1/ns2.dns-parking.com) | ✅ live in the zone |
-| Meta tag on every page (`GOOGLE_SITE_VERIFICATION`) | ✅ deployed, verified in live HTML |
-| HTML file `/googles6lC…9lYrQ.html` (`GSC_VERIFICATION_TOKEN`) | ✅ 200 with exact expected body; wrong tokens 404 |
-| IndexNow | ✅ key file live, targeted ping accepted (HTTP 200), daily 02:00 UTC cron registered |
+> DNS zone (Hostinger) also still carries an older, stale token
+> (`s6lC7I…9lYrQ`) from an earlier attempt. It is harmless — but any Google
+> account holding that token could verify its own property for this domain.
+> **Recommended:** delete that one TXT record in Hostinger unless you
+> deliberately want that second account as a co-owner.
 
-**The only remaining human step:** open
-[search.google.com/search-console](https://search.google.com/search-console) →
-create the property (Domain → `astrokalki.com`) → if the token GSC shows matches
-the one above, click **Verify** — it will pass instantly. Then submit
-`sitemap.xml` and Request Indexing for the three money URLs (Minutes 6–10 below).
+| Layer | State |
+|---|---|
+| Domain property `sc-domain:astrokalki.com` | ✅ VERIFIED (astrokalki.sos@gmail.com) |
+| DNS TXT (Hostinger) | ✅ live — verified token `_WftyBS7…` |
+| Meta tag on every page | ✅ deployed, verified in live HTML (same token) |
+| HTML file `/google_WftyBS7….html` | ✅ 200 with exact expected body; wrong tokens 404 |
+| IndexNow | ✅ full sitemap (173 URLs) accepted; daily 02:00 UTC cron registered |
+| Sitemap submission in GSC | ⬜ human step: Sitemaps → submit `sitemap.xml` |
+| Request Indexing | ⬜ human step: inspect `/`, `/consultations`, `/guhya` |
+
+**Remaining human steps (≈3 minutes):**
+1. [Sitemaps](https://search.google.com/search-console/sitemaps?resource_id=sc-domain%3Aastrokalki.com) → enter `sitemap.xml` → **Submit**.
+2. [URL Inspection](https://search.google.com/search-console/inspect?resource_id=sc-domain%3Aastrokalki.com) → inspect and **Request Indexing** for:
+   `https://www.astrokalki.com/` · `/consultations` · `/guhya`
+3. Performance data starts flowing within 24–48 h; weekly ritual in
+   `docs/geo/search-console-us-targeting.md` §4.
 
 ---
 
