@@ -18,25 +18,41 @@ medium=referral` anyway, and a naked UTM string invites mod removal.
 
 ---
 
-## 1 · Instagram
+## 1 · Instagram — MAIN account `@unfilteredbuddy_`
 
-### Bio (≤150 chars — Variant A, archive-forward)
+> The one active account, fresh start. The handle IS the positioning:
+> "unfiltered buddy" = no guru theatre, no sugar-coating — which is exactly
+> KALKI's voice. The old personal account (@lokhandekaustubh) is discarded;
+> never reference it in content.
 
-```
-Tantrik intelligence. Pattern recognition.
-56 evidence-graded siddhi folios. Paranormal files with verdicts.
-Light for the Dark Age.
-```
-*(135 chars)*
-
-### Bio (Variant B, consultation-forward)
+### Bio (≤150 chars — Variant A, persona-forward · RECOMMENDED for fresh start)
 
 ```
-Consult the Archivist. Mirror Method diagnostics, sādhana prescriptions, evidence-graded archive. Light for the Dark Age.
+Your unfiltered buddy for karma, patterns & the loops that repeat.
+No guru theatre. No sugar-coating. Evidence-graded.
+Consultations open.
 ```
-*(122 chars)*
+*(138 chars)*
 
-**Name field** (searchable, 64 max): `KALKI · Tantrik Intelligence`
+### Bio (Variant B, brand-forward — mirrors the YT channel's proven line)
+
+```
+KALKI — Vedic astrology × depth psychology.
+We don't predict your future. We decode why it keeps repeating.
+Consultations open.
+```
+*(127 chars)*
+
+### Bio (Variant C, edge)
+
+```
+The buddy who tells you what your karma is actually doing.
+56 siddhi folios, evidence-graded. Paranormal files with verdicts.
+Consultations open.
+```
+*(145 chars)*
+
+**Name field** (searchable, 64 max): `Unfiltered Buddy | KALKI`
 **Link field:** money link with `utm_source=instagram&utm_medium=bio`.
 
 ### Post 1 — Anchor post (caption)
@@ -228,46 +244,16 @@ Post 2 of that channel within 48 hours. The pipeline tells you; don't guess.
 
 ---
 
-## 8 · Founder account — @lokhandekaustubh
+## 8 · Instagram — first-person anchor + MIRROR mechanic (post on `@unfilteredbuddy_`)
 
-> The human face. DM-seekers (from ASTROKAOS-style prediction content) are
-> free-tier curiosity; this bio migrates them into the KALKI consultation
-> funnel. Link field = money link `utm_source=instagram&utm_medium=bio`.
+> All of this runs on the main account (§1). DM-seekers are free-tier
+> curiosity; this sequence migrates them into the KALKI consultation funnel.
 
-### Name field (searchable, ≤64)
-
-```
-Kaustubh Lokhande | KALKI
-```
-
-### Bio — Variant A (authority, 143/150 chars)
-
-```
-Tantric technologist. Founder, KALKI.
-I read the pattern that repeats in you. Mirror Method, not guesswork.
-Consultations open. WhatsApp video.
-```
-
-### Bio — Variant B (evidence-grade edge, 130/150)
-
-```
-Founder @ KALKI — 56 siddhi folios, evidence-graded. Paranormal files with verdicts.
-I consult on the pattern that repeats in you.
-```
-
-### Bio — Variant C (DM-funnel bridge, 119/150)
-
-```
-Your predictions land here. Your pattern lives at KALKI.
-Founder, KALKI · Mirror Method consultations · WhatsApp video.
-```
-
-**Link field:** `https://www.astrokalki.com/consultations?utm_source=instagram&utm_medium=bio&utm_campaign=aug26-launch`
-**Story highlight:** create `CONSULT` — 3 slides: (1) what a Mirror Method
+### Story highlight: create `CONSULT` — 3 slides: (1) what a Mirror Method
 diagnostic is, (2) what you get (sādhana prescription, WhatsApp video), (3)
 link sticker → money link with `utm_medium=story`.
 
-### Founder anchor post (first person, caption)
+### Second post — "why I built this" (first person, caption)
 
 ```
 People come to me asking what will happen. Wrong question.
@@ -340,7 +326,7 @@ THE ARCHIVE
 CONNECT
 ✦ WhatsApp: +91 8920862931
 ✦ Email: astrokalki.sos@gmail.com
-✦ Instagram: @lokhandekaustubh
+✦ Instagram: @unfilteredbuddy_
 
 No spiritual bypassing. No sugar-coated motivation. Just the truth behind your patterns.
 ```
