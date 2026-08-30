@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Cormorant_Garamond, Cinzel } from 'next/font/google';
 import "./globals.css";
 import { TierProvider } from "@/components/layout/TierProvider";
+import { AttributionCapture } from "@/components/analytics/AttributionCapture";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { Analytics } from "@vercel/analytics/react";
 import { NextIntlClientProvider } from 'next-intl';
@@ -113,6 +114,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         </noscript>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <TierProvider>
+            <AttributionCapture />
             <PublicShell>{children}</PublicShell>
             <Analytics />
           </TierProvider>

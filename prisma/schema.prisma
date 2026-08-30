@@ -252,6 +252,19 @@ model Consultation {
   followUpDate     DateTime?
   completedAt      DateTime?
 
+  // ── Attribution layer (written once at submit; never edited afterwards) ──
+  // Flat columns power the pipeline view's chips and rollups; the full
+  // first-touch/last-touch snapshot is preserved for drill-down.
+  utmSource       String?   // utm_source | referral host | 'direct'
+  utmMedium       String?   // utm_medium | 'referral' | 'cpc' | 'direct'
+  utmCampaign     String?
+  utmTerm         String?
+  utmContent      String?
+  clickId         String?   // gclid | fbclid | msclkid | ttclid
+  referrerDomain  String?   // rollup-ready domain of document.referrer
+  landingPath     String?   // first-touch path+query on astrokalki.com
+  attributionJson String?   // full AttributionSnapshot (first/last/sessions)
+
   @@index([status, scheduledFor])
   @@index([phone])
 }

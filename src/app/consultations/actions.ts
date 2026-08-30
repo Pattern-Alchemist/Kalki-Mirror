@@ -1,13 +1,34 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { cookies } from "next/headers";
 import { z } from "zod";
+import {
+  ATTRIBUTION_COOKIE,
+  parseAttributionCookie,
+  referrerDomainOf,
+  type AttributionSnapshot,
+} from "@/lib/attribution";
 
 const consultationSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters.").max(200, "Name too long."),
   whatsapp: z.string().min(7, "A valid WhatsApp number is required.").max(30, "Number too long."),
   message: z.string().min(10, "Please describe your pattern (at least 10 characters).").max(5000, "Message too long."),
 });
+
+/**
+ * Reads the visitor's attribution cookie (set client-side by
+ * AttributionCapture). Attribution is a nice-to-have: any failure here
+ * degrades to `null` and the lead is still created.
+ */
+async function readAttribution(): Promise<AttributionSnapshot | null> {
+  try {
+    const jar = await cookies();
+    return parseAttributionCookie(jar.get(ATTRIBUTION_COOKIE)?.value);
+  } catch {
+    return null;
+  }
+}
 
 export async function submitConsultation(formData: {
   name: string;
@@ -29,6 +50,9 @@ export async function submitConsultation(formData: {
   const { name, whatsapp, message } = parsed.data;
 
   try {
+    const attribution = await readAttribution();
+    const last = attribution?.last;
+
     await db.consultation.create({
       data: {
         name,
@@ -36,6 +60,16 @@ export async function submitConsultation(formData: {
         email: "",
         request: message,
         status: "NEW",
+        // ── Attribution layer (written once; never edited afterwards) ──
+        utmSource: last?.source ?? null,
+        utmMedium: last?.medium ?? null,
+        utmCampaign: last?.campaign ?? null,
+        utmTerm: last?.term ?? null,
+        utmContent: last?.content ?? null,
+        clickId: last?.clickId ?? null,
+        referrerDomain: referrerDomainOf(last?.referrer) ?? null,
+        landingPath: attribution?.first.landingPath ?? null,
+        attributionJson: attribution ? JSON.stringify(attribution) : null,
       },
     });
 

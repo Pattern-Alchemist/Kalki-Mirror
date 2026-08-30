@@ -28,11 +28,21 @@ export type ConsultationRow = {
   notes: string | null;
   createdAt: Date;
   updatedAt: Date;
+  // Attribution layer
+  utmSource: string | null;
+  utmMedium: string | null;
+  utmCampaign: string | null;
+  utmTerm: string | null;
+  utmContent: string | null;
+  clickId: string | null;
+  referrerDomain: string | null;
+  landingPath: string | null;
+  attributionJson: string | null;
 };
 
 const STATUSES = ["NEW", "ACKNOWLEDGED", "SCHEDULED", "COMPLETED", "CANCELLED"] as const;
 
-export async function getConsultations(status?: string, page: number = 1) {
+export async function getConsultations(status?: string, page: number = 1, take: number = 20) {
   await requireAdmin();
 
   const where: Record<string, unknown> = {};
@@ -40,24 +50,30 @@ export async function getConsultations(status?: string, page: number = 1) {
     where.status = status;
   }
 
-  const take = 20;
-  const skip = (page - 1) * take;
+  const cappedTake = Math.min(Math.max(take, 1), 200);
+  const skip = (page - 1) * cappedTake;
 
-  const [consultations, total] = await Promise.all([
+  const [consultations, total, countGroups] = await Promise.all([
     db.consultation.findMany({
       where,
       orderBy: { createdAt: "desc" },
-      take,
+      take: cappedTake,
       skip,
     }),
     db.consultation.count({ where }),
+    db.consultation.groupBy({ by: ["status"], _count: { _all: true } }),
   ]);
+
+  const counts = Object.fromEntries(
+    countGroups.map((g) => [g.status, g._count._all]),
+  );
 
   return {
     consultations: consultations as ConsultationRow[],
     total,
-    pages: Math.ceil(total / take),
+    pages: Math.ceil(total / cappedTake),
     statuses: STATUSES,
+    counts,
   };
 }
 

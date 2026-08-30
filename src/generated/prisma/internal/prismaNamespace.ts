@@ -1576,7 +1576,16 @@ export const ConsultationScalarFieldEnum = {
   sessionNotes: 'sessionNotes',
   outcome: 'outcome',
   followUpDate: 'followUpDate',
-  completedAt: 'completedAt'
+  completedAt: 'completedAt',
+  utmSource: 'utmSource',
+  utmMedium: 'utmMedium',
+  utmCampaign: 'utmCampaign',
+  utmTerm: 'utmTerm',
+  utmContent: 'utmContent',
+  clickId: 'clickId',
+  referrerDomain: 'referrerDomain',
+  landingPath: 'landingPath',
+  attributionJson: 'attributionJson'
 } as const
 
 export type ConsultationScalarFieldEnum = (typeof ConsultationScalarFieldEnum)[keyof typeof ConsultationScalarFieldEnum]

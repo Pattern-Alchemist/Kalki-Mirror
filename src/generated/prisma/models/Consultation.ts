@@ -43,6 +43,15 @@ export type ConsultationMinAggregateOutputType = {
   outcome: string | null
   followUpDate: Date | null
   completedAt: Date | null
+  utmSource: string | null
+  utmMedium: string | null
+  utmCampaign: string | null
+  utmTerm: string | null
+  utmContent: string | null
+  clickId: string | null
+  referrerDomain: string | null
+  landingPath: string | null
+  attributionJson: string | null
 }
 
 export type ConsultationMaxAggregateOutputType = {
@@ -64,6 +73,15 @@ export type ConsultationMaxAggregateOutputType = {
   outcome: string | null
   followUpDate: Date | null
   completedAt: Date | null
+  utmSource: string | null
+  utmMedium: string | null
+  utmCampaign: string | null
+  utmTerm: string | null
+  utmContent: string | null
+  clickId: string | null
+  referrerDomain: string | null
+  landingPath: string | null
+  attributionJson: string | null
 }
 
 export type ConsultationCountAggregateOutputType = {
@@ -85,6 +103,15 @@ export type ConsultationCountAggregateOutputType = {
   outcome: number
   followUpDate: number
   completedAt: number
+  utmSource: number
+  utmMedium: number
+  utmCampaign: number
+  utmTerm: number
+  utmContent: number
+  clickId: number
+  referrerDomain: number
+  landingPath: number
+  attributionJson: number
   _all: number
 }
 
@@ -108,6 +135,15 @@ export type ConsultationMinAggregateInputType = {
   outcome?: true
   followUpDate?: true
   completedAt?: true
+  utmSource?: true
+  utmMedium?: true
+  utmCampaign?: true
+  utmTerm?: true
+  utmContent?: true
+  clickId?: true
+  referrerDomain?: true
+  landingPath?: true
+  attributionJson?: true
 }
 
 export type ConsultationMaxAggregateInputType = {
@@ -129,6 +165,15 @@ export type ConsultationMaxAggregateInputType = {
   outcome?: true
   followUpDate?: true
   completedAt?: true
+  utmSource?: true
+  utmMedium?: true
+  utmCampaign?: true
+  utmTerm?: true
+  utmContent?: true
+  clickId?: true
+  referrerDomain?: true
+  landingPath?: true
+  attributionJson?: true
 }
 
 export type ConsultationCountAggregateInputType = {
@@ -150,6 +195,15 @@ export type ConsultationCountAggregateInputType = {
   outcome?: true
   followUpDate?: true
   completedAt?: true
+  utmSource?: true
+  utmMedium?: true
+  utmCampaign?: true
+  utmTerm?: true
+  utmContent?: true
+  clickId?: true
+  referrerDomain?: true
+  landingPath?: true
+  attributionJson?: true
   _all?: true
 }
 
@@ -244,6 +298,15 @@ export type ConsultationGroupByOutputType = {
   outcome: string | null
   followUpDate: Date | null
   completedAt: Date | null
+  utmSource: string | null
+  utmMedium: string | null
+  utmCampaign: string | null
+  utmTerm: string | null
+  utmContent: string | null
+  clickId: string | null
+  referrerDomain: string | null
+  landingPath: string | null
+  attributionJson: string | null
   _count: ConsultationCountAggregateOutputType | null
   _min: ConsultationMinAggregateOutputType | null
   _max: ConsultationMaxAggregateOutputType | null
@@ -286,6 +349,15 @@ export type ConsultationWhereInput = {
   outcome?: Prisma.StringNullableFilter<"Consultation"> | string | null
   followUpDate?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
+  utmSource?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  utmMedium?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  utmCampaign?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  utmTerm?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  utmContent?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  clickId?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  referrerDomain?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  landingPath?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  attributionJson?: Prisma.StringNullableFilter<"Consultation"> | string | null
 }
 
 export type ConsultationOrderByWithRelationInput = {
@@ -307,6 +379,15 @@ export type ConsultationOrderByWithRelationInput = {
   outcome?: Prisma.SortOrderInput | Prisma.SortOrder
   followUpDate?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  utmSource?: Prisma.SortOrderInput | Prisma.SortOrder
+  utmMedium?: Prisma.SortOrderInput | Prisma.SortOrder
+  utmCampaign?: Prisma.SortOrderInput | Prisma.SortOrder
+  utmTerm?: Prisma.SortOrderInput | Prisma.SortOrder
+  utmContent?: Prisma.SortOrderInput | Prisma.SortOrder
+  clickId?: Prisma.SortOrderInput | Prisma.SortOrder
+  referrerDomain?: Prisma.SortOrderInput | Prisma.SortOrder
+  landingPath?: Prisma.SortOrderInput | Prisma.SortOrder
+  attributionJson?: Prisma.SortOrderInput | Prisma.SortOrder
 }
 
 export type ConsultationWhereUniqueInput = Prisma.AtLeast<{
@@ -331,6 +412,15 @@ export type ConsultationWhereUniqueInput = Prisma.AtLeast<{
   outcome?: Prisma.StringNullableFilter<"Consultation"> | string | null
   followUpDate?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
+  utmSource?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  utmMedium?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  utmCampaign?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  utmTerm?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  utmContent?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  clickId?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  referrerDomain?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  landingPath?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  attributionJson?: Prisma.StringNullableFilter<"Consultation"> | string | null
 }, "id">
 
 export type ConsultationOrderByWithAggregationInput = {
@@ -352,6 +442,15 @@ export type ConsultationOrderByWithAggregationInput = {
   outcome?: Prisma.SortOrderInput | Prisma.SortOrder
   followUpDate?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  utmSource?: Prisma.SortOrderInput | Prisma.SortOrder
+  utmMedium?: Prisma.SortOrderInput | Prisma.SortOrder
+  utmCampaign?: Prisma.SortOrderInput | Prisma.SortOrder
+  utmTerm?: Prisma.SortOrderInput | Prisma.SortOrder
+  utmContent?: Prisma.SortOrderInput | Prisma.SortOrder
+  clickId?: Prisma.SortOrderInput | Prisma.SortOrder
+  referrerDomain?: Prisma.SortOrderInput | Prisma.SortOrder
+  landingPath?: Prisma.SortOrderInput | Prisma.SortOrder
+  attributionJson?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ConsultationCountOrderByAggregateInput
   _max?: Prisma.ConsultationMaxOrderByAggregateInput
   _min?: Prisma.ConsultationMinOrderByAggregateInput
@@ -379,6 +478,15 @@ export type ConsultationScalarWhereWithAggregatesInput = {
   outcome?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
   followUpDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Consultation"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Consultation"> | Date | string | null
+  utmSource?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
+  utmMedium?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
+  utmCampaign?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
+  utmTerm?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
+  utmContent?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
+  clickId?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
+  referrerDomain?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
+  landingPath?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
+  attributionJson?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
 }
 
 export type ConsultationCreateInput = {
@@ -400,6 +508,15 @@ export type ConsultationCreateInput = {
   outcome?: string | null
   followUpDate?: Date | string | null
   completedAt?: Date | string | null
+  utmSource?: string | null
+  utmMedium?: string | null
+  utmCampaign?: string | null
+  utmTerm?: string | null
+  utmContent?: string | null
+  clickId?: string | null
+  referrerDomain?: string | null
+  landingPath?: string | null
+  attributionJson?: string | null
 }
 
 export type ConsultationUncheckedCreateInput = {
@@ -421,6 +538,15 @@ export type ConsultationUncheckedCreateInput = {
   outcome?: string | null
   followUpDate?: Date | string | null
   completedAt?: Date | string | null
+  utmSource?: string | null
+  utmMedium?: string | null
+  utmCampaign?: string | null
+  utmTerm?: string | null
+  utmContent?: string | null
+  clickId?: string | null
+  referrerDomain?: string | null
+  landingPath?: string | null
+  attributionJson?: string | null
 }
 
 export type ConsultationUpdateInput = {
@@ -442,6 +568,15 @@ export type ConsultationUpdateInput = {
   outcome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  utmSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmMedium?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCampaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmTerm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clickId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ConsultationUncheckedUpdateInput = {
@@ -463,6 +598,15 @@ export type ConsultationUncheckedUpdateInput = {
   outcome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  utmSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmMedium?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCampaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmTerm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clickId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ConsultationCreateManyInput = {
@@ -484,6 +628,15 @@ export type ConsultationCreateManyInput = {
   outcome?: string | null
   followUpDate?: Date | string | null
   completedAt?: Date | string | null
+  utmSource?: string | null
+  utmMedium?: string | null
+  utmCampaign?: string | null
+  utmTerm?: string | null
+  utmContent?: string | null
+  clickId?: string | null
+  referrerDomain?: string | null
+  landingPath?: string | null
+  attributionJson?: string | null
 }
 
 export type ConsultationUpdateManyMutationInput = {
@@ -505,6 +658,15 @@ export type ConsultationUpdateManyMutationInput = {
   outcome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  utmSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmMedium?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCampaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmTerm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clickId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ConsultationUncheckedUpdateManyInput = {
@@ -526,6 +688,15 @@ export type ConsultationUncheckedUpdateManyInput = {
   outcome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  utmSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmMedium?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCampaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmTerm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clickId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ConsultationCountOrderByAggregateInput = {
@@ -547,6 +718,15 @@ export type ConsultationCountOrderByAggregateInput = {
   outcome?: Prisma.SortOrder
   followUpDate?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
+  utmSource?: Prisma.SortOrder
+  utmMedium?: Prisma.SortOrder
+  utmCampaign?: Prisma.SortOrder
+  utmTerm?: Prisma.SortOrder
+  utmContent?: Prisma.SortOrder
+  clickId?: Prisma.SortOrder
+  referrerDomain?: Prisma.SortOrder
+  landingPath?: Prisma.SortOrder
+  attributionJson?: Prisma.SortOrder
 }
 
 export type ConsultationMaxOrderByAggregateInput = {
@@ -568,6 +748,15 @@ export type ConsultationMaxOrderByAggregateInput = {
   outcome?: Prisma.SortOrder
   followUpDate?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
+  utmSource?: Prisma.SortOrder
+  utmMedium?: Prisma.SortOrder
+  utmCampaign?: Prisma.SortOrder
+  utmTerm?: Prisma.SortOrder
+  utmContent?: Prisma.SortOrder
+  clickId?: Prisma.SortOrder
+  referrerDomain?: Prisma.SortOrder
+  landingPath?: Prisma.SortOrder
+  attributionJson?: Prisma.SortOrder
 }
 
 export type ConsultationMinOrderByAggregateInput = {
@@ -589,6 +778,15 @@ export type ConsultationMinOrderByAggregateInput = {
   outcome?: Prisma.SortOrder
   followUpDate?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
+  utmSource?: Prisma.SortOrder
+  utmMedium?: Prisma.SortOrder
+  utmCampaign?: Prisma.SortOrder
+  utmTerm?: Prisma.SortOrder
+  utmContent?: Prisma.SortOrder
+  clickId?: Prisma.SortOrder
+  referrerDomain?: Prisma.SortOrder
+  landingPath?: Prisma.SortOrder
+  attributionJson?: Prisma.SortOrder
 }
 
 
@@ -612,6 +810,15 @@ export type ConsultationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   outcome?: boolean
   followUpDate?: boolean
   completedAt?: boolean
+  utmSource?: boolean
+  utmMedium?: boolean
+  utmCampaign?: boolean
+  utmTerm?: boolean
+  utmContent?: boolean
+  clickId?: boolean
+  referrerDomain?: boolean
+  landingPath?: boolean
+  attributionJson?: boolean
 }, ExtArgs["result"]["consultation"]>
 
 export type ConsultationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -633,6 +840,15 @@ export type ConsultationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   outcome?: boolean
   followUpDate?: boolean
   completedAt?: boolean
+  utmSource?: boolean
+  utmMedium?: boolean
+  utmCampaign?: boolean
+  utmTerm?: boolean
+  utmContent?: boolean
+  clickId?: boolean
+  referrerDomain?: boolean
+  landingPath?: boolean
+  attributionJson?: boolean
 }, ExtArgs["result"]["consultation"]>
 
 export type ConsultationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -654,6 +870,15 @@ export type ConsultationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   outcome?: boolean
   followUpDate?: boolean
   completedAt?: boolean
+  utmSource?: boolean
+  utmMedium?: boolean
+  utmCampaign?: boolean
+  utmTerm?: boolean
+  utmContent?: boolean
+  clickId?: boolean
+  referrerDomain?: boolean
+  landingPath?: boolean
+  attributionJson?: boolean
 }, ExtArgs["result"]["consultation"]>
 
 export type ConsultationSelectScalar = {
@@ -675,9 +900,18 @@ export type ConsultationSelectScalar = {
   outcome?: boolean
   followUpDate?: boolean
   completedAt?: boolean
+  utmSource?: boolean
+  utmMedium?: boolean
+  utmCampaign?: boolean
+  utmTerm?: boolean
+  utmContent?: boolean
+  clickId?: boolean
+  referrerDomain?: boolean
+  landingPath?: boolean
+  attributionJson?: boolean
 }
 
-export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "email" | "phone" | "request" | "status" | "scheduledFor" | "notes" | "createdAt" | "updatedAt" | "patternDiagnosis" | "prescribedSequence" | "prescribedSiddhis" | "sessionNotes" | "outcome" | "followUpDate" | "completedAt", ExtArgs["result"]["consultation"]>
+export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "email" | "phone" | "request" | "status" | "scheduledFor" | "notes" | "createdAt" | "updatedAt" | "patternDiagnosis" | "prescribedSequence" | "prescribedSiddhis" | "sessionNotes" | "outcome" | "followUpDate" | "completedAt" | "utmSource" | "utmMedium" | "utmCampaign" | "utmTerm" | "utmContent" | "clickId" | "referrerDomain" | "landingPath" | "attributionJson", ExtArgs["result"]["consultation"]>
 
 export type $ConsultationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Consultation"
@@ -701,6 +935,15 @@ export type $ConsultationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     outcome: string | null
     followUpDate: Date | null
     completedAt: Date | null
+    utmSource: string | null
+    utmMedium: string | null
+    utmCampaign: string | null
+    utmTerm: string | null
+    utmContent: string | null
+    clickId: string | null
+    referrerDomain: string | null
+    landingPath: string | null
+    attributionJson: string | null
   }, ExtArgs["result"]["consultation"]>
   composites: {}
 }
@@ -1142,6 +1385,15 @@ export interface ConsultationFieldRefs {
   readonly outcome: Prisma.FieldRef<"Consultation", 'String'>
   readonly followUpDate: Prisma.FieldRef<"Consultation", 'DateTime'>
   readonly completedAt: Prisma.FieldRef<"Consultation", 'DateTime'>
+  readonly utmSource: Prisma.FieldRef<"Consultation", 'String'>
+  readonly utmMedium: Prisma.FieldRef<"Consultation", 'String'>
+  readonly utmCampaign: Prisma.FieldRef<"Consultation", 'String'>
+  readonly utmTerm: Prisma.FieldRef<"Consultation", 'String'>
+  readonly utmContent: Prisma.FieldRef<"Consultation", 'String'>
+  readonly clickId: Prisma.FieldRef<"Consultation", 'String'>
+  readonly referrerDomain: Prisma.FieldRef<"Consultation", 'String'>
+  readonly landingPath: Prisma.FieldRef<"Consultation", 'String'>
+  readonly attributionJson: Prisma.FieldRef<"Consultation", 'String'>
 }
     
 

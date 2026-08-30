@@ -7,6 +7,7 @@ import { fadeInUp, fadeIn } from '@/lib/motion/tokens';
 import { submitConsultation } from '@/app/consultations/actions';
 import { track } from '@/lib/analytics/track';
 import { whatsappIntakeUrl } from '@/lib/utils/whatsapp';
+import { getAttribution } from '@/lib/attribution';
 
 interface PatternSummary {
   slug: string;
@@ -568,7 +569,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
     setSubmitting(false);
 
     if (result.success) {
-      track('wizard_submitted', { properties: { step: totalSteps, patterns: form.selectedPatterns.length } });
+      track('wizard_submitted', { properties: { step: totalSteps, patterns: form.selectedPatterns.length, source: getAttribution()?.last.source ?? 'direct' } });
       setSubmitted(true);
     } else {
       setFormError(result.error || 'Submission failed.');
