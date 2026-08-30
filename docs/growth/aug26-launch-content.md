@@ -225,3 +225,75 @@ is proven.
 
 **After D7:** whichever channel produced the first real (non-test) lead gets
 Post 2 of that channel within 48 hours. The pipeline tells you; don't guess.
+
+---
+
+## 8 · Founder account — @lokhandekaustubh
+
+> The human face. DM-seekers (from ASTROKAOS-style prediction content) are
+> free-tier curiosity; this bio migrates them into the KALKI consultation
+> funnel. Link field = money link `utm_source=instagram&utm_medium=bio`.
+
+### Name field (searchable, ≤64)
+
+```
+Kaustubh Lokhande | KALKI
+```
+
+### Bio — Variant A (authority, 143/150 chars)
+
+```
+Tantric technologist. Founder, KALKI.
+I read the pattern that repeats in you. Mirror Method, not guesswork.
+Consultations open. WhatsApp video.
+```
+
+### Bio — Variant B (evidence-grade edge, 130/150)
+
+```
+Founder @ KALKI — 56 siddhi folios, evidence-graded. Paranormal files with verdicts.
+I consult on the pattern that repeats in you.
+```
+
+### Bio — Variant C (DM-funnel bridge, 119/150)
+
+```
+Your predictions land here. Your pattern lives at KALKI.
+Founder, KALKI · Mirror Method consultations · WhatsApp video.
+```
+
+**Link field:** `https://www.astrokalki.com/consultations?utm_source=instagram&utm_medium=bio&utm_campaign=aug26-launch`
+**Story highlight:** create `CONSULT` — 3 slides: (1) what a Mirror Method
+diagnostic is, (2) what you get (sādhana prescription, WhatsApp video), (3)
+link sticker → money link with `utm_medium=story`.
+
+### Founder anchor post (first person, caption)
+
+```
+People come to me asking what will happen. Wrong question.
+
+The right one: what keeps happening — and why.
+
+Everything that repeats in your life has a structure. The job isn't prediction; it's recognition. That is the Mirror Method — a diagnostic, not a fortune-telling session. Twenty emotional patterns, mapped across Tantric geometry. You leave with a practice, not a prophecy.
+
+I built KALKI on one rule: what we cannot verify, we mark. 56 siddhi folios, graded by evidence. Paranormal case files that close with verdicts, not legends.
+
+Consultations are open. Link in bio. Bring the pattern that repeats.
+```
+
+**First comment:** money link `utm_medium=post` + hashtags from §1.
+
+### Comment-keyword mechanic (algorithm fuel)
+
+Pin this reply on the anchor post:
+
+```
+Comment "MIRROR" and I'll DM you the link to book a diagnostic.
+```
+
+Every comment = reach; every DM = a hand on the funnel. When you DM the
+link, use `utm_medium=dm` so the pipeline shows you the mechanic works:
+
+```
+https://www.astrokalki.com/consultations?utm_source=instagram&utm_medium=dm&utm_campaign=aug26-launch
+```
