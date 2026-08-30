@@ -1,5 +1,27 @@
 # GSC Property — The 10-Minute Runbook
 
+> **STATUS (2026-08-30): DNS TXT record is LIVE and all three verification
+> surfaces are armed.** The record visible in public DNS at the apex:
+>
+> ```
+> astrokalki.com.  TXT  "google-site-verification=s6lC7I_1OZI6LHndjBGWwxP2dvsrX0NBVh39YN9lYrQ"
+> ```
+>
+| Surface | State |
+|---|---|
+| DNS TXT (Hostinger, ns1/ns2.dns-parking.com) | ✅ live in the zone |
+| Meta tag on every page (`GOOGLE_SITE_VERIFICATION`) | ✅ deployed, verified in live HTML |
+| HTML file `/googles6lC…9lYrQ.html` (`GSC_VERIFICATION_TOKEN`) | ✅ 200 with exact expected body; wrong tokens 404 |
+| IndexNow | ✅ key file live, targeted ping accepted (HTTP 200), daily 02:00 UTC cron registered |
+
+**The only remaining human step:** open
+[search.google.com/search-console](https://search.google.com/search-console) →
+create the property (Domain → `astrokalki.com`) → if the token GSC shows matches
+the one above, click **Verify** — it will pass instantly. Then submit
+`sitemap.xml` and Request Indexing for the three money URLs (Minutes 6–10 below).
+
+---
+
 > One-time setup. Everything machine-side (verification routes, meta tag, sitemap,
 > IndexNow cron) is already shipped and live. This runbook is only the two things
 > that require **your** Google account: creating the property and proving ownership.
