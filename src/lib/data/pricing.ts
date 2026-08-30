@@ -118,9 +118,23 @@ export const pricingTiers: PricingTier[] = [
 export type Currency = 'INR' | 'USD';
 
 /**
- * Detect user's preferred currency from browser locale.
+ * Detect user's preferred currency — Phase C: edge geo first, locale fallback.
+ * `kr_country` (set by middleware from Vercel's x-vercel-ip-country) is
+ * server-truth about where the visitor is served; locale is only a heuristic
+ * (an en-US browser in India, an Indian diaspora browser in the US, …).
+ * India → INR; any other known country → USD; unknown/no cookie → locale.
  */
 export function detectCurrency(): Currency {
+  // 1 · Edge geo cookie (client-side read; SSR sees neither cookie nor navigator → INR default)
+  if (typeof document !== 'undefined') {
+    const hit = document.cookie
+      .split(';')
+      .map((c) => c.trim())
+      .find((c) => c.startsWith('kr_country='));
+    const country = hit ? decodeURIComponent(hit.slice('kr_country='.length)) : null;
+    if (country && /^[A-Za-z]{2}$/.test(country)) return country.toUpperCase() === 'IN' ? 'INR' : 'USD';
+  }
+  // 2 · Locale heuristic (pre-Phase-C behavior, unchanged)
   if (typeof navigator === 'undefined') return 'INR';
   const lang = navigator.language || (Intl.DateTimeFormat().resolvedOptions()?.locale ?? '');
   if (/\b(IN|hi|bn|te|ta|kn|ml|mr|gu|or|pa|as|ur)\b/i.test(lang)) return 'INR';

@@ -64,6 +64,29 @@ function getClientIP(request: NextRequest): string {
   );
 }
 
+// ── Phase C: geo capture ──────────────────────────────────────────────────
+// Vercel's edge injects `x-vercel-ip-country` (ISO-3166 alpha-2) on every
+// request. Mirror it into a first-party cookie so (a) the client-side
+// attribution layer can stamp `country` into its snapshot and (b) the
+// pricing UI can default USD/INR by geography, not locale guesswork.
+// Fail-silent by design: no header (local dev, non-Vercel) → no cookie →
+// every downstream consumer degrades exactly as before Phase C.
+const GEO_COOKIE = 'kr_country';
+const GEO_COOKIE_MAX_AGE_S = 60 * 60 * 24 * 7; // 7 days — geo can change
+
+function withGeoCookie(request: NextRequest, response: NextResponse): NextResponse {
+  if (request.cookies.get(GEO_COOKIE)?.value) return response;
+  const country = request.headers.get('x-vercel-ip-country');
+  if (!country || !/^[A-Za-z]{2}$/.test(country)) return response;
+  response.cookies.set(GEO_COOKIE, country.toUpperCase(), {
+    maxAge: GEO_COOKIE_MAX_AGE_S,
+    path: '/',
+    sameSite: 'lax',
+    httpOnly: false, // attribution + pricing read it from document.cookie
+  });
+  return response;
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -190,7 +213,7 @@ export async function middleware(request: NextRequest) {
 
     response.headers.set("X-Robots-Tag", "noindex, nofollow");
     response.headers.set("Referrer-Policy", "no-referrer");
-    return response;
+    return withGeoCookie(request, response);
   }
 
   // ── Tier injection for gated content pages ──
@@ -206,16 +229,18 @@ export async function middleware(request: NextRequest) {
     const userTier = (token?.tier as string) || "prithvi";
     const response = NextResponse.next();
     response.headers.set("x-user-tier", userTier);
-    return response;
+    return withGeoCookie(request, response);
   }
 
-  return NextResponse.next();
+  return withGeoCookie(request, NextResponse.next());
 }
 
 export const config = {
+  // Phase C: matched every dynamic route so the geo cookie lands on the
+  // marketing surface (home, consultations, pricing, patterns…), not just
+  // admin/gated pages. Static assets, health, auth internals and middleware's
+  // own session-validate fetch are excluded — no recursive or wasted work.
   matcher: [
-    "/admin/:path*",
-    "/archive/:path*",
-    "/archetypes",
+    "/((?!_next/static|_next/image|favicon.ico|api/auth|api/health|api/monitoring-tunnel|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|xml|txt|json|css|js|woff2?)).*)",
   ],
 };

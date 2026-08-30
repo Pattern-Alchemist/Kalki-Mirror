@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { z } from "zod";
 import {
   ATTRIBUTION_COOKIE,
@@ -30,6 +30,23 @@ async function readAttribution(): Promise<AttributionSnapshot | null> {
   }
 }
 
+/**
+ * Edge geo fallback (Phase C). The middleware-mirrored `kr_country` cookie
+ * is normally carried inside the attribution snapshot; if the snapshot is
+ * missing (blocked cookies, pre-deploy visitor) the submit request itself
+ * still carries Vercel's `x-vercel-ip-country` header — so EVERY lead gets
+ * a country, even fully untagged ones.
+ */
+async function readEdgeCountry(): Promise<string | null> {
+  try {
+    const h = await headers();
+    const c = h.get("x-vercel-ip-country");
+    return c && /^[A-Za-z]{2}$/.test(c) ? c.toUpperCase() : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function submitConsultation(formData: {
   name: string;
   whatsapp: string;
@@ -52,6 +69,7 @@ export async function submitConsultation(formData: {
   try {
     const attribution = await readAttribution();
     const last = attribution?.last;
+    const country = last?.country ?? (await readEdgeCountry());
 
     await db.consultation.create({
       data: {
@@ -67,6 +85,7 @@ export async function submitConsultation(formData: {
         utmTerm: last?.term ?? null,
         utmContent: last?.content ?? null,
         clickId: last?.clickId ?? null,
+        country: country ?? null,
         referrerDomain: referrerDomainOf(last?.referrer) ?? null,
         landingPath: attribution?.first.landingPath ?? null,
         attributionJson: attribution ? JSON.stringify(attribution) : null,

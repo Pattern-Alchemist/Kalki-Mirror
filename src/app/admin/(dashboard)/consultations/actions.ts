@@ -35,6 +35,7 @@ export type ConsultationRow = {
   utmTerm: string | null;
   utmContent: string | null;
   clickId: string | null;
+  country: string | null;
   referrerDomain: string | null;
   landingPath: string | null;
   attributionJson: string | null;

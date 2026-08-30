@@ -261,6 +261,7 @@ model Consultation {
   utmTerm         String?
   utmContent      String?
   clickId         String?   // gclid | fbclid | msclkid | ttclid
+  country         String?   // ISO-3166 alpha-2 from Vercel edge (x-vercel-ip-country); captured via kr_country cookie / submit header — geo rollups without UTM tags
   referrerDomain  String?   // rollup-ready domain of document.referrer
   landingPath     String?   // first-touch path+query on astrokalki.com
   attributionJson String?   // full AttributionSnapshot (first/last/sessions)

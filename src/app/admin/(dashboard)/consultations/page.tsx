@@ -27,8 +27,8 @@ const STATUS_DOT: Record<string, string> = {
 };
 
 type AttributionSnapshot = {
-  first?: Record<string, unknown> & { ts?: string; source?: string; medium?: string; campaign?: string; landingPath?: string; referrer?: string };
-  last?: Record<string, unknown> & { ts?: string; source?: string; medium?: string; campaign?: string; landingPath?: string; referrer?: string };
+  first?: Record<string, unknown> & { ts?: string; source?: string; medium?: string; campaign?: string; country?: string; landingPath?: string; referrer?: string };
+  last?: Record<string, unknown> & { ts?: string; source?: string; medium?: string; campaign?: string; country?: string; landingPath?: string; referrer?: string };
   sessions?: number;
 };
 
@@ -63,12 +63,13 @@ function fmtDate(iso: unknown): string {
 
 /** One-line source classification for a lead. */
 function leadSource(c: ConsultationRow): { label: string; kind: "paid" | "organic" | "referral" | "direct" } {
-  if (c.clickId) return { label: c.utmSource || c.clickId, kind: "paid" };
+  const geo = c.country ? ` · ${c.country}` : "";
+  if (c.clickId) return { label: (c.utmSource || c.clickId) + geo, kind: "paid" };
   if (c.utmSource && c.utmSource !== "direct") {
-    return { label: c.utmCampaign ? `${c.utmSource} · ${c.utmCampaign}` : c.utmSource, kind: "organic" };
+    return { label: (c.utmCampaign ? `${c.utmSource} · ${c.utmCampaign}` : c.utmSource) + geo, kind: "organic" };
   }
-  if (c.referrerDomain) return { label: c.referrerDomain, kind: "referral" };
-  return { label: c.utmSource || "direct", kind: "direct" };
+  if (c.referrerDomain) return { label: c.referrerDomain + geo, kind: "referral" };
+  return { label: (c.utmSource || "direct") + geo, kind: "direct" };
 }
 
 const SOURCE_CHIP: Record<string, string> = {
@@ -360,6 +361,7 @@ function LeadDrawer({
       ["Source", touch.source],
       ["Medium", touch.medium],
       ["Campaign", touch.campaign],
+      ["Country", touch.country],
       ["Landing", touch.landingPath],
       ["Referrer", touch.referrer],
       ["At", fmtDate(touch.ts)],
@@ -453,7 +455,7 @@ function LeadDrawer({
           ) : (
             <p className="text-xs text-zinc-600">
               No snapshot recorded — this lead predates the attribution layer or cookies were blocked.
-              Flat fields: {lead.utmSource || "—"} / {lead.utmMedium || "—"} {lead.referrerDomain ? `· ref ${lead.referrerDomain}` : ""}
+              Flat fields: {lead.utmSource || "—"} / {lead.utmMedium || "—"} {lead.referrerDomain ? `· ref ${lead.referrerDomain}` : ""} {lead.country ? `· ${lead.country}` : ""}
             </p>
           )}
         </div>

@@ -32,6 +32,7 @@ export interface Touch {
   term?: string;
   content?: string;
   clickId?: string; // gclid | fbclid | msclkid | ttclid
+  country?: string; // ISO-3166 alpha-2 — Vercel edge geo, mirrored into the `kr_country` cookie by middleware
   referrer?: string; // full document.referrer at arrival ('' when none)
   landingPath?: string; // path+search at arrival (first touch mainly)
   ts: string; // ISO timestamp
@@ -107,6 +108,12 @@ function referrerHost(referrer: string): string | null {
   }
 }
 
+/** Browser read of the middleware-set geo cookie (null when absent/SSR/dev). */
+function edgeCountry(): string | undefined {
+  const raw = readCookie('kr_country');
+  return raw && /^[A-Za-z]{2}$/.test(raw) ? raw.toUpperCase() : undefined;
+}
+
 /** Classifies the current page arrival. Returns null when nothing is trackable. */
 function classifyArrival(): Touch | null {
   const params = new URLSearchParams(location.search);
@@ -130,6 +137,7 @@ function classifyArrival(): Touch | null {
 
   const touch: Touch = {
     ts: new Date().toISOString(),
+    country: edgeCountry(),
     referrer: ref || undefined,
     landingPath: `${location.pathname}${location.search}`.slice(0, 300),
   };
@@ -182,6 +190,7 @@ export function captureAttribution(): void {
       const first: Touch = touch ?? {
         source: 'direct',
         medium: 'direct',
+        country: edgeCountry(),
         landingPath: `${location.pathname}${location.search}`.slice(0, 300),
         ts: new Date(now).toISOString(),
       };
