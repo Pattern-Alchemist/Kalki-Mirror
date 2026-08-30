@@ -1583,6 +1583,7 @@ export const ConsultationScalarFieldEnum = {
   utmTerm: 'utmTerm',
   utmContent: 'utmContent',
   clickId: 'clickId',
+  country: 'country',
   referrerDomain: 'referrerDomain',
   landingPath: 'landingPath',
   attributionJson: 'attributionJson'
