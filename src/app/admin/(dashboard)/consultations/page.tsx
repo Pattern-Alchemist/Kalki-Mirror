@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   getConsultations,
   updateConsultationStatus,
+  deleteConsultation,
   type ConsultationRow,
 } from "./actions";
 
@@ -164,6 +165,22 @@ export default function ConsultationsPage() {
     [],
   );
 
+  const deleteLead = useCallback(
+    async (lead: ConsultationRow) => {
+      setSavingStatus(true);
+      try {
+        await deleteConsultation(lead.id);
+        setSelected(null);
+        await loadPipeline();
+      } catch {
+        setError("Delete failed — only ADMIN/SUPERADMIN can remove leads.");
+      } finally {
+        setSavingStatus(false);
+      }
+    },
+    [loadPipeline],
+  );
+
   const converting = (counts["SCHEDULED"] ?? 0) + (counts["COMPLETED"] ?? 0);
   const conversionRate = total > 0 ? Math.round((converting / total) * 100) : 0;
 
@@ -253,6 +270,7 @@ export default function ConsultationsPage() {
           onClose={() => setSelected(null)}
           onStatus={(s) => changeStatus(selected, s)}
           onSaveNotes={(n) => saveNotes(selected, n)}
+          onDelete={() => deleteLead(selected)}
         />
       )}
     </div>
@@ -301,12 +319,14 @@ function LeadDrawer({
   onClose,
   onStatus,
   onSaveNotes,
+  onDelete,
 }: {
   lead: ConsultationRow;
   saving: boolean;
   onClose: () => void;
   onStatus: (s: string) => void;
   onSaveNotes: (n: string) => void;
+  onDelete: () => void;
 }) {
   const [notes, setNotes] = useState(lead.notes ?? "");
   useEffect(() => setNotes(lead.notes ?? ""), [lead.id, lead.notes]);
@@ -479,6 +499,28 @@ function LeadDrawer({
           >
             Save notes
           </button>
+        </div>
+
+        {/* Danger zone */}
+        <div className="mt-6 border-t border-zinc-800/80 pt-4">
+          <button
+            onClick={() => {
+              if (
+                window.confirm(
+                  `Delete lead "${lead.name}" permanently? This cannot be undone.`,
+                )
+              ) {
+                onDelete();
+              }
+            }}
+            disabled={saving}
+            className="rounded-lg border border-red-500/30 bg-red-500/5 px-4 py-2 text-xs font-medium text-red-400 transition-colors hover:bg-red-500/15 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Delete lead permanently
+          </button>
+          <p className="mt-1.5 text-[0.65rem] text-zinc-600">
+            Admin/Superadmin only · recorded in the audit log
+          </p>
         </div>
       </aside>
     </div>

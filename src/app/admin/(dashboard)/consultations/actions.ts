@@ -120,6 +120,46 @@ export async function updateConsultationStatus(
   return { success: true };
 }
 
+export async function deleteConsultation(consultationId: string) {
+  await requireAdmin();
+
+  // Destructive — restricted further than the general admin gate:
+  // only ADMIN / SUPERADMIN may remove a lead outright.
+  const session = await safeGetToken();
+  const role = (session?.role as string) ?? "";
+  if (!["ADMIN", "SUPERADMIN"].includes(role)) {
+    throw new Error("Forbidden");
+  }
+
+  const consultation = await db.consultation.findUniqueOrThrow({
+    where: { id: consultationId },
+  });
+
+  await db.consultation.delete({ where: { id: consultationId } });
+
+  await logAudit({
+    action: "consultation.delete",
+    entity: "Consultation",
+    entityId: consultationId,
+    before: {
+      name: consultation.name,
+      phone: consultation.phone,
+      status: consultation.status,
+      utmSource: consultation.utmSource,
+      utmCampaign: consultation.utmCampaign,
+    },
+  });
+
+  await dispatchWebhooks("consultation.delete", {
+    consultationId,
+    name: consultation.name,
+  });
+
+  revalidatePath("/admin/overview");
+  revalidatePath("/admin/consultations");
+  return { success: true };
+}
+
 export async function scheduleConsultation(
   consultationId: string,
   scheduledFor: string,
