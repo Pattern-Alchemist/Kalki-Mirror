@@ -21,6 +21,15 @@ captions.
 | Closing line | Every short ends: **"Door N of 10. Tomorrow night, [goddess]."** (Door 9 teases the finale; Door 10 teases the Vijayadashami money post.) |
 | Spine | Every script runs the Mirror Method™ arc implicitly: Pattern Recognition → Emotional Origin → Karmic Reinforcement → Behavioural Expression → Conscious Intervention. Never say the stage names out loud except Doors 2, 4, 5 where scripted. |
 
+**YT Studio plumbing (per-video, 1 min each — do while pinning the comment):**
+
+- **Related Video chain:** Door 1 → link the "I AM KALKI 🔱 The Avatar Has
+  Arrived" video (it pulls 45% of the channel's views; hand the identity
+  audience to the series). Door N → link Door N−1 (binge chain). This is the
+  free Shorts→long-form bridge YT Studio keeps asking for.
+- **Titles stay exactly as scripted** — channel Search traffic is already
+  31% of views, and the Door titles are built for it.
+
 ### UTM constants
 
 **Pinned comment — normal nights (2, 3, 4, 6, 7, 8, 9)** — atlas funnel:

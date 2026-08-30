@@ -249,12 +249,59 @@ opens with a two-geo strategy or a single-geo one.
 
 ## 11 · Optional code phase (needs your go-ahead — not built yet)
 
-1. **Server-side geo capture.** Read Vercel's `x-vercel-ip-country` header
-   into the attribution `Touch` at snapshot time → every lead gets a
-   `country` field even when links are untagged (direct/organic included).
-   ~1 file change, fail-silent like the rest of the layer.
-2. **Geo-aware currency default.** Consultations page defaults to USD for
-   non-INR visitors (both prices stay visible). Display-only change.
+**STATUS UPDATE (Aug 31, 2026): BUILT AND SHIPPED.** Phase C went live:
 
-Both are small, additive, and reversible. Say the word and they ship with
-the next push.
+1. **Server-side geo capture** — `src/middleware.ts` mirrors Vercel's
+   `x-vercel-ip-country` into a first-party `kr_country` cookie (7d, Lax) on
+   every dynamic route; `src/lib/attribution.ts` stamps `country` into each
+   attribution touch; the consultation server action writes it to the new
+   `Consultation.country` column, with the edge header as fallback at submit
+   (blocked cookies still get a country). Admin pipeline shows `· US`-style
+   geo suffixes on source chips + a Country row in the attribution drill-down.
+2. **Geo-aware currency default** — `detectCurrency()` now reads `kr_country`
+   first: `IN` → INR, any other known country → USD; the old locale heuristic
+   remains the fallback when the cookie hasn't been minted yet.
+
+Both are fail-silent: local dev / non-Vercel / blocked cookies degrade to the
+exact pre-Phase-C behavior.
+
+---
+
+## Appendix C — First data read (Aug 31, 2026, YT Studio 28-day window)
+
+**The numbers:** 386 views (−72% WoW), 5.96 watch-hours (−74%). Shorts = 83%
+of views (322). Top video: "I AM KALKI 🔱 The Avatar Has Arrived" = 174 views
+(45% of the entire channel). CTR 3.89% (↑ from 3.5%) on impressions that fell
+53%. Traffic: Channels 31.3% / Search 31.1% / Browse 24.1%. Geography:
+Southern Asia (India) ≈ 24.9%; **US/UK/CA/AU not in top list → Tier-1 well
+below the 5% threshold.**
+
+**Decision per §10:** **India-first confirmed through 2026.** Zero further
+international spend. Halloween (§8) remains the second reading — one wave,
+one experiment, real thresholds.
+
+**What the numbers actually say (beyond the geo ruling):**
+
+1. **The packaging works; the distribution stopped.** CTR rising while
+   impressions collapse −53% is the signature of a cadence problem, not a
+   creative problem. When you post less, YT stops testing you. The Door
+   series IS the fix: 10 consecutive daily posts for 10 days is the strongest
+   distribution signal the channel can send.
+2. **Identity content is the channel's gravity well.** "I AM KALKI" at 45%
+   of channel views — 4× the #2 video — says the avatar/founder-identity
+   frame pulls harder than breakup/motivation frames. The KALKI brand and
+   the site name are the same word for a reason. Feed it.
+3. **Search = 31% is quietly the best number here.** It means English
+   searchable titles are already landing. The Door titles are search-bait
+   ("The Version of You That Has to Die This Navratri") — keep titles
+   exactly as scripted, don't improvise.
+4. **Bridge Shorts → long-form (the Studio AI's suggestion is sound and
+   free):** use Related Video on every Door short — Door 1 links to the
+   "I AM KALKI" video (identity hand-off), Door N links to Door N−1 (binge
+   chain). Scripted into `navratri26-shorts-scripts.md` §0.
+
+**Next geo check: Nov 5 (post-Halloween)** — same thresholds. If GUHYA's
+English case files pull Tier-1 traffic ≥15% + 3 geo-tagged leads (the
+Phase C `country` column now measures this automatically, even for
+untagged organic traffic), 2027 opens two-geo. Otherwise: single-geo,
+decision closed, no re-litigating until Feb 2027.
