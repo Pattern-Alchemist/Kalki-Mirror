@@ -6,7 +6,7 @@ import { logAudit } from "@/lib/admin/audit";
 import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
 import { broadcastNotification } from "@/lib/admin/notifications";
 import { requireRole } from "@/lib/admin/require-role";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 
 function generateKeyCode(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";

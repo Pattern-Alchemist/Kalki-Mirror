@@ -8,7 +8,7 @@ import { broadcastNotification } from "@/lib/admin/notifications";
 import { requireRole } from "@/lib/admin/require-role";
 import { withRateLimit } from "@/lib/admin/rate-limit";
 import { safeGetToken } from "@/lib/get-token-safe";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 
 export type MemberRow = {
   id: string;

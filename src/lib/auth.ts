@@ -2,7 +2,7 @@ import type { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import type { UserRole } from "@prisma/client";
+import type { UserRole } from "@/generated/prisma/client";
 import { NEXTAUTH_SECRET_FALLBACK, getAuthSecret } from "./auth-secret";
 
 // Single source of truth for the secret (+ fallback) lives in auth-secret.ts,
