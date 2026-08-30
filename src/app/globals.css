@@ -63,7 +63,7 @@
 
   /* Text hierarchy — Luminous on dark. Never muddy. */
   --text-secondary: #D5D2C9;
-  --text-muted: #8A8A85;
+  --text-muted: #9A998F;
 
   /* Borders — oxidized copper edges */
   --border-subtle: rgba(212, 175, 55, 0.12);
@@ -140,7 +140,7 @@
     font-family: var(--font-ui);
     font-size: 0.8125rem;
     font-weight: 600;
-    letter-spacing: 0.5em;
+    letter-spacing: 0.36em;
     text-transform: uppercase;
     color: var(--gold-label);
     text-shadow:
@@ -1091,56 +1091,122 @@
 }
 
 /* ==========================================================
-   RESPONSIVE COMPOSITION TOKENS
+   RESPONSIVE COMPOSITION TOKENS — THE HERO STAGE SYSTEM
+   One stage. One inscription. Nothing clipped, ever.
    ========================================================== */
+.hero-stage {
+  /* The stage lives under the fixed nav (main pt-20 = 5rem), so the
+     composition must fit inside (viewport − nav) — otherwise the CTA
+     row rides the fold edge. */
+  min-height: calc(100vh - 5rem);   /* fallback */
+  min-height: calc(100svh - 5rem);  /* correct visual viewport on mobile Chrome/Safari */
+}
+@media (max-width: 767px) {
+  .hero-stage {
+    min-height: calc(100vh - 4rem);
+    min-height: calc(100svh - 4rem); /* main pt-16 on phones */
+  }
+}
 .hero-content-safe {
-  padding-bottom: clamp(3.5rem, 10vh, 8rem);
-  padding-top: 8rem;
+  padding-bottom: clamp(4.5rem, 9vh, 7rem);
+  padding-top: 7.5rem;
 }
-.hero-brand-lockup {
-  position: absolute;
-  top: clamp(5.75rem, 9.5vh, 7.5rem);
-  left: 50%;
-  z-index: 5;
+/* Eyebrow — hairline + invocation, sits above the wordmark */
+.hero-eyebrow {
   display: flex;
-  width: min(90%, 36rem);
-  transform: translateX(-50%);
-  flex-direction: column;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0;
-  text-align: center;
-  /* De-boxed: floating inscription instead of a panel that cuts the video.
-     Hairline rules keep the 'sacred architecture' feel without a visible card. */
-  border: none;
-  background: transparent;
-  backdrop-filter: none;
-  box-shadow: none;
+  gap: 1.1rem;
 }
-.hero-brand-lockup::before,
-.hero-brand-lockup::after {
-  content: '';
-  width: 3.5rem;
+.hero-eyebrow-rule {
+  width: clamp(2rem, 4vw, 3.5rem);
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.45), transparent);
+  flex: none;
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.75), rgba(212, 175, 55, 0.12));
 }
-.hero-brand-name {
-  color: var(--ivory);
-  font-family: var(--font-display);
-  font-size: clamp(1.2rem, 3vw, 2.1rem);
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  line-height: 1;
-  text-shadow: var(--hero-shadow), 0 0 28px rgba(212, 175, 55, 0.18);
-}
-.hero-brand-subtitle {
-  color: var(--gold-label);
+.hero-eyebrow-text {
   font-family: var(--font-ui);
-  font-size: clamp(0.52rem, 1.05vw, 0.72rem);
-  letter-spacing: 0.18em;
-  line-height: 1.3;
+  font-size: clamp(0.62rem, 1.1vw, 0.8rem);
+  font-weight: 600;
+  letter-spacing: 0.42em;
   text-transform: uppercase;
-  text-shadow: var(--hero-shadow);
+  color: var(--gold-label);
+  text-shadow: var(--hero-shadow), 0 0 24px rgba(212, 175, 55, 0.22);
+  white-space: nowrap;
+}
+/* Tagline — the brand triad under the wordmark */
+.hero-tagline {
+  margin-top: 1.15rem;
+  font-family: var(--font-ui);
+  font-size: clamp(0.72rem, 1.25vw, 0.92rem);
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--foreground);
+  opacity: 0.94;
+  text-shadow: var(--hero-shadow), 0 0 30px rgba(212, 175, 55, 0.12);
+}
+.hero-tagline-ext {
+  display: none;
+  color: var(--gold-label);
+}
+@media (min-width: 768px) {
+  .hero-tagline-ext { display: inline; }
+}
+/* Scroll cue — a breathing thread of light (lg+ only, clear of CTAs) */
+.hero-scroll-cue {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .hero-scroll-cue {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: 1px;
+    height: 3.25rem;
+    background: linear-gradient(180deg, transparent, rgba(212, 175, 55, 0.65));
+    pointer-events: none;
+  }
+  .hero-scroll-cue::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -1.5px;
+    width: 4px;
+    height: 4px;
+    border-radius: 9999px;
+    background: var(--gold-bright);
+    box-shadow: 0 0 14px rgba(232, 200, 85, 0.95);
+    animation: scrollBead 2.8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+}
+@keyframes scrollBead {
+  0%   { transform: translateY(0); opacity: 0; }
+  18%  { opacity: 1; }
+  82%  { opacity: 1; }
+  100% { transform: translateY(3rem); opacity: 0; }
+}
+/* Hero CTA row — shared sizing for the two forged buttons */
+.hero-cta-row .gold-cta,
+.hero-cta-row .ghost-cta {
+  min-height: 3rem;
+  padding: 0.95rem clamp(1.5rem, 2.6vw, 2.75rem);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+/* Slow cinematic zoom on story cards when their group link is hovered */
+.hover-zoom img,
+.hover-zoom span img {
+  transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.group:hover .hover-zoom img,
+.group:hover .hover-zoom span img {
+  transform: scale(1.055);
 }
 .gold-cta:focus-visible,
 .ghost-cta:focus-visible {
@@ -1151,15 +1217,6 @@
 .ghost-cta[aria-disabled="true"] {
   pointer-events: none;
   opacity: 0.45;
-}
-.hero-actions .gold-cta,
-.hero-actions .ghost-cta {
-  min-height: 2.75rem;
-  padding: 0.8rem 1.35rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
 }
 .editorial-heading {
   display: block;
@@ -1173,39 +1230,33 @@
 }
 
 @media (max-width: 767px) {
-  /* Too much chrome stole the video on phones — the lockup rests here.
-     Desktop keeps the floating inscription; mobile keeps the rider. */
-  .hero-brand-lockup {
-    display: none;
-  }
-
+  /* Mobile: deeper text floor so the inscription clears the floating
+     WhatsApp orb, and one comfortable CTA per hand. */
   .hero-content-safe {
-    padding-top: 6.5rem;
-    padding-bottom: max(5rem, env(safe-area-inset-bottom));
+    padding-top: 5.5rem;
+    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
   }
 
-  .hero-content-safe > div:first-child {
-    margin-bottom: 1.25rem;
+  .hero-eyebrow {
+    gap: 0.75rem;
   }
 
-  .hero-content-safe p {
-    margin-top: 0.5rem;
-    margin-bottom: 1.25rem;
-    font-size: 0.7rem;
-    letter-spacing: 0.24em;
+  .hero-tagline {
+    margin-top: 0.85rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.26em;
   }
 
-  .hero-actions {
-    width: 100%;
-    gap: 0.625rem;
+  .hero-cta-row {
+    gap: 0.75rem;
   }
 
-  .hero-actions .gold-cta,
-  .hero-actions .ghost-cta {
-    flex: 1 1 0;
+  .hero-cta-row .gold-cta,
+  .hero-cta-row .ghost-cta {
+    flex: 1 1 auto;
     min-width: 0;
-    padding: 0.9rem 0.5rem;
-    font-size: 0.72rem;
+    padding: 0.95rem 0.9rem;
+    font-size: 0.78rem;
     letter-spacing: 0.12em;
   }
 
@@ -1276,6 +1327,20 @@
   .ken-burns img,
   .ken-burns-slow img {
     animation: none !important;
+  }
+  /* Scroll-cue bead freezes; card zoom disables */
+  .hero-scroll-cue::after {
+    animation: none !important;
+    opacity: 0.7;
+    transform: none;
+  }
+  .hover-zoom img,
+  .hover-zoom span img {
+    transition: none !important;
+  }
+  .group:hover .hover-zoom img,
+  .group:hover .hover-zoom span img {
+    transform: none !important;
   }
   .blur-fade-up {
     opacity: 1;

@@ -16,12 +16,12 @@ const SiddhiCard = dynamic(() => import('@/components/archive/SiddhiCard').then(
 const PatternCard = dynamic(() => import('@/components/patterns/PatternCard').then(m => ({ default: m.PatternCard })), { ssr: false });
 
 /* ── Hero Background: the Kalki avatar video on every viewport ──
-   Mobile previously fell back to a static temple photo, so phones never
-   saw the rider at all. Now the video plays everywhere: the server
-   HTML still paints the static temple image instantly (LCP), this
-   component mounts a <video> with that same image as poster, and the
-   clip fades in once it can play. Mobile requests a 640px-wide
-   rendition to stay bandwidth-friendly. */
+   Rendered INSIDE the hero <section> (imported by app/page.tsx) so it
+   stacks cleanly with the scrims and the inscription. The server HTML
+   paints a still frame instantly (LCP); this client island mounts the
+   <video> with that same frame as poster and fades the clip in once
+   it can play. Mobile requests a 640px-wide rendition to stay
+   bandwidth-friendly. */
 const HERO_POSTER = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_640,c_limit/kalki-mirror/home/ancient-temple-midnight';
 const HERO_VIDEO_DESKTOP = 'https://res.cloudinary.com/b9oo5abp/video/upload/q_auto/kalki-mirror/hero-kalki-avatar-riding.mp4';
 const HERO_VIDEO_MOBILE = 'https://res.cloudinary.com/b9oo5abp/video/upload/q_auto,w_640/kalki-mirror/hero-kalki-avatar-riding.mp4';
@@ -109,8 +109,9 @@ interface HomeClientProps {
 export default function HomeClient({ featured, patternPreview, siddhiCount }: HomeClientProps) {
   return (
     <>
-      {/* ═══ HERO BACKGROUND ═══ */}
-      <HeroBackground />
+      {/* NOTE: the hero video (HeroBackground) now lives inside the hero
+          <section> in app/page.tsx — anchored to the stage, not floating
+          in the document. */}
 
       {/* ═══ CINEMATIC STRIP 1 ═══ */}
       <section aria-hidden="true" className="cinematic-strip">
@@ -129,6 +130,7 @@ export default function HomeClient({ featured, patternPreview, siddhiCount }: Ho
             src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/manuscript-sacred-geometry"
             alt="Cave with ancient yantra inscriptions and golden butter lamps"
             scrim="bottom"
+            className="hover-zoom"
           />
           <div className="scrim-bottom-anchored" />
           <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 lg:p-16">
@@ -148,6 +150,7 @@ export default function HomeClient({ featured, patternPreview, siddhiCount }: Ho
             src="https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/home/ascetic-walking-mountain-path"
             alt="Ascetic walking barefoot on a golden-hour Himalayan mountain path"
             scrim="bottom"
+            className="hover-zoom"
           />
           <div className="scrim-bottom-anchored" />
           <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 lg:p-16">

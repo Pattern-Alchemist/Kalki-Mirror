@@ -42,20 +42,28 @@ export default function GuhyaPage() {
           style={{
             zIndex: 0,
             backgroundImage:
-              'url(https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/archive/sacred-geometry-manuscript)',
+              'url(https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/e_brightness:-30,e_saturation:-20/kalki-mirror/archive/sacred-geometry-manuscript)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+          }}
+        />
+        {/* Deep archival scrim — the pale manuscript must never sit
+            behind gold text. Near-opaque floor, sealed seams. */}
+        <div
+          className="absolute inset-0 z-[1] pointer-events-none"
+          style={{
+            background:
+              'linear-gradient(180deg, rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.55) 34%, rgba(5,5,5,0.68) 58%, rgba(5,5,5,0.96) 100%)',
           }}
         />
         <div
           className="absolute inset-0 z-[1] pointer-events-none"
           style={{
-            background:
-              'linear-gradient(180deg, rgba(5,5,5,0.6) 0%, rgba(5,5,5,0.45) 40%, rgba(5,5,5,0.92) 100%)',
+            background: 'radial-gradient(115% 85% at 50% 42%, transparent 48%, rgba(5,5,5,0.55) 100%)',
           }}
         />
         <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-10 pb-16 md:pb-24 pt-32">
-          <p className="section-label mb-5">The Field · Case prefix GH-</p>
+          <p className="section-label mb-5">The Field · Prefix GH-</p>
           <h1
             className="font-display text-white uppercase tracking-[0.1em]"
             style={{
