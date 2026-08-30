@@ -739,3 +739,23 @@ Stage Summary:
 - Phase 0 kit deployed exactly per Dossier No. 03 §3.1 + the US-market layer on top.
 - The five live monitor failures recorded in the dossier (llms.txt 404, AI policy silent, count drift, duplicate WebSite, no Person) all flip to PASS.
 - Runtime remains zero external API.
+
+---
+Task ID: seo-brand-disambiguation
+Agent: Super Z (lead engineer)
+Task: Diagnose why Google shows Astrotalk results for "astrokalki" queries despite full SEO/GEO kit being live.
+
+Work Log:
+- Audited live surface as Googlebot: HTTP 200, robots.txt correct, 173-URL sitemap live, canonical + meta verification present, SSR'd 108KB homepage, proper apex→www redirects. All technical signals PASS.
+- Web-search audit proved the site IS indexed (site:astrokalki.com returns deep pages; "astrokalki.com" brand query returns the site #1). The failure is query auto-correction: Google shows "These are results for astrotalk".
+- Token census on homepage HTML: KALKI ×125, astrokalki ×24 (all inside URLs), astrotalk ×0. The brand token matching the domain had ZERO on-page presence → nothing for Google to bind the query "astrokalki" to.
+- Fixed layout.tsx: title default/template now lead with "AstroKalki"; description, og:site_name, publisher, keywords updated.
+- Fixed PublicShell.tsx @graph: WebSite.name='AstroKalki'+alternateName; Organization.alternateName='AstroKalki', disambiguatingDescription explicitly separating from Astrotalk, sameAs TODO slots for socials.
+- Fixed SacredFooter.tsx: visible "An AstroKalki property · astrokalki.com" brand bridge + copyright line.
+- Fixed llms.txt route: new "Entity Disambiguation" section instructing LLMs that AstroKalki=KALKI and is NOT Astrotalk.
+- tsc clean, next build clean. Committed 6e992ca, pushed to origin/main (Vercel auto-deploy).
+
+Stage Summary:
+- Root cause: entity binding failure, not technical SEO. Domain token astrokalki had no on-page brand anchor; 5-day-old domain + phonetic twin mega-brand (astrotalk) = Google auto-correction.
+- On-site entity signals now aligned (title/schema/footer/llms.txt all carry AstroKalki + explicit Astrotalk separation).
+- Remaining human steps recorded in docs/geo/gsc-property-10min-runbook.md: GSC sitemap submit + Request Indexing still pending; Google Business Profile + social sameAs URLs needed; expect 2–8 weeks for auto-correction to lift as brand-query volume accrues.
