@@ -111,6 +111,20 @@ const nextConfig: NextConfig = {
       // unreliable here because the root loading.tsx Suspense boundary commits
       // a 200 shell before the page renders.
       { source: '/deities', destination: '/archetypes', permanent: true },
+      // GSC 404 remediation (Aug 31 crawl audit): legacy/stray URLs Google
+      // knows about (3 × "Not found (404)" in Indexing report). Map each to
+      // the closest real surface instead of letting them bleed crawl equity:
+      //   /home, /astrokalki, /kalki  → brand entry point
+      //   /blog, /contact             → closest intent (library / consultations)
+      //   /login                      → the site's only sign-in surface
+      //   /signup                     → access is via redeem codes
+      { source: '/home', destination: '/', permanent: true },
+      { source: '/astrokalki', destination: '/', permanent: true },
+      { source: '/kalki', destination: '/', permanent: true },
+      { source: '/blog', destination: '/library', permanent: true },
+      { source: '/contact', destination: '/consultations', permanent: true },
+      { source: '/login', destination: '/admin/login', permanent: true },
+      { source: '/signup', destination: '/redeem', permanent: true },
     ];
   },
 
