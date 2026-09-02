@@ -350,3 +350,39 @@ model PracticeSession {
 
   @@index([userId, siddhiSlug, createdAt])
 }
+
+// ============================================================
+// DOORS EMAIL COURSE — "The 10 Doors" nurture list
+// First-party capture layer for the pre-consult funnel: ₹2-3.5k
+// consultations need a warm audience between the content waves
+// and the booking. Same attribution convention as Consultation
+// (flat columns + full snapshot, written once at subscribe).
+// Delivery is env-gated: RESEND_API_KEY activates auto-send
+// (docs/growth/doors-email-course.md §7); without it the list is
+// capture + admin export only. Fail-silent everywhere.
+// ============================================================
+
+model EmailSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  status    String   @default("active") // active | unsubscribed
+  doorDay   Int?     // which Door (1-10) the signup referenced; null = generic entry
+
+  // ── Attribution layer (same convention as Consultation) ──
+  utmSource       String?
+  utmMedium       String?
+  utmCampaign     String?
+  utmTerm         String?
+  utmContent      String?
+  clickId         String?
+  country         String?   // ISO-3166 alpha-2 (kr_country cookie / edge header)
+  referrerDomain  String?
+  landingPath     String?
+  attributionJson String?   // full AttributionSnapshot (first/last/sessions)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([utmCampaign])
+}

@@ -409,7 +409,8 @@ export const ModelName = {
   ActiveSession: 'ActiveSession',
   AdminNotification: 'AdminNotification',
   Webhook: 'Webhook',
-  PracticeSession: 'PracticeSession'
+  PracticeSession: 'PracticeSession',
+  EmailSubscriber: 'EmailSubscriber'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -425,7 +426,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession"
+    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1391,6 +1392,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    EmailSubscriber: {
+      payload: Prisma.$EmailSubscriberPayload<ExtArgs>
+      fields: Prisma.EmailSubscriberFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EmailSubscriberFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailSubscriberPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EmailSubscriberFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailSubscriberPayload>
+        }
+        findFirst: {
+          args: Prisma.EmailSubscriberFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailSubscriberPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EmailSubscriberFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailSubscriberPayload>
+        }
+        findMany: {
+          args: Prisma.EmailSubscriberFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailSubscriberPayload>[]
+        }
+        create: {
+          args: Prisma.EmailSubscriberCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailSubscriberPayload>
+        }
+        createMany: {
+          args: Prisma.EmailSubscriberCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EmailSubscriberCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailSubscriberPayload>[]
+        }
+        delete: {
+          args: Prisma.EmailSubscriberDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailSubscriberPayload>
+        }
+        update: {
+          args: Prisma.EmailSubscriberUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailSubscriberPayload>
+        }
+        deleteMany: {
+          args: Prisma.EmailSubscriberDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EmailSubscriberUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EmailSubscriberUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailSubscriberPayload>[]
+        }
+        upsert: {
+          args: Prisma.EmailSubscriberUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailSubscriberPayload>
+        }
+        aggregate: {
+          args: Prisma.EmailSubscriberAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEmailSubscriber>
+        }
+        groupBy: {
+          args: Prisma.EmailSubscriberGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmailSubscriberGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EmailSubscriberCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmailSubscriberCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1650,6 +1725,28 @@ export const PracticeSessionScalarFieldEnum = {
 export type PracticeSessionScalarFieldEnum = (typeof PracticeSessionScalarFieldEnum)[keyof typeof PracticeSessionScalarFieldEnum]
 
 
+export const EmailSubscriberScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  status: 'status',
+  doorDay: 'doorDay',
+  utmSource: 'utmSource',
+  utmMedium: 'utmMedium',
+  utmCampaign: 'utmCampaign',
+  utmTerm: 'utmTerm',
+  utmContent: 'utmContent',
+  clickId: 'clickId',
+  country: 'country',
+  referrerDomain: 'referrerDomain',
+  landingPath: 'landingPath',
+  attributionJson: 'attributionJson',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EmailSubscriberScalarFieldEnum = (typeof EmailSubscriberScalarFieldEnum)[keyof typeof EmailSubscriberScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1877,6 +1974,7 @@ export type GlobalOmitConfig = {
   adminNotification?: Prisma.AdminNotificationOmit
   webhook?: Prisma.WebhookOmit
   practiceSession?: Prisma.PracticeSessionOmit
+  emailSubscriber?: Prisma.EmailSubscriberOmit
 }
 
 /* Types for Logging */

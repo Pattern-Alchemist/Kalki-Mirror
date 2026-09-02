@@ -216,6 +216,45 @@ export async function GET(request: NextRequest) {
     });
     const campaignList = campRows.map((r) => r.utmCampaign as string).filter(Boolean);
 
+    // ── Email course (The 10 Doors) — capture layer health ────────────────
+    // Independent of the campaign selector: the course is a persistent asset,
+    // so its numbers are all-time + last-7d velocity, not range-filtered.
+    let emailCourse: {
+      total: number; active: number; last7: number;
+      topSources: { key: string; count: number }[];
+      topCampaigns: { key: string; count: number }[];
+    } | null = null;
+    try {
+      const subs = await db.emailSubscriber.findMany({
+        select: {
+          email: true, status: true, createdAt: true,
+          utmSource: true, utmCampaign: true,
+        },
+      });
+      const weekAgo = now.getTime() - 7 * 86_400_000;
+      const sourceCounts = new Map<string, number>();
+      const campCounts = new Map<string, number>();
+      for (const s of subs) {
+        sourceCounts.set(s.utmSource ?? "direct", (sourceCounts.get(s.utmSource ?? "direct") ?? 0) + 1);
+        if (s.utmCampaign) campCounts.set(s.utmCampaign, (campCounts.get(s.utmCampaign) ?? 0) + 1);
+      }
+      emailCourse = {
+        total: subs.length,
+        active: subs.filter((s) => s.status === "active").length,
+        last7: subs.filter((s) => s.createdAt.getTime() >= weekAgo).length,
+        topSources: [...sourceCounts.entries()]
+          .map(([key, count]) => ({ key, count }))
+          .sort((a, b) => b.count - a.count)
+          .slice(0, 5),
+        topCampaigns: [...campCounts.entries()]
+          .map(([key, count]) => ({ key, count }))
+          .sort((a, b) => b.count - a.count)
+          .slice(0, 3),
+      };
+    } catch {
+      emailCourse = null; // table missing / db hiccup — War Room must never break over a satellite panel
+    }
+
     return NextResponse.json({
       generatedAt: now.toISOString(),
       range: rangeParam,
@@ -232,6 +271,7 @@ export async function GET(request: NextRequest) {
       landing,
       recent,
       campaignList,
+      emailCourse,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";

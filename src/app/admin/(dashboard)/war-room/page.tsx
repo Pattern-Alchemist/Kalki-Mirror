@@ -32,6 +32,11 @@ interface WarRoomData {
   landing: { path: string; n: number }[];
   recent: { id: string; name: string; status: string; createdAt: string; utmSource: string | null; utmCampaign: string | null; country: string | null }[];
   campaignList: string[];
+  emailCourse: {
+    total: number; active: number; last7: number;
+    topSources: { key: string; count: number }[];
+    topCampaigns: { key: string; count: number }[];
+  } | null;
 }
 
 const RANGES = [
@@ -483,6 +488,45 @@ export default function WarRoomPage() {
                   </li>
                 ))}
               </ul>
+            )}
+          </Card>
+
+          {/* Email course — capture layer health (all-time, not range-filtered) */}
+          <Card
+            title="Email course — The 10 Doors"
+            icon={<Users className="h-4 w-4 text-amber-500" />}
+            action={<Link href="/admin/subscribers" className="text-xs text-amber-400 hover:text-amber-300">Open list →</Link>}
+          >
+            {data?.emailCourse ? (
+              <div>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
+                    <p className="text-[0.65rem] uppercase tracking-wider text-zinc-500">Subscribers</p>
+                    <p className="mt-1 text-xl font-semibold text-zinc-100">{data.emailCourse.total}</p>
+                  </div>
+                  <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
+                    <p className="text-[0.65rem] uppercase tracking-wider text-zinc-500">Active</p>
+                    <p className="mt-1 text-xl font-semibold text-emerald-400">{data.emailCourse.active}</p>
+                  </div>
+                  <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
+                    <p className="text-[0.65rem] uppercase tracking-wider text-zinc-500">Last 7d</p>
+                    <p className="mt-1 text-xl font-semibold text-amber-400">+{data.emailCourse.last7}</p>
+                  </div>
+                </div>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {data.emailCourse.topSources.length === 0 ? (
+                    <p className="text-xs text-zinc-600">No signups yet — /email-course is live and linked from consultations.</p>
+                  ) : (
+                    data.emailCourse.topSources.map((s) => (
+                      <span key={s.key} className="rounded border border-zinc-800 px-1.5 py-0.5 text-[0.65rem] text-zinc-400">
+                        {s.key} · {s.count}
+                      </span>
+                    ))
+                  )}
+                </div>
+              </div>
+            ) : (
+              <p className="py-2 text-xs text-zinc-600">Capture layer unavailable.</p>
             )}
           </Card>
 

@@ -63,7 +63,8 @@ export const ModelName = {
   ActiveSession: 'ActiveSession',
   AdminNotification: 'AdminNotification',
   Webhook: 'Webhook',
-  PracticeSession: 'PracticeSession'
+  PracticeSession: 'PracticeSession',
+  EmailSubscriber: 'EmailSubscriber'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -300,6 +301,28 @@ export const PracticeSessionScalarFieldEnum = {
 } as const
 
 export type PracticeSessionScalarFieldEnum = (typeof PracticeSessionScalarFieldEnum)[keyof typeof PracticeSessionScalarFieldEnum]
+
+
+export const EmailSubscriberScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  status: 'status',
+  doorDay: 'doorDay',
+  utmSource: 'utmSource',
+  utmMedium: 'utmMedium',
+  utmCampaign: 'utmCampaign',
+  utmTerm: 'utmTerm',
+  utmContent: 'utmContent',
+  clickId: 'clickId',
+  country: 'country',
+  referrerDomain: 'referrerDomain',
+  landingPath: 'landingPath',
+  attributionJson: 'attributionJson',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EmailSubscriberScalarFieldEnum = (typeof EmailSubscriberScalarFieldEnum)[keyof typeof EmailSubscriberScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -106,3 +106,8 @@ export type Webhook = Prisma.WebhookModel
  * 
  */
 export type PracticeSession = Prisma.PracticeSessionModel
+/**
+ * Model EmailSubscriber
+ * 
+ */
+export type EmailSubscriber = Prisma.EmailSubscriberModel

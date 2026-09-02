@@ -237,6 +237,21 @@ export default function ConsultationsPageClient({ consultationServices, patterns
             <WhatsAppCTA variant="inline" label="Message on WhatsApp" />
             <Link href="/patterns" className="ghost-cta">Explore Patterns</Link>
           </div>
+
+          {/* 10 DOORS CROSS-LINK — the "not ready yet" branch of the funnel.
+              Routes the hesitant into the email course instead of losing them. */}
+          <div className="mt-14 max-w-xl mx-auto text-center">
+            <p className="text-foreground/50 text-sm editorial-spacing">
+              Not ready to sit across the fire yet?{" "}
+              <Link
+                href="/email-course?utm_source=site&utm_medium=consultations&utm_campaign=doors-email-course&utm_content=consult-crosslink"
+                className="text-copper underline underline-offset-4 hover:text-gold"
+              >
+                Walk the 10 Doors first
+              </Link>{" "}
+              — a free 10-day email course. One karmic loop a day.
+            </p>
+          </div>
         </ParallaxText>
       </section>
 
