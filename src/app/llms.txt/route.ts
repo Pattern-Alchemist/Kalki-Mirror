@@ -14,6 +14,7 @@ import { allSiddhis } from '@/lib/data/siddhis';
 import { allPatterns } from '@/lib/data/patterns';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
 import { allSequences } from '@/lib/data/sequences';
+import { TEN_MAHAVIDYAS } from '@/lib/data/archetypes';
 import { CANONICAL } from '@/lib/canonical';
 import { FAQ } from '@/lib/data/faq';
 import { VERDICT_MEANINGS } from '@/lib/data/guhya';
@@ -72,6 +73,14 @@ function generateLlmsTxt(): string {
   const pantheon = section(`The Pantheon — ${C.pantheonForces} Forces`, [
     ['The Pantheon (Compendium)', '/archetypes', `The ${C.pantheonForces} archetypal forces of the KALKI system — the Ten Mahāvidyās and ${C.pantheonForces - C.mahavidyas} supplementary archetypes, each governing a specific karmic-loop pattern.`],
     ['The Ten Mahāvidyās', '/archetypes', `The great wisdom goddesses — Kālī to Kamalā — decoded as forces of tantrik psychology: dominant patterns, shadow aspects, growth pathways.`],
+    ...TEN_MAHAVIDYAS.map(
+      (m) =>
+        [
+          `${m.name} — Mahāvidyā ${m.number}`,
+          `/archetypes/${m.id}`,
+          `${m.name} (${m.sanskrit}) — textual context, iconography decoded, the philosophical teaching, and the KALKI diagnostic reading of the karmic loop she governs (${m.pattern}).`,
+        ] as [string, string, string],
+    ),
   ]);
 
   const breathwork = section(`Breathwork — ${C.breathwork} Practices`, [

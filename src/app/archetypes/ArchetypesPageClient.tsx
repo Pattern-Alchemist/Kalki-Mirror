@@ -37,6 +37,19 @@ function ArchetypeDetail({ a, siddhiLookup }: { a: Archetype; siddhiLookup: Reco
         {a.bija}
       </p>
 
+      {/* Full folio link — the ten Mahāvidyās have dedicated knowledge pages */}
+      {a.number <= 10 && (
+        <Link
+          href={`/archetypes/${a.id}`}
+          className="flex items-center justify-between glass-chip p-4 mb-8 group/folio hover:border-gold/20"
+        >
+          <span className="text-sm text-foreground group-hover/folio:text-gold transition-colors duration-500">
+            Read the full {a.name} folio — sources, symbolism, diagnostic
+          </span>
+          <span aria-hidden="true" className="text-copper">→</span>
+        </Link>
+      )}
+
       {/* Connected folios in the archive */}
       <p className="section-label mb-4">
         Archive Folios ({a.relatedSiddhiSlugs.length})

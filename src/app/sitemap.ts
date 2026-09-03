@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { allSiddhis } from '@/lib/data/siddhis';
+import { TEN_MAHAVIDYAS } from '@/lib/data/archetypes';
 import { allPatterns } from '@/lib/data/patterns';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
 import { allSequences } from '@/lib/data/sequences';
@@ -92,5 +93,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...staticPages, ...siddhiPages, ...patternPages, ...breathworkPages, ...sequencePages, ...aghoriPhasePages, ...aghoriLessonPages];
+  // Mahāvidyā folio pages (/archetypes/[id]) — 10 authoritative pages, spec §5
+  const mahavidyaPages: MetadataRoute.Sitemap = TEN_MAHAVIDYAS.map((m) => ({
+    url: `${base}/archetypes/${m.id}`,
+    lastModified: new Date(SITE_LASTMOD),
+    changeFrequency: 'monthly' as const,
+    priority: 0.75,
+  }));
+
+  return [...staticPages, ...siddhiPages, ...patternPages, ...mahavidyaPages, ...breathworkPages, ...sequencePages, ...aghoriPhasePages, ...aghoriLessonPages];
 }
