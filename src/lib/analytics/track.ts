@@ -16,6 +16,7 @@ const EVENT_NAMES = [
   'search_performed',
   'archetype_viewed',
   'karma_page_viewed',
+  'usa_page_viewed',
   'aghori_lesson_viewed',
   'aghori_phase_viewed',
   'breathwork_viewed',

@@ -41,6 +41,12 @@ function generateLlmsTxt(): string {
     ['Research', '/research', 'The research foundations: sources, evidence-grading methodology, and the register taxonomy behind every claim.'],
     ['Membership (The Covenant)', '/pricing', 'Access tiers and the Covenant structure — how depth is gated and priced.'],
     ['Consultations', '/consultations', 'One-to-one guidance with the founder — scope, format, and how to request a session.'],
+    ['KALKI for US Seekers', '/usa', 'The United States front door: online consultations in local time zones, USD pricing, and honest scope statements — hub for the US commercial pages.'],
+    ['Vedic Astrology Consultation (US)', '/usa/vedic-astrology-consultation', 'Jyotisha as diagnosis, not prediction — what a session covers, USD pricing, time-zone logistics, and the fortune-telling refusals that define the practice.'],
+    ['Choosing an Online Vedic Astrologer', '/usa/online-vedic-astrologer', 'The seven-point buyer checklist for evaluating any online practitioner, including KALKI itself — claims audit, pricing transparency, scope honesty.'],
+    ['Kundli & Birth-Chart Reading (US)', '/usa/kundli-birth-chart-reading', 'The four layers of a responsible kundli reading — houses, grahas, nakshatras, daśā timing — plus the birth-time accuracy question answered honestly.'],
+    ['Relationship Pattern Reading (US)', '/usa/relationship-pattern-reading', 'Why the same relationship repeats: saṃskāra-driven selection, the 60-minute diagnostic, and the traditional interruption practice.'],
+    ['Spiritual Consultation (US)', '/usa/spiritual-consultation', 'Sādhanā guidance with evidence grades and caution levels — japa, prāṇāyāma, sequencing — without initiation-for-sale or gurudom.'],
   ]);
 
   const archive = section(`The Akashic Archive — ${C.folios} Siddhi Folios`, [

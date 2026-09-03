@@ -23,6 +23,7 @@ const FOOTER_LINKS = {
     { href: '/research', label: 'Epistemic Sources' },
     { href: '/pricing', label: 'Membership Tiers' },
     { href: '/consultations', label: 'Consultations' },
+    { href: '/usa', label: 'KALKI for US Seekers' },
   ],
 };
 

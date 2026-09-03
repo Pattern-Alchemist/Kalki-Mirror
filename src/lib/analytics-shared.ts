@@ -18,6 +18,7 @@ export const EVENT_NAMES = [
   'search_performed',
   'archetype_viewed',
   'karma_page_viewed',
+  'usa_page_viewed',
   'aghori_lesson_viewed',
   'aghori_phase_viewed',
   'breathwork_viewed',
@@ -49,6 +50,7 @@ export const EVENT_META: Record<
   search_performed: { label: 'Site search used', group: 'Discovery' },
   archetype_viewed: { label: 'Archetype page opened', group: 'Discovery' },
   karma_page_viewed: { label: 'Karma map opened (US front door)', group: 'Discovery' },
+  usa_page_viewed: { label: 'US acquisition page opened', group: 'Discovery' },
   aghori_phase_viewed: { label: 'Course phase opened', group: 'Education' },
   aghori_lesson_viewed: { label: 'Course lesson opened', group: 'Education' },
   breathwork_viewed: { label: 'Breath practice opened', group: 'Practice' },
@@ -118,6 +120,7 @@ export function contentHref(event: string, slug: string | null | undefined): str
     case 'pattern_viewed': return s ? `/patterns/${s}` : '/patterns';
     case 'archetype_viewed': return '/archetypes';
     case 'karma_page_viewed': return '/karma';
+    case 'usa_page_viewed': return s ? `/usa/${s}` : '/usa';
     case 'aghori_phase_viewed': return s ? `/aghori-tantra/${s}` : '/aghori-tantra';
     case 'aghori_lesson_viewed': return s ? `/aghori-tantra/${s}` : '/aghori-tantra'; // slug is "phase/lesson"
     case 'breathwork_viewed': return s ? `/breathwork/${s}` : '/breathwork';

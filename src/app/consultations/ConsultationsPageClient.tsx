@@ -252,6 +252,22 @@ export default function ConsultationsPageClient({ consultationServices, patterns
               — a free 10-day email course. One karmic loop a day.
             </p>
           </div>
+
+          {/* US SEEKERS CROSS-LINK — intent disambiguation for the acquisition
+              layer: /consultations stays canonical for the general/global
+              consultation intent; /usa serves US commercial search queries. */}
+          <div className="mt-8 max-w-xl mx-auto text-center">
+            <p className="text-foreground/40 text-sm editorial-spacing">
+              Visiting from the United States?{" "}
+              <Link
+                href="/usa?utm_source=site&utm_medium=consultations&utm_campaign=aug26-launch&utm_content=usa-crosslink"
+                className="text-copper underline underline-offset-4 hover:text-gold"
+              >
+                See consultations for US seekers
+              </Link>{" "}
+              — USD pricing, your time zone, and the free discovery call.
+            </p>
+          </div>
         </ParallaxText>
       </section>
 
