@@ -6,13 +6,21 @@ import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp, fadeIn } from '@/lib/motion/tokens';
 import { submitConsultation } from '@/app/consultations/actions';
 import { track } from '@/lib/analytics/track';
-import { whatsappIntakeUrl } from '@/lib/utils/whatsapp';
+import { whatsappIntakeUrl, whatsappPaymentUrl } from '@/lib/utils/whatsapp';
+import { buildUpiPayUrl, formatINR, type PaidSession } from '@/lib/utils/upi';
 import { getAttribution } from '@/lib/attribution';
 
 interface PatternSummary {
   slug: string;
   name: string;
   signs: string[];
+}
+
+/** Payment payload returned by submitConsultation when UPI_VPA is configured. */
+interface SubmitPayment {
+  vpa: string;
+  payee: string;
+  sessions: PaidSession[];
 }
 
 /* ─── Types ─── */
@@ -467,6 +475,11 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState('');
   const [direction, setDirection] = useState<1 | -1>(1);
+  // Leak L1 — UPI manual rail (success-panel payment block)
+  const [payment, setPayment] = useState<SubmitPayment | null>(null);
+  const [selectedSession, setSelectedSession] = useState<PaidSession | null>(null);
+  const [paid, setPaid] = useState(false);
+  const [vpaCopied, setVpaCopied] = useState(false);
 
   const totalSteps = STEP_LABELS.length;
 
@@ -570,6 +583,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
 
     if (result.success) {
       track('wizard_submitted', { properties: { step: totalSteps, patterns: form.selectedPatterns.length, source: getAttribution()?.last.source ?? 'direct' } });
+      setPayment(result.payment ?? null);
       setSubmitted(true);
     } else {
       setFormError(result.error || 'Submission failed.');
@@ -617,13 +631,12 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
           <div className="relative z-10">
             <p className="section-label mb-4">Request Received</p>
             <p className="font-display text-2xl text-white mb-4">The Archive acknowledges you.</p>
-            <p className="text-text-secondary text-sm editorial-spacing mb-2">
+            <p className="text-text-secondary text-sm editorial-spacing mb-6">
               Your intake is sealed and logged. Kaustubh responds within 24 hours.
             </p>
-            <p className="text-text-muted text-xs editorial-spacing mb-8">
-              Continue now on WhatsApp — your full intake summary travels with you, pre-filled.
-            </p>
 
+            {/* Step 1 — intake handoff (unchanged) */}
+            <p className="text-[0.6875rem] uppercase tracking-widest text-text-muted mb-3">Step 1 · Send your intake</p>
             <a
               href={whatsappIntakeUrl(form.name.trim(), buildEnrichedMessage())}
               target="_blank"
@@ -636,6 +649,94 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
               </svg>
               Continue on WhatsApp
             </a>
+
+            {/* Step 2 — reserve the session (Leak L1: UPI manual rail).
+                Renders only when UPI_VPA is configured server-side. */}
+            {payment && (
+              <div className="mt-8 pt-6 border-t border-gold-dim/20">
+                <p className="text-[0.6875rem] uppercase tracking-widest text-text-muted mb-3">Step 2 · Reserve your session</p>
+
+                <div className="grid gap-2 mb-4" role="group" aria-label="Choose your session">
+                  {payment.sessions.map((s) => (
+                    <button
+                      key={s.slug}
+                      type="button"
+                      onClick={() => { setSelectedSession(s); setPaid(false); }}
+                      className={`text-left px-4 py-3 border rounded-sm transition-colors ${
+                        selectedSession?.slug === s.slug
+                          ? 'border-gold bg-gold/5'
+                          : 'border-gold-dim/30 hover:border-gold-dim/60'
+                      }`}
+                    >
+                      <span className="flex items-baseline justify-between gap-3">
+                        <span className="font-display text-sm text-white">{s.name}</span>
+                        <span className="text-gold text-sm whitespace-nowrap">{formatINR(s.amountINR)}</span>
+                      </span>
+                      <span className="block text-[0.6875rem] text-text-muted mt-1">{s.blurb}</span>
+                    </button>
+                  ))}
+                </div>
+
+                {selectedSession && (
+                  <div className="space-y-3">
+                    <a
+                      href={buildUpiPayUrl({
+                        vpa: payment.vpa,
+                        payee: payment.payee,
+                        amountINR: selectedSession.amountINR,
+                        note: `KALKI ${selectedSession.name}`,
+                      })}
+                      onClick={() => track('upi_pay_clicked', { properties: { session: selectedSession.slug } })}
+                      className="gold-cta w-full justify-center inline-flex"
+                    >
+                      Pay {formatINR(selectedSession.amountINR)} — Google Pay / UPI
+                    </a>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard?.writeText(payment.vpa).then(
+                          () => { setVpaCopied(true); setTimeout(() => setVpaCopied(false), 2000); },
+                          () => {},
+                        );
+                      }}
+                      className="block w-full text-center text-[0.6875rem] text-text-muted hover:text-text-secondary transition-colors"
+                      aria-label={`Copy UPI ID ${payment.vpa}`}
+                    >
+                      UPI ID: <span className="text-text-secondary">{payment.vpa}</span> · {vpaCopied ? 'copied ✓' : 'tap to copy (desktop)'}
+                    </button>
+
+                    <a
+                      href={whatsappPaymentUrl(form.name.trim(), {
+                        sessionName: selectedSession.name,
+                        amountINR: selectedSession.amountINR,
+                        vpa: payment.vpa,
+                        paid,
+                      })}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => track('payment_confirm_clicked', { properties: { session: selectedSession.slug, paid } })}
+                      className="ghost-cta w-full justify-center inline-flex"
+                    >
+                      {paid ? 'Send your payment confirmation →' : 'I\u2019ve paid — confirm on WhatsApp'}
+                    </a>
+                  </div>
+                )}
+
+                <p className="text-[0.6875rem] text-text-muted mt-4 text-center editorial-spacing">
+                  Prefer to talk first?{' '}
+                  <a
+                    href={whatsappPaymentUrl(form.name.trim(), { sessionName: 'Archival Discovery (free call)', amountINR: null, paid: false })}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-4 decoration-gold-dim hover:text-gold transition-colors"
+                  >
+                    Start with the free discovery call
+                  </a>{' '}
+                  — pay after you have spoken.
+                </p>
+              </div>
+            )}
 
             <div className="mt-6 flex items-center justify-center gap-4 text-[0.6875rem] text-text-muted">
               <span>Just press send in WhatsApp.</span>

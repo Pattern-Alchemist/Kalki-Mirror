@@ -10,6 +10,7 @@ import {
   type AttributionSnapshot,
 } from "@/lib/attribution";
 import { eventConsultationCreated } from "@/lib/admin/notify-events";
+import { PAID_SESSIONS, resolveUpiConfig } from "@/lib/utils/upi";
 
 const consultationSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters.").max(200, "Name too long."),
@@ -106,7 +107,15 @@ export async function submitConsultation(formData: {
       utmCampaign: created.utmCampaign,
     }).catch(() => {});
 
-    return { success: true };
+    const upi = resolveUpiConfig();
+    return {
+      success: true,
+      // Leak L1 — UPI manual rail (founder decision: "just Google Pay or UPI
+      // through WhatsApp"). Payload present only when UPI_VPA is configured;
+      // otherwise the wizard's success panel stays WhatsApp-only, exactly as
+      // before. Runtime env read → setting the var in Vercel needs no rebuild.
+      payment: upi ? { ...upi, sessions: PAID_SESSIONS } : null,
+    };
   } catch {
     return { success: false, error: "Failed to submit. Please try again." };
   }
