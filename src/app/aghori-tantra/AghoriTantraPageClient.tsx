@@ -8,6 +8,7 @@ import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
 import dynamic from 'next/dynamic';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
+import CaptureBand from '@/components/capture/CaptureBand';
 import Link from 'next/link';
 import { fadeInUp, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
@@ -622,6 +623,8 @@ export default function AghoriTantraPageClient({ aghoriCourse, courseMeta: COURS
           <Link href="/pricing" className="ghost-cta">View Membership</Link>
         </div>
       </motion.div>
+
+      <CaptureBand topic="aghori-tantra" className="mt-12" />
 
 
     </div>

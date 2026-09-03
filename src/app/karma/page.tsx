@@ -7,6 +7,7 @@ import { CANONICAL } from '@/lib/canonical';
 import { COURSE_LESSON_COUNT } from '@/lib/data/aghori-tantra-course';
 import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 import { TrackView } from '@/components/analytics/TrackView';
+import CaptureBand from '@/components/capture/CaptureBand';
 
 export const metadata: Metadata = {
   title: 'What Is Karma? The Complete Tantric Map — Meaning, Patterns & Dissolution',
@@ -335,6 +336,8 @@ export default function KarmaPage() {
               <Link href="/breathwork" className="ghost-cta text-sm">Begin with Breath</Link>
               <Link href="/method" className="ghost-cta text-sm">Read the Method</Link>
             </div>
+
+            <CaptureBand topic="karma" className="mt-10" />
           </section>
         </div>
       </div>

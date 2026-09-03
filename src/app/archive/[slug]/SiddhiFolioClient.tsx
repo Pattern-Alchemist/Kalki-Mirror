@@ -14,6 +14,7 @@ import { siddhiCategoryLabel } from '@/lib/data/tantra-categories';
 import { BackButton } from '@/components/nav/BackButton';
 import { TermText } from '@/components/longform/TermText';
 import { track } from '@/lib/analytics/track';
+import CaptureBand from '@/components/capture/CaptureBand';
 import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp } from '@/lib/motion/tokens';
@@ -287,7 +288,13 @@ export default function SiddhiFolioClient({ siddhi, relatedSiddhis, relatedPatte
               <WhatsAppCTA variant="inline" message={WHATSAPP_LINKS.siddhi(siddhi.name)} label="Consult the Archivist" />
             </motion.div>
           )}
+
         </AcknowledgmentGate>
+      </div>
+
+      {/* Capture band sits outside the gate — every reader sees it, acknowledged or not. */}
+      <div className="max-w-3xl mx-auto px-6">
+        <CaptureBand topic={`siddhi:${siddhi.slug}`} className="mt-10" />
       </div>
 
       {/* Cinematic Strip */}

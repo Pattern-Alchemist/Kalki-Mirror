@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { aghoriCourse, COURSE_META } from '@/lib/data/aghori-tantra-course';
 import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 import { TrackView } from '@/components/analytics/TrackView';
+import CaptureBand from '@/components/capture/CaptureBand';
 
 export const dynamicParams = false;
 
@@ -140,6 +141,8 @@ export default async function PhasePage({ params }: { params: Promise<{ phase: s
               </Link>
             )}
           </nav>
+
+          <CaptureBand topic={`aghori-phase:${phase}`} className="mt-14" />
         </div>
       </div>
     </>

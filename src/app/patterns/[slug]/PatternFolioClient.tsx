@@ -7,6 +7,7 @@ import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import type { Archetype } from '@/lib/data/archetypes';
 import type { Siddhi, Pattern, Tier } from '@/lib/data/types';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
+import CaptureBand from '@/components/capture/CaptureBand';
 import dynamic from 'next/dynamic';
 import { YantraLoader } from '@/components/patterns/YantraLoader';
 import { CautionBadge } from '@/components/archive/CautionBadge';
@@ -176,6 +177,8 @@ export default function PatternFolioClient({ pattern, relatedSiddhis, archetype 
             </div>
           </motion.section>
         )}
+
+        <CaptureBand topic={`pattern:${slug}`} className="mt-12" />
 
         <motion.div className="text-center pt-8" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <WhatsAppCTA variant="inline" label="Consult the Archivist" topic={`pattern:${slug}`} />
