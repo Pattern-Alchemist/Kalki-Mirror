@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { CampaignPulse } from "./pulse-client";
+import { ConsultationFunnel } from "./funnel-client";
 
 const TIER_CONFIG: Record<string, { label: string; color: string; element: string }> = {
   prithvi: { label: "Prithvi", color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20", element: "Earth" },
@@ -73,6 +74,8 @@ export default function OverviewPage() {
       </div>
 
       <CampaignPulse />
+
+      <ConsultationFunnel />
 
       <section className="space-y-4">
         <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Members</h2>

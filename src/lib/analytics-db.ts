@@ -401,6 +401,57 @@ export async function getAnalyticsSnapshot(
 }
 
 /**
+ * TOP-OF-FUNNEL event counts for the Overview consultation funnel (Ch 7.2).
+ *
+ * The CRM side of the funnel (submitted / triaged / booked) lives in the
+ * Consultation table via Prisma; only these two stages exist exclusively in
+ * the event store. Returns available:false (with nulls) when the store is
+ * unreachable so the widget can degrade to CRM-side stages only.
+ * Never throws.
+ */
+export async function getFunnelEvents(
+  range: AnalyticsRange = 30,
+): Promise<{
+  available: boolean;
+  sessions: number | null;
+  consultationStarted: number | null;
+  wizardSubmitted: number | null;
+}> {
+  try {
+    await ensureTables();
+    const c = getClient();
+    if (!c) {
+      return { available: false, sessions: null, consultationStarted: null, wizardSubmitted: null };
+    }
+    const R = normalizeRange(range);
+    const [sessRes, evRes] = await Promise.all([
+      c.execute(`
+        SELECT COUNT(DISTINCT sessionId) AS n
+        FROM AnalyticsEvent
+        WHERE createdAt >= datetime('now', '-${R} days')
+      `),
+      c.execute(`
+        SELECT event, COUNT(*) AS n
+        FROM AnalyticsEvent
+        WHERE createdAt >= datetime('now', '-${R} days')
+          AND event IN ('consultation_started', 'wizard_submitted')
+        GROUP BY event
+      `),
+    ]);
+    const evCount = (name: string) =>
+      num(evRes.rows.find((r) => r.event === name)?.n);
+    return {
+      available: true,
+      sessions: num(sessRes.rows[0]?.n),
+      consultationStarted: evCount('consultation_started'),
+      wizardSubmitted: evCount('wizard_submitted'),
+    };
+  } catch {
+    return { available: false, sessions: null, consultationStarted: null, wizardSubmitted: null };
+  }
+}
+
+/**
  * Full subscriber list as CSV (mailing-list export). Returns null when the
  * store is unreachable — the route turns that into a 503.
  */
