@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { TEN_MAHAVIDYAS } from '@/lib/data/archetypes';
+import { tantraHub, tantraPages } from '@/lib/data/tantra-pages';
 import { allPatterns } from '@/lib/data/patterns';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
 import { allSequences } from '@/lib/data/sequences';
@@ -101,5 +102,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75,
   }));
 
-  return [...staticPages, ...siddhiPages, ...patternPages, ...mahavidyaPages, ...breathworkPages, ...sequencePages, ...aghoriPhasePages, ...aghoriLessonPages];
+  // Tantra educational cluster (US engine Phase A): reclaimed /tantra hub + 5 children
+  const tantraPagesSitemap: MetadataRoute.Sitemap = [tantraHub, ...tantraPages].map((t) => ({
+    url: `${base}${t.path}`,
+    lastModified: new Date(SITE_LASTMOD),
+    changeFrequency: 'monthly' as const,
+    priority: t.slug === '' ? 0.8 : 0.7,
+  }));
+
+  return [...staticPages, ...siddhiPages, ...patternPages, ...mahavidyaPages, ...tantraPagesSitemap, ...breathworkPages, ...sequencePages, ...aghoriPhasePages, ...aghoriLessonPages];
 }

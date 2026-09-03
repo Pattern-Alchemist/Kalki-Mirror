@@ -1,5 +1,14 @@
-import { redirect } from 'next/navigation';
+import { TantraPageShell, tantraPageMetadata } from '@/components/tantra/TantraPageShell';
+import { tantraHub } from '@/lib/data/tantra-pages';
 
-export default function TantraPage() {
-  redirect('/aghori-tantra');
+export const metadata = tantraPageMetadata(tantraHub);
+
+export default function TantraHubPage() {
+  return (
+    <TantraPageShell
+      page={tantraHub}
+      crumbs={[{ name: 'Tantra', path: '/tantra' }]}
+      trackSlug=""
+    />
+  );
 }

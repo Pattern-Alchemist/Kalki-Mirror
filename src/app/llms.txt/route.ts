@@ -15,6 +15,7 @@ import { allPatterns } from '@/lib/data/patterns';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
 import { allSequences } from '@/lib/data/sequences';
 import { TEN_MAHAVIDYAS } from '@/lib/data/archetypes';
+import { tantraHub, tantraPages } from '@/lib/data/tantra-pages';
 import { CANONICAL } from '@/lib/canonical';
 import { FAQ } from '@/lib/data/faq';
 import { VERDICT_MEANINGS } from '@/lib/data/guhya';
@@ -80,6 +81,14 @@ function generateLlmsTxt(): string {
           `/archetypes/${m.id}`,
           `${m.name} (${m.sanskrit}) — textual context, iconography decoded, the philosophical teaching, and the KALKI diagnostic reading of the karmic loop she governs (${m.pattern}).`,
         ] as [string, string, string],
+    ),
+  ]);
+
+  const tantraSection = section('Tantra — The Educational Cluster', [
+    ['What Is Tantra', '/tantra', 'The tradition decoded: the loom etymology, the textual corpus, the three streams, and the two popular misreadings corrected.'],
+    ...tantraPages.map(
+      (t) =>
+        [t.title.split('|')[0].trim(), t.path, t.description] as [string, string, string],
     ),
   ]);
 
@@ -163,6 +172,8 @@ ${patterns}
 ${karma}
 
 ${pantheon}
+
+${tantraSection}
 
 ${breathwork}
 

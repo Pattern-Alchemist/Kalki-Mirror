@@ -102,7 +102,9 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
-      { source: '/tantra', destination: '/practice', permanent: true },
+      // NOTE: /tantra intentionally NOT redirected — the route was reclaimed as the
+      // educational hub for the tantra query family (US engine Phase A). The former
+      // 308 /tantra -> /practice was removed; /practice stays the noindexed app.
       { source: '/consult', destination: '/consultations', permanent: true },
       { source: '/aghoiri-tantra', destination: '/aghori-tantra', permanent: true },
       // Canonicalization (GEO Phase 1): /deities and /archetypes previously
