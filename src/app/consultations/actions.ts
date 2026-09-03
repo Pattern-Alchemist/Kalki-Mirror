@@ -9,6 +9,7 @@ import {
   referrerDomainOf,
   type AttributionSnapshot,
 } from "@/lib/attribution";
+import { eventConsultationCreated } from "@/lib/admin/notify-events";
 
 const consultationSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters.").max(200, "Name too long."),
@@ -71,7 +72,7 @@ export async function submitConsultation(formData: {
     const last = attribution?.last;
     const country = last?.country ?? (await readEdgeCountry());
 
-    await db.consultation.create({
+    const created = await db.consultation.create({
       data: {
         name,
         phone: whatsapp,
@@ -91,6 +92,19 @@ export async function submitConsultation(formData: {
         attributionJson: attribution ? JSON.stringify(attribution) : null,
       },
     });
+
+    // Ring the bell (Admin OS v2 §7.1): the archivist learns of a new lead
+    // in seconds instead of at the next console visit. Fire-and-forget by
+    // contract — a silent bell must never fail a submitted lead.
+    await eventConsultationCreated({
+      id: created.id,
+      name: created.name,
+      request: created.request,
+      country: created.country,
+      utmSource: created.utmSource,
+      utmMedium: created.utmMedium,
+      utmCampaign: created.utmCampaign,
+    }).catch(() => {});
 
     return { success: true };
   } catch {

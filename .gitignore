@@ -32,6 +32,10 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.local.example
+
+# database backups (dumps contain password hashes — NEVER commit)
+backups/
 
 # vercel
 .vercel
@@ -60,6 +64,9 @@ scripts/*
 # geo-ops monitoring code ships with the repo (exception to scripts/ ignore)
 !scripts/geo-ops/
 scripts/geo-ops/logs/
+# db backup engine ships with the repo (npm run db:backup — exception to scripts/ ignore)
+!scripts/backup-db.sh
+!scripts/backup-db.mjs
 *.zip
 cloudinary-map.json.open-next/
 

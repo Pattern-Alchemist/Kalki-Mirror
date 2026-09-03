@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import type { UserRole } from "@/generated/prisma/client";
 import { NEXTAUTH_SECRET_FALLBACK, getAuthSecret } from "./auth-secret";
+import { eventFailedLoginBurst } from "./admin/notify-events";
 
 // Single source of truth for the secret (+ fallback) lives in auth-secret.ts,
 // shared with the middleware and every route that mints or validates sessions.
@@ -11,12 +12,50 @@ export { getAuthSecret, NEXTAUTH_SECRET_FALLBACK };
 export { sessionCookieName, sessionCookieSecure } from "./auth-secret";
 
 // ── Direct Turso connection for auth (bypasses Prisma singleton issues) ──
-// Env-first so a future credential rotation is a Vercel env-var change, not a
-// code deploy. The inline value is the same fallback db.ts carries (G-10 debt).
-const TURSO_URL = process.env.TURSO_DATABASE_URL || 'libsql://kalki-mirror-pattern-alchemist.aws-ap-south-1.turso.io';
-const TURSO_TOKEN = process.env.TURSO_AUTH_TOKEN || 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3ODY5MDk3MDksImlkIjoiMDFhMDBjMWQtMWUwMS03YzFiLTlhYmItODUyZDgwOGRmMWVlIiwia2lkIjoiRHRnLUxVWDlCZ0VHbXVReEk5WVUzWnFqMjRPTUlGQllHZHpqYTBkT0VuUSIsInJpZCI6IjE5MjA2MDJkLTJmNTYtNDA2Yi05MDI2LWUyNTc4ZjUyMDgyMyJ9.0AavPuqz6W7qQtaHgYHscL21-1YgxlRt0DwRLBi-mHjDGemOrNX9gVkP9Ie2Zl7OXLicEDLBV29ZvHdNb9aNAQ';
+// Env-only (G-10 cleared): credentials live in Vercel env vars and local
+// .env.local, so rotating them is an env-var change, not a code deploy.
+// Never hardcode a fallback here — this file lives in a public repository.
+const TURSO_URL = process.env.TURSO_DATABASE_URL || '';
+const TURSO_TOKEN = process.env.TURSO_AUTH_TOKEN || '';
+
+// ── Failed-login burst detector (Admin OS v2 §7.1) ──────────────────────
+// Sliding 10-minute window across all admin sign-in attempts handled here.
+// In-memory per serverless instance — imperfect by design: zero schema and
+// fast enough to surface credential-stuffing while it is happening. The
+// alert fires at most once per window; the bell handles the rest.
+const FAILED_WINDOW_MS = 10 * 60 * 1000;
+const FAILED_BURST_THRESHOLD = 5;
+const failedLoginStamps: number[] = [];
+let lastFailedEmail = '';
+let burstAlertedAt = 0;
+
+async function recordFailedLogin(email: string): Promise<void> {
+  const now = Date.now();
+  while (failedLoginStamps.length > 0 && now - failedLoginStamps[0] > FAILED_WINDOW_MS) {
+    failedLoginStamps.shift();
+  }
+  failedLoginStamps.push(now);
+  lastFailedEmail = email;
+
+  if (failedLoginStamps.length >= FAILED_BURST_THRESHOLD && now - burstAlertedAt > FAILED_WINDOW_MS) {
+    burstAlertedAt = now;
+    try {
+      await eventFailedLoginBurst({
+        attempts: failedLoginStamps.length,
+        windowMinutes: FAILED_WINDOW_MS / 60_000,
+        lastEmail: lastFailedEmail,
+      });
+    } catch {
+      // Never let alerting break the auth flow.
+    }
+  }
+}
 
 export async function getUserFromTurso(email: string): Promise<{ id: string; email: string; name: string | null; passwordHash: string; role: string; tier: string; twoFactorEnabled: boolean } | null> {
+  if (!TURSO_URL || !TURSO_TOKEN) {
+    // Fail loud: an unconfigured auth DB must never look like "wrong password".
+    throw new Error('AUTH_DB_UNCONFIGURED: set TURSO_DATABASE_URL and TURSO_AUTH_TOKEN (see .env.local.example)');
+  }
   const { createClient } = await import('@libsql/client');
   const client = createClient({ url: TURSO_URL, authToken: TURSO_TOKEN });
   const res = await client.execute({
@@ -109,13 +148,25 @@ export const authOptions: NextAuthOptions = {
 
         // Direct Turso query — bypasses Prisma entirely
         const user = await getUserFromTurso(email);
-        if (!user || !user.passwordHash) return null;
+        if (!user || !user.passwordHash) {
+          await recordFailedLogin(email);
+          return null;
+        }
 
         const allowedRoles: UserRole[] = ADMIN_ALLOWED_ROLES;
-        if (!allowedRoles.includes(user.role as UserRole)) return null;
+        if (!allowedRoles.includes(user.role as UserRole)) {
+          await recordFailedLogin(email);
+          return null;
+        }
 
         const isValid = await bcrypt.compare(password, user.passwordHash);
-        if (!isValid) return null;
+        if (!isValid) {
+          await recordFailedLogin(email);
+          return null;
+        }
+
+        // Valid credentials — the burst window has served its purpose.
+        failedLoginStamps.length = 0;
 
         // 2FA check
         if (user.twoFactorEnabled) {
