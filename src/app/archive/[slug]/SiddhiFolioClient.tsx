@@ -311,7 +311,7 @@ export default function SiddhiFolioClient({ siddhi, relatedSiddhis, relatedPatte
             Book a session with Kaustubh for a precise prescription — or explore the Archive and Library to continue your own investigation.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <WhatsAppCTA variant="inline" label="Consult the Archivist" />
+            <WhatsAppCTA variant="inline" label="Consult the Archivist" topic={`siddhi:${siddhi.slug}`} />
             <Link href="/patterns" className="ghost-cta">Pattern Atlas</Link>
           </div>
         </ParallaxText>

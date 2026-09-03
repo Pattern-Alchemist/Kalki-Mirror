@@ -482,7 +482,7 @@ export default function MethodPageClient() {
             Book a consultation with Kaustubh to discover your dominant pattern and receive a prescribed sādhana — or explore the Archive and Library to begin your own investigation.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <WhatsAppCTA variant="inline" label="Consult Kaustubh" />
+            <WhatsAppCTA variant="inline" label="Consult Kaustubh" topic="mirror-method" />
             <Link href="/patterns" className="ghost-cta">Explore Patterns</Link>
           </div>
         </ParallaxText>

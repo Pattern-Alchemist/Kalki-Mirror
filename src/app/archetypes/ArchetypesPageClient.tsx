@@ -386,7 +386,7 @@ export default function ArchetypesPage({ tenMahavidyas, allArchetypes, siddhiLoo
             The Mahāvidyās are not deities to worship but mirrors to behold. YANTRA detects which archetype is running your loop. The consultation reveals the sādhana to dissolve it.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <WhatsAppCTA variant="inline" label="Consult Kaustubh" />
+            <WhatsAppCTA variant="inline" label="Consult Kaustubh" topic="mahavidya" />
             <Link href="/patterns" className="ghost-cta">Pattern Atlas</Link>
           </div>
         </ParallaxText>

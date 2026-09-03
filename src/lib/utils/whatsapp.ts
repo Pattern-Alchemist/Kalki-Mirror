@@ -5,6 +5,44 @@ export function openWhatsApp(message: string): void {
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`, '_blank', 'noopener');
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   WHATSAPP LEAD ATTRIBUTION (US-acquisition engine, Phase A)
+   ---------------------------------------------------------------------------
+   Every outbound WhatsApp click should answer two questions the moment the
+   chat opens on Kaustubh's phone: WHERE did this seeker come from, and WHAT
+   were they reading? The attribution is stamped INTO the prefilled chat text
+   — it survives the handoff (wa.me strips everything except `text`), needs
+   no analytics platform, no cookies, and leaks zero personal data: only the
+   public landing path and an optional content topic.
+
+   Server-safe: no window/document access — server components and static
+   renders can build attributed hrefs at build time.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+export interface WhatsAppAttribution {
+  /** Content topic the seeker was engaged with, e.g. 'vedic-astrology', 'pattern:the-rescuer', 'mahavidya:kali'. */
+  topic?: string;
+  /** Public landing path, e.g. '/usa/vedic-astrology-consultation'. No query strings, no personal data. */
+  page?: string;
+}
+
+const SITE_ORIGIN = 'https://www.astrokalki.com';
+
+/**
+ * Build a wa.me deep link with the attribution trailer appended to the
+ * chat text. The trailer is a single em-dash line — visually quiet in the
+ * chat, machine-greppable for Kaustubh's own lead triage.
+ */
+export function whatsappUrl(message: string, attribution?: WhatsAppAttribution): string {
+  const trailerParts: string[] = [];
+  if (attribution?.page) trailerParts.push(`via ${SITE_ORIGIN}${attribution.page}`);
+  if (attribution?.topic) trailerParts.push(`topic: ${attribution.topic}`);
+  const withTrailer = trailerParts.length
+    ? `${message}\n\n— ${trailerParts.join(' · ')}`
+    : message;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(withTrailer)}`;
+}
+
 /**
  * Deep-link URL for the lead-capture handoff: opens the chat with the
  * seeker's full intake pre-filled, so they only press send. Used by the

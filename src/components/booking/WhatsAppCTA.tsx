@@ -1,18 +1,20 @@
 'use client';
 
-import { WHATSAPP_LINKS } from '@/lib/utils/whatsapp';
-
-const WHATSAPP_NUMBER = '918920862931';
-
-function buildWhatsAppUrl(message: string): string {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}
+import { usePathname } from 'next/navigation';
+import { WHATSAPP_LINKS, whatsappUrl, type WhatsAppAttribution } from '@/lib/utils/whatsapp';
+import { track } from '@/lib/analytics/track';
 
 interface WhatsAppCTAProps {
   variant?: 'floating' | 'inline' | 'link';
   message?: string;
   label?: string;
   className?: string;
+  /**
+   * Content topic stamped into the chat trailer (e.g. 'vedic-astrology',
+   * 'pattern:the-rescuer'). Optional — every CTA still gets the page-path
+   * attribution automatically from the current route.
+   */
+  topic?: string;
 }
 
 export function WhatsAppCTA({
@@ -20,9 +22,23 @@ export function WhatsAppCTA({
   message,
   label = 'Book with Kaustubh',
   className = '',
+  topic,
 }: WhatsAppCTAProps) {
+  const pathname = usePathname();
   const msg = message ?? WHATSAPP_LINKS.general;
-  const href = buildWhatsAppUrl(msg);
+  // Page-path attribution is automatic (current route); topic is per-mount.
+  // ConsultationWizard passes its own handoff URL separately — it is not
+  // rendered through this component's href path.
+  const attribution: WhatsAppAttribution = { topic, page: pathname };
+  const href = whatsappUrl(msg, attribution);
+
+  const onClick = () => {
+    // Conversion event on EVERY variant — previously only the wizard
+    // handoff fired this, leaving floating/inline/link CTAs dark.
+    track('whatsapp_handoff_clicked', {
+      properties: { topic, cta: variant },
+    });
+  };
 
   if (variant === 'link') {
     return (
@@ -30,6 +46,7 @@ export function WhatsAppCTA({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={onClick}
         className={`text-gold hover:text-gold-bright transition-colors underline underline-offset-4 decoration-gold-dim ${className}`}
       >
         {label}
@@ -43,6 +60,7 @@ export function WhatsAppCTA({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={onClick}
         className={`gold-cta text-sm ${className}`}
       >
         {label}
@@ -56,6 +74,7 @@ export function WhatsAppCTA({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={onClick}
       className={`w-11 h-11 rounded-full bg-[#1da851] flex items-center justify-center shadow-lg shadow-[#1da851]/20 hover:scale-110 transition-transform ${className}`}
       aria-label="Contact via WhatsApp"
     >

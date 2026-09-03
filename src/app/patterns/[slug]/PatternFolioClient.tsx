@@ -178,7 +178,7 @@ export default function PatternFolioClient({ pattern, relatedSiddhis, archetype 
         )}
 
         <motion.div className="text-center pt-8" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
-          <WhatsAppCTA variant="inline" label="Consult the Archivist" />
+          <WhatsAppCTA variant="inline" label="Consult the Archivist" topic={`pattern:${slug}`} />
         </motion.div>
       </div>
 
@@ -201,7 +201,7 @@ export default function PatternFolioClient({ pattern, relatedSiddhis, archetype 
             Book a session with Kaustubh for a precise prescription — or explore the Archive and Library.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <WhatsAppCTA variant="inline" label="Consult the Archivist" />
+            <WhatsAppCTA variant="inline" label="Consult the Archivist" topic={`pattern:${slug}`} />
             <Link href="/patterns" className="ghost-cta">Pattern Atlas</Link>
           </div>
         </ParallaxText>
