@@ -16,11 +16,9 @@
 import { PrismaClient } from '@/generated/prisma/client';
 import { PrismaLibSql } from '@prisma/adapter-libsql';
 
-// ─── Turso fallback config (until Vercel env var delivery is fixed) ───
-const TURSO_URL_FALLBACK = 'libsql://kalki-mirror-pattern-alchemist.aws-ap-south-1.turso.io';
-const TURSO_TOKEN_FALLBACK = process.env.VERCEL === '1'
-  ? 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3ODY5MDk3MDksImlkIjoiMDFhMDBjMWQtMWUwMS03YzFiLTlhYmItODUyZDgwOGRmMWVlIiwia2lkIjoiRHRnLUxVWDlCZ0VHbXVReEk5WVUzWnFqMjRPTUlGQllHZHpqYTBkT0VuUSIsInJpZCI6IjE5MjA2MDJkLTJmNTYtNDA2Yi05MDI2LWUyNTc4ZjUyMDgyMyJ9.0AavPuqz6W7qQtaHgYHscL21-1YgxlRt0DwRLBi-mHjDGemOrNX9gVkP9Ie2Zl7OXLicEDLBV29ZvHdNb9aNAQ'
-  : '';
+// ── Turso config (env-only, G-10 cleared) ────────────────────────────────
+// Credentials live in Vercel env vars (production/preview) and local
+// .env.local for development. No inline fallbacks — this file is public.
 
 // ─── Retry wrapper for Turso cold starts ─────────────────────────────
 const MAX_RETRIES = 2;
@@ -57,8 +55,8 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrismaClient(): PrismaClient {
-  const tursoUrl = process.env.TURSO_DATABASE_URL || (process.env.VERCEL === '1' ? TURSO_URL_FALLBACK : '');
-  const tursoAuthToken = process.env.TURSO_AUTH_TOKEN || TURSO_TOKEN_FALLBACK;
+  const tursoUrl = process.env.TURSO_DATABASE_URL || '';
+  const tursoAuthToken = process.env.TURSO_AUTH_TOKEN || '';
 
   if (tursoUrl) {
     // ── Production: Turso via libSQL adapter ──────────────────────────────

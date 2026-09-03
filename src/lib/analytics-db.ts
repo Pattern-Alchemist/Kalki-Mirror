@@ -29,14 +29,11 @@ import {
 // lives in analytics-shared.ts, which is safe for the client bundle.
 export * from './analytics-shared';
 
-// Same credential resolution as src/lib/db.ts (rotated together — G-10).
-const TURSO_URL_FALLBACK = 'libsql://kalki-mirror-pattern-alchemist.aws-ap-south-1.turso.io';
-const TURSO_TOKEN_FALLBACK = process.env.VERCEL === '1'
-  ? 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3ODY5MDk3MDksImlkIjoiMDFhMDBjMWQtMWUwMS03YzFiLTlhYmItODUyZDgwOGRmMWVlIiwia2lkIjoiRHRnLUxVWDlCZ0VHbXVReEk5WVUzWnFqMjRPTUlGQllHZHpqYTBkT0VuUSIsInJpZCI6IjE5MjA2MDJkLTJmNTYtNDA2Yi05MDI2LWUyNTc4ZjUyMDgyMyJ9.0AavPuqz6W7qQtaHgYHscL21-1YgxlRt0DwRLBi-mHjDGemOrNX9gVkP9Ie2Zl7OXLicEDLBV29ZvHdNb9aNAQ'
-  : '';
+// Same credential resolution policy as src/lib/db.ts (env-only — G-10 cleared).
+// Credentials live in Vercel env vars and local .env.local; no inline fallbacks.
 
 function resolveUrl(): string {
-  return process.env.TURSO_DATABASE_URL || (process.env.VERCEL === '1' ? TURSO_URL_FALLBACK : '');
+  return process.env.TURSO_DATABASE_URL || '';
 }
 
 let client: Client | null = null;
@@ -48,7 +45,7 @@ function getClient(): Client | null {
   if (!client) {
     client = createClient({
       url,
-      authToken: process.env.TURSO_AUTH_TOKEN || TURSO_TOKEN_FALLBACK || undefined,
+      authToken: process.env.TURSO_AUTH_TOKEN || undefined,
     });
   }
   return client;
