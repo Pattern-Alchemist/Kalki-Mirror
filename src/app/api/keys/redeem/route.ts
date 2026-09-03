@@ -3,6 +3,7 @@ import { db } from '@/lib/db';
 import { requireAuth } from '@/lib/api-auth';
 import { redeemKeySchema } from '@/lib/validators/schemas';
 import { afterAudit } from '@/lib/after-audit';
+import { eventKeyRedeemed } from '@/lib/admin/notify-events';
 
 /**
  * POST /api/keys/redeem
@@ -96,6 +97,16 @@ export async function POST(request: NextRequest) {
       actorId: userId,
       after: { tierGranted: invite.tierGranted },
     });
+
+    // Ring the bell (Admin OS v2 §7.1): "golden key redeemed" is a
+    // high-signal growth event — the covenant map just changed. A silent
+    // bell must never fail a redemption.
+    await eventKeyRedeemed({
+      code: invite.code,
+      tierGranted: invite.tierGranted,
+      userName: user?.name ?? null,
+      userEmail: user?.email ?? null,
+    }).catch(() => {});
 
     return NextResponse.json({
       status: 'key_redeemed',
