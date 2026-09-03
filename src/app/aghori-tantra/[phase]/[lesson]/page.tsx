@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { aghoriCourse, COURSE_LESSON_COUNT, COURSE_META } from '@/lib/data/aghori-tantra-course';
 import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 import { TrackView } from '@/components/analytics/TrackView';
+import CaptureBand from '@/components/capture/CaptureBand';
 
 export const dynamicParams = false;
 
@@ -228,6 +229,8 @@ export default async function LessonPage({ params }: { params: Promise<{ phase: 
               <Link href="/archive" className="ghost-cta text-xs">The Akashic Archive</Link>
             </div>
           </div>
+
+          <CaptureBand topic={`aghori-lesson:${mod.id}/${l.id}`} className="mt-10" />
         </div>
       </article>
     </>

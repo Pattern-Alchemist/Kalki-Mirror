@@ -19,6 +19,7 @@ import { MAHAVIDYA_CONTENT } from '@/lib/data/mahavidya-content';
 import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 import { TrackView } from '@/components/analytics/TrackView';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
+import CaptureBand from '@/components/capture/CaptureBand';
 
 const MAHAVIDYA_IDS = TEN_MAHAVIDYAS.map((m) => m.id);
 
@@ -272,6 +273,8 @@ export default async function MahavidyaFolioPage({
             <Link href="/archetypes" className="ghost-cta text-sm">Back to the Wheel</Link>
           </div>
         </section>
+
+        <CaptureBand topic={`mahavidya:${id}`} className="mb-16" />
       </div>
     </div>
   );
