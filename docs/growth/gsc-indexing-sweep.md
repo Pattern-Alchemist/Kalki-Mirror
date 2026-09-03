@@ -63,7 +63,44 @@ Evidence-graded siddhi pages — the differentiation moat.
 - `https://www.astrokalki.com/archive/trataka`
 - `https://www.astrokalki.com/archive/ajapa-japa`
 
-### Tier B — second round (next 60) (60 URLs)
+### Tier A+ — US ENGINE WAVE 1 (added 2026-09-03, 22 URLs)
+
+The US acquisition build (spec Phase A). Request-index these FIRST — they are
+the new commercial front doors. Priority within the tier: /usa hub and the
+commercial children before the educational cluster.
+
+### /usa commercial layer (6 URLs)
+
+- https://www.astrokalki.com/usa
+- https://www.astrokalki.com/usa/vedic-astrology-consultation
+- https://www.astrokalki.com/usa/online-vedic-astrologer
+- https://www.astrokalki.com/usa/kundli-birth-chart-reading
+- https://www.astrokalki.com/usa/relationship-pattern-reading
+- https://www.astrokalki.com/usa/spiritual-consultation
+
+### /tantra educational cluster (6 URLs)
+
+- https://www.astrokalki.com/tantra
+- https://www.astrokalki.com/tantra/what-is-tantra
+- https://www.astrokalki.com/tantra/tantric-meditation
+- https://www.astrokalki.com/tantra/tantra-and-yoga
+- https://www.astrokalki.com/tantra/shakta-tantra
+- https://www.astrokalki.com/tantra/kashmiri-shaivism
+
+### Mahāvidyā folios (10 URLs)
+
+- https://www.astrokalki.com/archetypes/kali
+- https://www.astrokalki.com/archetypes/tara
+- https://www.astrokalki.com/archetypes/shodashi
+- https://www.astrokalki.com/archetypes/bhuvaneshvari
+- https://www.astrokalki.com/archetypes/bhairavi
+- https://www.astrokalki.com/archetypes/chinnamasta
+- https://www.astrokalki.com/archetypes/dhumavati
+- https://www.astrokalki.com/archetypes/bagalamukhi
+- https://www.astrokalki.com/archetypes/matangi
+- https://www.astrokalki.com/archetypes/kamala
+
+## Tier B — second round (next 60) (60 URLs)
 Run after Tier A is submitted.
 
 - `https://www.astrokalki.com/archive/mahamrityunjaya`
