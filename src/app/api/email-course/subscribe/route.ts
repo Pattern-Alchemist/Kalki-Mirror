@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { cookies, headers } from "next/headers";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { sendWelcome } from "@/lib/emails/course-send";
 import {
   ATTRIBUTION_COOKIE,
   parseAttributionCookie,
@@ -23,6 +24,10 @@ export const dynamic = "force-dynamic";
  *   - honeypot field `website` (bots fill it, humans never see it)
  *   - in-memory IP rate limit: 6/min (serverless-instance-local, same
  *     tradeoff the admin login limiter makes)
+ *
+ * WELCOME EMAIL (doors-email-course.md §1/§3): fires once, for NEW
+ * subscribers only, via after() — the response is never blocked and
+ * an email outage can never fail a signup (sendWelcome soft-fails).
  */
 
 const schema = z.object({
@@ -99,28 +104,44 @@ export async function POST(request: NextRequest) {
     const last = attribution?.last;
     const country = last?.country ?? (await readEdgeCountry());
 
-    await db.emailSubscriber.upsert({
+    const existing = await db.emailSubscriber.findUnique({
       where: { email },
-      create: {
-        email,
-        status: "active",
-        doorDay: doorDay ?? null,
-        utmSource: last?.source ?? null,
-        utmMedium: last?.medium ?? null,
-        utmCampaign: last?.campaign ?? null,
-        utmTerm: last?.term ?? null,
-        utmContent: last?.content ?? null,
-        clickId: last?.clickId ?? null,
-        country: country ?? null,
-        referrerDomain: referrerDomainOf(last?.referrer) ?? null,
-        landingPath: attribution?.first.landingPath ?? null,
-        attributionJson: attribution ? JSON.stringify(attribution) : null,
-      },
-      update: {
-        // Attribution is written once — a returning email only re-activates.
-        status: "active",
-      },
+      select: { id: true, status: true },
     });
+
+    if (existing) {
+      // Attribution is written once — a returning email only re-activates.
+      await db.emailSubscriber.update({
+        where: { email },
+        data: { status: "active" },
+      });
+    } else {
+      await db.emailSubscriber.create({
+        data: {
+          email,
+          status: "active",
+          doorDay: doorDay ?? null,
+          utmSource: last?.source ?? null,
+          utmMedium: last?.medium ?? null,
+          utmCampaign: last?.campaign ?? null,
+          utmTerm: last?.term ?? null,
+          utmContent: last?.content ?? null,
+          clickId: last?.clickId ?? null,
+          country: country ?? null,
+          referrerDomain: referrerDomainOf(last?.referrer) ?? null,
+          landingPath: attribution?.first.landingPath ?? null,
+          attributionJson: attribution ? JSON.stringify(attribution) : null,
+        },
+      });
+      // Welcome email: once, for first-time subscribers, post-response.
+      after(async () => {
+        try {
+          await sendWelcome(email);
+        } catch (e) {
+          console.error("[email-course] welcome send failed (post-response)", e);
+        }
+      });
+    }
 
     return NextResponse.json({ ok: true });
   } catch {
