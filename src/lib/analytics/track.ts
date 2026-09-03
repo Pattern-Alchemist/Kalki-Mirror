@@ -29,6 +29,9 @@ const EVENT_NAMES = [
   'wizard_step_completed',
   'wizard_submitted',
   'whatsapp_handoff_clicked',
+  // UPI manual rail (Leak L1 — WhatsApp + Google Pay/UPI handoff):
+  'upi_pay_clicked',
+  'payment_confirm_clicked',
   'email_subscribed',
 ] as const;
 

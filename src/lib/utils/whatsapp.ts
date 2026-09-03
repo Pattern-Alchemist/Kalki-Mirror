@@ -81,6 +81,35 @@ export function whatsappFollowUpUrl(name: string, phone: string): string | null 
   return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
 }
 
+/**
+ * Payment-confirmation handoff (Leak L1 — UPI manual rail): the seeker
+ * taps the UPI intent, pays in GPay/PhonePe/Paytm, then opens this chat
+ * with the session + amount + payment line pre-filled. When `paid` is
+ * false the message states intent to settle after the free discovery call
+ * instead — both variants land in the same chat for manual reconciliation.
+ */
+export function whatsappPaymentUrl(
+  name: string,
+  opts: { sessionName: string; amountINR: number | null; vpa?: string; paid: boolean },
+): string {
+  const lines = [
+    `Namaste Kaustubh — ${name.trim()} here. I just submitted my consultation intake on astrokalki.com.`,
+    '',
+    `Session: ${opts.sessionName}`,
+  ];
+  if (opts.paid && opts.amountINR) {
+    lines.push(
+      `Payment: ${'\u20B9'}${opts.amountINR.toLocaleString('en-IN')} sent via UPI${opts.vpa ? ` to ${opts.vpa}` : ''} — please confirm receipt.`,
+    );
+  } else if (opts.amountINR) {
+    lines.push(`Payment: I'll settle ${'\u20B9'}${opts.amountINR.toLocaleString('en-IN')} after we fix the slot.`);
+  } else {
+    lines.push(`Payment: starting with the free discovery call.`);
+  }
+  lines.push('', 'Please confirm a time for our session.');
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
+}
+
 export const WHATSAPP_LINKS = {
   consultation: (service: string, price: string) =>
     "Hello Kaustubh, I'd like to book a " + service + " (" + price + ").",
