@@ -67,6 +67,8 @@ scripts/geo-ops/logs/
 # db backup engine ships with the repo (npm run db:backup — exception to scripts/ ignore)
 !scripts/backup-db.sh
 !scripts/backup-db.mjs
+# FolioChunk embedding baker ships with the repo (Leak L4 — corpus re-bake on change)
+!scripts/bake-folio-embeddings.ts
 *.zip
 cloudinary-map.json.open-next/
 
