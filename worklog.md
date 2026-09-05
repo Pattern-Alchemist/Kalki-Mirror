@@ -759,3 +759,26 @@ Stage Summary:
 - Root cause: entity binding failure, not technical SEO. Domain token astrokalki had no on-page brand anchor; 5-day-old domain + phonetic twin mega-brand (astrotalk) = Google auto-correction.
 - On-site entity signals now aligned (title/schema/footer/llms.txt all carry AstroKalki + explicit Astrotalk separation).
 - Remaining human steps recorded in docs/geo/gsc-property-10min-runbook.md: GSC sitemap submit + Request Indexing still pending; Google Business Profile + social sameAs URLs needed; expect 2–8 weeks for auto-correction to lift as brand-query volume accrues.
+
+---
+Task ID: tier3-growth-surfaces
+Agent: Super Z (lead engineer)
+Task: Ship Tier 3 — growth surfaces (roadmap #11–15) + Vol. 2 backlog, deploy and verify live.
+
+Work Log:
+- Verified pre-state: production READY at 7c67af4 (Tier 2, PR #10), health green, corpus 279/279, rateLimitBackend=memory (Upstash fallback as designed). Tier 2 was already shipped by the prior session — continued from the roadmap.
+- Applied additive DDL to production Turso (scripts/apply-tier3-schema.ts): Testimonial table + status/featured indexes — verified live before any code shipped.
+- ② Testimonials module: Testimonial model in schema + regenerated client; /admin/testimonials (consent-gated entry, approve/feature/hide/delete, audit-logged, IndexNow publish-hook on approve); public TestimonialWall on /consultations between wizard and closing CTA — approved + consented rows only, renders nothing while empty. Nav + icon registered in role-ui/sidebar.
+- ③ Cal.com handoff: resolveBookingConfig() reads CAL_BOOKING_URL at runtime (same env-first contract as UPI_VPA); submitConsultation returns booking payload; wizard success panel gains "Step 3 · Claim your time slot" only when configured; booking_opened registered in both analytics dictionaries (21→22 events) + test updated.
+- ⑤ PWA shell: scripts/gen-pwa-icons.mjs bakes 192/512/maskable-512 PNGs from the brand mark via Cloudinary (fixed double-folder public_id bug; icons verified visually); manifest upgraded (5 icons + 3 app shortcuts + manifest link in layout); public/sw.js — network-first navigations with /offline.html fallback, SWR static assets, /api+/admin+/dossier+/redeem never cached; branded offline page; production-only SwRegister.
+- ① SEO automation: publish-hook (approve → pingIndexNow /consultations); GSC OAuth remainder documented in docs/ops/gsc-indexing-automation.md.
+- ④ n8n recipes documented (docs/automation/n8n-recipes.md) against the existing outbound webhook dispatcher.
+- Backlog: docs/roadmap-vol2-next-20.md — the next 20 (Tiers 5–8: conversion depth, intelligence, hardening, reach).
+- Verification: tsc clean · lint delta 0 · 198/198 tests · build green (235 pages). PR #11 opened, squash-merged as f30fcd0, Vercel deploy READY, all PWA surfaces 200 in production.
+- Live E2E (browser, SUPERADMIN): create PENDING (consent checkbox enforced) → approve → feature → /consultations renders the wall (verified in HTML) → delete via confirm dialog → wall hidden, DB count 0, audit trail shows create→approve→feature→delete.
+
+Stage Summary:
+- Tier 3 core shipped: PR #11 merged (f30fcd0), deployed, verified live end-to-end.
+- Production schema: Testimonial table live (empty by design — nothing fabricated).
+- Activation steps left (founder, zero-code): set CAL_BOOKING_URL for the booking block; optionally set UPSTASH_REDIS_REST_URL/TOKEN for distributed rate limiting; enter real consented testimonials in /admin/testimonials.
+- Roadmap: Vol. 1 Tier 3 items #11–15 closed; Vol. 2 (20 new items) ready in docs/roadmap-vol2-next-20.md.
