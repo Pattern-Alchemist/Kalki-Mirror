@@ -87,8 +87,11 @@ function buildWhatsAppLink(tierName: string, priceStr: string, cycle: BillingCyc
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 export default function PricingPageClient({ pricingTiers: tiers }: PricingPageProps) {
-  useEffect(() => { track('pricing_viewed'); }, []);
   const { tier: currentTier, currency, setCurrency } = useTier();
+  // Vol. 2 #3 — USD display A/B instrumentation: pricing_viewed now carries
+  // the currency the visitor actually saw + the billing cycle default, so
+  // the funnel can correlate display currency → wizard click-through.
+  useEffect(() => { track('pricing_viewed', { properties: { currency, billing: 'monthly' } }); }, [currency]);
   const reduced = useNativeReducedMotion();
   const [billing, setBilling] = useState<BillingCycle>('monthly');
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);

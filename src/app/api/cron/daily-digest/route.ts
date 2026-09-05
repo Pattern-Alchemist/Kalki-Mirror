@@ -22,6 +22,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { sendEmail } from "@/lib/resend";
 import { computeCourseDay } from "@/lib/emails/course-send";
+import { buildPairAffinities } from "@/lib/admin/pair-affinity";
+import { computeTopReferrers } from "@/lib/emails/course-share";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -61,6 +63,10 @@ export async function GET(request: NextRequest) {
   let openDrafts = 0;
   let touchedDrafts24h = 0;
   let recentDrafts: Array<{ name: string; phone: string; step: number; updatedAt: Date }> = [];
+  let affinityPairs = 0;
+  let affinityTop = "";
+  let referrals: Array<{ email: string; referrals: number }> = [];
+  let renewalsDue: Array<{ email: string; tier: string; nextDueAt: Date | null; renewalCycle: string | null }> = [];
 
   try {
     const [leads, claimAgg, paidAgg, totalAgg] = await Promise.all([
@@ -107,6 +113,70 @@ export async function GET(request: NextRequest) {
     unreadBell = await db.adminNotification.count({ where: { read: false } });
   } catch (err) {
     console.error("[daily-digest] bell block failed", err);
+  }
+
+  // Vol. 2 #7 — nightly pattern-pair recompute. Reads every submission
+  // that carries structured slugs, ranks co-occurrences, rewrites the
+  // cache table (bounded: ≤ C(44,2)=946 rows). Pattern folios read this
+  // table for their "most common companions" line. Soft-fail: stale
+  // cache beats a failed digest.
+  try {
+    const rows = await db.consultation.findMany({
+      where: { patternSlugs: { not: null } },
+      select: { patternSlugs: true },
+      orderBy: { createdAt: "desc" },
+      take: 5000,
+    });
+    const lists = rows
+      .map((r) => {
+        try {
+          return JSON.parse(r.patternSlugs as string) as string[];
+        } catch {
+          return [];
+        }
+      })
+      .filter((l) => Array.isArray(l) && l.length > 0);
+    const ranked = buildPairAffinities(lists);
+    await db.$transaction([
+      db.patternPairAffinity.deleteMany({}),
+      ...ranked.map((r) =>
+        db.patternPairAffinity.create({ data: { slugA: r.slugA, slugB: r.slugB, pairCount: r.pairCount } }),
+      ),
+    ]);
+    affinityPairs = ranked.length;
+    const top = ranked[0];
+    if (top) affinityTop = `${top.slugA} ↔ ${top.slugB} (${top.pairCount})`;
+  } catch (err) {
+    console.error("[daily-digest] affinity block failed", err);
+  }
+
+  // Vol. 2 #18 — referral loop: re-derive every active subscriber's share
+  // token and count newcomers whose referredByToken matches. O(n), no
+  // joins; only real subscribers ever appear in the pool.
+  try {
+    const subs = await db.emailSubscriber.findMany({
+      where: { status: "active" },
+      select: { email: true, referredByToken: true },
+      take: 5000,
+    });
+    referrals = computeTopReferrers(subs);
+  } catch (err) {
+    console.error("[daily-digest] referral block failed", err);
+  }
+
+  // Vol. 2 #5 — renewal ledger: ACTIVE memberships whose next payment is
+  // due within 7 days (or already overdue). This is the LTV engine's
+  // morning tickler — each row is one WhatsApp message away from renewal.
+  try {
+    const dueCutoff = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    renewalsDue = await db.membership.findMany({
+      where: { status: "ACTIVE", nextDueAt: { lte: dueCutoff } },
+      orderBy: { nextDueAt: "asc" },
+      take: 10,
+      select: { email: true, tier: true, nextDueAt: true, renewalCycle: true },
+    });
+  } catch (err) {
+    console.error("[daily-digest] renewal block failed", err);
   }
 
   // Tier-5 #2 — abandoned-intake recovery ledger. OPEN drafts are seekers
@@ -157,6 +227,22 @@ export async function GET(request: NextRequest) {
       return `  · ${who} — step ${d.step} — last touched ${new Date(d.updatedAt).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })} — ${d.phone}`;
     }),
     "",
+    `— REFERRALS —`,
+    referrals.length > 0
+      ? ["Top referrers (personal share links):", ...referrals.map((r) => `  · ${r.email} — ${r.referrals} signup${r.referrals === 1 ? "" : "s"}`)].join("\n")
+      : "No referral signups yet — share links ride in completion emails and the course page",
+    "",
+    `— RENEWALS DUE (7d) —`,
+    renewalsDue.length > 0
+      ? [
+          `${renewalsDue.length} membership${renewalsDue.length === 1 ? "" : "s"} due:`,
+          ...renewalsDue.map((m) => `  · ${m.email} — ${m.tier} — due ${m.nextDueAt ? new Date(m.nextDueAt).toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }) : "unspecified"}${m.renewalCycle ? ` (${m.renewalCycle.toLowerCase()})` : ""}`),
+        ].join("\n")
+      : "Nothing due in the next 7 days",
+    "",
+    `— DERIVED —`,
+    `${affinityPairs} pattern pairs ranked${affinityTop ? ` · strongest: ${affinityTop}` : ""} — folio companions refreshed`,
+    "",
     `— CONSOLE —`,
     `${unreadBell} unread bell notification${unreadBell === 1 ? "" : "s"}`,
     "",
@@ -176,6 +262,10 @@ export async function GET(request: NextRequest) {
       unreadBell,
       openDrafts,
       touchedDrafts24h,
+      affinityPairs,
+      affinityTop: affinityTop || null,
+      referrals,
+      renewalsDue: renewalsDue.length,
       preview: lines.join("\n"),
     });
   }

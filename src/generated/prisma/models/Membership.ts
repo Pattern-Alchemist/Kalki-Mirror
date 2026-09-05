@@ -35,6 +35,9 @@ export type MembershipMinAggregateOutputType = {
   status: string | null
   utrRef: string | null
   grantedAt: Date | null
+  renewalCycle: string | null
+  nextDueAt: Date | null
+  lastRenewedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +53,9 @@ export type MembershipMaxAggregateOutputType = {
   status: string | null
   utrRef: string | null
   grantedAt: Date | null
+  renewalCycle: string | null
+  nextDueAt: Date | null
+  lastRenewedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -65,6 +71,9 @@ export type MembershipCountAggregateOutputType = {
   status: number
   utrRef: number
   grantedAt: number
+  renewalCycle: number
+  nextDueAt: number
+  lastRenewedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -82,6 +91,9 @@ export type MembershipMinAggregateInputType = {
   status?: true
   utrRef?: true
   grantedAt?: true
+  renewalCycle?: true
+  nextDueAt?: true
+  lastRenewedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -97,6 +109,9 @@ export type MembershipMaxAggregateInputType = {
   status?: true
   utrRef?: true
   grantedAt?: true
+  renewalCycle?: true
+  nextDueAt?: true
+  lastRenewedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,6 +127,9 @@ export type MembershipCountAggregateInputType = {
   status?: true
   utrRef?: true
   grantedAt?: true
+  renewalCycle?: true
+  nextDueAt?: true
+  lastRenewedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -200,6 +218,9 @@ export type MembershipGroupByOutputType = {
   status: string
   utrRef: string | null
   grantedAt: Date | null
+  renewalCycle: string | null
+  nextDueAt: Date | null
+  lastRenewedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: MembershipCountAggregateOutputType | null
@@ -236,6 +257,9 @@ export type MembershipWhereInput = {
   status?: Prisma.StringFilter<"Membership"> | string
   utrRef?: Prisma.StringNullableFilter<"Membership"> | string | null
   grantedAt?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
+  renewalCycle?: Prisma.StringNullableFilter<"Membership"> | string | null
+  nextDueAt?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
+  lastRenewedAt?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Membership"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Membership"> | Date | string
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -252,6 +276,9 @@ export type MembershipOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   utrRef?: Prisma.SortOrderInput | Prisma.SortOrder
   grantedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  renewalCycle?: Prisma.SortOrderInput | Prisma.SortOrder
+  nextDueAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastRenewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -271,6 +298,9 @@ export type MembershipWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.StringFilter<"Membership"> | string
   utrRef?: Prisma.StringNullableFilter<"Membership"> | string | null
   grantedAt?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
+  renewalCycle?: Prisma.StringNullableFilter<"Membership"> | string | null
+  nextDueAt?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
+  lastRenewedAt?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Membership"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Membership"> | Date | string
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -287,6 +317,9 @@ export type MembershipOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   utrRef?: Prisma.SortOrderInput | Prisma.SortOrder
   grantedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  renewalCycle?: Prisma.SortOrderInput | Prisma.SortOrder
+  nextDueAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastRenewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.MembershipCountOrderByAggregateInput
@@ -308,6 +341,9 @@ export type MembershipScalarWhereWithAggregatesInput = {
   status?: Prisma.StringWithAggregatesFilter<"Membership"> | string
   utrRef?: Prisma.StringNullableWithAggregatesFilter<"Membership"> | string | null
   grantedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Membership"> | Date | string | null
+  renewalCycle?: Prisma.StringNullableWithAggregatesFilter<"Membership"> | string | null
+  nextDueAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Membership"> | Date | string | null
+  lastRenewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Membership"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Membership"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Membership"> | Date | string
 }
@@ -322,6 +358,9 @@ export type MembershipCreateInput = {
   status?: string
   utrRef?: string | null
   grantedAt?: Date | string | null
+  renewalCycle?: string | null
+  nextDueAt?: Date | string | null
+  lastRenewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutMembershipsInput
@@ -338,6 +377,9 @@ export type MembershipUncheckedCreateInput = {
   status?: string
   utrRef?: string | null
   grantedAt?: Date | string | null
+  renewalCycle?: string | null
+  nextDueAt?: Date | string | null
+  lastRenewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -352,6 +394,9 @@ export type MembershipUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  renewalCycle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRenewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutMembershipsNestedInput
@@ -368,6 +413,9 @@ export type MembershipUncheckedUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  renewalCycle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRenewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -383,6 +431,9 @@ export type MembershipCreateManyInput = {
   status?: string
   utrRef?: string | null
   grantedAt?: Date | string | null
+  renewalCycle?: string | null
+  nextDueAt?: Date | string | null
+  lastRenewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -397,6 +448,9 @@ export type MembershipUpdateManyMutationInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  renewalCycle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRenewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -412,6 +466,9 @@ export type MembershipUncheckedUpdateManyInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  renewalCycle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRenewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -437,6 +494,9 @@ export type MembershipCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   utrRef?: Prisma.SortOrder
   grantedAt?: Prisma.SortOrder
+  renewalCycle?: Prisma.SortOrder
+  nextDueAt?: Prisma.SortOrder
+  lastRenewedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -452,6 +512,9 @@ export type MembershipMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   utrRef?: Prisma.SortOrder
   grantedAt?: Prisma.SortOrder
+  renewalCycle?: Prisma.SortOrder
+  nextDueAt?: Prisma.SortOrder
+  lastRenewedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -467,6 +530,9 @@ export type MembershipMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   utrRef?: Prisma.SortOrder
   grantedAt?: Prisma.SortOrder
+  renewalCycle?: Prisma.SortOrder
+  nextDueAt?: Prisma.SortOrder
+  lastRenewedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -523,6 +589,9 @@ export type MembershipCreateWithoutUserInput = {
   status?: string
   utrRef?: string | null
   grantedAt?: Date | string | null
+  renewalCycle?: string | null
+  nextDueAt?: Date | string | null
+  lastRenewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -537,6 +606,9 @@ export type MembershipUncheckedCreateWithoutUserInput = {
   status?: string
   utrRef?: string | null
   grantedAt?: Date | string | null
+  renewalCycle?: string | null
+  nextDueAt?: Date | string | null
+  lastRenewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -580,6 +652,9 @@ export type MembershipScalarWhereInput = {
   status?: Prisma.StringFilter<"Membership"> | string
   utrRef?: Prisma.StringNullableFilter<"Membership"> | string | null
   grantedAt?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
+  renewalCycle?: Prisma.StringNullableFilter<"Membership"> | string | null
+  nextDueAt?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
+  lastRenewedAt?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Membership"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Membership"> | Date | string
 }
@@ -594,6 +669,9 @@ export type MembershipCreateManyUserInput = {
   status?: string
   utrRef?: string | null
   grantedAt?: Date | string | null
+  renewalCycle?: string | null
+  nextDueAt?: Date | string | null
+  lastRenewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -608,6 +686,9 @@ export type MembershipUpdateWithoutUserInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  renewalCycle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRenewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -622,6 +703,9 @@ export type MembershipUncheckedUpdateWithoutUserInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  renewalCycle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRenewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -636,6 +720,9 @@ export type MembershipUncheckedUpdateManyWithoutUserInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  renewalCycle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastRenewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -653,6 +740,9 @@ export type MembershipSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   status?: boolean
   utrRef?: boolean
   grantedAt?: boolean
+  renewalCycle?: boolean
+  nextDueAt?: boolean
+  lastRenewedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.Membership$userArgs<ExtArgs>
@@ -669,6 +759,9 @@ export type MembershipSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   status?: boolean
   utrRef?: boolean
   grantedAt?: boolean
+  renewalCycle?: boolean
+  nextDueAt?: boolean
+  lastRenewedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.Membership$userArgs<ExtArgs>
@@ -685,6 +778,9 @@ export type MembershipSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   status?: boolean
   utrRef?: boolean
   grantedAt?: boolean
+  renewalCycle?: boolean
+  nextDueAt?: boolean
+  lastRenewedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.Membership$userArgs<ExtArgs>
@@ -701,11 +797,14 @@ export type MembershipSelectScalar = {
   status?: boolean
   utrRef?: boolean
   grantedAt?: boolean
+  renewalCycle?: boolean
+  nextDueAt?: boolean
+  lastRenewedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type MembershipOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "email" | "name" | "phone" | "plan" | "tier" | "status" | "utrRef" | "grantedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["membership"]>
+export type MembershipOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "email" | "name" | "phone" | "plan" | "tier" | "status" | "utrRef" | "grantedAt" | "renewalCycle" | "nextDueAt" | "lastRenewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["membership"]>
 export type MembershipInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.Membership$userArgs<ExtArgs>
 }
@@ -732,6 +831,9 @@ export type $MembershipPayload<ExtArgs extends runtime.Types.Extensions.Internal
     status: string
     utrRef: string | null
     grantedAt: Date | null
+    renewalCycle: string | null
+    nextDueAt: Date | null
+    lastRenewedAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["membership"]>
@@ -1168,6 +1270,9 @@ export interface MembershipFieldRefs {
   readonly status: Prisma.FieldRef<"Membership", 'String'>
   readonly utrRef: Prisma.FieldRef<"Membership", 'String'>
   readonly grantedAt: Prisma.FieldRef<"Membership", 'DateTime'>
+  readonly renewalCycle: Prisma.FieldRef<"Membership", 'String'>
+  readonly nextDueAt: Prisma.FieldRef<"Membership", 'DateTime'>
+  readonly lastRenewedAt: Prisma.FieldRef<"Membership", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Membership", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Membership", 'DateTime'>
 }

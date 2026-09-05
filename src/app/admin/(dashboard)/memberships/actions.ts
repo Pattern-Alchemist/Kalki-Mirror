@@ -41,6 +41,10 @@ export type MembershipRow = {
   createdAt: Date;
   updatedAt: Date;
   userName: string | null;
+  // Vol. 2 #5 — renewal ledger fields
+  renewalCycle: string | null;
+  nextDueAt: Date | null;
+  lastRenewedAt: Date | null;
 };
 
 export async function getMemberships() {
@@ -158,6 +162,92 @@ export async function grantMembership(membershipId: string, utrRef?: string) {
   revalidatePath("/admin/memberships");
   revalidatePath("/admin/members");
   return { success: true };
+}
+
+/* ── Vol. 2 #5 — renewal ledger (the LTV engine) ────────────────────────
+ * Monthly/quarterly renewals were invisible: no cycle, no due date, no
+ * tickler. The archivist sets the cycle once (at grant or later), records
+ * each UPI renewal as it lands, and the daily digest lists what's due in
+ * the next 7 days. NONE removes the renewal expectation (comp/lifetime). */
+
+const RENEWAL_DAYS: Record<string, number> = { MONTHLY: 30, QUARTERLY: 91 };
+
+function advanceDue(from: Date, cycle: string): Date | null {
+  const days = RENEWAL_DAYS[cycle];
+  return days ? new Date(from.getTime() + days * 86_400_000) : null;
+}
+
+/** Set (or clear) the renewal cycle.nextDueAt re-bases on today when absent. */
+export async function setRenewalCycle(
+  membershipId: string,
+  cycle: "MONTHLY" | "QUARTERLY" | "NONE",
+) {
+  await requireAdmin();
+
+  const membership = await db.membership.findUniqueOrThrow({
+    where: { id: membershipId },
+  });
+
+  const nextCycle = cycle === "NONE" ? null : cycle;
+  const base = membership.nextDueAt && nextCycle ? membership.nextDueAt : new Date();
+  const nextDueAt = nextCycle ? advanceDue(base, nextCycle) : null;
+
+  await db.membership.update({
+    where: { id: membershipId },
+    data: { renewalCycle: nextCycle, nextDueAt },
+  });
+  await logAudit({
+    action: "membership.renewal_cycle_set",
+    entity: "Membership",
+    entityId: membershipId,
+    before: { renewalCycle: membership.renewalCycle, nextDueAt: membership.nextDueAt },
+    after: { renewalCycle: nextCycle, nextDueAt },
+  });
+
+  revalidatePath("/admin/memberships");
+  return { success: true, nextDueAt };
+}
+
+/** Record a landed renewal: advance the due date by the cycle, stamp lastRenewedAt. */
+export async function recordRenewal(membershipId: string, utrRef?: string) {
+  await requireAdmin();
+
+  const membership = await db.membership.findUniqueOrThrow({
+    where: { id: membershipId },
+  });
+  if (!membership.renewalCycle || !RENEWAL_DAYS[membership.renewalCycle]) {
+    return { success: false, error: "Set a renewal cycle first (MONTHLY or QUARTERLY)." };
+  }
+
+  const lastRenewedAt = new Date();
+  const nextDueAt = advanceDue(lastRenewedAt, membership.renewalCycle);
+
+  await db.membership.update({
+    where: { id: membershipId },
+    data: {
+      lastRenewedAt,
+      nextDueAt,
+      ...(utrRef !== undefined && utrRef.trim() !== ""
+        ? { utrRef: utrRef.trim().slice(0, 60) }
+        : {}),
+    },
+  });
+  await logAudit({
+    action: "membership.renewed",
+    entity: "Membership",
+    entityId: membershipId,
+    before: { nextDueAt: membership.nextDueAt, utrRef: membership.utrRef },
+    after: { nextDueAt, lastRenewedAt, cycle: membership.renewalCycle },
+  });
+  await broadcastNotification({
+    title: "Membership renewed",
+    body: `${membership.name || membership.email} — ${membership.renewalCycle.toLowerCase()} renewal recorded · next due ${nextDueAt?.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })}`,
+    type: "success",
+    href: "/admin/memberships",
+  });
+
+  revalidatePath("/admin/memberships");
+  return { success: true, nextDueAt };
 }
 
 /** Cancel the ledger row. Deliberately does NOT auto-revert User.tier —

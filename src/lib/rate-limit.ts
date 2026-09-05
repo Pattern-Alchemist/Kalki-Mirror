@@ -200,11 +200,53 @@ function memoryRateLimit(cfg: RateLimitConfig): RateLimitResult {
 /**
  * Check if a request should be rate limited.
  * Backend chain: Upstash Redis → Vercel KV → in-memory.
+ * Every `limited: true` is counted (Vol. 2 #14) so throttling is visible
+ * BEFORE it costs a lead — the snapshot rides on /api/health and the
+ * admin overview card.
  */
+const LIMIT429_WINDOW_MS = 60_000;
+const LIMIT429_MAX_SAMPLES = 10_000; // bounded — 429 storms can't balloon the heap
+const limit429Samples: Array<{ prefix: string; ts: number }> = [];
+
+function count429(cfg: RateLimitConfig): void {
+  limit429Samples.push({ prefix: cfg.prefix || 'rl', ts: Date.now() });
+  if (limit429Samples.length > LIMIT429_MAX_SAMPLES) {
+    limit429Samples.splice(0, limit429Samples.length - LIMIT429_MAX_SAMPLES);
+  }
+}
+
+export interface RateLimit429Snapshot {
+  /** 429s in the last minute across all surfaces */
+  lastMinute: number;
+  /** per-surface breakdown (last minute), e.g. { ai: 12, init: 3 } */
+  byPrefix: Record<string, number>;
+  /** samples retained by the bounded ring (observability of the counter itself) */
+  samples: number;
+  /** honest scope note — per serverless instance, not global */
+  scope: 'instance';
+}
+
+export function rateLimit429Snapshot(): RateLimit429Snapshot {
+  const cutoff = Date.now() - LIMIT429_WINDOW_MS;
+  const byPrefix: Record<string, number> = {};
+  let lastMinute = 0;
+  for (let i = limit429Samples.length - 1; i >= 0; i--) {
+    const s = limit429Samples[i];
+    if (s.ts < cutoff) break; // ring is append-ordered → safe to stop
+    lastMinute += 1;
+    byPrefix[s.prefix] = (byPrefix[s.prefix] ?? 0) + 1;
+  }
+  return { lastMinute, byPrefix, samples: limit429Samples.length, scope: 'instance' };
+}
+
 export async function rateLimit(cfg: RateLimitConfig): Promise<RateLimitResult> {
-  if (hasUpstash) return upstashRateLimit(cfg);
-  if (hasKV) return kvRateLimit(cfg);
-  return memoryRateLimit(cfg);
+  const result = hasUpstash
+    ? await upstashRateLimit(cfg)
+    : hasKV
+      ? await kvRateLimit(cfg)
+      : memoryRateLimit(cfg);
+  if (result.limited) count429(cfg);
+  return result;
 }
 
 /** Observability: which backend is live (surfaced on /api/health). */

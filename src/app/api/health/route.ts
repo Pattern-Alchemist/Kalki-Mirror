@@ -3,7 +3,7 @@ export const runtime = 'nodejs';
 import { NextResponse } from 'next/server';
 import { getCorpusStats } from '@/lib/static-db';
 import { db } from '@/lib/db';
-import { rateLimitBackend } from '@/lib/rate-limit';
+import { rateLimitBackend, rateLimit429Snapshot } from '@/lib/rate-limit';
 
 /**
  * GET /api/health
@@ -73,6 +73,8 @@ export async function GET() {
         error: dbError,
       },
       rateLimitBackend: rateLimitBackend(),
+      // Vol. 2 #14 — throttling visibility (per serverless instance)
+      rateLimit429: rateLimit429Snapshot(),
       environment: process.env.VERCEL === '1' ? 'serverless' : 'local',
       timing: {
         coldStartMs: elapsed,

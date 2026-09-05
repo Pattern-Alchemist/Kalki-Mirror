@@ -416,7 +416,8 @@ export const ModelName = {
   EmailSend: 'EmailSend',
   EmailEvent: 'EmailEvent',
   DraftLead: 'DraftLead',
-  SynthesisCache: 'SynthesisCache'
+  SynthesisCache: 'SynthesisCache',
+  PatternPairAffinity: 'PatternPairAffinity'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -432,7 +433,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "draftLead" | "synthesisCache"
+    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "draftLead" | "synthesisCache" | "patternPairAffinity"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1916,6 +1917,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PatternPairAffinity: {
+      payload: Prisma.$PatternPairAffinityPayload<ExtArgs>
+      fields: Prisma.PatternPairAffinityFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PatternPairAffinityFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PatternPairAffinityPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PatternPairAffinityFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PatternPairAffinityPayload>
+        }
+        findFirst: {
+          args: Prisma.PatternPairAffinityFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PatternPairAffinityPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PatternPairAffinityFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PatternPairAffinityPayload>
+        }
+        findMany: {
+          args: Prisma.PatternPairAffinityFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PatternPairAffinityPayload>[]
+        }
+        create: {
+          args: Prisma.PatternPairAffinityCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PatternPairAffinityPayload>
+        }
+        createMany: {
+          args: Prisma.PatternPairAffinityCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PatternPairAffinityCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PatternPairAffinityPayload>[]
+        }
+        delete: {
+          args: Prisma.PatternPairAffinityDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PatternPairAffinityPayload>
+        }
+        update: {
+          args: Prisma.PatternPairAffinityUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PatternPairAffinityPayload>
+        }
+        deleteMany: {
+          args: Prisma.PatternPairAffinityDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PatternPairAffinityUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PatternPairAffinityUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PatternPairAffinityPayload>[]
+        }
+        upsert: {
+          args: Prisma.PatternPairAffinityUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PatternPairAffinityPayload>
+        }
+        aggregate: {
+          args: Prisma.PatternPairAffinityAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePatternPairAffinity>
+        }
+        groupBy: {
+          args: Prisma.PatternPairAffinityGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PatternPairAffinityGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PatternPairAffinityCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PatternPairAffinityCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2048,6 +2123,9 @@ export const MembershipScalarFieldEnum = {
   status: 'status',
   utrRef: 'utrRef',
   grantedAt: 'grantedAt',
+  renewalCycle: 'renewalCycle',
+  nextDueAt: 'nextDueAt',
+  lastRenewedAt: 'lastRenewedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2152,7 +2230,8 @@ export const ConsultationScalarFieldEnum = {
   paymentState: 'paymentState',
   paymentSession: 'paymentSession',
   utrRef: 'utrRef',
-  paidAt: 'paidAt'
+  paidAt: 'paidAt',
+  patternSlugs: 'patternSlugs'
 } as const
 
 export type ConsultationScalarFieldEnum = (typeof ConsultationScalarFieldEnum)[keyof typeof ConsultationScalarFieldEnum]
@@ -2231,6 +2310,7 @@ export const EmailSubscriberScalarFieldEnum = {
   referrerDomain: 'referrerDomain',
   landingPath: 'landingPath',
   attributionJson: 'attributionJson',
+  referredByToken: 'referredByToken',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2290,6 +2370,16 @@ export const SynthesisCacheScalarFieldEnum = {
 } as const
 
 export type SynthesisCacheScalarFieldEnum = (typeof SynthesisCacheScalarFieldEnum)[keyof typeof SynthesisCacheScalarFieldEnum]
+
+
+export const PatternPairAffinityScalarFieldEnum = {
+  slugA: 'slugA',
+  slugB: 'slugB',
+  pairCount: 'pairCount',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PatternPairAffinityScalarFieldEnum = (typeof PatternPairAffinityScalarFieldEnum)[keyof typeof PatternPairAffinityScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2526,6 +2616,7 @@ export type GlobalOmitConfig = {
   emailEvent?: Prisma.EmailEventOmit
   draftLead?: Prisma.DraftLeadOmit
   synthesisCache?: Prisma.SynthesisCacheOmit
+  patternPairAffinity?: Prisma.PatternPairAffinityOmit
 }
 
 /* Types for Logging */

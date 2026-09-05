@@ -613,6 +613,8 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
       whatsapp: form.whatsapp,
       message: enrichedMessage,
       enrichedMessage,
+      // Vol. 2 #7 — machine-readable pattern selection for the affinity rollup
+      patternSlugs: form.selectedPatterns,
     });
     setSubmitting(false);
 

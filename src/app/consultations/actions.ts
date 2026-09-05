@@ -12,6 +12,10 @@ import {
 import { eventConsultationCreated } from "@/lib/admin/notify-events";
 import { PAID_SESSIONS, resolveUpiConfig } from "@/lib/utils/upi";
 import { resolveBookingConfig } from "@/lib/utils/booking";
+import { allPatterns } from "@/lib/data/patterns";
+
+/** Valid pattern slugs — the wizard sends slugs; anything else is dropped. */
+const KNOWN_PATTERN_SLUGS = new Set(allPatterns.map((p) => p.slug));
 
 const consultationSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters.").max(200, "Name too long."),
@@ -55,6 +59,8 @@ export async function submitConsultation(formData: {
   whatsapp: string;
   message: string;
   enrichedMessage?: string;
+  /** Vol. 2 #7 — wizard step-2 pattern slugs (machine-readable twin of the message text). */
+  patternSlugs?: string[];
 }) {
   const messageBody = formData.enrichedMessage?.trim() || formData.message || '';
   const parsed = consultationSchema.safeParse({
@@ -68,6 +74,23 @@ export async function submitConsultation(formData: {
   }
 
   const { name, whatsapp, message } = parsed.data;
+
+  // Pattern slugs: dedupe, validate against the corpus, cap at 12. Invalid
+  // input degrades to null — never blocks the lead.
+  const patternSlugsJson = (() => {
+    try {
+      const slugs = [
+        ...new Set(
+          (formData.patternSlugs ?? [])
+            .map((s) => String(s).trim().toLowerCase())
+            .filter((s) => KNOWN_PATTERN_SLUGS.has(s)),
+        ),
+      ].slice(0, 12);
+      return slugs.length > 0 ? JSON.stringify(slugs) : null;
+    } catch {
+      return null;
+    }
+  })();
 
   try {
     const attribution = await readAttribution();
@@ -92,6 +115,8 @@ export async function submitConsultation(formData: {
         referrerDomain: referrerDomainOf(last?.referrer) ?? null,
         landingPath: attribution?.first.landingPath ?? null,
         attributionJson: attribution ? JSON.stringify(attribution) : null,
+        // Vol. 2 #7 — feeds the nightly pair-affinity rollup
+        patternSlugs: patternSlugsJson,
       },
     });
 

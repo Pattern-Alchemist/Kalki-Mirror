@@ -1,0 +1,29 @@
+# Vol. 2 #10 — embedding neural-swap rehearsal.
+# Weekly + on-demand dry-run of the RAG embedding contract so the day a
+# provider key lands, the swap is one secret + one workflow run.
+# Requires NO secrets — the hashed pipeline is provider-free by design.
+name: embed-rehearsal
+
+on:
+  schedule:
+    - cron: "0 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rehearse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run embedding contract rehearsal
+        run: npx tsx scripts/embed-rehearsal.ts

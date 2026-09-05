@@ -178,6 +178,15 @@ model Membership {
   status    String    @default("PENDING") // PENDING | ACTIVE | CANCELLED
   utrRef    String?   // UPI reference if paid via the manual rail
   grantedAt DateTime?
+
+  // Vol. 2 #5 — renewal ledger. Memberships had no renewal concept; the
+  // monthly/quarterly cycle is the LTV engine. The archivist sets the
+  // cycle when activating (or leaves it null for one-time/lifetime grants
+  // like prithvi or comped access); the digest lists what's coming due.
+  renewalCycle String?   // MONTHLY | QUARTERLY | null (no auto-renewal)
+  nextDueAt    DateTime? // when the next UPI payment is expected
+  lastRenewedAt DateTime?
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
@@ -323,6 +332,13 @@ model Consultation {
   utrRef         String?   // UPI reference / UTR quoted by the seeker
   paidAt         DateTime?
 
+  // Vol. 2 #7 — structured pattern selection from wizard step 2 (slugs,
+  // JSON array). Written once at submit; feeds the nightly pair-affinity
+  // rollup. Names stay in the message text; this is the machine-readable
+  // twin the rollup needs (patternDiagnosis is the archivist's post-session
+  // verdict, not the seeker's self-selection — different signal).
+  patternSlugs String?
+
   @@index([status, scheduledFor])
   @@index([phone])
   @@index([paymentState])
@@ -438,6 +454,14 @@ model EmailSubscriber {
   landingPath     String?
   attributionJson String?   // full AttributionSnapshot (first/last/sessions)
 
+  // Vol. 2 #18 — personal share-link attribution. The referrer's share
+  // token (namespaced HMAC over THEIR email) lands here when a newcomer
+  // subscribes through `?ref=`. Crediting is computed at read time by
+  // re-deriving each active subscriber's token — no joins, no second
+  // table, and the token leaks nothing (it only proves "came from a
+  // subscriber", not which one, to anyone without the secret).
+  referredByToken String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -520,4 +544,22 @@ model SynthesisCache {
   expiresAt DateTime
 
   @@index([expiresAt])
+}
+
+// ── Vol. 2 #7: pattern-pair affinities ───────────────────────────────────
+// Which patterns co-occur in real wizard submissions — derived from
+// Consultation.patternSlugs, not vibes. The nightly digest recompute
+// rewrites this table wholesale (bounded: at most C(44,2)=946 rows for the
+// current corpus); pattern folios read the top pairs for their slug and
+// render the "most common companions" line. Zero rows → folio renders
+// nothing, exactly the pre-feature behaviour.
+model PatternPairAffinity {
+  slugA     String   // canonical (alphabetical) — slugA < slugB
+  slugB     String
+  pairCount Int      @default(0) // co-occurrences across submissions
+  updatedAt DateTime @updatedAt
+
+  @@id([slugA, slugB])
+  @@index([slugA, pairCount])
+  @@index([slugB, pairCount])
 }

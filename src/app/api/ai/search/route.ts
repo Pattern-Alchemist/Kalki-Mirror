@@ -6,6 +6,7 @@ import { allSiddhis } from '@/lib/data/siddhis';
 import { getClientIp } from '@/lib/api-auth';
 import { aiSearchSchema } from '@/lib/validators/schemas';
 import { aiRateLimit } from '@/lib/rate-limit';
+import { termAnchor } from '@/lib/utils/term-anchor';
 
 
 /**
@@ -90,8 +91,19 @@ Return the top ${limit} most relevant siddhis. Respond ONLY with valid JSON matc
       (r) => validSlugs.has(r.slug)
     ).slice(0, limit);
 
+    // Vol. 2 #9 — answer citations: each result carries its canonical folio
+    // URL plus the glossary anchor term for its name (term-anchor is the
+    // shared derivation), so AI surfaces can deep-link the archive instead
+    // of paraphrasing without provenance.
+    const citations = filtered.map((r) => ({
+      slug: r.slug,
+      url: `https://www.astrokalki.com/archive/${r.slug}`,
+      term: termAnchor(r.name),
+    }));
+
     return NextResponse.json({
       results: filtered,
+      citations,
       query,
     });
   } catch (error) {

@@ -6,6 +6,8 @@ import {
   createMembership,
   grantMembership,
   cancelMembership,
+  setRenewalCycle,
+  recordRenewal,
   type MembershipRow,
 } from "./actions";
 
@@ -74,6 +76,65 @@ export default function MembershipsPage() {
       setBusy(false);
     }
   }, [form, load]);
+
+  /* Vol. 2 #5 — renewal controls. "Cycle" sets/clears the renewal cadence
+   * (prompt keeps the table compact); "Renew" records a landed UPI payment
+   * and advances the due date. Both are audit-logged server-side. */
+  const onCycle = useCallback(
+    async (m: MembershipRow) => {
+      const next = window.prompt(
+        "Renewal cycle for this membership:\n  MONTHLY · QUARTERLY · NONE (no auto-renewal)",
+        m.renewalCycle ?? "MONTHLY",
+      );
+      if (!next) return;
+      const cycle = next.trim().toUpperCase();
+      if (!["MONTHLY", "QUARTERLY", "NONE"].includes(cycle)) {
+        setError("Cycle must be MONTHLY, QUARTERLY or NONE.");
+        return;
+      }
+      setBusy(true);
+      setError("");
+      setNotice("");
+      try {
+        const res = await setRenewalCycle(m.id, cycle as "MONTHLY" | "QUARTERLY" | "NONE");
+        if (res.success) {
+          setNotice(
+            res.nextDueAt
+              ? `Cycle set — next payment due ${new Date(res.nextDueAt).toLocaleDateString()}.`
+              : "Renewal expectation cleared (NONE).",
+          );
+          await load();
+        }
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Failed to set cycle.");
+      } finally {
+        setBusy(false);
+      }
+    },
+    [load],
+  );
+
+  const onRenew = useCallback(
+    async (m: MembershipRow) => {
+      setBusy(true);
+      setError("");
+      setNotice("");
+      try {
+        const res = await recordRenewal(m.id);
+        if (res.success && res.nextDueAt) {
+          setNotice(`Renewal recorded — next due ${new Date(res.nextDueAt).toLocaleDateString()}.`);
+          await load();
+        } else if (!res.success) {
+          setError(res.error ?? "Renewal failed.");
+        }
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Renewal failed.");
+      } finally {
+        setBusy(false);
+      }
+    },
+    [load],
+  );
 
   const onGrant = useCallback(async (m: MembershipRow) => {
     setBusy(true);
@@ -215,7 +276,22 @@ export default function MembershipsPage() {
                   <p className="font-medium text-zinc-200">{m.name || "—"}{m.userName ? <span className="text-zinc-600"> · {m.userName}</span> : null}</p>
                   <p className="text-xs text-zinc-500">{m.email}{m.phone ? ` · ${m.phone}` : ""}</p>
                 </td>
-                <td className="px-4 py-3 text-zinc-300">{m.plan}</td>
+                <td className="px-4 py-3 text-zinc-300">
+                  {m.plan}
+                  {m.status === "ACTIVE" && (
+                    <p className="mt-0.5 text-[0.65rem] text-zinc-500">
+                      {m.renewalCycle ? (
+                        <>
+                          {m.renewalCycle.toLowerCase()} · next due {fmtDate(m.nextDueAt)}
+                        </>
+                      ) : (
+                        <button onClick={() => onCycle(m)} className="text-zinc-500 underline decoration-dotted hover:text-amber-300">
+                          set renewal cycle
+                        </button>
+                      )}
+                    </p>
+                  )}
+                </td>
                 <td className="px-4 py-3">
                   <span className={`rounded-full border px-2.5 py-0.5 text-xs ${STATUS_CHIP[m.status] ?? ""}`}>{m.status}</span>
                 </td>
@@ -239,6 +315,24 @@ export default function MembershipsPage() {
                         className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-400 transition-colors hover:text-zinc-200 disabled:cursor-not-allowed disabled:opacity-40"
                       >
                         Cancel
+                      </button>
+                    )}
+                    {m.status === "ACTIVE" && (
+                      <button
+                        onClick={() => onCycle(m)}
+                        disabled={busy}
+                        className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-400 transition-colors hover:text-zinc-200 disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        Cycle
+                      </button>
+                    )}
+                    {m.status === "ACTIVE" && m.renewalCycle && m.renewalCycle !== "NONE" && (
+                      <button
+                        onClick={() => onRenew(m)}
+                        disabled={busy}
+                        className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-300 transition-colors hover:bg-amber-500/20 disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        Renew
                       </button>
                     )}
                   </div>

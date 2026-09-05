@@ -19,6 +19,7 @@ import { tantraHub, tantraPages } from '@/lib/data/tantra-pages';
 import { CANONICAL } from '@/lib/canonical';
 import { FAQ } from '@/lib/data/faq';
 import { VERDICT_MEANINGS } from '@/lib/data/guhya';
+import { aghoriCourse } from '@/lib/data/aghori-tantra-course';
 
 const BASE = 'https://www.astrokalki.com';
 
@@ -130,6 +131,28 @@ function generateLlmsTxt(): string {
     ['Phase VIII — Integration', '/aghori-tantra/integration', 'Return to the marketplace: integration, service, and the Aghori principle of transcendence-through-engagement.'],
   ]);
 
+  /* Vol. 2 #17 — llms.txt vol. 2: the full course syllabus as a learning
+   * path. Every phase AND every lesson gets a curated line with its
+   * position in the sequence, so a model can cite a single lesson or
+   * recommend the path in order without guessing. */
+  const aghoriSyllabus = section('The Aghorī Path — Full Syllabus (learning path, in order)', [
+    ...aghoriCourse.flatMap((m) => [
+      [
+        `Phase ${m.phase} — ${m.title}`,
+        `/aghori-tantra/${m.id}`,
+        `${m.description} (${m.lessons.length} lessons · ${m.duration} · ${m.difficulty}).`,
+      ] as [string, string, string],
+      ...m.lessons.map(
+        (l, li) =>
+          [
+            `Phase ${m.phase} · Lesson ${li + 1} — ${l.title}`,
+            `/aghori-tantra/${m.id}/${l.id}`,
+            `Aghorī Tantra lesson ${li + 1} of ${m.lessons.length} in Phase ${m.phase}${l.titleSanskrit ? ` (${l.titleSanskrit})` : ''}: ${l.title}.`,
+          ] as [string, string, string],
+      ),
+    ]),
+  ]);
+
   const dossier = section('The Dossier — Rite of Entry', [
     ['The Dossier', '/dossier', `The personalized entry rite (interactive instrument — not an article). A seeker answers behavioral questions and receives a personalized map: dominant pattern, governing force, and the station where their work begins.`],
   ]);
@@ -184,6 +207,8 @@ ${lexicon}
 ${library}
 
 ${practice}
+
+${aghoriSyllabus}
 
 ${guhya}
 

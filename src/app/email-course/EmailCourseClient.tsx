@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 
 /* ─── The 10 Doors — mirrors docs/growth/navratri26-shorts-scripts.md ─────── */
+
+const REF_STORAGE_KEY = "kr_course_ref"; // Vol. 2 #18 — ?ref capture, survives navigation
 
 const DOORS: { n: number; deity: string; loop: string }[] = [
   { n: 1, deity: "Kālī", loop: "The loop of endings you keep reopening" },
@@ -19,11 +21,76 @@ const DOORS: { n: number; deity: string; loop: string }[] = [
 
 type FormState = "idle" | "sending" | "success" | "error";
 
+/* Vol. 2 #18 — the subscriber's personal share link, minted server-side
+ * (the HMAC secret never leaves the server) and copied with one tap. */
+function ShareLink({ email }: { email: string }) {
+  const [url, setUrl] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    let alive = true;
+    fetch(`/api/email-course/share-link?email=${encodeURIComponent(email)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        if (alive && j?.ok) setUrl(j.url as string);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [email]);
+
+  if (!url) return null;
+  return (
+    <div className="mt-6 rounded-lg border border-white/10 bg-deep-black/60 p-4 text-left">
+      <p className="text-xs uppercase tracking-[0.2em] text-copper">Your door to share</p>
+      <p className="mt-2 text-xs text-foreground/50">
+        Know someone living these loops? Send them their door — signups through your link are counted for you.
+      </p>
+      <div className="mt-3 flex items-center gap-2">
+        <code className="flex-1 truncate rounded bg-white/5 px-3 py-2 text-xs text-foreground/70">{url}</code>
+        <button
+          type="button"
+          onClick={() => {
+            navigator.clipboard?.writeText(url).then(
+              () => {
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+              },
+              () => {},
+            );
+          }}
+          className="rounded border border-gold/30 px-3 py-2 text-xs text-gold transition hover:bg-gold/10"
+        >
+          {copied ? "Copied" : "Copy"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function EmailCourseClient() {
   const [email, setEmail] = useState("");
   const [honeypot, setHoneypot] = useState(""); // bots fill it; humans never see it
   const [state, setState] = useState<FormState>("idle");
   const [message, setMessage] = useState("");
+  const [refToken, setRefToken] = useState<string | null>(null);
+
+  // Vol. 2 #18 — a subscriber's share link lands here as /email-course?ref=<token>.
+  // Stash it before anything else can redirect; it rides along with the POST.
+  useEffect(() => {
+    try {
+      const fromUrl = new URLSearchParams(window.location.search).get("ref");
+      if (fromUrl) {
+        window.localStorage.setItem(REF_STORAGE_KEY, fromUrl);
+        setRefToken(fromUrl);
+        return;
+      }
+      setRefToken(window.localStorage.getItem(REF_STORAGE_KEY));
+    } catch {
+      /* private mode / storage blocked — attribution degrades, signup fine */
+    }
+  }, []);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -34,7 +101,7 @@ export default function EmailCourseClient() {
       const res = await fetch("/api/email-course/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, website: honeypot }),
+        body: JSON.stringify({ email, website: honeypot, ref: refToken ?? undefined }),
       });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
       if (res.ok && data.ok) {
@@ -101,6 +168,7 @@ export default function EmailCourseClient() {
                 aligned to the Navratri wave (Oct 11). No spam, no forwarding, no noise:
                 one door a day for ten days, then silence unless you ask for more.
               </p>
+              {email.trim() && <ShareLink email={email.trim().toLowerCase()} />}
             </div>
           ) : (
             <>

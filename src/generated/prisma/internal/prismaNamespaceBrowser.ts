@@ -70,7 +70,8 @@ export const ModelName = {
   EmailSend: 'EmailSend',
   EmailEvent: 'EmailEvent',
   DraftLead: 'DraftLead',
-  SynthesisCache: 'SynthesisCache'
+  SynthesisCache: 'SynthesisCache',
+  PatternPairAffinity: 'PatternPairAffinity'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -182,6 +183,9 @@ export const MembershipScalarFieldEnum = {
   status: 'status',
   utrRef: 'utrRef',
   grantedAt: 'grantedAt',
+  renewalCycle: 'renewalCycle',
+  nextDueAt: 'nextDueAt',
+  lastRenewedAt: 'lastRenewedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -286,7 +290,8 @@ export const ConsultationScalarFieldEnum = {
   paymentState: 'paymentState',
   paymentSession: 'paymentSession',
   utrRef: 'utrRef',
-  paidAt: 'paidAt'
+  paidAt: 'paidAt',
+  patternSlugs: 'patternSlugs'
 } as const
 
 export type ConsultationScalarFieldEnum = (typeof ConsultationScalarFieldEnum)[keyof typeof ConsultationScalarFieldEnum]
@@ -365,6 +370,7 @@ export const EmailSubscriberScalarFieldEnum = {
   referrerDomain: 'referrerDomain',
   landingPath: 'landingPath',
   attributionJson: 'attributionJson',
+  referredByToken: 'referredByToken',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -424,6 +430,16 @@ export const SynthesisCacheScalarFieldEnum = {
 } as const
 
 export type SynthesisCacheScalarFieldEnum = (typeof SynthesisCacheScalarFieldEnum)[keyof typeof SynthesisCacheScalarFieldEnum]
+
+
+export const PatternPairAffinityScalarFieldEnum = {
+  slugA: 'slugA',
+  slugB: 'slugB',
+  pairCount: 'pairCount',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PatternPairAffinityScalarFieldEnum = (typeof PatternPairAffinityScalarFieldEnum)[keyof typeof PatternPairAffinityScalarFieldEnum]
 
 
 export const SortOrder = {

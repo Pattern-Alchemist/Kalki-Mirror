@@ -141,3 +141,8 @@ export type DraftLead = Prisma.DraftLeadModel
  * 
  */
 export type SynthesisCache = Prisma.SynthesisCacheModel
+/**
+ * Model PatternPairAffinity
+ * 
+ */
+export type PatternPairAffinity = Prisma.PatternPairAffinityModel

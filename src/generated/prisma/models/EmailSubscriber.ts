@@ -49,6 +49,7 @@ export type EmailSubscriberMinAggregateOutputType = {
   referrerDomain: string | null
   landingPath: string | null
   attributionJson: string | null
+  referredByToken: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -68,6 +69,7 @@ export type EmailSubscriberMaxAggregateOutputType = {
   referrerDomain: string | null
   landingPath: string | null
   attributionJson: string | null
+  referredByToken: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -87,6 +89,7 @@ export type EmailSubscriberCountAggregateOutputType = {
   referrerDomain: number
   landingPath: number
   attributionJson: number
+  referredByToken: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -116,6 +119,7 @@ export type EmailSubscriberMinAggregateInputType = {
   referrerDomain?: true
   landingPath?: true
   attributionJson?: true
+  referredByToken?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -135,6 +139,7 @@ export type EmailSubscriberMaxAggregateInputType = {
   referrerDomain?: true
   landingPath?: true
   attributionJson?: true
+  referredByToken?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -154,6 +159,7 @@ export type EmailSubscriberCountAggregateInputType = {
   referrerDomain?: true
   landingPath?: true
   attributionJson?: true
+  referredByToken?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -260,6 +266,7 @@ export type EmailSubscriberGroupByOutputType = {
   referrerDomain: string | null
   landingPath: string | null
   attributionJson: string | null
+  referredByToken: string | null
   createdAt: Date
   updatedAt: Date
   _count: EmailSubscriberCountAggregateOutputType | null
@@ -302,6 +309,7 @@ export type EmailSubscriberWhereInput = {
   referrerDomain?: Prisma.StringNullableFilter<"EmailSubscriber"> | string | null
   landingPath?: Prisma.StringNullableFilter<"EmailSubscriber"> | string | null
   attributionJson?: Prisma.StringNullableFilter<"EmailSubscriber"> | string | null
+  referredByToken?: Prisma.StringNullableFilter<"EmailSubscriber"> | string | null
   createdAt?: Prisma.DateTimeFilter<"EmailSubscriber"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"EmailSubscriber"> | Date | string
 }
@@ -321,6 +329,7 @@ export type EmailSubscriberOrderByWithRelationInput = {
   referrerDomain?: Prisma.SortOrderInput | Prisma.SortOrder
   landingPath?: Prisma.SortOrderInput | Prisma.SortOrder
   attributionJson?: Prisma.SortOrderInput | Prisma.SortOrder
+  referredByToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -343,6 +352,7 @@ export type EmailSubscriberWhereUniqueInput = Prisma.AtLeast<{
   referrerDomain?: Prisma.StringNullableFilter<"EmailSubscriber"> | string | null
   landingPath?: Prisma.StringNullableFilter<"EmailSubscriber"> | string | null
   attributionJson?: Prisma.StringNullableFilter<"EmailSubscriber"> | string | null
+  referredByToken?: Prisma.StringNullableFilter<"EmailSubscriber"> | string | null
   createdAt?: Prisma.DateTimeFilter<"EmailSubscriber"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"EmailSubscriber"> | Date | string
 }, "id" | "email">
@@ -362,6 +372,7 @@ export type EmailSubscriberOrderByWithAggregationInput = {
   referrerDomain?: Prisma.SortOrderInput | Prisma.SortOrder
   landingPath?: Prisma.SortOrderInput | Prisma.SortOrder
   attributionJson?: Prisma.SortOrderInput | Prisma.SortOrder
+  referredByToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.EmailSubscriberCountOrderByAggregateInput
@@ -389,6 +400,7 @@ export type EmailSubscriberScalarWhereWithAggregatesInput = {
   referrerDomain?: Prisma.StringNullableWithAggregatesFilter<"EmailSubscriber"> | string | null
   landingPath?: Prisma.StringNullableWithAggregatesFilter<"EmailSubscriber"> | string | null
   attributionJson?: Prisma.StringNullableWithAggregatesFilter<"EmailSubscriber"> | string | null
+  referredByToken?: Prisma.StringNullableWithAggregatesFilter<"EmailSubscriber"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"EmailSubscriber"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"EmailSubscriber"> | Date | string
 }
@@ -408,6 +420,7 @@ export type EmailSubscriberCreateInput = {
   referrerDomain?: string | null
   landingPath?: string | null
   attributionJson?: string | null
+  referredByToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -427,6 +440,7 @@ export type EmailSubscriberUncheckedCreateInput = {
   referrerDomain?: string | null
   landingPath?: string | null
   attributionJson?: string | null
+  referredByToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -446,6 +460,7 @@ export type EmailSubscriberUpdateInput = {
   referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referredByToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -465,6 +480,7 @@ export type EmailSubscriberUncheckedUpdateInput = {
   referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referredByToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -484,6 +500,7 @@ export type EmailSubscriberCreateManyInput = {
   referrerDomain?: string | null
   landingPath?: string | null
   attributionJson?: string | null
+  referredByToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -503,6 +520,7 @@ export type EmailSubscriberUpdateManyMutationInput = {
   referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referredByToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -522,6 +540,7 @@ export type EmailSubscriberUncheckedUpdateManyInput = {
   referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referredByToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -541,6 +560,7 @@ export type EmailSubscriberCountOrderByAggregateInput = {
   referrerDomain?: Prisma.SortOrder
   landingPath?: Prisma.SortOrder
   attributionJson?: Prisma.SortOrder
+  referredByToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -564,6 +584,7 @@ export type EmailSubscriberMaxOrderByAggregateInput = {
   referrerDomain?: Prisma.SortOrder
   landingPath?: Prisma.SortOrder
   attributionJson?: Prisma.SortOrder
+  referredByToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -583,6 +604,7 @@ export type EmailSubscriberMinOrderByAggregateInput = {
   referrerDomain?: Prisma.SortOrder
   landingPath?: Prisma.SortOrder
   attributionJson?: Prisma.SortOrder
+  referredByToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -608,6 +630,7 @@ export type EmailSubscriberSelect<ExtArgs extends runtime.Types.Extensions.Inter
   referrerDomain?: boolean
   landingPath?: boolean
   attributionJson?: boolean
+  referredByToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["emailSubscriber"]>
@@ -627,6 +650,7 @@ export type EmailSubscriberSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   referrerDomain?: boolean
   landingPath?: boolean
   attributionJson?: boolean
+  referredByToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["emailSubscriber"]>
@@ -646,6 +670,7 @@ export type EmailSubscriberSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   referrerDomain?: boolean
   landingPath?: boolean
   attributionJson?: boolean
+  referredByToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["emailSubscriber"]>
@@ -665,11 +690,12 @@ export type EmailSubscriberSelectScalar = {
   referrerDomain?: boolean
   landingPath?: boolean
   attributionJson?: boolean
+  referredByToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type EmailSubscriberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "status" | "doorDay" | "utmSource" | "utmMedium" | "utmCampaign" | "utmTerm" | "utmContent" | "clickId" | "country" | "referrerDomain" | "landingPath" | "attributionJson" | "createdAt" | "updatedAt", ExtArgs["result"]["emailSubscriber"]>
+export type EmailSubscriberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "status" | "doorDay" | "utmSource" | "utmMedium" | "utmCampaign" | "utmTerm" | "utmContent" | "clickId" | "country" | "referrerDomain" | "landingPath" | "attributionJson" | "referredByToken" | "createdAt" | "updatedAt", ExtArgs["result"]["emailSubscriber"]>
 
 export type $EmailSubscriberPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "EmailSubscriber"
@@ -689,6 +715,7 @@ export type $EmailSubscriberPayload<ExtArgs extends runtime.Types.Extensions.Int
     referrerDomain: string | null
     landingPath: string | null
     attributionJson: string | null
+    referredByToken: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["emailSubscriber"]>
@@ -1128,6 +1155,7 @@ export interface EmailSubscriberFieldRefs {
   readonly referrerDomain: Prisma.FieldRef<"EmailSubscriber", 'String'>
   readonly landingPath: Prisma.FieldRef<"EmailSubscriber", 'String'>
   readonly attributionJson: Prisma.FieldRef<"EmailSubscriber", 'String'>
+  readonly referredByToken: Prisma.FieldRef<"EmailSubscriber", 'String'>
   readonly createdAt: Prisma.FieldRef<"EmailSubscriber", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"EmailSubscriber", 'DateTime'>
 }

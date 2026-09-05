@@ -22,10 +22,11 @@ import { TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
 const PatternExplainer = dynamic(() => import('@/components/ai/PatternExplainer').then(m => ({ default: m.PatternExplainer })), { ssr: false, loading: () => <div className="h-32" /> });
 const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
 
-export default function PatternFolioClient({ pattern, relatedSiddhis, archetype }: {
+export default function PatternFolioClient({ pattern, relatedSiddhis, archetype, companions = [] }: {
   pattern: Pattern;
   relatedSiddhis: Siddhi[];
   archetype: Archetype | null;
+  companions?: Array<{ slug: string; name: string; pairCount: number }>;
 }) {
   useEffect(() => { track('pattern_viewed', { slug: pattern.slug }); }, [pattern.slug]);
   const slug = pattern.slug;
@@ -74,6 +75,28 @@ export default function PatternFolioClient({ pattern, relatedSiddhis, archetype 
       </header>
 
       <div className="max-w-4xl mx-auto px-6 space-y-16 pb-32">
+        {/* Vol. 2 #7 — derived, not vibes: co-occurrence across real wizard
+            submissions, refreshed nightly. Empty cache renders nothing. */}
+        {companions.length > 0 && (
+          <motion.p
+            initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+            whileInView={fadeInUp.visible}
+            viewport={{ once: true }}
+            className="text-sm text-text-secondary editorial-spacing border-l-2 pl-4"
+            style={{ borderColor: 'var(--copper)', opacity: 0.7 }}
+          >
+            Seekers who resonate with {pattern.name} most often name{" "}
+            {companions.map((c, i) => (
+              <span key={c.slug}>
+                {i > 0 && ", "}
+                <Link href={`/patterns/${c.slug}`} className="text-gold hover:text-copper transition-colors">
+                  {c.name}
+                </Link>
+              </span>
+            ))}{" "}
+            alongside it.
+          </motion.p>
+        )}
         {archetype && (
           <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
             <p className="section-label mb-6">Mahāvidyā Classification</p>

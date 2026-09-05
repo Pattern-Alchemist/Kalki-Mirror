@@ -13,6 +13,7 @@
 // =============================================================
 
 import { unsubscribeUrl, unsubHeaders } from "@/lib/emails/course-unsubscribe";
+import { shareUrl } from "@/lib/emails/course-share";
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.astrokalki.com";
 
@@ -296,6 +297,7 @@ export function buildCompletion(email: string): CourseEmail {
   const day = "day-10-review";
   const subject = "Your ten lines are your diagnosis";
   const consultations = utm("/consultations", day);
+  const share = shareUrl(email);
   return {
     subject,
     html: shell(
@@ -307,7 +309,11 @@ export function buildCompletion(email: string): CourseEmail {
         p(
           "If you book a session, bring it — the first twenty minutes of the Mirror Method are exactly this map, read properly. If you're not booking yet, keep the note; the loops are patient, but so are we.",
         ) +
-        ctaButton("Book the session — bring the note", consultations),
+        ctaButton("Book the session — bring the note", consultations) +
+        ctaSoft(
+          "Know someone living these loops? Pass them their door — signups through your link are counted for you:",
+          share,
+        ),
       day,
       email,
     ),
@@ -316,6 +322,8 @@ export function buildCompletion(email: string): CourseEmail {
 If you book a session, bring it — the first twenty minutes of the Mirror Method are exactly this map, read properly. If you're not booking yet, keep the note; the loops are patient, but so are we.
 
 Book the session — bring the note: ${consultations}
+
+Know someone living these loops? Pass them their door (your personal link): ${share}
 
 — Kaustubh
 

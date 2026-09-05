@@ -57,6 +57,7 @@ export type ConsultationMinAggregateOutputType = {
   paymentSession: string | null
   utrRef: string | null
   paidAt: Date | null
+  patternSlugs: string | null
 }
 
 export type ConsultationMaxAggregateOutputType = {
@@ -92,6 +93,7 @@ export type ConsultationMaxAggregateOutputType = {
   paymentSession: string | null
   utrRef: string | null
   paidAt: Date | null
+  patternSlugs: string | null
 }
 
 export type ConsultationCountAggregateOutputType = {
@@ -127,6 +129,7 @@ export type ConsultationCountAggregateOutputType = {
   paymentSession: number
   utrRef: number
   paidAt: number
+  patternSlugs: number
   _all: number
 }
 
@@ -164,6 +167,7 @@ export type ConsultationMinAggregateInputType = {
   paymentSession?: true
   utrRef?: true
   paidAt?: true
+  patternSlugs?: true
 }
 
 export type ConsultationMaxAggregateInputType = {
@@ -199,6 +203,7 @@ export type ConsultationMaxAggregateInputType = {
   paymentSession?: true
   utrRef?: true
   paidAt?: true
+  patternSlugs?: true
 }
 
 export type ConsultationCountAggregateInputType = {
@@ -234,6 +239,7 @@ export type ConsultationCountAggregateInputType = {
   paymentSession?: true
   utrRef?: true
   paidAt?: true
+  patternSlugs?: true
   _all?: true
 }
 
@@ -342,6 +348,7 @@ export type ConsultationGroupByOutputType = {
   paymentSession: string | null
   utrRef: string | null
   paidAt: Date | null
+  patternSlugs: string | null
   _count: ConsultationCountAggregateOutputType | null
   _min: ConsultationMinAggregateOutputType | null
   _max: ConsultationMaxAggregateOutputType | null
@@ -398,6 +405,7 @@ export type ConsultationWhereInput = {
   paymentSession?: Prisma.StringNullableFilter<"Consultation"> | string | null
   utrRef?: Prisma.StringNullableFilter<"Consultation"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
+  patternSlugs?: Prisma.StringNullableFilter<"Consultation"> | string | null
 }
 
 export type ConsultationOrderByWithRelationInput = {
@@ -433,6 +441,7 @@ export type ConsultationOrderByWithRelationInput = {
   paymentSession?: Prisma.SortOrderInput | Prisma.SortOrder
   utrRef?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  patternSlugs?: Prisma.SortOrderInput | Prisma.SortOrder
 }
 
 export type ConsultationWhereUniqueInput = Prisma.AtLeast<{
@@ -471,6 +480,7 @@ export type ConsultationWhereUniqueInput = Prisma.AtLeast<{
   paymentSession?: Prisma.StringNullableFilter<"Consultation"> | string | null
   utrRef?: Prisma.StringNullableFilter<"Consultation"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
+  patternSlugs?: Prisma.StringNullableFilter<"Consultation"> | string | null
 }, "id">
 
 export type ConsultationOrderByWithAggregationInput = {
@@ -506,6 +516,7 @@ export type ConsultationOrderByWithAggregationInput = {
   paymentSession?: Prisma.SortOrderInput | Prisma.SortOrder
   utrRef?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  patternSlugs?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ConsultationCountOrderByAggregateInput
   _max?: Prisma.ConsultationMaxOrderByAggregateInput
   _min?: Prisma.ConsultationMinOrderByAggregateInput
@@ -547,6 +558,7 @@ export type ConsultationScalarWhereWithAggregatesInput = {
   paymentSession?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
   utrRef?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
   paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Consultation"> | Date | string | null
+  patternSlugs?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
 }
 
 export type ConsultationCreateInput = {
@@ -582,6 +594,7 @@ export type ConsultationCreateInput = {
   paymentSession?: string | null
   utrRef?: string | null
   paidAt?: Date | string | null
+  patternSlugs?: string | null
 }
 
 export type ConsultationUncheckedCreateInput = {
@@ -617,6 +630,7 @@ export type ConsultationUncheckedCreateInput = {
   paymentSession?: string | null
   utrRef?: string | null
   paidAt?: Date | string | null
+  patternSlugs?: string | null
 }
 
 export type ConsultationUpdateInput = {
@@ -652,6 +666,7 @@ export type ConsultationUpdateInput = {
   paymentSession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ConsultationUncheckedUpdateInput = {
@@ -687,6 +702,7 @@ export type ConsultationUncheckedUpdateInput = {
   paymentSession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ConsultationCreateManyInput = {
@@ -722,6 +738,7 @@ export type ConsultationCreateManyInput = {
   paymentSession?: string | null
   utrRef?: string | null
   paidAt?: Date | string | null
+  patternSlugs?: string | null
 }
 
 export type ConsultationUpdateManyMutationInput = {
@@ -757,6 +774,7 @@ export type ConsultationUpdateManyMutationInput = {
   paymentSession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ConsultationUncheckedUpdateManyInput = {
@@ -792,6 +810,7 @@ export type ConsultationUncheckedUpdateManyInput = {
   paymentSession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ConsultationCountOrderByAggregateInput = {
@@ -827,6 +846,7 @@ export type ConsultationCountOrderByAggregateInput = {
   paymentSession?: Prisma.SortOrder
   utrRef?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
+  patternSlugs?: Prisma.SortOrder
 }
 
 export type ConsultationMaxOrderByAggregateInput = {
@@ -862,6 +882,7 @@ export type ConsultationMaxOrderByAggregateInput = {
   paymentSession?: Prisma.SortOrder
   utrRef?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
+  patternSlugs?: Prisma.SortOrder
 }
 
 export type ConsultationMinOrderByAggregateInput = {
@@ -897,6 +918,7 @@ export type ConsultationMinOrderByAggregateInput = {
   paymentSession?: Prisma.SortOrder
   utrRef?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
+  patternSlugs?: Prisma.SortOrder
 }
 
 
@@ -934,6 +956,7 @@ export type ConsultationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   paymentSession?: boolean
   utrRef?: boolean
   paidAt?: boolean
+  patternSlugs?: boolean
 }, ExtArgs["result"]["consultation"]>
 
 export type ConsultationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -969,6 +992,7 @@ export type ConsultationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   paymentSession?: boolean
   utrRef?: boolean
   paidAt?: boolean
+  patternSlugs?: boolean
 }, ExtArgs["result"]["consultation"]>
 
 export type ConsultationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1004,6 +1028,7 @@ export type ConsultationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   paymentSession?: boolean
   utrRef?: boolean
   paidAt?: boolean
+  patternSlugs?: boolean
 }, ExtArgs["result"]["consultation"]>
 
 export type ConsultationSelectScalar = {
@@ -1039,9 +1064,10 @@ export type ConsultationSelectScalar = {
   paymentSession?: boolean
   utrRef?: boolean
   paidAt?: boolean
+  patternSlugs?: boolean
 }
 
-export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "email" | "phone" | "request" | "status" | "scheduledFor" | "notes" | "createdAt" | "updatedAt" | "patternDiagnosis" | "prescribedSequence" | "prescribedSiddhis" | "sessionNotes" | "outcome" | "followUpDate" | "completedAt" | "utmSource" | "utmMedium" | "utmCampaign" | "utmTerm" | "utmContent" | "clickId" | "country" | "referrerDomain" | "landingPath" | "attributionJson" | "paymentState" | "paymentSession" | "utrRef" | "paidAt", ExtArgs["result"]["consultation"]>
+export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "email" | "phone" | "request" | "status" | "scheduledFor" | "notes" | "createdAt" | "updatedAt" | "patternDiagnosis" | "prescribedSequence" | "prescribedSiddhis" | "sessionNotes" | "outcome" | "followUpDate" | "completedAt" | "utmSource" | "utmMedium" | "utmCampaign" | "utmTerm" | "utmContent" | "clickId" | "country" | "referrerDomain" | "landingPath" | "attributionJson" | "paymentState" | "paymentSession" | "utrRef" | "paidAt" | "patternSlugs", ExtArgs["result"]["consultation"]>
 
 export type $ConsultationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Consultation"
@@ -1079,6 +1105,7 @@ export type $ConsultationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     paymentSession: string | null
     utrRef: string | null
     paidAt: Date | null
+    patternSlugs: string | null
   }, ExtArgs["result"]["consultation"]>
   composites: {}
 }
@@ -1534,6 +1561,7 @@ export interface ConsultationFieldRefs {
   readonly paymentSession: Prisma.FieldRef<"Consultation", 'String'>
   readonly utrRef: Prisma.FieldRef<"Consultation", 'String'>
   readonly paidAt: Prisma.FieldRef<"Consultation", 'DateTime'>
+  readonly patternSlugs: Prisma.FieldRef<"Consultation", 'String'>
 }
     
 

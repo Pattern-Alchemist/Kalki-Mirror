@@ -9,6 +9,7 @@ import {
   referrerDomainOf,
   type AttributionSnapshot,
 } from "@/lib/attribution";
+import { isValidRefToken } from "@/lib/emails/course-share";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +35,15 @@ const schema = z.object({
   email: z.string().trim().toLowerCase().email().max(200),
   website: z.string().max(0).optional().or(z.literal("")), // honeypot: must stay empty
   doorDay: z.coerce.number().int().min(1).max(10).optional().nullable(),
+  // Vol. 2 #18 — referrer share token (opaque, namespaced HMAC). Validated
+  // for shape only; whether it credits anyone is computed at read time.
+  ref: z
+    .string()
+    .trim()
+    .max(64)
+    .regex(/^[A-Za-z0-9_-]{8,64}$/, "invalid ref")
+    .optional()
+    .nullable(),
 });
 
 const RATE_LIMIT = 6;
@@ -98,7 +108,9 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
-    const { email, doorDay } = parsed.data;
+    const { email, doorDay, ref } = parsed.data;
+    // Shape-validated above; the extra validity gate keeps one rule in one place.
+    const refToken = isValidRefToken(ref) ? ref : null;
 
     const attribution = await readAttribution();
     const last = attribution?.last;
@@ -121,6 +133,8 @@ export async function POST(request: NextRequest) {
           email,
           status: "active",
           doorDay: doorDay ?? null,
+          // Vol. 2 #18 — written ONCE, on the newcomer's first signup only.
+          referredByToken: refToken,
           utmSource: last?.source ?? null,
           utmMedium: last?.medium ?? null,
           utmCampaign: last?.campaign ?? null,

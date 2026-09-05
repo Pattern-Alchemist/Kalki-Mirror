@@ -1,0 +1,33 @@
+# Vol. 2 #15 — weekly dependency audit.
+# Fails on HIGH or CRITICAL in PRODUCTION dependencies only — dev-only
+# advisories never block the tree (the runtime tree is 16 deps; keep it
+# that way). Runs every Monday 06:00 UTC and on demand.
+name: dependency-audit
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Audit production dependencies (fail on HIGH+)
+        run: |
+          npm audit --omit=dev --audit-level=high || {
+            echo "::error::Production dependency audit found HIGH+ vulnerabilities — run 'npm audit --omit=dev' locally and patch."
+            exit 1
+          }
+
+      - name: Report full audit (advisory)
+        run: npm audit || true
