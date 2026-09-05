@@ -32,22 +32,17 @@
    - Why: founder reads email before the console; zero new deps (Resend + cron pattern already live).
    - First move: `/api/cron/daily-digest` mirroring the doors cron + CRON_SECRET.
 
-## Tier 2 — Ops resilience (before the next spike)
+## Tier 2 — Ops resilience (before the next spike) — SHIPPED 2026-09-05
 
-6. **Rate-limit hardening** — move `rate-limit.ts` to Upstash Redis free tier
-   - Why: in-memory limits reset per serverless instance; the build already warns about optional `@vercel/kv`.
+6. **✅ Rate-limit hardening** — Upstash Redis REST backend (zero-dep fetch pipeline) heads the backend chain in `rate-limit.ts`; falls back to legacy Vercel KV, then in-memory. Flip-on = set `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` env vars (free tier, no rebuild). Backend surfaces on `/api/health` as `rateLimitBackend`.
 
-7. **Automated Turso backups** — schedule `scripts/backup-db.sh` (exists, unused on a timer)
-   - What: GitHub Action daily → compressed snapshot → Cloudinary (free) or repo artifact; 30-day retention.
-   - First move: `.github/workflows/backup.yml` with the Turso token as a secret.
+7. **✅ Automated Turso backups** — `.github/workflows/db-backup.yml` runs `scripts/backup-db.mjs` daily 21:30 UTC (03:00 IST), gzipped logical dump uploaded as a private artifact, 30-day retention; manual `workflow_dispatch` supported. Secrets: `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`.
 
-8. **Admin TOTP 2FA** — `otpauth` is already a dependency
-   - What: TOTP enrollment for ADMIN+/SUPERADMIN, enforced at NextAuth login.
-   - Why: the console now touches payments; password-only is the last soft surface.
+8. **✅ Admin TOTP 2FA** — was already live (A1): enrollment with QR + backup codes at `/admin/settings`, enforced two-step login via `/api/auth/admin-login` → `/api/auth/2fa-verify`; re-verified in Tier 2.
 
-9. **Uptime + error alerting** — Sentry DSN set (wiring exists, inactive) + cron pinger on `/api/health` alerting via Resend.
+9. **✅ Uptime + error alerting** — `.github/workflows/uptime.yml` pings `/api/health` + homepage every 15 min (2 attempts), emails via Resend ONLY on ok→down / down→ok transitions. Sentry wiring verified dormant: set `SENTRY_DSN` + `NEXT_PUBLIC_SENTRY_DSN` env vars to activate capture.
 
-10. **Email analytics loop** — Resend webhooks (delivered/opened/clicked) → storage → per-subscriber engagement view; segment non-openers of Doors 1–5 for re-send.
+10. **✅ Email analytics loop** — Resend webhooks (svix-verified, zero-dep verifier in `src/lib/webhooks/svix.ts`) → `/api/webhooks/resend` → `EmailEvent`; sends logged to `EmailSend` at dispatch. Engagement rollup + Doors 1–5 non-opener segment with one-click re-send on `/admin/subscribers`.
 
 ## Tier 3 — Growth surfaces
 

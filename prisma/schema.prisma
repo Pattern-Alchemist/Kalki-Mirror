@@ -418,3 +418,36 @@ model EmailSubscriber {
   @@index([status, createdAt])
   @@index([utmCampaign])
 }
+
+// ── Tier 2 #10: email analytics loop ─────────────────────────────────────
+// EmailSend logs every accepted send (Resend returns an email id) at the
+// moment course-send/subscribe dispatch it; EmailEvent stores the Resend
+// webhook callbacks (svix-signed) keyed by that same email id. Together
+// they give the per-subscriber engagement view and the Doors 1–5
+// non-opener segment without touching the subscriber table's shape.
+
+model EmailSend {
+  id      String  @id @default(cuid())
+  emailId String  @unique // Resend email id from POST /emails response
+  email   String  // recipient address (denormalized for direct joins)
+  kind    String  // welcome | door | completion | ops
+  doorDay Int?    // set when kind = "door"
+  subject String  @default("")
+  sentAt  DateTime @default(now())
+
+  @@index([email])
+  @@index([kind, doorDay])
+}
+
+model EmailEvent {
+  id         String   @id @default(cuid())
+  emailId    String   // Resend email id (correlates to EmailSend.emailId)
+  email      String   // recipient address from the webhook payload
+  type       String   // email.sent | email.delivered | email.opened | email.clicked | email.bounced | email.complained
+  url        String?  // click target when type = email.clicked
+  payload    String?  // raw signed webhook JSON (truncated) for forensics
+  occurredAt DateTime @default(now())
+
+  @@index([emailId])
+  @@index([email, type])
+}

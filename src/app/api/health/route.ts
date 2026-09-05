@@ -3,6 +3,7 @@ export const runtime = 'nodejs';
 import { NextResponse } from 'next/server';
 import { getCorpusStats } from '@/lib/static-db';
 import { db } from '@/lib/db';
+import { rateLimitBackend } from '@/lib/rate-limit';
 
 /**
  * GET /api/health
@@ -71,6 +72,7 @@ export async function GET() {
         latencyMs: dbLatencyMs,
         error: dbError,
       },
+      rateLimitBackend: rateLimitBackend(),
       environment: process.env.VERCEL === '1' ? 'serverless' : 'local',
       timing: {
         coldStartMs: elapsed,
