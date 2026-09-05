@@ -65,7 +65,9 @@ export const ModelName = {
   AdminNotification: 'AdminNotification',
   Webhook: 'Webhook',
   PracticeSession: 'PracticeSession',
-  EmailSubscriber: 'EmailSubscriber'
+  EmailSubscriber: 'EmailSubscriber',
+  EmailSend: 'EmailSend',
+  EmailEvent: 'EmailEvent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -346,6 +348,32 @@ export const EmailSubscriberScalarFieldEnum = {
 } as const
 
 export type EmailSubscriberScalarFieldEnum = (typeof EmailSubscriberScalarFieldEnum)[keyof typeof EmailSubscriberScalarFieldEnum]
+
+
+export const EmailSendScalarFieldEnum = {
+  id: 'id',
+  emailId: 'emailId',
+  email: 'email',
+  kind: 'kind',
+  doorDay: 'doorDay',
+  subject: 'subject',
+  sentAt: 'sentAt'
+} as const
+
+export type EmailSendScalarFieldEnum = (typeof EmailSendScalarFieldEnum)[keyof typeof EmailSendScalarFieldEnum]
+
+
+export const EmailEventScalarFieldEnum = {
+  id: 'id',
+  emailId: 'emailId',
+  email: 'email',
+  type: 'type',
+  url: 'url',
+  payload: 'payload',
+  occurredAt: 'occurredAt'
+} as const
+
+export type EmailEventScalarFieldEnum = (typeof EmailEventScalarFieldEnum)[keyof typeof EmailEventScalarFieldEnum]
 
 
 export const SortOrder = {

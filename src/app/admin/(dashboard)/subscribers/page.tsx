@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { getSubscribers, type SubscriberRow } from "./actions";
+import { EngagementPanel } from "./engagement-panel";
 
 /* ─── Constants ───────────────────────────────────────────────────────────── */
 
@@ -106,6 +107,9 @@ export default function SubscribersPage() {
           </div>
         ))}
       </div>
+
+      {/* Engagement analytics (Tier 2 #10) — rollup + Doors 1–5 non-opener segment */}
+      <EngagementPanel />
 
       {/* Search */}
       <input

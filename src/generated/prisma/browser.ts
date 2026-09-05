@@ -92,3 +92,13 @@ export type PracticeSession = Prisma.PracticeSessionModel
  * 
  */
 export type EmailSubscriber = Prisma.EmailSubscriberModel
+/**
+ * Model EmailSend
+ * 
+ */
+export type EmailSend = Prisma.EmailSendModel
+/**
+ * Model EmailEvent
+ * 
+ */
+export type EmailEvent = Prisma.EmailEventModel

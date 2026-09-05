@@ -1,9 +1,13 @@
 /* ══════════════════════════════════════════════════════════════
    RATE LIMITER — Single source of truth for all API route rate limiting.
    
-   Backend strategy:
-   - Production (Vercel): Vercel KV (Redis) if KV_REST_API_URL + KV_REST_API_TOKEN set
-   - Development / fallback: in-memory sliding window (per-process, resets on cold start)
+   Backend strategy (Tier 2 hardening — first distributed store wins):
+   1. Upstash Redis (free tier) when UPSTASH_REDIS_REST_URL +
+      UPSTASH_REDIS_REST_TOKEN are set — raw REST pipeline over fetch,
+      zero extra dependencies, shared across serverless instances.
+   2. Vercel KV (legacy) if KV_REST_API_URL + KV_REST_API_TOKEN set
+      and the optional @vercel/kv package resolves.
+   3. Development / fallback: in-memory sliding window (per-process, resets on cold start)
    
    Usage:
      import { rateLimit } from '@/lib/rate-limit';
@@ -33,7 +37,68 @@ export interface RateLimitResult {
 }
 
 /* ------------------------------------------------------------------
-   2. Vercel KV (Redis) backend — shared across serverless invocations
+   2. Upstash Redis backend — REST pipeline, zero deps, cross-instance
+   ------------------------------------------------------------------ */
+
+const upstashUrl = process.env.UPSTASH_REDIS_REST_URL;
+const upstashToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+const hasUpstash = !!(upstashUrl && upstashToken);
+
+/**
+ * Sliding-window limiter over an Upstash Redis REST pipeline.
+ * One round-trip: ZREMRANGEBYSCORE (prune) → ZADD (record) → ZCARD (count)
+ * → PTTL (window remaining). Same semantics as the Vercel KV path below.
+ */
+async function upstashRateLimit(cfg: RateLimitConfig): Promise<RateLimitResult> {
+  const prefix = cfg.prefix || 'rl';
+  const redisKey = `${prefix}:${cfg.key}`;
+  const windowMs = cfg.window * 1000;
+  const now = Date.now();
+  const windowStart = now - windowMs;
+
+  try {
+    const res = await fetch(upstashUrl as string, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${upstashToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify([
+        ['zremrangebyscore', redisKey, '0', String(windowStart)],
+        ['zadd', redisKey, String(now), `${now}-${Math.random()}`],
+        ['zcard', redisKey],
+        ['pttl', redisKey],
+      ]),
+      // A limiter must never hang the request path — degrade to memory.
+      signal: AbortSignal.timeout(2_500),
+    });
+    if (!res.ok) throw new Error(`Upstash REST HTTP ${res.status}`);
+
+    const payload = (await res.json()) as Array<{ result: unknown; error: string | null }>;
+    if (!Array.isArray(payload)) throw new Error('Upstash REST malformed response');
+    for (const entry of payload) {
+      if (entry?.error) throw new Error(`Upstash REST error: ${entry.error}`);
+    }
+
+    const count = typeof payload[2]?.result === 'number' ? payload[2].result : 1;
+    const ttl = typeof payload[3]?.result === 'number' ? payload[3].result : windowMs;
+
+    if (count > cfg.max) {
+      return { limited: true, remaining: 0, reset: now + Math.max(ttl, 0) };
+    }
+    return {
+      limited: false,
+      remaining: Math.max(0, cfg.max - count),
+      reset: now + Math.max(ttl, 0),
+    };
+  } catch (error) {
+    console.error('[rate-limit] Upstash error, falling back:', error);
+    return memoryRateLimit(cfg);
+  }
+}
+
+/* ------------------------------------------------------------------
+   2b. Vercel KV (Redis) backend — legacy, shared across serverless invocations
    ------------------------------------------------------------------ */
 
 const kvUrl = process.env.KV_REST_API_URL;
@@ -129,16 +194,24 @@ function memoryRateLimit(cfg: RateLimitConfig): RateLimitResult {
 }
 
 /* ------------------------------------------------------------------
-   4. Public API
+   5. Public API
    ------------------------------------------------------------------ */
 
 /**
  * Check if a request should be rate limited.
- * Automatically uses Vercel KV in production, in-memory in dev.
+ * Backend chain: Upstash Redis → Vercel KV → in-memory.
  */
 export async function rateLimit(cfg: RateLimitConfig): Promise<RateLimitResult> {
+  if (hasUpstash) return upstashRateLimit(cfg);
   if (hasKV) return kvRateLimit(cfg);
   return memoryRateLimit(cfg);
+}
+
+/** Observability: which backend is live (surfaced on /api/health). */
+export function rateLimitBackend(): 'upstash' | 'vercel-kv' | 'memory' {
+  if (hasUpstash) return 'upstash';
+  if (hasKV) return 'vercel-kv';
+  return 'memory';
 }
 
 /**
@@ -153,7 +226,7 @@ export function createRateLimiter(opts: Omit<RateLimitConfig, 'key'>) {
 }
 
 /* ------------------------------------------------------------------
-   5. Pre-configured limiters for common patterns
+   6. Pre-configured limiters for common patterns
    ------------------------------------------------------------------ */
 
 /** AI endpoints: 5 requests per minute */

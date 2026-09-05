@@ -1,0 +1,128 @@
+# ============================================================
+# KALKI ADMIN OS — Uptime + error alerting (Tier 2 #9)
+# ------------------------------------------------------------
+# Free-tier stand-in for a paid uptime SaaS: a GitHub Actions
+# cron pings production every 15 minutes and emails the founder
+# via Resend ONLY on state transitions (never per failed run):
+#
+#   ok → down    : alert email ("production is DOWN")
+#   down → ok    : recovery email
+#   down → down  : silent (no repeat spam)
+#
+# Targets: /api/health (corpus + Turso probes, 200 + status ok)
+# and the homepage (200). Two attempts per run — one transient
+# blip never pages a human.
+#
+# Sentry note: application-level error capture activates the
+# moment SENTRY_DSN / NEXT_PUBLIC_SENTRY_DSN env vars are set
+# (withSentryConfig + sentry.{server,client,edge}.config.ts are
+# already wired). This workflow covers "site unreachable" —
+# the class of failure Sentry cannot see.
+# ============================================================
+
+name: uptime
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: uptime
+  cancel-in-progress: false
+
+env:
+  HEALTH_URL: https://www.astrokalki.com/api/health
+  HOME_URL: https://www.astrokalki.com/
+
+jobs:
+  probe:
+    name: Probe production
+    runs-on: ubuntu-latest
+    outputs:
+      verdict: ${{ steps.probe.outputs.verdict }}
+    steps:
+      - name: Probe (health + homepage, 2 attempts)
+        id: probe
+        run: |
+          attempt_ok() {
+            # $1 = url, $2 = extra check mode (health|home)
+            code=$(curl -sS -o /tmp/body -w '%{http_code}' -m 30 -L "$1" 2>/dev/null) || return 1
+            [ "$code" = "200" ] || return 1
+            if [ "$2" = "health" ]; then
+              grep -q '"status":"ok"' /tmp/body || return 1
+            fi
+            return 0
+          }
+
+          health_ok=false; home_ok=false
+          for i in 1 2; do
+            attempt_ok "$HEALTH_URL" health && health_ok=true
+            attempt_ok "$HOME_URL" home    && home_ok=true
+            $health_ok && $home_ok && break
+            [ "$i" = "1" ] && sleep 20
+          done
+
+          if $health_ok && $home_ok; then
+            echo "verdict=ok" >> "$GITHUB_OUTPUT"
+            echo "✓ production healthy"
+          else
+            echo "verdict=down" >> "$GITHUB_OUTPUT"
+            echo "✗ probe failed (health=$health_ok home=$home_ok)"
+            echo "health body tail:"; tail -c 400 /tmp/body 2>/dev/null || true
+          fi
+
+  notify:
+    name: Email transition via Resend
+    runs-on: ubuntu-latest
+    needs: probe
+    if: always()
+    steps:
+      - name: Resolve previous verdict + send email on transition
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_TO: ${{ secrets.RESEND_ALERT_TO }}
+          VERDICT: ${{ needs.probe.outputs.verdict }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          # Previous completed run of this workflow (runs[0] is this run).
+          PREV=$(curl -sf -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/uptime.yml/runs?per_page=2" \
+            | python3 -c "import sys,json; runs=json.load(sys.stdin).get('workflow_runs',[]); print(runs[1].get('conclusion','unknown') if len(runs)>1 else 'unknown')")
+          echo "this verdict: $VERDICT · previous run conclusion: $PREV"
+
+          # Resolve recipients (secret wins; default mirrors the digest route).
+          TO="${ALERT_TO:-doors@astrokalki.com}"
+          [ -n "$RESEND_API_KEY" ] || { echo "RESEND_API_KEY secret not set — cannot email"; exit 0; }
+
+          send_email() {
+            curl -sf -X POST https://api.resend.com/emails \
+              -H "Authorization: Bearer $RESEND_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d "$1" >/dev/null && echo "✓ email sent → $TO" || echo "✗ resend send failed"
+          }
+
+          if [ "$VERDICT" = "down" ] && [ "$PREV" != "failure" ]; then
+            echo "→ transition ok→down: ALERT"
+            send_email "{
+              \"from\": \"Kalki Ops <doors@astrokalki.com>\",
+              \"to\": [\"$TO\"],
+              \"subject\": \"[KALKI] production is DOWN (run $RUN_ID)\",
+              \"html\": \"<p>Uptime probe failed twice for both <code>/api/health</code> and the homepage.</p><p>Check <a href='https://vercel.com/dashboard'>Vercel</a> and <a href='https://github.com/${{ github.repository }}/actions/runs/$RUN_ID'>run $RUN_ID</a>.</p>\"
+            }"
+          elif [ "$VERDICT" = "ok" ] && [ "$PREV" = "failure" ]; then
+            echo "→ transition down→ok: RECOVERY"
+            send_email "{
+              \"from\": \"Kalki Ops <doors@astrokalki.com>\",
+              \"to\": [\"$TO\"],
+              \"subject\": \"[KALKI] production recovered ✓\",
+              \"html\": \"<p>Uptime probe is green again: /api/health reports <code>status ok</code> and the homepage returns 200.</p>\"
+            }"
+          else
+            echo "→ no transition — silent"
+          fi

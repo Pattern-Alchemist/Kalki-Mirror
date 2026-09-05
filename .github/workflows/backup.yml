@@ -1,0 +1,69 @@
+# ============================================================
+# KALKI ADMIN OS — Automated Turso backups (Tier 2 #7)
+# ------------------------------------------------------------
+# Daily logical dump of the production Turso database via the
+# repo's own scripts/backup-db.mjs (read-only: SELECT +
+# sqlite_master only). The gzipped snapshot is uploaded as a
+# private workflow artifact with 30-day retention.
+#
+#   · Schedule: 21:30 UTC daily (03:00 IST — low-traffic window,
+#     well before the 08:00 IST digest).
+#   · Credentials come from repo secrets TURSO_DATABASE_URL +
+#     TURSO_AUTH_TOKEN — never inline (G-10 rule).
+#   · The dump contains password hashes — artifacts live in the
+#     private repo only; do not redistribute.
+#   · Manual runs: Actions → db-backup → Run workflow.
+# ============================================================
+
+name: db-backup
+
+on:
+  schedule:
+    - cron: '30 21 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: db-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    name: Dump + snapshot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Dump Turso (read-only, gzip)
+        env:
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+        run: node scripts/backup-db.mjs --keep 30
+
+      - name: Upload snapshot artifact (30-day retention)
+        uses: actions/upload-artifact@v4
+        with:
+          name: kalki-db-dump-${{ github.run_id }}
+          path: backups/*-kalki-dump.sql.gz
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Summary
+        run: |
+          echo "## db-backup run ${GITHUB_RUN_ID}" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          ls -lh backups/ | tail -n +2 >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "Snapshot uploaded as artifact \`kalki-db-dump-${GITHUB_RUN_ID}\` (retains 30 days)." >> "$GITHUB_STEP_SUMMARY"
