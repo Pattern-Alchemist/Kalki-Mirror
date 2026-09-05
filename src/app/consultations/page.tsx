@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { consultationServices } from '@/lib/data/consultations';
 import { allPatterns } from '@/lib/data/patterns';
+import { getPublicTestimonials } from '@/lib/data/testimonials';
 import dynamic from 'next/dynamic';
 import type { ConsultationsPageProps } from './ConsultationsPageClient';
 
@@ -16,7 +17,9 @@ const patternSummaries = allPatterns.map(p => ({
   signs: p.signs,
 }));
 
-const pageProps: ConsultationsPageProps = {
+// Testimonials are fetched per-request below — pageProps carries the
+// static data only (Omit keeps the shared props type honest).
+const pageProps: Omit<ConsultationsPageProps, 'testimonials'> = {
   consultationServices,
   patterns: patternSummaries,
 };
@@ -80,14 +83,18 @@ const ConsultationsPageClient = dynamic(
   }
 );
 
-export default function ConsultationsPage() {
+export default async function ConsultationsPage() {
+  // Tier-3 ②: approved + consented seeker words for the social-proof wall.
+  // Empty ledger → the wall renders nothing (no placeholder praise).
+  const testimonials = await getPublicTestimonials();
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <ConsultationsPageClient {...pageProps} />
+      <ConsultationsPageClient {...pageProps} testimonials={testimonials} />
     </>
   );
 }

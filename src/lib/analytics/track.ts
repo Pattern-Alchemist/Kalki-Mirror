@@ -32,6 +32,8 @@ const EVENT_NAMES = [
   // UPI manual rail (Leak L1 — WhatsApp + Google Pay/UPI handoff):
   'upi_pay_clicked',
   'payment_confirm_clicked',
+  // Cal.com booking handoff (Tier-3 ③):
+  'booking_opened',
   'email_subscribed',
 ] as const;
 

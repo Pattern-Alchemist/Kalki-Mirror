@@ -5,6 +5,7 @@ import { TierProvider } from "@/components/layout/TierProvider";
 import { AttributionCapture } from "@/components/analytics/AttributionCapture";
 import { PublicShell } from "@/components/layout/PublicShell";
 import { Analytics } from "@vercel/analytics/react";
+import { SwRegister } from "@/components/pwa/SwRegister";
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 
@@ -103,6 +104,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <meta name="theme-color" content="#0B0C10" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="min-h-screen bg-deep-black text-foreground antialiased">
         <noscript>
@@ -120,6 +122,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <NextIntlClientProvider locale={locale} messages={messages}>
           <TierProvider>
             <AttributionCapture />
+            <SwRegister />
             <PublicShell>{children}</PublicShell>
             <Analytics />
           </TierProvider>

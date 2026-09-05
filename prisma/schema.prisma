@@ -187,6 +187,32 @@ model Membership {
   @@index([email])
 }
 
+// ============================================================
+// TESTIMONIALS — social proof (roadmap #12). Admin-curated by
+// design: Kaustubh collects consented seeker words over WhatsApp
+// and enters them here; nothing is self-serve. Only APPROVED
+// rows render publicly, FEATURED rows on /consultations.
+// ============================================================
+
+model Testimonial {
+  id          String    @id @default(cuid())
+  quote       String    // the seeker's words, lightly copy-edited with consent
+  name        String    @default("") // display name ("Ananya M.") — never full identity without consent
+  context     String    @default("") // what they did: "Pattern Consultation", "3-month japa guidance"
+  location    String    @default("") // optional texture: "Mumbai", "Austin, TX"
+  source      String    @default("consultation") // consultation | membership | email-course | other
+  status      String    @default("PENDING") // PENDING | APPROVED | HIDDEN
+  featured    Boolean   @default(false) // featured + approved → renders on /consultations
+  consent     Boolean   @default(false) // seeker explicitly consented to public display
+  submittedBy String    @default("") // archivist who entered the row (audit redundancy)
+  approvedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status, featured])
+  @@index([status])
+}
+
 model InviteUsage {
   id        String   @id @default(cuid())
   codeId    String

@@ -33,6 +33,8 @@ export const EVENT_NAMES = [
   // UPI manual rail (Leak L1 / Tier-1 ④ funnel — fired client-side since PR #6)
   'upi_pay_clicked',
   'payment_confirm_clicked',
+  // Cal.com booking handoff (Tier-3 ③ — fired when the seeker opens the calendar)
+  'booking_opened',
   'email_subscribed',
 ] as const;
 
@@ -67,6 +69,7 @@ export const EVENT_META: Record<
   whatsapp_handoff_clicked: { label: 'WhatsApp handoff clicked', group: 'Conversion' },
   upi_pay_clicked: { label: 'UPI pay intent opened', group: 'Conversion' },
   payment_confirm_clicked: { label: 'Payment confirmed on WhatsApp', group: 'Conversion' },
+  booking_opened: { label: 'Calendar booking opened', group: 'Conversion' },
   email_subscribed: { label: 'Newsletter signup', group: 'Retention' },
 };
 

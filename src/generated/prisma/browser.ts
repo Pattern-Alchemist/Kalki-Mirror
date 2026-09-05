@@ -48,6 +48,11 @@ export type FolioChunk = Prisma.FolioChunkModel
  */
 export type Membership = Prisma.MembershipModel
 /**
+ * Model Testimonial
+ * 
+ */
+export type Testimonial = Prisma.TestimonialModel
+/**
  * Model InviteUsage
  * 
  */

@@ -44,17 +44,17 @@
 
 10. **✅ Email analytics loop** — Resend webhooks (svix-verified, zero-dep verifier in `src/lib/webhooks/svix.ts`) → `/api/webhooks/resend` → `EmailEvent`; sends logged to `EmailSend` at dispatch. Engagement rollup + Doors 1–5 non-opener segment with one-click re-send on `/admin/subscribers`.
 
-## Tier 3 — Growth surfaces
+## Tier 3 — Growth surfaces — SHIPPED 2026-09-06 (core)
 
-11. **SEO automation** — sitemap regeneration on deploy + IndexNow ping extended to changed URLs (ping-indexnow cron exists) + GSC API submission.
+11. **✅ SEO automation (IndexNow core)** — daily full-sitemap IndexNow ping (existed) is now joined by a **publish-hook**: approving a testimonial re-pings `/consultations` instantly (`pingIndexNow` in the admin action). Google submission remains manual/OAuth-gated — runbook at `docs/ops/gsc-indexing-automation.md`.
 
-12. **Testimonials / social proof module** — post-consultation WhatsApp follow-up template → admin-curated proof block on `/consultations` + landing.
+12. **✅ Testimonials / social proof module** — `Testimonial` table + `/admin/testimonials` curation (consent-gated, audit-logged: create → approve → feature → hide → delete) + public wall on `/consultations` (approved + consented rows only; renders nothing while empty — no placeholder praise). WhatsApp collection script inside the admin page's empty-state.
 
-13. **Cal.com booking embed** (free tier) — after payment confirm, hand the seeker a real calendar slot instead of manual WhatsApp scheduling.
+13. **✅ Cal.com booking handoff (env-first)** — `CAL_BOOKING_URL` (runtime env, no rebuild) adds "Step 3 · Claim your time slot" to the wizard's success panel; unset = WhatsApp/UPI-only, exactly as before. `booking_opened` event registered in the dictionary (now 22 events).
 
-14. **n8n automation recipes** (free self-host) — consume the existing `consultation.created` webhook → Google Sheets CRM, WhatsApp template follow-ups, stale-lead nudges.
+14. **✅ n8n automation recipes** — documented (no infra provisioned): Google Sheets CRM, WhatsApp follow-ups, stale-membership reminders — all consuming the site's existing outbound webhooks. `docs/automation/n8n-recipes.md`.
 
-15. **PWA shell** — installable manifest + service worker caching the folio surfaces for returning practitioners (offline practice access).
+15. **✅ PWA shell** — real PNG icon set (192/512/maskable, generated from the brand mark via `scripts/gen-pwa-icons.mjs` → Cloudinary), installable manifest with app shortcuts, service worker (`public/sw.js`: network-first navigations → offline page; SWR static assets; /api, /admin, /dossier, /redeem never cached), branded `/offline.html`, production-only registration.
 
 ## Tier 4 — Depth & quality
 
