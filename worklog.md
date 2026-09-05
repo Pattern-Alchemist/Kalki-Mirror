@@ -822,3 +822,28 @@ Stage Summary:
 - Admins can see and kill their device sessions from Settings; every revocation lands in the audit log.
 - /consultations and /pricing now carry Service+Offer rich-result graphs with the real INR prices.
 - Next candidates (Week C): #7 pattern-pair affinities, #18 email-course referral loop, #16 RSS full-text feed.
+
+---
+
+Task ID: tier5-weekC
+Agent: Super Z (lead engineer, main session)
+Task: Vol. 2 Week C + remaining quick wins — #7 #18 #16 core, then #5 #14 #3 #9 #17 #10 #15 #13 by pull. Founder: "go ahead and complete all".
+
+Work Log:
+- Tier-6 DDL (scripts/apply-tier6-schema.ts) applied to production Turso BEFORE code shipped: Consultation.patternSlugs, PatternPairAffinity table, EmailSubscriber.referredByToken, Membership renewal triple.
+- #7: wizard sends patternSlugs → submit action validates against corpus (dedupe/cap 12) → nightly recompute in digest cron (bounded ≤946 rows, transactional rewrite) → pattern folios render "most common companions" (daily ISR revalidate=86400, fail-soft to nothing).
+- #18: course-share.ts (namespaced HMAC — share token ≠ unsubscribe token, tested), ?ref capture on /email-course (localStorage), subscribe route stores referredByToken once, share-link minting endpoint (rate-limited, shape-gated), share CTA in completion email + success screen, top referrers in digest (O(n) re-derivation, active-only pool).
+- #16: feed.xml full-text (description+signs+practice / summary+benefits+cautions), 5+5 items; live: longest body 1525 chars.
+- #5: Membership renewalCycle/nextDueAt/lastRenewedAt + setRenewalCycle/recordRenewal actions (audit-logged, notification), Cycle/Renew buttons in admin, renewals-due(7d) digest section.
+- #14: bounded 429 ring in rate-limit.ts → /health rateLimit429 + overview ThrottleCard (per-instance honesty label).
+- #3: pricing_viewed carries displayed currency + billing cycle.
+- #9: /api/ai/search responses carry folio citations (canonical URL + term-anchor term).
+- #17: llms.txt full Aghorī syllabus section (8 phases + 54 lessons, learning-path order); Phase I line preserved in overview.
+- #10: scripts/embed-rehearsal.ts (8 contract checks: dims/determinism/normalization tolerance/corpus sync/zero-dep seam) + weekly CI; fixed 2 over-strict checks (norm ±1e-4 for 6-decimal rounding; import-statement grep not comment grep).
+- #15: audit.yml — weekly npm audit, fails HIGH+ on prod deps only.
+- #13: restore-drill.sh (dump→scratch→sanity→RTO) + quarterly workflow_dispatch CI.
+- Verified: tsc clean, 240/240 vitest (20 new), build green 235 pages. Pushed c593522 → Vercel READY. Production smoke: feed full-text ✓, llms.txt 54 lessons ✓, share-link mint ✓ (+400 guard), folio 200 ✓, email-course 200 ✓, digest 401 with non-matching key (auth gate ✓ — prod CRON_SECRET intentionally not rotated; nightly Vercel cron will exercise the new blocks).
+
+Stage Summary:
+- Week C + 9 pull items shipped in one deploy. Remaining open from Vol. 2: #8 (screener voice pass), #12 (2FA required for ADMIN+), #19 (hi-locale wizard) — deferred deliberately: LLM-path and auth-flow changes deserve their own careful deploy.
+- Pattern folio companions show automatically after tonight's 02:30 UTC digest (or manual dryRun with the prod key).
