@@ -106,9 +106,18 @@ export async function updateMemberRole(userId: string, newRole: string, reason: 
   const user = await db.user.findUniqueOrThrow({ where: { id: userId } });
   const oldRole = user.role;
 
+  // Vol. 2 #12 — (re)anchor the 2FA grace window at every elevation into
+  // ADMIN/SUPERADMIN. Demotions leave the column alone; a future
+  // re-elevation re-stamps it.
+  const nowElevated = newRole === 'ADMIN' || newRole === 'SUPERADMIN';
+  const wasElevated = oldRole === 'ADMIN' || oldRole === 'SUPERADMIN';
+
   await db.user.update({
     where: { id: userId },
-    data: { role: newRole as never },
+    data: {
+      role: newRole as never,
+      ...(nowElevated && (!wasElevated || !user.elevatedAt) ? { elevatedAt: new Date() } : {}),
+    },
   });
 
   await logAudit({

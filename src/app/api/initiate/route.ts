@@ -9,6 +9,7 @@ import { getCautionLevel, type Tier } from '@/lib/data/types';
 import { retrievePrescription, retrieveCitation } from '@/lib/rag/retrieval';
 import { buildYantraUserPrompt, YANTRA_SYSTEM_PROMPT } from '@/lib/ai/yantra-prompt';
 import { synthesizeYantra } from '@/lib/ai/yantra-synthesize';
+import { voicePass } from '@/lib/ai/voice-pass';
 import { synthesisCacheKey, lookupSynthesis, storeSynthesis, recordSynthesisHit } from '@/lib/ai/synthesis-cache';
 import { optionalAuth, getClientIp } from '@/lib/api-auth';
 import { initiateSchema } from '@/lib/validators/schemas';
@@ -19,6 +20,7 @@ export const maxDuration = 30;
 
 export async function POST(request: NextRequest) {
   try {
+    const startedAt = Date.now();
     // Rate limit
     const ip = getClientIp(request);
     const { limited } = await initiateRateLimit(ip);
@@ -211,6 +213,30 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Vol. 2 #8 — screener voice pass. The pattern-based floor reads
+    // clinical (corpus copy concatenated verbatim). When the LLM synthesis
+    // is not serving the karmic loop, lift the floor into the Kaustubh
+    // voice (rewrite-only, cached, soft-fail to the raw floor). Gated by a
+    // wall-clock guard: a congested day must not blow the 30s maxDuration
+    // (synthesis already spent up to 3×20s inside the chain).
+    const floorKarmic =
+      dominantPatterns.length > 0
+        ? `${dominantPatterns[0].description} ${dominantPatterns[0].practice}`.trim()
+        : null;
+    let voicePassModel: string | null = null;
+    let floorVoiceText: string | null = null;
+    if (!llmKarmicLoop && floorKarmic && Date.now() - startedAt < 15_000) {
+      try {
+        const vp = await voicePass(floorKarmic);
+        if (vp) {
+          floorVoiceText = vp.text;
+          voicePassModel = vp.model;
+        }
+      } catch {
+        // soft-fail — the raw floor is the floor, never a crash
+      }
+    }
+
     // Step 8: Compose the Dossier
     const dossier = {
       timestamp: geometry.timestamp,
@@ -267,11 +293,9 @@ export async function POST(request: NextRequest) {
         cautionLevel: getCautionLevel(s!.level),
       })),
 
-      // Synthesis layer — LLM output (Tier-1 ③) or pattern-based fallback
-      karmic_loop: llmKarmicLoop
-        ?? (dominantPatterns.length > 0
-          ? `${dominantPatterns[0].description} ${dominantPatterns[0].practice}`.trim()
-          : null),
+      // Synthesis layer — LLM output (Tier-1 ③), voice-passed floor
+      // (Vol. 2 #8), or the raw pattern-based floor
+      karmic_loop: llmKarmicLoop ?? (voicePassModel ? floorVoiceText : floorKarmic),
 
       tantric_citation: llmCitation
         ?? (citationChunks.length > 0
@@ -283,7 +307,10 @@ export async function POST(request: NextRequest) {
           : null),
 
       // Tier-1 ③ — provenance of the synthesis voice
-      synthesis,
+      synthesis: {
+        ...synthesis,
+        ...(voicePassModel ? { voicePass: { model: voicePassModel } } : {}),
+      },
 
       // YANTRA prompt (ready for LLM connection)
       yantra_prompt: {

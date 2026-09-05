@@ -9,6 +9,8 @@ import { track } from '@/lib/analytics/track';
 import { whatsappIntakeUrl, whatsappPaymentUrl } from '@/lib/utils/whatsapp';
 import { buildUpiPayUrl, formatINR, type PaidSession } from '@/lib/utils/upi';
 import { getAttribution } from '@/lib/attribution';
+import { useTranslations } from 'next-intl';
+import { buildWizardCopy, MODALITY_VALUES, type WizardCopy } from './wizard-copy';
 
 interface PatternSummary {
   slug: string;
@@ -55,50 +57,15 @@ interface SliderQuestion {
   highLabel: string;
 }
 
-const SLIDER_QUESTIONS: SliderQuestion[] = [
-  {
-    key: 'emotionalStability',
-    question: 'How would you rate your current emotional stability?',
-    lowLabel: '1 — Very unstable',
-    highLabel: '10 — Very stable',
-  },
-  {
-    key: 'patternAwareness',
-    question: 'How long have you been aware of these patterns?',
-    lowLabel: 'Just noticing',
-    highLabel: 'Years',
-  },
-  {
-    key: 'discomfortWillingness',
-    question: 'How willing are you to engage with discomfort?',
-    lowLabel: '1 — Avoidant',
-    highLabel: '10 — Fully willing',
-  },
-  {
-    key: 'previousGuidance',
-    question: 'Have you worked with a guide or therapist before?',
-    lowLabel: 'Never',
-    highLabel: 'Extensively',
-  },
-];
+const EXPERIENCE_LABELS_EN: Record<string, string> = {
+  beginner: 'Beginner',
+  intermediate: 'Intermediate',
+  advanced: 'Advanced',
+  returning: 'Returning',
+};
 
-const EXPERIENCE_LEVELS = [
-  { value: 'beginner', label: 'Beginner', description: 'No regular practice' },
-  { value: 'intermediate', label: 'Intermediate', description: 'Some meditation or breathwork' },
-  { value: 'advanced', label: 'Advanced', description: 'Daily sādhana practice' },
-  { value: 'returning', label: 'Returning', description: 'Practiced before, starting again' },
-] as const;
-
-const MODALITY_OPTIONS = [
-  'Mantra & Japa',
-  'Breathwork (Prāṇāyāma)',
-  'Yantra & Visualization',
-  'Movement & Embodiment',
-  'Shadow Journaling',
-  'Dreamwork',
-] as const;
-
-const STEP_LABELS = [
+// Canonical English step labels — analytics dashboards stay locale-stable.
+const STEP_LABELS_EN = [
   'Pattern Self-Assessment',
   'Emotional Landscape',
   'Experience Level',
@@ -190,18 +157,22 @@ function StepPatternAssessment({
   selected,
   onToggle,
   patterns,
+  copy,
 }: {
   selected: string[];
   onToggle: (slug: string) => void;
   patterns: PatternSummary[];
+  copy: WizardCopy;
 }) {
+  const t = useTranslations('wizard');
   const canSelect = selected.length < 3;
 
   return (
     <div className="space-y-6">
       <p className="text-text-secondary text-sm leading-relaxed max-w-lg">
-        Select up to <span className="text-gold font-medium">3 patterns</span> that most resonate with what
-        you are navigating. Each card shows the primary sign.
+        {t.rich('step1.intro', {
+          gold: (chunks) => <span className="text-gold font-medium">{chunks}</span>,
+        })}
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1 scrollbar-thin">
         {patterns.map((p) => {
@@ -231,7 +202,7 @@ function StepPatternAssessment({
               </p>
               {isSelected && (
                 <span className="inline-block mt-2 text-[0.625rem] tracking-[0.15em] uppercase text-gold">
-                  ✓ Selected
+                  {copy.step1.selected}
                 </span>
               )}
             </button>
@@ -240,20 +211,20 @@ function StepPatternAssessment({
       </div>
       {selected.length > 0 && (
         <p className="text-text-muted text-xs text-center">
-          {selected.length} / 3 selected
+          {copy.step1.countSelected(selected.length)}
         </p>
       )}
     </div>
   );
 }
 
-function StepEmotionalLandscape({ form, onChange }: { form: WizardFormData; onChange: <K extends keyof WizardFormData>(key: K, val: WizardFormData[K]) => void }) {
+function StepEmotionalLandscape({ form, onChange, copy }: { form: WizardFormData; onChange: <K extends keyof WizardFormData>(key: K, val: WizardFormData[K]) => void; copy: WizardCopy }) {
   return (
     <div className="space-y-8">
       <p className="text-text-secondary text-sm leading-relaxed max-w-lg">
-        Move the sliders to reflect where you are right now. There are no wrong answers — only honest ones.
+        {copy.step2.intro}
       </p>
-      {SLIDER_QUESTIONS.map((q) => (
+      {copy.step2.sliders.map((q) => (
         <div key={q.key} className="space-y-2">
           <p className="text-foreground text-sm font-medium">{q.question}</p>
           <GoldSlider
@@ -272,17 +243,19 @@ function StepEmotionalLandscape({ form, onChange }: { form: WizardFormData; onCh
 function StepExperienceLevel({
   selected,
   onSelect,
+  copy,
 }: {
   selected: string;
   onSelect: (value: string) => void;
+  copy: WizardCopy;
 }) {
   return (
     <div className="space-y-6">
       <p className="text-text-secondary text-sm leading-relaxed max-w-lg">
-        Where are you on the path? This helps Kaustubh calibrate the depth of your first session.
+        {copy.step3.intro}
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {EXPERIENCE_LEVELS.map((level) => {
+        {copy.step3.levels.map((level) => {
           const isActive = selected === level.value;
           return (
             <button
@@ -312,19 +285,24 @@ function StepExperienceLevel({
 function StepModality({
   selected,
   onToggle,
+  copy,
 }: {
   selected: string[];
   onToggle: (modality: string) => void;
+  copy: WizardCopy;
 }) {
+  const t = useTranslations('wizard');
   const canSelect = selected.length < 2;
 
   return (
     <div className="space-y-6">
       <p className="text-text-secondary text-sm leading-relaxed max-w-lg">
-        Choose up to <span className="text-gold font-medium">2 modalities</span> that call to you most strongly.
+        {t.rich('step4.intro', {
+          gold: (chunks) => <span className="text-gold font-medium">{chunks}</span>,
+        })}
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {MODALITY_OPTIONS.map((mod) => {
+        {MODALITY_VALUES.map((mod) => {
           const isSelected = selected.includes(mod);
           const isDisabled = !isSelected && !canSelect;
           return (
@@ -345,10 +323,10 @@ function StepModality({
               `}
               aria-pressed={isSelected}
             >
-              <p className="font-display text-sm text-foreground">{mod}</p>
+              <p className="font-display text-sm text-foreground">{copy.step4.modalityLabels[mod] ?? mod}</p>
               {isSelected && (
                 <span className="inline-block mt-1.5 text-[0.625rem] tracking-[0.15em] uppercase text-gold">
-                  ✓ Selected
+                  {copy.step1.selected}
                 </span>
               )}
             </button>
@@ -363,47 +341,51 @@ function StepContactScheduling({
   form,
   onChange,
   patterns,
+  copy,
 }: {
   form: WizardFormData;
   onChange: <K extends keyof WizardFormData>(key: K, val: WizardFormData[K]) => void;
   patterns: PatternSummary[];
+  copy: WizardCopy;
 }) {
   const summary = useMemo(() => {
+    const s = copy.step5.summary;
     const lines: string[] = [];
 
-    // Patterns
+    // Patterns (names are corpus data — canonical English)
     if (form.selectedPatterns.length > 0) {
       const names = form.selectedPatterns
         .map((slug) => patterns.find((p) => p.slug === slug)?.name)
         .filter(Boolean);
-      lines.push(`▸ Resonant Patterns: ${names.join(', ')}`);
+      lines.push(`▸ ${s.resonantPatterns} ${names.join(', ')}`);
     }
 
     // Scores
-    lines.push('▸ Self-Assessment Scores:');
-    lines.push(`   Emotional Stability: ${form.emotionalStability}/10`);
-    lines.push(`   Pattern Awareness: ${form.patternAwareness}/10`);
-    lines.push(`   Discomfort Willingness: ${form.discomfortWillingness}/10`);
-    lines.push(`   Previous Guidance: ${form.previousGuidance}/10`);
+    lines.push(`▸ ${s.scoresHeader}`);
+    lines.push(`   ${s.emotionalStability} ${form.emotionalStability}/10`);
+    lines.push(`   ${s.patternAwareness} ${form.patternAwareness}/10`);
+    lines.push(`   ${s.discomfortWillingness} ${form.discomfortWillingness}/10`);
+    lines.push(`   ${s.previousGuidance} ${form.previousGuidance}/10`);
 
-    // Experience
+    // Experience (label translated for display)
     if (form.experienceLevel) {
-      const level = EXPERIENCE_LEVELS.find((l) => l.value === form.experienceLevel);
-      lines.push(`▸ Experience Level: ${level?.label ?? form.experienceLevel}`);
+      const level = copy.step3.levels.find((l) => l.value === form.experienceLevel);
+      lines.push(`▸ ${s.experienceLevel} ${level?.label ?? form.experienceLevel}`);
     }
 
-    // Modalities
+    // Modalities (canonical values, translated labels)
     if (form.preferredModalities.length > 0) {
-      lines.push(`▸ Preferred Modalities: ${form.preferredModalities.join(', ')}`);
+      const labels = form.preferredModalities.map((m) => copy.step4.modalityLabels[m] ?? m);
+      lines.push(`▸ ${s.preferredModalities} ${labels.join(', ')}`);
     }
 
     return lines.join('\n');
-  }, [form, patterns]);
+  }, [form, patterns, copy]);
 
   return (
     <div className="space-y-6">
       <p className="text-text-secondary text-sm leading-relaxed max-w-lg">
-        Review your intake summary below. Add any additional context, then send your request.
+        {copy.step5.intro}
       </p>
 
       {/* Summary panel with blueprint grid overlay */}
@@ -418,7 +400,7 @@ function StepContactScheduling({
           }}
           aria-hidden="true"
         />
-        <p className="section-label mb-4 relative z-10">Intake Summary</p>
+        <p className="section-label mb-4 relative z-10">{copy.step5.summaryLabel}</p>
         <pre className="font-mono text-xs sm:text-sm text-foreground/80 whitespace-pre-wrap leading-relaxed relative z-10 max-h-64 overflow-y-auto scrollbar-thin">
           {summary}
         </pre>
@@ -428,7 +410,7 @@ function StepContactScheduling({
       <div className="space-y-5">
         <div>
           <label htmlFor="wiz-name" className="block text-[0.6875rem] tracking-[0.2em] uppercase text-text-muted mb-2">
-            Name
+            {copy.step5.nameLabel}
           </label>
           <input
             id="wiz-name"
@@ -436,12 +418,12 @@ function StepContactScheduling({
             value={form.name}
             onChange={(e) => onChange('name', e.target.value)}
             className="w-full bg-transparent border border-gold/10 rounded-sm px-4 py-3 text-foreground text-sm placeholder:text-text-muted/50 focus:border-gold/40 focus:outline-none transition-colors"
-            placeholder="Your name"
+            placeholder={copy.step5.namePlaceholder}
           />
         </div>
         <div>
           <label htmlFor="wiz-whatsapp" className="block text-[0.6875rem] tracking-[0.2em] uppercase text-text-muted mb-2">
-            WhatsApp Number
+            {copy.step5.whatsappLabel}
           </label>
           <input
             id="wiz-whatsapp"
@@ -454,7 +436,7 @@ function StepContactScheduling({
         </div>
         <div>
           <label htmlFor="wiz-notes" className="block text-[0.6875rem] tracking-[0.2em] uppercase text-text-muted mb-2">
-            Additional Notes <span className="normal-case tracking-normal text-text-muted/50">(optional)</span>
+            {copy.step5.notesLabel} <span className="normal-case tracking-normal text-text-muted/50">{copy.step5.notesOptional}</span>
           </label>
           <textarea
             id="wiz-notes"
@@ -462,7 +444,7 @@ function StepContactScheduling({
             value={form.additionalNotes}
             onChange={(e) => onChange('additionalNotes', e.target.value)}
             className="w-full bg-transparent border border-gold/10 rounded-sm px-4 py-3 text-foreground text-sm placeholder:text-text-muted/50 focus:border-gold/40 focus:outline-none transition-colors resize-none"
-            placeholder="Anything else Kaustubh should know before your session…"
+            placeholder={copy.step5.notesPlaceholder}
           />
         </div>
       </div>
@@ -474,6 +456,8 @@ function StepContactScheduling({
 
 export default function ConsultationWizard({ patterns }: { patterns: PatternSummary[] }) {
   const reduced = useNativeReducedMotion();
+  const t = useTranslations('wizard');
+  const copy = useMemo(() => buildWizardCopy(t), [t]);
   const [currentStep, setCurrentStep] = useState(0);
   const [form, setForm] = useState<WizardFormData>(INITIAL_FORM);
   const [submitted, setSubmitted] = useState(false);
@@ -488,7 +472,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
   const [paid, setPaid] = useState(false);
   const [vpaCopied, setVpaCopied] = useState(false);
 
-  const totalSteps = STEP_LABELS.length;
+  const totalSteps = copy.steps.length;
 
   const updateField = useCallback(<K extends keyof WizardFormData>(key: K, val: WizardFormData[K]) => {
     setForm((prev) => ({ ...prev, [key]: val }));
@@ -523,7 +507,8 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
   );
 
   const goNext = useCallback(() => {
-    track('wizard_step_completed', { properties: { step: currentStep + 1, label: STEP_LABELS[currentStep] } });
+    // Analytics label stays canonical English — dashboards must not fork per locale.
+    track('wizard_step_completed', { properties: { step: currentStep + 1, label: STEP_LABELS_EN[currentStep] } });
     setDirection(1);
     setCurrentStep((s) => Math.min(s + 1, totalSteps - 1));
   }, [totalSteps, currentStep]);
@@ -578,10 +563,10 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
     lines.push(`Discomfort Willingness: ${form.discomfortWillingness}/10`);
     lines.push(`Previous Guidance: ${form.previousGuidance}/10`);
 
-    // Experience
+    // Experience — canonical English labels: this payload is the archivist's
+    // working copy (WhatsApp + enrichedMessage column), locale-independent.
     if (form.experienceLevel) {
-      const level = EXPERIENCE_LEVELS.find((l) => l.value === form.experienceLevel);
-      lines.push(`Experience Level: ${level?.label ?? form.experienceLevel}`);
+      lines.push(`Experience Level: ${EXPERIENCE_LABELS_EN[form.experienceLevel] ?? form.experienceLevel}`);
     }
 
     // Modalities
@@ -601,7 +586,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
     setFormError('');
 
     if (!form.name.trim() || !form.whatsapp.trim()) {
-      setFormError('Name and WhatsApp number are required.');
+      setFormError(copy.errors.nameWhatsappRequired);
       return;
     }
 
@@ -625,9 +610,9 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
       setLeadId(result.leadId ?? null);
       setSubmitted(true);
     } else {
-      setFormError(result.error || 'Submission failed.');
+      setFormError(result.error || copy.errors.submissionFailed);
     }
-  }, [form, buildEnrichedMessage]);
+  }, [form, buildEnrichedMessage, copy]);
 
   // Step animation variants
   const slideVariants = {
@@ -668,14 +653,14 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
             aria-hidden="true"
           />
           <div className="relative z-10">
-            <p className="section-label mb-4">Request Received</p>
-            <p className="font-display text-2xl text-white mb-4">The Archive acknowledges you.</p>
+            <p className="section-label mb-4">{copy.success.heading}</p>
+            <p className="font-display text-2xl text-white mb-4">{copy.success.ack}</p>
             <p className="text-text-secondary text-sm editorial-spacing mb-6">
-              Your intake is sealed and logged. Kaustubh responds within 24 hours.
+              {copy.success.body}
             </p>
 
             {/* Step 1 — intake handoff (unchanged) */}
-            <p className="text-[0.6875rem] uppercase tracking-widest text-text-muted mb-3">Step 1 · Send your intake</p>
+            <p className="text-[0.6875rem] uppercase tracking-widest text-text-muted mb-3">{copy.success.step1Label}</p>
             <a
               href={whatsappIntakeUrl(form.name.trim(), buildEnrichedMessage())}
               target="_blank"
@@ -686,16 +671,15 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
               </svg>
-              Continue on WhatsApp
+              {copy.success.continueWhatsapp}
             </a>
-
             {/* Step 2 — reserve the session (Leak L1: UPI manual rail).
                 Renders only when UPI_VPA is configured server-side. */}
             {payment && (
               <div className="mt-8 pt-6 border-t border-gold-dim/20">
-                <p className="text-[0.6875rem] uppercase tracking-widest text-text-muted mb-3">Step 2 · Reserve your session</p>
+                <p className="text-[0.6875rem] uppercase tracking-widest text-text-muted mb-3">{copy.success.step2Label}</p>
 
-                <div className="grid gap-2 mb-4" role="group" aria-label="Choose your session">
+                <div className="grid gap-2 mb-4" role="group" aria-label={copy.success.chooseSession}>
                   {payment.sessions.map((s) => (
                     <button
                       key={s.slug}
@@ -728,7 +712,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
                       onClick={() => track('upi_pay_clicked', { properties: { session: selectedSession.slug } })}
                       className="gold-cta w-full justify-center inline-flex"
                     >
-                      Pay {formatINR(selectedSession.amountINR)} — Google Pay / UPI
+                      {copy.success.payCta(formatINR(selectedSession.amountINR))}
                     </a>
 
                     <button
@@ -742,7 +726,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
                       className="block w-full text-center text-[0.6875rem] text-text-muted hover:text-text-secondary transition-colors"
                       aria-label={`Copy UPI ID ${payment.vpa}`}
                     >
-                      UPI ID: <span className="text-text-secondary">{payment.vpa}</span> · {vpaCopied ? 'copied ✓' : 'tap to copy (desktop)'}
+                      UPI ID: <span className="text-text-secondary">{payment.vpa}</span> · {vpaCopied ? copy.success.upiCopied : copy.success.upiTapToCopy}
                     </button>
 
                     <a
@@ -764,22 +748,22 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
                       }}
                       className="ghost-cta w-full justify-center inline-flex"
                     >
-                      {paid ? 'Send your payment confirmation →' : 'I\u2019ve paid — confirm on WhatsApp'}
+                      {paid ? copy.success.confirmPaid : copy.success.confirmUnpaid}
                     </a>
                   </div>
                 )}
 
                 <p className="text-[0.6875rem] text-text-muted mt-4 text-center editorial-spacing">
-                  Prefer to talk first?{' '}
+                  {copy.success.preferTalk}{' '}
                   <a
                     href={whatsappPaymentUrl(form.name.trim(), { sessionName: 'Archival Discovery (free call)', amountINR: null, paid: false })}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline underline-offset-4 decoration-gold-dim hover:text-gold transition-colors"
                   >
-                    Start with the free discovery call
+                    {copy.success.freeCall}
                   </a>{' '}
-                  — pay after you have spoken.
+                  {copy.success.payAfter}
                 </p>
               </div>
             )}
@@ -788,9 +772,9 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
                 Renders only when CAL_BOOKING_URL is configured server-side. */}
             {booking && (
               <div className="mt-8 pt-6 border-t border-gold-dim/20">
-                <p className="text-[0.6875rem] uppercase tracking-widest text-text-muted mb-3">Step 3 · Claim your time slot</p>
+                <p className="text-[0.6875rem] uppercase tracking-widest text-text-muted mb-3">{copy.success.step3Label}</p>
                 <p className="text-[0.8125rem] text-text-muted mb-3 editorial-spacing">
-                  Skip the back-and-forth — pick a slot on the calendar and it is confirmed. Payment stays via UPI above.
+                  {copy.success.bookingIntro}
                 </p>
                 <a
                   href={booking.url}
@@ -799,16 +783,16 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
                   onClick={() => track('booking_opened')}
                   className="ghost-cta w-full justify-center inline-flex"
                 >
-                  Reserve a time on the calendar →
+                  {copy.success.reserveSlot}
                 </a>
               </div>
             )}
 
             <div className="mt-6 flex items-center justify-center gap-4 text-[0.6875rem] text-text-muted">
-              <span>Just press send in WhatsApp.</span>
+              <span>{copy.success.justPressSend}</span>
               <span aria-hidden="true" className="text-gold-dim">·</span>
               <a href="/" className="underline underline-offset-4 decoration-gold-dim hover:text-gold transition-colors">
-                Return to the Archive
+                {copy.success.returnArchive}
               </a>
             </div>
           </div>
@@ -830,7 +814,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
         <ProgressIndicator current={currentStep} total={totalSteps} />
 
         {/* Step Label */}
-        <p className="section-label mb-6">Step {currentStep + 1} — {STEP_LABELS[currentStep]}</p>
+        <p className="section-label mb-6">Step {currentStep + 1} — {copy.steps[currentStep]}</p>
 
         {/* Step Content */}
         <div className="min-h-[320px]">
@@ -844,19 +828,19 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
               exit="exit"
             >
               {currentStep === 0 && (
-                <StepPatternAssessment selected={form.selectedPatterns} onToggle={togglePattern} patterns={patterns} />
+                <StepPatternAssessment selected={form.selectedPatterns} onToggle={togglePattern} patterns={patterns} copy={copy} />
               )}
               {currentStep === 1 && (
-                <StepEmotionalLandscape form={form} onChange={updateField} />
+                <StepEmotionalLandscape form={form} onChange={updateField} copy={copy} />
               )}
               {currentStep === 2 && (
-                <StepExperienceLevel selected={form.experienceLevel} onSelect={(v) => updateField('experienceLevel', v)} />
+                <StepExperienceLevel selected={form.experienceLevel} onSelect={(v) => updateField('experienceLevel', v)} copy={copy} />
               )}
               {currentStep === 3 && (
-                <StepModality selected={form.preferredModalities} onToggle={toggleModality} />
+                <StepModality selected={form.preferredModalities} onToggle={toggleModality} copy={copy} />
               )}
               {currentStep === 4 && (
-                <StepContactScheduling form={form} onChange={updateField} patterns={patterns} />
+                <StepContactScheduling form={form} onChange={updateField} patterns={patterns} copy={copy} />
               )}
             </motion.div>
           </AnimatePresence>
@@ -875,7 +859,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
               onClick={goBack}
               className="ghost-cta flex-shrink-0"
             >
-              ← Back
+              {copy.nav.back}
             </button>
           )}
 
@@ -887,7 +871,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
               onClick={goNext}
               className="gold-cta flex-shrink-0"
             >
-              Continue →
+              {copy.nav.continue}
             </button>
           ) : (
             <button
@@ -896,7 +880,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
               disabled={!form.name.trim() || !form.whatsapp.trim() || submitting}
               className="gold-cta flex-shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              {submitting ? 'Sending…' : 'Send Request'}
+              {submitting ? copy.nav.sending : copy.nav.sendRequest}
             </button>
           )}
         </div>

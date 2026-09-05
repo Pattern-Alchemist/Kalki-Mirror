@@ -7,6 +7,7 @@ import { MobileSidebarToggle } from "@/components/admin/mobile-sidebar-toggle";
 import { GlobalSearch } from "@/components/admin/global-search";
 import { NotificationBell } from "@/components/admin/notification-bell";
 import { ThemeToggle } from "@/components/admin/theme-toggle";
+import { TwoFactorGraceBanner } from "@/components/admin/two-factor-grace-banner";
 
 export const dynamic = "force-dynamic";
 
@@ -47,6 +48,7 @@ export default async function AdminDashboardLayout({
           </div>
           <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
             <AdminBreadcrumbs />
+            <TwoFactorGraceBanner />
             {children}
           </div>
         </main>

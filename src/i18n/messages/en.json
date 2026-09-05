@@ -48,7 +48,7 @@
   "footer": {
     "tagline": "The Architecture of Karma",
     "description": "Where ancient Tantric geometry meets modern computational intelligence.",
-    "copyright": "\u00a9 {year} KALKI. All rights reserved.",
+    "copyright": "© {year} KALKI. All rights reserved.",
     "privacy": "Privacy",
     "terms": "Terms",
     "contact": "Contact"
@@ -151,5 +151,133 @@
     "moderateDesc": "Requires guidance. Not for solo beginners.",
     "highDesc": "Advanced practice with real risk. Qualified guidance mandatory.",
     "sealedDesc": "Lineage-restricted. Documented for scholarly completeness only."
+  },
+  "wizard": {
+    "steps": [
+      "Pattern Self-Assessment",
+      "Emotional Landscape",
+      "Experience Level",
+      "Preferred Modality",
+      "Contact & Scheduling"
+    ],
+    "step1": {
+      "intro": "Select up to <gold>3 patterns</gold> that most resonate with what you are navigating. Each card shows the primary sign.",
+      "selected": "✓ Selected",
+      "countSelected": "{n} / 3 selected"
+    },
+    "step2": {
+      "intro": "Move the sliders to reflect where you are right now. There are no wrong answers — only honest ones.",
+      "sliders": {
+        "emotionalStability": {
+          "question": "How would you rate your current emotional stability?",
+          "low": "1 — Very unstable",
+          "high": "10 — Very stable"
+        },
+        "patternAwareness": {
+          "question": "How long have you been aware of these patterns?",
+          "low": "Just noticing",
+          "high": "Years"
+        },
+        "discomfortWillingness": {
+          "question": "How willing are you to engage with discomfort?",
+          "low": "1 — Avoidant",
+          "high": "10 — Fully willing"
+        },
+        "previousGuidance": {
+          "question": "Have you worked with a guide or therapist before?",
+          "low": "Never",
+          "high": "Extensively"
+        }
+      }
+    },
+    "step3": {
+      "intro": "Where are you on the path? This helps Kaustubh calibrate the depth of your first session.",
+      "levels": {
+        "beginner": {
+          "label": "Beginner",
+          "description": "No regular practice"
+        },
+        "intermediate": {
+          "label": "Intermediate",
+          "description": "Some meditation or breathwork"
+        },
+        "advanced": {
+          "label": "Advanced",
+          "description": "Daily sādhana practice"
+        },
+        "returning": {
+          "label": "Returning",
+          "description": "Practiced before, starting again"
+        }
+      }
+    },
+    "step4": {
+      "intro": "Choose up to <gold>2 modalities</gold> that call to you most strongly.",
+      "modalities": {
+        "mantra": "Mantra & Japa",
+        "breath": "Breathwork (Prāṇāyāma)",
+        "yantra": "Yantra & Visualization",
+        "movement": "Movement & Embodiment",
+        "journaling": "Shadow Journaling",
+        "dream": "Dreamwork"
+      }
+    },
+    "step5": {
+      "intro": "Review your intake summary below. Add any additional context, then send your request.",
+      "summaryLabel": "Intake Summary",
+      "summary": {
+        "resonantPatterns": "Resonant Patterns:",
+        "scoresHeader": "Self-Assessment Scores:",
+        "emotionalStability": "Emotional Stability:",
+        "patternAwareness": "Pattern Awareness:",
+        "discomfortWillingness": "Discomfort Willingness:",
+        "previousGuidance": "Previous Guidance:",
+        "experienceLevel": "Experience Level:",
+        "preferredModalities": "Preferred Modalities:"
+      },
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "whatsappLabel": "WhatsApp Number",
+      "notesLabel": "Additional Notes",
+      "notesOptional": "(optional)",
+      "notesPlaceholder": "Anything else Kaustubh should know before your session…"
+    },
+    "success": {
+      "heading": "Request Received",
+      "ack": "The Archive acknowledges you.",
+      "body": "Your intake is sealed and logged. Kaustubh responds within 24 hours.",
+      "step1Label": "Step 1 · Send your intake",
+      "continueWhatsapp": "Continue on WhatsApp",
+      "step2Label": "Step 2 · Reserve your session",
+      "chooseSession": "Choose your session",
+      "payCta": "Pay {amount} — Google Pay / UPI",
+      "upiCopied": "copied ✓",
+      "upiTapToCopy": "tap to copy (desktop)",
+      "confirmUnpaid": "I’ve paid — confirm on WhatsApp",
+      "confirmPaid": "Send your payment confirmation →",
+      "preferTalk": "Prefer to talk first?",
+      "freeCall": "Start with the free discovery call",
+      "payAfter": "— pay after you have spoken.",
+      "step3Label": "Step 3 · Claim your time slot",
+      "bookingIntro": "Skip the back-and-forth — pick a slot on the calendar and it is confirmed. Payment stays via UPI above.",
+      "reserveSlot": "Reserve a time on the calendar →",
+      "justPressSend": "Just press send in WhatsApp.",
+      "returnArchive": "Return to the Archive"
+    },
+    "nav": {
+      "back": "← Back",
+      "continue": "Continue →",
+      "sending": "Sending…",
+      "sendRequest": "Send Request"
+    },
+    "errors": {
+      "nameWhatsappRequired": "Name and WhatsApp number are required.",
+      "submissionFailed": "Submission failed."
+    },
+    "switcher": {
+      "label": "Language",
+      "en": "EN",
+      "hi": "हिं"
+    }
   }
 }

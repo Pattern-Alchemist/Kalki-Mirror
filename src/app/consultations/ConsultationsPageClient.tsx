@@ -22,6 +22,7 @@ export interface ConsultationsPageProps {
 }
 
 const ConsultationWizard = dynamic(() => import('@/components/consultations/ConsultationWizard'), { ssr: false, loading: () => <div className="h-64" /> });
+import { LocaleSwitcher } from '@/components/consultations/LocaleSwitcher';
 
 const KAUSTUBH_IMG = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_800,c_limit/kalki-mirror/kaustubh-portrait';
 
@@ -212,6 +213,9 @@ export default function ConsultationsPageClient({ consultationServices, patterns
           </div>
           <div className="absolute inset-0 z-[1] bg-gradient-to-b from-deep-black via-deep-black/60 to-deep-black" aria-hidden="true" />
           <div className="relative z-10">
+            <div className="flex justify-end mb-2">
+              <LocaleSwitcher />
+            </div>
             <ConsultationWizard patterns={patterns} />
           </div>
         </div>

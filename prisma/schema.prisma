@@ -63,6 +63,11 @@ model User {
   twoFactorEnabled  Boolean  @default(false)
   twoFactorBackupCodes String? // JSON array of backup codes
 
+  // Vol. 2 #12: when the user was granted ADMIN/SUPERADMIN (backfilled to
+  // the migration run for pre-existing admins). Anchors the 2FA grace
+  // window — see src/lib/admin/two-factor-policy.ts.
+  elevatedAt        DateTime?
+
   // Relations
   streaks       SadhanaStreak[]
   resolutions    PatternResolution[]

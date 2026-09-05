@@ -61,6 +61,7 @@ export type UserMinAggregateOutputType = {
   twoFactorSecret: string | null
   twoFactorEnabled: boolean | null
   twoFactorBackupCodes: string | null
+  elevatedAt: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -84,6 +85,7 @@ export type UserMaxAggregateOutputType = {
   twoFactorSecret: string | null
   twoFactorEnabled: boolean | null
   twoFactorBackupCodes: string | null
+  elevatedAt: Date | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -107,6 +109,7 @@ export type UserCountAggregateOutputType = {
   twoFactorSecret: number
   twoFactorEnabled: number
   twoFactorBackupCodes: number
+  elevatedAt: number
   _all: number
 }
 
@@ -146,6 +149,7 @@ export type UserMinAggregateInputType = {
   twoFactorSecret?: true
   twoFactorEnabled?: true
   twoFactorBackupCodes?: true
+  elevatedAt?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -169,6 +173,7 @@ export type UserMaxAggregateInputType = {
   twoFactorSecret?: true
   twoFactorEnabled?: true
   twoFactorBackupCodes?: true
+  elevatedAt?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -192,6 +197,7 @@ export type UserCountAggregateInputType = {
   twoFactorSecret?: true
   twoFactorEnabled?: true
   twoFactorBackupCodes?: true
+  elevatedAt?: true
   _all?: true
 }
 
@@ -302,6 +308,7 @@ export type UserGroupByOutputType = {
   twoFactorSecret: string | null
   twoFactorEnabled: boolean
   twoFactorBackupCodes: string | null
+  elevatedAt: Date | null
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -348,6 +355,7 @@ export type UserWhereInput = {
   twoFactorSecret?: Prisma.StringNullableFilter<"User"> | string | null
   twoFactorEnabled?: Prisma.BoolFilter<"User"> | boolean
   twoFactorBackupCodes?: Prisma.StringNullableFilter<"User"> | string | null
+  elevatedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   streaks?: Prisma.SadhanaStreakListRelationFilter
   resolutions?: Prisma.PatternResolutionListRelationFilter
   keysGenerated?: Prisma.InviteCodeListRelationFilter
@@ -378,6 +386,7 @@ export type UserOrderByWithRelationInput = {
   twoFactorSecret?: Prisma.SortOrderInput | Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   twoFactorBackupCodes?: Prisma.SortOrderInput | Prisma.SortOrder
+  elevatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   streaks?: Prisma.SadhanaStreakOrderByRelationAggregateInput
   resolutions?: Prisma.PatternResolutionOrderByRelationAggregateInput
   keysGenerated?: Prisma.InviteCodeOrderByRelationAggregateInput
@@ -411,6 +420,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   twoFactorSecret?: Prisma.StringNullableFilter<"User"> | string | null
   twoFactorEnabled?: Prisma.BoolFilter<"User"> | boolean
   twoFactorBackupCodes?: Prisma.StringNullableFilter<"User"> | string | null
+  elevatedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   streaks?: Prisma.SadhanaStreakListRelationFilter
   resolutions?: Prisma.PatternResolutionListRelationFilter
   keysGenerated?: Prisma.InviteCodeListRelationFilter
@@ -441,6 +451,7 @@ export type UserOrderByWithAggregationInput = {
   twoFactorSecret?: Prisma.SortOrderInput | Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   twoFactorBackupCodes?: Prisma.SortOrderInput | Prisma.SortOrder
+  elevatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -472,6 +483,7 @@ export type UserScalarWhereWithAggregatesInput = {
   twoFactorSecret?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   twoFactorEnabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   twoFactorBackupCodes?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  elevatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
 }
 
 export type UserCreateInput = {
@@ -495,6 +507,7 @@ export type UserCreateInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   streaks?: Prisma.SadhanaStreakCreateNestedManyWithoutUserInput
   resolutions?: Prisma.PatternResolutionCreateNestedManyWithoutUserInput
   keysGenerated?: Prisma.InviteCodeCreateNestedManyWithoutCreatorInput
@@ -525,6 +538,7 @@ export type UserUncheckedCreateInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   streaks?: Prisma.SadhanaStreakUncheckedCreateNestedManyWithoutUserInput
   resolutions?: Prisma.PatternResolutionUncheckedCreateNestedManyWithoutUserInput
   keysGenerated?: Prisma.InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
@@ -555,6 +569,7 @@ export type UserUpdateInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   streaks?: Prisma.SadhanaStreakUpdateManyWithoutUserNestedInput
   resolutions?: Prisma.PatternResolutionUpdateManyWithoutUserNestedInput
   keysGenerated?: Prisma.InviteCodeUpdateManyWithoutCreatorNestedInput
@@ -585,6 +600,7 @@ export type UserUncheckedUpdateInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   streaks?: Prisma.SadhanaStreakUncheckedUpdateManyWithoutUserNestedInput
   resolutions?: Prisma.PatternResolutionUncheckedUpdateManyWithoutUserNestedInput
   keysGenerated?: Prisma.InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
@@ -615,6 +631,7 @@ export type UserCreateManyInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -638,6 +655,7 @@ export type UserUpdateManyMutationInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -661,6 +679,7 @@ export type UserUncheckedUpdateManyInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -684,6 +703,7 @@ export type UserCountOrderByAggregateInput = {
   twoFactorSecret?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   twoFactorBackupCodes?: Prisma.SortOrder
+  elevatedAt?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -714,6 +734,7 @@ export type UserMaxOrderByAggregateInput = {
   twoFactorSecret?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   twoFactorBackupCodes?: Prisma.SortOrder
+  elevatedAt?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -737,6 +758,7 @@ export type UserMinOrderByAggregateInput = {
   twoFactorSecret?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
   twoFactorBackupCodes?: Prisma.SortOrder
+  elevatedAt?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -919,6 +941,7 @@ export type UserCreateWithoutStreaksInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   resolutions?: Prisma.PatternResolutionCreateNestedManyWithoutUserInput
   keysGenerated?: Prisma.InviteCodeCreateNestedManyWithoutCreatorInput
   keysUsed?: Prisma.InviteUsageCreateNestedManyWithoutUserInput
@@ -948,6 +971,7 @@ export type UserUncheckedCreateWithoutStreaksInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   resolutions?: Prisma.PatternResolutionUncheckedCreateNestedManyWithoutUserInput
   keysGenerated?: Prisma.InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
   keysUsed?: Prisma.InviteUsageUncheckedCreateNestedManyWithoutUserInput
@@ -993,6 +1017,7 @@ export type UserUpdateWithoutStreaksInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resolutions?: Prisma.PatternResolutionUpdateManyWithoutUserNestedInput
   keysGenerated?: Prisma.InviteCodeUpdateManyWithoutCreatorNestedInput
   keysUsed?: Prisma.InviteUsageUpdateManyWithoutUserNestedInput
@@ -1022,6 +1047,7 @@ export type UserUncheckedUpdateWithoutStreaksInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resolutions?: Prisma.PatternResolutionUncheckedUpdateManyWithoutUserNestedInput
   keysGenerated?: Prisma.InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
   keysUsed?: Prisma.InviteUsageUncheckedUpdateManyWithoutUserNestedInput
@@ -1051,6 +1077,7 @@ export type UserCreateWithoutResolutionsInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   streaks?: Prisma.SadhanaStreakCreateNestedManyWithoutUserInput
   keysGenerated?: Prisma.InviteCodeCreateNestedManyWithoutCreatorInput
   keysUsed?: Prisma.InviteUsageCreateNestedManyWithoutUserInput
@@ -1080,6 +1107,7 @@ export type UserUncheckedCreateWithoutResolutionsInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   streaks?: Prisma.SadhanaStreakUncheckedCreateNestedManyWithoutUserInput
   keysGenerated?: Prisma.InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
   keysUsed?: Prisma.InviteUsageUncheckedCreateNestedManyWithoutUserInput
@@ -1125,6 +1153,7 @@ export type UserUpdateWithoutResolutionsInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   streaks?: Prisma.SadhanaStreakUpdateManyWithoutUserNestedInput
   keysGenerated?: Prisma.InviteCodeUpdateManyWithoutCreatorNestedInput
   keysUsed?: Prisma.InviteUsageUpdateManyWithoutUserNestedInput
@@ -1154,6 +1183,7 @@ export type UserUncheckedUpdateWithoutResolutionsInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   streaks?: Prisma.SadhanaStreakUncheckedUpdateManyWithoutUserNestedInput
   keysGenerated?: Prisma.InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
   keysUsed?: Prisma.InviteUsageUncheckedUpdateManyWithoutUserNestedInput
@@ -1183,6 +1213,7 @@ export type UserCreateWithoutKeysGeneratedInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   streaks?: Prisma.SadhanaStreakCreateNestedManyWithoutUserInput
   resolutions?: Prisma.PatternResolutionCreateNestedManyWithoutUserInput
   keysUsed?: Prisma.InviteUsageCreateNestedManyWithoutUserInput
@@ -1212,6 +1243,7 @@ export type UserUncheckedCreateWithoutKeysGeneratedInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   streaks?: Prisma.SadhanaStreakUncheckedCreateNestedManyWithoutUserInput
   resolutions?: Prisma.PatternResolutionUncheckedCreateNestedManyWithoutUserInput
   keysUsed?: Prisma.InviteUsageUncheckedCreateNestedManyWithoutUserInput
@@ -1257,6 +1289,7 @@ export type UserUpdateWithoutKeysGeneratedInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   streaks?: Prisma.SadhanaStreakUpdateManyWithoutUserNestedInput
   resolutions?: Prisma.PatternResolutionUpdateManyWithoutUserNestedInput
   keysUsed?: Prisma.InviteUsageUpdateManyWithoutUserNestedInput
@@ -1286,6 +1319,7 @@ export type UserUncheckedUpdateWithoutKeysGeneratedInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   streaks?: Prisma.SadhanaStreakUncheckedUpdateManyWithoutUserNestedInput
   resolutions?: Prisma.PatternResolutionUncheckedUpdateManyWithoutUserNestedInput
   keysUsed?: Prisma.InviteUsageUncheckedUpdateManyWithoutUserNestedInput
@@ -1315,6 +1349,7 @@ export type UserCreateWithoutMembershipsInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   streaks?: Prisma.SadhanaStreakCreateNestedManyWithoutUserInput
   resolutions?: Prisma.PatternResolutionCreateNestedManyWithoutUserInput
   keysGenerated?: Prisma.InviteCodeCreateNestedManyWithoutCreatorInput
@@ -1344,6 +1379,7 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   streaks?: Prisma.SadhanaStreakUncheckedCreateNestedManyWithoutUserInput
   resolutions?: Prisma.PatternResolutionUncheckedCreateNestedManyWithoutUserInput
   keysGenerated?: Prisma.InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
@@ -1389,6 +1425,7 @@ export type UserUpdateWithoutMembershipsInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   streaks?: Prisma.SadhanaStreakUpdateManyWithoutUserNestedInput
   resolutions?: Prisma.PatternResolutionUpdateManyWithoutUserNestedInput
   keysGenerated?: Prisma.InviteCodeUpdateManyWithoutCreatorNestedInput
@@ -1418,6 +1455,7 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   streaks?: Prisma.SadhanaStreakUncheckedUpdateManyWithoutUserNestedInput
   resolutions?: Prisma.PatternResolutionUncheckedUpdateManyWithoutUserNestedInput
   keysGenerated?: Prisma.InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
@@ -1447,6 +1485,7 @@ export type UserCreateWithoutKeysUsedInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   streaks?: Prisma.SadhanaStreakCreateNestedManyWithoutUserInput
   resolutions?: Prisma.PatternResolutionCreateNestedManyWithoutUserInput
   keysGenerated?: Prisma.InviteCodeCreateNestedManyWithoutCreatorInput
@@ -1476,6 +1515,7 @@ export type UserUncheckedCreateWithoutKeysUsedInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   streaks?: Prisma.SadhanaStreakUncheckedCreateNestedManyWithoutUserInput
   resolutions?: Prisma.PatternResolutionUncheckedCreateNestedManyWithoutUserInput
   keysGenerated?: Prisma.InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
@@ -1521,6 +1561,7 @@ export type UserUpdateWithoutKeysUsedInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   streaks?: Prisma.SadhanaStreakUpdateManyWithoutUserNestedInput
   resolutions?: Prisma.PatternResolutionUpdateManyWithoutUserNestedInput
   keysGenerated?: Prisma.InviteCodeUpdateManyWithoutCreatorNestedInput
@@ -1550,6 +1591,7 @@ export type UserUncheckedUpdateWithoutKeysUsedInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   streaks?: Prisma.SadhanaStreakUncheckedUpdateManyWithoutUserNestedInput
   resolutions?: Prisma.PatternResolutionUncheckedUpdateManyWithoutUserNestedInput
   keysGenerated?: Prisma.InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
@@ -1579,6 +1621,7 @@ export type UserCreateWithoutActiveSessionsInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   streaks?: Prisma.SadhanaStreakCreateNestedManyWithoutUserInput
   resolutions?: Prisma.PatternResolutionCreateNestedManyWithoutUserInput
   keysGenerated?: Prisma.InviteCodeCreateNestedManyWithoutCreatorInput
@@ -1608,6 +1651,7 @@ export type UserUncheckedCreateWithoutActiveSessionsInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   streaks?: Prisma.SadhanaStreakUncheckedCreateNestedManyWithoutUserInput
   resolutions?: Prisma.PatternResolutionUncheckedCreateNestedManyWithoutUserInput
   keysGenerated?: Prisma.InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
@@ -1653,6 +1697,7 @@ export type UserUpdateWithoutActiveSessionsInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   streaks?: Prisma.SadhanaStreakUpdateManyWithoutUserNestedInput
   resolutions?: Prisma.PatternResolutionUpdateManyWithoutUserNestedInput
   keysGenerated?: Prisma.InviteCodeUpdateManyWithoutCreatorNestedInput
@@ -1682,6 +1727,7 @@ export type UserUncheckedUpdateWithoutActiveSessionsInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   streaks?: Prisma.SadhanaStreakUncheckedUpdateManyWithoutUserNestedInput
   resolutions?: Prisma.PatternResolutionUncheckedUpdateManyWithoutUserNestedInput
   keysGenerated?: Prisma.InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
@@ -1711,6 +1757,7 @@ export type UserCreateWithoutNotificationsInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   streaks?: Prisma.SadhanaStreakCreateNestedManyWithoutUserInput
   resolutions?: Prisma.PatternResolutionCreateNestedManyWithoutUserInput
   keysGenerated?: Prisma.InviteCodeCreateNestedManyWithoutCreatorInput
@@ -1740,6 +1787,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: string | null
+  elevatedAt?: Date | string | null
   streaks?: Prisma.SadhanaStreakUncheckedCreateNestedManyWithoutUserInput
   resolutions?: Prisma.PatternResolutionUncheckedCreateNestedManyWithoutUserInput
   keysGenerated?: Prisma.InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
@@ -1785,6 +1833,7 @@ export type UserUpdateWithoutNotificationsInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   streaks?: Prisma.SadhanaStreakUpdateManyWithoutUserNestedInput
   resolutions?: Prisma.PatternResolutionUpdateManyWithoutUserNestedInput
   keysGenerated?: Prisma.InviteCodeUpdateManyWithoutCreatorNestedInput
@@ -1814,6 +1863,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  elevatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   streaks?: Prisma.SadhanaStreakUncheckedUpdateManyWithoutUserNestedInput
   resolutions?: Prisma.PatternResolutionUncheckedUpdateManyWithoutUserNestedInput
   keysGenerated?: Prisma.InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
@@ -1928,6 +1978,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   twoFactorSecret?: boolean
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: boolean
+  elevatedAt?: boolean
   streaks?: boolean | Prisma.User$streaksArgs<ExtArgs>
   resolutions?: boolean | Prisma.User$resolutionsArgs<ExtArgs>
   keysGenerated?: boolean | Prisma.User$keysGeneratedArgs<ExtArgs>
@@ -1959,6 +2010,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   twoFactorSecret?: boolean
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: boolean
+  elevatedAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1982,6 +2034,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   twoFactorSecret?: boolean
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: boolean
+  elevatedAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -2005,9 +2058,10 @@ export type UserSelectScalar = {
   twoFactorSecret?: boolean
   twoFactorEnabled?: boolean
   twoFactorBackupCodes?: boolean
+  elevatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "passwordHash" | "role" | "tier" | "natalMoonLng" | "birthDate" | "birthPlace" | "latitude" | "longitude" | "timezone" | "lastTransmissionDate" | "invitedByCode" | "goldKeysRemaining" | "createdAt" | "updatedAt" | "twoFactorSecret" | "twoFactorEnabled" | "twoFactorBackupCodes", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "passwordHash" | "role" | "tier" | "natalMoonLng" | "birthDate" | "birthPlace" | "latitude" | "longitude" | "timezone" | "lastTransmissionDate" | "invitedByCode" | "goldKeysRemaining" | "createdAt" | "updatedAt" | "twoFactorSecret" | "twoFactorEnabled" | "twoFactorBackupCodes" | "elevatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   streaks?: boolean | Prisma.User$streaksArgs<ExtArgs>
   resolutions?: boolean | Prisma.User$resolutionsArgs<ExtArgs>
@@ -2053,6 +2107,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     twoFactorSecret: string | null
     twoFactorEnabled: boolean
     twoFactorBackupCodes: string | null
+    elevatedAt: Date | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -2503,6 +2558,7 @@ export interface UserFieldRefs {
   readonly twoFactorSecret: Prisma.FieldRef<"User", 'String'>
   readonly twoFactorEnabled: Prisma.FieldRef<"User", 'Boolean'>
   readonly twoFactorBackupCodes: Prisma.FieldRef<"User", 'String'>
+  readonly elevatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     
 

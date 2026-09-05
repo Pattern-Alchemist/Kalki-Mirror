@@ -107,7 +107,8 @@ export const UserScalarFieldEnum = {
   updatedAt: 'updatedAt',
   twoFactorSecret: 'twoFactorSecret',
   twoFactorEnabled: 'twoFactorEnabled',
-  twoFactorBackupCodes: 'twoFactorBackupCodes'
+  twoFactorBackupCodes: 'twoFactorBackupCodes',
+  elevatedAt: 'elevatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
