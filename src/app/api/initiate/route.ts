@@ -9,6 +9,7 @@ import { getCautionLevel, type Tier } from '@/lib/data/types';
 import { retrievePrescription, retrieveCitation } from '@/lib/rag/retrieval';
 import { buildYantraUserPrompt, YANTRA_SYSTEM_PROMPT } from '@/lib/ai/yantra-prompt';
 import { synthesizeYantra } from '@/lib/ai/yantra-synthesize';
+import { synthesisCacheKey, lookupSynthesis, storeSynthesis, recordSynthesisHit } from '@/lib/ai/synthesis-cache';
 import { optionalAuth, getClientIp } from '@/lib/api-auth';
 import { initiateSchema } from '@/lib/validators/schemas';
 import { initiateRateLimit } from '@/lib/rate-limit';
@@ -138,46 +139,75 @@ export async function POST(request: NextRequest) {
     // Step 7.5 (Tier-1 ③): the LLM connection itself. One OpenRouter call
     // through the fallback chain, strict-JSON, soft-fail — the dossier
     // degrades to the pattern-based synthesis exactly as before.
+    // Tier-5 #6: identical geometry is served from SynthesisCache (7-day
+    // TTL) instead of re-paying the LLM — a cold cache is the old behaviour.
     let synthesis: {
       source: 'llm' | 'pattern';
       model?: string;
       prescription?: string;
       cited_folios?: string[];
+      cached?: boolean;
     } = { source: 'pattern' };
     let llmKarmicLoop: string | null = null;
     let llmCitation: { text: string; source_slug: string; caution: string } | null = null;
 
     if (process.env.OPENROUTER_API_KEY && allRetrievedChunks.length > 0) {
-      try {
-        const result = await synthesizeYantra({
-          behavioralQuery: query,
-          patterns: dominantPatterns.map(p => ({ name: p.name, subtitle: p.subtitle })),
-          transitSummary: formatTransitForPrompt(geometry),
-          folioChunks: allRetrievedChunks.map(c => ({
-            slug: c.slug,
-            section: c.section,
-            caution: c.caution,
-            text: c.text,
-          })),
-        });
-        if (result) {
-          synthesis = {
-            source: 'llm',
-            model: result.model,
-            prescription: result.output.prescription_line,
-            cited_folios: result.output.cited_folios,
-          };
-          llmKarmicLoop = result.output.karmic_loop;
-          const cautionOf = (slug: string) =>
-            allRetrievedChunks.find(c => c.slug === slug)?.caution ?? 'OPEN';
-          llmCitation = {
-            text: result.output.citation_line,
-            source_slug: result.output.cited_folios[0],
-            caution: cautionOf(result.output.cited_folios[0]),
-          };
+      const cautionOf = (slug: string) =>
+        allRetrievedChunks.find(c => c.slug === slug)?.caution ?? 'OPEN';
+      const cacheKey = synthesisCacheKey({
+        behavioralQuery: query,
+        patterns: dominantPatterns.map(p => ({ name: p.name, subtitle: p.subtitle })),
+        folioSlugs: allRetrievedChunks.map(c => c.slug),
+        tier: userTier,
+      });
+
+      const cached = await lookupSynthesis(cacheKey);
+      if (cached) {
+        synthesis = {
+          source: 'llm',
+          model: cached.model,
+          prescription: cached.output.prescription_line,
+          cited_folios: cached.output.cited_folios,
+          cached: true,
+        };
+        llmKarmicLoop = cached.output.karmic_loop;
+        llmCitation = {
+          text: cached.output.citation_line,
+          source_slug: cached.output.cited_folios[0],
+          caution: cautionOf(cached.output.cited_folios[0]),
+        };
+        recordSynthesisHit(cacheKey);
+      } else {
+        try {
+          const result = await synthesizeYantra({
+            behavioralQuery: query,
+            patterns: dominantPatterns.map(p => ({ name: p.name, subtitle: p.subtitle })),
+            transitSummary: formatTransitForPrompt(geometry),
+            folioChunks: allRetrievedChunks.map(c => ({
+              slug: c.slug,
+              section: c.section,
+              caution: c.caution,
+              text: c.text,
+            })),
+          });
+          if (result) {
+            synthesis = {
+              source: 'llm',
+              model: result.model,
+              prescription: result.output.prescription_line,
+              cited_folios: result.output.cited_folios,
+            };
+            llmKarmicLoop = result.output.karmic_loop;
+            llmCitation = {
+              text: result.output.citation_line,
+              source_slug: result.output.cited_folios[0],
+              caution: cautionOf(result.output.cited_folios[0]),
+            };
+            storeSynthesis(cacheKey, result.output, result.model);
+          }
+        } catch {
+          // soft-fail — the pattern synthesis below is the floor, never a crash
         }
-      } catch {
-        // soft-fail — the pattern synthesis below is the floor, never a crash
       }
     }
 

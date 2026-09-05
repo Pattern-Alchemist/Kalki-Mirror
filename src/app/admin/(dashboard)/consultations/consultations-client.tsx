@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateConsultationStatus, scheduleConsultation, type ConsultationRow } from "./actions";
+import { whatsappTestimonialAskUrl } from "@/lib/utils/whatsapp";
 
 const STATUS_STYLES: Record<string, string> = {
   NEW: "bg-amber-500/10 text-amber-400",
@@ -195,6 +196,25 @@ export function ConsultationsClient({
             </div>
             <div><p className="text-xs text-zinc-600">Request</p><p className="mt-1 text-sm text-zinc-300 whitespace-pre-wrap">{c.request}</p></div>
             {c.notes && <div><p className="text-xs text-zinc-600">Notes</p><p className="mt-1 text-sm text-zinc-400 whitespace-pre-wrap">{c.notes}</p></div>}
+            {(() => {
+              // Tier-5 #1 — testimonial flywheel: a t+48h ask deep-link for
+              // completed sessions with a contact number. Opens WhatsApp
+              // with the three-honest-sentences + consent template pre-filled.
+              const askUrl = c.status === "COMPLETED" && c.phone
+                ? whatsappTestimonialAskUrl(c.name, c.phone)
+                : null;
+              if (!askUrl) return null;
+              return (
+                <a
+                  href={askUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600/10 px-3 py-1.5 text-xs font-medium text-emerald-400 transition hover:bg-emerald-600/20 hover:text-emerald-300"
+                >
+                  Ask for testimonial · t+48h
+                </a>
+              );
+            })()}
           </div>
         );
       })()}

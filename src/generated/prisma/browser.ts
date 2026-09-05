@@ -107,3 +107,13 @@ export type EmailSend = Prisma.EmailSendModel
  * 
  */
 export type EmailEvent = Prisma.EmailEventModel
+/**
+ * Model DraftLead
+ * 
+ */
+export type DraftLead = Prisma.DraftLeadModel
+/**
+ * Model SynthesisCache
+ * 
+ */
+export type SynthesisCache = Prisma.SynthesisCacheModel

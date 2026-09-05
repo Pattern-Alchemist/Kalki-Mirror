@@ -244,3 +244,7 @@ export const keyRateLimit = createRateLimiter({ max: 10, window: 60, prefix: 'ke
 export const subscribeRateLimit = createRateLimiter({ max: 5, window: 300, prefix: 'subscribe' });
 
 export const yantraRateLimit = createRateLimiter({ max: 20, window: 60, prefix: 'yantra' });
+
+/** Abandoned-intake drafts (Tier-5 #2): fires on wizard step transitions +
+ * a client debounce — generous but bounded so it can't be used as a write sink. */
+export const draftRateLimit = createRateLimiter({ max: 10, window: 300, prefix: 'draft' });

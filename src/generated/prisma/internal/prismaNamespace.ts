@@ -414,7 +414,9 @@ export const ModelName = {
   PracticeSession: 'PracticeSession',
   EmailSubscriber: 'EmailSubscriber',
   EmailSend: 'EmailSend',
-  EmailEvent: 'EmailEvent'
+  EmailEvent: 'EmailEvent',
+  DraftLead: 'DraftLead',
+  SynthesisCache: 'SynthesisCache'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -430,7 +432,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent"
+    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "draftLead" | "synthesisCache"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1766,6 +1768,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DraftLead: {
+      payload: Prisma.$DraftLeadPayload<ExtArgs>
+      fields: Prisma.DraftLeadFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DraftLeadFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftLeadPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DraftLeadFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftLeadPayload>
+        }
+        findFirst: {
+          args: Prisma.DraftLeadFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftLeadPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DraftLeadFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftLeadPayload>
+        }
+        findMany: {
+          args: Prisma.DraftLeadFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftLeadPayload>[]
+        }
+        create: {
+          args: Prisma.DraftLeadCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftLeadPayload>
+        }
+        createMany: {
+          args: Prisma.DraftLeadCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DraftLeadCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftLeadPayload>[]
+        }
+        delete: {
+          args: Prisma.DraftLeadDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftLeadPayload>
+        }
+        update: {
+          args: Prisma.DraftLeadUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftLeadPayload>
+        }
+        deleteMany: {
+          args: Prisma.DraftLeadDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DraftLeadUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DraftLeadUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftLeadPayload>[]
+        }
+        upsert: {
+          args: Prisma.DraftLeadUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DraftLeadPayload>
+        }
+        aggregate: {
+          args: Prisma.DraftLeadAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDraftLead>
+        }
+        groupBy: {
+          args: Prisma.DraftLeadGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DraftLeadGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DraftLeadCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DraftLeadCountAggregateOutputType> | number
+        }
+      }
+    }
+    SynthesisCache: {
+      payload: Prisma.$SynthesisCachePayload<ExtArgs>
+      fields: Prisma.SynthesisCacheFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SynthesisCacheFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SynthesisCachePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SynthesisCacheFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SynthesisCachePayload>
+        }
+        findFirst: {
+          args: Prisma.SynthesisCacheFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SynthesisCachePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SynthesisCacheFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SynthesisCachePayload>
+        }
+        findMany: {
+          args: Prisma.SynthesisCacheFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SynthesisCachePayload>[]
+        }
+        create: {
+          args: Prisma.SynthesisCacheCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SynthesisCachePayload>
+        }
+        createMany: {
+          args: Prisma.SynthesisCacheCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SynthesisCacheCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SynthesisCachePayload>[]
+        }
+        delete: {
+          args: Prisma.SynthesisCacheDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SynthesisCachePayload>
+        }
+        update: {
+          args: Prisma.SynthesisCacheUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SynthesisCachePayload>
+        }
+        deleteMany: {
+          args: Prisma.SynthesisCacheDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SynthesisCacheUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SynthesisCacheUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SynthesisCachePayload>[]
+        }
+        upsert: {
+          args: Prisma.SynthesisCacheUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SynthesisCachePayload>
+        }
+        aggregate: {
+          args: Prisma.SynthesisCacheAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSynthesisCache>
+        }
+        groupBy: {
+          args: Prisma.SynthesisCacheGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SynthesisCacheGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SynthesisCacheCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SynthesisCacheCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2114,6 +2264,34 @@ export const EmailEventScalarFieldEnum = {
 export type EmailEventScalarFieldEnum = (typeof EmailEventScalarFieldEnum)[keyof typeof EmailEventScalarFieldEnum]
 
 
+export const DraftLeadScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  phone: 'phone',
+  step: 'step',
+  payload: 'payload',
+  status: 'status',
+  resumedAt: 'resumedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DraftLeadScalarFieldEnum = (typeof DraftLeadScalarFieldEnum)[keyof typeof DraftLeadScalarFieldEnum]
+
+
+export const SynthesisCacheScalarFieldEnum = {
+  id: 'id',
+  cacheKey: 'cacheKey',
+  output: 'output',
+  model: 'model',
+  hits: 'hits',
+  createdAt: 'createdAt',
+  expiresAt: 'expiresAt'
+} as const
+
+export type SynthesisCacheScalarFieldEnum = (typeof SynthesisCacheScalarFieldEnum)[keyof typeof SynthesisCacheScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2346,6 +2524,8 @@ export type GlobalOmitConfig = {
   emailSubscriber?: Prisma.EmailSubscriberOmit
   emailSend?: Prisma.EmailSendOmit
   emailEvent?: Prisma.EmailEventOmit
+  draftLead?: Prisma.DraftLeadOmit
+  synthesisCache?: Prisma.SynthesisCacheOmit
 }
 
 /* Types for Logging */

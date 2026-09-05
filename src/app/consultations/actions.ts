@@ -108,6 +108,19 @@ export async function submitConsultation(formData: {
       utmCampaign: created.utmCampaign,
     }).catch(() => {});
 
+    // Tier-5 #2 — a real submit converts any abandoned-intake draft for the
+    // same WhatsApp number, so the recovery ledger never asks the archivist
+    // to follow up on a lead that already arrived. Fire-and-forget.
+    const draftPhone = whatsapp.replace(/\D/g, "");
+    if (draftPhone.length >= 7) {
+      await db.draftLead
+        .updateMany({
+          where: { phone: draftPhone, status: "OPEN" },
+          data: { status: "CONVERTED" },
+        })
+        .catch(() => {});
+    }
+
     const upi = resolveUpiConfig();
     // Tier-3 ③ — Cal.com handoff (roadmap #13). Present only when
     // CAL_BOOKING_URL is configured; runtime env read → no rebuild.

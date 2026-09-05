@@ -782,3 +782,23 @@ Stage Summary:
 - Production schema: Testimonial table live (empty by design — nothing fabricated).
 - Activation steps left (founder, zero-code): set CAL_BOOKING_URL for the booking block; optionally set UPSTASH_REDIS_REST_URL/TOKEN for distributed rate limiting; enter real consented testimonials in /admin/testimonials.
 - Roadmap: Vol. 1 Tier 3 items #11–15 closed; Vol. 2 (20 new items) ready in docs/roadmap-vol2-next-20.md.
+
+---
+Task ID: tier5-weekA
+Agent: Super Z (lead engineer)
+Task: Ship Vol. 2 Week A (roadmap #1, #2, #6) — testimonial flywheel, abandoned-intake recovery, YANTRA synthesis caching. All communication switched to English per founder directive.
+
+Work Log:
+- Fresh session (prior window crashed). Cloned repo, rebuilt .env.local from founder-supplied credentials (Turso, Cloudinary, OpenRouter, Resend, UPI; generated NEXTAUTH_SECRET + CRON_SECRET locally). Verified pre-state: tsc clean, 198/198 tests, build green, 235 pages.
+- ② Testimonial flywheel (roadmap #1 — first move): `whatsappTestimonialAskUrl(name, phone)` in src/lib/utils/whatsapp.ts; "Ask for testimonial · t+48h" deep-link button in the /admin/consultations expanded drawer (COMPLETED + phone only). Message = three honest sentences + explicit consent line; returns land in /admin/testimonials as PENDING.
+- ② Abandoned-intake recovery (roadmap #2): DraftLead model + POST /api/initiate/draft (draftRateLimit 10/5min, zod-capped payload, digits-normalized phone upsert, soft-fail 200). Wizard saves a debounced (1.2s) fire-and-forget snapshot once ≥7 digits exist; submitConsultation flips matching OPEN drafts CONVERTED; daily digest gained the ABANDONED INTAKES section (open / touched-24h / 5 newest with step + phone). E2E verified against production Turso: create → resume (same digits) → digest render → test rows deleted.
+- ③ Synthesis cache (roadmap #6): SynthesisCache model (cacheKey unique, 7-day TTL, hits counter) + src/lib/ai/synthesis-cache.ts (sha256 over normalized query + pattern names + folio slugs + tier; transit deliberately excluded — TTL bounds drift). /api/initiate: lookup before OpenRouter, store on success, hit increments fire-and-forget; response gains synthesis.cached.
+- ④ PRODUCTION BUG FOUND & FIXED (pre-existing): the strict-JSON synthesis contract was silently failing 100% of the time — (a) maxTokens 700 truncated minimax-m2.7 mid-JSON (it is a REASONING model: observed 747 reasoning tokens before content), and (b) models cite "slug · section" pairs while the parser demanded bare slugs, so cited_folios validated empty. Fixes: maxTokens 3000 (free tier — headroom costs nothing), compactness rule in the prompt, cited_folios moved FIRST in the schema, citation normalization (splits on · — – • | :, validates against allowed set — grounding preserved), and a 3-rung repair ladder for truncated JSON. Env-gated YANTRA_DEBUG=1 logging added for future chain forensics. scripts/debug-synthesis.mjs = reusable chain probe.
+- ⑤ Schema applied to production Turso via scripts/apply-tier5-schema.ts: DraftLead + SynthesisCache verified live BEFORE code shipped. Local dev DB also patched.
+- ⑥ Production topology clarified: www.astrokalki.com is served by Vercel project **kalki-fix** (linked to this same repo, all 14 env vars correctly set: OPENROUTER/RESEND/UPI_VPA/CRON_SECRET/TURSO/CLOUDINARY/NEXTAUTH). The kalki-mirror project is an unused duplicate (missing most envs — harmless). Apex astrokalki.com domain verification failed with a ROTATED TXT value — founder must update the _vercel TXT record to `vc-domain-verify=astrokalki.com,c2d0b9682a6bc4ca053c` (www already verified; apex 308s to www, non-blocking).
+
+Stage Summary:
+- Vol. 2 Week A closed: #1 (flywheel ask live in drawer), #2 (draft ledger + endpoint + digest section), #6 (cache live — first production dossier synthesis EVER stored: model minimax/minimax-m2.7:free, cache hit counter verified incrementing).
+- Pre-existing silent LLM failure fixed — production dossiers now actually use the LLM path (was permanently degrading to pattern floor since Tier-1 ③ shipped).
+- Verification: tsc clean · vitest 198/198 · eslint clean on changed files · build green · E2E smoke tests against production Turso (draft resume, cache miss→hit, digest dry-run).
+- Deployment: pushed to main → auto-deploy to kalki-fix (production) + kalki-mirror (unused).

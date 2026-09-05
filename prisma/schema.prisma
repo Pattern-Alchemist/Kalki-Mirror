@@ -477,3 +477,47 @@ model EmailEvent {
   @@index([emailId])
   @@index([email, type])
 }
+
+// ── Tier 5 #2: abandoned-intake recovery ─────────────────────────────────
+// The wizard's last step (name + WhatsApp typed but no submit) used to
+// evaporate. A debounced client-side save posts the partial to
+// POST /api/initiate/draft; this table is the recovery ledger. One row per
+// WhatsApp number (server-side upsert) — resumed sessions re-save over the
+// same row. A real submit flips matching OPEN drafts to CONVERTED so the
+// digest never asks the archivist to follow up on a lead that already
+// arrived. Nothing here is ever public; the digest and the consultations
+// drawer are the only readers.
+
+model DraftLead {
+  id        String    @id @default(cuid())
+  name      String    @default("")
+  phone     String    @default("") // normalized digits — the dedup key
+  step      Int       @default(0)  // wizard step reached (1-based)
+  payload   String    @default("{}") // full wizard snapshot JSON
+  status    String    @default("OPEN") // OPEN | CONVERTED | DISMISSED
+  resumedAt DateTime? // last client-side re-save on an existing draft
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([status, updatedAt])
+  @@index([phone])
+}
+
+// ── Tier 5 #6: YANTRA synthesis cache ────────────────────────────────────
+// Identical intake geometry re-paid the LLM on every dossier. The key is a
+// SHA-256 over (normalized query + matched patterns + retrieved folio slugs
+// + tier bucket); hits skip the OpenRouter call entirely for 7 days. Hits
+// and misses degrade silently — a cold cache is exactly the pre-Tier-5
+// behaviour, never an error surface.
+
+model SynthesisCache {
+  id        String   @id @default(cuid())
+  cacheKey  String   @unique // sha256(query+patterns+folioSlugs+tier)
+  output    String   // JSON-serialized SynthesisOutput (validated contract)
+  model     String   @default("") // OpenRouter model that produced it
+  hits      Int      @default(0)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp, fadeIn } from '@/lib/motion/tokens';
@@ -527,6 +527,34 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
     setDirection(1);
     setCurrentStep((s) => Math.min(s + 1, totalSteps - 1));
   }, [totalSteps, currentStep]);
+
+  // Tier-5 #2 — abandoned-intake recovery. Once a contact channel exists
+  // (≥7 digits typed into the WhatsApp field), a debounced fire-and-forget
+  // snapshot lands on POST /api/initiate/draft. Silent by contract: a draft
+  // save must never log, never toast, never disturb the seeker's flow.
+  const draftTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    if (submitted || submitting) return;
+    const digits = form.whatsapp.replace(/\D/g, '');
+    if (digits.length < 7) return;
+    if (draftTimer.current) clearTimeout(draftTimer.current);
+    draftTimer.current = setTimeout(() => {
+      fetch('/api/initiate/draft', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.whatsapp,
+          step: currentStep + 1,
+          payload: JSON.stringify(form),
+        }),
+        keepalive: true,
+      }).catch(() => {});
+    }, 1200);
+    return () => {
+      if (draftTimer.current) clearTimeout(draftTimer.current);
+    };
+  }, [form, currentStep, submitted, submitting]);
 
   const goBack = useCallback(() => {
     setDirection(-1);

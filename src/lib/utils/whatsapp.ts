@@ -110,6 +110,28 @@ export function whatsappPaymentUrl(
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
 }
 
+/**
+ * Tier-5 #1 — testimonial flywheel ask (t+48h). Opens a chat with a
+ * COMPLETED lead asking for three honest sentences about the session,
+ * with the explicit-consent line baked in. The archivist taps this from
+ * the /admin/consultations drawer when reviewing finished sessions;
+ * whatever comes back is entered (consent-gated) in /admin/testimonials
+ * and lands PENDING until approved.
+ */
+export function whatsappTestimonialAskUrl(name: string, phone: string): string | null {
+  const digits = phone.replace(/\D/g, '');
+  if (digits.length < 7) return null;
+  const first = name.trim().split(/\s+/)[0] || 'there';
+  const message = [
+    `Namaste ${first} — Kaustubh here from KALKI.`,
+    '',
+    'It has been a couple of days since our session. If you are open to it, send me three honest sentences about how it landed — what you noticed, what shifted, and what did not.',
+    '',
+    'With your explicit yes, I may share a line of it (first name only) with others who are deciding whether to begin. Your words stay private unless you say otherwise.',
+  ].join('\n');
+  return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
+}
+
 export const WHATSAPP_LINKS = {
   consultation: (service: string, price: string) =>
     "Hello Kaustubh, I'd like to book a " + service + " (" + price + ").",

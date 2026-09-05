@@ -58,6 +58,9 @@ export async function GET(request: NextRequest) {
   let unreadBell = 0;
   let doorsDue = 0;
   let totalLeads = 0;
+  let openDrafts = 0;
+  let touchedDrafts24h = 0;
+  let recentDrafts: Array<{ name: string; phone: string; step: number; updatedAt: Date }> = [];
 
   try {
     const [leads, claimAgg, paidAgg, totalAgg] = await Promise.all([
@@ -106,6 +109,27 @@ export async function GET(request: NextRequest) {
     console.error("[daily-digest] bell block failed", err);
   }
 
+  // Tier-5 #2 — abandoned-intake recovery ledger. OPEN drafts are seekers
+  // who typed their WhatsApp number but never pressed send; the archivist
+  // can re-open the conversation with a single first-touch message.
+  try {
+    const [openAgg, touchedAgg, drafts] = await Promise.all([
+      db.draftLead.count({ where: { status: "OPEN" } }),
+      db.draftLead.count({ where: { status: "OPEN", updatedAt: { gte: since } } }),
+      db.draftLead.findMany({
+        where: { status: "OPEN" },
+        orderBy: { updatedAt: "desc" },
+        take: 5,
+        select: { name: true, phone: true, step: true, updatedAt: true },
+      }),
+    ]);
+    openDrafts = openAgg;
+    touchedDrafts24h = touchedAgg;
+    recentDrafts = drafts;
+  } catch (err) {
+    console.error("[daily-digest] draft block failed", err);
+  }
+
   const nowIst = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
   const subject = `KALKI daily digest — ${leads24h.length > 0 ? `${leads24h.length}+ new lead${leads24h.length === 1 ? "" : "s"}` : "quiet night"} · ${claimed} claim${claimed === 1 ? "" : "s"} pending`;
 
@@ -126,6 +150,13 @@ export async function GET(request: NextRequest) {
     `— 10 DOORS —`,
     `${newSubs} new subscribers (24h) · ${activeSubs} active · ${doorsDue} due a door today`,
     "",
+    `— ABANDONED INTAKES —`,
+    `${openDrafts} open draft${openDrafts === 1 ? "" : "s"} · ${touchedDrafts24h} touched in window${openDrafts > 0 ? " — recovery: WhatsApp first-touch on the newest" : ""}`,
+    ...recentDrafts.map((d) => {
+      const who = d.name || "(name not typed yet)";
+      return `  · ${who} — step ${d.step} — last touched ${new Date(d.updatedAt).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })} — ${d.phone}`;
+    }),
+    "",
     `— CONSOLE —`,
     `${unreadBell} unread bell notification${unreadBell === 1 ? "" : "s"}`,
     "",
@@ -143,6 +174,8 @@ export async function GET(request: NextRequest) {
       activeSubs,
       doorsDue,
       unreadBell,
+      openDrafts,
+      touchedDrafts24h,
       preview: lines.join("\n"),
     });
   }

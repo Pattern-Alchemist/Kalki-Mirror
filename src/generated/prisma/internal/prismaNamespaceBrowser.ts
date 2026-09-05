@@ -68,7 +68,9 @@ export const ModelName = {
   PracticeSession: 'PracticeSession',
   EmailSubscriber: 'EmailSubscriber',
   EmailSend: 'EmailSend',
-  EmailEvent: 'EmailEvent'
+  EmailEvent: 'EmailEvent',
+  DraftLead: 'DraftLead',
+  SynthesisCache: 'SynthesisCache'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -394,6 +396,34 @@ export const EmailEventScalarFieldEnum = {
 } as const
 
 export type EmailEventScalarFieldEnum = (typeof EmailEventScalarFieldEnum)[keyof typeof EmailEventScalarFieldEnum]
+
+
+export const DraftLeadScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  phone: 'phone',
+  step: 'step',
+  payload: 'payload',
+  status: 'status',
+  resumedAt: 'resumedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DraftLeadScalarFieldEnum = (typeof DraftLeadScalarFieldEnum)[keyof typeof DraftLeadScalarFieldEnum]
+
+
+export const SynthesisCacheScalarFieldEnum = {
+  id: 'id',
+  cacheKey: 'cacheKey',
+  output: 'output',
+  model: 'model',
+  hits: 'hits',
+  createdAt: 'createdAt',
+  expiresAt: 'expiresAt'
+} as const
+
+export type SynthesisCacheScalarFieldEnum = (typeof SynthesisCacheScalarFieldEnum)[keyof typeof SynthesisCacheScalarFieldEnum]
 
 
 export const SortOrder = {
