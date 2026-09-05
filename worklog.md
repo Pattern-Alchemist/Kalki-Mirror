@@ -802,3 +802,23 @@ Stage Summary:
 - Pre-existing silent LLM failure fixed — production dossiers now actually use the LLM path (was permanently degrading to pattern floor since Tier-1 ③ shipped).
 - Verification: tsc clean · vitest 198/198 · eslint clean on changed files · build green · E2E smoke tests against production Turso (draft resume, cache miss→hit, digest dry-run).
 - Deployment: pushed to main → auto-deploy to kalki-fix (production) + kalki-mirror (unused).
+
+---
+
+Task ID: tier5-weekB
+Agent: Super Z (lead engineer, main session)
+Task: Vol. 2 Week B — #4 Doors→consultation attribution proof, #11 admin device sessions, #20 Service+Offer schema.
+
+Work Log:
+- #4: extended /api/admin/funnel with attribution block; pure buildCampaignRollup + buildDoorsRollup in lib/admin/funnel.ts (untagged bucket keeps totals reconcilable, CANCELLED triages never books); funnel widget renders "Where leads came from" campaign chips + per-day Doors board (welcome→day-10-review in calendar order).
+- #11: GET/DELETE /api/admin/sessions (ADMIN+ only) — device rows with "This device" flag via tokenHash comparison (hash stripped before response), single revoke + revoke-others, both audit-logged (session.revoke / session.revoke_others); sessions-section.tsx mounted in Settings; lib/admin/sessions.ts now exports hashSessionToken and selects tokenHash.
+- #20: lib/seo/service-schema.ts — ProfessionalService graph on /consultations (0/1999/3499 INR offers) + Service graph on /pricing (4 tiers, UnitPriceSpecification MONTH on paid tiers, none on free); no fabricated ratings; both server-rendered JSON-LD mirroring faqJsonLd.
+- New zero-dep device-label.ts UA parser (ordered rules, iOS before macOS — iPhone UAs embed "like Mac OS X").
+- Fixed 2 test-authoring bugs mid-run (Chai startsWith misuse; OS regex order). tsc clean · 220/220 vitest · build green (235+ pages).
+- Committed f6755ee → pushed main → Vercel production queued.
+
+Stage Summary:
+- Email→wizard attribution is now provable end-to-end inside the admin funnel (campaign chips + Doors day board with submitted/triaged/booked per day).
+- Admins can see and kill their device sessions from Settings; every revocation lands in the audit log.
+- /consultations and /pricing now carry Service+Offer rich-result graphs with the real INR prices.
+- Next candidates (Week C): #7 pattern-pair affinities, #18 email-course referral loop, #16 RSS full-text feed.
