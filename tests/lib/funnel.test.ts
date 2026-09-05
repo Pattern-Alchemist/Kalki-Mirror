@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { buildFunnelStages, pctOf, type FunnelCounts } from '@/lib/admin/funnel';
+import {
+  buildFunnelStages,
+  buildCampaignRollup,
+  buildDoorsRollup,
+  pctOf,
+  type FunnelCounts,
+  type LeadAttributionRow,
+} from '@/lib/admin/funnel';
 
 /* ══════════════════════════════════════════════════════════════
    The one funnel that matters (Ch 7.2) — pure stage math guards
@@ -115,5 +122,92 @@ describe('buildFunnelStages', () => {
     expect(stages[3].value).toBe(2);
     expect(stages[4].value).toBe(1);
     expect(stages[4].stepPct).toBe(50);
+  });
+});
+
+/* ══════════════════════════════════════════════════════════════
+   Vol. 2 #4 — attribution rollups (campaign board + Doors days)
+   ══════════════════════════════════════════════════════════════ */
+
+function lead(partial: Partial<LeadAttributionRow>): LeadAttributionRow {
+  return {
+    utmSource: null,
+    utmMedium: null,
+    utmCampaign: null,
+    utmContent: null,
+    status: 'NEW',
+    ...partial,
+  };
+}
+
+describe('buildCampaignRollup', () => {
+  it('groups leads by utm_campaign with honest CRM counts', () => {
+    const rows = buildCampaignRollup([
+      lead({ utmCampaign: 'doors-email-course', status: 'SCHEDULED' }),
+      lead({ utmCampaign: 'doors-email-course', status: 'NEW' }),
+      lead({ utmCampaign: 'doors-email-course', status: 'CANCELLED' }),
+      lead({ utmCampaign: 'usa-geo-launch', status: 'COMPLETED' }),
+    ]);
+    expect(rows).toHaveLength(2);
+    const doors = rows.find((r) => r.key === 'doors-email-course')!;
+    expect(doors).toMatchObject({ submitted: 3, triaged: 2, booked: 1 }); // CANCELLED triages, never books
+    const usa = rows.find((r) => r.key === 'usa-geo-launch')!;
+    expect(usa).toMatchObject({ submitted: 1, triaged: 1, booked: 1 });
+  });
+
+  it('rolls untagged leads into "(untagged)" so totals reconcile', () => {
+    const rows = buildCampaignRollup([
+      lead({}),
+      lead({ utmCampaign: null, utmSource: 'google-ads' }),
+      lead({ utmCampaign: '  ' }),
+    ]);
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({ key: '(untagged)', submitted: 3 });
+  });
+
+  it('sorts by submitted desc', () => {
+    const rows = buildCampaignRollup([
+      lead({ utmCampaign: 'small' }),
+      lead({ utmCampaign: 'big', status: 'NEW' }),
+      lead({ utmCampaign: 'big', status: 'NEW' }),
+    ]);
+    expect(rows[0].key).toBe('big');
+    expect(rows[0].submitted).toBe(2);
+  });
+
+  it('returns empty for an empty window', () => {
+    expect(buildCampaignRollup([])).toEqual([]);
+  });
+});
+
+describe('buildDoorsRollup', () => {
+  it('returns [] when no lead carries the doors campaign', () => {
+    expect(buildDoorsRollup([lead({ utmCampaign: 'other' }), lead({})])).toEqual([]);
+  });
+
+  it('groups doors leads by utm_content in calendar order', () => {
+    const rows = buildDoorsRollup([
+      lead({ utmCampaign: 'doors-email-course', utmContent: 'day-10' }),
+      lead({ utmCampaign: 'doors-email-course', utmContent: 'welcome' }),
+      lead({ utmCampaign: 'doors-email-course', utmContent: 'day-1', status: 'SCHEDULED' }),
+      lead({ utmCampaign: 'doors-email-course', utmContent: 'day-1' }),
+    ]);
+    expect(rows.map((r) => r.day)).toEqual(['welcome', 'day-1', 'day-10']);
+    expect(rows.find((r) => r.day === 'day-1')).toMatchObject({ submitted: 2, booked: 1 });
+  });
+
+  it('ignores leads from other campaigns entirely', () => {
+    const rows = buildDoorsRollup([
+      lead({ utmCampaign: 'doors-email-course', utmContent: 'day-5' }),
+      lead({ utmCampaign: 'usa-geo-launch', utmContent: 'day-5' }),
+    ]);
+    expect(rows).toHaveLength(1);
+    expect(rows[0].submitted).toBe(1);
+  });
+
+  it('buckets doors leads missing utm_content as "(no day tag)"', () => {
+    const rows = buildDoorsRollup([lead({ utmCampaign: 'doors-email-course' })]);
+    expect(rows).toHaveLength(1);
+    expect(rows[0].label).toBe('(no day tag)');
   });
 });

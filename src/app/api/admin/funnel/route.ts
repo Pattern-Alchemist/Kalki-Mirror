@@ -3,7 +3,11 @@ import { authenticateRequest } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { getFunnelEvents } from "@/lib/analytics-db";
 import { normalizeRange } from "@/lib/analytics-shared";
-import { buildFunnelStages } from "@/lib/admin/funnel";
+import {
+  buildCampaignRollup,
+  buildDoorsRollup,
+  buildFunnelStages,
+} from "@/lib/admin/funnel";
 
 export const dynamic = "force-dynamic";
 
@@ -41,7 +45,14 @@ export async function GET(request: NextRequest) {
       getFunnelEvents(range),
       db.consultation.findMany({
         where: { createdAt: { gte: rangeStart } },
-        select: { status: true },
+        // Vol. 2 #4 — attribution columns feed the campaign/day rollups.
+        select: {
+          status: true,
+          utmSource: true,
+          utmMedium: true,
+          utmCampaign: true,
+          utmContent: true,
+        },
         take: 5000, // bounded — lead volume is hundreds per wave
       }),
     ]);
@@ -72,6 +83,12 @@ export async function GET(request: NextRequest) {
       // action is dropping events.
       wizardSubmittedEvents: events.wizardSubmitted,
       stages,
+      // Vol. 2 #4 — where window leads came from: top utm campaigns and
+      // the Doors day board (email course → wizard proof).
+      attribution: {
+        campaigns: buildCampaignRollup(windowLeads),
+        doors: buildDoorsRollup(windowLeads),
+      },
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";

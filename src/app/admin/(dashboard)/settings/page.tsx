@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { SessionsSection } from "./sessions-section";
 
 function StatBlock({ label, value }: { label: string; value: string | number }) {
   return <div><p className="text-xs text-zinc-600">{label}</p><p className="mt-0.5 text-lg font-semibold tabular-nums text-zinc-200">{value}</p></div>;
@@ -49,6 +50,8 @@ export default function SettingsPage() {
           <div><p className="text-xs text-zinc-600">Role</p><p className="mt-0.5 text-sm text-amber-400">{session?.role || "-"}</p></div>
         </div>
       </section>
+
+      <SessionsSection />
 
       {dbStats && (
         <section className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 space-y-4">

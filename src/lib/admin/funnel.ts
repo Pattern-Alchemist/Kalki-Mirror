@@ -82,6 +82,104 @@ const STAGE_META = [
   },
 ] as const;
 
+/* ════════════════════════════════════════════════════════════════════
+   Attribution rollups (Vol. 2 #4 — "prove email→wizard attribution")
+
+   The five stages above say HOW the funnel bends; the rollups say WHERE
+   leads came from. The email course tags every CTA with
+   utm_campaign=doors-email-course&utm_content=day-N (course-content.ts);
+   the wizard action freezes the snapshot into the Consultation row; these
+   two pure functions turn window rows into the two views the founder
+   needs — top campaigns, and the per-door day board.
+   ════════════════════════════════════════════════════════════════════ */
+
+/** Minimal lead shape the rollups consume (straight from Prisma select). */
+export interface LeadAttributionRow {
+  utmSource: string | null;
+  utmMedium: string | null;
+  utmCampaign: string | null;
+  utmContent: string | null;
+  status: string;
+}
+
+export interface RollupRow {
+  key: string;
+  label: string;
+  submitted: number;
+  triaged: number;
+  booked: number;
+}
+
+const DOORS_CAMPAIGN = 'doors-email-course';
+
+/** Human order for door days: welcome → day-1..10 → day-10-review. */
+const DOOR_ORDER: string[] = [
+  'welcome',
+  ...Array.from({ length: 10 }, (_, i) => `day-${i + 1}`),
+  'day-10-review',
+];
+
+function daySortKey(content: string): number {
+  const idx = DOOR_ORDER.indexOf(content);
+  return idx === -1 ? DOOR_ORDER.length : idx;
+}
+
+function prettifyKey(key: string): string {
+  return key
+    .replace(/^doors-/, '')
+    .replace(/-course$/, '')
+    .replace(/-/g, ' ');
+}
+
+function emptyRow(key: string, label?: string): RollupRow {
+  return { key, label: label ?? prettifyKey(key), submitted: 0, triaged: 0, booked: 0 };
+}
+
+/**
+ * Top campaigns over window leads. Untagged leads (no utm_campaign) roll
+ * up under "(untagged)" — the honest "direct / organic / pre-attribution"
+ * bucket that keeps the totals reconcilable with the stage counts.
+ * Sorted by submitted desc; ties keep insertion order.
+ */
+export function buildCampaignRollup(leads: LeadAttributionRow[]): RollupRow[] {
+  const byKey = new Map<string, RollupRow>();
+  for (const l of leads) {
+    const key = l.utmCampaign?.trim() || '(untagged)';
+    const row = byKey.get(key) ?? emptyRow(key, key === '(untagged)' ? '(untagged)' : undefined);
+    row.submitted += 1;
+    if (l.status !== 'NEW') row.triaged += 1;
+    if (l.status === 'SCHEDULED' || l.status === 'COMPLETED') row.booked += 1;
+    byKey.set(key, row);
+  }
+  return [...byKey.values()].sort((a, b) => b.submitted - a.submitted);
+}
+
+/**
+ * The Doors day board — leads whose utm_campaign is exactly
+ * `doors-email-course`, grouped by utm_content (welcome, day-1…day-10,
+ * day-10-review). Days with zero submissions still appear when at least
+ * one door day exists, so the board reads like the email calendar instead
+ * of a partial slice. Rows carry the day number for chip rendering.
+ */
+export function buildDoorsRollup(leads: LeadAttributionRow[]): (RollupRow & { day: string })[] {
+  const doors = leads.filter((l) => l.utmCampaign?.trim() === DOORS_CAMPAIGN);
+  if (doors.length === 0) return [];
+
+  const byContent = new Map<string, RollupRow>();
+  for (const l of doors) {
+    const key = l.utmContent?.trim() || 'unattributed';
+    const row = byContent.get(key) ?? emptyRow(key, key === 'unattributed' ? '(no day tag)' : prettifyKey(key));
+    row.submitted += 1;
+    if (l.status !== 'NEW') row.triaged += 1;
+    if (l.status === 'SCHEDULED' || l.status === 'COMPLETED') row.booked += 1;
+    byContent.set(key, row);
+  }
+
+  return [...byContent.entries()]
+    .map(([key, row]) => ({ ...row, key, day: key }))
+    .sort((a, b) => daySortKey(a.day) - daySortKey(b.day) || b.submitted - a.submitted);
+}
+
 /**
  * Assemble the five-stage funnel from raw counts.
  *

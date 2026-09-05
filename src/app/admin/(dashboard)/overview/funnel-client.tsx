@@ -25,12 +25,30 @@ interface FunnelStage {
   stepPct: number | null;
 }
 
+interface RollupRow {
+  key: string;
+  label: string;
+  submitted: number;
+  triaged: number;
+  booked: number;
+}
+
+interface DoorsRow extends RollupRow {
+  day: string;
+}
+
+interface AttributionData {
+  campaigns: RollupRow[];
+  doors: DoorsRow[];
+}
+
 interface FunnelData {
   generatedAt: string;
   range: number;
   eventsAvailable: boolean;
   wizardSubmittedEvents: number | null;
   stages: FunnelStage[];
+  attribution?: AttributionData;
 }
 
 const RANGES = [7, 30, 90] as const;
@@ -159,6 +177,59 @@ export function ConsultationFunnel() {
           );
         })}
       </div>
+
+      {/* Vol. 2 #4 — attribution: top campaigns + the Doors day board */}
+      {d.attribution && (d.attribution.campaigns.length > 0 || d.attribution.doors.length > 0) && (
+        <div className="mt-4 space-y-3 border-t border-zinc-800/60 pt-3">
+          {d.attribution.campaigns.length > 0 && (
+            <div>
+              <p className="text-[0.65rem] font-medium uppercase tracking-wider text-zinc-500">
+                Where leads came from · utm campaigns in window
+              </p>
+              <div className="mt-1.5 flex flex-wrap gap-1.5">
+                {d.attribution.campaigns.slice(0, 6).map((c) => (
+                  <span
+                    key={c.key}
+                    title={`${c.label} — ${c.submitted} submitted · ${c.triaged} triaged · ${c.booked} booked`}
+                    className="rounded-full border border-zinc-800 bg-zinc-950/60 px-2.5 py-1 text-[0.65rem] text-zinc-300"
+                  >
+                    {c.label}
+                    <span className="ml-1.5 font-semibold tabular-nums text-amber-300/90">{c.submitted}</span>
+                    {c.booked > 0 && <span className="ml-1 text-emerald-400/80">· {c.booked} booked</span>}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          {d.attribution.doors.length > 0 && (
+            <div>
+              <p className="text-[0.65rem] font-medium uppercase tracking-wider text-zinc-500">
+                The 10 Doors · email day → wizard submissions (utm_content)
+              </p>
+              <div className="mt-1.5 flex flex-wrap gap-1.5">
+                {d.attribution.doors.map((door) => (
+                  <span
+                    key={door.key}
+                    title={`${door.submitted} submitted · ${door.triaged} triaged · ${door.booked} booked`}
+                    className={`rounded-full border px-2.5 py-1 text-[0.65rem] ${
+                      door.submitted > 0
+                        ? "border-amber-500/30 bg-amber-500/[0.07] text-amber-200/90"
+                        : "border-zinc-800 text-zinc-600"
+                    }`}
+                  >
+                    {door.label}
+                    <span className="ml-1.5 font-semibold tabular-nums">{door.submitted}</span>
+                    {door.booked > 0 && <span className="ml-1 text-emerald-400/80">· {door.booked} booked</span>}
+                  </span>
+                ))}
+              </div>
+              <p className="mt-1 text-[0.6rem] text-zinc-600">
+                Attribution end-to-end: email CTA (utm_content=day-N) → wizard → Consultation row → this board.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Footer links */}
       <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 border-t border-zinc-800/60 pt-3 text-[0.65rem] text-zinc-600">

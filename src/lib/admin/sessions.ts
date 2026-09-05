@@ -9,6 +9,13 @@ function hashToken(token: string): string {
   return crypto.createHash('sha256').update(token).digest('hex').slice(0, 32);
 }
 
+/**
+ * Vol. 2 #11 — hash the *current* request's token jti so the sessions API
+ * can flag which row in the device list is "this device". Same digest as
+ * storage; exported for the read model only.
+ */
+export const hashSessionToken = hashToken;
+
 /** Create or update an active session after successful login */
 export async function trackSession(userId: string, tokenJti: string, ip?: string, userAgent?: string) {
   const tokenHash = hashToken(tokenJti);
@@ -84,6 +91,9 @@ export async function getActiveSessions(userId: string) {
     orderBy: { lastSeen: 'desc' },
     select: {
       id: true,
+      // Vol. 2 #11 — needed to flag which row is the *current* device.
+      // The API route strips it before responding; never leaks to clients.
+      tokenHash: true,
       ip: true,
       userAgent: true,
       lastSeen: true,

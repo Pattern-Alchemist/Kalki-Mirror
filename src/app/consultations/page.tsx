@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { consultationServices } from '@/lib/data/consultations';
 import { allPatterns } from '@/lib/data/patterns';
 import { getPublicTestimonials } from '@/lib/data/testimonials';
+import { buildConsultationServiceJsonLd } from '@/lib/seo/service-schema';
 import dynamic from 'next/dynamic';
 import type { ConsultationsPageProps } from './ConsultationsPageClient';
 
@@ -65,6 +66,11 @@ const faqJsonLd = {
   })),
 };
 
+/* Vol. 2 #20 — Service + Offer graph so rich results can render price +
+ * availability directly (free discovery, ₹1,999 Pattern Consultation,
+ * ₹3,499 Shadow Dossier — INR, the prices the page actually charges). */
+const serviceJsonLd = buildConsultationServiceJsonLd();
+
 const ConsultationsPageClient = dynamic(
   () => import('./ConsultationsPageClient'),
   {
@@ -93,6 +99,10 @@ export default async function ConsultationsPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
       />
       <ConsultationsPageClient {...pageProps} testimonials={testimonials} />
     </>

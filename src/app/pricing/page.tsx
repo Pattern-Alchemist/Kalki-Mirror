@@ -1,11 +1,17 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { pricingTiers } from '@/lib/data/pricing';
+import { buildMembershipServiceJsonLd } from '@/lib/seo/service-schema';
 
 export const metadata: Metadata = {
   title: 'The Covenant — Four Tiers',
   description: 'Four access levels. One path to Shambhala. Prithvi, Jal, Agni, Akash — each tier unlocks deeper layers of the Akashic Archive.',
 };
+
+/* Vol. 2 #20 — Service + Offer graph for the four membership tiers
+ * (Prithvi free → Akash ₹4,999, INR, monthly unit pricing). Server-
+ * rendered so the price graph ships in the initial HTML. */
+const serviceJsonLd = buildMembershipServiceJsonLd();
 
 const PricingPageClient = dynamic(
   () => import('./PricingPageClient'),
@@ -29,5 +35,13 @@ const PricingPageClient = dynamic(
 );
 
 export default function PricingPage() {
-  return <PricingPageClient pricingTiers={pricingTiers} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+      <PricingPageClient pricingTiers={pricingTiers} />
+    </>
+  );
 }
