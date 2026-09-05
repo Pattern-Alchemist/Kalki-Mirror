@@ -57,6 +57,7 @@ export const ModelName = {
   InviteCode: 'InviteCode',
   FolioChunk: 'FolioChunk',
   Membership: 'Membership',
+  Testimonial: 'Testimonial',
   InviteUsage: 'InviteUsage',
   AdminAuditLog: 'AdminAuditLog',
   ContentEntry: 'ContentEntry',
@@ -184,6 +185,25 @@ export const MembershipScalarFieldEnum = {
 } as const
 
 export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof typeof MembershipScalarFieldEnum]
+
+
+export const TestimonialScalarFieldEnum = {
+  id: 'id',
+  quote: 'quote',
+  name: 'name',
+  context: 'context',
+  location: 'location',
+  source: 'source',
+  status: 'status',
+  featured: 'featured',
+  consent: 'consent',
+  submittedBy: 'submittedBy',
+  approvedAt: 'approvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TestimonialScalarFieldEnum = (typeof TestimonialScalarFieldEnum)[keyof typeof TestimonialScalarFieldEnum]
 
 
 export const InviteUsageScalarFieldEnum = {

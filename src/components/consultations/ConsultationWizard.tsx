@@ -23,6 +23,11 @@ interface SubmitPayment {
   sessions: PaidSession[];
 }
 
+/** Booking payload returned by submitConsultation when CAL_BOOKING_URL is configured (Tier-3 ③). */
+interface SubmitBooking {
+  url: string;
+}
+
 /* ─── Types ─── */
 
 interface WizardFormData {
@@ -477,6 +482,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
   const [direction, setDirection] = useState<1 | -1>(1);
   // Leak L1 — UPI manual rail (success-panel payment block)
   const [payment, setPayment] = useState<SubmitPayment | null>(null);
+  const [booking, setBooking] = useState<SubmitBooking | null>(null);
   const [leadId, setLeadId] = useState<string | null>(null);
   const [selectedSession, setSelectedSession] = useState<PaidSession | null>(null);
   const [paid, setPaid] = useState(false);
@@ -585,6 +591,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
     if (result.success) {
       track('wizard_submitted', { properties: { step: totalSteps, patterns: form.selectedPatterns.length, source: getAttribution()?.last.source ?? 'direct' } });
       setPayment(result.payment ?? null);
+      setBooking(result.booking ?? null);
       setLeadId(result.leadId ?? null);
       setSubmitted(true);
     } else {
@@ -744,6 +751,26 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
                   </a>{' '}
                   — pay after you have spoken.
                 </p>
+              </div>
+            )}
+
+            {/* Step 3 — claim a real calendar slot (Tier-3 ③: Cal.com handoff).
+                Renders only when CAL_BOOKING_URL is configured server-side. */}
+            {booking && (
+              <div className="mt-8 pt-6 border-t border-gold-dim/20">
+                <p className="text-[0.6875rem] uppercase tracking-widest text-text-muted mb-3">Step 3 · Claim your time slot</p>
+                <p className="text-[0.8125rem] text-text-muted mb-3 editorial-spacing">
+                  Skip the back-and-forth — pick a slot on the calendar and it is confirmed. Payment stays via UPI above.
+                </p>
+                <a
+                  href={booking.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => track('booking_opened')}
+                  className="ghost-cta w-full justify-center inline-flex"
+                >
+                  Reserve a time on the calendar →
+                </a>
               </div>
             )}
 

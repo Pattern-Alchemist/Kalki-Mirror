@@ -11,11 +11,14 @@ import type { ConsultationService } from '@/lib/data/types';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
+import { TestimonialWall } from '@/components/social/TestimonialWall';
+import type { PublicTestimonial } from '@/lib/data/testimonials';
 import dynamic from 'next/dynamic';
 
 export interface ConsultationsPageProps {
   consultationServices: ConsultationService[];
   patterns: { slug: string; name: string; signs: string[] }[];
+  testimonials: PublicTestimonial[];
 }
 
 const ConsultationWizard = dynamic(() => import('@/components/consultations/ConsultationWizard'), { ssr: false, loading: () => <div className="h-64" /> });
@@ -24,7 +27,7 @@ const KAUSTUBH_IMG = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_
 
 /* ─── Main Page ─── */
 
-export default function ConsultationsPageClient({ consultationServices, patterns }: ConsultationsPageProps) {
+export default function ConsultationsPageClient({ consultationServices, patterns, testimonials }: ConsultationsPageProps) {
   useEffect(() => { track('consultation_started'); }, []);
   const reduced = useNativeReducedMotion();
 
@@ -213,6 +216,11 @@ export default function ConsultationsPageClient({ consultationServices, patterns
           </div>
         </div>
       </div>
+
+      {/* ═══════ SOCIAL PROOF WALL (Tier-3 ②) — approved + consented seeker
+          words, fetched server-side. Renders nothing while the ledger is
+          empty: no placeholder praise, ever. ═══════ */}
+      <TestimonialWall testimonials={testimonials} />
 
       {/* ═══════ CLOSING CTA ═══════ */}
       <section className="relative py-24 md:py-36">

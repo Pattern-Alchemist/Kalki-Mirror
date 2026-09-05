@@ -1,11 +1,13 @@
 {
-  "name": "KALKI",
+  "name": "KALKI — Esoteric Intelligence",
   "short_name": "KALKI",
   "description": "Light for the Dark Age. Esoteric Intelligence. Sacred Architecture. Pattern Recognition.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0B0C10",
   "theme_color": "#C5A059",
+  "categories": ["education", "lifestyle"],
   "icons": [
     {
       "src": "/favicon.svg",
@@ -14,16 +16,45 @@
       "purpose": "any"
     },
     {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
+      "src": "/icon-192.png",
+      "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/logo.svg",
+      "src": "/icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Consult the Archivist",
+      "url": "/consultations",
+      "description": "Book a pattern consultation with Kaustubh"
+    },
+    {
+      "name": "The Pattern Atlas",
+      "url": "/patterns",
+      "description": "The twenty emotional karmic loops"
+    },
+    {
+      "name": "The 10 Doors",
+      "url": "/email-course",
+      "description": "Free 10-day email course — one karmic loop a day"
     }
   ]
 }

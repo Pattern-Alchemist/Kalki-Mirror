@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Offline — KALKI</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <style>
+    :root { color-scheme: dark; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      background: #0B0C10;
+      color: #E8E4D8;
+      font-family: Georgia, 'Times New Roman', serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .bindu {
+      width: 64px; height: 64px;
+      margin: 0 auto 32px;
+      border: 1px solid rgba(197, 160, 89, 0.25);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .bindu span {
+      width: 12px; height: 12px;
+      background: rgba(197, 160, 89, 0.5);
+      border-radius: 50%;
+    }
+    .label {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #9A7B3A;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-weight: 400;
+      font-size: clamp(26px, 5vw, 40px);
+      color: #F5F1E6;
+      margin-bottom: 16px;
+    }
+    p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(232, 228, 216, 0.6);
+      max-width: 34em;
+      margin: 0 auto 32px;
+    }
+    a {
+      display: inline-block;
+      padding: 12px 28px;
+      border: 1px solid rgba(197, 160, 89, 0.5);
+      color: #C5A059;
+      text-decoration: none;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+    }
+    a:hover { background: rgba(197, 160, 89, 0.08); }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="bindu" aria-hidden="true"><span></span></div>
+    <p class="label">The connection is absent</p>
+    <h1>You are offline</h1>
+    <p>The archive lives on the network. What you already opened remains
+       readable below the surface &mdash; but this page needs the connection
+       to return. Reconnect and the mirror resumes.</p>
+    <a href="/">Return to the Archive</a>
+  </main>
+</body>
+</html>

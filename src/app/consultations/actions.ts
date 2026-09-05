@@ -11,6 +11,7 @@ import {
 } from "@/lib/attribution";
 import { eventConsultationCreated } from "@/lib/admin/notify-events";
 import { PAID_SESSIONS, resolveUpiConfig } from "@/lib/utils/upi";
+import { resolveBookingConfig } from "@/lib/utils/booking";
 
 const consultationSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters.").max(200, "Name too long."),
@@ -108,6 +109,9 @@ export async function submitConsultation(formData: {
     }).catch(() => {});
 
     const upi = resolveUpiConfig();
+    // Tier-3 ③ — Cal.com handoff (roadmap #13). Present only when
+    // CAL_BOOKING_URL is configured; runtime env read → no rebuild.
+    const booking = resolveBookingConfig();
     return {
       success: true,
       // Tier-1 ①: the wizard needs the lead id to attach a payment claim
@@ -120,6 +124,8 @@ export async function submitConsultation(formData: {
       // otherwise the wizard's success panel stays WhatsApp-only, exactly as
       // before. Runtime env read → setting the var in Vercel needs no rebuild.
       payment: upi ? { ...upi, sessions: PAID_SESSIONS } : null,
+      // Tier-3 ③ — real calendar slot instead of manual WhatsApp scheduling.
+      booking,
     };
   } catch {
     return { success: false, error: "Failed to submit. Please try again." };
