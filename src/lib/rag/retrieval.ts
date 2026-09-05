@@ -2,6 +2,7 @@ import { staticDb } from '@/lib/static-db';
 import type { Tier } from '@/lib/data/types';
 import type { RetrievedChunk, RetrievalPool } from './types';
 import { TIER_TO_CAUTION, PRESCRIPTION_CAUTIONS, type CautionLevel } from './caution-map';
+import { embedQueryText } from './embed';
 
 // ─── Cosine similarity ────────────────────────────────────────────────────
 
@@ -41,27 +42,16 @@ function keywordScore(query: string, text: string): number {
   return score;
 }
 
-// ─── Embed the query (if API key available) ────────────────────────────────
+// ─── Embed the query ──────────────────────────────────────────────────────
+// Leak L4: the query embedder is LOCAL and deterministic (hashed TF-IDF over
+// the baked IDF map) — zero latency, zero API keys, zero failure modes.
+// The stored chunk vectors come from scripts/bake-folio-embeddings.ts using
+// the exact same embedText() contract, so cosine is always apples-to-apples.
+// If a neural provider is added later: re-bake the corpus, and swap only
+// embedQueryText — nothing else in this file changes.
 
 async function embedQuery(text: string): Promise<number[]> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) return [];
-
-  try {
-    const resp = await fetch('https://api.openai.com/v1/embeddings', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({ input: text, model: 'text-embedding-3-small', dimensions: 1536 }),
-    });
-    if (!resp.ok) return [];
-    const data = await resp.json();
-    return data.data[0].embedding;
-  } catch {
-    return [];
-  }
+  return embedQueryText(text);
 }
 
 // ─── Two-pool retrieval ────────────────────────────────────────────────────
@@ -98,9 +88,9 @@ export async function retrieveChunks(
     ? PRESCRIPTION_CAUTIONS
     : TIER_TO_CAUTION[tier];
 
-  // Fetch candidate chunks from DB
-  // Only fetch embedding column when we have an API key (saves ~60% payload per row)
-  const hasApiKey = !!process.env.OPENAI_API_KEY;
+  // Fetch candidate chunks from DB (embedding column is always populated
+  // post-L4 bake; kept in the select so fresh unbaked corpora still fall
+  // through to the keyword path below)
   const candidates = await staticDb.folioChunk.findMany({
     where: {
       caution: { in: allowedCautions },
@@ -111,7 +101,7 @@ export async function retrieveChunks(
       section: true,
       caution: true,
       text: true,
-      ...(hasApiKey ? { embedding: true } : {}),
+      embedding: true,
     },
   });
 
