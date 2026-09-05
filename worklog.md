@@ -847,3 +847,26 @@ Work Log:
 Stage Summary:
 - Week C + 9 pull items shipped in one deploy. Remaining open from Vol. 2: #8 (screener voice pass), #12 (2FA required for ADMIN+), #19 (hi-locale wizard) — deferred deliberately: LLM-path and auth-flow changes deserve their own careful deploy.
 - Pattern folio companions show automatically after tonight's 02:30 UTC digest (or manual dryRun with the prod key).
+
+---
+Task ID: tier5-weekC-opsfix
+Agent: Z (Super Z, main session)
+Task: Founder: "go ahead and complete all and push and merge all" — post-deploy verification of Week C on production + close any remaining gaps.
+
+Work Log:
+- Confirmed main == origin/main (c593522 + 19e06a2 pushed), 0 open PRs, Vercel production READY for 19e06a2 (dpl_FC6VBrFJHEhB).
+- Repo hygiene audit: 9 legacy branches checked for stranded work. All tip-commit content already lives in main (resend.ts, idf-generated.ts, svix.test.ts, booking.ts, upi.ts all present). merge-tree simulation shows conflicts (4/2/11/4/4) against newer main for zero content gain — left as historical artifacts, no merge performed. kalki-tantra-landing-page + v0/* are superseded V0 prototypes (intentionally unmerged).
+- Production smoke suite: homepage 200; /health carries rateLimit429 counter (#14 live); feed.xml valid XML, 10 items 5+5 with ~1,200-char full-text bodies incl. practice + cautions (#16 live); llms.txt 61KB with full 8-phase Aghorī syllabus (#17 live); /api/email-course/share-link mints real HMAC URLs (#18 live); subscribe accepts ref fail-soft (#18); pattern folio renders companions fail-soft empty (#7 correct — 0 Consultations carry patternSlugs yet, nightly 02:30 UTC recompute lights up with first leads).
+- CRITICAL FIND: /api/ai/search returned 503 "AI engine is not configured". Root cause: 10 routes (/api/ai/search, explain, japa-guide, pattern-explain, breathwork, draft, transit-interpretation, consultation-screen, archetype-quiz, recommend-tier) gate on isLLMConfigured() → LLM_API_KEY — a var never provisioned in Vercel — while OPENROUTER_API_KEY sat unused (only yantra-synthesize used it). Entire AI surface 503'd in production.
+- Live-probed OpenRouter before designing the fix: minimax-m2.7 responds but is a reasoning model (content=null, finish_reason=length at max_tokens=20 — hidden reasoning eats budget); glm-5.2/gemma-4 429 upstream (documented congestion). Informed two design decisions: chain-walking (reuse resolveModelChain()) + max_tokens floor 1600.
+- Fix (379ba90): llm.ts provider resolution — generic path (LLM_API_KEY) preserved verbatim; OpenRouter fallback walks resolveModelChain() with 25s/model timeout, log-and-continue; jsonMode additionally post-cleans via extractJsonPayload() (fences/prose/trailing chatter stripped — free-tier models break naive JSON.parse habitually); isLLMConfigured() true on either key.
+- Verified fix: tsc clean, 250/250 vitest (10 new: env-resolution matrix + payload cleaning incl. real fence+prose+chatter shape), build green 235 pages. Pushed → Vercel READY.
+- Post-fix production proof: /api/ai/search → 5 results with full citations (slug + canonical folio URL + term-anchor term) — #9 live at last; /api/ai/explain → 1,340-char YANTRA-voice synthesis with keyTerms. Shared-path fix proven across routes.
+- Ops cleanup: smoke-test subscriber (smoke-test-ref@kalki-check.invalid) deleted from Turso EmailSubscriber (1 row, re-verified 0 remaining). Script persisted at workspace scripts/turso-smoke-cleanup.mjs.
+- Worklog mirrored to workspace /home/z/my-project/worklog.md.
+
+Stage Summary:
+- All Vol. 2 Week C items verified LIVE on production; AI surface rescued from a full 503 outage that predated Week C (the search 503 was not a regression — isLLMConfigured() was written against a var that never existed in prod).
+- 250 unit tests, tsc clean, build 235 pages, main pushed at 379ba90, Vercel READY.
+- Open remains from Vol. 2: #8 (screener voice pass), #12 (2FA for ADMIN+), #19 (hi-locale wizard) — deliberate deferrals, each deserving its own deploy.
+- Pattern folio "most common companions" populates automatically after tonight's 02:30 UTC digest once real wizard leads carry patternSlugs.
