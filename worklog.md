@@ -870,3 +870,20 @@ Stage Summary:
 - 250 unit tests, tsc clean, build 235 pages, main pushed at 379ba90, Vercel READY.
 - Open remains from Vol. 2: #8 (screener voice pass), #12 (2FA for ADMIN+), #19 (hi-locale wizard) — deliberate deferrals, each deserving its own deploy.
 - Pattern folio "most common companions" populates automatically after tonight's 02:30 UTC digest once real wizard leads carry patternSlugs.
+
+---
+Task ID: tier5-vol2-closeout
+Agent: Z (Super Z, main session)
+Task: Founder: "go ahead and complete all" — the three deliberate deferrals (#8 screener voice pass, #12 2FA mandate for ADMIN+, #19 hi-locale wizard). This closes all 20 Vol. 2 roadmap items.
+
+Work Log:
+- #8: voice-pass.ts (Kaustubh-voice rewrite-only style pass over the RAG-grounded floor; validateVoicePass enforces forbidden lexicon word-boundary-anchored, length inflation guard 1.4x+40, markdown/link/meta-leak rejection; cached in SynthesisCache under voice: ns, 7-day TTL — floors are deterministic per dominant pattern, ~14 unique). Wired into /api/initiate: fires only when LLM synthesis is not serving the karmic loop, wall-clock guarded at 15s under maxDuration 30; dossier provenance gains synthesis.voicePass.model. 9 unit tests.
+- #12: User.elevatedAt added (tier-7 DDL applied to production Turso BEFORE code shipped; existing admins backfilled to the migration run so their grace starts there). two-factor-policy.ts pure grace math (7 days; null elevatedAt on unenrolled elevated = past due, strictest). requireRole gates admin_plus/superadmin_only: past-due → TwoFactorRequiredError (actionable message); enrollment stays any_staff so the fix is always reachable; transient DB read failure fails open to the role gate. updateMemberRole re-stamps elevatedAt at every elevation. TwoFactorGraceBanner (amber in grace / red past due) rendered in the admin layout. 8 unit tests.
+- #19: wizard namespace shipped in en.json + hi.json (steps, sliders, levels, modalities, summary, success, nav, errors, switcher). ConsultationWizard consumes via buildWizardCopy (pure, testable); step intros render through t.rich gold spans; LocaleSwitcher (EN | हिं) above the wizard on /consultations. Non-routing i18n preserved: request.ts reads NEXT_LOCALE cookie — zero URL/SEO change. Data-hygiene decisions: analytics step labels + enriched WhatsApp payload stay canonical English (dashboards and the archivist's working copy must not fork per locale); experience/modality lead values stay canonical English, only display labels translate. 11 unit tests incl. en↔hi structural parity + Devanagari assertion.
+- Gauntlet: tsc clean, 278/278 vitest (28 new), build green (235 pages). Pushed a197a90 → Vercel READY.
+- Production smoke: /consultations with NEXT_LOCALE=hi renders 435 Devanagari tokens vs 2 on default EN (locale switch live); /api/initiate returns warm second-person karmic_loop via the primary LLM path (voice pass correctly dormant — fires only on synthesis failure, per contract); admin surfaces 307 unauthenticated; tier-7 backfill verified in Turso: archivist@kalki.mirror SUPERADMIN elevatedAt=2026-09-05, twoFactorEnabled=0 → 7-day grace window live.
+- Worklog mirrored to workspace /home/z/my-project/worklog.md.
+
+Stage Summary:
+- ALL 20 Vol. 2 roadmap items now shipped and verified. Founder has until ~2026-09-12 to enroll TOTP at /admin/settings before elevated actions lock — enroll by scanning the QR in the Two-Factor section.
+- Open (Vol. 1, parallel by design): #16–20 RAG behavioral bridge items — neural swap (blocked on a real embedding key), re-bake CI, i18n+a11y expansion, orphan-drift salvage.
