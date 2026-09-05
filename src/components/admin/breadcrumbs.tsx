@@ -6,6 +6,7 @@ import Link from "next/link";
 const LABELS: Record<string, string> = {
   overview: "Overview",
   members: "Members",
+  memberships: "Memberships",
   keys: "Golden Keys",
   content: "Content Studio",
   folio: "Folio Corpus",

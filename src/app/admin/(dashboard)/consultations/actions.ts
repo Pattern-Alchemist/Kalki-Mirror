@@ -39,6 +39,11 @@ export type ConsultationRow = {
   referrerDomain: string | null;
   landingPath: string | null;
   attributionJson: string | null;
+  // Tier-1 ① — UPI reconciliation ledger
+  paymentState: string;
+  paymentSession: string | null;
+  utrRef: string | null;
+  paidAt: Date | null;
 };
 
 const STATUSES = ["NEW", "ACKNOWLEDGED", "SCHEDULED", "COMPLETED", "CANCELLED"] as const;
@@ -118,6 +123,89 @@ export async function updateConsultationStatus(
 
   revalidatePath('/admin/overview');
   revalidatePath('/admin/consultations');
+  return { success: true };
+}
+
+/**
+ * Tier-1 ① — reconcile a payment claim: mark the lead PAID with the UPI
+ * reference/UTR Kaustubh quoted back. Archivist action of record — audited,
+ * webhooks fired, bell rung.
+ */
+export async function setPaymentPaid(
+  consultationId: string,
+  utrRef?: string
+) {
+  await requireAdmin();
+
+  const consultation = await db.consultation.findUniqueOrThrow({
+    where: { id: consultationId },
+  });
+  const oldState = consultation.paymentState;
+
+  await db.consultation.update({
+    where: { id: consultationId },
+    data: {
+      paymentState: "PAID",
+      paidAt: new Date(),
+      ...(utrRef !== undefined && utrRef.trim() !== "" ? { utrRef: utrRef.trim().slice(0, 60) } : {}),
+    },
+  });
+
+  await logAudit({
+    action: "consultation.payment.paid",
+    entity: "Consultation",
+    entityId: consultationId,
+    before: { paymentState: oldState, utrRef: consultation.utrRef },
+    after: { paymentState: "PAID", utrRef: utrRef ?? consultation.utrRef, session: consultation.paymentSession },
+  });
+
+  await dispatchWebhooks("consultation.payment", {
+    consultationId,
+    name: consultation.name,
+    oldState,
+    state: "PAID",
+    session: consultation.paymentSession,
+    utrRef: utrRef ?? consultation.utrRef,
+  });
+  await broadcastNotification({
+    title: "Payment reconciled",
+    body: `${consultation.name} — ${consultation.paymentSession ?? "session"} marked PAID`,
+    type: "success",
+    href: "/admin/consultations",
+  });
+
+  revalidatePath("/admin/overview");
+  revalidatePath("/admin/consultations");
+  return { success: true };
+}
+
+/**
+ * Tier-1 ① — waive payment (free discovery path, comps, archival courtesy).
+ * Reversible by re-marking PAID; never blocks the pipeline.
+ */
+export async function setPaymentWaived(consultationId: string) {
+  await requireAdmin();
+
+  const consultation = await db.consultation.findUniqueOrThrow({
+    where: { id: consultationId },
+  });
+  const oldState = consultation.paymentState;
+
+  await db.consultation.update({
+    where: { id: consultationId },
+    data: { paymentState: "WAIVED", paidAt: null },
+  });
+
+  await logAudit({
+    action: "consultation.payment.waived",
+    entity: "Consultation",
+    entityId: consultationId,
+    before: { paymentState: oldState },
+    after: { paymentState: "WAIVED", session: consultation.paymentSession },
+  });
+
+  revalidatePath("/admin/overview");
+  revalidatePath("/admin/consultations");
   return { success: true };
 }
 

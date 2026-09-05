@@ -5,6 +5,8 @@ import {
   getConsultations,
   updateConsultationStatus,
   deleteConsultation,
+  setPaymentPaid,
+  setPaymentWaived,
   type ConsultationRow,
 } from "./actions";
 
@@ -79,6 +81,21 @@ const SOURCE_CHIP: Record<string, string> = {
   direct: "border-zinc-700 text-zinc-400",
 };
 
+/* Tier-1 ① — UPI reconciliation ledger states */
+const PAYMENT_STATES = ["UNPAID", "CLAIMED", "PAID", "WAIVED"] as const;
+const PAYMENT_CHIP: Record<string, string> = {
+  UNPAID: "border-zinc-700 text-zinc-500",
+  CLAIMED: "border-amber-500/50 bg-amber-500/10 text-amber-300",
+  PAID: "border-emerald-500/50 bg-emerald-500/10 text-emerald-300",
+  WAIVED: "border-violet-500/40 text-violet-300",
+};
+const PAYMENT_LABEL: Record<string, string> = {
+  UNPAID: "unpaid",
+  CLAIMED: "claimed — confirm on WhatsApp",
+  PAID: "paid ✓",
+  WAIVED: "waived",
+};
+
 /* ─── Component ───────────────────────────────────────────────────────────── */
 
 export default function ConsultationsPage() {
@@ -92,6 +109,7 @@ export default function ConsultationsPage() {
   const [savingStatus, setSavingStatus] = useState(false);
   const [countryFilter, setCountryFilter] = useState("ALL");
   const [kindFilter, setKindFilter] = useState("ALL");
+  const [paymentFilter, setPaymentFilter] = useState("ALL");
 
   const loadPipeline = useCallback(async () => {
     setLoading(true);
@@ -118,6 +136,7 @@ export default function ConsultationsPage() {
     return leads.filter((c) => {
       if (countryFilter !== "ALL" && (c.country ?? "??") !== countryFilter) return false;
       if (kindFilter !== "ALL" && leadSource(c).kind !== kindFilter) return false;
+      if (paymentFilter !== "ALL" && c.paymentState !== paymentFilter) return false;
       if (!q) return true;
       return (
         c.name.toLowerCase().includes(q) ||
@@ -125,7 +144,7 @@ export default function ConsultationsPage() {
         c.request.toLowerCase().includes(q)
       );
     });
-  }, [leads, query, countryFilter, kindFilter]);
+  }, [leads, query, countryFilter, kindFilter, paymentFilter]);
 
   const countries = useMemo(() => {
     const set = new Set<string>();
@@ -191,6 +210,49 @@ export default function ConsultationsPage() {
       }
     },
     [loadPipeline],
+  );
+
+  /* Tier-1 ① — reconciliation actions of record (audited server-side). */
+  const savePaymentPaid = useCallback(
+    async (lead: ConsultationRow, utr: string) => {
+      setSavingStatus(true);
+      try {
+        await setPaymentPaid(lead.id, utr || undefined);
+        setLeads((prev) =>
+          prev.map((c) =>
+            c.id === lead.id
+              ? { ...c, paymentState: "PAID", paidAt: new Date(), ...(utr ? { utrRef: utr } : {}) }
+              : c,
+          ),
+        );
+        setSelected((s) =>
+          s && s.id === lead.id
+            ? { ...s, paymentState: "PAID", paidAt: new Date(), ...(utr ? { utrRef: utr } : {}) }
+            : s,
+        );
+      } catch {
+        setError("Marking paid failed — check your session and try again.");
+      } finally {
+        setSavingStatus(false);
+      }
+    },
+    [],
+  );
+
+  const savePaymentWaived = useCallback(
+    async (lead: ConsultationRow) => {
+      setSavingStatus(true);
+      try {
+        await setPaymentWaived(lead.id);
+        setLeads((prev) => prev.map((c) => (c.id === lead.id ? { ...c, paymentState: "WAIVED", paidAt: null } : c)));
+        setSelected((s) => (s && s.id === lead.id ? { ...s, paymentState: "WAIVED", paidAt: null } : s));
+      } catch {
+        setError("Waiving payment failed — try again.");
+      } finally {
+        setSavingStatus(false);
+      }
+    },
+    [],
   );
 
   const converting = (counts["SCHEDULED"] ?? 0) + (counts["COMPLETED"] ?? 0);
@@ -279,6 +341,18 @@ export default function ConsultationsPage() {
               </button>
             ))}
           </div>
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-zinc-600">Payment:</span>
+            {PAYMENT_STATES.map((p) => (
+              <button
+                key={p}
+                onClick={() => setPaymentFilter(p)}
+                className={`rounded-full border px-2 py-0.5 capitalize transition ${paymentFilter === p ? "border-amber-500/40 bg-amber-500/10 text-amber-300" : PAYMENT_CHIP[p]}`}
+              >
+                {p.toLowerCase()}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
@@ -319,6 +393,8 @@ export default function ConsultationsPage() {
           onClose={() => setSelected(null)}
           onStatus={(s) => changeStatus(selected, s)}
           onSaveNotes={(n) => saveNotes(selected, n)}
+          onSavePaymentPaid={(utr) => savePaymentPaid(selected, utr)}
+          onSavePaymentWaived={() => savePaymentWaived(selected)}
           onDelete={() => deleteLead(selected)}
         />
       )}
@@ -350,6 +426,11 @@ function LeadCard({ lead, onOpen }: { lead: ConsultationRow; onOpen: () => void 
             {lead.clickId}
           </span>
         )}
+        {lead.paymentState !== "UNPAID" && (
+          <span className={`rounded-full border px-2 py-0.5 text-[0.65rem] ${PAYMENT_CHIP[lead.paymentState] ?? PAYMENT_CHIP.UNPAID}`}>
+            {PAYMENT_LABEL[lead.paymentState] ?? lead.paymentState.toLowerCase()}
+          </span>
+        )}
         {lead.notes && (
           <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] text-zinc-500" title={lead.notes}>
             note
@@ -368,6 +449,8 @@ function LeadDrawer({
   onClose,
   onStatus,
   onSaveNotes,
+  onSavePaymentPaid,
+  onSavePaymentWaived,
   onDelete,
 }: {
   lead: ConsultationRow;
@@ -375,9 +458,12 @@ function LeadDrawer({
   onClose: () => void;
   onStatus: (s: string) => void;
   onSaveNotes: (n: string) => void;
+  onSavePaymentPaid: (utr: string) => void;
+  onSavePaymentWaived: () => void;
   onDelete: () => void;
 }) {
   const [notes, setNotes] = useState(lead.notes ?? "");
+  const [utr, setUtr] = useState(lead.utrRef ?? "");
   // Render-time state adjustment (react-hooks/set-state-in-effect): reset the
   // draft when a different lead is opened or its server-side notes change —
   // same semantics as the previous effect-based reset, without the effect.
@@ -387,6 +473,7 @@ function LeadDrawer({
     setPrevId(lead.id);
     setPrevNotes(lead.notes);
     setNotes(lead.notes ?? "");
+    setUtr(lead.utrRef ?? "");
   }
 
   useEffect(() => {
@@ -515,6 +602,48 @@ function LeadDrawer({
               Flat fields: {lead.utmSource || "—"} / {lead.utmMedium || "—"} {lead.referrerDomain ? `· ref ${lead.referrerDomain}` : ""} {lead.country ? `· ${lead.country}` : ""}
             </p>
           )}
+        </div>
+
+        {/* Tier-1 ① — Payment reconciliation */}
+        <div className="mt-5 rounded-lg border border-zinc-800/80 bg-zinc-900/20 p-4">
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Payment (UPI manual rail)</p>
+            <span className={`rounded-full border px-2.5 py-0.5 text-[0.65rem] ${PAYMENT_CHIP[lead.paymentState] ?? PAYMENT_CHIP.UNPAID}`}>
+              {PAYMENT_LABEL[lead.paymentState] ?? lead.paymentState.toLowerCase()}
+            </span>
+          </div>
+          <p className="mt-1.5 text-[0.65rem] text-zinc-600">
+            {lead.paymentSession
+              ? `Session: ${lead.paymentSession.replace(/-/g, " ")} · INR ${lead.paymentSession === "shadow-pattern-reading" ? "3,499" : "1,999"}`
+              : "No session chosen yet — the seeker stayed on the free path."}
+            {lead.paidAt ? ` · Paid ${fmtDate(lead.paidAt)}` : ""}
+          </p>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <input
+              type="text"
+              value={utr}
+              onChange={(e) => setUtr(e.target.value)}
+              placeholder="UPI ref / UTR…"
+              className="w-40 rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-1.5 text-xs text-zinc-200 placeholder:text-zinc-600 focus:border-amber-500/40 focus:outline-none"
+            />
+            <button
+              onClick={() => onSavePaymentPaid(utr)}
+              disabled={saving}
+              className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-300 transition-colors hover:bg-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Mark paid
+            </button>
+            <button
+              onClick={() => onSavePaymentWaived()}
+              disabled={saving}
+              className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-400 transition-colors hover:text-zinc-200 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Waive
+            </button>
+          </div>
+          <p className="mt-1.5 text-[0.65rem] text-zinc-600">
+            Reconciliation is audited and bell-rung. CLAIMED = seeker said they paid — verify the UTR in your UPI app.
+          </p>
         </div>
 
         {/* Status */}

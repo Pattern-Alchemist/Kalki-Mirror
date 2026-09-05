@@ -402,6 +402,7 @@ export const ModelName = {
   PatternResolution: 'PatternResolution',
   InviteCode: 'InviteCode',
   FolioChunk: 'FolioChunk',
+  Membership: 'Membership',
   InviteUsage: 'InviteUsage',
   AdminAuditLog: 'AdminAuditLog',
   ContentEntry: 'ContentEntry',
@@ -426,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber"
+    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -797,6 +798,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.FolioChunkCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.FolioChunkCountAggregateOutputType> | number
+        }
+      }
+    }
+    Membership: {
+      payload: Prisma.$MembershipPayload<ExtArgs>
+      fields: Prisma.MembershipFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MembershipFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MembershipPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MembershipFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MembershipPayload>
+        }
+        findFirst: {
+          args: Prisma.MembershipFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MembershipPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MembershipFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MembershipPayload>
+        }
+        findMany: {
+          args: Prisma.MembershipFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MembershipPayload>[]
+        }
+        create: {
+          args: Prisma.MembershipCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MembershipPayload>
+        }
+        createMany: {
+          args: Prisma.MembershipCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MembershipCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MembershipPayload>[]
+        }
+        delete: {
+          args: Prisma.MembershipDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MembershipPayload>
+        }
+        update: {
+          args: Prisma.MembershipUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MembershipPayload>
+        }
+        deleteMany: {
+          args: Prisma.MembershipDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MembershipUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MembershipUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MembershipPayload>[]
+        }
+        upsert: {
+          args: Prisma.MembershipUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MembershipPayload>
+        }
+        aggregate: {
+          args: Prisma.MembershipAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMembership>
+        }
+        groupBy: {
+          args: Prisma.MembershipGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MembershipGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MembershipCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MembershipCountAggregateOutputType> | number
         }
       }
     }
@@ -1587,6 +1662,24 @@ export const FolioChunkScalarFieldEnum = {
 export type FolioChunkScalarFieldEnum = (typeof FolioChunkScalarFieldEnum)[keyof typeof FolioChunkScalarFieldEnum]
 
 
+export const MembershipScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  email: 'email',
+  name: 'name',
+  phone: 'phone',
+  plan: 'plan',
+  tier: 'tier',
+  status: 'status',
+  utrRef: 'utrRef',
+  grantedAt: 'grantedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof typeof MembershipScalarFieldEnum]
+
+
 export const InviteUsageScalarFieldEnum = {
   id: 'id',
   codeId: 'codeId',
@@ -1661,7 +1754,11 @@ export const ConsultationScalarFieldEnum = {
   country: 'country',
   referrerDomain: 'referrerDomain',
   landingPath: 'landingPath',
-  attributionJson: 'attributionJson'
+  attributionJson: 'attributionJson',
+  paymentState: 'paymentState',
+  paymentSession: 'paymentSession',
+  utrRef: 'utrRef',
+  paidAt: 'paidAt'
 } as const
 
 export type ConsultationScalarFieldEnum = (typeof ConsultationScalarFieldEnum)[keyof typeof ConsultationScalarFieldEnum]
@@ -1966,6 +2063,7 @@ export type GlobalOmitConfig = {
   patternResolution?: Prisma.PatternResolutionOmit
   inviteCode?: Prisma.InviteCodeOmit
   folioChunk?: Prisma.FolioChunkOmit
+  membership?: Prisma.MembershipOmit
   inviteUsage?: Prisma.InviteUsageOmit
   adminAuditLog?: Prisma.AdminAuditLogOmit
   contentEntry?: Prisma.ContentEntryOmit

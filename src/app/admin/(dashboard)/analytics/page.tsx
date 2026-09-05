@@ -241,6 +241,11 @@ export default function AnalyticsPage() {
     { key: "dossierStarted", label: "Assessment started" },
     { key: "dossierCompleted", label: "Assessment completed" },
     { key: "consultationStarted", label: "Consultation intent" },
+    { key: "wizardSubmitted", label: "Intake submitted (lead)" },
+    { key: "whatsappHandoff", label: "WhatsApp handoff" },
+    { key: "upiPay", label: "Pay — Google Pay / UPI" },
+    { key: "paymentConfirm", label: "Payment confirmed" },
+    { key: "paid", label: "Reconciled PAID ✓" },
   ] as const;
   const funnelMax = Math.max(...funnelSteps.map((s) => data.funnel[s.key]), 1);
   const completionRate = data.funnel.dossierStarted > 0

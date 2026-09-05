@@ -35,6 +35,7 @@ export const ADMIN_NAV: NavItem[] = [
   { name: 'Folio Corpus', href: '/admin/folio', shortcut: '5', minRole: 'ADMIN' },
   { name: 'Consultations', href: '/admin/consultations', shortcut: '6', minRole: 'ADMIN' },
   { name: 'Subscribers', href: '/admin/subscribers', shortcut: '', minRole: 'ADMIN' },
+  { name: 'Memberships', href: '/admin/memberships', shortcut: '', minRole: 'ADMIN' },
   { name: 'Analytics', href: '/admin/analytics', shortcut: '9', minRole: 'ADMIN' },
   { name: 'Audit Log', href: '/admin/audit', shortcut: '7', minRole: 'REVIEWER' },
   { name: 'Settings', href: '/admin/settings', shortcut: '8', minRole: 'SUPERADMIN' },

@@ -168,7 +168,7 @@ function emptySnapshot(range: AnalyticsRange): AnalyticsSnapshot {
     events: [],
     topContent: [],
     topReferrers: [],
-    funnel: { dossierStarted: 0, dossierCompleted: 0, pricingViewed: 0, consultationStarted: 0 },
+    funnel: { dossierStarted: 0, dossierCompleted: 0, pricingViewed: 0, consultationStarted: 0, whatsappHandoff: 0, upiPay: 0, paymentConfirm: 0, paid: 0 },
     recentEvents: [],
     recentSubscribers: [],
   };
@@ -242,7 +242,7 @@ export async function getAnalyticsSnapshot(
     if (!c) return emptySnapshot(R);
     const R2 = R * 2;
 
-    const [totalsRes, dailyRes, eventRes, topRes, refRes, subRes, subListRes, recentRes] =
+    const [totalsRes, dailyRes, eventRes, topRes, refRes, subRes, subListRes, recentRes, paidRes] =
       await Promise.all([
         c.execute(`
           SELECT
@@ -306,10 +306,16 @@ export async function getAnalyticsSnapshot(
           SELECT event, path, slug, referrer, sessionId, createdAt
           FROM AnalyticsEvent ORDER BY createdAt DESC LIMIT 15
         `),
+        // Tier-1 ④ — the CRM half of the funnel: reconciled PAID leads.
+        c.execute({
+          sql: "SELECT COUNT(*) AS n FROM Consultation WHERE paymentState = 'PAID' AND paidAt >= ?",
+          args: [new Date(Date.now() - R * 86_400_000).toISOString()],
+        }),
       ]);
 
     const t = totalsRes.rows[0] ?? {};
     const s = subRes.rows[0] ?? {};
+    const paidRow = paidRes.rows[0] ?? {};
     const windowOf = (name: EventName) =>
       num(eventRes.rows.find((r) => r.event === name)?.cw);
 
@@ -378,6 +384,10 @@ export async function getAnalyticsSnapshot(
         dossierCompleted: windowOf('dossier_completed'),
         pricingViewed: windowOf('pricing_viewed'),
         consultationStarted: windowOf('consultation_started'),
+      whatsappHandoff: windowOf('whatsapp_handoff_clicked'),
+      upiPay: windowOf('upi_pay_clicked'),
+      paymentConfirm: windowOf('payment_confirm_clicked'),
+      paid: num(paidRow.n),
       },
       recentEvents: recentRes.rows.map((r) => ({
         event: String(r.event) as EventName,
@@ -416,15 +426,20 @@ export async function getFunnelEvents(
   sessions: number | null;
   consultationStarted: number | null;
   wizardSubmitted: number | null;
+  whatsappHandoff: number | null;
+  upiPay: number | null;
+  paymentConfirm: number | null;
+  paid: number | null;
 }> {
   try {
     await ensureTables();
     const c = getClient();
     if (!c) {
-      return { available: false, sessions: null, consultationStarted: null, wizardSubmitted: null };
+      return { available: false, sessions: null, consultationStarted: null, wizardSubmitted: null, whatsappHandoff: null, upiPay: null, paymentConfirm: null, paid: null };
     }
     const R = normalizeRange(range);
-    const [sessRes, evRes] = await Promise.all([
+    const sinceIso = new Date(Date.now() - R * 86_400_000).toISOString();
+    const [sessRes, evRes, paidRes] = await Promise.all([
       c.execute(`
         SELECT COUNT(DISTINCT sessionId) AS n
         FROM AnalyticsEvent
@@ -434,9 +449,18 @@ export async function getFunnelEvents(
         SELECT event, COUNT(*) AS n
         FROM AnalyticsEvent
         WHERE createdAt >= datetime('now', '-${R} days')
-          AND event IN ('consultation_started', 'wizard_submitted')
+          AND event IN (
+            'consultation_started', 'wizard_submitted', 'whatsapp_handoff_clicked',
+            'upi_pay_clicked', 'payment_confirm_clicked'
+          )
         GROUP BY event
       `),
+      // Consultation is the Prisma-side half of the funnel (Tier-1 ① ledger).
+      // Raw SQL over the same Turso DB keeps analytics-db Prisma-free.
+      c.execute({
+        sql: `SELECT COUNT(*) AS n FROM Consultation WHERE paymentState = 'PAID' AND paidAt >= ?`,
+        args: [sinceIso],
+      }),
     ]);
     const evCount = (name: string) =>
       num(evRes.rows.find((r) => r.event === name)?.n);
@@ -445,9 +469,13 @@ export async function getFunnelEvents(
       sessions: num(sessRes.rows[0]?.n),
       consultationStarted: evCount('consultation_started'),
       wizardSubmitted: evCount('wizard_submitted'),
+      whatsappHandoff: evCount('whatsapp_handoff_clicked'),
+      upiPay: evCount('upi_pay_clicked'),
+      paymentConfirm: evCount('payment_confirm_clicked'),
+      paid: num(paidRes.rows[0]?.n),
     };
   } catch {
-    return { available: false, sessions: null, consultationStarted: null, wizardSubmitted: null };
+    return { available: false, sessions: null, consultationStarted: null, wizardSubmitted: null, whatsappHandoff: null, upiPay: null, paymentConfirm: null, paid: null };
   }
 }
 

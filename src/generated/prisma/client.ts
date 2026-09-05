@@ -67,6 +67,11 @@ export type InviteCode = Prisma.InviteCodeModel
  */
 export type FolioChunk = Prisma.FolioChunkModel
 /**
+ * Model Membership
+ * 
+ */
+export type Membership = Prisma.MembershipModel
+/**
  * Model InviteUsage
  * 
  */
