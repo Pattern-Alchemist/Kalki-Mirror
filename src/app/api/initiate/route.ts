@@ -8,9 +8,12 @@ import { PATTERN_ARCHETYPE_MAP, getArchetypeById, TEN_MAHAVIDYAS, ALL_ARCHETYPES
 import { getCautionLevel, type Tier } from '@/lib/data/types';
 import { retrievePrescription, retrieveCitation } from '@/lib/rag/retrieval';
 import { buildYantraUserPrompt, YANTRA_SYSTEM_PROMPT } from '@/lib/ai/yantra-prompt';
+import { synthesizeYantra } from '@/lib/ai/yantra-synthesize';
 import { optionalAuth, getClientIp } from '@/lib/api-auth';
 import { initiateSchema } from '@/lib/validators/schemas';
 import { initiateRateLimit } from '@/lib/rate-limit';
+
+export const maxDuration = 30;
 
 
 export async function POST(request: NextRequest) {
@@ -132,6 +135,52 @@ export async function POST(request: NextRequest) {
       })),
     });
 
+    // Step 7.5 (Tier-1 ③): the LLM connection itself. One OpenRouter call
+    // through the fallback chain, strict-JSON, soft-fail — the dossier
+    // degrades to the pattern-based synthesis exactly as before.
+    let synthesis: {
+      source: 'llm' | 'pattern';
+      model?: string;
+      prescription?: string;
+      cited_folios?: string[];
+    } = { source: 'pattern' };
+    let llmKarmicLoop: string | null = null;
+    let llmCitation: { text: string; source_slug: string; caution: string } | null = null;
+
+    if (process.env.OPENROUTER_API_KEY && allRetrievedChunks.length > 0) {
+      try {
+        const result = await synthesizeYantra({
+          behavioralQuery: query,
+          patterns: dominantPatterns.map(p => ({ name: p.name, subtitle: p.subtitle })),
+          transitSummary: formatTransitForPrompt(geometry),
+          folioChunks: allRetrievedChunks.map(c => ({
+            slug: c.slug,
+            section: c.section,
+            caution: c.caution,
+            text: c.text,
+          })),
+        });
+        if (result) {
+          synthesis = {
+            source: 'llm',
+            model: result.model,
+            prescription: result.output.prescription_line,
+            cited_folios: result.output.cited_folios,
+          };
+          llmKarmicLoop = result.output.karmic_loop;
+          const cautionOf = (slug: string) =>
+            allRetrievedChunks.find(c => c.slug === slug)?.caution ?? 'OPEN';
+          llmCitation = {
+            text: result.output.citation_line,
+            source_slug: result.output.cited_folios[0],
+            caution: cautionOf(result.output.cited_folios[0]),
+          };
+        }
+      } catch {
+        // soft-fail — the pattern synthesis below is the floor, never a crash
+      }
+    }
+
     // Step 8: Compose the Dossier
     const dossier = {
       timestamp: geometry.timestamp,
@@ -188,18 +237,23 @@ export async function POST(request: NextRequest) {
         cautionLevel: getCautionLevel(s!.level),
       })),
 
-      // Synthesis layer — YANTRA output (LLM-connected) or pattern-based fallback
-      karmic_loop: dominantPatterns.length > 0
-        ? `${dominantPatterns[0].description} ${dominantPatterns[0].practice}`.trim()
-        : null,
+      // Synthesis layer — LLM output (Tier-1 ③) or pattern-based fallback
+      karmic_loop: llmKarmicLoop
+        ?? (dominantPatterns.length > 0
+          ? `${dominantPatterns[0].description} ${dominantPatterns[0].practice}`.trim()
+          : null),
 
-      tantric_citation: citationChunks.length > 0
-        ? {
-            text: citationChunks[0].text,
-            source_slug: citationChunks[0].slug,
-            caution: citationChunks[0].caution,
-          }
-        : null,
+      tantric_citation: llmCitation
+        ?? (citationChunks.length > 0
+          ? {
+              text: citationChunks[0].text,
+              source_slug: citationChunks[0].slug,
+              caution: citationChunks[0].caution,
+            }
+          : null),
+
+      // Tier-1 ③ — provenance of the synthesis voice
+      synthesis,
 
       // YANTRA prompt (ready for LLM connection)
       yantra_prompt: {

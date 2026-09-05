@@ -56,6 +56,7 @@ export const ModelName = {
   PatternResolution: 'PatternResolution',
   InviteCode: 'InviteCode',
   FolioChunk: 'FolioChunk',
+  Membership: 'Membership',
   InviteUsage: 'InviteUsage',
   AdminAuditLog: 'AdminAuditLog',
   ContentEntry: 'ContentEntry',
@@ -165,6 +166,24 @@ export const FolioChunkScalarFieldEnum = {
 export type FolioChunkScalarFieldEnum = (typeof FolioChunkScalarFieldEnum)[keyof typeof FolioChunkScalarFieldEnum]
 
 
+export const MembershipScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  email: 'email',
+  name: 'name',
+  phone: 'phone',
+  plan: 'plan',
+  tier: 'tier',
+  status: 'status',
+  utrRef: 'utrRef',
+  grantedAt: 'grantedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof typeof MembershipScalarFieldEnum]
+
+
 export const InviteUsageScalarFieldEnum = {
   id: 'id',
   codeId: 'codeId',
@@ -239,7 +258,11 @@ export const ConsultationScalarFieldEnum = {
   country: 'country',
   referrerDomain: 'referrerDomain',
   landingPath: 'landingPath',
-  attributionJson: 'attributionJson'
+  attributionJson: 'attributionJson',
+  paymentState: 'paymentState',
+  paymentSession: 'paymentSession',
+  utrRef: 'utrRef',
+  paidAt: 'paidAt'
 } as const
 
 export type ConsultationScalarFieldEnum = (typeof ConsultationScalarFieldEnum)[keyof typeof ConsultationScalarFieldEnum]

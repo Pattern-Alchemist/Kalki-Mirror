@@ -354,6 +354,7 @@ export type UserWhereInput = {
   keysUsed?: Prisma.InviteUsageListRelationFilter
   activeSessions?: Prisma.ActiveSessionListRelationFilter
   notifications?: Prisma.AdminNotificationListRelationFilter
+  memberships?: Prisma.MembershipListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -383,6 +384,7 @@ export type UserOrderByWithRelationInput = {
   keysUsed?: Prisma.InviteUsageOrderByRelationAggregateInput
   activeSessions?: Prisma.ActiveSessionOrderByRelationAggregateInput
   notifications?: Prisma.AdminNotificationOrderByRelationAggregateInput
+  memberships?: Prisma.MembershipOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -415,6 +417,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   keysUsed?: Prisma.InviteUsageListRelationFilter
   activeSessions?: Prisma.ActiveSessionListRelationFilter
   notifications?: Prisma.AdminNotificationListRelationFilter
+  memberships?: Prisma.MembershipListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -498,6 +501,7 @@ export type UserCreateInput = {
   keysUsed?: Prisma.InviteUsageCreateNestedManyWithoutUserInput
   activeSessions?: Prisma.ActiveSessionCreateNestedManyWithoutUserInput
   notifications?: Prisma.AdminNotificationCreateNestedManyWithoutUserInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -527,6 +531,7 @@ export type UserUncheckedCreateInput = {
   keysUsed?: Prisma.InviteUsageUncheckedCreateNestedManyWithoutUserInput
   activeSessions?: Prisma.ActiveSessionUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.AdminNotificationUncheckedCreateNestedManyWithoutUserInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -556,6 +561,7 @@ export type UserUpdateInput = {
   keysUsed?: Prisma.InviteUsageUpdateManyWithoutUserNestedInput
   activeSessions?: Prisma.ActiveSessionUpdateManyWithoutUserNestedInput
   notifications?: Prisma.AdminNotificationUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -585,6 +591,7 @@ export type UserUncheckedUpdateInput = {
   keysUsed?: Prisma.InviteUsageUncheckedUpdateManyWithoutUserNestedInput
   activeSessions?: Prisma.ActiveSessionUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.AdminNotificationUncheckedUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -831,6 +838,22 @@ export type UserUpdateOneRequiredWithoutKeysGeneratedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutKeysGeneratedInput, Prisma.UserUpdateWithoutKeysGeneratedInput>, Prisma.UserUncheckedUpdateWithoutKeysGeneratedInput>
 }
 
+export type UserCreateNestedOneWithoutMembershipsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMembershipsInput
+  upsert?: Prisma.UserUpsertWithoutMembershipsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMembershipsInput, Prisma.UserUpdateWithoutMembershipsInput>, Prisma.UserUncheckedUpdateWithoutMembershipsInput>
+}
+
 export type UserCreateNestedOneWithoutKeysUsedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutKeysUsedInput, Prisma.UserUncheckedCreateWithoutKeysUsedInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutKeysUsedInput
@@ -901,6 +924,7 @@ export type UserCreateWithoutStreaksInput = {
   keysUsed?: Prisma.InviteUsageCreateNestedManyWithoutUserInput
   activeSessions?: Prisma.ActiveSessionCreateNestedManyWithoutUserInput
   notifications?: Prisma.AdminNotificationCreateNestedManyWithoutUserInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStreaksInput = {
@@ -929,6 +953,7 @@ export type UserUncheckedCreateWithoutStreaksInput = {
   keysUsed?: Prisma.InviteUsageUncheckedCreateNestedManyWithoutUserInput
   activeSessions?: Prisma.ActiveSessionUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.AdminNotificationUncheckedCreateNestedManyWithoutUserInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStreaksInput = {
@@ -973,6 +998,7 @@ export type UserUpdateWithoutStreaksInput = {
   keysUsed?: Prisma.InviteUsageUpdateManyWithoutUserNestedInput
   activeSessions?: Prisma.ActiveSessionUpdateManyWithoutUserNestedInput
   notifications?: Prisma.AdminNotificationUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStreaksInput = {
@@ -1001,6 +1027,7 @@ export type UserUncheckedUpdateWithoutStreaksInput = {
   keysUsed?: Prisma.InviteUsageUncheckedUpdateManyWithoutUserNestedInput
   activeSessions?: Prisma.ActiveSessionUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.AdminNotificationUncheckedUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutResolutionsInput = {
@@ -1029,6 +1056,7 @@ export type UserCreateWithoutResolutionsInput = {
   keysUsed?: Prisma.InviteUsageCreateNestedManyWithoutUserInput
   activeSessions?: Prisma.ActiveSessionCreateNestedManyWithoutUserInput
   notifications?: Prisma.AdminNotificationCreateNestedManyWithoutUserInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutResolutionsInput = {
@@ -1057,6 +1085,7 @@ export type UserUncheckedCreateWithoutResolutionsInput = {
   keysUsed?: Prisma.InviteUsageUncheckedCreateNestedManyWithoutUserInput
   activeSessions?: Prisma.ActiveSessionUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.AdminNotificationUncheckedCreateNestedManyWithoutUserInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutResolutionsInput = {
@@ -1101,6 +1130,7 @@ export type UserUpdateWithoutResolutionsInput = {
   keysUsed?: Prisma.InviteUsageUpdateManyWithoutUserNestedInput
   activeSessions?: Prisma.ActiveSessionUpdateManyWithoutUserNestedInput
   notifications?: Prisma.AdminNotificationUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutResolutionsInput = {
@@ -1129,6 +1159,7 @@ export type UserUncheckedUpdateWithoutResolutionsInput = {
   keysUsed?: Prisma.InviteUsageUncheckedUpdateManyWithoutUserNestedInput
   activeSessions?: Prisma.ActiveSessionUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.AdminNotificationUncheckedUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutKeysGeneratedInput = {
@@ -1157,6 +1188,7 @@ export type UserCreateWithoutKeysGeneratedInput = {
   keysUsed?: Prisma.InviteUsageCreateNestedManyWithoutUserInput
   activeSessions?: Prisma.ActiveSessionCreateNestedManyWithoutUserInput
   notifications?: Prisma.AdminNotificationCreateNestedManyWithoutUserInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutKeysGeneratedInput = {
@@ -1185,6 +1217,7 @@ export type UserUncheckedCreateWithoutKeysGeneratedInput = {
   keysUsed?: Prisma.InviteUsageUncheckedCreateNestedManyWithoutUserInput
   activeSessions?: Prisma.ActiveSessionUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.AdminNotificationUncheckedCreateNestedManyWithoutUserInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutKeysGeneratedInput = {
@@ -1229,6 +1262,7 @@ export type UserUpdateWithoutKeysGeneratedInput = {
   keysUsed?: Prisma.InviteUsageUpdateManyWithoutUserNestedInput
   activeSessions?: Prisma.ActiveSessionUpdateManyWithoutUserNestedInput
   notifications?: Prisma.AdminNotificationUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutKeysGeneratedInput = {
@@ -1254,6 +1288,139 @@ export type UserUncheckedUpdateWithoutKeysGeneratedInput = {
   twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   streaks?: Prisma.SadhanaStreakUncheckedUpdateManyWithoutUserNestedInput
   resolutions?: Prisma.PatternResolutionUncheckedUpdateManyWithoutUserNestedInput
+  keysUsed?: Prisma.InviteUsageUncheckedUpdateManyWithoutUserNestedInput
+  activeSessions?: Prisma.ActiveSessionUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.AdminNotificationUncheckedUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutMembershipsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  passwordHash?: string | null
+  role?: $Enums.UserRole
+  tier?: string
+  natalMoonLng?: number | null
+  birthDate?: Date | string | null
+  birthPlace?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  timezone?: string | null
+  lastTransmissionDate?: Date | string | null
+  invitedByCode?: string | null
+  goldKeysRemaining?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  twoFactorSecret?: string | null
+  twoFactorEnabled?: boolean
+  twoFactorBackupCodes?: string | null
+  streaks?: Prisma.SadhanaStreakCreateNestedManyWithoutUserInput
+  resolutions?: Prisma.PatternResolutionCreateNestedManyWithoutUserInput
+  keysGenerated?: Prisma.InviteCodeCreateNestedManyWithoutCreatorInput
+  keysUsed?: Prisma.InviteUsageCreateNestedManyWithoutUserInput
+  activeSessions?: Prisma.ActiveSessionCreateNestedManyWithoutUserInput
+  notifications?: Prisma.AdminNotificationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMembershipsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  passwordHash?: string | null
+  role?: $Enums.UserRole
+  tier?: string
+  natalMoonLng?: number | null
+  birthDate?: Date | string | null
+  birthPlace?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  timezone?: string | null
+  lastTransmissionDate?: Date | string | null
+  invitedByCode?: string | null
+  goldKeysRemaining?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  twoFactorSecret?: string | null
+  twoFactorEnabled?: boolean
+  twoFactorBackupCodes?: string | null
+  streaks?: Prisma.SadhanaStreakUncheckedCreateNestedManyWithoutUserInput
+  resolutions?: Prisma.PatternResolutionUncheckedCreateNestedManyWithoutUserInput
+  keysGenerated?: Prisma.InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+  keysUsed?: Prisma.InviteUsageUncheckedCreateNestedManyWithoutUserInput
+  activeSessions?: Prisma.ActiveSessionUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.AdminNotificationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMembershipsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
+}
+
+export type UserUpsertWithoutMembershipsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMembershipsInput, Prisma.UserUncheckedUpdateWithoutMembershipsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMembershipsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMembershipsInput, Prisma.UserUncheckedUpdateWithoutMembershipsInput>
+}
+
+export type UserUpdateWithoutMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  tier?: Prisma.StringFieldUpdateOperationsInput | string
+  natalMoonLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  birthPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastTransmissionDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedByCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  goldKeysRemaining?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streaks?: Prisma.SadhanaStreakUpdateManyWithoutUserNestedInput
+  resolutions?: Prisma.PatternResolutionUpdateManyWithoutUserNestedInput
+  keysGenerated?: Prisma.InviteCodeUpdateManyWithoutCreatorNestedInput
+  keysUsed?: Prisma.InviteUsageUpdateManyWithoutUserNestedInput
+  activeSessions?: Prisma.ActiveSessionUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.AdminNotificationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  tier?: Prisma.StringFieldUpdateOperationsInput | string
+  natalMoonLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  birthPlace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  timezone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastTransmissionDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedByCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  goldKeysRemaining?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  twoFactorBackupCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streaks?: Prisma.SadhanaStreakUncheckedUpdateManyWithoutUserNestedInput
+  resolutions?: Prisma.PatternResolutionUncheckedUpdateManyWithoutUserNestedInput
+  keysGenerated?: Prisma.InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
   keysUsed?: Prisma.InviteUsageUncheckedUpdateManyWithoutUserNestedInput
   activeSessions?: Prisma.ActiveSessionUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.AdminNotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1285,6 +1452,7 @@ export type UserCreateWithoutKeysUsedInput = {
   keysGenerated?: Prisma.InviteCodeCreateNestedManyWithoutCreatorInput
   activeSessions?: Prisma.ActiveSessionCreateNestedManyWithoutUserInput
   notifications?: Prisma.AdminNotificationCreateNestedManyWithoutUserInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutKeysUsedInput = {
@@ -1313,6 +1481,7 @@ export type UserUncheckedCreateWithoutKeysUsedInput = {
   keysGenerated?: Prisma.InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
   activeSessions?: Prisma.ActiveSessionUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.AdminNotificationUncheckedCreateNestedManyWithoutUserInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutKeysUsedInput = {
@@ -1357,6 +1526,7 @@ export type UserUpdateWithoutKeysUsedInput = {
   keysGenerated?: Prisma.InviteCodeUpdateManyWithoutCreatorNestedInput
   activeSessions?: Prisma.ActiveSessionUpdateManyWithoutUserNestedInput
   notifications?: Prisma.AdminNotificationUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutKeysUsedInput = {
@@ -1385,6 +1555,7 @@ export type UserUncheckedUpdateWithoutKeysUsedInput = {
   keysGenerated?: Prisma.InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
   activeSessions?: Prisma.ActiveSessionUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.AdminNotificationUncheckedUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutActiveSessionsInput = {
@@ -1413,6 +1584,7 @@ export type UserCreateWithoutActiveSessionsInput = {
   keysGenerated?: Prisma.InviteCodeCreateNestedManyWithoutCreatorInput
   keysUsed?: Prisma.InviteUsageCreateNestedManyWithoutUserInput
   notifications?: Prisma.AdminNotificationCreateNestedManyWithoutUserInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutActiveSessionsInput = {
@@ -1441,6 +1613,7 @@ export type UserUncheckedCreateWithoutActiveSessionsInput = {
   keysGenerated?: Prisma.InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
   keysUsed?: Prisma.InviteUsageUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.AdminNotificationUncheckedCreateNestedManyWithoutUserInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutActiveSessionsInput = {
@@ -1485,6 +1658,7 @@ export type UserUpdateWithoutActiveSessionsInput = {
   keysGenerated?: Prisma.InviteCodeUpdateManyWithoutCreatorNestedInput
   keysUsed?: Prisma.InviteUsageUpdateManyWithoutUserNestedInput
   notifications?: Prisma.AdminNotificationUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutActiveSessionsInput = {
@@ -1513,6 +1687,7 @@ export type UserUncheckedUpdateWithoutActiveSessionsInput = {
   keysGenerated?: Prisma.InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
   keysUsed?: Prisma.InviteUsageUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.AdminNotificationUncheckedUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -1541,6 +1716,7 @@ export type UserCreateWithoutNotificationsInput = {
   keysGenerated?: Prisma.InviteCodeCreateNestedManyWithoutCreatorInput
   keysUsed?: Prisma.InviteUsageCreateNestedManyWithoutUserInput
   activeSessions?: Prisma.ActiveSessionCreateNestedManyWithoutUserInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -1569,6 +1745,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   keysGenerated?: Prisma.InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
   keysUsed?: Prisma.InviteUsageUncheckedCreateNestedManyWithoutUserInput
   activeSessions?: Prisma.ActiveSessionUncheckedCreateNestedManyWithoutUserInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -1613,6 +1790,7 @@ export type UserUpdateWithoutNotificationsInput = {
   keysGenerated?: Prisma.InviteCodeUpdateManyWithoutCreatorNestedInput
   keysUsed?: Prisma.InviteUsageUpdateManyWithoutUserNestedInput
   activeSessions?: Prisma.ActiveSessionUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -1641,6 +1819,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   keysGenerated?: Prisma.InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
   keysUsed?: Prisma.InviteUsageUncheckedUpdateManyWithoutUserNestedInput
   activeSessions?: Prisma.ActiveSessionUncheckedUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1655,6 +1834,7 @@ export type UserCountOutputType = {
   keysUsed: number
   activeSessions: number
   notifications: number
+  memberships: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1664,6 +1844,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   keysUsed?: boolean | UserCountOutputTypeCountKeysUsedArgs
   activeSessions?: boolean | UserCountOutputTypeCountActiveSessionsArgs
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+  memberships?: boolean | UserCountOutputTypeCountMembershipsArgs
 }
 
 /**
@@ -1718,6 +1899,13 @@ export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Ty
   where?: Prisma.AdminNotificationWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MembershipWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1746,6 +1934,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   keysUsed?: boolean | Prisma.User$keysUsedArgs<ExtArgs>
   activeSessions?: boolean | Prisma.User$activeSessionsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1826,6 +2015,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   keysUsed?: boolean | Prisma.User$keysUsedArgs<ExtArgs>
   activeSessions?: boolean | Prisma.User$activeSessionsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1840,6 +2030,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     keysUsed: Prisma.$InviteUsagePayload<ExtArgs>[]
     activeSessions: Prisma.$ActiveSessionPayload<ExtArgs>[]
     notifications: Prisma.$AdminNotificationPayload<ExtArgs>[]
+    memberships: Prisma.$MembershipPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2262,6 +2453,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   keysUsed<T extends Prisma.User$keysUsedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$keysUsedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InviteUsagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   activeSessions<T extends Prisma.User$activeSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$activeSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActiveSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  memberships<T extends Prisma.User$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2843,6 +3035,30 @@ export type User$notificationsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.AdminNotificationScalarFieldEnum | Prisma.AdminNotificationScalarFieldEnum[]
+}
+
+/**
+ * User.memberships
+ */
+export type User$membershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Membership
+   */
+  select?: Prisma.MembershipSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Membership
+   */
+  omit?: Prisma.MembershipOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MembershipInclude<ExtArgs> | null
+  where?: Prisma.MembershipWhereInput
+  orderBy?: Prisma.MembershipOrderByWithRelationInput | Prisma.MembershipOrderByWithRelationInput[]
+  cursor?: Prisma.MembershipWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MembershipScalarFieldEnum | Prisma.MembershipScalarFieldEnum[]
 }
 
 /**

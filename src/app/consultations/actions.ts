@@ -110,6 +110,11 @@ export async function submitConsultation(formData: {
     const upi = resolveUpiConfig();
     return {
       success: true,
+      // Tier-1 ①: the wizard needs the lead id to attach a payment claim
+      // ("I've paid — confirm on WhatsApp" → CLAIMED on the reconciliation
+      // board). Safe to expose — the seeker received it from their own
+      // submission, same trust level as the submit action itself.
+      leadId: created.id,
       // Leak L1 — UPI manual rail (founder decision: "just Google Pay or UPI
       // through WhatsApp"). Payload present only when UPI_VPA is configured;
       // otherwise the wizard's success panel stays WhatsApp-only, exactly as
@@ -118,5 +123,42 @@ export async function submitConsultation(formData: {
     };
   } catch {
     return { success: false, error: "Failed to submit. Please try again." };
+  }
+}
+
+/**
+ * Tier-1 ① — record a payment claim from the wizard success panel.
+ *
+ * When the seeker taps "I've paid — confirm on WhatsApp", the lead flips
+ * UNPAID → CLAIMED on the reconciliation board with the chosen session.
+ * Guards:
+ *   · never downgrades PAID / WAIVED (archivist reconciliation wins)
+ *   · unknown lead id → soft-OK (the WhatsApp confirm message still carries
+ *     everything Kaustubh needs; this write is a convenience, not a gate)
+ *   · never throws into the client — the claim must not break the handoff
+ */
+export async function recordPaymentClaim(
+  leadId: string,
+  sessionSlug: string
+): Promise<{ ok: boolean }> {
+  try {
+    if (!leadId || !sessionSlug) return { ok: false };
+    const session = PAID_SESSIONS.find((s) => s.slug === sessionSlug);
+    if (!session) return { ok: false };
+
+    const lead = await db.consultation.findUnique({
+      where: { id: leadId },
+      select: { paymentState: true },
+    });
+    if (!lead) return { ok: false };
+    if (lead.paymentState !== "UNPAID") return { ok: true }; // already claimed/paid/waived
+
+    await db.consultation.update({
+      where: { id: leadId },
+      data: { paymentState: "CLAIMED", paymentSession: session.slug },
+    });
+    return { ok: true };
+  } catch {
+    return { ok: false };
   }
 }

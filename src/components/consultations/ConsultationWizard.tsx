@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { fadeInUp, fadeIn } from '@/lib/motion/tokens';
-import { submitConsultation } from '@/app/consultations/actions';
+import { submitConsultation, recordPaymentClaim } from '@/app/consultations/actions';
 import { track } from '@/lib/analytics/track';
 import { whatsappIntakeUrl, whatsappPaymentUrl } from '@/lib/utils/whatsapp';
 import { buildUpiPayUrl, formatINR, type PaidSession } from '@/lib/utils/upi';
@@ -477,6 +477,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
   const [direction, setDirection] = useState<1 | -1>(1);
   // Leak L1 — UPI manual rail (success-panel payment block)
   const [payment, setPayment] = useState<SubmitPayment | null>(null);
+  const [leadId, setLeadId] = useState<string | null>(null);
   const [selectedSession, setSelectedSession] = useState<PaidSession | null>(null);
   const [paid, setPaid] = useState(false);
   const [vpaCopied, setVpaCopied] = useState(false);
@@ -584,6 +585,7 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
     if (result.success) {
       track('wizard_submitted', { properties: { step: totalSteps, patterns: form.selectedPatterns.length, source: getAttribution()?.last.source ?? 'direct' } });
       setPayment(result.payment ?? null);
+      setLeadId(result.leadId ?? null);
       setSubmitted(true);
     } else {
       setFormError(result.error || 'Submission failed.');
@@ -715,7 +717,14 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
                       })}
                       target="_blank"
                       rel="noopener noreferrer"
-                      onClick={() => track('payment_confirm_clicked', { properties: { session: selectedSession.slug, paid } })}
+                      onClick={() => {
+                        track('payment_confirm_clicked', { properties: { session: selectedSession.slug, paid } });
+                        // Tier-1 ①: flip the lead to CLAIMED on the reconciliation
+                        // board — fire-and-forget, never breaks the handoff.
+                        if (leadId) {
+                          void recordPaymentClaim(leadId, selectedSession.slug).catch(() => {});
+                        }
+                      }}
                       className="ghost-cta w-full justify-center inline-flex"
                     >
                       {paid ? 'Send your payment confirmation →' : 'I\u2019ve paid — confirm on WhatsApp'}

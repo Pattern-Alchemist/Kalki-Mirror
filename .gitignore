@@ -69,6 +69,7 @@ scripts/geo-ops/logs/
 !scripts/backup-db.mjs
 # FolioChunk embedding baker ships with the repo (Leak L4 — corpus re-bake on change)
 !scripts/bake-folio-embeddings.ts
+# Tier-1 schema delta applier ships with the repo (migration record)
 *.zip
 cloudinary-map.json.open-next/
 

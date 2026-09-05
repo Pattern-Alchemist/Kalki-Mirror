@@ -30,6 +30,9 @@ export const EVENT_NAMES = [
   'wizard_step_completed',
   'wizard_submitted',
   'whatsapp_handoff_clicked',
+  // UPI manual rail (Leak L1 / Tier-1 ④ funnel — fired client-side since PR #6)
+  'upi_pay_clicked',
+  'payment_confirm_clicked',
   'email_subscribed',
 ] as const;
 
@@ -62,6 +65,8 @@ export const EVENT_META: Record<
   wizard_step_completed: { label: 'Wizard step passed', group: 'Conversion' },
   wizard_submitted: { label: 'Intake submitted (lead captured)', group: 'Conversion' },
   whatsapp_handoff_clicked: { label: 'WhatsApp handoff clicked', group: 'Conversion' },
+  upi_pay_clicked: { label: 'UPI pay intent opened', group: 'Conversion' },
+  payment_confirm_clicked: { label: 'Payment confirmed on WhatsApp', group: 'Conversion' },
   email_subscribed: { label: 'Newsletter signup', group: 'Retention' },
 };
 
@@ -211,6 +216,10 @@ export interface AnalyticsSnapshot {
     dossierCompleted: number;
     pricingViewed: number;
     consultationStarted: number;
+    whatsappHandoff: number;
+    upiPay: number;
+    paymentConfirm: number;
+    paid: number;
   };
   /** the 15 most recent raw events (live activity feed) */
   recentEvents: Array<{

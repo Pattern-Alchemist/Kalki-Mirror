@@ -53,6 +53,10 @@ export type ConsultationMinAggregateOutputType = {
   referrerDomain: string | null
   landingPath: string | null
   attributionJson: string | null
+  paymentState: string | null
+  paymentSession: string | null
+  utrRef: string | null
+  paidAt: Date | null
 }
 
 export type ConsultationMaxAggregateOutputType = {
@@ -84,6 +88,10 @@ export type ConsultationMaxAggregateOutputType = {
   referrerDomain: string | null
   landingPath: string | null
   attributionJson: string | null
+  paymentState: string | null
+  paymentSession: string | null
+  utrRef: string | null
+  paidAt: Date | null
 }
 
 export type ConsultationCountAggregateOutputType = {
@@ -115,6 +123,10 @@ export type ConsultationCountAggregateOutputType = {
   referrerDomain: number
   landingPath: number
   attributionJson: number
+  paymentState: number
+  paymentSession: number
+  utrRef: number
+  paidAt: number
   _all: number
 }
 
@@ -148,6 +160,10 @@ export type ConsultationMinAggregateInputType = {
   referrerDomain?: true
   landingPath?: true
   attributionJson?: true
+  paymentState?: true
+  paymentSession?: true
+  utrRef?: true
+  paidAt?: true
 }
 
 export type ConsultationMaxAggregateInputType = {
@@ -179,6 +195,10 @@ export type ConsultationMaxAggregateInputType = {
   referrerDomain?: true
   landingPath?: true
   attributionJson?: true
+  paymentState?: true
+  paymentSession?: true
+  utrRef?: true
+  paidAt?: true
 }
 
 export type ConsultationCountAggregateInputType = {
@@ -210,6 +230,10 @@ export type ConsultationCountAggregateInputType = {
   referrerDomain?: true
   landingPath?: true
   attributionJson?: true
+  paymentState?: true
+  paymentSession?: true
+  utrRef?: true
+  paidAt?: true
   _all?: true
 }
 
@@ -314,6 +338,10 @@ export type ConsultationGroupByOutputType = {
   referrerDomain: string | null
   landingPath: string | null
   attributionJson: string | null
+  paymentState: string
+  paymentSession: string | null
+  utrRef: string | null
+  paidAt: Date | null
   _count: ConsultationCountAggregateOutputType | null
   _min: ConsultationMinAggregateOutputType | null
   _max: ConsultationMaxAggregateOutputType | null
@@ -366,6 +394,10 @@ export type ConsultationWhereInput = {
   referrerDomain?: Prisma.StringNullableFilter<"Consultation"> | string | null
   landingPath?: Prisma.StringNullableFilter<"Consultation"> | string | null
   attributionJson?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  paymentState?: Prisma.StringFilter<"Consultation"> | string
+  paymentSession?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  utrRef?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  paidAt?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
 }
 
 export type ConsultationOrderByWithRelationInput = {
@@ -397,6 +429,10 @@ export type ConsultationOrderByWithRelationInput = {
   referrerDomain?: Prisma.SortOrderInput | Prisma.SortOrder
   landingPath?: Prisma.SortOrderInput | Prisma.SortOrder
   attributionJson?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentState?: Prisma.SortOrder
+  paymentSession?: Prisma.SortOrderInput | Prisma.SortOrder
+  utrRef?: Prisma.SortOrderInput | Prisma.SortOrder
+  paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
 }
 
 export type ConsultationWhereUniqueInput = Prisma.AtLeast<{
@@ -431,6 +467,10 @@ export type ConsultationWhereUniqueInput = Prisma.AtLeast<{
   referrerDomain?: Prisma.StringNullableFilter<"Consultation"> | string | null
   landingPath?: Prisma.StringNullableFilter<"Consultation"> | string | null
   attributionJson?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  paymentState?: Prisma.StringFilter<"Consultation"> | string
+  paymentSession?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  utrRef?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  paidAt?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
 }, "id">
 
 export type ConsultationOrderByWithAggregationInput = {
@@ -462,6 +502,10 @@ export type ConsultationOrderByWithAggregationInput = {
   referrerDomain?: Prisma.SortOrderInput | Prisma.SortOrder
   landingPath?: Prisma.SortOrderInput | Prisma.SortOrder
   attributionJson?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentState?: Prisma.SortOrder
+  paymentSession?: Prisma.SortOrderInput | Prisma.SortOrder
+  utrRef?: Prisma.SortOrderInput | Prisma.SortOrder
+  paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ConsultationCountOrderByAggregateInput
   _max?: Prisma.ConsultationMaxOrderByAggregateInput
   _min?: Prisma.ConsultationMinOrderByAggregateInput
@@ -499,6 +543,10 @@ export type ConsultationScalarWhereWithAggregatesInput = {
   referrerDomain?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
   landingPath?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
   attributionJson?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
+  paymentState?: Prisma.StringWithAggregatesFilter<"Consultation"> | string
+  paymentSession?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
+  utrRef?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
+  paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Consultation"> | Date | string | null
 }
 
 export type ConsultationCreateInput = {
@@ -530,6 +578,10 @@ export type ConsultationCreateInput = {
   referrerDomain?: string | null
   landingPath?: string | null
   attributionJson?: string | null
+  paymentState?: string
+  paymentSession?: string | null
+  utrRef?: string | null
+  paidAt?: Date | string | null
 }
 
 export type ConsultationUncheckedCreateInput = {
@@ -561,6 +613,10 @@ export type ConsultationUncheckedCreateInput = {
   referrerDomain?: string | null
   landingPath?: string | null
   attributionJson?: string | null
+  paymentState?: string
+  paymentSession?: string | null
+  utrRef?: string | null
+  paidAt?: Date | string | null
 }
 
 export type ConsultationUpdateInput = {
@@ -592,6 +648,10 @@ export type ConsultationUpdateInput = {
   referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentState?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentSession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ConsultationUncheckedUpdateInput = {
@@ -623,6 +683,10 @@ export type ConsultationUncheckedUpdateInput = {
   referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentState?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentSession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ConsultationCreateManyInput = {
@@ -654,6 +718,10 @@ export type ConsultationCreateManyInput = {
   referrerDomain?: string | null
   landingPath?: string | null
   attributionJson?: string | null
+  paymentState?: string
+  paymentSession?: string | null
+  utrRef?: string | null
+  paidAt?: Date | string | null
 }
 
 export type ConsultationUpdateManyMutationInput = {
@@ -685,6 +753,10 @@ export type ConsultationUpdateManyMutationInput = {
   referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentState?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentSession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ConsultationUncheckedUpdateManyInput = {
@@ -716,6 +788,10 @@ export type ConsultationUncheckedUpdateManyInput = {
   referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentState?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentSession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ConsultationCountOrderByAggregateInput = {
@@ -747,6 +823,10 @@ export type ConsultationCountOrderByAggregateInput = {
   referrerDomain?: Prisma.SortOrder
   landingPath?: Prisma.SortOrder
   attributionJson?: Prisma.SortOrder
+  paymentState?: Prisma.SortOrder
+  paymentSession?: Prisma.SortOrder
+  utrRef?: Prisma.SortOrder
+  paidAt?: Prisma.SortOrder
 }
 
 export type ConsultationMaxOrderByAggregateInput = {
@@ -778,6 +858,10 @@ export type ConsultationMaxOrderByAggregateInput = {
   referrerDomain?: Prisma.SortOrder
   landingPath?: Prisma.SortOrder
   attributionJson?: Prisma.SortOrder
+  paymentState?: Prisma.SortOrder
+  paymentSession?: Prisma.SortOrder
+  utrRef?: Prisma.SortOrder
+  paidAt?: Prisma.SortOrder
 }
 
 export type ConsultationMinOrderByAggregateInput = {
@@ -809,6 +893,10 @@ export type ConsultationMinOrderByAggregateInput = {
   referrerDomain?: Prisma.SortOrder
   landingPath?: Prisma.SortOrder
   attributionJson?: Prisma.SortOrder
+  paymentState?: Prisma.SortOrder
+  paymentSession?: Prisma.SortOrder
+  utrRef?: Prisma.SortOrder
+  paidAt?: Prisma.SortOrder
 }
 
 
@@ -842,6 +930,10 @@ export type ConsultationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   referrerDomain?: boolean
   landingPath?: boolean
   attributionJson?: boolean
+  paymentState?: boolean
+  paymentSession?: boolean
+  utrRef?: boolean
+  paidAt?: boolean
 }, ExtArgs["result"]["consultation"]>
 
 export type ConsultationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -873,6 +965,10 @@ export type ConsultationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   referrerDomain?: boolean
   landingPath?: boolean
   attributionJson?: boolean
+  paymentState?: boolean
+  paymentSession?: boolean
+  utrRef?: boolean
+  paidAt?: boolean
 }, ExtArgs["result"]["consultation"]>
 
 export type ConsultationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -904,6 +1000,10 @@ export type ConsultationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   referrerDomain?: boolean
   landingPath?: boolean
   attributionJson?: boolean
+  paymentState?: boolean
+  paymentSession?: boolean
+  utrRef?: boolean
+  paidAt?: boolean
 }, ExtArgs["result"]["consultation"]>
 
 export type ConsultationSelectScalar = {
@@ -935,9 +1035,13 @@ export type ConsultationSelectScalar = {
   referrerDomain?: boolean
   landingPath?: boolean
   attributionJson?: boolean
+  paymentState?: boolean
+  paymentSession?: boolean
+  utrRef?: boolean
+  paidAt?: boolean
 }
 
-export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "email" | "phone" | "request" | "status" | "scheduledFor" | "notes" | "createdAt" | "updatedAt" | "patternDiagnosis" | "prescribedSequence" | "prescribedSiddhis" | "sessionNotes" | "outcome" | "followUpDate" | "completedAt" | "utmSource" | "utmMedium" | "utmCampaign" | "utmTerm" | "utmContent" | "clickId" | "country" | "referrerDomain" | "landingPath" | "attributionJson", ExtArgs["result"]["consultation"]>
+export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "email" | "phone" | "request" | "status" | "scheduledFor" | "notes" | "createdAt" | "updatedAt" | "patternDiagnosis" | "prescribedSequence" | "prescribedSiddhis" | "sessionNotes" | "outcome" | "followUpDate" | "completedAt" | "utmSource" | "utmMedium" | "utmCampaign" | "utmTerm" | "utmContent" | "clickId" | "country" | "referrerDomain" | "landingPath" | "attributionJson" | "paymentState" | "paymentSession" | "utrRef" | "paidAt", ExtArgs["result"]["consultation"]>
 
 export type $ConsultationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Consultation"
@@ -971,6 +1075,10 @@ export type $ConsultationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     referrerDomain: string | null
     landingPath: string | null
     attributionJson: string | null
+    paymentState: string
+    paymentSession: string | null
+    utrRef: string | null
+    paidAt: Date | null
   }, ExtArgs["result"]["consultation"]>
   composites: {}
 }
@@ -1422,6 +1530,10 @@ export interface ConsultationFieldRefs {
   readonly referrerDomain: Prisma.FieldRef<"Consultation", 'String'>
   readonly landingPath: Prisma.FieldRef<"Consultation", 'String'>
   readonly attributionJson: Prisma.FieldRef<"Consultation", 'String'>
+  readonly paymentState: Prisma.FieldRef<"Consultation", 'String'>
+  readonly paymentSession: Prisma.FieldRef<"Consultation", 'String'>
+  readonly utrRef: Prisma.FieldRef<"Consultation", 'String'>
+  readonly paidAt: Prisma.FieldRef<"Consultation", 'DateTime'>
 }
     
 

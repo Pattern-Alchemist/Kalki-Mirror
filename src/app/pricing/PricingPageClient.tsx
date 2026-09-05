@@ -12,6 +12,9 @@ import { useTier } from '@/components/layout/TierProvider';
 import type { Currency } from '@/lib/data/pricing';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
 import { BackButton } from '@/components/nav/BackButton';
+import { requestMembership, resolvePublicUpi } from '@/app/admin/(dashboard)/memberships/actions';
+import { buildUpiPayUrl, formatINR } from '@/lib/utils/upi';
+import { whatsappPaymentUrl } from '@/lib/utils/whatsapp';
 import dynamic from 'next/dynamic';
 import { staggerContainer, staggerItem, fadeInUp } from '@/lib/motion/tokens';
 import { ScrollParallax } from '@/components/ui/ScrollParallax';
@@ -92,15 +95,74 @@ export default function PricingPageClient({ pricingTiers: tiers }: PricingPagePr
 
   const handleFAQToggle = useCallback((idx: number) => setOpenFAQ((prev) => (prev === idx ? null : idx)), []);
 
+  // ── Tier-1 ② — membership request flow (UPI manual rail) ──
+  const [requestTier, setRequestTier] = useState<PricingTier | null>(null);
+  const [upiCfg, setUpiCfg] = useState<{ vpa: string; payee: string } | null>(null);
+  const [reqForm, setReqForm] = useState({ name: '', email: '', phone: '' });
+  const [reqState, setReqState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [reqError, setReqError] = useState('');
+
+  useEffect(() => {
+    void resolvePublicUpi().then((c) => setUpiCfg(c));
+  }, []);
+
+  const monthlyINR = useCallback((t: PricingTier) => t.priceINR, []);
+
+  const openRequest = useCallback((t: PricingTier) => {
+    setRequestTier(t);
+    setReqState('idle');
+    setReqError('');
+  }, []);
+
+  const submitRequest = useCallback(async (paid: boolean) => {
+    if (!requestTier) return;
+    if (!reqForm.email.includes('@')) {
+      setReqError('A valid email is required — Kaustubh confirms every membership personally.');
+      return;
+    }
+    setReqState('sending');
+    setReqError('');
+    const res = await requestMembership({
+      name: reqForm.name,
+      email: reqForm.email,
+      phone: reqForm.phone,
+      plan: requestTier.id,
+    });
+    if (res.ok) {
+      setReqState('sent');
+      if (paid && upiCfg) {
+        // Hand off to WhatsApp for the reconciliation message (same rail as the wizard).
+        window.open(
+          whatsappPaymentUrl(reqForm.name || reqForm.email, {
+            sessionName: `${TIER_LABELS[requestTier.id]} membership (${requestTier.element})`,
+            amountINR: monthlyINR(requestTier),
+            vpa: upiCfg.vpa,
+            paid,
+          }),
+          '_blank',
+          'noopener,noreferrer',
+        );
+      }
+    } else {
+      setReqState('error');
+      setReqError(res.error ?? 'Request failed — try again.');
+    }
+  }, [requestTier, reqForm, upiCfg, monthlyINR]);
+
   const handleCTA = useCallback((tierId: Tier) => {
     const t = tiers.find((x) => x.id === tierId);
     if (!t) return;
-    const price = billing === 'monthly' ? (currency === 'INR' ? t.priceINR : t.priceUSD) : (currency === 'INR' ? t.yearlyINR : t.yearlyUSD);
-    const priceStr = formatPrice(price ?? 0, currency);
-    const tierLabel = TIER_LABELS[tierId];
-    const waLink = buildWhatsAppLink(tierLabel, priceStr, billing, currency);
-    window.open(waLink, '_blank', 'noopener,noreferrer');
-  }, [billing, currency, tiers]);
+    if (tierId === 'prithvi') {
+      const price = billing === 'monthly' ? (currency === 'INR' ? t.priceINR : t.priceUSD) : (currency === 'INR' ? t.yearlyINR : t.yearlyUSD);
+      const priceStr = formatPrice(price ?? 0, currency);
+      const tierLabel = TIER_LABELS[tierId];
+      const waLink = buildWhatsAppLink(tierLabel, priceStr, billing, currency);
+      window.open(waLink, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    // Tier-1 ②: paid tiers open the membership request flow (UPI manual rail).
+    openRequest(t);
+  }, [billing, currency, tiers, openRequest]);
 
   return (
     <div className="bg-deep-black min-h-screen">
@@ -280,6 +342,107 @@ export default function PricingPageClient({ pricingTiers: tiers }: PricingPagePr
           </div>
         </motion.div>
       </div>
+
+      {/* ── Tier-1 ② — Membership request modal (UPI manual rail) ── */}
+      <AnimatePresence>
+        {requestTier && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+            onClick={() => setRequestTier(null)}
+          >
+            <motion.div
+              initial={{ y: 24, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 24, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="glass-panel w-full max-w-md p-8"
+              role="dialog"
+              aria-modal="true"
+              aria-label={`Request ${TIER_LABELS[requestTier.id]} membership`}
+            >
+              {reqState === 'sent' ? (
+                <div className="text-center">
+                  <p className="text-caption mb-3">Request received</p>
+                  <h3 className="font-display text-2xl text-foreground mb-3">The ledger holds your name.</h3>
+                  <p className="text-text-secondary text-sm leading-relaxed mb-6">
+                    Kaustubh reconciles every membership by hand. Your WhatsApp confirmation is
+                    opening — once the UTR checks out, access is granted from the console.
+                  </p>
+                  <button onClick={() => setRequestTier(null)} className="gold-cta w-full">Close</button>
+                </div>
+              ) : (
+                <>
+                  <p className="text-caption mb-2">Membership request</p>
+                  <h3 className="font-display text-2xl text-foreground">{TIER_LABELS[requestTier.id]}</h3>
+                  <p className="text-gold font-display text-sm italic mb-5">{requestTier.elementSanskrit} · {formatINR(monthlyINR(requestTier))}/mo</p>
+
+                  <div className="space-y-3 mb-4">
+                    <input
+                      value={reqForm.name}
+                      onChange={(e) => setReqForm({ ...reqForm, name: e.target.value })}
+                      placeholder="Your name"
+                      className="w-full rounded-sm border border-gold-dim/30 bg-white/[0.03] px-4 py-3 text-sm text-foreground placeholder:text-text-muted focus:border-gold focus:outline-none"
+                    />
+                    <input
+                      value={reqForm.email}
+                      onChange={(e) => setReqForm({ ...reqForm, email: e.target.value })}
+                      placeholder="Email (required)"
+                      type="email"
+                      className="w-full rounded-sm border border-gold-dim/30 bg-white/[0.03] px-4 py-3 text-sm text-foreground placeholder:text-text-muted focus:border-gold focus:outline-none"
+                    />
+                    <input
+                      value={reqForm.phone}
+                      onChange={(e) => setReqForm({ ...reqForm, phone: e.target.value })}
+                      placeholder="WhatsApp number (optional)"
+                      className="w-full rounded-sm border border-gold-dim/30 bg-white/[0.03] px-4 py-3 text-sm text-foreground placeholder:text-text-muted focus:border-gold focus:outline-none"
+                    />
+                  </div>
+
+                  {reqError && <p className="mb-3 text-xs text-red-400">{reqError}</p>}
+
+                  {upiCfg && currency === 'INR' ? (
+                    <a
+                      href={buildUpiPayUrl({
+                        vpa: upiCfg.vpa,
+                        payee: upiCfg.payee,
+                        amountINR: monthlyINR(requestTier),
+                        note: `KALKI ${requestTier.id} membership`,
+                      })}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="gold-cta w-full justify-center inline-flex mb-3"
+                    >
+                      Pay {formatINR(monthlyINR(requestTier))} — Google Pay / UPI
+                    </a>
+                  ) : (
+                    <p className="mb-3 text-xs text-text-muted">
+                      {currency === 'INR' ? 'UPI is being configured — coordinate payment with Kaustubh on WhatsApp for now.' : 'The UPI rail is INR-only — international memberships coordinate on WhatsApp.'}
+                    </p>
+                  )}
+
+                  <button
+                    onClick={() => void submitRequest(true)}
+                    disabled={reqState === 'sending'}
+                    className="ghost-cta w-full mb-2 disabled:opacity-40"
+                  >
+                    {reqState === 'sending' ? 'Sending…' : "I've paid — request membership"}
+                  </button>
+                  <button
+                    onClick={() => void submitRequest(false)}
+                    disabled={reqState === 'sending'}
+                    className="block w-full text-center text-[0.6875rem] text-text-muted hover:text-text-secondary transition-colors"
+                  >
+                    Request first, pay after speaking with Kaustubh
+                  </button>
+                </>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

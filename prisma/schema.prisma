@@ -70,6 +70,7 @@ model User {
   keysUsed      InviteUsage[]    @relation("UsedKeys")
   activeSessions ActiveSession[]
   notifications  AdminNotification[]
+  memberships   Membership[]
 }
 
 // ============================================================
@@ -164,6 +165,26 @@ model FolioChunk {
   @@index([slug])
   @@index([caution])
   @@index([section])
+}
+
+model Membership {
+  id        String    @id @default(cuid())
+  userId    String?   // console user granted the tier — null until grant (seeker may have no account yet)
+  email     String
+  name      String    @default("")
+  phone     String    @default("")
+  plan      String    // plan slug from src/lib/data/pricing.ts (jal | agni | akash)
+  tier      String    // granted tier: prithvi | jal | agni | akash
+  status    String    @default("PENDING") // PENDING | ACTIVE | CANCELLED
+  utrRef    String?   // UPI reference if paid via the manual rail
+  grantedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([email])
 }
 
 model InviteUsage {
@@ -266,8 +287,19 @@ model Consultation {
   landingPath     String?   // first-touch path+query on astrokalki.com
   attributionJson String?   // full AttributionSnapshot (first/last/sessions)
 
+  // ── UPI payment reconciliation (Tier-1 roadmap; manual rail by design) ──
+  // UNPAID → CLAIMED (seeker hit "I've paid — confirm on WhatsApp") →
+  // PAID (archivist reconciled the UTR) | WAIVED (discovery/comp). The
+  // manual rail means reconciliation is a human act — these columns are
+  // its ledger.
+  paymentState   String    @default("UNPAID")
+  paymentSession String?   // PAID_SESSIONS slug the seeker chose
+  utrRef         String?   // UPI reference / UTR quoted by the seeker
+  paidAt         DateTime?
+
   @@index([status, scheduledFor])
   @@index([phone])
+  @@index([paymentState])
 }
 
 // ============================================================
