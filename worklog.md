@@ -927,3 +927,24 @@ Stage Summary:
 - Founder's two questions answered and fixed: EMBED_API_KEY is a deliberate future hook (now visible + explained on the panel), and the seed command was dead code since the Prisma 7 migration — rewritten, tested both branches, used on production, and verified end-to-end with a real login.
 - Admin state: archivist@kalki.mirror / SUPERADMIN with a rotated strong password (delivered to founder in-session), 2FA unenrolled, grace ends ~2026-09-12 — TOTP enrollment at /admin/settings is the founder's one open action.
 - Pending: git push 427b273 (needs PAT re-pasted; production already carries the change).
+
+---
+Task ID: vol3-week-a
+Agent: Z (Super Z, main session)
+Task: Founder re-supplied the full credential handoff (incl. GitHub PAT) and directed: "Enlist and work upon next 20 upgrades and enhancements." Enlist Vol. 3, execute Week A, ship to production.
+
+Work Log:
+- Credential ops: PAT stored at .gh_token (runbook convention) — discovered the runbook's claim that .gitignore already excluded it was FALSE; added the rule and committed. Pending commits 427b273 + 8806989 pushed (7989c04..8806989). Admin password reconciled to the handoff value Iron-Amber-Drift-Diya-85! via the seed script (grace anchor preserved: elevatedAt 2026-09-05, TOTP deadline ~2026-09-12) and verified with a live login (200 + session cookie).
+- Roadmap: docs/roadmap-vol3-next-20.md committed — 20 items in 4 tiers (T9 close-the-loops, T10 list-and-reach, T11 seeker-self-service, T12 hardening), grounded in a full codebase gap survey (admin surfaces, email engine, SEO, UX, member self-service, API hygiene, tests, schema, crons, content). Founder-gated carry-overs (EMBED key, GSC OAuth, TOTP enrollment) documented but not counted.
+- #1 outcome writer: saveOutcome action (enum-gated to dossier OutcomeStatus; slug lists → JSON arrays; undefined=untouched, empty=clear; completedAt stamped once on RESOLVED/DISCONTINUED; audited + webhook + bell) + OutcomeSection in the LIVE LeadDrawer (consultations-client.tsx turned out to be orphaned — the 716-line page.tsx is the real board) + outcome chips on LeadCards. 8 tests.
+- #3 follow-up queue: getFollowUpsDue action + cyan due-strip above the kanban + FOLLOW-UPS DUE digest section.
+- #18 events enum gate: unknown names → 422 (void-fetch tracker keeps it invisible to seekers). 6 tests.
+- #19 cleanup + backup freshness: OpsState KV model applied to PRODUCTION via scripts/apply-vol3-schema.ts (prisma db push silently targeted the local /tmp fallback first — prisma.config.ts reads DATABASE_URL not TURSO_DATABASE_URL; and the CLI P1013s on libsql:// — the tier-script DDL path is the way); /api/cron/cleanup (SynthesisCache expired / ActiveSession 30d / EmailEvent 180d / DISMISSED DraftLead 30d, dryRun + marker, cron 45 3 * * *); backup-db.mjs writes last_backup_at best-effort (dump collection stays read-only); /health gains backup age + 48h stale flag; digest gains OPS HEALTH. 6 tests. PROVEN: real backup run marked 04:24Z, dump 23→24 tables.
+- #17 revenue/token tests: buildUpiPayUrl hardened (positive-integer amount + handle@bank VPA guards — previously a ₹0/negative collect or handle-less VPA emitted a broken intent silently); 9 UPI + 8 unsubscribe-token tests (determinism, folding, secret rotation, cross-email replay, RFC 8058).
+- BONUS BUG (health): corpus === 279 hardcoded — the 327-chunk era has reported status "degraded" since the Tier-4 re-bake. Now compares against bake-derived CORPUS_SIZE; stale 279 comments fixed in schema + static-db.
+- Gauntlet: tsc clean · 349/349 vitest (37 new) · build 235 pages. Pushed 5d151b5 → Vercel READY (git-triggered).
+- Production smoke: /api/health status "ok" (first time since the re-bake) + backup age 0.4h stale:false; /api/events bogus→422 known→204; /api/cron/cleanup 401 with a wrong key (auth wall intact; real secret is the encrypted prod CRON_SECRET — Vercel cron carries it); new board UI confirmed in deployed chunks ("Follow-ups due" + "Session outcome (dossier)" both present); admin board renders 200 with session.
+
+Stage Summary:
+- Vol. 3 enlisted and Week A shipped: 6 of 20 items live (1, 3, 17, 18, 19 + the health bug) — the dossier loop is now writable end-to-end, the follow-up promise has a surface and a digest line, analytics pollution is gated, the DB has TTLs and a visible backup clock, and the payment rail throws on malformed input.
+- Open founder actions: TOTP enrollment before ~2026-09-12 (grace window); remaining Vol. 3 items per the Week B/C order (glossary pages, Content-Studio public renderer, course JSON-LD, then the email list batch).
