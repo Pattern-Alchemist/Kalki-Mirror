@@ -11,6 +11,12 @@ import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { cn } from '@/lib/utils';
 import { logSession, getSessions, getSessionStats } from './actions';
 import type { SessionRecord, SessionStats } from './actions';
+import {
+  milestonesReached,
+  milestoneProgress,
+  milestoneShareText,
+  MILESTONES,
+} from '@/lib/practice/milestones';
 import Link from 'next/link';
 import {
   Timer,
@@ -25,6 +31,9 @@ import {
   ChevronDown,
   ChevronRight,
   ArrowRight,
+  Share2,
+  Check,
+  Flag,
 } from 'lucide-react';
 
 /* ══════════════════════════════════════════════════════════════
@@ -90,6 +99,118 @@ function StatCard({
       <span className="text-2xl md:text-3xl font-display text-ivory">
         <AnimatedCounter target={value} suffix={suffix || ''} />
       </span>
+    </motion.div>
+  );
+}
+
+/* ── Milestone Card (Vol. 3 #15) — streak gates made visible ── */
+function MilestoneCard({
+  currentStreak,
+  longestStreak,
+}: {
+  currentStreak: number;
+  longestStreak: number;
+}) {
+  const reduced = useNativeReducedMotion();
+  const [shared, setShared] = useState(false);
+  const reached = milestonesReached(currentStreak);
+  const progress = milestoneProgress(currentStreak);
+
+  async function share() {
+    try {
+      await navigator.clipboard.writeText(milestoneShareText(currentStreak));
+      setShared(true);
+      setTimeout(() => setShared(false), 2200);
+    } catch {
+      /* clipboard unavailable — silently ignore */
+    }
+  }
+
+  return (
+    <motion.div
+      className="glass-panel mt-4 p-6 md:p-8"
+      initial={reduced ? { opacity: 1 } : fadeInUp.hidden}
+      whileInView={reduced ? { opacity: 1 } : fadeInUp.visible}
+      viewport={{ once: true, margin: '-40px' }}
+    >
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+        <div>
+          <p className="text-text-muted text-[0.65rem] font-mono tracking-[0.25em] uppercase mb-2 flex items-center gap-2">
+            <Flag className="w-3.5 h-3.5 text-gold-dim" strokeWidth={1.5} />
+            Streak Gates
+          </p>
+          <p className="font-display text-ivory text-lg md:text-xl font-light tracking-wide">
+            {currentStreak > 0 ? (
+              <>
+                Day <span className="text-gold">{currentStreak}</span> of uninterrupted
+                sādhana
+              </>
+            ) : (
+              <>The first gate opens at 7 days</>
+            )}
+          </p>
+          {progress ? (
+            <p className="text-text-muted text-xs mt-1">
+              {progress.daysRemaining} more to{' '}
+              <span className="text-gold-dim">
+                {progress.milestone.days}-day {progress.milestone.title}
+              </span>
+            </p>
+          ) : (
+            <p className="text-text-muted text-xs mt-1">
+              Longest streak: {longestStreak} days — every gate has opened.
+            </p>
+          )}
+        </div>
+        {currentStreak > 0 && (
+          <button
+            type="button"
+            onClick={share}
+            className="shrink-0 inline-flex items-center gap-2 border border-white/15 hover:border-gold/50 text-text-muted hover:text-gold text-[0.62rem] font-mono tracking-[0.2em] uppercase px-4 py-2 rounded-md transition-colors"
+            aria-label="Copy milestone to share"
+          >
+            {shared ? (
+              <Check className="w-3.5 h-3.5 text-gold" strokeWidth={1.5} />
+            ) : (
+              <Share2 className="w-3.5 h-3.5" strokeWidth={1.5} />
+            )}
+            {shared ? 'Copied' : 'Share'}
+          </button>
+        )}
+      </div>
+
+      {progress && (
+        <div className="mt-5">
+          <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-gold-dim to-gold rounded-full transition-all duration-700"
+              style={{ width: `${progress.pct}%` }}
+            />
+          </div>
+          <div className="flex justify-between mt-1.5">
+            <span className="text-[0.55rem] font-mono text-text-muted/60 tracking-wider">
+              {progress.pct}% to the {progress.milestone.days}-day gate
+            </span>
+            <span className="text-[0.55rem] font-mono text-text-muted/60 tracking-wider">
+              {MILESTONES[MILESTONES.length - 1].days}
+            </span>
+          </div>
+        </div>
+      )}
+
+      {reached.length > 0 && (
+        <div className="flex flex-wrap gap-2 mt-5">
+          {reached.map((m) => (
+            <span
+              key={m.days}
+              title={m.note}
+              className="text-[0.6rem] font-mono tracking-[0.15em] uppercase border border-gold/30 bg-gold/10 text-gold px-2.5 py-1 rounded-full"
+            >
+              {m.days}d · {m.title}
+            </span>
+          ))}
+        </div>
+      )}
     </motion.div>
   );
 }
@@ -606,6 +727,10 @@ export default function PracticeLoggerPage({ siddhisByLevel }: { siddhisByLevel:
               <StatCard icon={Flame} label="Current Streak" value={stats.currentStreak} suffix="d" />
               <StatCard icon={Trophy} label="Longest Streak" value={stats.longestStreak} suffix="d" />
             </motion.div>
+            <MilestoneCard
+              currentStreak={stats.currentStreak}
+              longestStreak={stats.longestStreak}
+            />
             {stats.topPractice && (
               <motion.p
                 className="text-center text-[0.6rem] font-mono tracking-[0.15em] text-text-muted mt-6"
