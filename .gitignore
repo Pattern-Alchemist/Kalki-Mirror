@@ -34,6 +34,10 @@ yarn-error.log*
 .env*
 !.env.local.example
 
+# GitHub PAT store (docs/security/credential-rotation-runbook.md §1 — helper
+# scripts read it from here; the runbook claimed this was already excluded)
+.gh_token
+
 # database backups (dumps contain password hashes — NEVER commit)
 backups/
 

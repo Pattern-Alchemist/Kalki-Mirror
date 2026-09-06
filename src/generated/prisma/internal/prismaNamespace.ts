@@ -417,7 +417,8 @@ export const ModelName = {
   EmailEvent: 'EmailEvent',
   DraftLead: 'DraftLead',
   SynthesisCache: 'SynthesisCache',
-  PatternPairAffinity: 'PatternPairAffinity'
+  PatternPairAffinity: 'PatternPairAffinity',
+  OpsState: 'OpsState'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -433,7 +434,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "draftLead" | "synthesisCache" | "patternPairAffinity"
+    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1991,6 +1992,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    OpsState: {
+      payload: Prisma.$OpsStatePayload<ExtArgs>
+      fields: Prisma.OpsStateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OpsStateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpsStatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OpsStateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpsStatePayload>
+        }
+        findFirst: {
+          args: Prisma.OpsStateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpsStatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OpsStateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpsStatePayload>
+        }
+        findMany: {
+          args: Prisma.OpsStateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpsStatePayload>[]
+        }
+        create: {
+          args: Prisma.OpsStateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpsStatePayload>
+        }
+        createMany: {
+          args: Prisma.OpsStateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OpsStateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpsStatePayload>[]
+        }
+        delete: {
+          args: Prisma.OpsStateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpsStatePayload>
+        }
+        update: {
+          args: Prisma.OpsStateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpsStatePayload>
+        }
+        deleteMany: {
+          args: Prisma.OpsStateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OpsStateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OpsStateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpsStatePayload>[]
+        }
+        upsert: {
+          args: Prisma.OpsStateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OpsStatePayload>
+        }
+        aggregate: {
+          args: Prisma.OpsStateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOpsState>
+        }
+        groupBy: {
+          args: Prisma.OpsStateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OpsStateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OpsStateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OpsStateCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2383,6 +2458,15 @@ export const PatternPairAffinityScalarFieldEnum = {
 export type PatternPairAffinityScalarFieldEnum = (typeof PatternPairAffinityScalarFieldEnum)[keyof typeof PatternPairAffinityScalarFieldEnum]
 
 
+export const OpsStateScalarFieldEnum = {
+  key: 'key',
+  value: 'value',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OpsStateScalarFieldEnum = (typeof OpsStateScalarFieldEnum)[keyof typeof OpsStateScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2618,6 +2702,7 @@ export type GlobalOmitConfig = {
   draftLead?: Prisma.DraftLeadOmit
   synthesisCache?: Prisma.SynthesisCacheOmit
   patternPairAffinity?: Prisma.PatternPairAffinityOmit
+  opsState?: Prisma.OpsStateOmit
 }
 
 /* Types for Logging */

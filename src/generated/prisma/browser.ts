@@ -122,3 +122,8 @@ export type SynthesisCache = Prisma.SynthesisCacheModel
  * 
  */
 export type PatternPairAffinity = Prisma.PatternPairAffinityModel
+/**
+ * Model OpsState
+ * 
+ */
+export type OpsState = Prisma.OpsStateModel

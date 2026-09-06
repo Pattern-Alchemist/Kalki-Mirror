@@ -71,7 +71,8 @@ export const ModelName = {
   EmailEvent: 'EmailEvent',
   DraftLead: 'DraftLead',
   SynthesisCache: 'SynthesisCache',
-  PatternPairAffinity: 'PatternPairAffinity'
+  PatternPairAffinity: 'PatternPairAffinity',
+  OpsState: 'OpsState'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -441,6 +442,15 @@ export const PatternPairAffinityScalarFieldEnum = {
 } as const
 
 export type PatternPairAffinityScalarFieldEnum = (typeof PatternPairAffinityScalarFieldEnum)[keyof typeof PatternPairAffinityScalarFieldEnum]
+
+
+export const OpsStateScalarFieldEnum = {
+  key: 'key',
+  value: 'value',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OpsStateScalarFieldEnum = (typeof OpsStateScalarFieldEnum)[keyof typeof OpsStateScalarFieldEnum]
 
 
 export const SortOrder = {

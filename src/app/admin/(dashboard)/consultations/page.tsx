@@ -7,8 +7,19 @@ import {
   deleteConsultation,
   setPaymentPaid,
   setPaymentWaived,
+  saveOutcome,
+  getFollowUpsDue,
   type ConsultationRow,
 } from "./actions";
+
+/* Vol. 3 #1 — outcome lifecycle (mirrors dossier/actions.ts OutcomeStatus) */
+type OutcomeInput = Parameters<typeof saveOutcome>[1];
+const OUTCOME_COLOR: Record<string, string> = {
+  PENDING: "border-zinc-600 text-zinc-400",
+  IN_PROGRESS: "border-blue-500/40 text-blue-300",
+  RESOLVED: "border-emerald-500/40 text-emerald-300",
+  DISCONTINUED: "border-zinc-700 text-zinc-500",
+};
 
 /* ─── Pipeline constants ──────────────────────────────────────────────────── */
 
@@ -110,6 +121,8 @@ export default function ConsultationsPage() {
   const [countryFilter, setCountryFilter] = useState("ALL");
   const [kindFilter, setKindFilter] = useState("ALL");
   const [paymentFilter, setPaymentFilter] = useState("ALL");
+  // Vol. 3 #3 — follow-up queue (due followUpDate, live outcome fields)
+  const [followUps, setFollowUps] = useState<Array<ConsultationRow & { status: string }>>([]);
 
   const loadPipeline = useCallback(async () => {
     setLoading(true);
@@ -130,6 +143,59 @@ export default function ConsultationsPage() {
   useEffect(() => {
     loadPipeline();
   }, [loadPipeline]);
+
+  // Vol. 3 #3 — load the follow-up queue alongside the pipeline.
+  const loadFollowUps = useCallback(async () => {
+    try {
+      setFollowUps((await getFollowUpsDue()) as Array<ConsultationRow & { status: string }>);
+    } catch {
+      // queue is advisory — never block the board on it
+    }
+  }, []);
+  useEffect(() => {
+    loadFollowUps();
+  }, [loadFollowUps]);
+
+  // Vol. 3 #1 — outcome writer handler: optimistically patches the board
+  // and the open drawer, then refreshes the follow-up queue.
+  const saveOutcomeFor = useCallback(
+    async (lead: ConsultationRow, input: OutcomeInput) => {
+      setSavingStatus(true);
+      try {
+        await saveOutcome(lead.id, input);
+        setLeads((prev) =>
+          prev.map((c) =>
+            c.id === lead.id
+              ? {
+                  ...c,
+                  outcome: input.outcome !== undefined ? input.outcome || null : c.outcome,
+                  patternDiagnosis: input.patternSlugs !== undefined
+                    ? input.patternSlugs ? JSON.stringify(input.patternSlugs.split(",").map((s) => s.trim()).filter(Boolean)) : null
+                    : c.patternDiagnosis,
+                  prescribedSequence: input.sequenceSlug !== undefined ? input.sequenceSlug.trim() || null : c.prescribedSequence,
+                  prescribedSiddhis: input.siddhiSlugs !== undefined
+                    ? input.siddhiSlugs ? JSON.stringify(input.siddhiSlugs.split(",").map((s) => s.trim()).filter(Boolean)) : null
+                    : c.prescribedSiddhis,
+                  sessionNotes: input.sessionNotes !== undefined ? input.sessionNotes.trim() || null : c.sessionNotes,
+                  followUpDate: input.followUpDate !== undefined ? (input.followUpDate ? new Date(input.followUpDate) : null) : c.followUpDate,
+                  completedAt:
+                    input.outcome === "RESOLVED" || input.outcome === "DISCONTINUED"
+                      ? (c.completedAt ?? new Date())
+                      : c.completedAt,
+                }
+              : c,
+          ),
+        );
+        setSelected((s) => (s && s.id === lead.id ? { ...s } : s));
+        loadFollowUps();
+      } catch {
+        setError("Saving outcome failed — try again.");
+      } finally {
+        setSavingStatus(false);
+      }
+    },
+    [loadFollowUps],
+  );
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -260,6 +326,30 @@ export default function ConsultationsPage() {
 
   return (
     <div className="space-y-6">
+      {/* Vol. 3 #3 — Follow-up queue: dates that have arrived */}
+      {followUps.length > 0 && (
+        <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/[0.04] p-4">
+          <p className="text-xs font-semibold uppercase tracking-wider text-cyan-400/80">
+            Follow-ups due · {followUps.length}
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {followUps.map((f) => (
+              <button
+                key={f.id}
+                onClick={() => setSelected(f)}
+                className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-1.5 text-left transition-colors hover:border-cyan-500/40"
+              >
+                <span className="text-xs font-medium text-zinc-200">{f.name}</span>
+                <span className="ml-2 text-[0.65rem] text-zinc-500">
+                  promised {f.followUpDate ? fmtDate(f.followUpDate) : "—"}
+                  {f.outcome ? ` · ${f.outcome.toLowerCase()}` : ""}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
@@ -395,9 +485,165 @@ export default function ConsultationsPage() {
           onSaveNotes={(n) => saveNotes(selected, n)}
           onSavePaymentPaid={(utr) => savePaymentPaid(selected, utr)}
           onSavePaymentWaived={() => savePaymentWaived(selected)}
+          onSaveOutcome={(input) => saveOutcomeFor(selected, input)}
           onDelete={() => deleteLead(selected)}
         />
       )}
+    </div>
+  );
+}
+
+/* ─── Vol. 3 #1 — Outcome section ───────────────────────────────────── */
+
+function slugsToText(json: string | null): string {
+  if (!json) return "";
+  try {
+    return (JSON.parse(json) as string[]).join(", ");
+  } catch {
+    return "";
+  }
+}
+
+function OutcomeSection({
+  lead,
+  saving,
+  onSave,
+}: {
+  lead: ConsultationRow;
+  saving: boolean;
+  onSave: (input: OutcomeInput) => void;
+}) {
+  const [outcome, setOutcome] = useState(lead.outcome ?? "");
+  const [patternSlugs, setPatternSlugs] = useState(slugsToText(lead.patternDiagnosis));
+  const [sequenceSlug, setSequenceSlug] = useState(lead.prescribedSequence ?? "");
+  const [siddhiSlugs, setSiddhiSlugs] = useState(slugsToText(lead.prescribedSiddhis));
+  const [sessionNotes, setSessionNotes] = useState(lead.sessionNotes ?? "");
+  const [followUpDate, setFollowUpDate] = useState(
+    lead.followUpDate ? new Date(lead.followUpDate).toISOString().slice(0, 16) : "",
+  );
+  // Render-time state adjustment — same pattern as the notes draft above:
+  // reset when a different lead opens or server state moved under us.
+  const [prevKey, setPrevKey] = useState(`${lead.id}:${lead.updatedAt}`);
+  if (prevKey !== `${lead.id}:${lead.updatedAt}`) {
+    setPrevKey(`${lead.id}:${lead.updatedAt}`);
+    setOutcome(lead.outcome ?? "");
+    setPatternSlugs(slugsToText(lead.patternDiagnosis));
+    setSequenceSlug(lead.prescribedSequence ?? "");
+    setSiddhiSlugs(slugsToText(lead.prescribedSiddhis));
+    setSessionNotes(lead.sessionNotes ?? "");
+    setFollowUpDate(lead.followUpDate ? new Date(lead.followUpDate).toISOString().slice(0, 16) : "");
+  }
+
+  const dirty =
+    outcome !== (lead.outcome ?? "") ||
+    patternSlugs !== slugsToText(lead.patternDiagnosis) ||
+    sequenceSlug !== (lead.prescribedSequence ?? "") ||
+    siddhiSlugs !== slugsToText(lead.prescribedSiddhis) ||
+    sessionNotes !== (lead.sessionNotes ?? "") ||
+    followUpDate !== (lead.followUpDate ? new Date(lead.followUpDate).toISOString().slice(0, 16) : "");
+
+  return (
+    <div className="mt-5 space-y-3 rounded-lg border border-cyan-500/20 bg-cyan-500/[0.03] p-4">
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-xs font-semibold uppercase tracking-wider text-cyan-400/80">Session outcome (dossier)</p>
+        {lead.outcome && (
+          <span className={`rounded-full border px-2.5 py-0.5 text-[0.65rem] ${OUTCOME_COLOR[lead.outcome] ?? ""}`}>
+            {lead.outcome}
+          </span>
+        )}
+      </div>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <label className="space-y-1">
+          <span className="text-xs text-zinc-500">Outcome</span>
+          <select
+            value={outcome}
+            disabled={saving}
+            onChange={(e) => setOutcome(e.target.value)}
+            className="w-full rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 focus:border-cyan-500/40 focus:outline-none"
+          >
+            <option value="">— not set —</option>
+            <option value="PENDING">PENDING</option>
+            <option value="IN_PROGRESS">IN_PROGRESS</option>
+            <option value="RESOLVED">RESOLVED</option>
+            <option value="DISCONTINUED">DISCONTINUED</option>
+          </select>
+        </label>
+        <label className="space-y-1">
+          <span className="text-xs text-zinc-500">Follow-up date (feeds the queue)</span>
+          <input
+            type="datetime-local"
+            value={followUpDate}
+            disabled={saving}
+            onChange={(e) => setFollowUpDate(e.target.value)}
+            className="w-full rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 focus:border-cyan-500/40 focus:outline-none"
+          />
+        </label>
+      </div>
+      <label className="block space-y-1">
+        <span className="text-xs text-zinc-500">Pattern diagnosis (comma-separated slugs)</span>
+        <input
+          type="text"
+          value={patternSlugs}
+          disabled={saving}
+          onChange={(e) => setPatternSlugs(e.target.value)}
+          placeholder="the-rescuer, the-controller"
+          className="w-full rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 font-mono text-xs text-zinc-200 placeholder:text-zinc-600 focus:border-cyan-500/40 focus:outline-none"
+        />
+      </label>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <label className="space-y-1">
+          <span className="text-xs text-zinc-500">Prescribed sequence (slug)</span>
+          <input
+            type="text"
+            value={sequenceSlug}
+            disabled={saving}
+            onChange={(e) => setSequenceSlug(e.target.value)}
+            placeholder="foundation-of-stillness"
+            className="w-full rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 font-mono text-xs text-zinc-200 placeholder:text-zinc-600 focus:border-cyan-500/40 focus:outline-none"
+          />
+        </label>
+        <label className="space-y-1">
+          <span className="text-xs text-zinc-500">Prescribed siddhis (slugs)</span>
+          <input
+            type="text"
+            value={siddhiSlugs}
+            disabled={saving}
+            onChange={(e) => setSiddhiSlugs(e.target.value)}
+            placeholder="nadi-shuddhi, soham-dhyana"
+            className="w-full rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 font-mono text-xs text-zinc-200 placeholder:text-zinc-600 focus:border-cyan-500/40 focus:outline-none"
+          />
+        </label>
+      </div>
+      <label className="block space-y-1">
+        <span className="text-xs text-zinc-500">Session notes (visible in the dossier)</span>
+        <textarea
+          rows={3}
+          value={sessionNotes}
+          disabled={saving}
+          onChange={(e) => setSessionNotes(e.target.value)}
+          placeholder="What surfaced, what was prescribed, what to watch…"
+          className="w-full resize-none rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-cyan-500/40 focus:outline-none"
+        />
+      </label>
+      <button
+        onClick={() =>
+          onSave({
+            outcome: outcome || undefined,
+            patternSlugs,
+            sequenceSlug,
+            siddhiSlugs,
+            sessionNotes,
+            followUpDate: followUpDate || null,
+          })
+        }
+        disabled={saving || !dirty}
+        className="rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-4 py-2 text-xs font-medium text-cyan-300 transition-colors hover:bg-cyan-500/20 disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        {saving ? "Saving…" : "Save outcome"}
+      </button>
+      <p className="text-[0.65rem] text-zinc-600">
+        RESOLVED / DISCONTINUED stamp completedAt (once). Audited, webhook-fired, bell-rung.
+      </p>
     </div>
   );
 }
@@ -431,6 +677,11 @@ function LeadCard({ lead, onOpen }: { lead: ConsultationRow; onOpen: () => void 
             {PAYMENT_LABEL[lead.paymentState] ?? lead.paymentState.toLowerCase()}
           </span>
         )}
+        {lead.outcome && (
+          <span className={`rounded-full border px-2 py-0.5 text-[0.65rem] ${OUTCOME_COLOR[lead.outcome] ?? ""}`}>
+            {lead.outcome.toLowerCase()}
+          </span>
+        )}
         {lead.notes && (
           <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] text-zinc-500" title={lead.notes}>
             note
@@ -451,6 +702,7 @@ function LeadDrawer({
   onSaveNotes,
   onSavePaymentPaid,
   onSavePaymentWaived,
+  onSaveOutcome,
   onDelete,
 }: {
   lead: ConsultationRow;
@@ -460,6 +712,7 @@ function LeadDrawer({
   onSaveNotes: (n: string) => void;
   onSavePaymentPaid: (utr: string) => void;
   onSavePaymentWaived: () => void;
+  onSaveOutcome: (input: OutcomeInput) => void;
   onDelete: () => void;
 }) {
   const [notes, setNotes] = useState(lead.notes ?? "");
@@ -688,6 +941,9 @@ function LeadDrawer({
             Save notes
           </button>
         </div>
+
+        {/* Vol. 3 #1 — Session outcome (the archivist writes what /dossier reads) */}
+        <OutcomeSection key={lead.id} lead={lead} saving={saving} onSave={onSaveOutcome} />
 
         {/* Danger zone */}
         <div className="mt-6 border-t border-zinc-800/80 pt-4">

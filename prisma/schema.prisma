@@ -15,7 +15,8 @@ datasource db {
 // 1. staticDb (src/lib/static-db.ts)
 //    - Reads ONLY FolioChunk from the baked db/custom.db
 //    - On Vercel: copies to /tmp/kalki-corpus.db at cold start
-//    - 279 chunks, immutable, committed as a read-only asset
+//    - Bake-derived count (CORPUS_SIZE, idf-generated.ts; 327 since the
+//      2026-09-06 re-bake) — immutable, committed as a read-only asset
 //
 // 2. db (src/lib/db.ts)
 //    - Reads/writes User, SadhanaStreak, PatternResolution, InviteCode, InviteUsage
@@ -567,4 +568,20 @@ model PatternPairAffinity {
   @@id([slugA, slugB])
   @@index([slugA, pairCount])
   @@index([slugB, pairCount])
+}
+
+// ── Vol. 3 #19: ops state KV ─────────────────────────────────────────────
+// Tiny key-value store for operational markers that outlive a serverless
+// instance but don't deserve a model each. Current keys:
+//   last_backup_at  — ISO timestamp written by scripts/backup-db.mjs after
+//                     a successful dump (the script itself stays read-only
+//                     against business tables; this marker is its only
+//                     write). /health and the daily digest read it and
+//                     surface backup age so a silently-broken backup
+//                     routine is visible within a day, not a quarter.
+//   last_cleanup_at — written by /api/cron/cleanup.
+model OpsState {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
 }

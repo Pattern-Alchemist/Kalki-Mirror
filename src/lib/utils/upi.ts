@@ -58,8 +58,19 @@ export interface UpiIntentInput {
  *   upi://pay?pa=<vpa>&pn=<payee>&am=<amount>&cu=INR&tn=<note>
  * `tn` stays short and static — reconciliation happens on the reference
  * number Kaustubh quotes back, not in the note field.
+ *
+ * Vol. 3 #17: guards the revenue rail — a non-positive amount would emit
+ * a ₹0/negative collect request, and a VPA without a @ handle would route
+ * money to nobody. Both are programmer bugs, so both throw loudly here
+ * rather than producing a plausible-looking broken intent link.
  */
 export function buildUpiPayUrl({ vpa, payee, amountINR, note }: UpiIntentInput): string {
+  if (!Number.isInteger(amountINR) || amountINR <= 0) {
+    throw new Error(`buildUpiPayUrl: amountINR must be a positive integer, got ${amountINR}`);
+  }
+  if (!/^[^@\s]+@[^@\s]+$/.test(vpa)) {
+    throw new Error(`buildUpiPayUrl: vpa must be a handle@bank UPI id, got "${vpa}"`);
+  }
   const params = new URLSearchParams({
     pa: vpa,
     pn: payee,

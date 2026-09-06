@@ -179,6 +179,24 @@ export async function GET(request: NextRequest) {
     console.error("[daily-digest] renewal block failed", err);
   }
 
+  // Vol. 3 #3 — follow-ups due: the archivist promised to check back and
+  // the date has arrived. Same contract as getFollowUpsDue on the board.
+  let followUpsDue: Array<{ name: string; phone: string; followUpDate: Date | null; outcome: string | null }> = [];
+  try {
+    followUpsDue = await db.consultation.findMany({
+      where: {
+        followUpDate: { lte: new Date() },
+        status: { not: "CANCELLED" },
+        OR: [{ outcome: null }, { outcome: "PENDING" }, { outcome: "IN_PROGRESS" }],
+      },
+      orderBy: { followUpDate: "asc" },
+      take: 10,
+      select: { name: true, phone: true, followUpDate: true, outcome: true },
+    });
+  } catch (err) {
+    console.error("[daily-digest] follow-up block failed", err);
+  }
+
   // Tier-5 #2 — abandoned-intake recovery ledger. OPEN drafts are seekers
   // who typed their WhatsApp number but never pressed send; the archivist
   // can re-open the conversation with a single first-touch message.
@@ -202,6 +220,25 @@ export async function GET(request: NextRequest) {
 
   const nowIst = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
   const subject = `KALKI daily digest — ${leads24h.length > 0 ? `${leads24h.length}+ new lead${leads24h.length === 1 ? "" : "s"}` : "quiet night"} · ${claimed} claim${claimed === 1 ? "" : "s"} pending`;
+
+  // Vol. 3 #19 — backup age + cleanup freshness (fail-soft).
+  let backupLine = "No backup marker yet — run `npm run db:backup` once to start the freshness clock";
+  let cleanupLine = "No cleanup run yet (cron starts after deploy)";
+  try {
+    const markers = await db.opsState.findMany({ where: { key: { in: ["last_backup_at", "last_cleanup_at"] } } });
+    const backupAt = markers.find((m) => m.key === "last_backup_at");
+    const cleanupAt = markers.find((m) => m.key === "last_cleanup_at");
+    if (backupAt) {
+      const ageH = Math.round(((Date.now() - new Date(backupAt.value).getTime()) / 3_600_000) * 10) / 10;
+      backupLine = `Last backup ${ageH}h ago${ageH > 48 ? " — ⚠ STALE, backup routine may be broken" : ""}`;
+    }
+    if (cleanupAt) {
+      const ageH = Math.round(((Date.now() - new Date(cleanupAt.value).getTime()) / 3_600_000) * 10) / 10;
+      cleanupLine = `Last TTL cleanup ${ageH}h ago`;
+    }
+  } catch {
+    // OpsState not present / transient — keep the default lines
+  }
 
   const lines: string[] = [
     `Window: last 24h · generated ${nowIst} IST`,
@@ -240,8 +277,20 @@ export async function GET(request: NextRequest) {
         ].join("\n")
       : "Nothing due in the next 7 days",
     "",
+    `— FOLLOW-UPS DUE —`,
+    followUpsDue.length > 0
+      ? [
+          `${followUpsDue.length} consultation${followUpsDue.length === 1 ? "" : "s"} past their promised date:`,
+          ...followUpsDue.map((f) => `  · ${f.name} — ${f.phone || "no phone"} — promised ${f.followUpDate ? new Date(f.followUpDate).toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }) : "—"}${f.outcome ? ` · ${f.outcome.toLowerCase()}` : ""}`),
+        ].join("\n")
+      : "No follow-ups due — the loop is current",
+    "",
     `— DERIVED —`,
     `${affinityPairs} pattern pairs ranked${affinityTop ? ` · strongest: ${affinityTop}` : ""} — folio companions refreshed`,
+    "",
+    `— OPS HEALTH —`,
+    backupLine,
+    cleanupLine,
     "",
     `— CONSOLE —`,
     `${unreadBell} unread bell notification${unreadBell === 1 ? "" : "s"}`,

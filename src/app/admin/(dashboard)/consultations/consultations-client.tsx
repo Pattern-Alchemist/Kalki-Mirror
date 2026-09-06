@@ -2,8 +2,20 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { updateConsultationStatus, scheduleConsultation, type ConsultationRow } from "./actions";
+import { updateConsultationStatus, scheduleConsultation, saveOutcome, type ConsultationRow } from "./actions";
 import { whatsappTestimonialAskUrl } from "@/lib/utils/whatsapp";
+
+const OUTCOME_STYLES: Record<string, string> = {
+  PENDING: "bg-zinc-800 text-zinc-400",
+  IN_PROGRESS: "bg-blue-500/10 text-blue-400",
+  RESOLVED: "bg-emerald-500/10 text-emerald-400",
+  DISCONTINUED: "bg-zinc-800 text-zinc-500",
+};
+
+function slugsToText(json: string | null): string {
+  if (!json) return "";
+  try { return (JSON.parse(json) as string[]).join(", "); } catch { return ""; }
+}
 
 const STATUS_STYLES: Record<string, string> = {
   NEW: "bg-amber-500/10 text-amber-400",
@@ -38,6 +50,43 @@ export function ConsultationsClient({
   const [noteId, setNoteId] = useState<string | null>(null);
   const [noteText, setNoteText] = useState("");
   const [statusFilter, setStatusFilter] = useState(currentStatus);
+  // Vol. 3 #1 — outcome writer modal state
+  const [outcomeId, setOutcomeId] = useState<string | null>(null);
+  const [outcomeForm, setOutcomeForm] = useState({
+    outcome: "",
+    patternSlugs: "",
+    sequenceSlug: "",
+    siddhiSlugs: "",
+    sessionNotes: "",
+    followUpDate: "",
+  });
+
+  function openOutcome(c: ConsultationRow) {
+    setOutcomeForm({
+      outcome: c.outcome || "",
+      patternSlugs: slugsToText(c.patternDiagnosis),
+      sequenceSlug: c.prescribedSequence || "",
+      siddhiSlugs: slugsToText(c.prescribedSiddhis),
+      sessionNotes: c.sessionNotes || "",
+      followUpDate: c.followUpDate ? new Date(c.followUpDate).toISOString().slice(0, 16) : "",
+    });
+    setOutcomeId(c.id);
+  }
+
+  function handleSaveOutcome(id: string) {
+    startTransition(async () => {
+      await saveOutcome(id, {
+        outcome: outcomeForm.outcome || undefined,
+        patternSlugs: outcomeForm.patternSlugs,
+        sequenceSlug: outcomeForm.sequenceSlug,
+        siddhiSlugs: outcomeForm.siddhiSlugs,
+        sessionNotes: outcomeForm.sessionNotes,
+        followUpDate: outcomeForm.followUpDate || null,
+      });
+      setOutcomeId(null);
+      router.refresh();
+    });
+  }
 
   function applyFilter() {
     const params = new URLSearchParams();
@@ -134,6 +183,11 @@ export function ConsultationsClient({
                   <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLES[c.status] || STATUS_STYLES.NEW}`}>
                     {c.status}
                   </span>
+                  {c.outcome && (
+                    <span className={`ml-1.5 inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${OUTCOME_STYLES[c.outcome] || ""}`}>
+                      {c.outcome}
+                    </span>
+                  )}
                 </td>
                 <td className="px-4 py-3 text-xs text-zinc-500">
                   {c.scheduledFor ? new Date(c.scheduledFor).toLocaleDateString() : "—"}
@@ -174,6 +228,13 @@ export function ConsultationsClient({
                     >
                       Note
                     </button>
+                    <button
+                      onClick={() => openOutcome(c)}
+                      disabled={isPending}
+                      className="text-xs text-cyan-400 hover:text-cyan-300 disabled:opacity-50"
+                    >
+                      Outcome
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -196,6 +257,11 @@ export function ConsultationsClient({
             </div>
             <div><p className="text-xs text-zinc-600">Request</p><p className="mt-1 text-sm text-zinc-300 whitespace-pre-wrap">{c.request}</p></div>
             {c.notes && <div><p className="text-xs text-zinc-600">Notes</p><p className="mt-1 text-sm text-zinc-400 whitespace-pre-wrap">{c.notes}</p></div>}
+            {c.sessionNotes && <div><p className="text-xs text-zinc-600">Session notes (dossier)</p><p className="mt-1 text-sm text-zinc-400 whitespace-pre-wrap">{c.sessionNotes}</p></div>}
+            {c.patternDiagnosis && <div><p className="text-xs text-zinc-600">Pattern diagnosis</p><p className="mt-1 text-sm text-zinc-300 font-mono text-xs">{slugsToText(c.patternDiagnosis)}</p></div>}
+            {c.prescribedSequence && <div><p className="text-xs text-zinc-600">Prescribed sequence</p><p className="mt-1 text-sm text-zinc-300 font-mono text-xs">{c.prescribedSequence}</p></div>}
+            {c.prescribedSiddhis && <div><p className="text-xs text-zinc-600">Prescribed siddhis</p><p className="mt-1 text-sm text-zinc-300 font-mono text-xs">{slugsToText(c.prescribedSiddhis)}</p></div>}
+            {c.followUpDate && <div><p className="text-xs text-zinc-600">Follow-up</p><p className="mt-1 text-sm text-zinc-300">{new Date(c.followUpDate).toLocaleString()}</p></div>}
             {(() => {
               // Tier-5 #1 — testimonial flywheel: a t+48h ask deep-link for
               // completed sessions with a contact number. Opens WhatsApp
@@ -261,6 +327,95 @@ export function ConsultationsClient({
           </div>
         </div>
       )}
+
+      {/* Outcome modal (Vol. 3 #1) — the archivist writes what /dossier reads */}
+      {outcomeId && (() => {
+        const c = initialConsultations.find((x) => x.id === outcomeId);
+        if (!c) return null;
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setOutcomeId(null)}>
+            <div className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-xl border border-zinc-700 bg-zinc-900 p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
+              <div>
+                <h3 className="text-sm font-medium text-zinc-200">Session Outcome — {c.name}</h3>
+                <p className="mt-1 text-xs text-zinc-500">
+                  Feeds the member-facing dossier. Slugs are comma-separated (pattern / sequence / siddhi).
+                </p>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <label className="space-y-1">
+                  <span className="text-xs text-zinc-500">Outcome</span>
+                  <select
+                    value={outcomeForm.outcome}
+                    onChange={(e) => setOutcomeForm({ ...outcomeForm, outcome: e.target.value })}
+                    className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none"
+                  >
+                    <option value="">— not set —</option>
+                    <option value="PENDING">PENDING</option>
+                    <option value="IN_PROGRESS">IN_PROGRESS</option>
+                    <option value="RESOLVED">RESOLVED</option>
+                    <option value="DISCONTINUED">DISCONTINUED</option>
+                  </select>
+                </label>
+                <label className="space-y-1">
+                  <span className="text-xs text-zinc-500">Follow-up date</span>
+                  <input
+                    type="datetime-local"
+                    value={outcomeForm.followUpDate}
+                    onChange={(e) => setOutcomeForm({ ...outcomeForm, followUpDate: e.target.value })}
+                    className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none"
+                  />
+                </label>
+              </div>
+              <label className="block space-y-1">
+                <span className="text-xs text-zinc-500">Pattern diagnosis (comma-separated slugs)</span>
+                <input
+                  type="text"
+                  value={outcomeForm.patternSlugs}
+                  onChange={(e) => setOutcomeForm({ ...outcomeForm, patternSlugs: e.target.value })}
+                  placeholder="the-rescuer, the-controller"
+                  className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm font-mono text-zinc-100 focus:border-amber-500/50 focus:outline-none"
+                />
+              </label>
+              <label className="block space-y-1">
+                <span className="text-xs text-zinc-500">Prescribed sequence (slug)</span>
+                <input
+                  type="text"
+                  value={outcomeForm.sequenceSlug}
+                  onChange={(e) => setOutcomeForm({ ...outcomeForm, sequenceSlug: e.target.value })}
+                  placeholder="foundation-of-stillness"
+                  className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm font-mono text-zinc-100 focus:border-amber-500/50 focus:outline-none"
+                />
+              </label>
+              <label className="block space-y-1">
+                <span className="text-xs text-zinc-500">Prescribed siddhis (comma-separated slugs)</span>
+                <input
+                  type="text"
+                  value={outcomeForm.siddhiSlugs}
+                  onChange={(e) => setOutcomeForm({ ...outcomeForm, siddhiSlugs: e.target.value })}
+                  placeholder="nadi-shuddhi, soham-dhyana"
+                  className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm font-mono text-zinc-100 focus:border-amber-500/50 focus:outline-none"
+                />
+              </label>
+              <label className="block space-y-1">
+                <span className="text-xs text-zinc-500">Session notes (visible in the dossier)</span>
+                <textarea
+                  value={outcomeForm.sessionNotes}
+                  onChange={(e) => setOutcomeForm({ ...outcomeForm, sessionNotes: e.target.value })}
+                  rows={4}
+                  placeholder="What surfaced, what was prescribed, what to watch…"
+                  className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none resize-none"
+                />
+              </label>
+              <div className="flex justify-end gap-2">
+                <button onClick={() => setOutcomeId(null)} className="rounded-lg bg-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-700">Cancel</button>
+                <button onClick={() => handleSaveOutcome(outcomeId)} disabled={isPending} className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-zinc-950 hover:bg-amber-500 disabled:opacity-50">
+                  {isPending ? "Saving…" : "Save outcome"}
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Pagination */}
       {totalPages > 1 && (

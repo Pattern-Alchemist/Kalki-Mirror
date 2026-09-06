@@ -2,7 +2,7 @@
  * STATIC DB — Read-only FolioChunk corpus
  *
  * Architecture decision (the persistence split):
- *   - The 279 FolioChunk embeddings are STATIC (the folio set never changes at runtime (count: see src/lib/canonical.ts)).
+ *   - The FolioChunk embeddings are STATIC (count is bake-derived — CORPUS_SIZE in src/lib/rag/idf-generated.ts; 327 since the 2026-09-06 re-bake) (the folio set never changes at runtime (count: see src/lib/canonical.ts)).
  *   - This client reads from a baked SQLite file committed as a read-only asset.
  *   - On Vercel serverless: the deployment filesystem is read-only; only /tmp is writable.
  *     At cold start, we copy the baked db/custom.db → /tmp/kalki-corpus.db and open it there.

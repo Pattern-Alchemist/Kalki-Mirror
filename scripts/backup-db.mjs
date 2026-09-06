@@ -11,7 +11,13 @@
  *   4. Prunes old dumps (keep 14 by default, --keep N to override).
  *
  * Guarantees
- *   - Read-only against the source database (SELECT + sqlite_master reads only).
+ *   - Read-only against business tables (SELECT + sqlite_master reads only
+ *     while collecting the dump).
+ *   - Vol. 3 #19: after a successful dump the script writes ONE marker row
+ *     (OpsState.last_backup_at) so /health and the daily digest can surface
+ *     backup age — a silently-broken backup routine becomes visible within
+ *     a day instead of a quarter. The marker is best-effort: a failure
+ *     warns and never changes the exit code (dumps still succeed offline).
  *   - Never prints or stores credentials; the dump lands in gitignored backups/.
  *   - A dump contains passwordHashes — treat the file as a secret and store
  *     it somewhere private (this machine, an encrypted volume, or private
@@ -136,6 +142,20 @@ for (const old of dumps.slice(KEEP)) {
 }
 
 const sizeKb = Math.round(statSync(gzPath).size / 1024);
+
+// ── Vol. 3 #19: backup-age marker (best-effort, non-fatal) ───────────────────
+try {
+  const nowIso = new Date().toISOString();
+  await client.execute({
+    sql: `INSERT INTO "OpsState" (key, value, updatedAt) VALUES ('last_backup_at', ?, ?)
+          ON CONFLICT("key") DO UPDATE SET value = excluded.value, updatedAt = excluded.updatedAt`,
+    args: [nowIso, nowIso],
+  });
+  console.log('✓ Backup marker written (OpsState.last_backup_at) — /health and digest now report age.');
+} catch (err) {
+  console.warn(`⚠ Backup marker not written (${err.message.split('\n')[0]}) — dumps still succeeded; age check will show stale.`);
+}
+
 console.log(perTable.join('\n'));
 console.log(`\n✓ Dumped ${tables.length} tables / ${totalRows} rows in ${((Date.now() - started) / 1000).toFixed(1)}s`);
 console.log(`✓ ${gzPath} (${sizeKb} KB gzipped)${pruned ? ` · pruned ${pruned} old dump${pruned > 1 ? 's' : ''}` : ''}`);

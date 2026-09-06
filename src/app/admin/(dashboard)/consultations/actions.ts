@@ -44,6 +44,14 @@ export type ConsultationRow = {
   paymentSession: string | null;
   utrRef: string | null;
   paidAt: Date | null;
+  // Vol. 3 #1 — outcome tracking (read by member-facing /dossier)
+  patternDiagnosis: string | null;
+  prescribedSequence: string | null;
+  prescribedSiddhis: string | null;
+  sessionNotes: string | null;
+  outcome: string | null;
+  followUpDate: Date | null;
+  completedAt: Date | null;
 };
 
 const STATUSES = ["NEW", "ACKNOWLEDGED", "SCHEDULED", "COMPLETED", "CANCELLED"] as const;
@@ -288,4 +296,146 @@ export async function scheduleConsultation(
   revalidatePath('/admin/overview');
   revalidatePath('/admin/consultations');
   return { success: true };
+}
+
+// Vol. 3 #1 — outcome lifecycle. PENDING before the session, IN_PROGRESS
+// while the seeker works the prescription, RESOLVED when the loop closes,
+// DISCONTINUED when it doesn't. Anything else is rejected — these strings
+// are part of the /dossier contract (OutcomeStatus in dossier/actions.ts).
+const OUTCOMES = ["PENDING", "IN_PROGRESS", "RESOLVED", "DISCONTINUED"] as const;
+
+/** Parse a comma-separated slug field into the JSON array string /dossier expects; null when emptied. */
+function slugListToJson(value: string | undefined): string | null | undefined {
+  if (value === undefined) return undefined; // field not touched this save
+  const slugs = value.split(",").map((s) => s.trim()).filter(Boolean);
+  return slugs.length ? JSON.stringify(slugs) : null;
+}
+
+/**
+ * Vol. 3 #1 — Consultation outcome writer. The missing half of the dossier
+ * loop: member-facing /dossier reads patternDiagnosis / prescribedSequence /
+ * prescribedSiddhis / sessionNotes / outcome / followUpDate / completedAt,
+ * but NO admin surface wrote them — the dossier's promise was unfulfillable.
+ * Archivist action of record: audited, webhook fired, bell rung.
+ *
+ * Field semantics (undefined = leave untouched, ""/null = clear):
+ *   · patternSlugs / siddhiSlugs — comma-separated slugs, stored as JSON arrays
+ *   · sequenceSlug               — a single sequence slug or empty to clear
+ *   · outcome                    — PENDING | IN_PROGRESS | RESOLVED | DISCONTINUED
+ *   · sessionNotes               — post-session notes (distinct from internal `notes`)
+ *   · followUpDate               — ISO datetime feeding the Vol. 3 #3 follow-up queue
+ * RESOLVED / DISCONTINUED also stamp completedAt (once — never clobbered).
+ */
+export async function saveOutcome(
+  consultationId: string,
+  input: {
+    outcome?: string;
+    patternSlugs?: string;
+    sequenceSlug?: string;
+    siddhiSlugs?: string;
+    sessionNotes?: string;
+    followUpDate?: string | null;
+  }
+) {
+  await requireAdmin();
+
+  const consultation = await db.consultation.findUniqueOrThrow({
+    where: { id: consultationId },
+  });
+
+  if (input.outcome !== undefined && !(OUTCOMES as readonly string[]).includes(input.outcome)) {
+    throw new Error(`Invalid outcome: ${input.outcome}`);
+  }
+
+  const patternJson = slugListToJson(input.patternSlugs);
+  const siddhiJson = slugListToJson(input.siddhiSlugs);
+
+  const data: Record<string, unknown> = {};
+  if (input.outcome !== undefined) data.outcome = input.outcome || null;
+  if (patternJson !== undefined) data.patternDiagnosis = patternJson;
+  if (input.sequenceSlug !== undefined) data.prescribedSequence = input.sequenceSlug.trim() || null;
+  if (siddhiJson !== undefined) data.prescribedSiddhis = siddhiJson;
+  if (input.sessionNotes !== undefined) data.sessionNotes = input.sessionNotes.trim() || null;
+  if (input.followUpDate !== undefined) {
+    data.followUpDate = input.followUpDate ? new Date(input.followUpDate) : null;
+  }
+
+  // A closed loop is stamped once: RESOLVED / DISCONTINUED are terminal
+  // outcomes, and completedAt anchors the t+48h testimonial window.
+  if (
+    (input.outcome === "RESOLVED" || input.outcome === "DISCONTINUED") &&
+    !consultation.completedAt
+  ) {
+    data.completedAt = new Date();
+  }
+
+  if (Object.keys(data).length === 0) {
+    return { success: false, reason: "nothing to update" };
+  }
+
+  await db.consultation.update({ where: { id: consultationId }, data });
+
+  await logAudit({
+    action: "consultation.outcome.update",
+    entity: "Consultation",
+    entityId: consultationId,
+    before: {
+      outcome: consultation.outcome,
+      patternDiagnosis: consultation.patternDiagnosis,
+      prescribedSequence: consultation.prescribedSequence,
+      prescribedSiddhis: consultation.prescribedSiddhis,
+      sessionNotes: consultation.sessionNotes,
+      followUpDate: consultation.followUpDate?.toISOString() ?? null,
+      completedAt: consultation.completedAt?.toISOString() ?? null,
+    },
+    after: data,
+  });
+
+  await dispatchWebhooks("consultation.outcome", {
+    consultationId,
+    name: consultation.name,
+    outcome: input.outcome ?? consultation.outcome,
+    prescribedSequence: data.prescribedSequence ?? consultation.prescribedSequence,
+  });
+
+  if (input.outcome === "RESOLVED") {
+    await broadcastNotification({
+      title: "Consultation RESOLVED",
+      body: `${consultation.name} — karmic loop closed; dossier now carries the prescription`,
+      type: "success",
+      href: "/admin/consultations",
+    });
+  }
+
+  revalidatePath("/admin/overview");
+  revalidatePath("/admin/consultations");
+  return { success: true };
+}
+
+/**
+ * Vol. 3 #3 — follow-up queue. Due = a followUpDate that has arrived, on a
+ * consultation that is neither CANCELLED nor terminally outcome'd — the
+ * archivist promised to check back and the date says now.
+ */
+export async function getFollowUpsDue(take: number = 20) {
+  await requireAdmin();
+
+  return db.consultation.findMany({
+    where: {
+      followUpDate: { lte: new Date() },
+      status: { not: "CANCELLED" },
+      OR: [{ outcome: null }, { outcome: "PENDING" }, { outcome: "IN_PROGRESS" }],
+    },
+    orderBy: { followUpDate: "asc" },
+    take: Math.min(Math.max(take, 1), 50),
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      email: true,
+      status: true,
+      outcome: true,
+      followUpDate: true,
+    },
+  });
 }
