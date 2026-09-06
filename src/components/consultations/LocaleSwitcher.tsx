@@ -38,6 +38,7 @@ export function LocaleSwitcher() {
         type="button"
         onClick={() => switchTo('en')}
         aria-pressed={current === 'en'}
+        aria-label={t('enLabel')}
         className={`px-2.5 py-1 border transition-colors ${
           current === 'en'
             ? 'border-gold text-gold'
@@ -50,6 +51,7 @@ export function LocaleSwitcher() {
         type="button"
         onClick={() => switchTo('hi')}
         aria-pressed={current === 'hi'}
+        aria-label={t('hiLabel')}
         disabled={pending}
         className={`px-2.5 py-1 border transition-colors ${
           current === 'hi'

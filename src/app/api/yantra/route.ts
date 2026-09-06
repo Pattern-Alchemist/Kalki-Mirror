@@ -3,6 +3,7 @@ export const runtime = 'nodejs';
 import { NextRequest, NextResponse } from 'next/server';
 import { YANTRA_SYSTEM_PROMPT, buildYantraUserPrompt, type YantraAnalysis } from '@/lib/ai/yantra-prompt';
 import { retrievePrescription, retrieveCitation } from '@/lib/rag/retrieval';
+import { bridgeSlugsForNames } from '@/lib/rag/pattern-bridge';
 import { ALL_ARCHETYPES } from '@/lib/data/archetypes';
 import type { Tier } from '@/lib/data/types';
 import { optionalAuth, getClientIp } from '@/lib/api-auth';
@@ -51,9 +52,12 @@ export async function POST(request: NextRequest) {
     let retrievalMethod = 'none';
 
     try {
+      // Vol. 1 #16 — behavioral bridge: named patterns in the context payload
+      // deterministically boost their linked folios inside the filtered pools.
+      const boostSlugs = bridgeSlugsForNames(context?.dominantPatterns ?? []);
       const [presResult, citeResult] = await Promise.all([
-        retrievePrescription(query, { k: 4 }),
-        retrieveCitation(query, userTier, { k: 4 }),
+        retrievePrescription(query, { k: 4, boostSlugs }),
+        retrieveCitation(query, userTier, { k: 4, boostSlugs }),
       ]);
 
       // Deduplicate

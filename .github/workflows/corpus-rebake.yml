@@ -1,0 +1,78 @@
+# Vol. 1 #18 — Content Studio → auto re-bake CI.
+#
+# Corpus-touching PRs must carry freshly-baked artifacts, not stale ones.
+# Pipeline: snapshot the committed corpus' LOGICAL fingerprint → re-ingest
+# (keyword mode, no secrets) → re-bake embeddings + IDF → compare.
+#
+# Why a fingerprint instead of `git diff db/custom.db`: SQLite files are not
+# byte-stable across write cycles (freelist/WAL churn) — a logically
+# identical rebake can move bytes. scripts/corpus-fingerprint.ts hashes the
+# ordered row CONTENT instead, which is deterministic by construction.
+#
+# Why the orphan audit: ingest upserts and never deletes, so a folio removed
+# from the data files would linger as retrieval-feeding chunks that the
+# fingerprint (computed pre- and post- on the SAME pipeline) would miss only
+# if the author also re-ran ingest — scripts/corpus-audit.ts catches the
+# lingering-slug direction deterministically.
+name: corpus-rebake
+
+on:
+  pull_request:
+    paths:
+      - 'src/lib/data/siddhis*.ts'
+      - 'src/lib/rag/caution-map.ts'
+      - 'src/lib/rag/embed.ts'
+      - 'scripts/ingest-folios.ts'
+      - 'scripts/bake-folio-embeddings.ts'
+      - 'db/custom.db'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rebake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Snapshot committed corpus fingerprint
+        run: |
+          cp db/custom.db /tmp/corpus-before.db
+          npx tsx scripts/corpus-fingerprint.ts /tmp/corpus-before.db > /tmp/fp-before.txt
+          cat /tmp/fp-before.txt
+
+      - name: Re-ingest corpus (keyword mode — no secrets required)
+        run: npx tsx scripts/ingest-folios.ts
+        env:
+          DATABASE_URL: 'file:./db/custom.db'
+
+      - name: Re-bake embeddings + IDF map
+        run: npx tsx scripts/bake-folio-embeddings.ts
+
+      - name: Fail if baked artifacts are stale
+        run: |
+          set -e
+          npx tsx scripts/corpus-fingerprint.ts db/custom.db > /tmp/fp-after.txt
+          cat /tmp/fp-after.txt
+          if ! diff -u /tmp/fp-before.txt /tmp/fp-after.txt; then
+            echo "::error::Corpus artifacts are STALE — the data files and db/custom.db disagree."
+            echo "::error::Run locally: npx tsx scripts/ingest-folios.ts && npx tsx scripts/bake-folio-embeddings.ts, then commit the refreshed db/custom.db + src/lib/rag/idf-generated.ts."
+            exit 1
+          fi
+          if ! git diff --exit-code -- src/lib/rag/idf-generated.ts; then
+            echo "::error::idf-generated.ts is STALE — the IDF map does not match the corpus."
+            echo "::error::Run locally: npx tsx scripts/bake-folio-embeddings.ts, then commit the refreshed file."
+            exit 1
+          fi
+
+      - name: Orphan chunk audit (deleted-folio drift)
+        run: npx tsx scripts/corpus-audit.ts

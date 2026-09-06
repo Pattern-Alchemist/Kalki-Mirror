@@ -277,7 +277,9 @@
     "switcher": {
       "label": "Language",
       "en": "EN",
-      "hi": "हिं"
+      "hi": "हिं",
+      "enLabel": "Switch to English",
+      "hiLabel": "Switch to Hindi"
     }
   }
 }

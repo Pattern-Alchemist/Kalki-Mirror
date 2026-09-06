@@ -474,6 +474,19 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
 
   const totalSteps = copy.steps.length;
 
+  // Vol. 1 #19 — a11y: on step change, move focus into the new step region so
+  // keyboard and screen-reader users land inside the content that just
+  // replaced the old step (skipped on first render to not steal page focus).
+  const stepRegionRef = useRef<HTMLDivElement>(null);
+  const wizardMountedRef = useRef(false);
+  useEffect(() => {
+    if (!wizardMountedRef.current) {
+      wizardMountedRef.current = true;
+      return;
+    }
+    stepRegionRef.current?.focus({ preventScroll: true });
+  }, [currentStep]);
+
   const updateField = useCallback(<K extends keyof WizardFormData>(key: K, val: WizardFormData[K]) => {
     setForm((prev) => ({ ...prev, [key]: val }));
   }, []);
@@ -813,11 +826,12 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
         {/* Progress */}
         <ProgressIndicator current={currentStep} total={totalSteps} />
 
-        {/* Step Label */}
-        <p className="section-label mb-6">Step {currentStep + 1} — {copy.steps[currentStep]}</p>
+        {/* Step Label — polite live region announces every step change */}
+        <p className="section-label mb-6" aria-live="polite">Step {currentStep + 1} — {copy.steps[currentStep]}</p>
 
-        {/* Step Content */}
-        <div className="min-h-[320px]">
+        {/* Step Content — focusable region (tabIndex -1) as the focus target
+            for step transitions; outline suppressed, focus is programmatic */}
+        <div ref={stepRegionRef} tabIndex={-1} className="min-h-[320px] focus:outline-none">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentStep}
@@ -846,9 +860,11 @@ export default function ConsultationWizard({ patterns }: { patterns: PatternSumm
           </AnimatePresence>
         </div>
 
-        {/* Error */}
+        {/* Error — role=alert announces immediately; the pulse animation was
+            removed: persistently animating text is a WCAG 2.2.2 concern and
+            the announcement carries the urgency better */}
         {formError && (
-          <p className="text-red-400 text-xs mt-4 text-center animate-pulse">{formError}</p>
+          <p role="alert" className="text-red-400 text-xs mt-4 text-center">{formError}</p>
         )}
 
         {/* Navigation Buttons */}

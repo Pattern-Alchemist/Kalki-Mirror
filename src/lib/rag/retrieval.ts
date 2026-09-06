@@ -56,11 +56,36 @@ async function embedQuery(text: string): Promise<number[]> {
 
 // ─── Two-pool retrieval ────────────────────────────────────────────────────
 
+export interface ScoredChunkLike {
+  slug: string;
+  similarity: number;
+}
+
+/**
+ * Pure boost application — exported for unit testing. Returns new objects
+ * (never mutates the scored input). Capped at 1 so the subsequent
+ * top-similarity normalization stays well-defined.
+ */
+export function applyPatternBoost<T extends ScoredChunkLike>(
+  scored: T[],
+  boostSlugs: readonly string[],
+): T[] {
+  if (boostSlugs.length === 0) return scored;
+  const boostSet = new Set(boostSlugs);
+  return scored.map((c) =>
+    boostSet.has(c.slug)
+      ? { ...c, similarity: Math.min(1, c.similarity + PATTERN_BOOST) }
+      : c,
+  );
+}
+
 export interface RetrievalResult {
  chunks: RetrievedChunk[];
  queryEmbedding: number[];  // empty if keyword fallback was used
   method: 'embedding' | 'keyword';
 }
+
+export const PATTERN_BOOST = 0.25;
 
 /**
  * Retrieve folio chunks for a given query and pool.
@@ -77,6 +102,8 @@ export async function retrieveChunks(
     tier?: Tier;
     k?: number;
     sectionFilter?: string[];
+    /** Folio slugs to deterministically boost (behavioral bridge, Vol. 1 #16). */
+    boostSlugs?: string[];
   }
 ): Promise<RetrievalResult> {
   const tier = options?.tier ?? 'prithvi';
@@ -132,9 +159,11 @@ export async function retrieveChunks(
     };
   });
 
-  // Sort by similarity descending, take top-k
-  scored.sort((a, b) => b.similarity - a.similarity);
-  const top = scored.slice(0, k);
+  // Behavioral-bridge boost (deterministic, inside the filtered pool only),
+  // then sort by similarity descending and take top-k
+  const boosted = applyPatternBoost(scored, options?.boostSlugs ?? []);
+  boosted.sort((a, b) => b.similarity - a.similarity);
+  const top = boosted.slice(0, k);
 
   // Normalize similarity scores (0-1 range)
   const maxSim = top[0]?.similarity || 1;
@@ -154,7 +183,7 @@ export async function retrieveChunks(
  */
 export async function retrievePrescription(
   query: string,
-  options?: { k?: number }
+  options?: { k?: number; boostSlugs?: string[] }
 ): Promise<RetrievalResult> {
   return retrieveChunks(query, 'prescription', {
     ...options,
@@ -168,7 +197,7 @@ export async function retrievePrescription(
 export async function retrieveCitation(
   query: string,
   tier: Tier,
-  options?: { k?: number }
+  options?: { k?: number; boostSlugs?: string[] }
 ): Promise<RetrievalResult> {
   return retrieveChunks(query, 'citation', {
     tier,

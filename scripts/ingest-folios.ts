@@ -14,7 +14,7 @@
 import { db } from '../src/lib/db';
 import { allSiddhis } from '../src/lib/data/siddhis';
 import { PATTERN_ARCHETYPE_MAP } from '../src/lib/data/archetypes';
-import { siddhiLevelToCaution, type CautionLevel } from '../src/lib/rag/caution-map';
+import { getCautionLevel, type CautionLevel } from '../src/lib/data/types';
 import type { Siddhi } from '../src/lib/data/types';
 
 // ─── Section extraction ────────────────────────────────────────────────────
@@ -31,7 +31,7 @@ interface RawChunk {
 }
 
 function extractChunks(s: Siddhi): RawChunk[] {
-  const caution = siddhiLevelToCaution(s.level);
+  const caution = getCautionLevel(s.level);
   const archetype = PATTERN_ARCHETYPE_MAP
     ? Object.entries(PATTERN_ARCHETYPE_MAP)
         .find(([, v]) => {

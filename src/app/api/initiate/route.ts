@@ -7,6 +7,7 @@ import { allSiddhis } from '@/lib/data/siddhis';
 import { PATTERN_ARCHETYPE_MAP, getArchetypeById, TEN_MAHAVIDYAS, ALL_ARCHETYPES } from '@/lib/data/archetypes';
 import { getCautionLevel, type Tier } from '@/lib/data/types';
 import { retrievePrescription, retrieveCitation } from '@/lib/rag/retrieval';
+import { bridgeSlugsFor } from '@/lib/rag/pattern-bridge';
 import { buildYantraUserPrompt, YANTRA_SYSTEM_PROMPT } from '@/lib/ai/yantra-prompt';
 import { synthesizeYantra } from '@/lib/ai/yantra-synthesize';
 import { voicePass } from '@/lib/ai/voice-pass';
@@ -66,8 +67,12 @@ export async function POST(request: NextRequest) {
 
     const dominantPatterns = matchedPatterns.slice(0, 3);
 
-    // Step 3: RAG retrieval — two pools
+    // Step 3: RAG retrieval — two pools.
+    // Vol. 1 #16 — behavioral bridge: the seeker's dominant patterns
+    // deterministically boost their archetypally-linked folios inside the
+    // filtered pools (reorder, never widen).
     const retrievalQuery = `${q} ${dominantPatterns.map(p => p.description).join(' ')}`.trim();
+    const boostSlugs = bridgeSlugsFor(dominantPatterns.map(p => p.slug));
 
     let prescriptionChunks: Awaited<ReturnType<typeof retrievePrescription>>['chunks'] = [];
     let citationChunks: Awaited<ReturnType<typeof retrieveCitation>>['chunks'] = [];
@@ -75,8 +80,8 @@ export async function POST(request: NextRequest) {
     if (retrievalQuery.length > 5) {
       try {
         const [presResult, citeResult] = await Promise.all([
-          retrievePrescription(retrievalQuery, { k: 4 }),
-          retrieveCitation(retrievalQuery, userTier, { k: 4 }),
+          retrievePrescription(retrievalQuery, { k: 4, boostSlugs }),
+          retrieveCitation(retrievalQuery, userTier, { k: 4, boostSlugs }),
         ]);
         prescriptionChunks = presResult.chunks;
         citationChunks = citeResult.chunks;
