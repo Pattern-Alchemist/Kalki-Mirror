@@ -1,7 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authenticateRequest } from "@/lib/api-auth";
 
-const SAFE_ENVS = ["NEXTAUTH_SECRET", "NEXTAUTH_URL", "DATABASE_URL", "TURSO_DATABASE_URL", "TURSO_AUTH_TOKEN", "CLOUDINARY_CLOUD_NAME", "ALLOWED_ADMIN_IPS", "SENTRY_DSN"];
+// Mirrors the settings panel: every name the dashboard may probe for
+// presence. Presence-only — values are NEVER returned to the client.
+const SAFE_ENVS = [
+  // Required (production-critical)
+  "NEXTAUTH_SECRET", "NEXTAUTH_URL", "TURSO_DATABASE_URL", "TURSO_AUTH_TOKEN",
+  "OPENROUTER_API_KEY", "RESEND_API_KEY",
+  // Optional (feature gates)
+  "DATABASE_URL", "CLOUDINARY_CLOUD_NAME", "ALLOWED_ADMIN_IPS", "SENTRY_DSN",
+  "EMBED_API_KEY",
+];
 
 export async function GET(request: NextRequest) {
   const token = await authenticateRequest(request);
