@@ -7,8 +7,14 @@ import { termAnchor } from '@/lib/utils/term-anchor';
  * TermText — the Lexicon auto-linker.
  *
  * Renders a plain-text string with every glossary term it contains linked
- * to its Lexicon anchor. The first occurrence of each term is linked;
+ * to its Lexicon page. The first occurrence of each term is linked;
  * repeats stay plain to keep prose quiet.
+ *
+ * Since Vol. 3 #4 each term has a programmatic page at /glossary/[slug]
+ * (slug derived by termAnchor, the same function that mints the hub's
+ * #anchors) — prose now links those pages instead of hub anchors, so
+ * every folio and pattern becomes internal-link equity for the 86
+ * indexable term URLs.
  *
  * The matcher is compiled once at module load: all {glossaryEntries.length}
  * terms, longest-first (so "Prāṇāyāma" wins over "Prāṇa"), with Unicode-aware
@@ -55,7 +61,7 @@ export function TermText({ text, className }: { text: string; className?: string
     if (start > last) nodes.push(text.slice(last, start));
 
     nodes.push(
-      <Link key={key++} href={`/glossary#${anchor}`} className={LINK_CLASS}>
+      <Link key={key++} href={`/glossary/${anchor}`} className={LINK_CLASS}>
         {full}
       </Link>
     );

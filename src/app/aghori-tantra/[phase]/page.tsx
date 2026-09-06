@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { aghoriCourse, COURSE_META } from '@/lib/data/aghori-tantra-course';
-import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
+import { canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
+import { coursePhaseJsonLd } from '@/lib/seo/course-jsonld';
 import { TrackView } from '@/components/analytics/TrackView';
 import CaptureBand from '@/components/capture/CaptureBand';
 
@@ -42,29 +43,8 @@ export default async function PhasePage({ params }: { params: Promise<{ phase: s
   const prev = idx > 0 ? aghoriCourse[idx - 1] : undefined;
   const next = idx < aghoriCourse.length - 1 ? aghoriCourse[idx + 1] : undefined;
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Course',
-        name: `Aghorī Tantra Course — ${mod.phase}: ${mod.title}`,
-        description: mod.description.slice(0, 300),
-        url: `${SITE_URL}/aghori-tantra/${mod.id}`,
-        provider: { '@id': `${SITE_URL}/#organization` },
-        isPartOf: { '@type': 'Course', name: 'Aghorī Tantra Course', url: `${SITE_URL}/aghori-tantra` },
-        educationalLevel: mod.difficulty,
-        inLanguage: 'en',
-      },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
-          { '@type': 'ListItem', position: 2, name: 'Aghorī Tantra Course', item: `${SITE_URL}/aghori-tantra` },
-          { '@type': 'ListItem', position: 3, name: mod.phase, item: `${SITE_URL}/aghori-tantra/${mod.id}` },
-        ],
-      },
-    ],
-  };
+  // Vol. 3 #10 — phase Course + lesson ItemList via the shared helper
+  const jsonLd = coursePhaseJsonLd(mod);
 
   return (
     <>

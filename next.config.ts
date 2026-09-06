@@ -56,6 +56,17 @@ const nextConfig: NextConfig = {
     ],
   },
   reactStrictMode: true,
+  // Vol. 3 #2 — the library renderer is the first React-Server-Component
+  // page to import the Prisma/libsql stack at request time (route handlers
+  // already did). Webpack's RSC bundle breaks the libsql driver adapter's
+  // node built-ins — these packages must stay external and be resolved by
+  // Node at runtime, exactly like the API-route bundles already do.
+  serverExternalPackages: [
+    "@prisma/adapter-libsql",
+    "@libsql/client",
+    "libsql",
+    "@prisma/client",
+  ],
   // TypeScript errors now fail the build — the admin-dashboard type debt
   // that motivated this mask was fully repaid in this release.
   // typescript: { ignoreBuildErrors: true },

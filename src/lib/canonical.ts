@@ -32,7 +32,7 @@ import { TEN_MAHAVIDYAS, SUPPLEMENTARY_ARCHETYPES } from '@/lib/data/archetypes'
 // before the current UTC date, never "today" in IST terms before
 // 05:30 IST, or lastmod lands in the future (protocol violation;
 // the geo-monitor's sitemap_lastmod check FAILs on future dates).
-export const SITE_LASTMOD = '2026-09-06'; // Vol. 1 Tier-4 closeout: behavioral RAG bridge + corpus re-bake (8 Aghorī folios ingested, 279→327 chunks)
+export const SITE_LASTMOD = '2026-09-06'; // Vol. 3 Week B: 86 Lexicon term pages + studio renderer + course graph (sitemap +190 URLs, same-day as Tier-4 re-bake)
 
 export const CANONICAL = {
   /** Folios in the Akashic Archive (siddhi entries). */

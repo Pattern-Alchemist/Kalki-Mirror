@@ -118,6 +118,16 @@ function ExpandedCard({ entry, onClose }: { entry: GlossaryEntry; onClose: () =>
         </span>
       </div>
 
+      {/* Vol. 3 #4 — every term has a programmatic page now; offer the jump */}
+      <Link
+        href={`/glossary/${termAnchor(entry.term)}`}
+        className="inline-flex items-center gap-1.5 text-[0.65rem] font-mono tracking-[0.15em] uppercase text-text-muted hover:text-gold transition-colors mb-5"
+        aria-label={`Open the standalone page for ${entry.term}`}
+      >
+        <ChevronRight className="w-3 h-3" />
+        Open {entry.term} page
+      </Link>
+
       {entry.minTier && (
         <span className={cn('inline-block mb-4 text-[0.6rem] font-mono tracking-[0.15em] uppercase px-2 py-1 rounded-sm border', TIER_BADGE_STYLES[entry.minTier])}>
           <Lock className="w-3 h-3 inline mr-1" />

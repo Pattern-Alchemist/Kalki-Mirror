@@ -87,7 +87,8 @@ export async function pingIndexNow(urls: string[]): Promise<IndexNowResult> {
  */
 export async function allSitemapUrls(): Promise<string[]> {
   const { default: sitemap } = await import('@/app/sitemap');
-  return sitemap().map((entry) =>
+  // sitemap() is async since Vol. 3 #2 (live studio entries from the DB)
+  return (await sitemap()).map((entry) =>
     typeof entry === 'string' ? entry : entry.url,
   );
 }

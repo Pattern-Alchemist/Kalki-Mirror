@@ -6,9 +6,13 @@ import { allPatterns } from '@/lib/data/patterns';
 import { allBreathPatterns } from '@/lib/data/breath-patterns';
 import { allSequences } from '@/lib/data/sequences';
 import { aghoriCourse } from '@/lib/data/aghori-tantra-course';
+import { glossaryEntries } from '@/lib/data/glossary';
+import { glossaryTermPath } from '@/lib/seo/glossary-seo';
 import { SITE_LASTMOD } from '@/lib/canonical';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 3600;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = 'https://www.astrokalki.com';
   // lastmod policy (Search Console quality): stable content dates from
   // SITE_LASTMOD — never new Date(). Bump the constant in
@@ -94,6 +98,38 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
+  // Lexicon term pages (Vol. 3 #4) — 86 programmatic pages off glossary.ts
+  const glossaryTermPages: MetadataRoute.Sitemap = glossaryEntries.map((e) => ({
+    url: `${base}${glossaryTermPath(e.term)}`,
+    lastModified: new Date(SITE_LASTMOD),
+    changeFrequency: 'monthly' as const,
+    priority: 0.5,
+  }));
+
+  // Studio entries (Vol. 3 #2) — PUBLISHED ContentEntry rows render at
+  // /library/[type]/[slug]. The DB is queried live (sitemap revalidates
+  // hourly); a DB hiccup must never break the sitemap, so failures
+  // degrade to "no studio entries" instead of a 500.
+  let libraryEntryPages: MetadataRoute.Sitemap = [];
+  try {
+    const { db } = await import('@/lib/db');
+    const { isPubliclyRenderable, contentEntryPath } = await import('@/lib/seo/content-seo');
+    const published = await db.contentEntry.findMany({
+      where: { status: 'PUBLISHED' },
+      select: { type: true, slug: true, status: true, caution: true, updatedAt: true },
+    });
+    libraryEntryPages = published
+      .filter(isPubliclyRenderable)
+      .map((e) => ({
+        url: `${base}${contentEntryPath(e.type, e.slug)}`,
+        lastModified: e.updatedAt,
+        changeFrequency: 'monthly' as const,
+        priority: 0.6,
+      }));
+  } catch {
+    // no DB at build/dev time → studio surface simply absent from the map
+  }
+
   // Mahāvidyā folio pages (/archetypes/[id]) — 10 authoritative pages, spec §5
   const mahavidyaPages: MetadataRoute.Sitemap = TEN_MAHAVIDYAS.map((m) => ({
     url: `${base}/archetypes/${m.id}`,
@@ -110,5 +146,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: t.slug === '' ? 0.8 : 0.7,
   }));
 
-  return [...staticPages, ...siddhiPages, ...patternPages, ...mahavidyaPages, ...tantraPagesSitemap, ...breathworkPages, ...sequencePages, ...aghoriPhasePages, ...aghoriLessonPages];
+  return [...staticPages, ...siddhiPages, ...patternPages, ...mahavidyaPages, ...tantraPagesSitemap, ...breathworkPages, ...sequencePages, ...glossaryTermPages, ...libraryEntryPages, ...aghoriPhasePages, ...aghoriLessonPages];
 }

@@ -34,6 +34,8 @@ const EVENT_NAMES = [
   'payment_confirm_clicked',
   // Cal.com booking handoff (Tier-3 ③):
   'booking_opened',
+  // Vol. 3 #2 — Content Studio goes public:
+  'library_entry_viewed',
   'email_subscribed',
 ] as const;
 

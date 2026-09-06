@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
+import { canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 import { COURSE_LESSON_COUNT } from '@/lib/data/aghori-tantra-course';
+import { courseHubJsonLd } from '@/lib/seo/course-jsonld';
 
 const COURSE_DESCRIPTION =
   `${COURSE_LESSON_COUNT} lessons across eight phases — from foundational orientation through non-dual integration. The most comprehensive online Aghorī Tantra course, grounded in living lineage and scholarly evidence.`;
@@ -24,26 +25,9 @@ export const metadata: Metadata = {
   },
 };
 
-const aghoriJsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Course',
-      name: 'Aghorī Tantra Course',
-      description: `${COURSE_LESSON_COUNT} lessons across eight phases — from foundational orientation through non-dual integration.`,
-      url: `${SITE_URL}/aghori-tantra`,
-      provider: { '@id': `${SITE_URL}/#organization` },
-      isPartOf: { '@id': `${SITE_URL}/#website` },
-    },
-    {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
-        { '@type': 'ListItem', position: 2, name: 'Aghorī Tantra Course', item: `${SITE_URL}/aghori-tantra` },
-      ],
-    },
-  ],
-};
+// Vol. 3 #10 — full educational graph (Course + offers + instance +
+// phase ItemList) built by the shared, test-pinned helper.
+const aghoriJsonLd = courseHubJsonLd();
 
 export default function AghoriTantraLayout({ children }: { children: React.ReactNode }) {
   return (

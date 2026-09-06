@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { aghoriCourse, COURSE_LESSON_COUNT, COURSE_META } from '@/lib/data/aghori-tantra-course';
-import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
+import { canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
+import { courseLessonJsonLd } from '@/lib/seo/course-jsonld';
 import { TrackView } from '@/components/analytics/TrackView';
 import CaptureBand from '@/components/capture/CaptureBand';
 
@@ -59,29 +60,10 @@ export default async function LessonPage({ params }: { params: Promise<{ phase: 
 
   const paragraphs = l.content.split(/\n\n+/);
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Article',
-        headline: l.title,
-        description: l.content.split('\n\n')[0].slice(0, 300),
-        url: `${SITE_URL}/aghori-tantra/${mod.id}/${l.id}`,
-        isPartOf: { '@type': 'Course', name: 'Aghorī Tantra Course', url: `${SITE_URL}/aghori-tantra` },
-        about: { '@type': 'Thing', name: 'Aghorī Tantra' },
-        inLanguage: 'en',
-      },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
-          { '@type': 'ListItem', position: 2, name: 'Aghorī Tantra Course', item: `${SITE_URL}/aghori-tantra` },
-          { '@type': 'ListItem', position: 3, name: mod.phase, item: `${SITE_URL}/aghori-tantra/${mod.id}` },
-          { '@type': 'ListItem', position: 4, name: l.title, item: `${SITE_URL}/aghori-tantra/${mod.id}/${l.id}` },
-        ],
-      },
-    ],
-  };
+  // Vol. 3 #10 — LearningResource (learningResourceType: Lesson) graph;
+  // schema.org has no Lesson type, so the lesson-level schema lives in the
+  // shared, test-pinned helper instead of the old generic Article node.
+  const jsonLd = courseLessonJsonLd(mod, l);
 
   return (
     <>

@@ -85,6 +85,10 @@ export async function updateContentEntry(
     where: { id },
     data: {
       ...data,
+      // Stamp first-publish time (Vol. 3 #2): the public renderer and the
+      // Article JSON-LD read publishedAt; undefined = untouched on later edits.
+      publishedAt:
+        data.status === 'PUBLISHED' && !entry.publishedAt ? new Date() : undefined,
       updatedById: userId,
     },
   });
@@ -106,6 +110,9 @@ export async function updateContentEntry(
       type: 'success',
       href: '/admin/content',
     });
+    // Vol. 3 #2 — the entry is publicly rendered now; refresh the sitemap
+    // (hourly revalidate is the backstop, this is the immediate path).
+    revalidatePath('/sitemap.xml');
   }
 
   return updated;

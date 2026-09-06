@@ -3,19 +3,19 @@ import { renderToString } from 'react-dom/server';
 import { TermText } from '@/components/longform/TermText';
 
 describe('TermText — Lexicon auto-linker', () => {
-  it('links glossary terms found in prose', () => {
+  it('links glossary terms to their programmatic pages (Vol. 3 #4)', () => {
     const html = renderToString(
       <TermText text="The Kuṇḍalinī rises through prāṇāyāma and mantra practice." />
     );
-    expect(html).toContain('href="/glossary#');
-    expect(html).toContain('kundalini');
+    expect(html).toContain('href="/glossary/kundalini"');
+    expect(html).toContain('href="/glossary/pranayama"');
   });
 
   it('links only the first occurrence of each term', () => {
     const html = renderToString(
       <TermText text="Karma is a loop. Karma repeats. Karma again." />
     );
-    const count = (html.match(/href="\/glossary#karma"/g) || []).length;
+    const count = (html.match(/href="\/glossary\/karma"/g) || []).length;
     expect(count).toBe(1);
   });
 
@@ -26,7 +26,7 @@ describe('TermText — Lexicon auto-linker', () => {
 
   it('does not match terms inside larger words', () => {
     const html = renderToString(<TermText text="The Karmamudrā practice is distinct." />);
-    expect(html).not.toContain('href="/glossary#karma"');
+    expect(html).not.toContain('href="/glossary/karma"');
   });
 
   it('links a real folio summary (integration)', async () => {
@@ -34,6 +34,6 @@ describe('TermText — Lexicon auto-linker', () => {
     const folio = allSiddhis.find((s) => s.slug === 'dakshina-kali-sadhana');
     expect(folio).toBeDefined();
     const html = renderToString(<TermText text={folio!.summary} />);
-    expect(html).toContain('href="/glossary#');
+    expect(html).toContain('href="/glossary/');
   });
 });

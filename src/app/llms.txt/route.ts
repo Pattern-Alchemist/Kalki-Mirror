@@ -5,8 +5,9 @@
 // llmstxt.org convention. Generated from the live data modules —
 // counts and links can never drift from the real catalog.
 //
-// Surface: 109 indexable URLs (the sitemap) + /dossier (the rite
-// of entry, robots-disallowed but described) = 110 curated links.
+// Surface: every indexable URL (the sitemap, incl. the per-term Lexicon
+// pages since Vol. 3 #4) + /dossier (the rite of entry, robots-disallowed
+// but described). Generated from the data modules — never hand-counted.
 // Served by a route handler with correct content-type.
 // =============================================================
 
@@ -20,6 +21,8 @@ import { CANONICAL } from '@/lib/canonical';
 import { FAQ } from '@/lib/data/faq';
 import { VERDICT_MEANINGS } from '@/lib/data/guhya';
 import { aghoriCourse } from '@/lib/data/aghori-tantra-course';
+import { glossaryEntries } from '@/lib/data/glossary';
+import { glossaryTermPath } from '@/lib/seo/glossary-seo';
 
 const BASE = 'https://www.astrokalki.com';
 
@@ -111,6 +114,11 @@ function generateLlmsTxt(): string {
 
   const lexicon = section(`The Lexicon — ${C.lexiconTerms} Terms`, [
     ['The Lexicon', '/glossary', `${C.lexiconTerms} Sanskrit and Tantric terms defined in the KALKI framework — from Oṃ to Kuṇḍalinī, the complete vocabulary of consciousness transformation, cross-linked to folios and patterns.`],
+    // Vol. 3 #4 — every term is an addressable page now
+    ...glossaryEntries.map(
+      (e) =>
+        [`${e.term}${e.sanskrit ? ` (${e.sanskrit})` : ''}`, glossaryTermPath(e.term), e.definition.slice(0, 160)] as [string, string, string],
+    ),
   ]);
 
   const library = section('The Library & Codex', [

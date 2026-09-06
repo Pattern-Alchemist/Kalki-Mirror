@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
-import { glossaryEntries } from '@/lib/data/glossary';
 import { CANONICAL } from '@/lib/canonical';
 
 const GLOSSARY_DESC = `${CANONICAL.lexiconTerms} Sanskrit and Tantric terms defined in the KALKI framework. From Oṃ to Kuṇḍalinī, from Prāṇāyāma to the Mahāvidyās — the vocabulary of consciousness transformation.`;
@@ -24,51 +23,11 @@ export const metadata: Metadata = {
   },
 };
 
-const glossaryJsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'WebPage',
-      name: 'The Lexicon',
-      description: `${CANONICAL.lexiconTerms} Sanskrit and Tantric terms defined in the KALKI framework. From Oṃ to Kuṇḍalinī, from Prāṇāyāma to the Mahāvidyās.`,
-      url: `${SITE_URL}/glossary`,
-      isPartOf: { '@id': `${SITE_URL}/#website` },
-    },
-    {
-      // GEO kit fix #5 — DefinedTermSet for the Lexicon's terms.
-      // Gives generative engines an addressable definition for every
-      // Sanskrit term KALKI is authoritative on.
-      '@type': 'DefinedTermSet',
-      '@id': `${SITE_URL}/glossary#termset`,
-      name: 'The KALKI Lexicon',
-      description: `${CANONICAL.lexiconTerms} Sanskrit and Tantric terms defined in the KALKI framework.`,
-      url: `${SITE_URL}/glossary`,
-      hasDefinedTerm: glossaryEntries.map((entry) => ({
-        '@type': 'DefinedTerm',
-        name: entry.term,
-        alternateName: entry.sanskrit,
-        description: entry.definition,
-        inDefinedTermSet: { '@id': `${SITE_URL}/glossary#termset` },
-      })),
-    },
-    {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-        { '@type': 'ListItem', position: 2, name: 'The Lexicon', item: `${SITE_URL}/glossary` },
-      ],
-    },
-  ],
-};
-
+// NOTE (Vol. 3 #4): the DefinedTermSet JSON-LD graph used to live here —
+// but a layout renders for BOTH the hub and all 86 term pages, duplicating
+// an 86-term graph onto every term page. The graph moved to the hub's own
+// page.tsx; term pages carry their single DefinedTerm (glossary-seo.ts)
+// which still references the `${SITE_URL}/glossary#termset` @id.
 export default function GlossaryLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(glossaryJsonLd) }}
-      />
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }

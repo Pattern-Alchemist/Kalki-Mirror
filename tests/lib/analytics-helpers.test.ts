@@ -74,10 +74,15 @@ describe('contentHref', () => {
     expect(contentHref('pricing_viewed', null)).toBe('/pricing');
   });
 
-  it('keeps the lexicon deep-link diacritic-safe', () => {
+  it('deep-links to the term page, diacritic-safe (Vol. 3 #4: pages replace #anchors)', () => {
     const href = contentHref('glossary_term_viewed', 'Prāṇāyāma');
-    expect(href).toMatch(/^\/glossary#/);
-    expect(decodeURIComponent(href)).toContain('pranayama');
+    expect(href).toBe('/glossary/pranayama');
+  });
+
+  it('deep-links studio entries to /library/type/slug (Vol. 3 #2)', () => {
+    expect(contentHref('library_entry_viewed', 'practice/trataka-protocol')).toBe(
+      '/library/practice/trataka-protocol'
+    );
   });
 
   it('falls back to hub pages when the slug is missing', () => {
