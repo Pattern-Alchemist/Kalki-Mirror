@@ -86,6 +86,17 @@ export type EngagementSnapshot = {
   totals: EngagementTotals;
   /** door (1-5) → emails that got that Door but never opened it */
   nonOpeners: Record<string, string[]>;
+  /** Vol. 3 #8 — per-URL click report: where delivered traffic actually lands */
+  topUrls: UrlCtrRow[];
+};
+
+/** Vol. 3 #8 — one clicked URL's rollup across all sends. */
+export type UrlCtrRow = {
+  url: string;
+  clicks: number;
+  /** share of all clicks, percent (one decimal) */
+  sharePct: number;
+  lastClickAt: string | null;
 };
 
 type RawEngagementRow = {
@@ -176,7 +187,29 @@ export async function getEngagement(): Promise<EngagementSnapshot> {
     (nonOpeners[key] ??= []).push(r.email);
   }
 
-  return { rows, totals, nonOpeners };
+  // ── Vol. 3 #8 — per-URL click report ──
+  // EmailEvent.url has been captured by the Resend webhook since Tier 2
+  // but never rendered. Roll clicks by URL (across all send kinds), with
+  // share-of-clicks and recency — the founder sees WHERE delivered
+  // attention actually lands.
+  const rawUrls = await db.$queryRaw<{ url: string; clicks: number; lastClickAt: Date | string }[]>`
+    SELECT "url", COUNT(*) AS clicks, MAX("occurredAt") AS "lastClickAt"
+    FROM "EmailEvent"
+    WHERE "type" = 'email.clicked' AND "url" IS NOT NULL
+    GROUP BY "url"
+    ORDER BY clicks DESC, "url" ASC
+    LIMIT 10
+  `;
+  const totalClicks = rawUrls.reduce((n, r) => n + Number(r.clicks), 0);
+  const topUrls: UrlCtrRow[] = rawUrls.map((r) => ({
+    url: r.url,
+    clicks: Number(r.clicks),
+    sharePct:
+      totalClicks > 0 ? Math.round((Number(r.clicks) / totalClicks) * 1000) / 10 : 0,
+    lastClickAt: r.lastClickAt ? new Date(r.lastClickAt).toISOString() : null,
+  }));
+
+  return { rows, totals, nonOpeners, topUrls };
 }
 
 /**

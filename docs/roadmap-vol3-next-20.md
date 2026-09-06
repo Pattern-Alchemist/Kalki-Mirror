@@ -7,6 +7,10 @@
 > EMBED_API_KEY neural swap (one key + one bake, rehearsed weekly),
 > GSC indexing OAuth (~1h documented build, needs GSC_INDEXING_CREDENTIALS),
 > TOTP enrollment (user action, grace ends ~2026-09-12).
+>
+> PROGRESS — Week A: 1·3·17·18·19 (+health bug) · Week B: 4·2·10 ·
+> Week C: 6·7·8·9 (+ the Seven Patterns primer lead-magnet as an
+> interlude) → 13 of 20 shipped. Remaining: 11·12·13·14·15 · 16·20 · 5.
 
 ## Tier 9 — Close the loops (data modeled but dead-ended) — do first
 

@@ -95,6 +95,50 @@ export function EngagementPanel() {
         ))}
       </div>
 
+      {/* Vol. 3 #8 — per-URL click report */}
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="text-sm font-semibold text-zinc-200">Clicked URLs (CTR report)</h2>
+            <p className="mt-0.5 text-xs text-zinc-500">
+              Where delivered attention actually lands — click rollup by target URL across all send kinds.
+            </p>
+          </div>
+        </div>
+        {data.topUrls.length === 0 ? (
+          <p className="mt-3 text-xs text-zinc-600">
+            No click events yet — this fills as Resend reports clicks from the webhook.
+          </p>
+        ) : (
+          <div className="mt-3 overflow-x-auto rounded-lg border border-zinc-800">
+            <table className="w-full min-w-[640px] text-left text-sm">
+              <thead>
+                <tr className="border-b border-zinc-800 text-xs uppercase tracking-wider text-zinc-500">
+                  <th className="px-4 py-2.5">URL</th>
+                  <th className="px-4 py-2.5">Clicks</th>
+                  <th className="px-4 py-2.5">Share of clicks</th>
+                  <th className="px-4 py-2.5">Last click</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.topUrls.map((u) => (
+                  <tr key={u.url} className="border-b border-zinc-800/60 last:border-0 hover:bg-zinc-900/40">
+                    <td className="max-w-[380px] truncate px-4 py-2.5 font-mono text-xs text-zinc-300" title={u.url}>
+                      {u.url}
+                    </td>
+                    <td className="px-4 py-2.5 text-zinc-200">{u.clicks}</td>
+                    <td className="px-4 py-2.5">
+                      <span className="text-emerald-400">{u.sharePct}%</span>
+                    </td>
+                    <td className="px-4 py-2.5 text-zinc-500">{timeAgo(u.lastClickAt)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
       {/* Non-opener segment + re-send */}
       <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
         <div className="flex flex-wrap items-center justify-between gap-3">

@@ -67,6 +67,8 @@ export async function GET(request: NextRequest) {
   let affinityTop = "";
   let referrals: Array<{ email: string; referrals: number }> = [];
   let renewalsDue: Array<{ email: string; tier: string; nextDueAt: Date | null; renewalCycle: string | null }> = [];
+  // Vol. 3 #8 — per-URL CTR line: the single most-clicked URL of the window.
+  let topClicks = "";
 
   try {
     const [leads, claimAgg, paidAgg, totalAgg] = await Promise.all([
@@ -107,6 +109,24 @@ export async function GET(request: NextRequest) {
     }).length;
   } catch (err) {
     console.error("[daily-digest] subscriber block failed", err);
+  }
+
+  // Vol. 3 #8 — where did delivered attention land? Top clicked URLs in
+  // the window (EmailEvent.url, captured by the Resend webhook).
+  try {
+    const rows = await db.$queryRaw<{ url: string; clicks: number }[]>`
+      SELECT "url", COUNT(*) AS clicks
+      FROM "EmailEvent"
+      WHERE "type" = 'email.clicked' AND "url" IS NOT NULL AND "occurredAt" >= ${since}
+      GROUP BY "url"
+      ORDER BY clicks DESC, "url" ASC
+      LIMIT 2
+    `;
+    topClicks = rows
+      .map((r) => `  · ${r.url} — ${Number(r.clicks)} click${Number(r.clicks) === 1 ? "" : "s"}`)
+      .join("\n");
+  } catch (err) {
+    console.error("[daily-digest] click block failed", err);
   }
 
   try {
@@ -256,6 +276,7 @@ export async function GET(request: NextRequest) {
     "",
     `— 10 DOORS —`,
     `${newSubs} new subscribers (24h) · ${activeSubs} active · ${doorsDue} due a door today`,
+    ...(topClicks ? ["Most-clicked links (24h):", topClicks] : []),
     "",
     `— ABANDONED INTAKES —`,
     `${openDrafts} open draft${openDrafts === 1 ? "" : "s"} · ${touchedDrafts24h} touched in window${openDrafts > 0 ? " — recovery: WhatsApp first-touch on the newest" : ""}`,

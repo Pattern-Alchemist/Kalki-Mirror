@@ -11,10 +11,11 @@
 //   course day 11     → completion email (doc §5)
 //   course day > 11   → course finished, silent
 //
-// Cadence note: Vercel Cron is at-least-once — a missed run skips
-// that Door for the list (documented tradeoff; list stays healthy,
-// no duplicate risk within a day under single daily invocation).
-// =============================================================
+// Cadence note: Vercel Cron is at-least-once — a missed run used to skip
+// that Door for the list permanently (documented tradeoff). Vol. 3 #9
+// replaces the tradeoff with ledger-driven catch-up: see the backfill
+// block below (computeDueDoors / shouldSendCompletion + the guards that
+// keep it safe). ==================================================
 
 import { sendEmail, type SendEmailResult } from "@/lib/resend";
 import {
@@ -33,6 +34,69 @@ export function computeCourseDay(createdAt: Date, now: Date = new Date()): numbe
   const a = Math.floor((createdAt.getTime() + IST_OFFSET_MS) / DAY_MS);
   const b = Math.floor((now.getTime() + IST_OFFSET_MS) / DAY_MS);
   return b - a;
+}
+
+// ── Vol. 3 #9 — missed-Door backfill ────────────────────────────────────
+// The old cron sent exactly door-N on day N: one skipped run permanently
+// skipped that Door for the whole list (documented tradeoff at the top of
+// this file). Now the EmailSend ledger IS the progression state: a Door is
+// due if it is in the subscriber's window, unlogged, and under the caps.
+//
+// Guards, in order of importance:
+//   · LOOKBACK WINDOW — doors older than BACKFILL_WINDOW_DAYS are treated
+//     as historical. This is what makes backfill safe for subscribers who
+//     predate EmailSend logging (their pre-ledger doors are invisible to
+//     the sent-set and must never be re-sent).
+//   · PER-SUBSCRIBER CAP — at most 2 catch-up emails per subscriber per
+//     run. A fully-missed 3-day stretch takes two nightly runs to heal,
+//     and no one ever wakes to a burst.
+//   · GLOBAL BATCH CAP stays at the cron (150) — unchanged.
+
+/** How many IST days back a Door remains deliverable. */
+export const BACKFILL_WINDOW_DAYS = 3;
+
+/** Max catch-up emails per subscriber per run. */
+export const BACKFILL_PER_SUBSCRIBER_CAP = 2;
+
+/**
+ * Doors due RIGHT NOW for one subscriber: unlogged door days inside the
+ * lookback window, oldest first, capped per run. On the healthy daily
+ * path this returns exactly [today's door] — the normal behavior is
+ * unchanged; only gaps trigger extra sends.
+ */
+export function computeDueDoors(
+  day: number,
+  sentDoorDays: Iterable<number>,
+  opts: {
+    windowDays?: number;
+    perSubscriberCap?: number;
+  } = {}
+): number[] {
+  const windowDays = opts.windowDays ?? BACKFILL_WINDOW_DAYS;
+  const cap = opts.perSubscriberCap ?? BACKFILL_PER_SUBSCRIBER_CAP;
+  const sent = new Set(sentDoorDays);
+  const earliest = Math.max(1, day - windowDays + 1);
+  const latest = Math.min(day, 10);
+  const due: number[] = [];
+  for (let d = earliest; d <= latest; d++) {
+    if (sent.has(d)) continue;
+    due.push(d);
+    if (due.length >= cap) break;
+  }
+  return due;
+}
+
+/**
+ * Completion catch-up: the day-11 completion email fires late (within the
+ * window) if its run was missed, and only ever once — EmailSend is the
+ * once-ever proof. Beyond the window it stays silent (historical).
+ */
+export function shouldSendCompletion(
+  day: number,
+  completionSent: boolean,
+  windowDays: number = BACKFILL_WINDOW_DAYS
+): boolean {
+  return !completionSent && day >= 11 && day <= 11 + windowDays - 1;
 }
 
 export const REPLY_TO = process.env.EMAIL_REPLY_TO ?? "admin@astrokalki.com";

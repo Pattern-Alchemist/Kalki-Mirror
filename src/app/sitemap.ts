@@ -34,6 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/pricing`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/consultations`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/email-course`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${base}/primer`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.8 },
     // US acquisition layer (Phase A): hub + 5 commercial-intent pages.
     // 0.85 hub / 0.8 children — commercial intent, one query family per page.
     { url: `${base}/usa`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'weekly', priority: 0.85 },

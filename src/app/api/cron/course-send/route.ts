@@ -1,21 +1,25 @@
 // =============================================================
 // KALKI — 10 Doors course sender (daily Vercel cron)
 // -------------------------------------------------------------
-// GET /api/cron/course-send              → send today's doors
+// GET /api/cron/course-send              → send due doors (incl. catch-up)
 // GET /api/cron/course-send?dryRun=1     → report, send nothing
 //
 // AUTH (mirrors /api/indexnow):
 //   · Authorization: Bearer <CRON_SECRET> — attached by Vercel
 //   · ?key=<CRON_SECRET>                  — manual runs
 //
-// DESIGN (doors-email-course.md §7, stateless):
+// DESIGN (doors-email-course.md §7, upgraded by Vol. 3 #9):
 //   · course day = whole IST calendar days since createdAt
-//   · day 1–10 → that day's Door; day 11 → completion; else skip
 //   · day 0 skips by design — the welcome email already went out
 //     immediately at subscribe time (subscribe route, after())
-//   · batch cap 150 sends/run — stays well inside provider and
-//     cron time limits at the volumes this list will carry for
-//     a long time; overflow waits for tomorrow's run
+//   · day 1–10 → UNLOGGED doors inside the lookback window
+//     (computeDueDoors): a missed run no longer permanently skips
+//     a Door — the EmailSend ledger IS the progression state
+//   · day 11+ → completion email, once ever, within the window
+//     (shouldSendCompletion)
+//   · batch cap 150 sends/run + per-subscriber catch-up cap 2 —
+//     stays well inside provider and cron time limits; overflow
+//     waits for tomorrow's run
 //
 // SCHEDULE: vercel.json cron "30 14 * * *" = 20:00 IST daily —
 // the publishing hour (doc §1: "consistency beats optimality").
@@ -25,6 +29,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import {
   computeCourseDay,
+  computeDueDoors,
+  shouldSendCompletion,
   sendDoorDay,
   sendCompletion,
 } from "@/lib/emails/course-send";
@@ -65,19 +71,59 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ ok: false, error: "subscriber query failed" }, { status: 500 });
   }
 
-  const now = new Date();
-  const plan = subscribers.map((s) => {
-    const day = computeCourseDay(s.createdAt, now);
-    return {
-      email: s.email,
-      day,
-      action: day >= 1 && day <= 10 ? `door-${day}` : day === 11 ? "completion" : "skip",
-    };
-  });
+  // ── Vol. 3 #9: read the ledger once for the whole batch ──
+  // sentDoors[email] = set of doorDays with an accepted send on record;
+  // completionSent[email] = whether the completion email ever logged.
+  const emails = subscribers.map((s) => s.email);
+  const sentDoors = new Map<string, Set<number>>();
+  const completionSent = new Set<string>();
+  if (emails.length > 0) {
+    try {
+      const ledger = await db.emailSend.findMany({
+        where: { email: { in: emails }, kind: { in: ["door", "completion"] } },
+        select: { email: true, kind: true, doorDay: true },
+      });
+      for (const row of ledger) {
+        if (row.kind === "door" && row.doorDay != null) {
+          let set = sentDoors.get(row.email);
+          if (!set) {
+            set = new Set<number>();
+            sentDoors.set(row.email, set);
+          }
+          set.add(row.doorDay);
+        } else if (row.kind === "completion") {
+          completionSent.add(row.email);
+        }
+      }
+    } catch (err) {
+      // Ledger read failed → behave like the pre-backfill era: send only
+      // today's door (sent-sets stay empty, window still bounds damage).
+      console.error("[course-send] ledger read failed — falling back to day-only plan", err);
+    }
+  }
 
-  const dueAll = plan.filter((p) => p.action !== "skip");
+  const now = new Date();
+  type PlanItem = { email: string; day: number; action: "door" | "completion"; door: number | null };
+  const plan: PlanItem[] = [];
+  for (const s of subscribers) {
+    const day = computeCourseDay(s.createdAt, now);
+    const doors = computeDueDoors(day, sentDoors.get(s.email) ?? []);
+    for (const d of doors) {
+      plan.push({ email: s.email, day, action: "door", door: d });
+    }
+    if (shouldSendCompletion(day, completionSent.has(s.email))) {
+      plan.push({ email: s.email, day, action: "completion", door: null });
+    }
+  }
+
+  const dueAll = plan;
   const due = dueAll.slice(0, BATCH_CAP);
   const overflow = Math.max(0, dueAll.length - BATCH_CAP);
+  const backfillCount = dueAll.filter((p) => {
+    // a catch-up send = a door that isn't "today's", or any late completion
+    if (p.action === "completion") return p.day !== 11;
+    return p.door !== p.day;
+  }).length;
 
   if (dryRun) {
     return NextResponse.json({
@@ -85,8 +131,13 @@ export async function GET(request: NextRequest) {
       dryRun: true,
       activeSubscribers: subscribers.length,
       dueToday: dueAll.length,
+      backfill: backfillCount,
       overflow,
-      plan: dueAll.slice(0, 25),
+      plan: dueAll.slice(0, 25).map((p) => ({
+        email: p.email,
+        day: p.day,
+        action: p.action === "completion" ? "completion" : `door-${p.door}`,
+      })),
     });
   }
 
@@ -96,13 +147,19 @@ export async function GET(request: NextRequest) {
       const res =
         item.action === "completion"
           ? await sendCompletion(item.email)
-          : await sendDoorDay(item.email, Number(item.action.replace("door-", "")));
-      results.push({ email: item.email, action: item.action, ok: res.ok, id: res.id, error: res.error });
+          : await sendDoorDay(item.email, item.door as number);
+      results.push({
+        email: item.email,
+        action: item.action === "completion" ? "completion" : `door-${item.door}`,
+        ok: res.ok,
+        id: res.id,
+        error: res.error,
+      });
     } catch (err) {
       console.error("[course-send] send threw", item.email, item.action, err);
       results.push({
         email: item.email,
-        action: item.action,
+        action: item.action === "completion" ? "completion" : `door-${item.door}`,
         ok: false,
         error: err instanceof Error ? err.message : String(err),
       });
@@ -113,7 +170,7 @@ export async function GET(request: NextRequest) {
   const failed = results.filter((r) => !r.ok).length;
 
   console.info(
-    `[course-send] active=${subscribers.length} due=${due.length} sent=${sent} failed=${failed} overflow=${overflow}`,
+    `[course-send] active=${subscribers.length} due=${due.length} sent=${sent} failed=${failed} backfill=${backfillCount} overflow=${overflow}`,
   );
 
   return NextResponse.json({
@@ -122,6 +179,7 @@ export async function GET(request: NextRequest) {
     due: due.length,
     sent,
     failed,
+    backfill: backfillCount,
     overflow,
     ...(process.env.VERCEL !== "1" ? { results } : {}),
   });
