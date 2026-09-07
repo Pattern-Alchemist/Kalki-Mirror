@@ -5,6 +5,7 @@ import { callLLM, isLLMConfigured, YANTRA_PERSONA } from '@/lib/ai/llm';
 import { getClientIp } from '@/lib/api-auth';
 import { consultationScreenSchema } from '@/lib/validators/schemas';
 import { aiRateLimit } from '@/lib/rate-limit';
+import { withAiRoute } from '@/lib/ai/observe';
 
 
 const VALID_URGENCIES = ['low', 'medium', 'high'] as const;
@@ -23,7 +24,7 @@ const VALID_ARCHETYPES = [
  *
  * Rate limited: 5 req/min per IP.
  */
-export async function POST(request: NextRequest) {
+async function handle(request: NextRequest) {
   try {
     if (!isLLMConfigured()) {
       return NextResponse.json(
@@ -125,4 +126,8 @@ Respond ONLY with valid JSON matching the schema above. Do not include any text 
       { status: 500 }
     );
   }
+}
+
+export async function POST(request: NextRequest) {
+  return withAiRoute('ai_consultation_screen', '/api/ai/consultation-screen', request, handle);
 }

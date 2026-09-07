@@ -5,6 +5,7 @@ import { callLLM, isLLMConfigured, YANTRA_PERSONA } from '@/lib/ai/llm';
 import { getClientIp } from '@/lib/api-auth';
 import { archetypeQuizSchema } from '@/lib/validators/schemas';
 import { aiRateLimit } from '@/lib/rate-limit';
+import { withAiRoute } from '@/lib/ai/observe';
 
 
 // ── Rule-based fallback when LLM is not configured ──
@@ -140,7 +141,7 @@ function normalizeArchetypeId(raw: string): string {
  *
  * Rate limited: 5 req/min per IP.
  */
-export async function POST(request: NextRequest) {
+async function handle(request: NextRequest) {
   try {
     const ip = getClientIp(request);
     const { limited } = await aiRateLimit(ip);
@@ -261,4 +262,8 @@ Analyze these answers and determine the dominant Mahavidya archetype. Respond ON
       { status: 500 }
     );
   }
+}
+
+export async function POST(request: NextRequest) {
+  return withAiRoute('ai_archetype_quiz', '/api/ai/archetype-quiz', request, handle);
 }

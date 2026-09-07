@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { authenticateRequest } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { getListFunnel } from "@/lib/admin/list-funnel-db";
+import { readAiRouteStats } from "@/lib/analytics-db";
 import type { ListFunnelResult } from "@/lib/admin/list-funnel";
 
 export const dynamic = "force-dynamic";
@@ -268,6 +269,16 @@ export async function GET(request: NextRequest) {
       listFunnel = null;
     }
 
+    // ── AI route observability (Vol. 4 #17) — per-route calls, outcomes and
+    // latency percentiles from the first-party event store. Own fail-soft
+    // block like every satellite panel: the war room must never break here.
+    let aiRoutes: Awaited<ReturnType<typeof readAiRouteStats>> = { available: false, routes: [] };
+    try {
+      aiRoutes = await readAiRouteStats(rangeParam === "all" ? 365 : days);
+    } catch {
+      // keep the silent default
+    }
+
     return NextResponse.json({
       generatedAt: now.toISOString(),
       range: rangeParam,
@@ -286,6 +297,7 @@ export async function GET(request: NextRequest) {
       campaignList,
       emailCourse,
       listFunnel,
+      aiRoutes,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";

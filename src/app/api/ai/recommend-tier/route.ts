@@ -5,6 +5,7 @@ import { callLLM, isLLMConfigured, YANTRA_PERSONA } from '@/lib/ai/llm';
 import { getClientIp } from '@/lib/api-auth';
 import { recommendTierSchema } from '@/lib/validators/schemas';
 import { aiRateLimit } from '@/lib/rate-limit';
+import { withAiRoute } from '@/lib/ai/observe';
 
 
 // ── Rule-based fallback when LLM is not configured or fails ──
@@ -76,7 +77,7 @@ function fallbackRecommendation(answers: string[]) {
  *
  * Rate limited: 5 req/min per IP.
  */
-export async function POST(request: NextRequest) {
+async function handle(request: NextRequest) {
   try {
     const ip = getClientIp(request);
     const { limited } = await aiRateLimit(ip);
@@ -179,4 +180,8 @@ Recommend the most suitable membership tier based on their interests, depth of e
       { status: 500 }
     );
   }
+}
+
+export async function POST(request: NextRequest) {
+  return withAiRoute('ai_recommend_tier', '/api/ai/recommend-tier', request, handle);
 }

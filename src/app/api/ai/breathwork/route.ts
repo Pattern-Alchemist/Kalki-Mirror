@@ -5,6 +5,7 @@ import { callLLM, isLLMConfigured, YANTRA_PERSONA } from '@/lib/ai/llm';
 import { getClientIp } from '@/lib/api-auth';
 import { breathworkSchema } from '@/lib/validators/schemas';
 import { aiRateLimit } from '@/lib/rate-limit';
+import { withAiRoute } from '@/lib/ai/observe';
 
 
 /**
@@ -15,7 +16,7 @@ import { aiRateLimit } from '@/lib/rate-limit';
  *
  * Rate limited: 5 req/min per IP.
  */
-export async function POST(request: NextRequest) {
+async function handle(request: NextRequest) {
   try {
     if (!isLLMConfigured()) {
       return NextResponse.json(
@@ -109,4 +110,8 @@ Generate a complete Pranayama protocol. Ensure the total duration of all phases 
       { status: 500 }
     );
   }
+}
+
+export async function POST(request: NextRequest) {
+  return withAiRoute('ai_breathwork', '/api/ai/breathwork', request, handle);
 }

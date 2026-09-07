@@ -40,6 +40,22 @@ export const EVENT_NAMES = [
   // Vol. 4 #6 — studio type index pages (/library/[type])
   'library_type_viewed',
   'email_subscribed',
+  // Vol. 4 #17 — AI route observability. One event per /api/ai/* route
+  // family (the nine rescued by 379ba90 + draft) and the Vol. 4 #14
+  // grounded /ask route. Fired SERVER-SIDE by src/lib/ai/observe.ts with
+  // latency_ms + outcome properties so the war-room can say which route
+  // fails or latency-drifts (the exact question it could not answer before).
+  'ai_archetype_quiz',
+  'ai_breathwork',
+  'ai_consultation_screen',
+  'ai_draft',
+  'ai_explain',
+  'ai_japa_guide',
+  'ai_pattern_explain',
+  'ai_recommend_tier',
+  'ai_search',
+  'ai_transit_interpretation',
+  'ai_ask',
 ] as const;
 
 export type EventName = (typeof EVENT_NAMES)[number];
@@ -77,6 +93,18 @@ export const EVENT_META: Record<
   library_entry_viewed: { label: 'Studio entry opened', group: 'Discovery' },
   library_type_viewed: { label: 'Studio shelf opened', group: 'Discovery' },
   email_subscribed: { label: 'Newsletter signup', group: 'Retention' },
+  // Vol. 4 #17 — AI route events (server-fired; see src/lib/ai/observe.ts)
+  ai_archetype_quiz: { label: 'AI archetype-quiz route called', group: 'Practice' },
+  ai_breathwork: { label: 'AI breathwork route called', group: 'Practice' },
+  ai_consultation_screen: { label: 'AI consultation-screen route called', group: 'Conversion' },
+  ai_draft: { label: 'AI studio draft route called', group: 'Education' },
+  ai_explain: { label: 'AI explain route called', group: 'Practice' },
+  ai_japa_guide: { label: 'AI japa-guide route called', group: 'Practice' },
+  ai_pattern_explain: { label: 'AI pattern-explain route called', group: 'Practice' },
+  ai_recommend_tier: { label: 'AI recommend-tier route called', group: 'Conversion' },
+  ai_search: { label: 'AI semantic search route called', group: 'Discovery' },
+  ai_transit_interpretation: { label: 'AI transit-interpretation route called', group: 'Education' },
+  ai_ask: { label: 'AI grounded /ask answered (Vol. 4 #14)', group: 'Discovery' },
 };
 
 export const GROUP_NAMES = ['Discovery', 'Education', 'Practice', 'Conversion', 'Retention'] as const;

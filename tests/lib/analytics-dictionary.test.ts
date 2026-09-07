@@ -5,8 +5,19 @@ import { EVENT_NAMES, EVENT_META } from '@/lib/analytics-db';
    Analytics event dictionary (TGA §12) — completeness guards
    ══════════════════════════════════════════════════════════════ */
 describe('Event dictionary', () => {
-  it('has exactly the 24 dictionary events (22 TGA §12 + library_entry_viewed Vol. 3 #2 + library_type_viewed Vol. 4 #6)', () => {
-    expect(EVENT_NAMES).toHaveLength(24);
+  it('has exactly the 35 dictionary events (22 TGA §12 + library_entry_viewed Vol. 3 #2 + library_type_viewed Vol. 4 #6 + email_subscribed + 11 ai_* Vol. 4 #17)', () => {
+    expect(EVENT_NAMES).toHaveLength(35);
+  });
+
+  it('every ai_* route event is prefixed ai_ and unique (Vol. 4 #17)', () => {
+    const aiNames = EVENT_NAMES.filter((n) => n.startsWith('ai_'));
+    expect(aiNames).toHaveLength(11);
+    expect(new Set(aiNames).size).toBe(aiNames.length);
+    for (const name of aiNames) {
+      expect(EVENT_META[name].label).toMatch(/route called|\/ask answered/);
+    }
+    // the /ask surface from Vol. 4 #14 must be observable too
+    expect(aiNames).toContain('ai_ask');
   });
 
   it('every event has dashboard metadata (label + group)', () => {

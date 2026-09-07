@@ -45,6 +45,21 @@ interface WarRoomData {
       subscribed: number; d3Opened: number; clicked: number; consulted: number; lead: number;
     }[];
   } | null;
+  aiRoutes: {
+    available: boolean;
+    routes: {
+      event: string;
+      calls: number;
+      ok: number;
+      limited: number;
+      invalid: number;
+      unconfigured: number;
+      error: number;
+      p50: number;
+      p95: number;
+      lastAt: string | null;
+    }[];
+  } | null;
 }
 
 const RANGES = [
@@ -591,6 +606,65 @@ export default function WarRoomPage() {
               </div>
             ) : (
               <p className="py-2 text-xs text-zinc-600">No subscribers in the last six weeks — the funnel starts when the list does.</p>
+            )}
+          </Card>
+
+          {/* AI layer — per-route observability (Vol. 4 #17) */}
+          <Card
+            title="AI layer — which route fails or drifts"
+            icon={<Radio className="h-4 w-4 text-amber-500" />}
+            action={<Link href="/ask" className="text-xs text-amber-400 hover:text-amber-300" target="_blank" rel="noopener noreferrer">/ask →</Link>}
+          >
+            {data?.aiRoutes && data.aiRoutes.routes.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
+                      <th className="pb-2 font-medium">Route</th>
+                      <th className="pb-2 text-right font-medium">Calls</th>
+                      <th className="pb-2 text-right font-medium">Ok</th>
+                      <th className="pb-2 text-right font-medium">Limited</th>
+                      <th className="pb-2 text-right font-medium">Errors</th>
+                      <th className="pb-2 text-right font-medium">p50</th>
+                      <th className="pb-2 text-right font-medium">p95</th>
+                      <th className="pb-2 text-right font-medium">Last call</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-800/50">
+                    {data.aiRoutes.routes.map((r) => {
+                      const trouble = r.error > 0 || r.unconfigured > 0;
+                      const drift = r.p95 > 0 && r.p95 >= 4 * Math.max(1, r.p50);
+                      return (
+                        <tr key={r.event}>
+                          <td className="py-2 font-medium text-zinc-200">
+                            <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ backgroundColor: trouble ? "#f43f5e" : drift ? "#f59e0b" : "#10b981" }} />
+                            {r.event.replace(/^ai_/, "").replace(/_/g, "-")}
+                          </td>
+                          <td className="py-2 text-right text-zinc-300">{r.calls}</td>
+                          <td className="py-2 text-right text-zinc-300">{r.ok}</td>
+                          <td className="py-2 text-right text-zinc-400">{r.limited}</td>
+                          <td className={`py-2 text-right ${r.error > 0 ? "text-rose-400" : "text-zinc-400"}`}>{r.error}</td>
+                          <td className="py-2 text-right text-zinc-400">{r.p50 ? `${r.p50}ms` : "—"}</td>
+                          <td className={`py-2 text-right ${drift ? "text-amber-400" : "text-zinc-400"}`}>{r.p95 ? `${r.p95}ms` : "—"}</td>
+                          <td className="py-2 text-right text-zinc-500">{r.lastAt ? r.lastAt.slice(0, 16).replace("T", " ") : "—"}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                <p className="mt-2 text-[0.65rem] leading-relaxed text-zinc-600">
+                  Server-fired first-party events (Vol. 4 #17): every /api/ai/* call reports
+                  latency_ms + outcome through the #18 dictionary gate. Dot: emerald = healthy,
+                  amber = p95 ≥ 4× p50 (latency drift), rose = errors or unconfigured provider.
+                  Limited = rate-limited (429) — a throttle working as designed, not a failure.
+                </p>
+              </div>
+            ) : (
+              <p className="py-2 text-xs text-zinc-600">
+                {data?.aiRoutes && !data.aiRoutes.available
+                  ? "Event store unavailable — AI telemetry is fail-open and never blocks routes."
+                  : "No AI traffic in this window — the layer is quiet, not broken."}
+              </p>
             )}
           </Card>
 

@@ -23,6 +23,7 @@ import {
   type AnalyticsRange,
   type AnalyticsSnapshot,
 } from './analytics-shared';
+import { aggregateAiRouteStats } from './ai/route-stats';
 
 // Re-exported so every existing `@/lib/analytics-db` import (tests, API
 // routes, client type imports) keeps working — the pure dictionary data now
@@ -500,5 +501,49 @@ export async function getAllSubscribersCsv(): Promise<string | null> {
     return [header, ...rows].join('\r\n');
   } catch {
     return null;
+  }
+}
+// ─── AI route observability (Vol. 4 #17) ────────────────────────────────────
+
+import type { AiRouteStat } from './ai/route-stats';
+export type { AiRouteStat };
+
+/**
+ * Per-route AI observability rollup for the war-room (Vol. 4 #17).
+ *
+ * Reads the ai_* events written server-side by src/lib/ai/observe.ts over
+ * the last `days` days and delegates the rollup to the pure aggregator in
+ * src/lib/ai/route-stats.ts (unit-tested there). One bounded query (AI
+ * traffic is small by design — every route is rate-limited), event names
+ * come from the closed EVENT_NAMES set, `days` is clamped to [1, 365]
+ * before interpolation. Rows return only for events that actually
+ * occurred; the panel renders silence for empty windows. Fail-open: any
+ * storage problem degrades to available:false.
+ */
+export async function readAiRouteStats(
+  days = 30,
+): Promise<{ available: boolean; routes: AiRouteStat[] }> {
+  try {
+    await ensureTables();
+    const c = getClient();
+    if (!c) return { available: false, routes: [] };
+    const aiNames = EVENT_NAMES.filter((n) => n.startsWith('ai_'));
+    if (aiNames.length === 0) return { available: true, routes: [] };
+    const clampedDays = Math.max(1, Math.min(365, Math.round(days)));
+    const list = aiNames.map((n) => `'${n}'`).join(', ');
+    const res = await c.execute({
+      sql: `SELECT event, properties, createdAt FROM AnalyticsEvent
+            WHERE event IN (${list})
+              AND createdAt >= datetime('now', '-${clampedDays} days')
+            ORDER BY createdAt ASC`,
+    });
+    const rows = res.rows.map((r) => ({
+      event: String(r.event),
+      properties: r.properties != null ? String(r.properties) : null,
+      createdAt: r.createdAt != null ? String(r.createdAt) : null,
+    }));
+    return { available: true, routes: aggregateAiRouteStats(rows, aiNames) };
+  } catch {
+    return { available: false, routes: [] };
   }
 }

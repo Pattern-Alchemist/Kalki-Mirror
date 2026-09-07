@@ -7,6 +7,7 @@ import { getClientIp } from '@/lib/api-auth';
 import { aiSearchSchema } from '@/lib/validators/schemas';
 import { aiRateLimit } from '@/lib/rate-limit';
 import { termAnchor } from '@/lib/utils/term-anchor';
+import { withAiRoute } from '@/lib/ai/observe';
 
 
 /**
@@ -17,7 +18,7 @@ import { termAnchor } from '@/lib/utils/term-anchor';
  *
  * Rate limited: 5 req/min per IP.
  */
-export async function POST(request: NextRequest) {
+async function handle(request: NextRequest) {
   try {
     if (!isLLMConfigured()) {
       return NextResponse.json(
@@ -113,4 +114,8 @@ Return the top ${limit} most relevant siddhis. Respond ONLY with valid JSON matc
       { status: 500 }
     );
   }
+}
+
+export async function POST(request: NextRequest) {
+  return withAiRoute('ai_search', '/api/ai/search', request, handle);
 }

@@ -186,6 +186,84 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
 
   # ── AI Routes ────────────────────────────────────────────
+  /api/ai/ask:
+    post:
+      operationId: aiAsk
+      tags: [AI]
+      summary: Public grounded Q&A (Vol. 4 #14)
+      description: >-
+        Corpus-grounded question answering for the public /ask surface.
+        Reuses the wizard's citation pool at the public 'prithvi' tier plus
+        the deterministic pattern-bridge boost. CORPUS-OR-SILENCE contract:
+        every grounded answer cites folio slugs validated against the
+        retrieved set; weak retrieval or a grounding-contract breach returns
+        grounded=false instead of an improvised answer. Identical
+        (query · retrieved set) pairs are served from SynthesisCache. Every
+        call fires an ai_ask event (Vol. 4 #17). No auth. Rate limited
+        5/min/IP. Returns 503 if LLM is not configured.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [query]
+              properties:
+                query:
+                  type: string
+                  minLength: 3
+                  maxLength: 500
+      responses:
+        '200':
+          description: Grounded answer with validated citations, or explicit silence
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    description: Grounded answer
+                    required: [grounded, answer, citations, model, method, cached]
+                    properties:
+                      grounded:
+                        type: boolean
+                        enum: [true]
+                      answer:
+                        type: string
+                      citations:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            slug:
+                              type: string
+                            section:
+                              type: string
+                            similarity:
+                              type: number
+                      model:
+                        type: string
+                      method:
+                        type: string
+                        enum: [embedding, keyword]
+                      cached:
+                        type: boolean
+                  - type: object
+                    description: Corpus-or-silence refusal
+                    required: [grounded, reason]
+                    properties:
+                      grounded:
+                        type: boolean
+                        enum: [false]
+                      reason:
+                        type: string
+                        enum: [corpus_silent, ungrounded_output]
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
   /api/ai/search:
     post:
       operationId: aiSearch

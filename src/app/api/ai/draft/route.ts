@@ -5,6 +5,7 @@ import { callLLM, isLLMConfigured, YANTRA_PERSONA } from '@/lib/ai/llm';
 import { getClientIp, requireAuth } from '@/lib/api-auth';
 import { aiDraftSchema } from '@/lib/validators/schemas';
 import { aiRateLimit } from '@/lib/rate-limit';
+import { withAiRoute } from '@/lib/ai/observe';
 
 
 const VALID_CAUTIONS = ['OPEN', 'MODERATE', 'HIGH', 'SEALED'] as const;
@@ -19,7 +20,7 @@ const VALID_TIERS = ['prithvi', 'jal', 'agni', 'akash'] as const;
  * Requires authentication.
  * Rate limited: 5 req/min per IP.
  */
-export async function POST(request: NextRequest) {
+async function handle(request: NextRequest) {
   try {
     // ── Auth check ──
     const { error: authError } = await requireAuth(request);
@@ -123,4 +124,8 @@ Respond ONLY with valid JSON matching the schema above. Do not include any text 
       { status: 500 }
     );
   }
+}
+
+export async function POST(request: NextRequest) {
+  return withAiRoute('ai_draft', '/api/ai/draft', request, handle);
 }

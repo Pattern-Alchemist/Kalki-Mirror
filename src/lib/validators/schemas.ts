@@ -78,6 +78,11 @@ export const aiSearchSchema = z.object({
   limit: z.number().min(1).max(20).default(5),
 });
 
+// ── API: /api/ai/ask (Vol. 4 #14 — public grounded Q&A) ──
+export const aiAskSchema = z.object({
+  query: z.string().min(3, "Ask in at least 3 characters.").max(500, "Query too long."),
+});
+
 // ── API: /api/ai/explain (codex explainer) ──
 export const aiExplainSchema = z.object({
   content: z.string().min(20, "Content must be at least 20 characters.").max(10000, "Content exceeds maximum length."),

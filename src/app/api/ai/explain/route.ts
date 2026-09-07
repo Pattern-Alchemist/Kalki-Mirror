@@ -5,6 +5,7 @@ import { callLLM, isLLMConfigured, YANTRA_PERSONA } from '@/lib/ai/llm';
 import { getClientIp } from '@/lib/api-auth';
 import { aiExplainSchema } from '@/lib/validators/schemas';
 import { aiRateLimit } from '@/lib/rate-limit';
+import { withAiRoute } from '@/lib/ai/observe';
 
 
 /**
@@ -15,7 +16,7 @@ import { aiRateLimit } from '@/lib/rate-limit';
  *
  * Rate limited: 5 req/min per IP.
  */
-export async function POST(request: NextRequest) {
+async function handle(request: NextRequest) {
   try {
     if (!isLLMConfigured()) {
       return NextResponse.json(
@@ -90,4 +91,8 @@ Return JSON: { "explanation": "<your rewritten explanation>", "keyTerms": ["term
       { status: 500 }
     );
   }
+}
+
+export async function POST(request: NextRequest) {
+  return withAiRoute('ai_explain', '/api/ai/explain', request, handle);
 }

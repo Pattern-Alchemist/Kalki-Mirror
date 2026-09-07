@@ -90,6 +90,10 @@ scripts/geo-ops/logs/
 !scripts/bake-breathwork-audio.mjs
 # Vol. 4 #13 — the hi corpus bridge insertion tool (translation provenance)
 !scripts/add-hi-bridge.py
+# Vol. 4 #16 — the neural-swap rehearsal (keyless precondition checks) + its
+# fingerprint probe (both ship with the repo; the scripts/* rule would swallow them)
+!scripts/rehearse-neural-swap.sh
+!scripts/neural-swap-fingerprint.ts
 *.zip
 cloudinary-map.json.open-next/
 

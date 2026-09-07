@@ -7,6 +7,7 @@ import { ALL_ARCHETYPES } from '@/lib/data/archetypes';
 import { getClientIp } from '@/lib/api-auth';
 import { aiPatternExplainSchema } from '@/lib/validators/schemas';
 import { aiRateLimit } from '@/lib/rate-limit';
+import { withAiRoute } from '@/lib/ai/observe';
 
 
 /**
@@ -34,7 +35,7 @@ function fallbackExplanation(pattern: typeof allPatterns[number], archetype: typ
   };
 }
 
-export async function POST(request: NextRequest) {
+async function handle(request: NextRequest) {
   try {
     if (!isLLMConfigured()) {
       // Attempt to serve a rule-based response instead of 503
@@ -156,4 +157,8 @@ Explain this pattern in plain English. Respond ONLY with valid JSON.`;
       { status: 500 }
     );
   }
+}
+
+export async function POST(request: NextRequest) {
+  return withAiRoute('ai_pattern_explain', '/api/ai/pattern-explain', request, handle);
 }

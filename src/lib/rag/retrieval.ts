@@ -83,6 +83,14 @@ export interface RetrievalResult {
  chunks: RetrievedChunk[];
  queryEmbedding: number[];  // empty if keyword fallback was used
   method: 'embedding' | 'keyword';
+  /**
+   * Vol. 4 #14 — the pre-normalization top similarity. `chunks[0].similarity`
+   * is normalized against the top score (always 1.0), which is useless for
+   * absolute thresholds; this carries the RAW best score (cosine in [0,1]
+   * for the hashed-TFIDF embedder, raw term-overlap hits for the keyword
+   * fallback) so the grounded /ask corpus-or-silence gate can be honest.
+   */
+  rawTopSimilarity: number;
 }
 
 export const PATTERN_BOOST = 0.25;
@@ -175,6 +183,7 @@ export async function retrieveChunks(
     chunks: top,
     queryEmbedding: queryEmb,
     method: useEmbedding ? 'embedding' : 'keyword',
+    rawTopSimilarity: top[0]?.similarity ?? 0,
   };
 }
 
