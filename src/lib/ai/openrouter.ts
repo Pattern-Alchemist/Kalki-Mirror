@@ -7,21 +7,28 @@
      · Soft-fail: a missing key, a rate-limited free model, or an outage
        NEVER throws into caller logic — the screener degrades to the
        pattern-based synthesis that predates this module.
-     · FALLBACK CHAIN: free-tier models share congested upstream capacity
-       (live probes 2026-09-05: minimax-m2.7 OK, glm-5.2/gemma-4 429,
-       nemotron 502). So one model is never enough — the client walks the
-       chain and returns the first completion. Override with
-       OPENROUTER_MODELS (comma-separated) or OPENROUTER_MODEL (primary).
+     · FALLBACK CHAIN: free-tier models share congested upstream capacity,
+       and OpenRouter DELISTS free tiers without notice (live probes
+       2026-09-08: minimax-m2.7 and glm-5.2 free tiers 404-dead within 72h
+       of enlistment; production /api/ai/ask degraded to total chain
+       failure until this swap). One model is never enough — the client
+       walks the chain and returns the first completion. The default chain
+       spans FIVE provider pools (inclusionAI, dots-studio, Google AI
+       Studio, NVIDIA, Liquid) so one pool's outage never silences the AI
+       layer. Override with OPENROUTER_MODELS (comma-separated) or
+       OPENROUTER_MODEL (primary).
      · 20s hard timeout per model — synthesis must never hang the dossier.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
-/** Default chain — free-tier, JSON-capable, probed live 2026-09-05. */
+/** Default chain — free-tier, JSON-capable, probed live 2026-09-08. */
 const DEFAULT_MODELS = [
-  "minimax/minimax-m2.7:free",
-  "z-ai/glm-5.2:free",
-  "google/gemma-4-31b-it:free",
+  "inclusionai/ling-3.0-flash-sante:free", // fast, clean JSON, probed OK
+  "dots-studio/dots-3-note-preview:free", // fast, clean JSON, probed OK
+  "google/gemma-4-31b-it:free", // best persona quality; congested upstream, recovers on retry
+  "nvidia/nemotron-3-ultra-550b-a55b:free", // heavyweight fallback, probed OK
+  "liquid/lfm-2.5-2.6b:free", // tiny last resort, nearly always up
 ];
 
 export function resolveModelChain(): string[] {
