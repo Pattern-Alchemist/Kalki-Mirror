@@ -9,37 +9,13 @@
  * sessionStorage so a seeker's visit groups under one id without cookies.
  */
 
-const EVENT_NAMES = [
-  'folio_viewed',
-  'pattern_viewed',
-  'glossary_term_viewed',
-  'search_performed',
-  'archetype_viewed',
-  'karma_page_viewed',
-  'usa_page_viewed',
-  'aghori_lesson_viewed',
-  'aghori_phase_viewed',
-  'breathwork_viewed',
-  'sequence_viewed',
-  'pricing_viewed',
-  'dossier_started',
-  'dossier_completed',
-  'consultation_started',
-  // Consultation-wizard funnel (lead-capture pipeline):
-  'wizard_step_completed',
-  'wizard_submitted',
-  'whatsapp_handoff_clicked',
-  // UPI manual rail (Leak L1 — WhatsApp + Google Pay/UPI handoff):
-  'upi_pay_clicked',
-  'payment_confirm_clicked',
-  // Cal.com booking handoff (Tier-3 ③):
-  'booking_opened',
-  // Vol. 3 #2 — Content Studio goes public:
-  'library_entry_viewed',
-  'email_subscribed',
-] as const;
+// The event dictionary lives in ONE place (src/lib/analytics-shared.ts).
+// The client previously carried a duplicated copy that could drift
+// silently — replaced in Vol. 4 #6 with a type-only import, which
+// vanishes at runtime, so the client bundle stays server-free.
+import type { EventName } from '@/lib/analytics-shared';
 
-export type TrackEventName = (typeof EVENT_NAMES)[number];
+export type TrackEventName = EventName;
 
 function getSessionId(): string {
   try {

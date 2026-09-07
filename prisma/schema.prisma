@@ -508,6 +508,26 @@ model EmailEvent {
   @@index([email, type])
 }
 
+// ============================================================
+// LETTERS — public broadcast archive (Vol. 4 #7)
+// One row per confirmed broadcast dispatch. The body is the RAW
+// text the admin composed — NEVER the per-recipient build (the
+// build carries signed per-subscriber unsubscribe URLs). No
+// personal data lands here: subject + body + aggregate count.
+// ============================================================
+
+model Letter {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  subject        String
+  body           String
+  recipientCount Int      @default(0)
+  isPublic       Boolean  @default(true)
+  sentAt         DateTime @default(now())
+
+  @@index([sentAt])
+}
+
 // ── Tier 5 #2: abandoned-intake recovery ─────────────────────────────────
 // The wizard's last step (name + WhatsApp typed but no submit) used to
 // evaporate. A debounced client-side save posts the partial to

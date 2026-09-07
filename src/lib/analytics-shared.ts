@@ -37,6 +37,8 @@ export const EVENT_NAMES = [
   'booking_opened',
   // Vol. 3 #2 — Content Studio public renderer
   'library_entry_viewed',
+  // Vol. 4 #6 — studio type index pages (/library/[type])
+  'library_type_viewed',
   'email_subscribed',
 ] as const;
 
@@ -73,6 +75,7 @@ export const EVENT_META: Record<
   payment_confirm_clicked: { label: 'Payment confirmed on WhatsApp', group: 'Conversion' },
   booking_opened: { label: 'Calendar booking opened', group: 'Conversion' },
   library_entry_viewed: { label: 'Studio entry opened', group: 'Discovery' },
+  library_type_viewed: { label: 'Studio shelf opened', group: 'Discovery' },
   email_subscribed: { label: 'Newsletter signup', group: 'Retention' },
 };
 
@@ -139,6 +142,7 @@ export function contentHref(event: string, slug: string | null | undefined): str
     case 'pricing_viewed': return '/pricing';
     case 'glossary_term_viewed': return s ? `/glossary/${termAnchor(s)}` : '/glossary'; // Vol. 3 #4: term pages replace #anchors
     case 'library_entry_viewed': return s ? `/library/${s}` : '/library'; // Vol. 3 #2: slug is "type/slug"
+    case 'library_type_viewed': return s ? `/library/${s}` : '/library'; // Vol. 4 #6: slug is the studio type
     default: return null;
   }
 }

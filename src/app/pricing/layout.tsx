@@ -23,6 +23,16 @@ export const metadata: Metadata = {
   },
 };
 
+/* Vol. 4 #10 — the layout's old hand-written graph is GONE: it carried a
+ * catalog of membership offers with prices 10× the real tiers (Jal 4999
+ * vs ₹499, Agni 14999 vs ₹1,499, Akash 49990 vs ₹4,999) and an FAQ set
+ * the page never renders. Structured data on this route is now GENERATED
+ * from the modules the page renders:
+ *   · tier offers → buildMembershipServiceJsonLd() on the page (pricing.ts)
+ *   · FAQ answers → buildFaqPageJsonLd(FAQ_DATA) on the page (faq-data.ts)
+ * The layout keeps only the two price-free nodes below — the truth test
+ * pins that no offer or FAQ graph ever returns here. */
+
 const pricingJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -32,59 +42,12 @@ const pricingJsonLd = {
       description: 'Four membership tiers with progressive access to the Akashic Archive, consultations, and live satsang.',
       url: `${SITE_URL}/pricing`,
       isPartOf: { '@id': `${SITE_URL}/#website` },
-      hasOfferCatalog: {
-        '@type': 'OfferCatalog',
-        name: 'KALKI Membership',
-        itemListElement: [
-          { '@type': 'Offer', name: 'Prithvi', description: 'Free tier — Seeker level access to foundational content.', price: '0', priceCurrency: 'INR' },
-          { '@type': 'Offer', name: 'Jal', description: 'Adept tier — full archive access and intermediate siddhis.', price: '4999', priceCurrency: 'INR' },
-          { '@type': 'Offer', name: 'Agni', description: 'Initiate tier — advanced siddhis, consultations, and satsang.', price: '14999', priceCurrency: 'INR' },
-          { '@type': 'Offer', name: 'Akash', description: 'Sovereign tier — unrestricted access, priority consultations, and personal guidance.', price: '49990', priceCurrency: 'INR' },
-        ],
-      },
     },
     {
       '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
         { '@type': 'ListItem', position: 2, name: 'Membership', item: `${SITE_URL}/pricing` },
-      ],
-    },
-    {
-      '@type': 'FAQPage',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: 'What is included in the free Prithvi tier?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Prithvi gives you free access to foundational siddhis (Foundation level), the Mirror Method diagnostic, pattern identification, and the public archive. No payment or credit card required.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'How do Golden Keys work?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Jal tier members and above receive 3 Golden Keys. Each key grants one person access to your tier level for 30 days. Share them with practitioners who would benefit.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Can I upgrade or downgrade my tier?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Yes. You can upgrade at any time through the pricing page. The new tier activates immediately. Downgrades take effect at the next billing cycle.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'What payment methods are accepted?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'We accept UPI, credit cards, debit cards, and net banking through our secure Razorpay integration. All prices are in Indian Rupees (INR).',
-          },
-        },
       ],
     },
   ],

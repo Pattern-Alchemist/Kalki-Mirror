@@ -69,6 +69,7 @@ export const ModelName = {
   EmailSubscriber: 'EmailSubscriber',
   EmailSend: 'EmailSend',
   EmailEvent: 'EmailEvent',
+  Letter: 'Letter',
   DraftLead: 'DraftLead',
   SynthesisCache: 'SynthesisCache',
   PatternPairAffinity: 'PatternPairAffinity',
@@ -404,6 +405,19 @@ export const EmailEventScalarFieldEnum = {
 } as const
 
 export type EmailEventScalarFieldEnum = (typeof EmailEventScalarFieldEnum)[keyof typeof EmailEventScalarFieldEnum]
+
+
+export const LetterScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  subject: 'subject',
+  body: 'body',
+  recipientCount: 'recipientCount',
+  isPublic: 'isPublic',
+  sentAt: 'sentAt'
+} as const
+
+export type LetterScalarFieldEnum = (typeof LetterScalarFieldEnum)[keyof typeof LetterScalarFieldEnum]
 
 
 export const DraftLeadScalarFieldEnum = {

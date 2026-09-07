@@ -12,16 +12,15 @@ import { defineConfig } from 'prisma/config';
  */
 /**
  * Datasource URL for the Prisma CLI (db push / migrate).
- * When pointed at Turso (libsql://), the auth token is appended as a query
- * param so `prisma db push` authenticates without a separate driver adapter.
+ * NOTE (Vol. 4 #7): the CLI's sqlite engine only accepts file: URLs —
+ * libsql:// is rejected with P1013, token-append or not. Production
+ * schema changes therefore ride the libSQL HTTP pipeline directly
+ * (see scripts/restore-drill.mjs for the client pattern): extract the
+ * exact DDL via a throwaway local `prisma db push`, then apply it to
+ * Turso with the libsql client and verify against sqlite_master.
  */
 function resolveDatasourceUrl(): string {
   const raw = process.env.DATABASE_URL || 'file:/tmp/kalki-dynamic.db';
-  const token = process.env.TURSO_AUTH_TOKEN;
-  if (raw.startsWith('libsql://') && token && !raw.includes('auth_token=')) {
-    const sep = raw.includes('?') ? '&' : '?';
-    return `${raw}${sep}auth_token=${encodeURIComponent(token)}`;
-  }
   return raw;
 }
 

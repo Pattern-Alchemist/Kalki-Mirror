@@ -6,6 +6,7 @@ import type { GlossaryEntry } from '@/lib/data/glossary';
 import { CATEGORIES } from '@/lib/data/glossary';
 import { termAnchor } from '@/lib/utils/term-anchor';
 import { glossaryTermPath, glossaryTermJsonLd, resolveRelatedTerm } from '@/lib/seo/glossary-seo';
+import { TermText } from '@/components/longform/TermText';
 import { pageAlternates } from '@/lib/utils/metadata';
 import { TrackView } from '@/components/analytics/TrackView';
 import { TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
@@ -127,9 +128,12 @@ export default async function GlossaryTermPage({ params }: { params: Promise<{ s
           <div className="divider-subtle mb-10" />
 
           {/* Definition — the same text the hub publishes in structured
-              data (DefinedTermSet); here it renders as readable HTML. */}
+              data (DefinedTermSet); here it renders as readable HTML with
+              the Lexicon auto-linker (Vol. 4 #9): the first mention of
+              every OTHER term links its page — the crawl graph becomes a
+              web. The term itself never links itself. */}
           <p className="text-editorial text-lg text-foreground/85 leading-relaxed editorial-spacing">
-            {entry.definition}
+            <TermText text={entry.definition} excludeTerm={entry.term} />
           </p>
 
           {/* Cross-linked vocabulary */}

@@ -15,6 +15,7 @@
 // =============================================================
 
 import { unsubscribeUrl, unsubHeaders } from "@/lib/emails/course-unsubscribe";
+import { termAnchor } from "@/lib/utils/term-anchor";
 
 export interface BroadcastEmail {
   subject: string;
@@ -116,4 +117,16 @@ ${bodyHtml}
     text: renderBroadcastText(body),
     headers: unsubHeaders(email),
   };
+}
+
+/**
+ * Public-archive slug for a letter (Vol. 4 #7): the subject's anchor
+ * (same termAnchor the Lexicon uses — diacritics folded, URL-safe)
+ * capped at 60 chars, plus a caller-supplied salt for uniqueness.
+ * Symbol-only subjects fall back to "letter". Deterministic given the
+ * same inputs — the salt carries the uniqueness burden.
+ */
+export function letterSlug(subject: string, salt: string): string {
+  const base = (termAnchor(subject) || "letter").slice(0, 60).replace(/-+$/g, "") || "letter";
+  return `${base}-${salt}`;
 }

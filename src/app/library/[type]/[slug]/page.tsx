@@ -7,6 +7,7 @@ import {
   isPublicContentType,
   isPubliclyRenderable,
   contentEntryPath,
+  libraryTypePath,
   contentArticleJsonLd,
   contentDescription,
   CONTENT_TYPE_LABELS,
@@ -89,7 +90,8 @@ export default async function LibraryEntryPage({ params }: Props) {
           <nav aria-label="Breadcrumb" className="mb-10 font-mono text-xs tracking-[0.15em] uppercase text-text-muted">
             <Link href="/library" className="hover:text-gold transition-colors">The Library</Link>
             <span className="mx-2 text-gold/40">/</span>
-            <span className="text-gold-dim">{typeLabel}</span>
+            {/* Vol. 4 #6: the mid breadcrumb node links the type index */}
+            <Link href={libraryTypePath(entry.type)} className="text-gold-dim hover:text-gold transition-colors">{typeLabel}</Link>
           </nav>
 
           <header className="mb-10">

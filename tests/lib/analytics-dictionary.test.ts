@@ -5,8 +5,8 @@ import { EVENT_NAMES, EVENT_META } from '@/lib/analytics-db';
    Analytics event dictionary (TGA §12) — completeness guards
    ══════════════════════════════════════════════════════════════ */
 describe('Event dictionary', () => {
-  it('has exactly the 23 dictionary events (22 TGA §12 + library_entry_viewed, Vol. 3 #2)', () => {
-    expect(EVENT_NAMES).toHaveLength(23);
+  it('has exactly the 24 dictionary events (22 TGA §12 + library_entry_viewed Vol. 3 #2 + library_type_viewed Vol. 4 #6)', () => {
+    expect(EVENT_NAMES).toHaveLength(24);
   });
 
   it('every event has dashboard metadata (label + group)', () => {

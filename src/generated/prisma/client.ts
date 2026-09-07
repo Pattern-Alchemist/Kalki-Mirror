@@ -132,6 +132,11 @@ export type EmailSend = Prisma.EmailSendModel
  */
 export type EmailEvent = Prisma.EmailEventModel
 /**
+ * Model Letter
+ * 
+ */
+export type Letter = Prisma.LetterModel
+/**
  * Model DraftLead
  * 
  */

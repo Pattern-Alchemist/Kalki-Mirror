@@ -72,7 +72,9 @@ export default function BroadcastPage() {
         <p className="mt-1 text-sm text-zinc-500">
           One letter to the whole Doors list. Plain text — blank lines split
           paragraphs, &quot;- &quot; lines become bullets, &quot;## &quot; lines become section labels.
-          Every send carries the signed one-click unsubscribe footer.
+          Every send carries the signed one-click unsubscribe footer. Confirmed
+          sends are captured to the public archive at <span className="text-zinc-400">/letters</span> —
+          the raw text you composed, never per-recipient links.
         </p>
       </div>
 

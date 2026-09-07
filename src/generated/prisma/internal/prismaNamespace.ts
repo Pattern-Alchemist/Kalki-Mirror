@@ -415,6 +415,7 @@ export const ModelName = {
   EmailSubscriber: 'EmailSubscriber',
   EmailSend: 'EmailSend',
   EmailEvent: 'EmailEvent',
+  Letter: 'Letter',
   DraftLead: 'DraftLead',
   SynthesisCache: 'SynthesisCache',
   PatternPairAffinity: 'PatternPairAffinity',
@@ -434,7 +435,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState"
+    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1770,6 +1771,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Letter: {
+      payload: Prisma.$LetterPayload<ExtArgs>
+      fields: Prisma.LetterFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LetterFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetterPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LetterFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetterPayload>
+        }
+        findFirst: {
+          args: Prisma.LetterFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetterPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LetterFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetterPayload>
+        }
+        findMany: {
+          args: Prisma.LetterFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetterPayload>[]
+        }
+        create: {
+          args: Prisma.LetterCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetterPayload>
+        }
+        createMany: {
+          args: Prisma.LetterCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LetterCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetterPayload>[]
+        }
+        delete: {
+          args: Prisma.LetterDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetterPayload>
+        }
+        update: {
+          args: Prisma.LetterUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetterPayload>
+        }
+        deleteMany: {
+          args: Prisma.LetterDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LetterUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LetterUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetterPayload>[]
+        }
+        upsert: {
+          args: Prisma.LetterUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetterPayload>
+        }
+        aggregate: {
+          args: Prisma.LetterAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLetter>
+        }
+        groupBy: {
+          args: Prisma.LetterGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LetterGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LetterCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LetterCountAggregateOutputType> | number
+        }
+      }
+    }
     DraftLead: {
       payload: Prisma.$DraftLeadPayload<ExtArgs>
       fields: Prisma.DraftLeadFieldRefs
@@ -2420,6 +2495,19 @@ export const EmailEventScalarFieldEnum = {
 export type EmailEventScalarFieldEnum = (typeof EmailEventScalarFieldEnum)[keyof typeof EmailEventScalarFieldEnum]
 
 
+export const LetterScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  subject: 'subject',
+  body: 'body',
+  recipientCount: 'recipientCount',
+  isPublic: 'isPublic',
+  sentAt: 'sentAt'
+} as const
+
+export type LetterScalarFieldEnum = (typeof LetterScalarFieldEnum)[keyof typeof LetterScalarFieldEnum]
+
+
 export const DraftLeadScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -2699,6 +2787,7 @@ export type GlobalOmitConfig = {
   emailSubscriber?: Prisma.EmailSubscriberOmit
   emailSend?: Prisma.EmailSendOmit
   emailEvent?: Prisma.EmailEventOmit
+  letter?: Prisma.LetterOmit
   draftLead?: Prisma.DraftLeadOmit
   synthesisCache?: Prisma.SynthesisCacheOmit
   patternPairAffinity?: Prisma.PatternPairAffinityOmit

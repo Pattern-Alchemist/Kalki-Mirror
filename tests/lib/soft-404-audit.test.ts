@@ -28,6 +28,8 @@ const DYNAMIC_ROUTES: { route: string; page: string }[] = [
   { route: "/archive/[slug]", page: "src/app/archive/[slug]/page.tsx" },
   { route: "/breathwork/[slug]", page: "src/app/breathwork/[slug]/page.tsx" },
   { route: "/glossary/[slug]", page: "src/app/glossary/[slug]/page.tsx" },
+  { route: "/letters/[slug]", page: "src/app/letters/[slug]/page.tsx" },
+  { route: "/library/[type]", page: "src/app/library/[type]/page.tsx" },
   { route: "/library/[type]/[slug]", page: "src/app/library/[type]/[slug]/page.tsx" },
   { route: "/patterns/[slug]", page: "src/app/patterns/[slug]/page.tsx" },
   { route: "/sequences/[slug]", page: "src/app/sequences/[slug]/page.tsx" },

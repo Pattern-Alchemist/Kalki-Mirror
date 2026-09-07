@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { pricingTiers } from '@/lib/data/pricing';
 import { buildMembershipServiceJsonLd } from '@/lib/seo/service-schema';
+import { buildFaqPageJsonLd } from '@/lib/seo/faq-schema';
+import { FAQ_DATA } from './faq-data';
 
 export const metadata: Metadata = {
   title: 'The Covenant — Four Tiers',
@@ -10,8 +12,15 @@ export const metadata: Metadata = {
 
 /* Vol. 2 #20 — Service + Offer graph for the four membership tiers
  * (Prithvi free → Akash ₹4,999, INR, monthly unit pricing). Server-
- * rendered so the price graph ships in the initial HTML. */
+ * rendered so the price graph ships in the initial HTML.
+ * Vol. 4 #10 — the FAQPage graph is GENERATED from FAQ_DATA (the same
+ * items the page renders), replacing the layout's old hand-written
+ * graph whose prices were 10× the real tiers. */
 const serviceJsonLd = buildMembershipServiceJsonLd();
+const faqJsonLd = buildFaqPageJsonLd(FAQ_DATA, {
+  path: '/pricing',
+  name: 'KALKI Membership — Frequently Asked Questions',
+});
 
 const PricingPageClient = dynamic(
   () => import('./PricingPageClient'),
@@ -40,6 +49,10 @@ export default function PricingPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <PricingPageClient pricingTiers={pricingTiers} />
     </>

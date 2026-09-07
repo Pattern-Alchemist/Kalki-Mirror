@@ -1,4 +1,5 @@
 import { allSequences, getSequenceBySlug } from '@/lib/data/sequences';
+import { buildSequenceHowToJsonLd } from '@/lib/seo/sequence-schema';
 import { allSiddhis } from '@/lib/data/siddhis';
 import { allPatterns } from '@/lib/data/patterns';
 import type { Pattern } from '@/lib/data/types';
@@ -37,10 +38,19 @@ export default async function SequenceDetailPage({ params }: { params: Promise<{
     .filter((p): p is Pattern => p !== undefined);
 
   return (
-    <SequenceFolioClient
-      sequence={sequence}
-      stepSiddhis={stepSiddhis}
-      targetPatterns={targetPatternData}
-    />
+    <>
+      {/* Vol. 4 #10 — HowTo graph generated from the same sequence data
+          the folio renders (steps + durations; totalTime only when the
+          duration parses cleanly). */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSequenceHowToJsonLd(sequence)) }}
+      />
+      <SequenceFolioClient
+        sequence={sequence}
+        stepSiddhis={stepSiddhis}
+        targetPatterns={targetPatternData}
+      />
+    </>
   );
 }

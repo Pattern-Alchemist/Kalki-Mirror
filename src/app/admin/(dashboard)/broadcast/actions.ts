@@ -5,7 +5,7 @@ import { safeGetToken } from "@/lib/get-token-safe";
 import { logAudit } from "@/lib/admin/audit";
 import { sendEmail } from "@/lib/resend";
 import { REPLY_TO } from "@/lib/emails/course-send";
-import { buildBroadcast } from "@/lib/emails/broadcast-content";
+import { buildBroadcast, letterSlug } from "@/lib/emails/broadcast-content";
 import { createRateLimiter } from "@/lib/rate-limit";
 
 /* ════════════════════════════════════════════════════════════════════
@@ -148,6 +148,26 @@ export async function sendBroadcast(
     } catch {
       failed += 1;
     }
+  }
+
+  // Vol. 4 #7 — capture the letter for the public archive (/letters).
+  // The RAW composed body is stored — never the per-recipient build,
+  // which carries signed per-subscriber unsubscribe URLs. One row per
+  // confirmed dispatch (a cap-overflow re-run is a second, honest row).
+  // Soft-fail: an archive outage must never break a live delivery.
+  try {
+    const salt = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+    await db.letter.create({
+      data: {
+        slug: letterSlug(s, salt),
+        subject: s,
+        body: b,
+        recipientCount: sent,
+        isPublic: true,
+      },
+    });
+  } catch (err) {
+    console.error("[broadcast] Letter archive write failed", err);
   }
 
   await logAudit({

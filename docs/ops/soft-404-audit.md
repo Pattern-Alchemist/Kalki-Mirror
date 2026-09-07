@@ -20,6 +20,8 @@ miss path:
 | /archive/[slug] | notFound() + noindex metadata |
 | /breathwork/[slug] | notFound() + noindex metadata |
 | /glossary/[slug] | notFound() + noindex metadata |
+| /letters/[slug] | notFound() + noindex metadata (Vol. 4 #7: unknown/non-public slug) |
+| /library/[type] | notFound() + noindex metadata (Vol. 4 #6: unknown studio type). A KNOWN type with zero published entries is a HIT — an honest empty state ships 200 + indexable |
 | /library/[type]/[slug] | notFound() + noindex metadata |
 | /patterns/[slug] | notFound() + noindex metadata |
 | /sequences/[slug] | notFound() + noindex metadata |

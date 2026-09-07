@@ -8,6 +8,7 @@ import { allSequences } from '@/lib/data/sequences';
 import { aghoriCourse } from '@/lib/data/aghori-tantra-course';
 import { glossaryEntries } from '@/lib/data/glossary';
 import { glossaryTermPath } from '@/lib/seo/glossary-seo';
+import { CONTENT_TYPES } from '@/lib/seo/content-seo';
 import { SITE_LASTMOD } from '@/lib/canonical';
 
 export const revalidate = 3600;
@@ -34,6 +35,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/pricing`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/consultations`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/email-course`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.85 },
+    // Vol. 4 #7 — the broadcast archive (letters are DB rows, added live below)
+    { url: `${base}/letters`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'weekly', priority: 0.6 },
     { url: `${base}/primer`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.8 },
     // US acquisition layer (Phase A): hub + 5 commercial-intent pages.
     // 0.85 hub / 0.8 children — commercial intent, one query family per page.
@@ -46,6 +49,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/aghori-tantra`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.75 },
     { url: `${base}/guhya`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/library`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.7 },
+    // Vol. 4 #6 — the five studio shelves (closed set, CONTENT_TYPES);
+    // listings are live, the URLs are static so the hub stays DB-free.
+    ...CONTENT_TYPES.map((t) => ({
+      url: `${base}/library/${t}`,
+      lastModified: new Date(SITE_LASTMOD),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    })),
     { url: `${base}/codex`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${base}/breathwork`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/glossary`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.5 },
@@ -131,6 +142,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // no DB at build/dev time → studio surface simply absent from the map
   }
 
+  // Letters archive (Vol. 4 #7) — public broadcast letters. Same live-
+  // query + fail-soft pattern as the studio entries above.
+  let letterPages: MetadataRoute.Sitemap = [];
+  try {
+    const { db } = await import('@/lib/db');
+    const letters = await db.letter.findMany({
+      where: { isPublic: true },
+      select: { slug: true, sentAt: true },
+      orderBy: { sentAt: 'desc' },
+      take: 200,
+    });
+    letterPages = letters.map((l) => ({
+      url: `${base}/letters/${l.slug}`,
+      lastModified: l.sentAt,
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    }));
+  } catch {
+    // no DB at build/dev time → letters simply absent from the map
+  }
+
   // Mahāvidyā folio pages (/archetypes/[id]) — 10 authoritative pages, spec §5
   const mahavidyaPages: MetadataRoute.Sitemap = TEN_MAHAVIDYAS.map((m) => ({
     url: `${base}/archetypes/${m.id}`,
@@ -147,5 +179,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: t.slug === '' ? 0.8 : 0.7,
   }));
 
-  return [...staticPages, ...siddhiPages, ...patternPages, ...mahavidyaPages, ...tantraPagesSitemap, ...breathworkPages, ...sequencePages, ...glossaryTermPages, ...libraryEntryPages, ...aghoriPhasePages, ...aghoriLessonPages];
+  return [...staticPages, ...siddhiPages, ...patternPages, ...mahavidyaPages, ...tantraPagesSitemap, ...breathworkPages, ...sequencePages, ...glossaryTermPages, ...libraryEntryPages, ...letterPages, ...aghoriPhasePages, ...aghoriLessonPages];
 }

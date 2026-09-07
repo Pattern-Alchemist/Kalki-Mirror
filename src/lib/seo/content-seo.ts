@@ -58,6 +58,11 @@ export function contentEntryPath(type: string, slug: string): string {
   return `/library/${type}/${slug}`;
 }
 
+/** URL path of a studio type index, e.g. `/library/practice` (Vol. 4 #6). */
+export function libraryTypePath(type: string): string {
+  return `/library/${type}`;
+}
+
 /** ISO date for JSON-LD: publishedAt preferred, updatedAt as fallback. */
 export function contentDateIso(entry: PublicContentEntry): string {
   return (entry.publishedAt ?? entry.updatedAt).toISOString();
@@ -109,9 +114,57 @@ export function contentArticleJsonLd(entry: PublicContentEntry) {
             '@type': 'ListItem',
             position: 3,
             name: CONTENT_TYPE_LABELS[entry.type as PublicContentType] ?? entry.type,
-            item: `${SITE_URL}/library`,
+            // Vol. 4 #6: the mid node is the type index, not the hub —
+            // the visible breadcrumb links /library/[type] too.
+            item: `${SITE_URL}${libraryTypePath(entry.type)}`,
           },
           { '@type': 'ListItem', position: 4, name: entry.title, item: url },
+        ],
+      },
+    ],
+  };
+}
+
+/** Minimal shape the type-index ItemList needs (the index passes trimmed rows). */
+export interface LibraryTypeIndexItem {
+  type: string;
+  slug: string;
+  title: string;
+  publishedAt: Date | null;
+  updatedAt: Date;
+}
+
+/**
+ * JSON-LD graph for a studio type index (Vol. 4 #6): ItemList over the
+ * type's published entries + BreadcrumbList rooted at the hub. Emitted
+ * only when the index has entries — an empty index renders its honest
+ * empty state without a graph.
+ */
+export function libraryTypeJsonLd(type: PublicContentType, entries: LibraryTypeIndexItem[]) {
+  const url = `${SITE_URL}${libraryTypePath(type)}`;
+  const label = CONTENT_TYPE_LABELS[type];
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'ItemList',
+        name: `${label} — The Sādhanā Library`,
+        url,
+        numberOfItems: entries.length,
+        itemListOrder: 'https://schema.org/ItemListOrderDescending',
+        itemListElement: entries.map((e, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          url: `${SITE_URL}${contentEntryPath(e.type, e.slug)}`,
+          name: e.title,
+        })),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'The Library', item: `${SITE_URL}/library` },
+          { '@type': 'ListItem', position: 3, name: label, item: url },
         ],
       },
     ],
