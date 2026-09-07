@@ -1132,3 +1132,21 @@ Work Log:
 Stage Summary:
 - Week E complete: 20 of 20 Vol. 4 items live — the AI layer is closed: grounded or silent, cited or nothing, cheap by cache, observable by default, rehearsed to one command, and legible to the author from a local terminal.
 - The full Vol. 4 roadmap (Revenue, Ritual & Reach — 20 items) is now shipped and deployed. Founder-gated work remains founder-gated: TOTP enrollment at /admin/settings before ~2026-09-12 (DAYS away), EMBED_API_KEY neural swap (now rehearsed: bash scripts/rehearse-neural-swap.sh → one command when the key lands), GSC indexing OAuth — plus the fresh ops flag: the OpenRouter chain needs a founder-side look (quota/rotation) before the next AI-dependent wave.
+
+---
+Task ID: hotfix-ai-chain
+Agent: Z (Super Z, main session)
+Task: Founder: "check the OpenRouter quota" + "go for Vol. 5 enlistment or a full production sweep."
+
+Work Log:
+- OpenRouter key probed live (2026-09-08): alive, free tier, no spend limit, lifetime usage $0.074, credits $0.00 — and credits are IRRELEVANT by design: the chain is all :free models. Quota was never the problem.
+- ROOT CAUSE of the Week E ops finding: OpenRouter DELISTED two of three chain models from the free tier within ~72h — minimax/minimax-m2.7:free and z-ai/glm-5.2:free now return 404 ("unavailable for free"). Only gemma-4-31b:free survived, and it sits behind upstream 429 congestion. Production /api/ai/ask walked 404→404→429 and failed loud-honest, exactly as the Week E observability made legible.
+- Candidate sweep: every currently-listed :free model probed. Excluded: inkling* (403 agentic-only), ling-3.0-flash-fin (400), nemotron-3-super (502 at probe), gemma-4-26b (429, same Google pool).
+- Hotfix commit 6a09147: chain rebuilt — five models across five provider pools, all availability-probed.
+- Then CONTRACT-SIZE probing (the deeper standard): each candidate got the real /ask system prompt + real corpus chunks + jsonMode + the 1600-token floor, judged against parseAskOutput strictness. Findings: ling-3.0-flash-sante is a toy-prompt illusion (clean on 20-token probes, HTTP 400 INVALID_REQUEST_BODY on every real-size body — dropped); dots-3-note-preview contract PASS; nemotron-3-ultra PASS with the best archivist voice; lfm-2.5 PASS. Honest silences confirmed legitimate: the corpus truly is silent on definitional samskara and on procrastination (it is a 56-folio sadhana corpus — behavioral-loop queries are out of scope by design).
+- Hotfix commit e1cc366: chain reordered by proven contract robustness — dots-3-note (non-reasoning primary) → nemotron-3-ultra → gemma-4-31b → lfm-2.5. Four models, four pools.
+- Gauntlet: 731/731 vitest, build green, deployed via git-trigger (READY), live smoke PASS: /api/ai/ask "How do I practice ajapa japa?" → grounded:true, citations manasika-japa (0.937) + soham-dhyana (0.807), served by dots-3-note-preview, ~16s cold; /api/health green (corpus 327/327, db 199ms, backup 10.5h).
+
+Stage Summary:
+- The AI layer's silence was provider-side model delisting, not quota and not code. The chain is rebuilt on contract-validated models and production answers grounded again.
+- Structural lesson recorded for Vol. 5: free-tier chains rot silently — a scheduled chain-health probe (model-availability + contract smoke, alerting the war-room) is the never-regress follow-up.
