@@ -20,7 +20,7 @@ function getModule(phase: string) {
 export async function generateMetadata({ params }: { params: Promise<{ phase: string }> }): Promise<Metadata> {
   const { phase } = await params;
   const mod = getModule(phase);
-  if (!mod) return { title: 'Not Found' };
+  if (!mod) return { title: 'Not Found', robots: { index: false, follow: true } }; // Vol.4 #18: soft-404 guard — streaming shells ship HTTP 200; the miss body must never be indexable
   return {
     title: `${mod.phase}: ${mod.title} | Aghorī Tantra Course`,
     description: mod.description.slice(0, 155),

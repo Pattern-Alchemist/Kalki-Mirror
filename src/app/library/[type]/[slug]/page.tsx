@@ -37,7 +37,7 @@ async function loadEntry(type: string, slug: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { type, slug } = await params;
   const entry = await loadEntry(type, slug).catch(() => undefined);
-  if (!entry) return { title: 'Not Found' };
+  if (!entry) return { title: 'Not Found', robots: { index: false, follow: true } }; // Vol.4 #18: soft-404 guard — streaming shells ship HTTP 200; the miss body must never be indexable
   const typeLabel = CONTENT_TYPE_LABELS[entry.type as keyof typeof CONTENT_TYPE_LABELS] ?? entry.type;
   const title = `${entry.title} | KALKI`;
   const description = contentDescription(entry);

@@ -71,6 +71,13 @@ scripts/geo-ops/logs/
 # db backup engine ships with the repo (npm run db:backup — exception to scripts/ ignore)
 !scripts/backup-db.sh
 !scripts/backup-db.mjs
+# Vol. 4 #2 — the scripts/* rule silently swallowed TWO shipped files
+# (restore-drill.sh Vol.2 #13, run-e2e.sh Vol.3 #16). Everything the repo's
+# own workflows and package.json reference must be tracked:
+!scripts/restore-drill.sh
+!scripts/restore-drill.mjs
+!scripts/run-e2e.sh
+!scripts/seed-admin.cjs
 # FolioChunk embedding baker ships with the repo (Leak L4 — corpus re-bake on change)
 !scripts/bake-folio-embeddings.ts
 # Tier-1/2 schema delta appliers ship with the repo (migration records)

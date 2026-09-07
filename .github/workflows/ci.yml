@@ -29,12 +29,34 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci
-      - run: npx tsc --noEmit 2>&1 || true
+      # Vol. 4 #20: this gate used to soft-pass ("|| true") — a red typecheck
+      # never blocked anything. It is real now.
+      - run: npx tsc --noEmit
+
+  # Vol. 4 #19 — schema truth gate + the 494-test unit suite finally run in CI.
+  # (Unit tests previously ran ONLY on dev machines; schema drift and test
+  # regressions could land on main unnoticed.)
+  unit:
+    name: Unit Tests + Schema Truth
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Prisma schema truth
+        run: |
+          npx prisma validate
+          npx prisma format --check
+      - name: Unit tests
+        run: npx vitest run
 
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: [lint]
+    needs: [lint, unit]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -51,7 +73,7 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-latest
     needs: [build]
-    timeout-minutes: 10
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

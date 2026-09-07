@@ -17,6 +17,9 @@ import { dispatchWebhooks } from "@/lib/admin/webhook-dispatch";
 import { broadcastNotification } from "@/lib/admin/notifications";
 import { safeGetToken } from "@/lib/get-token-safe";
 import { pricingTiers } from "@/lib/data/pricing";
+import { sendEmail } from "@/lib/resend";
+import { buildMembershipRequestEmail } from "@/lib/emails/membership-request";
+import { TIER_LABELS } from "@/lib/utils/tier-gate";
 
 async function requireAdmin() {
   const session = await safeGetToken();
@@ -310,6 +313,22 @@ export async function requestMembership(input: {
       type: "info",
       href: "/admin/memberships",
     }).catch(() => {});
+
+    // Vol. 4 #1 — the seeker hears back. Fail-soft by design: the ledger row
+    // is the source of truth; an email outage never fails the request.
+    try {
+      const upi = (await import("@/lib/utils/upi")).resolveUpiConfig();
+      const mail = buildMembershipRequestEmail({
+        name: (input.name ?? "").trim(),
+        tierLabel: TIER_LABELS[plan.id] ?? plan.id,
+        amountINR: plan.priceINR,
+        vpa: upi?.vpa ?? null,
+        payee: upi?.payee ?? "KALKI",
+      });
+      await sendEmail({ to: email, ...mail });
+    } catch {
+      // Confirmation email is best-effort — reconcile from the ledger regardless.
+    }
 
     return { ok: true as const };
   } catch {

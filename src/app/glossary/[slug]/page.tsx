@@ -27,7 +27,7 @@ function locate(slug: string): GlossaryEntry | undefined {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const entry = locate(slug);
-  if (!entry) return { title: 'Not Found' };
+  if (!entry) return { title: 'Not Found', robots: { index: false, follow: true } }; // Vol.4 #18: soft-404 guard — streaming shells ship HTTP 200; the miss body must never be indexable
   const title = `${entry.term} — The Lexicon | KALKI`;
   const description = entry.definition.slice(0, 155).replace(/\s+\S*$/, '');
   return {

@@ -35,7 +35,7 @@ export async function generateMetadata({
   const { id } = await params;
   const archetype = getArchetypeById(id);
   const content = MAHAVIDYA_CONTENT[id];
-  if (!archetype || !content) return { title: 'Not Found' };
+  if (!archetype || !content) return { title: 'Not Found', robots: { index: false, follow: true } }; // Vol.4 #18: soft-404 guard — streaming shells ship HTTP 200; the miss body must never be indexable
 
   return {
     title: content.title,

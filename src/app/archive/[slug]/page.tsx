@@ -12,7 +12,7 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   return params.then(({ slug }) => {
     const siddhi = getSiddhiBySlug(slug);
-    if (!siddhi) return { title: 'Not Found' };
+    if (!siddhi) return { title: 'Not Found', robots: { index: false, follow: true } }; // Vol.4 #18: soft-404 guard — streaming shells ship HTTP 200; the miss body must never be indexable
     return {
       title: `${siddhi.name} — ${siddhi.sanskrit}`,
       description: siddhi.summary,

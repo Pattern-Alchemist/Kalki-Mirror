@@ -26,7 +26,7 @@ function locate(phase: string, lesson: string) {
 export async function generateMetadata({ params }: { params: Promise<{ phase: string; lesson: string }> }): Promise<Metadata> {
   const { phase, lesson } = await params;
   const loc = locate(phase, lesson);
-  if (!loc) return { title: 'Not Found' };
+  if (!loc) return { title: 'Not Found', robots: { index: false, follow: true } }; // Vol.4 #18: soft-404 guard — streaming shells ship HTTP 200; the miss body must never be indexable
   const { mod, lesson: l } = loc;
   const firstPara = l.content.split('\n\n')[0].slice(0, 155);
   return {

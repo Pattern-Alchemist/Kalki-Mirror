@@ -13,7 +13,7 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   return params.then(({ slug }) => {
     const sequence = getSequenceBySlug(slug);
-    if (!sequence) return { title: 'Not Found' };
+    if (!sequence) return { title: 'Not Found', robots: { index: false, follow: true } }; // Vol.4 #18: soft-404 guard — streaming shells ship HTTP 200; the miss body must never be indexable
     return {
       title: `${sequence.name}${sequence.sanskrit ? ` — ${sequence.sanskrit}` : ''}`,
       description: sequence.description,

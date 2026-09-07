@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { SessionsSection } from "./sessions-section";
+import { TwoFactorSection } from "./two-factor-section";
+import { WebhookSection } from "./webhook-section";
 
 function StatBlock({ label, value }: { label: string; value: string | number }) {
   return <div><p className="text-xs text-zinc-600">{label}</p><p className="mt-0.5 text-lg font-semibold tabular-nums text-zinc-200">{value}</p></div>;
@@ -80,6 +82,15 @@ export default function SettingsPage() {
       </section>
 
       <SessionsSection />
+
+      {/* Vol. 4 #2 — these sections shipped in Vol. 1/2 but sat orphaned:
+          the settings page told the user to "enroll at Two-Factor below"
+          while rendering nothing below. The TOTP enrollment surface is
+          deadline-critical (grace window) — wired now, with the webhook
+          console beside it. */}
+      <TwoFactorSection />
+
+      <WebhookSection />
 
       {dbStats && (
         <section className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 space-y-4">

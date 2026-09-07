@@ -13,7 +13,15 @@
 > /admin/settings (grace ends ~2026-09-12), EMBED_API_KEY neural swap
 > (item 16 rehearses it so the key means ONE command), GSC indexing OAuth.
 >
-> PROGRESS — (opens with Week A)
+> PROGRESS — Week A: 19·2·18·1·20 — with grounding corrections (below):
+> #1's rail was found PRE-SHIPPED (WhatsApp handoff + UPI intent button +
+> PENDING ledger + admin grant, Tier-1 ②); Week A closed its one true gap
+> (seeker confirmation email). #16's rehearsal turns out to be Vol-2 #10
+> (embed-rehearsal.yml) — refocus pending. #19's incident resolved as a
+> display artifact (the malformation was NEVER in git; validate correctly
+> rejects the syntax with P1012 — probed) — the truth gate ships anyway as
+> CI enforcement + canary + lint. #20's workflow existed (Vol-2 #13) but
+> its SCRIPT never did — now shipped and PASSED live against production.
 
 ## Tier 13 — Close the revenue loop (the price list is public, nothing sells) — do first
 
@@ -158,15 +166,19 @@
     noindex-on-miss asserted in vitest, per-route decision documented,
     thread closed permanently.
 
-19. **Schema truth gate** — DISCOVERED IN THIS SURVEY: schema.prisma:288
-    carries `@@index(inTier, caution])` — malformed (missing `[`; the field
-    is minTier) — and `npx prisma validate` PASSES it; Prisma 7 silently
-    recovers. Prod and fresh-push DBs carry the correct
-    ContentEntry_minTier_caution_idx, so nothing is broken — but the gate we
-    trust is blind to the exact typo class that could someday NOT recover.
-    First move: fix the line; vitest schema-lint (every @@index/@@unique
-    field reference resolves to a declared field, no stray brackets) +
-    `prisma format --check` in CI.
+19. **Schema truth gate** — CORRECTED AFTER FORENSICS: the malformed
+    @@index reported in this survey never existed in git (hex-verified blob
+    reads + `git log -S` pickaxe over all history); it was an output-channel
+    display artifact (the text layer eats the two-char sequence bracket+m,
+    turning bracket+minTier into inTier). `prisma validate` probed against a
+    genuinely mutated copy REJECTS that syntax with P1012 — the gate we
+    trust was never blind. What the incident DID expose: unit tests and
+    schema checks ran only on dev machines, and ci.yml's typecheck
+    soft-passed with a swallowed exit code.
+    First move: vitest schema-truth test (byte canary on the incident lines,
+    bracket-shape + field-resolution lint over every @@index/@@unique/@@id,
+    P1012 strictness regression) + a CI unit job (validate + format --check
+    + vitest) + a real typecheck gate.
 
 20. **Restore drill** — db:backup runs with an age clock in digest + health
     (#19 Vol.3); no restore has ever been rehearsed. A backup that has never

@@ -371,8 +371,9 @@ export default function PricingPageClient({ pricingTiers: tiers }: PricingPagePr
                   <p className="text-caption mb-3">Request received</p>
                   <h3 className="font-display text-2xl text-foreground mb-3">The ledger holds your name.</h3>
                   <p className="text-text-secondary text-sm leading-relaxed mb-6">
-                    Kaustubh reconciles every membership by hand. Your WhatsApp confirmation is
-                    opening — once the UTR checks out, access is granted from the console.
+                    Kaustubh reconciles every membership by hand — a confirmation email with
+                    payment details is on its way to your inbox. Once the UTR checks out, access
+                    is granted from the console.
                   </p>
                   <button onClick={() => setRequestTier(null)} className="gold-cta w-full">Close</button>
                 </div>
