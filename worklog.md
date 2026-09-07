@@ -1150,3 +1150,19 @@ Work Log:
 Stage Summary:
 - The AI layer's silence was provider-side model delisting, not quota and not code. The chain is rebuilt on contract-validated models and production answers grounded again.
 - Structural lesson recorded for Vol. 5: free-tier chains rot silently — a scheduled chain-health probe (model-availability + contract smoke, alerting the war-room) is the never-regress follow-up.
+
+---
+Task ID: vol5-enlistment
+Agent: Z (Super Z, main session)
+Task: Founder: "go for Vol. 5 enlistment or a full production sweep" — did the sweep first (54/54), then enlisted Vol. 5 from its findings.
+
+Work Log:
+- Full production sweep (scripts/production-sweep.py): 54/54 checks — 27 core pages 200, /ask noindexed, sitemap 289 URLs canonical (letters hub-only because zero public Letter rows — correct fail-soft, not a bug), dynamic renderers 200, soft-404 noindex posture holds on bogus slugs, robots/feed/llms.txt green, all 4 crons + admin API gated 401, JSON-LD valid (Graph+FAQPage; 3 blocks on term pages), health green (corpus 327/327, db ok, backup 10.9h).
+- Sweeper calibration fixed mid-run: URL-count threshold 300→280 (canonical composition), letters item check made DB-state-aware. Both initial "failures" were sweep artifacts, production was correct.
+- SUPERADMIN session established via NextAuth credentials flow; /api/admin/stats live: 2 members (agni+akash), 3 keys / 0 redeemed, 0 consultations, 0 drafts; war-room aiRoutes narrating the chain incident (ai_ask: 4 calls, 1 ok / 1 unconfigured / 2 error, p95 14.7s).
+- FORENSIC FINDING: the founder-vault Turso token is byte-exact to the message yet rejected by Turso ("invalid JWT") — rotated server-side; production unaffected (Vercel copy works). Local env.local updated with the same (stale) token; flagged as Vol.5 #2 (credential rotation audit).
+- docs/roadmap-vol5-next-20.md: "Vol. 5 — Feed, Vigilance & Voice", 20 items in Tiers 17–20, every item citing live evidence from this sweep. Week A order: chain-health probe → credential audit → /ask contract gate → distributed rate-limit backend → cron ledger.
+
+Stage Summary:
+- Vol. 4 closed with a clean 54/54 production sweep; Vol. 5 enlisted with its first tier written by the week's two silent-rot incidents (free-tier chain delisting, stale vault credential).
+- Founder-gated carry-overs (unchanged, NOT counted): TOTP before ~2026-09-12, EMBED_API_KEY swap (rehearsed), GSC OAuth (+ Turso token rotation in the vault).
