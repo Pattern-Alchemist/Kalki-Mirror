@@ -24,6 +24,8 @@ import { sendEmail } from "@/lib/resend";
 import { computeCourseDay } from "@/lib/emails/course-send";
 import { buildPairAffinities } from "@/lib/admin/pair-affinity";
 import { computeTopReferrers } from "@/lib/emails/course-share";
+import { getListFunnel } from "@/lib/admin/list-funnel-db";
+import { listFunnelDigestLine } from "@/lib/admin/list-funnel";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -260,6 +262,16 @@ export async function GET(request: NextRequest) {
     // OpsState not present / transient — keep the default lines
   }
 
+  // Vol. 4 #3 — list funnel (weekly cohort): joined → Door-3 open → any
+  // click → /consultations → intake. Fail-soft like every other block:
+  // a dead join dims one line, never the digest.
+  let funnelLine: string | null = null;
+  try {
+    funnelLine = listFunnelDigestLine((await getListFunnel()).cohorts);
+  } catch (err) {
+    console.error("[daily-digest] list funnel block failed", err);
+  }
+
   const lines: string[] = [
     `Window: last 24h · generated ${nowIst} IST`,
     "",
@@ -277,6 +289,7 @@ export async function GET(request: NextRequest) {
     `— 10 DOORS —`,
     `${newSubs} new subscribers (24h) · ${activeSubs} active · ${doorsDue} due a door today`,
     ...(topClicks ? ["Most-clicked links (24h):", topClicks] : []),
+    ...(funnelLine ? [funnelLine] : []),
     "",
     `— ABANDONED INTAKES —`,
     `${openDrafts} open draft${openDrafts === 1 ? "" : "s"} · ${touchedDrafts24h} touched in window${openDrafts > 0 ? " — recovery: WhatsApp first-touch on the newest" : ""}`,

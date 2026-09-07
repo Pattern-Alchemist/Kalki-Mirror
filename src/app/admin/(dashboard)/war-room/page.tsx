@@ -9,6 +9,7 @@ import {
   RefreshCw, Download, Copy, Check, Crosshair, Globe, Flame,
   DoorOpen, Link2, Radio, TrendingUp, Users, CalendarCheck,
 } from "lucide-react";
+import { pctOf } from "@/lib/admin/funnel";
 
 /* ─── Types ──────────────────────────────────────────────────────────────── */
 
@@ -37,6 +38,13 @@ interface WarRoomData {
     topSources: { key: string; count: number }[];
     topCampaigns: { key: string; count: number }[];
   } | null;
+  listFunnel: {
+    available: boolean;
+    cohorts: {
+      weekStart: string; weekLabel: string;
+      subscribed: number; d3Opened: number; clicked: number; consulted: number; lead: number;
+    }[];
+  } | null;
 }
 
 const RANGES = [
@@ -52,6 +60,16 @@ const STATUS_COLOR: Record<string, string> = {
 };
 
 /* ─── Small pieces ───────────────────────────────────────────────────────── */
+
+function FunnelCell({ n, whole }: { n: number; whole: number }) {
+  const pct = pctOf(n, whole);
+  return (
+    <td className="py-2 text-right text-zinc-300">
+      {n}
+      {pct !== null && <span className="ml-1 text-[0.65rem] text-zinc-600">{pct}%</span>}
+    </td>
+  );
+}
 
 function Card({ title, icon, action, children, className = "" }: {
   title: string; icon?: React.ReactNode; action?: React.ReactNode; children: React.ReactNode; className?: string;
@@ -527,6 +545,52 @@ export default function WarRoomPage() {
               </div>
             ) : (
               <p className="py-2 text-xs text-zinc-600">Capture layer unavailable.</p>
+            )}
+          </Card>
+
+          {/* List funnel — weekly cohort truth (Vol. 4 #3) */}
+          <Card
+            title="List funnel — what the list converts"
+            icon={<TrendingUp className="h-4 w-4 text-amber-500" />}
+            action={<Link href="/admin/broadcast" className="text-xs text-amber-400 hover:text-amber-300">Compose →</Link>}
+          >
+            {data?.listFunnel && data.listFunnel.cohorts.some((c) => c.subscribed > 0) ? (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
+                      <th className="pb-2 font-medium">Cohort</th>
+                      <th className="pb-2 text-right font-medium">Joined</th>
+                      <th className="pb-2 text-right font-medium">Door-3 open</th>
+                      <th className="pb-2 text-right font-medium">Clicked</th>
+                      <th className="pb-2 text-right font-medium">→ /consultations</th>
+                      <th className="pb-2 text-right font-medium">Intake</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-800/50">
+                    {[...data.listFunnel.cohorts].reverse().map((c, i, arr) => (
+                      <tr key={c.weekStart}>
+                        <td className="py-2 font-medium text-zinc-200">
+                          {c.weekLabel}
+                          {i === arr.length - 1 && <span className="ml-1.5 text-[0.6rem] text-zinc-600">in flight</span>}
+                        </td>
+                        <td className="py-2 text-right text-zinc-300">{c.subscribed}</td>
+                        <FunnelCell n={c.d3Opened} whole={c.subscribed} />
+                        <FunnelCell n={c.clicked} whole={c.subscribed} />
+                        <FunnelCell n={c.consulted} whole={c.subscribed} />
+                        <FunnelCell n={c.lead} whole={c.subscribed} />
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="mt-2 text-[0.65rem] leading-relaxed text-zinc-600">
+                  Opens/clicks are provider-webhook truth counted independently — a reader who blocks
+                  pixels but taps links shows in click stages, not open stages. Intake = Consultation
+                  row created after joining. Cohort = week the seeker joined the list (Mon UTC).
+                </p>
+              </div>
+            ) : (
+              <p className="py-2 text-xs text-zinc-600">No subscribers in the last six weeks — the funnel starts when the list does.</p>
             )}
           </Card>
 

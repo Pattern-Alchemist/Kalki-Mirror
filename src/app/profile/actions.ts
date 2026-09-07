@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { logAudit } from "@/lib/admin/audit";
 import { parseBirthProfile } from "@/lib/validators/profile";
+import { validateTestimonial, type TestimonialInput } from "@/lib/validators/testimonial";
 import { signActionToken, DELETE_ACTION } from "@/lib/privacy";
 
 /* =============================================================
@@ -115,5 +116,78 @@ export async function issueDeletionToken(): Promise<{
   } catch (err) {
     console.error("[KALKI] issueDeletionToken error:", err);
     return { success: false, error: "Could not start the deletion flow. Please try again." };
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   VOL. 4 #5 — SEEKER TESTIMONIAL INTAKE
+   The moment of highest testimony — a milestone reached, a resolution
+   logged — used to generate zero capture: Testimonial rows were
+   archivist-entered only. This action lets the seeker write their own
+   PENDING row (session-gated, consent explicit, audit-logged); the
+   existing admin approve flow finishes the journey to public display.
+   One self-intake per seeker — dedup keyed on the submittedBy marker.
+   ═════════════════════════════════════════════════════════════════════ */
+
+export async function submitTestimonial(input: unknown): Promise<{
+  success: boolean;
+  error?: string;
+  fieldErrors?: Record<string, string>;
+  alreadySubmitted?: boolean;
+}> {
+  const session = await getServerSession(authOptions);
+  const userId = sessionUserId(session);
+  if (!userId) return { success: false, error: "Please sign in first." };
+
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    select: { id: true, email: true },
+  });
+  if (!user?.email) return { success: false, error: "No account email found." };
+
+  // One self-intake per seeker. The archivist's approve flow takes it from
+  // here; re-submission (if ever wanted) happens through the archivist,
+  // not by re-filing this form.
+  const marker = `self:${user.email.toLowerCase()}`;
+  const existing = await db.testimonial.findFirst({
+    where: { submittedBy: marker },
+    select: { id: true },
+  });
+  if (existing) {
+    return {
+      success: false,
+      alreadySubmitted: true,
+      error: "Your testimony is already with the archivist — thank you.",
+    };
+  }
+
+  const res = validateTestimonial((input ?? {}) as TestimonialInput);
+  if (!res.ok) {
+    return { success: false, error: "Please review the highlighted fields.", fieldErrors: res.errors };
+  }
+
+  try {
+    const row = await db.testimonial.create({
+      data: {
+        quote: res.data.quote,
+        name: res.data.displayName,
+        context: res.data.context,
+        location: res.data.location,
+        source: "self",
+        status: "PENDING",
+        consent: true,
+        submittedBy: marker,
+      },
+    });
+    await logAudit({
+      action: "testimonial.intake",
+      entity: "Testimonial",
+      entityId: row.id,
+      after: { status: "PENDING", source: "self", consent: true },
+    });
+    return { success: true };
+  } catch (err) {
+    console.error("[profile] testimonial intake failed", err);
+    return { success: false, error: "Could not save your testimony — please try again." };
   }
 }

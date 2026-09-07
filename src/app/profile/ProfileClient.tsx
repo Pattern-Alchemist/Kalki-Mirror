@@ -13,8 +13,9 @@ import {
   Loader2,
   Check,
   X,
+  Quote,
 } from "lucide-react";
-import { updateBirthProfile, issueDeletionToken } from "./actions";
+import { updateBirthProfile, issueDeletionToken, submitTestimonial } from "./actions";
 import { fadeInUp } from "@/lib/motion/tokens";
 
 /* =============================================================
@@ -40,6 +41,11 @@ export interface ProfileUser {
   };
 }
 
+export interface ProfileTestimonialState {
+  submitted: boolean;
+  status: string | null;
+}
+
 type FormState = {
   birthDate: string;
   birthPlace: string;
@@ -56,7 +62,15 @@ const TIER_LABELS: Record<string, string> = {
   akash: "Akash · Sky",
 };
 
-export default function ProfileClient({ user }: { user: ProfileUser }) {
+export default function ProfileClient({
+  user,
+  testimonial,
+  resolutionPresets,
+}: {
+  user: ProfileUser;
+  testimonial: ProfileTestimonialState;
+  resolutionPresets: string[];
+}) {
   const [form, setForm] = useState<FormState>({
     birthDate: user.birth.birthDate ?? "",
     birthPlace: user.birth.birthPlace ?? "",
@@ -73,6 +87,17 @@ export default function ProfileClient({ user }: { user: ProfileUser }) {
   const [confirmEmail, setConfirmEmail] = useState("");
   const [deleteState, setDeleteState] = useState<"idle" | "working" | "error">("idle");
   const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  // Vol. 4 #5 — testimony intake
+  const [tQuote, setTQuote] = useState("");
+  const [tName, setTName] = useState("");
+  const [tContext, setTContext] = useState("");
+  const [tLocation, setTLocation] = useState("");
+  const [tConsent, setTConsent] = useState(false);
+  const [tState, setTState] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [tErrors, setTErrors] = useState<Record<string, string>>({});
+  const [tError, setTError] = useState<string | null>(null);
+  const [tSubmitted, setTSubmitted] = useState(testimonial.submitted);
 
   const set = (key: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((f) => ({ ...f, [key]: e.target.value }));
@@ -97,6 +122,28 @@ export default function ProfileClient({ user }: { user: ProfileUser }) {
       setSaveState("error");
       setSaveError(res.error ?? "Something went wrong.");
       if (res.fieldErrors) setFieldErrors(res.fieldErrors);
+    }
+  }
+
+  async function onSubmitTestimonial(e: React.FormEvent) {
+    e.preventDefault();
+    setTState("saving");
+    setTError(null);
+    setTErrors({});
+    const res = await submitTestimonial({
+      quote: tQuote,
+      displayName: tName,
+      context: tContext,
+      location: tLocation,
+      consent: tConsent,
+    });
+    if (res.success) {
+      setTState("saved");
+      setTSubmitted(true);
+    } else {
+      setTState("error");
+      setTError(res.error ?? "Something went wrong.");
+      if (res.fieldErrors) setTErrors(res.fieldErrors);
     }
   }
 
@@ -335,6 +382,143 @@ export default function ProfileClient({ user }: { user: ProfileUser }) {
             <Download className="w-3.5 h-3.5" />
             Download my data (JSON)
           </a>
+        </motion.section>
+
+        {/* ── Testimony (Vol. 4 #5) ── */}
+        <motion.section
+          className="border border-white/10 rounded-lg p-6 bg-white/[0.02]"
+          initial={fadeInUp.hidden}
+          whileInView={fadeInUp.visible}
+          viewport={{ once: true }}
+        >
+          <h2 className="font-display text-xl tracking-[0.05em] font-light mb-1.5 inline-flex items-center gap-2">
+            <Quote className="w-4 h-4 text-gold/70" /> Leave a Testimony
+          </h2>
+          {tSubmitted ? (
+            <p className="text-xs text-text-secondary leading-relaxed">
+              Your testimony is with the archivist{testimonial.status ? ` (currently: ${testimonial.status.toLowerCase()})` : ""} —
+              nothing is published without a human reading it and your consent on file.
+              Thank you for putting the work into words.
+            </p>
+          ) : (
+            <>
+              <p className="text-xs text-text-secondary leading-relaxed mb-5">
+                If the practice moved something in you, the words help the next seeker
+                find their way. Write it in your own voice — the archivist reviews every
+                testimony before anything is published, and your consent below is what
+                makes it publishable at all.
+              </p>
+              <form onSubmit={onSubmitTestimonial} className="space-y-4">
+                <div>
+                  <label htmlFor="t-quote" className={labelCls}>Your words</label>
+                  <textarea
+                    id="t-quote"
+                    value={tQuote}
+                    onChange={(e) => { setTQuote(e.target.value); setTState("idle"); }}
+                    rows={5}
+                    maxLength={1000}
+                    placeholder="What the practice changed, in your own words…"
+                    className={inputCls}
+                  />
+                  <p className="mt-1 text-[0.6rem] font-mono text-text-muted">
+                    {tQuote.trim().length} characters · 40–800 after review
+                  </p>
+                  {tErrors.quote && <p className="mt-1 text-xs text-red-400">{tErrors.quote}</p>}
+                </div>
+
+                {resolutionPresets.length > 0 && (
+                  <div>
+                    <span className={labelCls}>What you did (optional — tap to fill)</span>
+                    <div className="flex flex-wrap gap-2">
+                      {resolutionPresets.map((p) => (
+                        <button
+                          key={p}
+                          type="button"
+                          onClick={() => { setTContext(p); setTState("idle"); }}
+                          className="rounded-full border border-gold/30 px-3 py-1 text-[0.65rem] font-mono text-gold/80 transition-colors hover:border-gold/60 hover:text-gold"
+                        >
+                          {p}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <div>
+                    <label htmlFor="t-name" className={labelCls}>Display name</label>
+                    <input
+                      id="t-name"
+                      value={tName}
+                      onChange={(e) => { setTName(e.target.value); setTState("idle"); }}
+                      maxLength={40}
+                      placeholder="Ananya M."
+                      className={inputCls}
+                    />
+                    {tErrors.displayName && <p className="mt-1 text-xs text-red-400">{tErrors.displayName}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="t-context" className={labelCls}>Context</label>
+                    <input
+                      id="t-context"
+                      value={tContext}
+                      onChange={(e) => { setTContext(e.target.value); setTState("idle"); }}
+                      maxLength={80}
+                      placeholder="Pattern Consultation"
+                      className={inputCls}
+                    />
+                    {tErrors.context && <p className="mt-1 text-xs text-red-400">{tErrors.context}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="t-location" className={labelCls}>Location (optional)</label>
+                    <input
+                      id="t-location"
+                      value={tLocation}
+                      onChange={(e) => { setTLocation(e.target.value); setTState("idle"); }}
+                      maxLength={60}
+                      placeholder="Mumbai"
+                      className={inputCls}
+                    />
+                    {tErrors.location && <p className="mt-1 text-xs text-red-400">{tErrors.location}</p>}
+                  </div>
+                </div>
+
+                <label className="flex items-start gap-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={tConsent}
+                    onChange={(e) => { setTConsent(e.target.checked); setTState("idle"); }}
+                    className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/20 bg-black/40 accent-[var(--gold,#c8a24a)]"
+                  />
+                  <span className="text-xs text-text-secondary leading-relaxed">
+                    I consent to KALKI publishing these words, lightly copy-edited, with my
+                    display name. Nothing is published without this yes.
+                  </span>
+                </label>
+                {tErrors.consent && <p className="text-xs text-red-400">{tErrors.consent}</p>}
+
+                {tError && (
+                  <div className="rounded-md border border-red-900/40 bg-red-950/10 p-3 text-xs text-red-400">
+                    {tError}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={tState === "saving" || tQuote.trim().length < 40 || !tConsent}
+                  className="inline-flex items-center gap-2 border border-gold/40 hover:border-gold disabled:border-white/10 disabled:text-text-muted/40 text-gold text-xs font-mono tracking-[0.15em] uppercase px-5 py-2.5 rounded-md transition-colors disabled:cursor-not-allowed"
+                >
+                  {tState === "saving" ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" /> Offering…
+                    </>
+                  ) : (
+                    "Offer this testimony"
+                  )}
+                </button>
+              </form>
+            </>
+          )}
         </motion.section>
 
         {/* ── Danger zone ── */}

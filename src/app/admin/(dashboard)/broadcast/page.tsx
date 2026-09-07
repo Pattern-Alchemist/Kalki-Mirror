@@ -5,8 +5,12 @@ import {
   getBroadcastAudience,
   previewBroadcast,
   sendBroadcast,
+  getWinbackAudience,
+  previewWinback,
+  sendWinback,
   type BroadcastPreview,
   type BroadcastSendResult,
+  type WinbackAudience,
 } from "./actions";
 
 /* ─── Broadcast (Vol. 3 #6) ─────────────────────────────────────────────
@@ -23,12 +27,50 @@ export default function BroadcastPage() {
   const [result, setResult] = useState<BroadcastSendResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  // Vol. 4 #4 — win-back mode: same compose → preview → confirm discipline,
+  // different audience (the silently cold) and send path (suppression-aware).
+  const [mode, setMode] = useState<"all" | "cold">("all");
+  const [winback, setWinback] = useState<WinbackAudience | null>(null);
 
   useEffect(() => {
     getBroadcastAudience()
       .then(setAudience)
       .catch((e: unknown) => setError(e instanceof Error ? e.message : "Failed to load audience"));
   }, []);
+
+  useEffect(() => {
+    if (mode !== "cold") return;
+    getWinbackAudience()
+      .then((w) => {
+        setWinback(w);
+        setPreview(null);
+        setArmed(false);
+        // Prefill the house letter only into an empty composer — an edit
+        // in progress is the founder's, never ours to clobber.
+        setSubject((cur) => (cur.trim() === "" ? w.template.subject : cur));
+        setBody((cur) => (cur.trim() === "" ? w.template.body : cur));
+      })
+      .catch((e: unknown) =>
+        setError(e instanceof Error ? e.message : "Failed to load win-back audience"),
+      );
+  }, [mode]);
+
+  const switchMode = (m: "all" | "cold") => {
+    if (m === mode) return;
+    setMode(m);
+    setPreview(null);
+    setArmed(false);
+    setResult(null);
+    setError(null);
+  };
+
+  const loadWinbackTemplate = () => {
+    if (!winback) return;
+    setSubject(winback.template.subject);
+    setBody(winback.template.body);
+    setPreview(null);
+    setArmed(false);
+  };
 
   const dirty = preview !== null && (preview.text !== body.trim() || subject.trim().length < 3);
 
@@ -38,7 +80,7 @@ export default function BroadcastPage() {
     setArmed(false);
     startTransition(async () => {
       try {
-        const p = await previewBroadcast(subject, body);
+        const p = mode === "cold" ? await previewWinback(subject, body) : await previewBroadcast(subject, body);
         setPreview(p);
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : "Preview failed");
@@ -51,7 +93,7 @@ export default function BroadcastPage() {
     setError(null);
     startTransition(async () => {
       try {
-        const r = await sendBroadcast(subject, body, true);
+        const r = mode === "cold" ? await sendWinback(subject, body, true) : await sendBroadcast(subject, body, true);
         setResult(r);
         setArmed(false);
         if (r.remaining > 0) {
@@ -75,11 +117,45 @@ export default function BroadcastPage() {
           Every send carries the signed one-click unsubscribe footer. Confirmed
           sends are captured to the public archive at <span className="text-zinc-400">/letters</span> —
           the raw text you composed, never per-recipient links.
+          Win-back mode sends only to the silently cold — active subscribers with zero
+          opens in 21 days — and never more than one win-back per subscriber per 30 days.
         </p>
       </div>
 
+      {/* Audience mode (Vol. 4 #4) */}
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          onClick={() => switchMode("all")}
+          className={
+            mode === "all"
+              ? "rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-sm text-amber-300"
+              : "rounded-lg border border-zinc-800 px-3 py-1.5 text-sm text-zinc-400 transition hover:border-zinc-600 hover:text-zinc-200"
+          }
+        >
+          Full list
+        </button>
+        <button
+          onClick={() => switchMode("cold")}
+          className={
+            mode === "cold"
+              ? "rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-sm text-amber-300"
+              : "rounded-lg border border-zinc-800 px-3 py-1.5 text-sm text-zinc-400 transition hover:border-zinc-600 hover:text-zinc-200"
+          }
+        >
+          Win-back — the silently cold
+        </button>
+        {mode === "cold" && (
+          <button
+            onClick={loadWinbackTemplate}
+            className="text-xs text-amber-400 underline-offset-2 hover:text-amber-300 hover:underline"
+          >
+            Load the house letter
+          </button>
+        )}
+      </div>
+
       {/* Audience */}
-      {audience && (
+      {mode === "all" && audience && (
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
           {[
             { label: "Active recipients", value: audience.count },
@@ -88,6 +164,21 @@ export default function BroadcastPage() {
               label: "Runs to deliver all",
               value: Math.max(1, Math.ceil(audience.count / audience.cap)),
             },
+          ].map((s) => (
+            <div key={s.label} className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
+              <p className="text-xs uppercase tracking-wider text-zinc-500">{s.label}</p>
+              <p className="mt-1 text-2xl font-semibold text-zinc-100">{s.value}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {mode === "cold" && winback && (
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
+          {[
+            { label: "Cold recipients (zero opens 21d)", value: winback.count },
+            { label: "Suppressed (win-backed <30d)", value: winback.suppressed },
+            { label: "Per-run cap", value: winback.cap },
           ].map((s) => (
             <div key={s.label} className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
               <p className="text-xs uppercase tracking-wider text-zinc-500">{s.label}</p>

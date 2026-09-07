@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { formatResolutionContext } from "@/lib/validators/testimonial";
 import ProfileClient from "./ProfileClient";
 
 /* =============================================================
@@ -45,6 +46,21 @@ export default async function ProfilePage() {
   });
   if (!user) redirect("/admin/login");
 
+  // Vol. 4 #5 — testimonial intake state + the seeker's own resolved
+  // patterns as context presets (the moment of highest testimony, in words).
+  const [testimonial, resolutions] = await Promise.all([
+    db.testimonial.findFirst({
+      where: { submittedBy: `self:${user.email.toLowerCase()}` },
+      select: { status: true, createdAt: true },
+    }),
+    db.patternResolution.findMany({
+      where: { userId: user.id },
+      orderBy: { resolvedAt: "desc" },
+      take: 3,
+      select: { patternName: true, daysToResolve: true },
+    }),
+  ]);
+
   return (
     <ProfileClient
       user={{
@@ -63,6 +79,11 @@ export default async function ProfilePage() {
           natalMoonLng: user.natalMoonLng,
         },
       }}
+      testimonial={{
+        submitted: testimonial !== null,
+        status: testimonial?.status ?? null,
+      }}
+      resolutionPresets={resolutions.map((r) => formatResolutionContext(r))}
     />
   );
 }

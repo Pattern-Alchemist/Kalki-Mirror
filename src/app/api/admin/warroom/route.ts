@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authenticateRequest } from "@/lib/api-auth";
 import { db } from "@/lib/db";
+import { getListFunnel } from "@/lib/admin/list-funnel-db";
+import type { ListFunnelResult } from "@/lib/admin/list-funnel";
 
 export const dynamic = "force-dynamic";
 
@@ -255,6 +257,17 @@ export async function GET(request: NextRequest) {
       emailCourse = null; // table missing / db hiccup — War Room must never break over a satellite panel
     }
 
+    // ── List funnel (Vol. 4 #3) — weekly cohort: joined → Door-3 open →
+    // any click → /consultations click-through → intake. Own fail-soft
+    // block: the war room renders streams; the funnel must never be the
+    // thing that breaks them.
+    let listFunnel: ListFunnelResult | null = null;
+    try {
+      listFunnel = await getListFunnel(now);
+    } catch {
+      listFunnel = null;
+    }
+
     return NextResponse.json({
       generatedAt: now.toISOString(),
       range: rangeParam,
@@ -272,6 +285,7 @@ export async function GET(request: NextRequest) {
       recent,
       campaignList,
       emailCourse,
+      listFunnel,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";
