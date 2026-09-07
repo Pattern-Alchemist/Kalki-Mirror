@@ -41,7 +41,8 @@ const REQUIRED_ENVS: Array<{ name: string; note: string }> = [
 // Feature gates, not faults. Unset is a legitimate steady state.
 const OPTIONAL_ENVS: Array<{ name: string; note: string }> = [
   { name: "DATABASE_URL", note: "local dev fallback — never used in production" },
-  { name: "CLOUDINARY_CLOUD_NAME", note: "runtime media uploads (local script path)" },
+  { name: "CLOUDINARY_URL", note: "media library (Vol. 3 #5) — cloudinary://key:secret@cloud" },
+  { name: "CLOUDINARY_CLOUD_NAME", note: "legacy three-var split — CLOUDINARY_URL is preferred" },
   { name: "ALLOWED_ADMIN_IPS", note: "admin IP allowlist — empty = open" },
   { name: "EMBED_API_KEY", note: "future neural-embed trigger (embed.ts decision record)" },
 ];

@@ -11,7 +11,9 @@
 > PROGRESS — Week A: 1·3·17·18·19 (+health bug) · Week B: 4·2·10 ·
 > Week C: 6·7·8·9 (+ the Seven Patterns primer lead-magnet as an
 > interlude) · Week D: 11·12·13·14·15 (+ hi.json NUL-corruption fix,
-> full-shell parity enforced) → 18 of 20 shipped. Remaining: 16·20 · 5.
+> full-shell parity enforced) · Week E: 16·20·5 (+ CLOUDINARY_URL
+> wiring discovery: the uploader was orphaned because it read three
+> env vars production never had) → **20 of 20 shipped. Vol. 3 CLOSED.**
 
 ## Tier 9 — Close the loops (data modeled but dead-ended) — do first
 

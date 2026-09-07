@@ -8,6 +8,9 @@ import { BackButton } from '@/components/nav/BackButton';
 import { CautionBadge } from '@/components/archive/CautionBadge';
 import { CitationCard } from '@/components/dossier/CitationCard';
 import { UnattestedState } from '@/components/dossier/UnattestedState';
+// Vol. 3 #20 — the corpus size is a canonical, bake-derived number
+// (idf-generated.ts). Never hardcode it in copy again.
+import { CORPUS_SIZE } from '@/lib/rag/idf-generated';
 import { ArchiveRefsLedger } from '@/components/dossier/ArchiveRefsLedger';
 import { PrescriptionBlueprint } from '@/components/dossier/PrescriptionBlueprint';
 import { TransitReadout } from '@/components/dossier/TransitReadout';
@@ -297,7 +300,7 @@ export default function DossierPageClient() {
             that generates your recurring experience. You provide two coordinates: a behavioral description of the
             pattern you observe, and your natal Moon sign (rāśi), which in the Tantric framework governs the inner
             emotional terrain — the manomaya kośa. These are cross-referenced against the Akashic Archive's
-            279 textual fragments spanning the Upaniṣads, Tantras, Āgamas, Haṭha Yoga Pradīpikā, and living
+            {` ${CORPUS_SIZE} `}textual fragments spanning the Upaniṣads, Tantras, Āgamas, Haṭha Yoga Pradīpikā, and living
             lineage protocols from the Aghorī, Kashmiri Shaiva, and Vajrayāna traditions.
           </p>
           <p className="text-text-muted text-sm leading-relaxed max-w-2xl mt-4 editorial-spacing">

@@ -7,8 +7,10 @@
    - OpenRouter was probed live: 431 models served, ZERO embedding endpoints
      (POST /v1/embeddings → 404 "No endpoints found" for qwen3-embedding).
    - No OpenAI/Gemini/Jina key exists in the stack; adding a vendor key was
-     rejected (new vendor + cost + rotation surface for a 279-chunk corpus).
-   - For 279 static chunks, IDF-weighted hashed TF-IDF + cosine gives
+     rejected (new vendor + cost + rotation surface for a corpus this size).
+   - For the full static corpus (see CORPUS_SIZE in rag/idf-generated.ts —
+     bake-derived, 327 since the 2026-09-06 re-bake), IDF-weighted hashed
+     TF-IDF + cosine gives
      high-precision lexical retrieval, and — critically — the storage and
      query contract is IDENTICAL to neural vectors (JSON float array in
      FolioChunk.embedding + cosine at query time). When a real embedding

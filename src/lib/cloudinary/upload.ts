@@ -1,15 +1,33 @@
 import { v2 as cloudinary } from 'cloudinary';
+import { parseCloudinaryUrl } from './media';
 
 // Singleton — configured once at module load
 let _configured = false;
 
+/**
+ * Vol. 3 #5 — the real wiring for this module.
+ *
+ * Production carries CLOUDINARY_URL (Vercel-style cloudinary://key:secret@cloud),
+ * not the three-var split — so getCloudinary() prefers parsing that URL and
+ * falls back to the three explicit vars (CLOUDINARY_CLOUD_NAME / API_KEY /
+ * API_SECRET) for parity with the upstream SDK docs. Throws only when the
+ * caller actually needs credentials and none exist.
+ */
 function getConfig() {
+  const fromUrl = parseCloudinaryUrl(process.env.CLOUDINARY_URL);
+  if (fromUrl) {
+    return {
+      cloud_name: fromUrl.cloudName,
+      api_key: fromUrl.apiKey,
+      api_secret: fromUrl.apiSecret,
+    };
+  }
   const name = process.env.CLOUDINARY_CLOUD_NAME;
   const key = process.env.CLOUDINARY_API_KEY;
   const secret = process.env.CLOUDINARY_API_SECRET;
   if (!name || !key || !secret) {
     throw new Error(
-      'Missing CLOUDINARY_CLOUD_NAME / CLOUDINARY_API_KEY / CLOUDINARY_API_SECRET env vars'
+      'Cloudinary is not configured — set CLOUDINARY_URL (cloudinary://key:secret@cloud) or the three-var split'
     );
   }
   return { cloud_name: name, api_key: key, api_secret: secret };
@@ -21,6 +39,16 @@ export function getCloudinary(): typeof cloudinary {
     _configured = true;
   }
   return cloudinary;
+}
+
+/** Safe boolean for UI gating — never throws, never logs values. */
+export function cloudinaryConfigured(): boolean {
+  try {
+    getConfig();
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export interface UploadResult {
@@ -71,9 +99,13 @@ export async function uploadToCloudinary(
  */
 export function buildCloudinaryUrl(
   publicId: string,
-  opts: { width?: number; quality?: string; format?: string } = {}
+  opts: { width?: number; quality?: string; format?: string; cloudName?: string } = {}
 ): string {
-  const cloud = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_CLOUD_NAME;
+  const cloud =
+    opts.cloudName ||
+    parseCloudinaryUrl(process.env.CLOUDINARY_URL)?.cloudName ||
+    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
+    process.env.CLOUDINARY_CLOUD_NAME;
   if (!cloud) return '';
   const w = opts.width ? `w_${opts.width},c_limit` : '';
   const q = opts.quality ? `q_${opts.quality}` : 'q_auto:good';

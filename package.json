@@ -18,7 +18,7 @@
     "db:migrate": "prisma migrate dev",
     "db:reset": "prisma migrate reset",
     "db:seed": "npx tsx prisma/seed.ts",
-    "test:e2e": "npx playwright test",
+    "test:e2e": "bash scripts/run-e2e.sh",
     "db:backup": "bash scripts/backup-db.sh",
     "ping:indexnow": "bash scripts/ping-indexnow.sh",
     "ping:indexnow:cron": "curl -fsS -H \"Authorization: Bearer ${CRON_SECRET}\" \"${SITE_URL:-https://www.astrokalki.com}/api/indexnow\"",

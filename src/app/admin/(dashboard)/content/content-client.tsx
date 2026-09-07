@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import { createContentEntry, updateContentEntry, deleteContentEntry } from "./actions";
+import { listMedia, uploadMedia } from "./media-actions";
+import { buildImageMarkdown, insertMarkdownAtCursor, type MediaAsset } from "@/lib/cloudinary/media";
 import { CONTENT_TYPES, STATUSES, CAUTIONS, TIERS, type ContentRow } from "./constants";
 import { AdminAIDraft } from "@/components/ai/AdminAIDraft";
 
@@ -41,6 +43,88 @@ export function ContentClient({
   const [showCreate, setShowCreate] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState({ type: "practice", slug: "", title: "", excerpt: "", body: "", minTier: "prithvi", caution: "OPEN" });
+
+  // ── Vol. 3 #5 — media library state ──
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
+  const [mediaOpen, setMediaOpen] = useState(false);          // studio panel
+  const [pickerOpen, setPickerOpen] = useState(false);        // in-modal picker
+  const [mediaAssets, setMediaAssets] = useState<MediaAsset[]>([]);
+  const [mediaState, setMediaState] = useState<"idle" | "loading" | "ready" | "not-configured" | "error">("idle");
+  const [mediaMessage, setMediaMessage] = useState("");
+  const [uploading, setUploading] = useState(false);
+
+  const loadMedia = useCallback(async () => {
+    setMediaState("loading");
+    setMediaMessage("");
+    try {
+      const result = await listMedia();
+      if (result.ok) {
+        setMediaAssets(result.assets);
+        setMediaState("ready");
+      } else {
+        setMediaState(result.reason === "not-configured" ? "not-configured" : "error");
+        setMediaMessage(result.message);
+      }
+    } catch {
+      setMediaState("error");
+      setMediaMessage("Media listing failed — try again shortly.");
+    }
+  }, []);
+
+  function toggleMediaPanel() {
+    const next = !mediaOpen;
+    setMediaOpen(next);
+    if (next && mediaState === "idle") void loadMedia();
+  }
+
+  function openPicker() {
+    setPickerOpen(true);
+    if (mediaState === "idle") void loadMedia();
+  }
+
+  async function handleUpload(file: File) {
+    setUploading(true);
+    setMediaMessage("");
+    try {
+      const fd = new FormData();
+      fd.set("file", file);
+      const result = await uploadMedia(fd);
+      if (result.ok) {
+        setMediaAssets((prev) => [result.asset, ...prev]);
+        setMediaState("ready");
+        setMediaMessage("");
+      } else {
+        setMediaMessage(result.message);
+        if (result.message.includes("dormant")) setMediaState("not-configured");
+      }
+    } catch {
+      setMediaMessage("Upload failed — try again shortly.");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  function insertAsset(asset: MediaAsset) {
+    const alt = asset.publicId.split("/").pop() || "illustration";
+    const md = buildImageMarkdown(alt.replace(/\.[a-z0-9]+$/i, ""), asset.secureUrl);
+    const ta = bodyRef.current;
+    const { text, caret } = insertMarkdownAtCursor(
+      form.body,
+      ta?.selectionStart ?? form.body.length,
+      ta?.selectionEnd ?? form.body.length,
+      md
+    );
+    setForm((prev) => ({ ...prev, body: text }));
+    requestAnimationFrame(() => {
+      ta?.focus();
+      ta?.setSelectionRange(caret, caret);
+    });
+  }
+
+  function copyAssetMarkdown(asset: MediaAsset) {
+    const alt = (asset.publicId.split("/").pop() || "illustration").replace(/\.[a-z0-9]+$/i, "");
+    void navigator.clipboard?.writeText(buildImageMarkdown(alt, asset.secureUrl));
+  }
 
   function applyFilters() {
     const params = new URLSearchParams();
@@ -147,6 +231,60 @@ export function ContentClient({
         />
       </div>
 
+      {/* Media Library (Vol. 3 #5 — the uploader finally has callers) */}
+      <div className="rounded-xl border border-zinc-800 p-4">
+        <div className="flex items-center gap-3">
+          <button onClick={toggleMediaPanel} className="text-sm font-medium text-zinc-300 hover:text-amber-400 transition-colors">
+            Media Library {mediaOpen ? "▾" : "▸"}
+          </button>
+          {mediaState === "ready" && <span className="text-xs text-zinc-600">{mediaAssets.length} asset(s) in kalki-mirror/</span>}
+          {mediaOpen && (
+            <label className="ml-auto cursor-pointer rounded-lg border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 transition hover:border-amber-500/50 hover:text-amber-400">
+              {uploading ? "Uploading…" : "Upload image"}
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/avif,image/gif"
+                className="hidden"
+                disabled={uploading}
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) void handleUpload(f);
+                  e.target.value = "";
+                }}
+              />
+            </label>
+          )}
+        </div>
+        {mediaOpen && (
+          <div className="mt-4">
+            {mediaState === "loading" && <p className="text-sm text-zinc-500">Opening the media library…</p>}
+            {mediaState === "not-configured" && (
+              <p className="rounded-lg border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-sm text-amber-400">{mediaMessage}</p>
+            )}
+            {mediaState === "error" && <p className="rounded-lg border border-red-500/20 bg-red-500/5 px-4 py-3 text-sm text-red-400">{mediaMessage}</p>}
+            {mediaState === "ready" && mediaAssets.length === 0 && (
+              <p className="text-sm text-zinc-600">No assets yet — upload the first image for this entry.</p>
+            )}
+            {mediaState === "ready" && mediaAssets.length > 0 && (
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+                {mediaAssets.map((asset) => (
+                  <div key={asset.publicId} className="group space-y-1 rounded-lg border border-zinc-800 p-2">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={asset.secureUrl} alt={asset.publicId} className="h-24 w-full rounded object-cover" />
+                    <p className="truncate font-mono text-[0.625rem] text-zinc-600" title={asset.publicId}>{asset.publicId.split("/").pop()}</p>
+                    <div className="flex gap-1">
+                      <button onClick={() => copyAssetMarkdown(asset)} className="flex-1 rounded bg-zinc-800 px-1.5 py-1 text-[0.625rem] text-zinc-300 transition hover:bg-zinc-700">Copy ![]()</button>
+                      <button onClick={() => window.open(asset.secureUrl, "_blank")} className="rounded bg-zinc-800 px-1.5 py-1 text-[0.625rem] text-zinc-300 transition hover:bg-zinc-700">↗</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {mediaMessage && mediaState === "ready" && <p className="mt-2 text-xs text-red-400">{mediaMessage}</p>}
+          </div>
+        )}
+      </div>
+
       {/* Table */}
       <div className="overflow-x-auto rounded-xl border border-zinc-800">
         <table className="w-full text-left text-sm">
@@ -225,8 +363,32 @@ export function ContentClient({
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="block text-xs font-medium text-zinc-400">Body (Markdown)</label>
-                <textarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} rows={12} placeholder="Write content body in Markdown…" className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none resize-none font-mono" />
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-medium text-zinc-400">Body (Markdown)</label>
+                  <button onClick={openPicker} className="text-[0.625rem] text-amber-500 transition hover:text-amber-400">Insert image ↓</button>
+                </div>
+                <textarea ref={bodyRef} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} rows={12} placeholder="Write content body in Markdown…" className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none resize-none font-mono" />
+                {pickerOpen && (
+                  <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-3">
+                    <div className="mb-2 flex items-center justify-between">
+                      <span className="text-xs text-zinc-500">Media library</span>
+                      <button onClick={() => setPickerOpen(false)} className="text-xs text-zinc-600 hover:text-zinc-400">close</button>
+                    </div>
+                    {mediaState === "loading" && <p className="text-xs text-zinc-600">Loading…</p>}
+                    {mediaState === "not-configured" && <p className="text-xs text-amber-400">{mediaMessage}</p>}
+                    {mediaState === "ready" && mediaAssets.length === 0 && <p className="text-xs text-zinc-600">No assets — close this picker and upload from the Media Library panel first.</p>}
+                    {mediaState === "ready" && mediaAssets.length > 0 && (
+                      <div className="grid max-h-48 grid-cols-4 gap-2 overflow-y-auto">
+                        {mediaAssets.map((asset) => (
+                          <button key={asset.publicId} onClick={() => insertAsset(asset)} title={`Insert ${asset.publicId.split("/").pop()}`} className="group relative">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={asset.secureUrl} alt={asset.publicId} className="h-16 w-full rounded border border-zinc-800 object-cover transition group-hover:border-amber-500/50" />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
               <div className="space-y-1">
                 <label className="block text-xs font-medium text-zinc-400">Preview</label>

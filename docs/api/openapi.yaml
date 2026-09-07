@@ -36,6 +36,20 @@ tags:
     description: User profile and tier
   - name: Admin
     description: Administrative search and notifications
+  - name: Subscribe
+    description: Public email capture (one list, one brain — Vol. 3 #7)
+  - name: Email Course
+    description: The 10 Doors course — share links and signed unsubscribe
+  - name: Events
+    description: First-party analytics event ingestion
+  - name: Cron
+    description: Scheduled jobs (Vercel cron, CRON_SECRET-gated)
+  - name: Webhooks
+    description: Inbound provider webhooks (signature-verified)
+  - name: IndexNow
+    description: Search-engine ping integration
+  - name: GSC
+    description: Google Search Console verification
 
 paths:
   # ── Health ────────────────────────────────────────────────
@@ -876,6 +890,420 @@ paths:
           $ref: '#/components/responses/BadRequest'
 
 # ── Components ──────────────────────────────────────────────
+  # ── Auto-documented fills (scripts/gen-openapi-paths.mjs — Vol. 3 #20) ──
+  # Minimal truthful entries for routes the hand-written section never
+  # covered. Summaries are quoted from each route module header. Enrich
+  # by hand as needed — tests/lib/openapi-truth.test.ts pins the set.
+
+  /api/admin/analytics:
+    get:
+      operationId: apiAdminAnalyticsGet
+      tags: [Admin]
+      summary: GET /api/admin/analytics — founder analytics dashboard feed.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/audit-logs:
+    get:
+      operationId: apiAdminAuditLogsGet
+      tags: [Admin]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/consultations:
+    get:
+      operationId: apiAdminConsultationsGet
+      tags: [Admin]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/consultations/export:
+    get:
+      operationId: apiAdminConsultationsExportGet
+      tags: [Admin]
+      summary: CONSULTATION CSV EXPORT — full-lead download for offline archivist work.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/content:
+    get:
+      operationId: apiAdminContentGet
+      tags: [Admin]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/env-check:
+    get:
+      operationId: apiAdminEnvCheckGet
+      tags: [Admin]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/folio:
+    get:
+      operationId: apiAdminFolioGet
+      tags: [Admin]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/funnel:
+    get:
+      operationId: apiAdminFunnelGet
+      tags: [Admin]
+      summary: CONSULTATION FUNNEL API — \"The one funnel that matters\" (Admin OS v2, 7.2)
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/keys:
+    get:
+      operationId: apiAdminKeysGet
+      tags: [Admin]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/members:
+    get:
+      operationId: apiAdminMembersGet
+      tags: [Admin]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/members/{id}:
+    get:
+      operationId: apiAdminMembersIdGet
+      tags: [Admin]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/session:
+    get:
+      operationId: apiAdminSessionGet
+      tags: [Admin]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/sessions:
+    delete:
+      operationId: apiAdminSessionsDelete
+      tags: [Admin]
+      summary: ADMIN DEVICE SESSIONS API — Vol. 2 #11
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+    get:
+      operationId: apiAdminSessionsGet
+      tags: [Admin]
+      summary: ADMIN DEVICE SESSIONS API — Vol. 2 #11
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/stats:
+    get:
+      operationId: apiAdminStatsGet
+      tags: [Admin]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/subscribers/export:
+    get:
+      operationId: apiAdminSubscribersExportGet
+      tags: [Admin]
+      summary: SUBSCRIBERS CSV EXPORT — The 10 Doors nurture list.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/warroom:
+    get:
+      operationId: apiAdminWarroomGet
+      tags: [Admin]
+      summary: WAR ROOM API — campaign intelligence for the attribution layer.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/auth/{nextauth}:
+    get:
+      operationId: apiAuthNextauthGet
+      tags: [Auth]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+    post:
+      operationId: apiAuthNextauthPost
+      tags: [Auth]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+  /api/auth/admin-login:
+    post:
+      operationId: apiAuthAdminLoginPost
+      tags: [Auth]
+      summary: POST /api/auth/admin-login
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+  /api/cron/cleanup:
+    get:
+      operationId: apiCronCleanupGet
+      tags: [Cron]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+  /api/cron/course-send:
+    get:
+      operationId: apiCronCourseSendGet
+      tags: [Cron]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+  /api/cron/daily-digest:
+    get:
+      operationId: apiCronDailyDigestGet
+      tags: [Cron]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+  /api/email-course/share-link:
+    get:
+      operationId: apiEmailCourseShareLinkGet
+      tags: [Email Course]
+      summary: Vol. 2 #18 — personal share-link minting for the success screen.
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+  /api/email-course/subscribe:
+    post:
+      operationId: apiEmailCourseSubscribePost
+      tags: [Email Course]
+      summary: DOORS EMAIL COURSE — subscribe endpoint.
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+  /api/email-course/unsubscribe:
+    get:
+      operationId: apiEmailCourseUnsubscribeGet
+      tags: [Email Course]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+    post:
+      operationId: apiEmailCourseUnsubscribePost
+      tags: [Email Course]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+  /api/events:
+    post:
+      operationId: apiEventsPost
+      tags: [Events]
+      summary: POST /api/events — first-party analytics ingestion (TGA §12).
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+  /api/gsc-verification/{token}:
+    get:
+      operationId: apiGscVerificationTokenGet
+      tags: [GSC]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+  /api/indexnow:
+    get:
+      operationId: apiIndexnowGet
+      tags: [IndexNow]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+    post:
+      operationId: apiIndexnowPost
+      tags: [IndexNow]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+  /api/initiate/draft:
+    post:
+      operationId: apiInitiateDraftPost
+      tags: [Initiate]
+      summary: Digits-only normalization — the dedup key mirrors the lead pipeline.
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+  /api/subscribe:
+    post:
+      operationId: apiSubscribePost
+      tags: [Subscribe]
+      summary: POST /api/subscribe — email capture (owned channel, zero external APIs).
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
+  /api/user/delete:
+    post:
+      operationId: apiUserDeletePost
+      tags: [User]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — session required
+
+  /api/user/export:
+    get:
+      operationId: apiUserExportGet
+      tags: [User]
+      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — session required
+
+  /api/webhooks/resend:
+    post:
+      operationId: apiWebhooksResendPost
+      tags: [Webhooks]
+      summary: Event types we persist. Unknown signed types are acked but ignored.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/yantra/score:
+    post:
+      operationId: apiYantraScorePost
+      tags: [Yantra]
+      summary: POST /api/yantra/score — the DETERMINISTIC half of the YANTRA engine.
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
 components:
 
   securitySchemes:
@@ -1456,3 +1884,8 @@ components:
         success:
           type: boolean
           example: true
+
+
+
+
+
