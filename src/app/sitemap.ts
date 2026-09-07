@@ -127,8 +127,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const { db } = await import('@/lib/db');
     const { isPubliclyRenderable, contentEntryPath } = await import('@/lib/seo/content-seo');
     const published = await db.contentEntry.findMany({
-      where: { status: 'PUBLISHED' },
-      select: { type: true, slug: true, status: true, caution: true, updatedAt: true },
+      where: { status: 'PUBLISHED', ...(await import('@/lib/admin/scheduled-publish')).duePublishedWhere() },
+      select: { type: true, slug: true, status: true, caution: true, publishedAt: true, updatedAt: true },
     });
     libraryEntryPages = published
       .filter(isPubliclyRenderable)

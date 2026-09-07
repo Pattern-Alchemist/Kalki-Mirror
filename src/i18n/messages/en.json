@@ -281,5 +281,18 @@
       "enLabel": "Switch to English",
       "hiLabel": "Switch to Hindi"
     }
+  },
+  "lexicon": {
+    "title": "The Lexicon",
+    "subtitle": "Sanskrit & Tantric terms decoded in the KALKI framework",
+    "termCount": "{count} Sanskrit & Tantric terms decoded in the KALKI framework",
+    "relatedTerms": "Related Terms",
+    "relatedPractices": "Related Practices",
+    "tierPractice": "{tier} tier practice",
+    "definition": "Definition",
+    "pronunciation": "Pronunciation",
+    "readingHindi": "Reading in Hindi — the English definition stays below for every term.",
+    "hindiAvailable": "Hindi available",
+    "autoLinksNote": "Mentions of other terms are links — the Lexicon is a web, not a list."
   }
 }

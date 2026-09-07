@@ -11,6 +11,8 @@ import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import dynamic from 'next/dynamic';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { TIER_BADGE_STYLES, TIER_LABELS } from '@/lib/utils/tier-gate';
+import { getBreathNarration } from '@/lib/data/audio-narrations';
+import { Headphones } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Play, Pause, RotateCcw, Wind, Repeat, CheckCircle2 } from 'lucide-react';
 import type { BreathPattern } from '@/lib/data/types';
@@ -149,6 +151,9 @@ export default function BreathFolioClient({ pattern }: { pattern: BreathPattern 
   useEffect(() => { track('breathwork_viewed', { slug: pattern.slug }); }, [pattern.slug]);
   const reduced = useNativeReducedMotion();
   const tierLabel = TIER_LABELS[pattern.minTier];
+  // Vol. 4 #12 — the guided narration rides the open surface (same gate
+  // as the description), not the tier-gated visualizer.
+  const narration = getBreathNarration(pattern.slug);
 
   const [isRunning, setIsRunning] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -271,6 +276,28 @@ export default function BreathFolioClient({ pattern }: { pattern: BreathPattern 
         <motion.div initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-6">Practice Notes</p>
           <p className="text-text-secondary text-lg leading-relaxed editorial-spacing">{pattern.description}</p>
+
+          {/* Vol. 4 #12 — guided narration band (pilot: four patterns) */}
+          {narration && (
+            <div className="mt-8 rounded-md border border-gold/10 bg-surface/40 px-5 py-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Headphones className="w-4 h-4 text-gold-dim" />
+                <span className="font-mono text-[0.7rem] tracking-[0.12em] uppercase text-text-muted">
+                  {narration.title} · {Math.floor(narration.durationSec / 60)}:{String(narration.durationSec % 60).padStart(2, '0')}
+                </span>
+              </div>
+              <audio
+                controls
+                preload="none"
+                src={narration.url}
+                className="w-full h-9"
+                aria-label={narration.title}
+              />
+              <p className="mt-2 font-mono text-[0.65rem] text-text-muted/60 tracking-[0.06em]">
+                Narrated guidance — the cue counts match the table below.
+              </p>
+            </div>
+          )}
         </motion.div>
         <motion.div className="mt-16" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-6" style={{ letterSpacing: '0.4em' }}>Phase Breakdown</p>

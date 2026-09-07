@@ -7,6 +7,7 @@ import { createContentEntry, updateContentEntry, deleteContentEntry } from "./ac
 import { listMedia, uploadMedia } from "./media-actions";
 import { buildImageMarkdown, insertMarkdownAtCursor, type MediaAsset } from "@/lib/cloudinary/media";
 import { CONTENT_TYPES, STATUSES, CAUTIONS, TIERS, type ContentRow } from "./constants";
+import { rowPublishState } from "@/lib/admin/scheduled-publish";
 import { AdminAIDraft } from "@/components/ai/AdminAIDraft";
 
 const STATUS_STYLES: Record<string, string> = {
@@ -22,6 +23,12 @@ const CAUTION_STYLES: Record<string, string> = {
   HIGH: "text-orange-400",
   SEALED: "text-red-400",
 };
+
+/** Date -> value accepted by <input type="datetime-local"> (local time). */
+function toDatetimeLocal(d: Date): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 
 export function ContentClient({
   initialEntries,
@@ -42,7 +49,11 @@ export function ContentClient({
   const [statusFilter, setStatusFilter] = useState(currentStatus);
   const [showCreate, setShowCreate] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  const [form, setForm] = useState({ type: "practice", slug: "", title: "", excerpt: "", body: "", minTier: "prithvi", caution: "OPEN" });
+  const [form, setForm] = useState({ type: "practice", slug: "", title: "", excerpt: "", body: "", minTier: "prithvi", caution: "OPEN", publishAt: "" });
+  // Vol. 4 #8 — the stamp this row had when the modal opened; the schedule
+  // input only reaches the server when the editor actually CHANGED it
+  // (re-sending an unchanged stamp would re-arm the flip pass).
+  const [originalPublishAt, setOriginalPublishAt] = useState<string>("");
 
   // ── Vol. 3 #5 — media library state ──
   const bodyRef = useRef<HTMLTextAreaElement>(null);
@@ -134,12 +145,14 @@ export function ContentClient({
   }
 
   function openCreate() {
-    setForm({ type: "practice", slug: "", title: "", excerpt: "", body: "", minTier: "prithvi", caution: "OPEN" });
+    setForm({ type: "practice", slug: "", title: "", excerpt: "", body: "", minTier: "prithvi", caution: "OPEN", publishAt: "" });
+    setOriginalPublishAt("");
     setShowCreate(true);
     setEditId(null);
   }
 
   function openEdit(entry: ContentRow) {
+    const stamp = entry.publishedAt ? toDatetimeLocal(new Date(entry.publishedAt)) : "";
     setForm({
       type: entry.type,
       slug: entry.slug,
@@ -148,7 +161,9 @@ export function ContentClient({
       body: entry.body || "",
       minTier: entry.minTier,
       caution: entry.caution,
+      publishAt: stamp,
     });
+    setOriginalPublishAt(stamp);
     setEditId(entry.id);
     setShowCreate(true);
   }
@@ -156,6 +171,9 @@ export function ContentClient({
   async function handleSave() {
     if (!form.slug || !form.title) return;
     startTransition(async () => {
+      // Only send a schedule the editor actually set/changed.
+      const scheduleChanged = form.publishAt !== originalPublishAt;
+      const publishAt = scheduleChanged && form.publishAt ? new Date(form.publishAt).toISOString() : undefined;
       if (editId) {
         await updateContentEntry(editId, {
           title: form.title,
@@ -163,6 +181,7 @@ export function ContentClient({
           body: form.body || undefined,
           minTier: form.minTier,
           caution: form.caution,
+          publishAt,
         });
       } else {
         await createContentEntry({
@@ -173,6 +192,7 @@ export function ContentClient({
           body: form.body || undefined,
           minTier: form.minTier,
           caution: form.caution,
+          publishAt,
         });
       }
       setShowCreate(false);
@@ -319,6 +339,12 @@ export function ContentClient({
                   >
                     {STATUSES.map((s) => (<option key={s} value={s}>{s}</option>))}
                   </select>
+                  {/* Vol. 4 #8 — SCHEDULED is a state of PUBLISHED rows, not a status value */}
+                  {rowPublishState(entry) === "SCHEDULED" && (
+                    <span className="ml-1.5 rounded bg-sky-500/10 px-1.5 py-0.5 text-[0.625rem] font-medium text-sky-400" title={entry.publishedAt ? new Date(entry.publishedAt).toLocaleString() : ""}>
+                      SCHEDULED
+                    </span>
+                  )}
                 </td>
                 <td className={`px-4 py-3 text-xs font-medium ${CAUTION_STYLES[entry.caution] || ""}`}>{entry.caution}</td>
                 <td className="px-4 py-3 text-xs text-zinc-500 capitalize">{entry.minTier}</td>
@@ -410,6 +436,28 @@ export function ContentClient({
                   {CAUTIONS.map((c) => (<option key={c} value={c}>{c}</option>))}
                 </select>
               </div>
+            </div>
+            <div className="space-y-1">
+              <label className="block text-xs font-medium text-zinc-400">
+                Schedule publish <span className="text-zinc-600">(optional — admin only)</span>
+              </label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="datetime-local"
+                  value={form.publishAt}
+                  onChange={(e) => setForm({ ...form, publishAt: e.target.value })}
+                  className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none font-mono"
+                />
+                {form.publishAt && (
+                  <button type="button" onClick={() => setForm({ ...form, publishAt: "" })} className="rounded-lg border border-zinc-700 px-2.5 py-2 text-xs text-zinc-400 hover:border-red-500/50 hover:text-red-400" title="Clear the input (leaves the existing stamp untouched)">
+                    Clear
+                  </button>
+                )}
+              </div>
+              <p className="text-[0.625rem] leading-relaxed text-zinc-600">
+                Vol. 4 #8 — a future date on a PUBLISHED entry hides it from the public site until this moment;
+                the daily cron announces it when due. Clearing the input never erases an existing stamp.
+              </p>
             </div>
             <div className="flex justify-end gap-2 pt-2">
               <button onClick={() => { setShowCreate(false); setEditId(null); }} className="rounded-lg bg-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-700">Cancel</button>

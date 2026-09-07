@@ -83,6 +83,13 @@ scripts/geo-ops/logs/
 # Tier-1/2 schema delta appliers ship with the repo (migration records)
 !scripts/apply-tier1-schema.ts
 !scripts/apply-tier2-schema.ts
+# Vol. 4 #11 — the OG render smoke (satori pipeline check before deploy)
+!scripts/og-smoke.mjs
+# Vol. 4 #12 — the audio pilot: narration scripts (data) + the TTS baker
+!scripts/breathwork-narrations.mjs
+!scripts/bake-breathwork-audio.mjs
+# Vol. 4 #13 — the hi corpus bridge insertion tool (translation provenance)
+!scripts/add-hi-bridge.py
 *.zip
 cloudinary-map.json.open-next/
 

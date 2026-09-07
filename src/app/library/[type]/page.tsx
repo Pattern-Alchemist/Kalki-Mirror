@@ -13,6 +13,7 @@ import {
   type PublicContentType,
 } from '@/lib/seo/content-seo';
 import { pageAlternates } from '@/lib/utils/metadata';
+import { duePublishedWhere } from '@/lib/admin/scheduled-publish';
 import { TrackView } from '@/components/analytics/TrackView';
 
 // Same freshness contract as [slug]: entries publish and withdraw at
@@ -30,8 +31,10 @@ interface Props {
 
 async function loadTypeEntries(type: string) {
   if (!isPublicContentType(type)) return undefined;
+  // Vol. 4 #8: due PUBLISHED rows only — scheduled entries stay out of
+  // the shelf until their publishedAt arrives (same truth as [slug]).
   const rows = await db.contentEntry.findMany({
-    where: { type },
+    where: { type, status: 'PUBLISHED', ...duePublishedWhere() },
     orderBy: [{ publishedAt: 'desc' }, { updatedAt: 'desc' }],
   });
   // Identical public gate as the entry renderer: PUBLISHED only, SEALED

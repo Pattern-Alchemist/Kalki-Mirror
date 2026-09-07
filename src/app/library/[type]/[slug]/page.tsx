@@ -12,6 +12,7 @@ import {
   contentDescription,
   CONTENT_TYPE_LABELS,
 } from '@/lib/seo/content-seo';
+import { duePublishedWhere } from '@/lib/admin/scheduled-publish';
 import { pageAlternates } from '@/lib/utils/metadata';
 import { TrackView } from '@/components/analytics/TrackView';
 import CaptureBand from '@/components/capture/CaptureBand';
@@ -27,8 +28,11 @@ interface Props {
 
 async function loadEntry(type: string, slug: string) {
   if (!isPublicContentType(type)) return undefined;
+  // Vol. 4 #8: the DB pre-filters to due PUBLISHED rows (SCHEDULED =
+  // future publishedAt never leaves the studio); the JS gate below is
+  // the defense-in-depth backstop over the same truth.
   const entry = await db.contentEntry.findFirst({
-    where: { type, slug },
+    where: { type, slug, status: 'PUBLISHED', ...duePublishedWhere() },
   });
   // Public gate: PUBLISHED only, and SEALED stays studio-internal even then.
   if (!entry || !isPubliclyRenderable(entry)) return undefined;

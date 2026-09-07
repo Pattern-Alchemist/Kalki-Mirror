@@ -9,6 +9,16 @@ export interface GlossaryEntry {
   sanskrit?: string;
   pronunciation?: string;
   definition: string;
+  /**
+   * Vol. 4 #13 — the hi corpus bridge. Optional Hindi (sadhu register)
+   * fields with EN fallback: when the seeker's locale is hi and a term
+   * carries a translation, the renderer shows it; otherwise the EN
+   * definition serves unchanged. Scale beyond the top-20 stays
+   * founder-review (the sadhu register is not to be machine-diluted).
+   */
+  hi?: {
+    definition: string;
+  };
   category: 'foundational' | 'pranayama' | 'tantra' | 'ritual' | 'philosophical' | 'archetype';
   relatedTerms?: string[];
   relatedSiddhiSlugs?: string[];
@@ -33,7 +43,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'AUM',
     definition:
       'The primordial sound — the acoustic signature of the cosmos. Composed of three phonemes (a-u-ṃ) representing the waking, dreaming, and deep-sleep states, with the fourth (turiya) as the silence beyond. In the KALKI system, Oṃ is not a religious symbol but a frequency calibration tool that tunes the nervous system to the fundamental vibration of consciousness.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'प्राथमिक ध्वनि — समस्त सृष्टि की ध्वन्यात्मक पहचान। तीन ध्वनिभेदों (अ-उ-म्) से बनी यह ध्वनि जाग्रत, स्वप्न और सुषुप्ति — तीन अवस्थाओं को दर्शाती है, और चौथी अवस्था (तुरीय) इन सबसे परे की मौन है। काल्की पद्धति में ॐ कोई धार्मिक चिह्न नहीं — यह एक आवृत्ति-कैलिब्रेशन साधन है, जो तंत्रिका तंत्र को चेतना की मूल स्पन्दन-आवृत्ति से समन्वित करता है।',
+    },
+category: 'foundational',
     relatedTerms: ['Mantra', 'Bīja'],
   },
   {
@@ -42,7 +56,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'PRAH-nah',
     definition:
       'The vital life-force that animates all biological systems. Not breath itself, but the intelligent energy that rides upon breath. The KALKI system treats prāṇa as the primary currency of consciousness — the medium through which intention is translated into physiological change and, ultimately, into pattern transformation.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'वह प्राण-शक्ति जो समस्त जीव-तंत्रों में जीवन का संचार करती है। यह केवल श्वास नहीं — श्वास पर अश्वारोही की तरह सवार वह बुद्धिमान ऊर्जा है। काल्की पद्धति प्राण को चेतना की प्राथमिक मुद्रा मानती है — वह माध्यम जिसके द्वारा संकल्प शारीरिक परिवर्तन में, और अंततः पैटर्न-परिवर्तन में रूप लेता है।',
+    },
+category: 'foundational',
     relatedTerms: ['Prāṇāyāma', 'Nāḍī', 'Ojas'],
   },
   {
@@ -51,7 +69,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'NAH-dee',
     definition:
       'The energetic channels through which prāṇa circulates in the subtle body. The Tantric model describes 72,000 nāḍīs, of which three are primary: Iḍā (lunar, cooling), Piṅgalā (solar, heating), and Suṣumṇā (central, transcendent). The health of the nāḍī system determines the clarity and bandwidth of consciousness.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'वे सूक्ष्म-शरीर की ऊर्जा-नालियाँ जिनमें प्राण प्रवाहित होता है। तांत्रिक मॉडल 72,000 नाड़ियों का वर्णन करता है, जिनमें तीन प्रधान हैं — इड़ा (चंद्र, शीतल), पिंगला (सौर, तापक) और सुषुम्ना (मध्यस्थ, उत्कृष्ट)। नाड़ी-तंत्र की शुद्धता ही चेतना की स्पष्टता और बैंडविड्थ निर्धारित करती है।',
+    },
+category: 'foundational',
     relatedTerms: ['Iḍā', 'Piṅgalā', 'Suṣumṇā', 'Prāṇa', 'Kuṇḍalinī'],
   },
   {
@@ -60,7 +82,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'EE-dah',
     definition:
       'The lunar nāḍī, flowing from the left nostril down to the base of the spine. Governs the parasympathetic nervous system, intuitive receptivity, cooling, and the feminine principle. When Iḍā dominates, the mental state is receptive, inward-turning, and contemplative.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'चंद्र नाड़ी — बाईं नासाद्वार से मेरुदंड के आधार तक प्रवाहित। यह पैरासिम्पेथेटिक तंत्रिका तंत्र, अंतर्ज्ञानी ग्राह्यता, शीतलता और स्त्री तत्व का शासन करती है। जब इड़ा प्रभावी होती है, मन ग्राही, अंतर्मुखी और चिंतनशील रहता है।',
+    },
+category: 'foundational',
     relatedTerms: ['Nāḍī', 'Piṅgalā', 'Suṣumṇā'],
   },
   {
@@ -69,7 +95,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'ping-GAHL-ah',
     definition:
       'The solar nāḍī, flowing from the right nostril to the base of the spine. Governs the sympathetic nervous system, logical analysis, heating, and the masculine principle. When Piṅgalā dominates, the mental state is active, outward-turning, and analytical.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'सौर नाड़ी — दाईं नासाद्वार से मेरुदंड के आधार तक प्रवाहित। यह सिम्पेथेटिक तंत्रिका तंत्र, तार्किक विश्लेषण, ताप और पुं-तत्व का शासन करती है। जब पिंगला प्रभावी होती है, मन क्रियाशील, बहिर्मुखी और विश्लेषणात्मक रहता है।',
+    },
+category: 'foundational',
     relatedTerms: ['Nāḍī', 'Iḍā', 'Suṣumṇā'],
   },
   {
@@ -78,7 +108,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'soo-SHOOM-nah',
     definition:
       'The central nāḍī, running from the base of the spine (mūlādhāra) to the crown (sahasrāra). Dormant in the ordinary state, it activates when Iḍā and Piṅgalā are brought into equilibrium. The KALKI system treats suṣumṇā activation as the physiological correlate of viveka — the bandwidth expansion that makes pattern recognition possible.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'मध्य नाड़ी — मेरुदंड के आधार (मूलाधार) से शिरोत्कट (सहस्रार) तक। साधारण अवस्था में निद्रित, यह तब जागृत होती है जब इड़ा और पिंगला संतुलित हो जाते हैं। काल्की पद्धति सुषुम्ना-जागरण को विवेक का शारीरिक सहसंबंध मानती है — वह बैंडविड्थ-विस्तार जिससे पैटर्न को देखना संभव होता है।',
+    },
+category: 'foundational',
     relatedTerms: ['Nāḍī', 'Iḍā', 'Piṅgalā', 'Kuṇḍalinī', 'Cakra'],
   },
   {
@@ -87,7 +121,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'CHAH-krah',
     definition:
       'Energetic nodes along the suṣumṇā nāḍī where psychological and physiological functions converge. The classical model identifies seven primary cakras, each governing a specific band of experience — from survival (mūlādhāra) to transcendent awareness (sahasrāra). In the KALKI framework, cakras are not mystical objects but information-processing hubs in the subtle-body operating system.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'सुषुम्ना नाड़ी के पर्व — जहाँ मनोवैज्ञानिक और शारीरिक क्रियाएँ संगम करती हैं। प्राचीन मॉडल सात प्रधान चक्र गिनता है, प्रत्येक अनुभव का एक विशिष्ट क्षेत्र रखता है — अस्तित्व-रक्षा (मूलाधार) से लेकर उत्कृष्ट चेतना (सहस्रार) तक। काल्की दृष्टि में चक्र रहस्यमय वस्तुएँ नहीं — सूक्ष्म-शरीर की सूचना-संसाधन केंद्र हैं।',
+    },
+category: 'foundational',
     relatedTerms: ['Suṣumṇā', 'Kuṇḍalinī', 'Nāḍī'],
   },
   {
@@ -96,7 +134,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'koon-dah-LEE-nee',
     definition:
       'The dormant bio-energy coiled at the base of the spine, conceptualized as a serpent. When awakened through sustained practice, it ascends through the suṣumṇā, activating each cakra and ultimately merging with consciousness at the crown. The KALKI system does not treat kuṇḍalinī as a supernatural phenomenon but as the activation of latent neuro-physiological bandwidth.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'मेरुदंड के आधार में कुंडलित निद्रित जैव-ऊर्जा, जिसे सर्प के रूप में चित्रित किया गया। सतत अभ्यास से जागृत होकर यह सुषुम्ना में आरोहित होती है, प्रत्येक चक्र को सक्रिय करती है, और अंततः शिखर पर चेतना में विलीन हो जाती है। काल्की पद्धति कुंडलिनी को अलौकिक घटना नहीं — गुप्त तंत्रिका-शारीरिक बैंडविड्थ का जागरण मानती है।',
+    },
+category: 'foundational',
     relatedTerms: ['Suṣumṇā', 'Cakra', 'Prāṇa'],
     minTier: 'jal',
   },
@@ -106,7 +148,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'MAN-trah',
     definition:
       'A structured vibrational pattern used to focus, direct, and transform consciousness. The word derives from man (mind) + trana (protection/liberation). Mantras are not prayers in the Western sense — they are acoustic technologies that reorganize the pattern architecture of the mind by exposing it to specific frequencies of sound and intention.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'एक संरचित स्पन्दन-प्रतिरूप, जिसके द्वारा चेतना को केंद्रित, निर्देशित और परिवर्तित किया जाता है। शब्द मनस् (मन) + त्राण (रक्षा/मुक्ति) से बना है। मंत्र पाश्चात्य अर्थ में प्रार्थना नहीं — ये ध्वनि-प्रौद्योगिकियाँ हैं, जो मन को विशिष्ट आवृत्तियों और संकल्पों से संस्पर्श करके उसके पैटर्न-विन्यास को पुनर्गठित करती हैं।',
+    },
+category: 'foundational',
     relatedTerms: ['Bīja', 'Oṃ', 'Japa'],
   },
   {
@@ -115,7 +161,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'BEE-jah',
     definition:
       'Seed syllable — the most compressed form of a mantra, containing the vibrational essence of an entire deity or principle. Examples: oṃ, hrīṁ, śrīṁ, krīṁ. Bīja mantras are the source code of the sonic universe — single phonemes that encode complex energetic architectures. In the KALKI system, bījas are treated as frequency-based pattern interrupters.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'बीजाक्षर — मंत्र का सर्वाधिक संकुचित रूप, जिसमें किसी संपूर्ण देवता या तत्व का स्पन्दन-सार निहित रहता है। उदाहरण: ॐ, ह्रीं, श्रीं, क्रीं। बीज मंत्र ध्वनि-ब्रह्मांड का मूल-कोड हैं — एक-एक ध्वनिभेद में जटिल ऊर्जा-विन्यास संकेतित रहता है। काल्की पद्धति में बीज आवृत्ति-आधारित पैटर्न-भंगकारी हैं।',
+    },
+category: 'foundational',
     relatedTerms: ['Mantra', 'Oṃ', 'Bīja Mantra'],
   },
   {
@@ -207,7 +257,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'PRAH-nah-YAH-mah',
     definition:
       'The science of prāṇa extension — the systematic expansion, direction, and refinement of vital energy through breath manipulation. Prāṇāyāma is not breathing exercise; it is a precision technology for altering the operating frequency of the nervous system. The four stages are pūraka (inhalation), kumbhaka (retention), recaka (exhalation), and śūnya (suspension).',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'प्राण-विस्तार का विज्ञान — श्वास-प्रबंध द्वारा प्राण-ऊर्जा का व्यवस्थित विस्तार, निर्देशन और परिष्कार। प्राणायाम केवल श्वास-व्यायाम नहीं — तंत्रिका तंत्र की संचालन-आवृत्ति बदलने की सूक्ष्म-प्रौद्योगिकी है। इसकी चार अवस्थाएँ हैं — पूरक (श्वास भरना), कुंभक (रोकना), रेचक (छोड़ना) और शून्य (निलंबन)।',
+    },
+category: 'pranayama',
     relatedTerms: ['Prāṇa', 'Kumbhaka', 'Nāḍī Śuddhi'],
   },
   {
@@ -216,7 +270,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'koom-BHAH-kah',
     definition:
       'Breath retention — the central technique of prāṇāyāma and the most powerful tool for redirecting prāṇa. Kumbhaka is the still point between inhalation and exhalation where the nervous system is most receptive to reprogramming. The KALKI system treats kumbhaka as the primary technology for pattern interruption at the physiological level.',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'श्वास-रोध — प्राणायाम की केंद्रीय तकनीक और प्राण को पुनर्निर्देशित करने का सबसे शक्तिशाली साधन। कुंभक श्वास के भरने और छोड़ने के बीच का स्थिर बिंदु है, जहाँ तंत्रिका तंत्र पुनर्प्रोग्रामन के लिए सर्वाधिक ग्राही होता है। काल्की पद्धति कुंभक को शारीरिक स्तर पर पैटर्न-भंग की प्राथमिक तकनीक मानती है।',
+    },
+category: 'pranayama',
     relatedTerms: ['Prāṇāyāma', 'Bandha', 'Antara Kumbhaka', 'Bahya Kumbhaka'],
   },
   {
@@ -347,7 +405,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'TAHN-trah',
     definition:
       'The technology of expansion — from tan (to expand) + tra (to liberate). Tantra is not a religion but a methodological framework: a set of precise techniques for expanding the bandwidth of consciousness beyond its ordinary limits. The KALKI system is a tantrik system in the purest sense — it uses the raw material of human experience as the fuel for consciousness transformation.',
-    category: 'tantra',
+        hi: {
+      definition:
+        'विस्तार की प्रौद्योगिकी — तन् (विस्तार) + त्र (मुक्ति)। तंत्र कोई धर्म नहीं, एक पद्धति-संरचना है: चेतना की बैंडविड्थ को साधारण सीमाओं से परे विस्तारित करने की सूक्ष्म तकनीकों का समूह। काल्की पद्धति शुद्धतम अर्थों में तांत्रिक है — वह मानव-अनुभव की सामग्री को ही चेतना-रूपांतरण का ईंधन बनाती है।',
+    },
+category: 'tantra',
     relatedTerms: ['Mantra', 'Yantra', 'Maṇḍala', 'Kuṇḍalinī'],
   },
   {
@@ -384,7 +446,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'SHAHK-tee',
     definition:
       'Power — the dynamic, creative force of consciousness that manifests as all experience. Śakti is not separate from consciousness but is its active dimension. In the KALKI system, Śakti is the energy of pattern transformation: the force that dissolves old grooves and creates new ones.',
-    category: 'tantra',
+        hi: {
+      definition:
+        'शक्ति — चेतना की गतिशील, सृजनशील शक्ति जो समस्त अनुभव के रूप में प्रकट होती है। शक्ति चेतना से भिन्न नहीं — वह उसी की क्रियाशील विमर्श है। काल्की पद्धति में शक्ति ही पैटर्न-परिवर्तन की ऊर्जा है: वह बल जो पुरानी खांचे को पिघलाता है और नई गढ़ता है।',
+    },
+category: 'tantra',
     relatedTerms: ['Śiva', 'Kuṇḍalinī', 'Tantra', 'Śākta'],
   },
   {
@@ -393,7 +459,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'SHEE-vah',
     definition:
       'Pure consciousness — the unchanging witness that observes all experience without being altered by it. Śiva is not a deity in the anthropomorphic sense but the foundational awareness that makes all experience possible. In the KALKI system, Śiva is the witness — the part of you that watches the pattern without becoming the pattern.',
-    category: 'tantra',
+        hi: {
+      definition:
+        'शुद्ध चेतना — अपरिवर्तनीय साक्षी, जो समस्त अनुभव को देखता है पर उससे कभी रंगा नहीं जाता। शिव मानवाकार अर्थ में कोई देवता नहीं — वह मूल चेतना है जिससे समस्त अनुभव संभव होता है। काल्की पद्धति में शिव ही साक्षी है — आपका वह भाग जो पैटर्न को देखता है, पैटर्न बनकर नहीं।',
+    },
+category: 'tantra',
     relatedTerms: ['Śakti', 'Atman', 'Brahman'],
   },
   {
@@ -479,7 +549,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'SAH-dhah-nah',
     definition:
       'Systematic practice — the disciplined, sustained application of specific techniques toward a specific transformative goal. Sādhana is not hobby practice or casual meditation; it is a structured protocol with defined inputs, processes, and observable outputs. The KALKI system is, in its entirety, a sādhana framework.',
-    category: 'ritual',
+        hi: {
+      definition:
+        'व्यवस्थित अभ्यास — किसी विशिष्ट रूपांतरण-लक्ष्य की ओर विशिष्ट तकनीकों का अनुशासित, सतत अनुप्रयोग। साधना शौकिया अभ्यास या सामयिक ध्यान नहीं; यह एक संरचित प्रोटोकॉल है — निश्चित इनपुट, प्रक्रिया और दृश्य उत्पाद के साथ। काल्की पद्धति संपूर्णतः एक साधना-संरचना है।',
+    },
+category: 'ritual',
     relatedTerms: ['Sādhaka', 'Guru', 'Dīkṣā'],
   },
   {
@@ -659,7 +733,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'KAHR-mah',
     definition:
       'Action and its consequences — the fundamental law of information processing in consciousness. Every action creates a pattern imprint (saṃskāra) that generates a probabilistic bias toward repetition. Karma is not moral accounting but computational: you are running the compiled output of every action you have ever generated.',
-    category: 'philosophical',
+        hi: {
+      definition:
+        'कर्म और उसका फल — चेतना में सूचना-संसाधन का मूल नियम। प्रत्येक कर्म एक पैटर्न-छाप (संस्कार) छोड़ता है, जो उसकी पुनरावृत्ति की संभावना बनाए रखता है। कर्म नैतिक हिसाब-किताब नहीं, गणनात्मक नियम है: आप अपने किए हर कर्म का संकलित परिणाम चला रहे हैं।',
+    },
+category: 'philosophical',
     relatedTerms: ['Saṃskāra', 'Vāsanā', 'Samsāra', 'Mokṣa'],
   },
   {
@@ -677,7 +755,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'MOHK-shah',
     definition:
       'Liberation — the permanent cessation of the cycle of birth, death, and rebirth (samsāra). In the KALKI framework, mokṣa is not an afterlife destination but a mode of perception: the condition in which the witness is no longer confused with the witnessed, the observer is no longer identified with the pattern. Mokṣa is not escape from the system but mastery of its operation.',
-    category: 'philosophical',
+        hi: {
+      definition:
+        'मोक्ष — जन्म-मृत्यु-पुनर्जन्म के चक्र (संसार) से स्थायी मुक्ति। काल्की दृष्टि में मोक्ष कोई मरणोत्तर गंतव्य नहीं — एक दृष्टि-प्रकार है: वह अवस्था जहाँ साक्षी को दृश्य से, द्रष्टा को पैटर्न से मिश्रित होना छूट जाता है। मोक्ष तंत्र से पलायन नहीं — उसके संचालन में पारंगति है।',
+    },
+category: 'philosophical',
     relatedTerms: ['Samsāra', 'Brahman', 'Atman', 'Karma'],
   },
   {
@@ -804,7 +886,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'dhee-AH-nah',
     definition:
       'Meditation — the seventh limb of Patañjali\'s aṣṭāṅga yoga. Dhyāna is the unbroken flow of awareness toward a single point. When dhāraṇā (concentration) becomes effortless and sustained, it transitions into dhyāna. In the KALKI system, dhyāna is the state in which the pattern is observed without interference — the prerequisite for pattern dissolution.',
-    category: 'philosophical',
+        hi: {
+      definition:
+        'ध्यान — पातंजल अष्टांग योग का सातवाँ अंग। ध्यान चेतना का एक बिंदु की ओर अखंड प्रवाह है। जब धारणा (एकाग्रता) सहज और सतत हो उठती है, तब वह ध्यान में रूपांतरित हो जाती है। काल्की पद्धति में ध्यान वह अवस्था है जहाँ पैटर्न को बिना हस्तक्षेप देखा जाता है — पैटर्न-विलय की यही पूर्व-शर्त है।',
+    },
+category: 'philosophical',
     relatedTerms: ['Dhāraṇā', 'Samādhi', 'Trāṭaka'],
   },
   {
@@ -813,7 +899,11 @@ export const glossaryEntries: GlossaryEntry[] = [
     pronunciation: 'sah-MAH-dhee',
     definition:
       'Absorption — the eighth limb of Patañjali\'s aṣṭāṅga yoga and the culminating state of meditative absorption. In samādhi, the boundary between observer and observed dissolves. The KALKI system does not treat samādhi as a mystical experience but as the natural outcome of sufficient pattern clarity: when all patterns are visible and transparent, only the witness remains.',
-    category: 'philosophical',
+        hi: {
+      definition:
+        'समाधि — अष्टांग योग का आठवाँ अंग और ध्यान की परिणति। समाधि में द्रष्टा और दृश्य की सीमा घुल जाती है। काल्की पद्धति समाधि को अलौकिक अनुभव नहीं — पर्याप्त पैटर्न-स्पष्टता का स्वाभाविक परिणाम मानती है: जब सभी पैटर्न दृश्य और पारदर्शी हो जाते हैं, तब केवल साक्षी शेष रहता है।',
+    },
+category: 'philosophical',
     relatedTerms: ['Dhyāna', 'Dhāraṇā', 'Brahman'],
     minTier: 'agni',
   },

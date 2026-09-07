@@ -10,8 +10,9 @@ import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp, staggerContainer, staggerItem } from '@/lib/motion/tokens';
 import { TIER_BADGE_STYLES, TIER_LABELS } from '@/lib/utils/tier-gate';
+import { getBreathNarration, type AudioNarration } from '@/lib/data/audio-narrations';
 import { cn } from '@/lib/utils';
-import { Wind, ArrowRight, Repeat } from 'lucide-react';
+import { Wind, ArrowRight, Repeat, Headphones } from 'lucide-react';
 
 export interface BreathworkPageProps {
   breathPatterns: BreathPattern[];
@@ -30,6 +31,9 @@ function BreathCard({
   const tierLabel = TIER_LABELS[pattern.minTier];
   const phaseCount = pattern.phases.length;
   const totalPhaseDuration = pattern.phases.reduce((a, p) => a + p.duration, 0);
+  // Vol. 4 #12 — the baked narrations ride the OPEN surface (the card,
+  // like the description — not the tier-gated visualizer inside).
+  const narration = getBreathNarration(pattern.slug);
 
   return (
     <motion.div variants={staggerItem} className="group">
@@ -109,7 +113,34 @@ function BreathCard({
           </div>
         </div>
       </Link>
+
+      {/* Vol. 4 #12 — guided narration band. Sits OUTSIDE the <Link> so
+          touching the player never navigates; preload="none" keeps 5MB
+          of pilot audio idle until a seeker actually presses play. */}
+      {narration && <NarrationBand narration={narration} />}
     </motion.div>
+  );
+}
+
+function NarrationBand({ narration }: { narration: AudioNarration }) {
+  const mm = Math.floor(narration.durationSec / 60);
+  const ss = String(narration.durationSec % 60).padStart(2, '0');
+  return (
+    <div className="mt-2 rounded-md border border-gold/10 bg-surface/40 px-4 py-3">
+      <div className="flex items-center gap-2 mb-2">
+        <Headphones className="w-3.5 h-3.5 text-gold-dim" />
+        <span className="font-mono text-[0.7rem] tracking-[0.12em] uppercase text-text-muted">
+          {narration.title} · {mm}:{ss}
+        </span>
+      </div>
+      <audio
+        controls
+        preload="none"
+        src={narration.url}
+        className="w-full h-9"
+        aria-label={narration.title}
+      />
+    </div>
   );
 }
 

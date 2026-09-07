@@ -15,6 +15,8 @@
 import { unsubscribeUrl, unsubHeaders } from "@/lib/emails/course-unsubscribe";
 import { shareUrl } from "@/lib/emails/course-share";
 
+import { doorNarrationAbsoluteUrl } from "@/lib/data/audio-narrations";
+
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.astrokalki.com";
 
 export interface CourseEmail {
@@ -63,6 +65,21 @@ function ctaButton(label: string, href: string): string {
 
 function ctaSoft(text: string, href: string): string {
   return `<p style="font-size:16px;line-height:1.7;margin:0 0 16px;">${text} <a href="${href}" style="color:#c9a86a;text-decoration:underline;">→</a></p>`;
+}
+
+// Vol. 4 #12 — the Doors narration pilot: when a door has a narrated
+// edition (public/audio/doors/), the letter carries one quiet listen
+// line — no urgency theater, same register as every other link.
+function listenLine(day: number): string {
+  const url = doorNarrationAbsoluteUrl(day, SITE);
+  if (!url) return "";
+  return `<p style="font-size:14px;line-height:1.6;color:#a89880;margin:0 0 16px;">Prefer to listen? This door has a narrated edition: <a href="${url}" style="color:#c9a86a;text-decoration:underline;">Door ${day}, told aloud</a>.</p>`;
+}
+
+function listenLineText(day: number): string {
+  const url = doorNarrationAbsoluteUrl(day, SITE);
+  if (!url) return "";
+  return `Prefer to listen? Narrated edition: ${url}`;
 }
 
 function textFooter(email: string): string {
@@ -220,6 +237,7 @@ function renderDoor(d: DoorCopy, email: string): CourseEmail {
   let body = d.paras.map(p).join("");
   if (d.loop) body += loopBox(d.loop);
   if (d.night) body += nightLine(d.night);
+  body += listenLine(d.n); // Vol. 4 #12 — empty string when the day has no narrated edition
   if (d.cta) body += ctaButton(d.cta.label, utm(d.cta.href, day));
   if (d.soft) body += ctaSoft(d.soft.text, utm(d.soft.href, day));
 
@@ -231,6 +249,7 @@ function renderDoor(d: DoorCopy, email: string): CourseEmail {
     d.paras.join("\n\n"),
     d.loop ?? "",
     d.night ? `Tonight's one line: ${d.night}` : "",
+    listenLineText(d.n),
     d.cta ? `${d.cta.label}: ${utm(d.cta.href, day)}` : "",
     d.soft ? `${d.soft.text} ${utm(d.soft.href, day)}` : "",
     "",

@@ -12,6 +12,7 @@
 // =============================================================
 
 import { SITE_URL } from '@/lib/utils/metadata';
+import { isEntryDue } from '@/lib/admin/scheduled-publish';
 
 /** The content types the studio accepts (mirror of admin constants.ts). */
 export const CONTENT_TYPES = ['practice', 'archetype', 'pattern', 'research', 'codex'] as const;
@@ -46,12 +47,20 @@ export interface PublicContentEntry {
  * refused even when published (sealed means "not for public eyes" —
  * an admin can keep it in the studio without it ever hitting the web).
  * MODERATE/HIGH render behind a caution band, like the folios.
+ *
+ * Vol. 4 #8 — the schedule dimension: PUBLISHED + publishedAt in the
+ * future is SCHEDULED and stays hidden until due. A null publishedAt
+ * (legacy rows from before the stamp existed) still renders — the
+ * due check must never regress the existing corpus.
  */
 export function isPubliclyRenderable(entry: {
   status: string;
   caution: string;
+  publishedAt?: Date | null;
 }): boolean {
-  return entry.status === 'PUBLISHED' && entry.caution !== 'SEALED';
+  if (entry.status !== 'PUBLISHED') return false;
+  if (entry.caution === 'SEALED') return false;
+  return isEntryDue(entry.publishedAt ?? null);
 }
 
 export function contentEntryPath(type: string, slug: string): string {

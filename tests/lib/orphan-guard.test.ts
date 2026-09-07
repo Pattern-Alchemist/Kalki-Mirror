@@ -30,6 +30,14 @@ const ENTRY_BASENAMES = new Set([
   "route",
   "globals",
   "favicon",
+  // metadata file conventions (Vol. 4 #11 uses opengraph-image.tsx cards)
+  "opengraph-image",
+  "twitter-image",
+  "icon",
+  "apple-icon",
+  "sitemap",
+  "robots",
+  "manifest",
 ]);
 
 interface SourceFile {

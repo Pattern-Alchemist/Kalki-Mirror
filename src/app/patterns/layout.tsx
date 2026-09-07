@@ -12,14 +12,9 @@ export const metadata: Metadata = {
     title: 'Pattern Atlas | KALKI — The Mirror Method',
     description:
       '20 recurring human emotional patterns mapped through the Mirror Method. Recognize, confront, dissolve, and integrate the behavioral loops that run your life.',
-    images: [
-      {
-        url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/patterns/mirror-hero',
-        width: 1200,
-        height: 630,
-        alt: 'Pattern Atlas — The Mirror Method — KALKI',
-      },
-    ],
+    // Vol. 4 #11: og:image comes from the sibling opengraph-image.tsx —
+    // the old static Cloudinary mirror-hero is retired so the card
+    // truth lives in exactly one place.
   },
 };
 

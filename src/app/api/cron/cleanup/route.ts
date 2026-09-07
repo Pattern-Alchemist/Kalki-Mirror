@@ -17,9 +17,19 @@
 //
 // SCHEDULE: vercel.json cron "45 3 * * *" = 09:15 IST daily — after
 // the digest (08:00 IST) so the digest reads a fresh last_cleanup_at.
+//
+// VOL. 4 #8 — the route also carries the scheduled-publish FLIP PASS:
+// PUBLISHED entries whose scheduled publishedAt has come due get their
+// publish side effects (webhook + notification + sitemap refresh)
+// exactly once. Visibility itself needs no cron — the public gate hides
+// future-publishedAt rows continuously — the flip pass only settles the
+// ANNOUNCEMENT. Idempotence = audit pair (content.schedule written at
+// scheduling, content.publish_flip written at the flip); see
+// src/lib/admin/scheduled-publish.ts.
 // =============================================================
 
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -73,6 +83,81 @@ export async function GET(request: NextRequest) {
       where: { status: "DISMISSED", updatedAt: { lt: draftCutoff } },
     }).then(r => r.count);
 
+    // 5. Scheduled-publish flip pass (Vol. 4 #8) — fire publish side
+    //     effects for due scheduled entries, exactly once. Fail-soft:
+    //     a flip-pass hiccup must never fail the whole cleanup.
+    let scheduledPublishFlips = 0;
+    let flipDetail: Array<{ slug: string; publishAt: string }> = [];
+    let flipError: string | null = null;
+    try {
+      const { planPublishFlips, scheduleAuditPayload } = await import(
+        "@/lib/admin/scheduled-publish"
+      );
+      const dueRows = await db.contentEntry.findMany({
+        where: {
+          status: "PUBLISHED",
+          publishedAt: { lte: new Date(now) },
+        },
+        select: { id: true, title: true, type: true, slug: true, publishedAt: true },
+      });
+      const audits =
+        dueRows.length > 0
+          ? await db.adminAuditLog.findMany({
+              where: {
+                action: { in: ["content.schedule", "content.publish_flip"] },
+                entity: "ContentEntry",
+                entityId: { in: dueRows.map((r) => r.id) },
+              },
+              select: { action: true, entityId: true, after: true },
+            })
+          : [];
+      const plan = planPublishFlips(dueRows, audits, new Date(now));
+      for (const entry of plan) {
+        // Settle the flip audit FIRST — a crash after this line costs a
+        // missed announcement, never a double announcement.
+        await db.adminAuditLog.create({
+          data: {
+            actorId: "system:cron",
+            action: "content.publish_flip",
+            entity: "ContentEntry",
+            entityId: entry.id,
+            after: JSON.stringify(scheduleAuditPayload(entry.publishedAt)),
+            ipHash: null,
+          },
+        });
+        scheduledPublishFlips++;
+        flipDetail.push({ slug: entry.slug ?? entry.id, publishAt: entry.publishedAt.toISOString() });
+        // Side effects fail-soft, each in its own skin.
+        try {
+          const { dispatchWebhooks } = await import("@/lib/admin/webhook-dispatch");
+          await dispatchWebhooks("content.published", {
+            id: entry.id,
+            title: entry.title,
+            type: entry.type,
+          });
+        } catch {
+          // webhook outage never blocks the pass
+        }
+        try {
+          const { broadcastNotification } = await import("@/lib/admin/notifications");
+          await broadcastNotification({
+            title: "Scheduled content is live",
+            body: `"${entry.title}" reached its publish time and is now public`,
+            type: "success",
+            href: "/admin/content",
+          });
+        } catch {
+          // notification failure never blocks the pass
+        }
+      }
+      if (plan.length > 0) {
+        // The entry set changed publicly — refresh the sitemap now.
+        revalidatePath("/sitemap.xml");
+      }
+    } catch (error) {
+      flipError = String(error).slice(0, 200);
+    }
+
     if (!dryRun) {
       await db.opsState.upsert({
         where: { key: "last_cleanup_at" },
@@ -89,6 +174,11 @@ export async function GET(request: NextRequest) {
         activeSessions: sessionsPruned,
         emailEvents: eventsPruned,
         dismissedDraftLeads: draftsPruned,
+      },
+      scheduledPublish: {
+        flips: scheduledPublishFlips,
+        detail: dryRun ? flipDetail : undefined,
+        error: flipError,
       },
       cutoffs: {
         sessions: sessionCutoff.toISOString(),

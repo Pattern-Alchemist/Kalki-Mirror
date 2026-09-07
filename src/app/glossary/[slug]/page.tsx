@@ -8,6 +8,8 @@ import { termAnchor } from '@/lib/utils/term-anchor';
 import { glossaryTermPath, glossaryTermJsonLd, resolveRelatedTerm } from '@/lib/seo/glossary-seo';
 import { TermText } from '@/components/longform/TermText';
 import { pageAlternates } from '@/lib/utils/metadata';
+import { getTranslations, getLocale } from 'next-intl/server';
+import { pickDefinition } from '@/lib/i18n/lexicon-bridge';
 import { TrackView } from '@/components/analytics/TrackView';
 import { TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
 import { cn } from '@/lib/utils';
@@ -39,14 +41,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       url: glossaryTermPath(entry.term),
       title,
       description,
-      images: [
-        {
-          url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/codex/sanskrit-plate-hero',
-          width: 1200,
-          height: 630,
-          alt: `${entry.term} — The Lexicon, KALKI`,
-        },
-      ],
+      // Vol. 4 #11: the bespoke per-term card comes from the sibling
+      // opengraph-image.tsx route — the old shared Cloudinary hero is
+      // retired; og:image truth now lives in exactly one place.
     },
   };
 }
@@ -69,6 +66,13 @@ export default async function GlossaryTermPage({ params }: { params: Promise<{ s
   const entry = locate(slug);
   if (!entry) notFound();
 
+  // Vol. 4 #13 — the hi bridge: chrome + definition follow the seeker's
+  // NEXT_LOCALE cookie; EN is the fallback of last resort. Metadata stays
+  // EN (the corpus is indexed en-US; the hi layer is a reading layer).
+  const t = await getTranslations('lexicon');
+  const locale = await getLocale();
+  const picked = pickDefinition(entry, locale);
+
   // Cross-links: related terms become real links ONLY when the name
   // resolves to an actual entry (the hub renders them as plain chips —
   // the data contains a few aspirational references like "Bīja Mantra"
@@ -90,7 +94,7 @@ export default async function GlossaryTermPage({ params }: { params: Promise<{ s
         <div className="max-w-3xl mx-auto px-6 lg:px-10">
           {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" className="mb-10 font-mono text-xs tracking-[0.15em] uppercase text-text-muted">
-            <Link href="/glossary" className="hover:text-gold transition-colors">The Lexicon</Link>
+            <Link href="/glossary" className="hover:text-gold transition-colors">{t('title')}</Link>
             <span className="mx-2 text-gold/40">/</span>
             <span className="text-gold-dim">{entry.term}</span>
           </nav>
@@ -119,7 +123,13 @@ export default async function GlossaryTermPage({ params }: { params: Promise<{ s
                     TIER_BADGE_STYLES[entry.minTier]
                   )}
                 >
-                  {entry.minTier} tier practice
+                  {t('tierPractice', { tier: entry.minTier })}
+                </span>
+              )}
+              {/* Vol. 4 #13 — the bridge badge: this term reads in Hindi */}
+              {picked.isHi && (
+                <span className="text-[0.6rem] font-mono tracking-[0.15em] uppercase px-2 py-1 rounded-sm border border-gold/30 text-gold">
+                  हिंदी
                 </span>
               )}
             </div>
@@ -131,17 +141,30 @@ export default async function GlossaryTermPage({ params }: { params: Promise<{ s
               data (DefinedTermSet); here it renders as readable HTML with
               the Lexicon auto-linker (Vol. 4 #9): the first mention of
               every OTHER term links its page — the crawl graph becomes a
-              web. The term itself never links itself. */}
+              web. The term itself never links itself.
+              Vol. 4 #13: under a hi locale with a translated term, the
+              hi definition serves (EN fallback otherwise — the invariant
+              is that the corpus never regresses). The EN text stays on
+              the page for terms WITH a translation, so the sadhu-register
+              rendering is always checkable against its source. */}
           <p className="text-editorial text-lg text-foreground/85 leading-relaxed editorial-spacing">
-            <TermText text={entry.definition} excludeTerm={entry.term} />
+            <TermText text={picked.text} excludeTerm={entry.term} />
           </p>
+          {picked.isHi && (
+            <div className="mt-8 rounded-md border border-gold/20 bg-surface/40 px-5 py-4">
+              <p className="section-label mb-3">{entry.term} — English</p>
+              <p className="text-sm text-foreground/60 leading-relaxed editorial-spacing">
+                <TermText text={entry.definition} excludeTerm={entry.term} />
+              </p>
+            </div>
+          )}
 
           {/* Cross-linked vocabulary */}
           {related.length > 0 && (
             <>
               <div className="divider-subtle my-12" />
               <section aria-label="Related terms">
-                <p className="section-label mb-6">Related Terms</p>
+                <p className="section-label mb-6">{t('relatedTerms')}</p>
                 <div className="flex flex-wrap gap-2">
                   {related.map(({ name, rel }) => (
                     <Link
@@ -162,7 +185,7 @@ export default async function GlossaryTermPage({ params }: { params: Promise<{ s
             <>
               <div className="divider-subtle my-12" />
               <section aria-label="Related practices">
-                <p className="section-label mb-6">Related Practices</p>
+                <p className="section-label mb-6">{t('relatedPractices')}</p>
                 <div className="flex flex-wrap gap-2">
                   {entry.relatedSiddhiSlugs.map((s) => (
                     <Link
