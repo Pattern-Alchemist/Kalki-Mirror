@@ -77,6 +77,16 @@ export async function GET(request: NextRequest) {
 
   const dryRun = request.nextUrl.searchParams.get("dryRun") === "1";
 
+  // Day-rotated walk order: the 45s wall budget means a cold chain only
+  // warms 3–4 queries per run. A fixed order would starve the tail forever;
+  // rotating the start by day-of-year (plus skip-cached lookups) lets the
+  // list self-complete across daily runs in 2–3 days.
+  const dayOffset = Math.floor(Date.now() / 86_400_000) % PREWARM_QUERIES.length;
+  const WALK_ORDER = [
+    ...PREWARM_QUERIES.slice(dayOffset),
+    ...PREWARM_QUERIES.slice(0, dayOffset),
+  ];
+
   if (dryRun) {
     // Coverage proof: retrieval only — does each query clear the
     // corpus-or-silence gate? No LLM call, nothing stored.
@@ -88,7 +98,7 @@ export async function GET(request: NextRequest) {
       folios?: string[];
       error?: string;
     }> = [];
-    for (const query of PREWARM_QUERIES) {
+    for (const query of WALK_ORDER) {
       try {
         const retrieval = await retrieveFor(query);
         const retrievedSlugs = [...new Set(retrieval.chunks.map((c) => c.slug))];
@@ -126,7 +136,7 @@ export async function GET(request: NextRequest) {
     const misses: Array<{ query: string; error: string }> = [];
     const skippedTail: string[] = [];
 
-    for (const query of PREWARM_QUERIES) {
+    for (const query of WALK_ORDER) {
       if (Date.now() - startedAt > RUN_WALL_BUDGET_MS) {
         skippedTail.push(query);
         continue;
