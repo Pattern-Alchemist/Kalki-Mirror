@@ -173,7 +173,16 @@ export async function retrieveChunks(
   boosted.sort((a, b) => b.similarity - a.similarity);
   const top = boosted.slice(0, k);
 
-  // Normalize similarity scores (0-1 range)
+  // Vol. 5 #5 catch: the RAW top similarity must be captured BEFORE the
+  // normalization pass below — reading it after made rawTopSimilarity a
+  // constant 1.0 (top/maxSim = 1) and silently killed the corpus-or-silence
+  // gate's embedding path: isCorpusSilent(1.0) can never fire, so weak
+  // retrievals burned LLM round-trips only to die at gate #2. The ask.ts
+  // contract ("rawTopSimilarity, pre-normalization", ASK_MIN_EMBED_SIMILARITY
+  // as a RAW cosine floor) is now true again.
+  const rawTopSimilarity = top[0]?.similarity ?? 0;
+
+  // Normalize similarity scores (0-1 range) — display/citation ranking only.
   const maxSim = top[0]?.similarity || 1;
   for (const chunk of top) {
     chunk.similarity = maxSim > 0 ? chunk.similarity / maxSim : 0;
@@ -183,7 +192,7 @@ export async function retrieveChunks(
     chunks: top,
     queryEmbedding: queryEmb,
     method: useEmbedding ? 'embedding' : 'keyword',
-    rawTopSimilarity: top[0]?.similarity ?? 0,
+    rawTopSimilarity,
   };
 }
 
