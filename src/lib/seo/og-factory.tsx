@@ -193,6 +193,20 @@ export function ogImageResponseOptions(): {
   };
 }
 
+/**
+ * USA layer card copy (Vol. 5 #10) — the six /usa pages share one
+ * label + footer and use their split h1 / h1Accent sentence pair as
+ * the bespoke share copy (big line, then the completion line).
+ */
+export function usaOgCardData(page: { h1: string; h1Accent?: string }): OgCardData {
+  return {
+    label: 'KALKI · UNITED STATES',
+    title: page.h1,
+    subtitle: page.h1Accent,
+    footer: 'EVIDENCE-FIRST TANTRA · KALKI',
+  };
+}
+
 /** Card copy for the studio type shelves (DB-free — brand-level card). */
 export const OG_LIBRARY_TYPE_COPY: Record<string, { title: string; subtitle: string }> = {
   practice: { title: 'Sādhana Practice', subtitle: 'Practice notes from the studio corpus — published under the evidence-first discipline.' },

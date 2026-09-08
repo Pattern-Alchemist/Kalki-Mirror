@@ -46,14 +46,9 @@ export async function generateMetadata({
       title: content.title,
       description: content.description,
       type: 'article',
-      images: [
-        {
-          url: archetype.image,
-          width: 1200,
-          height: 630,
-          alt: `${archetype.name} — ${archetype.pattern} | KALKI`,
-        },
-      ],
+      // Vol. 5 #10: the bespoke per-archetype card comes from the sibling
+      // opengraph-image.tsx route — the raw Cloudinary art share-image is
+      // retired; og:image truth lives in exactly one place.
     },
   };
 }

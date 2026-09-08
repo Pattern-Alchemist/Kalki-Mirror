@@ -45,14 +45,9 @@ export function usaPageMetadata(page: UsaPage): Metadata {
       url: canonicalUrl(page.path),
       title: page.title,
       description: page.description,
-      images: [
-        {
-          url: 'https://res.cloudinary.com/b9oo5abp/image/upload/f_jpg,q_auto:good,w_1200,h_630,c_fill/kalki-mirror/aghori/ashram/entering-path',
-          width: 1200,
-          height: 630,
-          alt: page.h1,
-        },
-      ],
+      // Vol. 5 #10: the bespoke card comes from the sibling opengraph-image.tsx
+      // routes (hub + one per service) — the shared Cloudinary hero is retired;
+      // og:image truth lives in exactly one place per page.
     },
   };
 }

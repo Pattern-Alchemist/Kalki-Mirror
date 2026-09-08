@@ -16,6 +16,13 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
     return {
       title: `${siddhi.name} — ${siddhi.sanskrit}`,
       description: siddhi.summary,
+      openGraph: {
+        title: `${siddhi.name} — ${siddhi.sanskrit}`,
+        description: siddhi.summary,
+        // Vol. 5 #10: the bespoke per-folio card comes from the sibling
+        // opengraph-image.tsx route — the layout's shared Cloudinary hero
+        // no longer cascades; og:image truth lives in exactly one place.
+      },
     };
   });
 }

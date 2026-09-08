@@ -15,9 +15,17 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
   return params.then(({ slug }) => {
     const sequence = getSequenceBySlug(slug);
     if (!sequence) return { title: 'Not Found', robots: { index: false, follow: true } }; // Vol.4 #18: soft-404 guard — streaming shells ship HTTP 200; the miss body must never be indexable
+    const ogTitle = `${sequence.name}${sequence.sanskrit ? ` — ${sequence.sanskrit}` : ''}`;
     return {
-      title: `${sequence.name}${sequence.sanskrit ? ` — ${sequence.sanskrit}` : ''}`,
+      title: ogTitle,
       description: sequence.description,
+      openGraph: {
+        title: ogTitle,
+        description: sequence.description,
+        // Vol. 5 #10: the bespoke per-sequence card comes from the sibling
+        // opengraph-image.tsx route — the layout's shared Cloudinary hero
+        // no longer cascades; og:image truth lives in exactly one place.
+      },
     };
   });
 }

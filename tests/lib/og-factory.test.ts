@@ -17,11 +17,20 @@ import {
   OG_LIBRARY_TYPE_COPY,
   OG_SIZE,
   loadOgFont,
+  usaOgCardData,
 } from "@/lib/seo/og-factory";
 import { allPatterns } from "@/lib/data/patterns";
 import { glossaryEntries } from "@/lib/data/glossary";
 import { termAnchor } from "@/lib/utils/term-anchor";
 import { CONTENT_TYPES } from "@/lib/seo/content-seo";
+import { allSiddhis, getSiddhiBySlug } from "@/lib/data/siddhis";
+import { allSequences, getSequenceBySlug } from "@/lib/data/sequences";
+import {
+  TEN_MAHAVIDYAS,
+  getArchetypeById,
+} from "@/lib/data/archetypes";
+import { MAHAVIDYA_CONTENT } from "@/lib/data/mahavidya-content";
+import { usaPages, usaHub } from "@/lib/data/usa-pages";
 
 // ── registry: walk src/app for opengraph-image files ──────────────
 
@@ -35,11 +44,23 @@ function walk(dir: string, acc: string[] = []): string[] {
   return acc;
 }
 
+// Vol. 5 #10: the long tail — the four families that still shared the
+// generic card (archive folios, sequences, archetypes, usa) joined the
+// registry. fs-exhaustive: a new card ships silently → CI fails.
 const REGISTERED_ROUTES = [
   "src/app/glossary/[slug]/opengraph-image.tsx",
   "src/app/patterns/opengraph-image.tsx",
   "src/app/patterns/[slug]/opengraph-image.tsx",
   "src/app/library/[type]/opengraph-image.tsx",
+  "src/app/archive/[slug]/opengraph-image.tsx",
+  "src/app/sequences/[slug]/opengraph-image.tsx",
+  "src/app/archetypes/[id]/opengraph-image.tsx",
+  "src/app/usa/opengraph-image.tsx",
+  "src/app/usa/kundli-birth-chart-reading/opengraph-image.tsx",
+  "src/app/usa/online-vedic-astrologer/opengraph-image.tsx",
+  "src/app/usa/relationship-pattern-reading/opengraph-image.tsx",
+  "src/app/usa/spiritual-consultation/opengraph-image.tsx",
+  "src/app/usa/vedic-astrology-consultation/opengraph-image.tsx",
 ];
 
 describe("og-image registry (fs-exhaustive)", () => {
@@ -127,6 +148,49 @@ describe("the factory covers the real corpus", () => {
     }
     expect(Object.keys(OG_LIBRARY_TYPE_COPY)).toHaveLength(CONTENT_TYPES.length);
   });
+
+  // ── Vol. 5 #10: the long tail joins the factory ──────────────
+
+  it("every siddhi folio slug resolves a card (archive long tail)", () => {
+    expect(allSiddhis.length).toBeGreaterThan(50);
+    for (const s of allSiddhis) {
+      expect(getSiddhiBySlug(s.slug), `${s.slug} must resolve`).toBeDefined();
+      expect(s.summary.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("every practice sequence slug resolves a card", () => {
+    expect(allSequences.length).toBeGreaterThan(5);
+    for (const q of allSequences) {
+      expect(getSequenceBySlug(q.slug), `${q.slug} must resolve`).toBeDefined();
+      expect(q.subtitle.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("every Mahāvidyā id serves card data (supplementary ids stay hub-only)", () => {
+    expect(TEN_MAHAVIDYAS).toHaveLength(10);
+    for (const m of TEN_MAHAVIDYAS) {
+      expect(getArchetypeById(m.id), `${m.id} must resolve`).toBeDefined();
+      expect(MAHAVIDYA_CONTENT[m.id], `${m.id} must have page content`).toBeDefined();
+      expect(m.pattern.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("every usa page + hub carries bespoke card copy (6 cards)", () => {
+    expect(usaPages.length + 1).toBe(6);
+    for (const p of [usaHub, ...usaPages]) {
+      expect(p.h1.length).toBeGreaterThan(0);
+      expect(p.h1Accent?.length ?? 0).toBeGreaterThan(0);
+    }
+  });
+
+  it("usaOgCardData maps the split h1 sentence into card copy", () => {
+    const card = usaOgCardData(usaHub);
+    expect(card.label).toBe("KALKI · UNITED STATES");
+    expect(card.title).toBe(usaHub.h1);
+    expect(card.subtitle).toBe(usaHub.h1Accent);
+    expect(card.footer).toBe("EVIDENCE-FIRST TANTRA · KALKI");
+  });
 });
 
 describe("font asset", () => {
@@ -150,6 +214,26 @@ describe("retired static card (regression pin)", () => {
   it("patterns layout no longer hardcodes the Cloudinary OG hero", () => {
     const src = readFileSync("src/app/patterns/layout.tsx", "utf8");
     expect(src).not.toContain("res.cloudinary.com");
+  });
+
+  it("usa shell no longer hardcodes the Cloudinary OG hero (Vol. 5 #10)", () => {
+    const src = readFileSync("src/components/usa/UsaPageShell.tsx", "utf8");
+    expect(src).not.toContain("res.cloudinary.com");
+  });
+
+  it("archive/sequences/archetypes folio metadata no longer hardcode share images (Vol. 5 #10)", () => {
+    const siddhiPage = readFileSync("src/app/archive/[slug]/page.tsx", "utf8");
+    const seqPage = readFileSync("src/app/sequences/[slug]/page.tsx", "utf8");
+    const archPage = readFileSync("src/app/archetypes/[id]/page.tsx", "utf8");
+    for (const [name, src] of [
+      ["archive/[slug]/page.tsx", siddhiPage],
+      ["sequences/[slug]/page.tsx", seqPage],
+      ["archetypes/[id]/page.tsx", archPage],
+    ] as const) {
+      expect(src, `${name} must not hardcode a share image`).not.toContain(
+        "res.cloudinary.com"
+      );
+    }
   });
 
   it("card size is the OG standard 1200×630", () => {
