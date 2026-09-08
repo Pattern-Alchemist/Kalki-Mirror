@@ -16,6 +16,12 @@
 | Publish-time ping | `pingIndexNow()` hooks in admin actions | on publish |
 | Search engines' discovery of sitemap | `robots.ts` `Sitemap:` directive | continuous |
 
+> **Vol. 5 #12 update:** the indexing queue is now OAuth-ready —
+> `/api/cron/gsc-indexing` (nightly 02:40 UTC) keeps an IndexingRequest
+> queue warm against the live sitemap (289 URLs as of enlistment) and the
+> war-room carries the "GSC indexing" panel. The moment GSC_ACCESS_TOKEN
+> lands in Vercel env, the next cron run submits for real — no new plumbing.
+
 ## The remaining manual piece: Google
 
 Two provisioning-free wins first:
