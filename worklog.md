@@ -1187,3 +1187,20 @@ Stage Summary:
 - Week A complete: the tier-17 vigilance plane is live — chain rot, credential rot and cron silence now announce themselves to the war-room and the founder's inbox.
 - Founder actions surfaced: add CLOUDINARY_URL to Vercel env (or discrete trio), rotate the vault Turso token, TOTP before ~2026-09-12, EMBED swap + GSC OAuth unchanged.
 - Remainder: Week B 6 → 7 → 8 → 9 (letters launch, bake path, hi scale, audio tail).
+
+---
+Task ID: vol5-week-b
+Agent: Z (Super Z, main session)
+Task: Founder: "go for Week B" (6→7→8→9 — feed: letters launch, bake path, hi scale, audio tail). Week A was green-lit the prior session and shipped there (worklog above); this week rolled straight into B per the roadmap order.
+
+Work Log:
+- Sandbox reset → full bootstrap replay; HEAD reconciled at caf5e5c (Week A close).
+- #6 letters pipeline (a997f39): feed.xml gained a letters section (pure builder src/lib/seo/feed-builder.ts, take 5, full body, revalidate 3600, fail-soft dynamic db import mirroring sitemap.ts); POST/GET /api/admin/letters curation surface (upsert-by-slug, publish flips re-date sentAt, metadata-only GET, audited); five launch letters drafted FROM corpus folios in content/launch-letters/ (founder-review register) + seed-launch-letters.mjs via NextAuth credentials flow; docs/letters-launch-checklist.md. 19 tests incl. the publish pin over REAL sitemap()/feed GET(). Live: 5 drafts seeded, 401 gate, draft posture verified on hub/sitemap/feed.
+- #7 bake one-command (4224694): pure folio-ingest contract (validate + idempotent plan) + scripts/ingest-folio-json.ts CLI + scripts/bake-corpus.sh orchestrator (validate → ingest → bake → fingerprint → CORPUS_SIZE assertion → vitest gates → done banner); bake-pending war-room panel (ContentEntry vs FolioChunk diff, fail-soft satellite). CAUGHT: my CLI initially clobbered the historical scripts/ingest-folios.ts — restored byte-identical, renamed CLI to ingest-folio-json.ts, fs-truth guards the name/job split. LIVE DRILL: temp folio ran the full chain (327→329 chunks, IN_SYNC, gates 32/32, CORPUS_SIZE 329==329) then restored. Live: warroom bakePending panel green (0 pending).
+- #8 hi bridge scale-out (f04e8b7): +40 glossary hi definitions (Mudrā → Prasād — guṇas, four kumbhakas, breath techniques, Śākta/Śaiva/Kaula, yantra geometry, ritual vocabulary), same atomic insertion (60/86 terms carry hi); Pattern.hi? + 10 OPEN folios bridged via per-slug atomic window; pickPatternDescription shape adapter delegating to the ONE canonical picker; pattern folio renders the हिंदी badge + EN-below block; gate floor 20→60 with batch pin. One inner-quote syntax bug caught by tsc on arrival. Live: /glossary/mudra hi + /patterns/the-pleaser hi serve sadhu-register text, EN intact.
+- #9 audio long tail (e99091c): +8 breath narration scripts (real pattern math) + +9 Door scripts (doors' own copy, ear-abridged, Door 1 shape); 17 mp3s baked via z-ai TTS → ffmpeg (65–94s, ffprobe-measured); runtime registry → all 12 patterns + 10 Doors (honest durations); truth tests scale to full scope (set equality, 12+10 pins, every-day listen-line pin). Corpus 22 files ≈21MB. Live: 5 new mp3s 200, folio audio bands wired.
+- Gauntlet per item: tsc clean · 838/838 vitest (63 files) · build green · git-trigger deploys READY · live smoke each.
+- Pushed: a997f39, 4224694, f04e8b7, e99091c (+ this worklog commit).
+
+Stage Summary:
+- Vol. 5 Week B shipped: the feed lives (letters pipeline seeded with 5 founder-review drafts — publish is ONE command via the checklist), the bake ritual is one command (live-drilled), the hi wall fell for 60 terms + 10 patterns, and the whole breath corpus + all 10 Doors are voiced. 9 of 20 Vol. 5 items live. Next: Week C (10 → 11 → 14 → 13). Founder-gated unchanged: TOTP (~2026-09-12 — days), EMBED swap, GSC OAuth, Turso vault rotation + the CLOUDINARY_URL runtime-var finding from Week A #2.
