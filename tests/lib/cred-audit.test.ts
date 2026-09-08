@@ -180,3 +180,37 @@ describe("OpsState round trip (store → parse → digest line)", () => {
     expect(credAuditAgeHours(null)).toBe(Infinity);
   });
 });
+
+describe("parseCloudinaryUrl + compound-url probe (production env shape)", () => {
+  it("parses the compound cloudinary:// credential", async () => {
+    const { parseCloudinaryUrl } = await import("@/lib/ops/cred-audit");
+    expect(parseCloudinaryUrl("cloudinary://588419685486859:-tMNFptmkXUtCk@b9oo5abp")).toEqual({
+      key: "588419685486859",
+      secret: "-tMNFptmkXUtCk",
+      cloud: "b9oo5abp",
+    });
+    expect(parseCloudinaryUrl(undefined)).toBeNull();
+    expect(parseCloudinaryUrl("not-a-url")).toBeNull();
+  });
+
+  it("probeCloudinary falls back to CLOUDINARY_URL when discrete vars are absent", async () => {
+    const saved = process.env.CLOUDINARY_URL;
+    const savedK = [process.env.CLOUDINARY_CLOUD_NAME, process.env.CLOUDINARY_API_KEY, process.env.CLOUDINARY_API_SECRET];
+    delete process.env.CLOUDINARY_CLOUD_NAME;
+    delete process.env.CLOUDINARY_API_KEY;
+    delete process.env.CLOUDINARY_API_SECRET;
+    process.env.CLOUDINARY_URL = "cloudinary://k@s:test@mycloud";
+    try {
+      const v = await probeCloudinary({ fetchImpl: fakeFetch(200, { status: "ok" }) });
+      expect(v).toMatchObject({ provider: "cloudinary", ok: true, reason: "ok" });
+    } finally {
+      if (saved === undefined) delete process.env.CLOUDINARY_URL;
+      else process.env.CLOUDINARY_URL = saved;
+      const names = ["CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"];
+      savedK.forEach((val, i) => {
+        if (val === undefined) delete process.env[names[i]];
+        else process.env[names[i]] = val;
+      });
+    }
+  });
+});

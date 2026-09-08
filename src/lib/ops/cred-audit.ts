@@ -145,13 +145,24 @@ export function probeResend(opts: { apiKey?: string; fetchImpl?: FetchLike } = {
   });
 }
 
-export function probeCloudinary(opts: { cloudName?: string; apiKey?: string; apiSecret?: string; fetchImpl?: FetchLike } = {}): Promise<CredVerdict> {
+/** cloudinary://key:secret@cloud → { key, secret, cloud } or null. */
+export function parseCloudinaryUrl(url: string | undefined): { key: string; secret: string; cloud: string } | null {
+  if (!url) return null;
+  const m = /^cloudinary:\/\/([^:]+):([^@]+)@([^/\s]+)$/.exec(url.trim());
+  return m ? { key: m[1], secret: m[2], cloud: m[3] } : null;
+}
+
+export function probeCloudinary(opts: { cloudName?: string; apiKey?: string; apiSecret?: string; url?: string; fetchImpl?: FetchLike } = {}): Promise<CredVerdict> {
   return runProbe("cloudinary", async () => {
-    const cloud = opts.cloudName ?? process.env.CLOUDINARY_CLOUD_NAME;
-    const key = opts.apiKey ?? process.env.CLOUDINARY_API_KEY;
-    const secret = opts.apiSecret ?? process.env.CLOUDINARY_API_SECRET;
+    // The server may hold either the discrete vars or the compound
+    // CLOUDINARY_URL (production ships the compound form) — probe whichever
+    // is actually present.
+    const parsed = parseCloudinaryUrl(opts.url ?? process.env.CLOUDINARY_URL);
+    const cloud = opts.cloudName ?? process.env.CLOUDINARY_CLOUD_NAME ?? parsed?.cloud;
+    const key = opts.apiKey ?? process.env.CLOUDINARY_API_KEY ?? parsed?.key;
+    const secret = opts.apiSecret ?? process.env.CLOUDINARY_API_SECRET ?? parsed?.secret;
     if (!cloud || !key || !secret) {
-      return { provider: "cloudinary" as const, ok: false, latencyMs: 0, reason: "unconfigured" as const, detail: "CLOUDINARY_* missing" };
+      return { provider: "cloudinary" as const, ok: false, latencyMs: 0, reason: "unconfigured" as const, detail: "CLOUDINARY_URL / CLOUDINARY_* missing" };
     }
     const doFetch = opts.fetchImpl ?? fetch;
     const auth = Buffer.from(`${key}:${secret}`).toString("base64");
