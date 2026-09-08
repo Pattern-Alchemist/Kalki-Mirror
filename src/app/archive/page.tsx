@@ -22,10 +22,32 @@ const categoryFacets = Object.entries(categoryCounts)
   .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
   .map(([name, count]) => ({ name, count }));
 
+// Vol. 5 #18 — the page-weight diet: the archive card UI consumes SIX
+// siddhi fields, but the full objects (summaries, benefits, warnings,
+// evidence sources, mantras) serialized ~200KB of RSC payload into every
+// hub view. Project to the render contract — folio pages carry the depth.
+const siddhiProjection = allSiddhis.map((s) => ({
+  slug: s.slug,
+  name: s.name,
+  sanskrit: s.sanskrit,
+  category: s.category,
+  level: s.level,
+  minTier: s.minTier,
+  summary: s.summary,
+  tradition: s.tradition,
+  authenticityScore: s.authenticityScore,
+}));
+// the Mahāvidyā chips render id, name and pattern — nothing else
+const mahaVidyasProjection = TEN_MAHAVIDYAS.map((a) => ({
+  id: a.id,
+  name: a.name,
+  pattern: a.pattern,
+}));
+
 const pageProps: ArchivePageProps = {
-  siddhis: allSiddhis,
+  siddhis: siddhiProjection,
   siddhiCount: SIDDHI_COUNT,
-  mahaVidyas: TEN_MAHAVIDYAS,
+  mahaVidyas: mahaVidyasProjection,
   categoryFacets,
 };
 

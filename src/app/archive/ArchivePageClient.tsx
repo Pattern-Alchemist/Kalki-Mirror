@@ -32,9 +32,11 @@ export interface CategoryFacet {
 }
 
 export interface ArchivePageProps {
-  siddhis: Siddhi[];
+  // Vol. 5 #18 — the render contract: exactly the fields the archive cards
+  // draw (the page projects the full data model away).
+  siddhis: Array<Pick<Siddhi, 'slug' | 'name' | 'sanskrit' | 'category' | 'level' | 'minTier' | 'summary' | 'tradition' | 'authenticityScore'>>;
   siddhiCount: number;
-  mahaVidyas: Archetype[];
+  mahaVidyas: Array<Pick<Archetype, 'id' | 'name' | 'pattern'>>;
   /** Data-derived category facets — only categories that hold folios. */
   categoryFacets: CategoryFacet[];
 }
@@ -117,7 +119,7 @@ const LIGHT_OPACITY: Record<SiddhiLevel, number> = {
 };
 
 /* ─── Knowledge Lights (reduced on mobile for performance) ─────── */
-function KnowledgeLights({ siddhis }: { siddhis: Siddhi[] }) {
+function KnowledgeLights({ siddhis }: { siddhis: ArchivePageProps['siddhis'] }) {
   const reduced = useNativeReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef, { once: true, margin: '-10% 0px' });
@@ -255,10 +257,10 @@ export default function ArchivePage({ siddhis: allSiddhis, siddhiCount, mahaVidy
      dead-end "Showing 0 of 0" surprises. */
   const { filtered, catCounts, cautionCounts, tierCounts } = useMemo(() => {
     const q = search.toLowerCase();
-    const matchSearch = (s: Siddhi) =>
+    const matchSearch = (s: ArchivePageProps['siddhis'][number]) =>
       !q || s.name.toLowerCase().includes(q) || s.sanskrit.toLowerCase().includes(q);
-    const catOf = (s: Siddhi) => siddhiCategoryLabel(s.category);
-    const cautionOf = (s: Siddhi) => getCautionLevel(s.level);
+    const catOf = (s: ArchivePageProps['siddhis'][number]) => siddhiCategoryLabel(s.category);
+    const cautionOf = (s: ArchivePageProps['siddhis'][number]) => getCautionLevel(s.level);
 
     const catCounts: Record<string, number> = {};
     const cautionCounts: Record<string, number> = {};

@@ -27,8 +27,10 @@ const ZONE_CONFRONTATION = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_a
 const ZONE_DISSOLUTION = 'https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/tantra/cremation-ground';
 
 interface PatternsPageProps {
-  patterns: Pattern[];
-  siddhis: Siddhi[];
+  // Vol. 5 #18 — the render contract, not the full data model: the hub
+  // receives exactly the fields these cards draw (the page projects it).
+  patterns: Array<Pick<Pattern, 'slug' | 'name' | 'subtitle' | 'description' | 'signs' | 'relatedSiddhis'>>;
+  siddhis: Array<Pick<Siddhi, 'slug' | 'category'>>;
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -36,7 +38,10 @@ interface PatternsPageProps {
    ══════════════════════════════════════════════════════════════ */
 
 /* ── Derived Data Helpers ── */
-function buildDerivedData(patterns: Pattern[], siddhis: Siddhi[]) {
+function buildDerivedData(
+  patterns: PatternsPageProps['patterns'],
+  siddhis: PatternsPageProps['siddhis']
+) {
   const findSiddhi = (slug: string) => siddhis.find((s) => s.slug === slug)!;
   const allArchetypes = Array.from(
     new Set(
@@ -76,7 +81,7 @@ function ZoneDivider({ label, subtitle, index }: { label: string; subtitle: stri
   );
 }
 
-function PatternZone({ patterns }: { patterns: Pattern[] }) {
+function PatternZone({ patterns }: { patterns: PatternsPageProps['patterns'] }) {
   const reduced = useNativeReducedMotion();
   return (
     <motion.div
@@ -94,7 +99,7 @@ function PatternZone({ patterns }: { patterns: Pattern[] }) {
   );
 }
 
-function FilteredGrid({ patterns, clearFilters }: { patterns: Pattern[]; clearFilters: () => void }) {
+function FilteredGrid({ patterns, clearFilters }: { patterns: PatternsPageProps['patterns']; clearFilters: () => void }) {
   const reduced = useNativeReducedMotion();
   return (
     <AnimatePresence mode="wait">

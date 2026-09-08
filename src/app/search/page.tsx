@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { buildSearchDocs } from "@/lib/search/search-index";
 import SearchPageClient from "./SearchPageClient";
 
 /* =============================================================
@@ -17,6 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default function SearchPage() {
-  const docs = buildSearchDocs();
-  return <SearchPageClient docs={docs} />;
+  // Vol. 5 #18 — the index hydrates client-side from /api/search-index;
+  // the HTML ships the light shell only (was ~290KB of inline docs).
+  return <SearchPageClient />;
 }

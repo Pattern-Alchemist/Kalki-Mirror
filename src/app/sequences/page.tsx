@@ -29,5 +29,9 @@ const SequencesPageClient = dynamic(
 );
 
 export default function SequencesPage() {
-  return <SequencesPageClient sequences={allSequences} siddhis={allSiddhis} patterns={allPatterns} />;
+  // Vol. 5 #18 — the sequence cards resolve siddhis/patterns to NAMES only
+  // ({slug,name}); the full objects serialized ~200KB of dead payload.
+  const siddhis = allSiddhis.map((s) => ({ slug: s.slug, name: s.name }));
+  const patterns = allPatterns.map((p) => ({ slug: p.slug, name: p.name }));
+  return <SequencesPageClient sequences={allSequences} siddhis={siddhis} patterns={patterns} />;
 }

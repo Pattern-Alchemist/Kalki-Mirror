@@ -11,7 +11,13 @@ import { CautionBadge, getCautionLevel } from './CautionBadge';
 import { MagneticCard } from '@/components/ui/MagneticCard';
 
 interface SiddhiCardProps {
-  siddhi: Siddhi;
+  // Vol. 5 #18 — the card contract: 9 fields (hubs project the data model;
+  // folio pages pass full objects, which satisfy the Pick structurally).
+  siddhi: Pick<
+    Siddhi,
+    | 'slug' | 'name' | 'sanskrit' | 'category' | 'level'
+    | 'minTier' | 'summary' | 'tradition' | 'authenticityScore'
+  >;
   className?: string;
 }
 

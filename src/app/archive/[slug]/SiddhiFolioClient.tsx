@@ -33,8 +33,8 @@ function ConfidenceBadge({ confidence }: { confidence: string }) {
 
 export default function SiddhiFolioClient({ siddhi, relatedSiddhis, relatedPatterns, activeArchetype }: {
   siddhi: Siddhi;
-  relatedSiddhis: Siddhi[];
-  relatedPatterns: Pattern[];
+  relatedSiddhis: Array<Pick<Siddhi, 'slug' | 'name' | 'level'>>;
+  relatedPatterns: Array<Pick<Pattern, 'slug' | 'name' | 'subtitle'>>;
   activeArchetype?: Archetype;
 }) {
   useEffect(() => { track('folio_viewed', { slug: siddhi.slug }); }, [siddhi.slug]);

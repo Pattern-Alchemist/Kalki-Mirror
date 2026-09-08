@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import Link from "next/link";
 import {
@@ -12,7 +12,12 @@ import {
 /* =============================================================
    SEARCH CLIENT — one box over the static corpora.
    Grouped results, per-corpus filter chips, honest empty state.
-   No LLM, no network round-trip: the index ships with the page.
+   No LLM, no network round-trip at QUERY time.
+
+   Vol. 5 #18: the index no longer ships inline with the HTML —
+   it carried the lesson corpus full-text (~290KB into every view).
+   The page hydrates the index ONCE from /api/search-index and
+   keeps it in memory for the session; query-time stays offline.
    ============================================================= */
 
 const CORPUS_LABELS: Record<SearchCorpus, string> = {
@@ -24,13 +29,31 @@ const CORPUS_LABELS: Record<SearchCorpus, string> = {
 
 const CORPUS_ORDER: SearchCorpus[] = ["pattern", "glossary", "sequence", "lesson"];
 
-export default function SearchPageClient({ docs }: { docs: SearchDoc[] }) {
+export default function SearchPageClient() {
+  // Vol. 5 #18 — lazy index hydration: null = loading, [] = failed (honest),
+  // non-empty = the corpus is searchable.
+  const [docs, setDocs] = useState<SearchDoc[] | null>(null);
   const [query, setQuery] = useState("");
   const [corpus, setCorpus] = useState<SearchCorpus | "all">("all");
   const inputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    let alive = true;
+    fetch("/api/search-index")
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then((d: SearchDoc[]) => {
+        if (alive) setDocs(Array.isArray(d) ? d : []);
+      })
+      .catch(() => {
+        if (alive) setDocs([]);
+      });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
   const hits = useMemo(
-    () => searchDocs(docs, query, { corpus, limit: 40 }),
+    () => searchDocs(docs ?? [], query, { corpus, limit: 40 }),
     [docs, query, corpus]
   );
 
@@ -55,6 +78,17 @@ export default function SearchPageClient({ docs }: { docs: SearchDoc[] }) {
         <h1 className="font-display text-3xl md:text-4xl tracking-[0.04em] font-light mb-8">
           Search the Archive
         </h1>
+
+        {docs === null && (
+          <p className="text-xs font-mono tracking-[0.2em] uppercase text-text-muted/70 mb-5" role="status">
+            Loading the index…
+          </p>
+        )}
+        {docs !== null && docs.length === 0 && (
+          <p className="text-xs font-mono tracking-[0.2em] uppercase text-rose-400/80 mb-5" role="alert">
+            The index failed to load — refresh to retry.
+          </p>
+        )}
 
         {/* ── Input ── */}
         <div className="relative mb-5">

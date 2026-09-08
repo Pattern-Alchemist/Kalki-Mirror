@@ -32,9 +32,23 @@ const PatternsPageClient = dynamic(
 );
 
 export default function PatternsPage() {
+  // Vol. 5 #18 — the page-weight diet: the atlas card UI consumes six
+  // pattern fields and TWO siddhi fields, but the full Pattern/Siddhi
+  // objects (origin, practice, hi bridge, evidence sources, summaries)
+  // serialized 225KB of RSC payload into every hub view. Project to the
+  // render contract — the detail pages carry the depth.
+  const patterns = allPatterns.map((p) => ({
+    slug: p.slug,
+    name: p.name,
+    subtitle: p.subtitle,
+    description: p.description,
+    signs: p.signs,
+    relatedSiddhis: p.relatedSiddhis,
+  }));
+  const siddhis = allSiddhis.map((s) => ({ slug: s.slug, category: s.category }));
   return (
     <>
-      <PatternsPageClient patterns={allPatterns} siddhis={allSiddhis} />
+      <PatternsPageClient patterns={patterns} siddhis={siddhis} />
       {/* Vol. 5 #11 — the ask invitation: /ask is noindexed, so the corpus
           needs visible doors. ref stamps the ai_ask funnel with the surface. */}
       <AskTheArchiveCTA surface="patterns" />

@@ -47,6 +47,7 @@ tags:
   - name: Webhooks
     description: Inbound provider webhooks (signature-verified)
   - name: IndexNow
+  - name: Search
     description: Search-engine ping integration
   - name: GSC
     description: Google Search Console verification
@@ -1316,6 +1317,15 @@ paths:
       responses:
         '200':
           description: OK (shape documented in the route module)
+
+  /api/search-index:
+    get:
+      operationId: apiSearchIndexGet
+      tags: [Search]
+      summary: The full static-corpus search index (patterns, lexicon, sequences, Aghorī lessons) as JSON — hydrated once by the /search client instead of riding inline in the HTML (Vol. 5 #18). Revalidated hourly.
+      responses:
+        '200':
+          description: OK (array of SearchDoc)
 
   /api/email-course/share-link:
     get:

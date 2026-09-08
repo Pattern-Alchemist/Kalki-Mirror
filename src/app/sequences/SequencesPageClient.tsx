@@ -17,15 +17,16 @@ import { Clock, ArrowRight } from 'lucide-react';
 
 interface SequencesPageProps {
   sequences: PracticeSequence[];
-  siddhis: Siddhi[];
-  patterns: Pattern[];
+  // Vol. 5 #18 — the render contract: names resolve, nothing else travels.
+  siddhis: Array<Pick<Siddhi, 'slug' | 'name'>>;
+  patterns: Array<Pick<Pattern, 'slug' | 'name'>>;
 }
 
 /* ── Derived Data ── */
-function createFindSiddhi(siddhis: Siddhi[]) {
+function createFindSiddhi(siddhis: Array<Pick<Siddhi, 'slug' | 'name'>>) {
   return (slug: string) => siddhis.find((s) => s.slug === slug);
 }
-function createFindPattern(patterns: Pattern[]) {
+function createFindPattern(patterns: Array<Pick<Pattern, 'slug' | 'name'>>) {
   return (slug: string) => patterns.find((p) => p.slug === slug);
 }
 
@@ -40,8 +41,8 @@ function SequenceCard({
 }: {
   sequence: PracticeSequence;
   index: number;
-  findSiddhi: (slug: string) => Siddhi | undefined;
-  findPattern: (slug: string) => Pattern | undefined;
+  findSiddhi: (slug: string) => Pick<Siddhi, 'slug' | 'name'> | undefined;
+  findPattern: (slug: string) => Pick<Pattern, 'slug' | 'name'> | undefined;
 }) {
   const tierLabel = TIER_LABELS[sequence.minTier];
 

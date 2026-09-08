@@ -28,6 +28,26 @@ const AghoriTantraPageClient = dynamic(
   }
 );
 
+// Vol. 5 #18 — the page-weight diet: the course hub rendered all 54 lessons'
+// FULL content (118KB) + practice bodies (10KB) inline; the lesson pages
+// (/aghori-tantra/[phase]/[lesson]) carry the depth. The hub renders a
+// preview; "read the lesson" is one click.
+function preview(text: string, max: number): string {
+  if (!text || text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return `${cut.slice(0, lastSpace > max * 0.6 ? lastSpace : max)}…`;
+}
+
+const hubCourse = aghoriCourse.map((m) => ({
+  ...m,
+  lessons: m.lessons.map((l) => ({
+    ...l,
+    content: preview(l.content, 260),
+    practice: l.practice ? preview(l.practice, 200) : l.practice,
+  })),
+}));
+
 export default function AghoriTantraPage() {
-  return <AghoriTantraPageClient aghoriCourse={aghoriCourse} courseMeta={COURSE_META} />;
+  return <AghoriTantraPageClient aghoriCourse={hubCourse} courseMeta={COURSE_META} />;
 }

@@ -13,6 +13,16 @@ export const metadata: Metadata = {
 // DefinedTermSet graph — lives on the HUB ONLY (moved out of layout.tsx in
 // Vol. 3 #4 so the 86-term graph stops duplicating onto every term page;
 // term pages reference this @id from their own DefinedTerm nodes).
+// Vol. 5 #18: DefinedTerm.description carries a PREVIEW (180 chars), not
+// the full definition — the full text belongs to the term page it links to;
+// the 86 full definitions inline cost ~30KB of every hub view.
+function definitionPreview(text: string, max: number): string {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return `${cut.slice(0, lastSpace > max * 0.6 ? lastSpace : max)}…`;
+}
+
 const glossaryJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -35,7 +45,7 @@ const glossaryJsonLd = {
         '@type': 'DefinedTerm',
         name: entry.term,
         alternateName: entry.sanskrit,
-        description: entry.definition,
+        description: definitionPreview(entry.definition, 180),
         url: `${SITE_URL}${glossaryTermPath(entry.term)}`,
         inDefinedTermSet: { '@id': `${SITE_URL}/glossary#termset` },
       })),
@@ -68,13 +78,28 @@ const GlossaryPageClient = dynamic(
 );
 
 export default function GlossaryPage() {
+  // Vol. 5 #18 — the hub payload diet: the cards render a PREVIEW of each
+  // definition (the full text lives on /glossary/[term], one click away),
+  // and the hi bridge objects ride in the payload without ever being
+  // rendered by this client (the hi parity lives on the detail pages).
+  // Together: ~-190KB off the heaviest page on the site.
+  const hubEntries = glossaryEntries.map((e) => ({
+    term: e.term,
+    sanskrit: e.sanskrit,
+    pronunciation: e.pronunciation,
+    definition: definitionPreview(e.definition, 300),
+    category: e.category,
+    relatedTerms: e.relatedTerms,
+    relatedSiddhiSlugs: e.relatedSiddhiSlugs,
+    minTier: e.minTier,
+  }));
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(glossaryJsonLd) }}
       />
-      <GlossaryPageClient entries={glossaryEntries} categories={CATEGORIES} />
+      <GlossaryPageClient entries={hubEntries} categories={CATEGORIES} />
     </>
   );
 }

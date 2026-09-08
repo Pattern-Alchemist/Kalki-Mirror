@@ -6,7 +6,9 @@ import type { Pattern } from '@/lib/data/types';
 import { MagneticCard } from '@/components/ui/MagneticCard';
 
 interface PatternCardProps {
-  pattern: Pattern;
+  // Vol. 5 #18 — the card contract (hubs project; detail-adjacent callers
+  // pass full objects, which satisfy the Pick structurally).
+  pattern: Pick<Pattern, 'slug' | 'name' | 'subtitle' | 'signs' | 'relatedSiddhis'>;
   className?: string;
 }
 

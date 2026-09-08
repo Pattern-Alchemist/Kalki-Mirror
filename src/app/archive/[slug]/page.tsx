@@ -32,9 +32,17 @@ export default async function SiddhiFolioPage({ params }: { params: Promise<{ sl
   const siddhi = getSiddhiBySlug(slug);
   if (!siddhi) notFound();
 
-  // Pre-compute related data on the server
-  const relatedSiddhis = allSiddhis.filter(s => s.slug !== siddhi.slug && s.category === siddhi.category).slice(0, 3);
-  const relatedPatterns = allPatterns.filter(p => p.relatedSiddhis.includes(siddhi.slug)).slice(0, 4);
+  // Pre-compute related data on the server.
+  // Vol. 5 #18 — the related cards render {slug,name,level} and
+  // {slug,name} only; the full objects rode dead weight into every folio.
+  const relatedSiddhis = allSiddhis
+    .filter(s => s.slug !== siddhi.slug && s.category === siddhi.category)
+    .slice(0, 3)
+    .map(s => ({ slug: s.slug, name: s.name, level: s.level }));
+  const relatedPatterns = allPatterns
+    .filter(p => p.relatedSiddhis.includes(siddhi.slug))
+    .slice(0, 4)
+    .map(p => ({ slug: p.slug, name: p.name, subtitle: p.subtitle }));
 
   const archetype = siddhi.archetypeId ? getArchetypeById(siddhi.archetypeId) : undefined;
   const patternArchetype = relatedPatterns.length > 0
