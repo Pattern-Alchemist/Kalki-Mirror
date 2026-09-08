@@ -422,7 +422,8 @@ export const ModelName = {
   OpsState: 'OpsState',
   RateLimitHit: 'RateLimitHit',
   CronRun: 'CronRun',
-  TestimonialFollowUp: 'TestimonialFollowUp'
+  TestimonialFollowUp: 'TestimonialFollowUp',
+  IndexingRequest: 'IndexingRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -438,7 +439,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState" | "rateLimitHit" | "cronRun" | "testimonialFollowUp"
+    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState" | "rateLimitHit" | "cronRun" | "testimonialFollowUp" | "indexingRequest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2366,6 +2367,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    IndexingRequest: {
+      payload: Prisma.$IndexingRequestPayload<ExtArgs>
+      fields: Prisma.IndexingRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.IndexingRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IndexingRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.IndexingRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IndexingRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.IndexingRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IndexingRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.IndexingRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IndexingRequestPayload>
+        }
+        findMany: {
+          args: Prisma.IndexingRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IndexingRequestPayload>[]
+        }
+        create: {
+          args: Prisma.IndexingRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IndexingRequestPayload>
+        }
+        createMany: {
+          args: Prisma.IndexingRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.IndexingRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IndexingRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.IndexingRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IndexingRequestPayload>
+        }
+        update: {
+          args: Prisma.IndexingRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IndexingRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.IndexingRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.IndexingRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.IndexingRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IndexingRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.IndexingRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IndexingRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.IndexingRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateIndexingRequest>
+        }
+        groupBy: {
+          args: Prisma.IndexingRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IndexingRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.IndexingRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IndexingRequestCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2813,6 +2888,21 @@ export const TestimonialFollowUpScalarFieldEnum = {
 export type TestimonialFollowUpScalarFieldEnum = (typeof TestimonialFollowUpScalarFieldEnum)[keyof typeof TestimonialFollowUpScalarFieldEnum]
 
 
+export const IndexingRequestScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  state: 'state',
+  reason: 'reason',
+  lastmodEpoch: 'lastmodEpoch',
+  submittedAt: 'submittedAt',
+  error: 'error',
+  discoveredAt: 'discoveredAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IndexingRequestScalarFieldEnum = (typeof IndexingRequestScalarFieldEnum)[keyof typeof IndexingRequestScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3060,6 +3150,7 @@ export type GlobalOmitConfig = {
   rateLimitHit?: Prisma.RateLimitHitOmit
   cronRun?: Prisma.CronRunOmit
   testimonialFollowUp?: Prisma.TestimonialFollowUpOmit
+  indexingRequest?: Prisma.IndexingRequestOmit
 }
 
 /* Types for Logging */

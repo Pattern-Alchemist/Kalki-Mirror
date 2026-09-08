@@ -103,6 +103,12 @@ interface WarRoomData {
     pending: { slug: string; type: string }[];
     pendingCount: number;
   } | { available: false; reason: string } | null;
+  indexing: {
+    available: boolean;
+    oauthPending: boolean;
+    counts: { pending: number; submitted: number; failed: number; removed: number };
+    pendingSample: { url: string; reason: string; discoveredAt: string }[];
+  } | null;
 }
 
 const RANGES = [
@@ -730,6 +736,56 @@ export default function WarRoomPage() {
                 {data?.aiRoutes && !data.aiRoutes.available
                   ? "Event store unavailable — AI telemetry is fail-open and never blocks routes."
                   : "No AI traffic in this window — the layer is quiet, not broken."}
+              </p>
+            )}
+          </Card>
+
+          {/* GSC indexing queue — OAuth-ready (Vol. 5 #12) */}
+          <Card
+            title="GSC indexing — which URLs need attention"
+            icon={<Globe className="h-4 w-4 text-sky-500" />}
+          >
+            {data?.indexing?.available ? (
+              <div>
+                <div className="flex items-baseline gap-6 mb-3">
+                  <p className="text-sm text-zinc-400">
+                    Pending:{" "}
+                    <span className={`font-medium ${data.indexing.counts.pending > 0 ? "text-amber-400" : "text-emerald-400"}`}>
+                      {data.indexing.counts.pending}
+                    </span>
+                  </p>
+                  <p className="text-sm text-zinc-400">
+                    Submitted: <span className="font-medium text-zinc-200">{data.indexing.counts.submitted}</span>
+                  </p>
+                  <p className="text-sm text-zinc-400">
+                    Failed: <span className={`font-medium ${data.indexing.counts.failed > 0 ? "text-rose-400" : "text-zinc-200"}`}>{data.indexing.counts.failed}</span>
+                  </p>
+                </div>
+                {data.indexing.oauthPending && (
+                  <p className="mb-3 text-xs text-amber-400">
+                    OAuth pending — the queue keeps itself warm nightly; set GSC_ACCESS_TOKEN in Vercel env and the next cron run submits for real.
+                  </p>
+                )}
+                {data.indexing.pendingSample.length > 0 && (
+                  <ul className="mb-3 space-y-1">
+                    {data.indexing.pendingSample.map((p) => (
+                      <li key={p.url} className="text-xs text-zinc-400 truncate">
+                        <span className="text-amber-400">●</span>{" "}
+                        <a href={p.url} target="_blank" rel="noopener noreferrer" className="hover:text-zinc-200">{p.url.replace("https://www.astrokalki.com", "")}</a>{" "}
+                        <span className="text-zinc-600">({p.reason})</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <p className="text-[0.65rem] leading-relaxed text-zinc-600">
+                  Nightly sitemap diff (Vol. 5 #12): never-seen URLs queue as PENDING/new, a SITE_LASTMOD
+                  epoch bump re-queues known URLs as changed, URLs that left the map go REMOVED. Runner
+                  submits via the Indexing API (100/day cap) once OAuth lands — until then it no-ops honestly.
+                </p>
+              </div>
+            ) : (
+              <p className="py-2 text-xs text-zinc-600">
+                Unknown — the queue table was unreadable (first cron run creates it; check back after 02:40 IST).
               </p>
             )}
           </Card>

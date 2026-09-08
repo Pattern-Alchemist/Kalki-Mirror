@@ -171,3 +171,8 @@ export type CronRun = Prisma.CronRunModel
  * 
  */
 export type TestimonialFollowUp = Prisma.TestimonialFollowUpModel
+/**
+ * Model IndexingRequest
+ * 
+ */
+export type IndexingRequest = Prisma.IndexingRequestModel

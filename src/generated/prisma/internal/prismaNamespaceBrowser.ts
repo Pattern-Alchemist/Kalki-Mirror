@@ -76,7 +76,8 @@ export const ModelName = {
   OpsState: 'OpsState',
   RateLimitHit: 'RateLimitHit',
   CronRun: 'CronRun',
-  TestimonialFollowUp: 'TestimonialFollowUp'
+  TestimonialFollowUp: 'TestimonialFollowUp',
+  IndexingRequest: 'IndexingRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -501,6 +502,21 @@ export const TestimonialFollowUpScalarFieldEnum = {
 } as const
 
 export type TestimonialFollowUpScalarFieldEnum = (typeof TestimonialFollowUpScalarFieldEnum)[keyof typeof TestimonialFollowUpScalarFieldEnum]
+
+
+export const IndexingRequestScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  state: 'state',
+  reason: 'reason',
+  lastmodEpoch: 'lastmodEpoch',
+  submittedAt: 'submittedAt',
+  error: 'error',
+  discoveredAt: 'discoveredAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IndexingRequestScalarFieldEnum = (typeof IndexingRequestScalarFieldEnum)[keyof typeof IndexingRequestScalarFieldEnum]
 
 
 export const SortOrder = {

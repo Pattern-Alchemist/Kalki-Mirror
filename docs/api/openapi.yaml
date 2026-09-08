@@ -1281,6 +1281,15 @@ paths:
         '200':
           description: OK (shape documented in the route module)
 
+  /api/cron/gsc-indexing:
+    get:
+      operationId: apiCronGscIndexingGet
+      tags: [Cron]
+      summary: GSC indexing queue (Vol. 5 #12, OAuth-ready) — diffs the live sitemap against the IndexingRequest queue (new/changed/removed) and submits PENDING URLs to the Google Indexing API when GSC_ACCESS_TOKEN is set; honest no-op while OAuth pends. ?dryRun=1 reports the gate + counts, writes nothing. CRON_SECRET gated.
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
   /api/cron/cleanup:
     get:
       operationId: apiCronCleanupGet

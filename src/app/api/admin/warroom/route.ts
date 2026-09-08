@@ -3,6 +3,7 @@ import { authenticateRequest } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { getListFunnel } from "@/lib/admin/list-funnel-db";
 import { readAiRouteStats } from "@/lib/analytics-db";
+import { readIndexingPanel, type IndexingPanel } from "@/lib/seo/indexing-queue";
 import type { ListFunnelResult } from "@/lib/admin/list-funnel";
 import {
   parseStoredChainHealth,
@@ -340,6 +341,15 @@ export async function GET(request: NextRequest) {
       bakePending = null; // either world unreadable — panel renders "unknown"
     }
 
+    // ── GSC indexing queue (Vol. 5 #12) — which URLs need indexing attention,
+    // kept warm nightly so the founder-gated OAuth lands on a ready panel.
+    let indexing: IndexingPanel | null = null;
+    try {
+      indexing = await readIndexingPanel();
+    } catch {
+      indexing = null; // queue table transient — panel renders "unknown"
+    }
+
     return NextResponse.json({
       generatedAt: now.toISOString(),
       range: rangeParam,
@@ -363,6 +373,7 @@ export async function GET(request: NextRequest) {
       credAudit,
       cronRuns,
       bakePending,
+      indexing,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";

@@ -654,3 +654,17 @@ model TestimonialFollowUp {
   sentBy         String       @default("system") // system | archivist email/name
   consultation   Consultation @relation(fields: [consultationId], references: [id])
 }
+
+model IndexingRequest {
+  id            String    @id @default(cuid())
+  url           String    @unique
+  state         String    @default("PENDING") // PENDING | SUBMITTED | FAILED | REMOVED
+  reason        String    @default("new")     // new | changed
+  lastmodEpoch  String?   // SITE_LASTMOD epoch seen at last diff
+  submittedAt   DateTime?
+  error         String?
+  discoveredAt  DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([state])
+}
