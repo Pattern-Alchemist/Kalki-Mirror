@@ -15,6 +15,10 @@
       "schedule": "30 14 * * *"
     },
     {
+      "path": "/api/cron/cred-audit",
+      "schedule": "10 2 * * *"
+    },
+    {
       "path": "/api/cron/chain-health",
       "schedule": "15 2 * * *"
     },

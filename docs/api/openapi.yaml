@@ -1219,6 +1219,15 @@ paths:
         '200':
           description: OK (shape documented in the route module)
 
+  /api/cron/cred-audit:
+    get:
+      operationId: apiCronCredAuditGet
+      tags: [Cron]
+      summary: Ping every provider credential (Turso, OpenRouter, Resend, Cloudinary) against its verify endpoint; verdicts into OpsState (Vol. 5 #2). ?dryRun=1 stores nothing. CRON_SECRET gated.
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
   /api/cron/chain-health:
     get:
       operationId: apiCronChainHealthGet

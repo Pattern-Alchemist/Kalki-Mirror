@@ -9,6 +9,11 @@ import {
   CHAIN_HEALTH_OPS_KEY,
   type ChainHealthReport,
 } from "@/lib/ai/chain-health";
+import {
+  parseStoredCredAudit,
+  CRED_AUDIT_OPS_KEY,
+  type CredAuditReport,
+} from "@/lib/ops/cred-audit";
 
 export const dynamic = "force-dynamic";
 
@@ -294,6 +299,15 @@ export async function GET(request: NextRequest) {
       aiChain = null;
     }
 
+    // ── Credential audit (Vol. 5 #2) — last stored provider verdicts.
+    let credAudit: CredAuditReport | null = null;
+    try {
+      const marker = await db.opsState.findUnique({ where: { key: CRED_AUDIT_OPS_KEY } });
+      credAudit = parseStoredCredAudit(marker?.value);
+    } catch {
+      credAudit = null;
+    }
+
     return NextResponse.json({
       generatedAt: now.toISOString(),
       range: rangeParam,
@@ -314,6 +328,7 @@ export async function GET(request: NextRequest) {
       listFunnel,
       aiRoutes,
       aiChain,
+      credAudit,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";

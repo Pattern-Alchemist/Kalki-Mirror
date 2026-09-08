@@ -31,6 +31,11 @@ import {
   parseStoredChainHealth,
   CHAIN_HEALTH_OPS_KEY,
 } from "@/lib/ai/chain-health";
+import {
+  credAuditDigestLine,
+  parseStoredCredAudit,
+  CRED_AUDIT_OPS_KEY,
+} from "@/lib/ops/cred-audit";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -277,6 +282,16 @@ export async function GET(request: NextRequest) {
     // OpsState transient — silence is the healthy default
   }
 
+  // Vol. 5 #2 — credential audit: alert when any provider credential
+  // fails its verify ping, or the audit itself went stale. Fail-soft.
+  let credLine = "";
+  try {
+    const marker = await db.opsState.findUnique({ where: { key: CRED_AUDIT_OPS_KEY } });
+    credLine = credAuditDigestLine(parseStoredCredAudit(marker?.value));
+  } catch {
+    // OpsState transient — silence is the healthy default
+  }
+
   // Vol. 4 #3 — list funnel (weekly cohort): joined → Door-3 open → any
   // click → /consultations → intake. Fail-soft like every other block:
   // a dead join dims one line, never the digest.
@@ -341,6 +356,7 @@ export async function GET(request: NextRequest) {
     backupLine,
     cleanupLine,
     ...(chainLine ? [chainLine] : []),
+    ...(credLine ? [credLine] : []),
     "",
     `— CONSOLE —`,
     `${unreadBell} unread bell notification${unreadBell === 1 ? "" : "s"}`,
