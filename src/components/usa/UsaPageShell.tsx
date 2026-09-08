@@ -6,7 +6,8 @@
 // dual conversion band (email course + attributed WhatsApp) →
 // related cross-links. Emits FAQPage + BreadcrumbList JSON-LD on
 // every page (Service schema added on commercial children via the
-// `service` prop). Content itself is authored per-page in
+// `service` prop; city pages narrow areaServed to a City via
+// page.area — Vol. 5 #15). Content itself is authored per-page in
 // src/lib/data/usa-pages.ts — this shell is typography only.
 // =============================================================
 
@@ -16,6 +17,39 @@ import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 import { TrackView } from '@/components/analytics/TrackView';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import type { UsaPage } from '@/lib/data/usa-pages';
+
+/**
+ * The Service JSON-LD builder — exported pure for the Vol. 5 #15 truth
+ * tests (city pages must emit a City areaServed, not the US default).
+ */
+export function usaServiceJsonLd(
+  service: { name: string; description: string; priceUSD: number },
+  page: Pick<UsaPage, 'path' | 'area'>,
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.name,
+    description: service.description,
+    provider: { '@id': `${SITE_URL}/#person`, name: 'Kaustubh' },
+    ...(page.area
+      ? {
+          areaServed: [
+            { '@type': 'City', name: page.area.city },
+            { '@type': 'Country', name: page.area.country },
+          ],
+        }
+      : { areaServed: { '@type': 'Country', name: 'United States' } }),
+    serviceType: 'Online consultation',
+    offers: {
+      '@type': 'Offer',
+      price: service.priceUSD,
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      url: `${SITE_URL}${page.path}`,
+    },
+  };
+}
 
 const EMAIL_COURSE_HREF = '/email-course';
 
@@ -76,24 +110,8 @@ export function UsaPageShell({ page, crumbs, trackSlug, service }: UsaPageShellP
     })),
   };
 
-  const serviceJsonLd = service
-    ? {
-        '@context': 'https://schema.org',
-        '@type': 'Service',
-        name: service.name,
-        description: service.description,
-        provider: { '@id': `${SITE_URL}/#person`, name: 'Kaustubh' },
-        areaServed: { '@type': 'Country', name: 'United States' },
-        serviceType: 'Online consultation',
-        offers: {
-          '@type': 'Offer',
-          price: service.priceUSD,
-          priceCurrency: 'USD',
-          availability: 'https://schema.org/InStock',
-          url: `${SITE_URL}${page.path}`,
-        },
-      }
-    : null;
+  // Vol. 5 #15 — one builder, one truth: city pages emit City+Country scope.
+  const serviceJsonLd = service ? usaServiceJsonLd(service, page) : null;
 
   return (
     <div className="bg-deep-black min-h-screen pt-28 md:pt-36 pb-32">

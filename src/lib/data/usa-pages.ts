@@ -36,6 +36,10 @@ export interface UsaPage {
   sections: UsaSection[];
   faqs: UsaFaq[];
   related: { href: string; label: string }[];
+  /** Vol. 5 #15 — LocalBusiness-grade area for city surfaces. When present,
+   *  the Service JSON-LD emits an @type City areaServed (plus the country)
+   *  instead of the default whole-US Country scope. */
+  area?: { city: string; region?: string; country: string };
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -127,6 +131,11 @@ export const usaHub: UsaPage = {
     { href: '/method', label: 'The Mirror Method' },
     { href: '/karma', label: 'The Karma Map' },
     { href: '/consultations', label: 'Book a Consultation' },
+    // Vol. 5 #15 — the city surfaces (local-intent doors from the front page)
+    { href: '/usa/austin', label: 'Austin, TX' },
+    { href: '/usa/new-york', label: 'New York City' },
+    { href: '/usa/san-francisco-bay', label: 'San Francisco Bay' },
+    { href: '/usa/london', label: 'London' },
   ],
 };
 
@@ -512,7 +521,302 @@ export const usaPages: UsaPage[] = [
       { href: '/archive', label: 'The Akashic Archive' },
       { href: '/aghori-tantra', label: 'The Aghorī Tantra Course' },
       { href: '/email-course', label: 'The Ten Doors — Free Email Course' },
+      // Vol. 5 #15 — the city surfaces (local-intent doors into the same system)
+      { href: '/usa/austin', label: 'Austin, TX' },
+      { href: '/usa/new-york', label: 'New York City' },
+      { href: '/usa/san-francisco-bay', label: 'San Francisco Bay' },
+      { href: '/usa/london', label: 'London' },
     ],
+  },
+];
+
+/* ─────────────────────────────────────────────────────────────
+   THE CITY SURFACES — Vol. 5 #15
+   -------------------------------------------------------------
+   Local-intent queries ("vedic astrologer austin", "tantric
+   consultation london") deserve city pages with genuinely local
+   copy — not the service page re-badged. Every paragraph below is
+   authored for its city (the uniqueness gate in tests/lib/
+   usa-cities.test.ts fails loud on template clones), each page
+   carries its own FAQ blocks (FAQPage JSON-LD comes from the
+   shared shell), and the Service JSON-LD narrows to the City via
+   the `area` field. London deliberately rides under /usa with an
+   honest "International" crumb — one acquisition layer, one
+   conversion spine, the city is the content.
+   ───────────────────────────────────────────────────────────── */
+
+export const usaCityPages: UsaPage[] = [
+  {
+    slug: 'austin',
+    path: '/usa/austin',
+    topic: 'usa-austin',
+    title: 'Vedic Astrologer for Austin, TX — Online Tantric Consultations',
+    description:
+      'Evidence-graded Tantric pattern work for Austin seekers. Online consultations with Kaustubh on Central Time — USD pricing, free discovery call, no fortune telling.',
+    label: 'KALKI · Austin, Texas',
+    h1: 'Austin reads everything carefully.',
+    h1Accent: 'Read your own patterns the same way.',
+    intro: [
+      'Austin is a city that takes inner work seriously — a meditation studio on every corner, a yoga teacher training every weekend, and a tech community that treats consciousness like the next frontier. What most of it does not offer is a map: a documented, source-checked body of knowledge that explains WHY the same relationship, the same burnout, the same self-sabotage keeps recurring. KALKI is that map — a Tantric knowledge platform built on the premise that patterns are loops, and loops can be read, understood, and interrupted.',
+      'The Mirror Method fuses classical Tantric psychology — Kashmiri Shaivism, Shakta traditions, the Aghorī path — with modern pattern analysis. Every claim carries an evidence grade (Āgama, Anubhāva, Parīkṣā, Pratibimba) so you always know whether you are reading a citation or a lived report. No psychic hotline energy, no "100% accurate" promises, no black-magic removal — the vocabulary Austin has heard enough of.',
+      'Sessions run online over WhatsApp video, scheduled in Central Time, priced in USD — the 60-minute Pattern Consultation at $29, the 90-minute Shadow Dossier at $49, and a free 30-minute discovery call that most Austin seekers start with. No studio to drive to, no incense upcharge; the work happens in the reading, not the room.',
+    ],
+    sections: [
+      {
+        label: '01 · Austin, meet the archive',
+        heading: 'A documented corpus, not a deck of cards',
+        paragraphs: [
+          'The platform holds an Akashic Archive of evidence-graded sādhana folios, a Pattern Atlas of twenty recurring emotional loops (the perfectionist, the rescuer, the ghost — you will recognize at least one), the ten Mahāvidyās mapped as diagnostic archetypes, and karma presented as the tradition actually teaches it: a psychology of cause and conditioning, not a cosmic scoreboard. Your chart, when a session calls for it, is read as a diagnostic instrument — cross-referenced with the pattern work, never used to tell you your month is cursed.',
+          'That register is deliberate. Austin\'s contemplative community is sophisticated enough to be tired of vague astrology-speak, and honest enough to want sources. This is the rare corner of the field where the sources are on the table — graded, cited, and open to being contested.',
+        ],
+      },
+      {
+        label: '02 · Working with Kaustubh from Austin',
+        heading: 'Central Time, in dollars, starting free',
+        paragraphs: [
+          'You propose two or three windows in your local time; sessions routinely land in Austin mornings before work or evenings after the heat breaks. The founder, Kaustubh, works one-on-one over WhatsApp video — no group webinars, no funnel of upsells. USD pricing is automatic for US visitors, and international cards are accepted.',
+        ],
+        bullets: [
+          'Free 30-minute Archival Discovery call — the standard first step, no obligation',
+          'Pattern Consultation — $29 / 60 minutes, one loop mapped in depth',
+          'Shadow Dossier — $49 / 90 minutes, written summary included',
+          'Ten Doors email course — free, ten days, the entire framework first',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: 'Do you have an office or studio in Austin?',
+        a: 'No — and that is by design, not a limitation. The consultation is a reading and a working conversation; it does not need a room to be real. Everything runs online over WhatsApp video, which means you can book from South Congress or Round Rock with the same experience. If you want in-person energy work, Austin has excellent studios — what they generally do not have is a documented corpus behind the guidance.',
+      },
+      {
+        q: 'What hours do sessions run for Central Time?',
+        a: 'You propose the windows and the session confirms one that works — Austin mornings (7–9am CT) and evenings (6–9pm CT) are both routine. The discovery call is thirty minutes; consultations run sixty or ninety depending on the depth you choose. Time-zone math is handled on this side, not yours.',
+      },
+      {
+        q: 'Austin already has yoga, meditation, and astrology everywhere. What makes this different?',
+        a: 'Most local astrology is interpretive and most local yoga is somatic — both valuable, neither gives you a MAP of your recurring loops with sources attached. KALKI sits in the gap: a documented Tantric corpus, evidence grades on every claim, and pattern analysis that treats your situation as a readable structure rather than a vibe. It pairs well with a practice you already have; it does not ask you to abandon it.',
+      },
+      {
+        q: 'Is this compatible with a meditation practice I already keep?',
+        a: 'Yes — a meaningful share of consultations are booked by people with an existing practice who hit something they cannot name: plateau, strange experiences, a loop the cushion has not touched. The session distinguishes documented phenomena the tradition actually maps from ordinary nervous-system noise, and sequences what to practice next from the open registers of the corpus. High-caution practices are documented on the platform but not dispensed in a first session.',
+      },
+      {
+        q: 'How do I start from Austin?',
+        a: 'The free 30-minute Archival Discovery call is the honest entry — thirty minutes on where you are and what the path forward looks like, no payment and no obligation. If you would rather read first, the Pattern Atlas is free, and the Ten Doors email course walks the full framework in ten days. Start anywhere; nothing auto-bills.',
+      },
+    ],
+    related: [
+      { href: '/usa', label: 'KALKI for the United States' },
+      { href: '/usa/vedic-astrology-consultation', label: 'The Pattern Consultation' },
+      { href: '/patterns', label: 'The Pattern Atlas — free' },
+      { href: '/usa/new-york', label: 'New York City' },
+    ],
+    area: { city: 'Austin', region: 'Texas', country: 'United States' },
+  },
+  {
+    slug: 'new-york',
+    path: '/usa/new-york',
+    topic: 'usa-new-york',
+    title: 'Vedic Astrologer for New York City — Online Tantric Consultations',
+    description:
+      'Evidence-graded Tantric pattern work for New York seekers. Online consultations on Eastern Time — USD pricing, free discovery call, zero fortune-telling.',
+    label: 'KALKI · New York City',
+    h1: 'The city that has seen everything',
+    h1Accent: 'has not seen your patterns read honestly.',
+    intro: [
+      'New York has more astrologers per square mile than almost anywhere on earth, and more reasons to be skeptical of all of them. KALKI is built for exactly that skepticism: a Tantric knowledge platform where every claim carries an evidence grade, the sources are cited, and the work is not fortune-telling — it is pattern analysis. The recurring relationship, the career loop that resets every eighteen months, the self-sabotage with excellent taste: those are structures, and structures can be read.',
+      'The Mirror Method fuses classical Tantric psychology — Kashmiri Shaivism, the Shakta tradition, the Aghorī path — with modern behavioral analysis. Your chart, when a session calls for it, is used as a diagnostic instrument, not a prophecy. What you get is a map of the loop you are in and a prescribed practice from a documented corpus — not a promise that Venus will fix your rent.',
+      'Sessions run one-on-one over WhatsApp video, scheduled in Eastern Time around New York hours — early mornings before the city wakes and late evenings after it stops demanding things. The 60-minute Pattern Consultation is $29, the 90-minute Shadow Dossier is $49, and the 30-minute discovery call is free. No studio in Midtown, no waiting room; the work is the reading.',
+    ],
+    sections: [
+      {
+        label: '01 · For New Yorkers allergic to fortune-telling',
+        heading: 'Skepticism is the right starting posture',
+        paragraphs: [
+          'You should not trust a field that runs on vibes — and most of what sells as astrology or Tantra in this city runs on vibes. KALKI\'s answer is documentation: an Akashic Archive of evidence-graded sādhana folios, a Pattern Atlas of twenty named loops, the Mahāvidyās mapped as diagnostic archetypes, and karma taught as the tradition\'s own psychology of cause and conditioning. Contested claims are labeled contested. "The texts attest this" and "practitioners report this" are kept visibly different, because collapsing them is how the field earned its reputation.',
+          'That posture tends to land with New Yorkers in particular: the city produces pattern-recognition machines. People who can read a market, a room, or a manuscript at speed usually need very little convincing once they see the corpus — they need the map, and someone honest enough to say what the map does not know.',
+        ],
+      },
+      {
+        label: '02 · Sessions around New York hours',
+        heading: 'Eastern Time, in dollars, no waiting room',
+        paragraphs: [
+          'Propose two or three windows; the session confirms one. Early morning before the first meeting and evening after nine are both routine — the calendar is built around your city\'s hours, not an ashram\'s. USD pricing is automatic: the 60-minute Pattern Consultation at $29, the 90-minute Shadow Dossier with a written summary at $49, the free 30-minute discovery call most people start with.',
+        ],
+        bullets: [
+          'Free 30-minute Archival Discovery call — the standard entry',
+          'Pattern Consultation — $29 / 60 minutes, one loop mapped in depth',
+          'Shadow Dossier — $49 / 90 minutes, written summary included',
+          'Ten Doors email course — free, ten days, the entire framework',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: 'Do I ever need to be anywhere in person in New York?',
+        a: 'No. The consultation is a reading and a working conversation over WhatsApp video — nothing about it improves by adding a Manhattan waiting room. You bring the pattern; the session brings the map. Everything — booking, the call itself, the written summary if you take the Dossier — happens online.',
+      },
+      {
+        q: 'New York is full of psychics and astrologers. How is this actually different?',
+        a: 'Three visible differences: every claim carries an evidence grade (textual authority vs. practitioner report vs. cross-source vs. interpretation), the corpus is documented and readable before you pay anything, and the session output is a pattern map plus a prescribed practice — not a prediction about your future. If you want someone to tell you a man is coming into your life in October, this is the wrong door. If you want to know why the same man keeps arriving in different costumes, it is the right one.',
+      },
+      {
+        q: 'Can I bring a specific problem — a job, a relationship, a decision?',
+        a: 'Yes — specific situations are the ideal material. The session reads the loop underneath the situation (the Pattern Atlas\'s twenty named loops cover most of them), cross-references the chart when it adds diagnostic value, and ends with a practice prescription. What it will not do is make the decision for you or promise outcomes; the tradition\'s own texts are blunt about practitioners who do.',
+      },
+      {
+        q: 'What hours work for Eastern Time?',
+        a: 'You propose two or three windows in your schedule; sessions routinely land 7–9am ET before the workday and 8–10pm ET after it. The discovery call is thirty minutes; consultations run sixty or ninety. Time-zone handling is this side\'s job.',
+      },
+      {
+        q: 'How do I start from New York?',
+        a: 'Book the free 30-minute discovery call — thirty minutes, no payment, no obligation. If reading suits you better first, the Pattern Atlas and the Akashic Archive are free, and the Ten Doors course teaches the full framework in ten days. Start anywhere; nothing auto-bills.',
+      },
+    ],
+    related: [
+      { href: '/usa', label: 'KALKI for the United States' },
+      { href: '/usa/online-vedic-astrologer', label: 'Choosing an online astrologer' },
+      { href: '/archetypes', label: 'The Ten Mahāvidyā Archetypes' },
+      { href: '/usa/san-francisco-bay', label: 'San Francisco Bay' },
+    ],
+    area: { city: 'New York', region: 'New York', country: 'United States' },
+  },
+  {
+    slug: 'san-francisco-bay',
+    path: '/usa/san-francisco-bay',
+    topic: 'usa-san-francisco-bay',
+    title: 'Vedic Astrologer for the SF Bay Area — Online Tantric Consultations',
+    description:
+      'Evidence-graded Tantric pattern work for Bay Area seekers. Online consultations on Pacific Time — USD pricing, free discovery call, no manifestation talk.',
+    label: 'KALKI · San Francisco Bay',
+    h1: 'The Bay optimized everything',
+    h1Accent: 'except the loops underneath.',
+    intro: [
+      'The Bay Area has tried every consciousness technology on the market — meditation apps, breathwork festivals, plant medicine circles, retreats in Big Sur — and produced more self-aware people per capita than anywhere in the country. What the market has not produced is a document: a source-checked body of knowledge that maps WHY the founder who can scale a company cannot stop rescuing people, why the exit did not fix the loop, why the same relationship keeps rendering in different fonts. KALKI is that document.',
+      'The Mirror Method fuses classical Tantric psychology — Kashmiri Shaivism, the Shakta tradition, the Aghorī path — with modern pattern analysis. Every claim carries an evidence grade; the corpus is the Akashic Archive of graded sādhana folios plus a Pattern Atlas of twenty named loops. No manifestation talk, no vibration pricing tiers, no "abundance alignment" — the tradition\'s own texts are sharper than that, and this platform treats them that way.',
+      'Sessions run one-on-one over WhatsApp video, scheduled in Pacific Time — early mornings before standup, evenings after the commute up the 101 or down the 101 from anywhere between San Jose and Marin. The 60-minute Pattern Consultation is $29, the 90-minute Shadow Dossier is $49 with a written summary, and the 30-minute discovery call is free. The work is the reading, not the venue.',
+    ],
+    sections: [
+      {
+        label: '01 · For the most optimized city on earth',
+        heading: 'Pattern analysis, not another optimization hack',
+        paragraphs: [
+          'The Bay\'s instinct is to treat inner life like a system to instrument — which is half right. The half that is missing is a corpus: twenty-five centuries of documented practice describing exactly these loops, with the tradition\'s own warning labels attached. KALKI\'s Pattern Atlas names twenty of them (the Perfectionist, the Rescuer, the Ghost — recognizable from any founder\'s retrospective), grades its evidence, and prescribes practices from the open registers of the tradition — japa with correct methodology, prāṇāyāma matched to the nervous system\'s actual behavior, contemplation with a documented target.',
+          'What it does not do is promise the loop will disappear after one session or sell you a state. The texts are blunt about practitioners who do, and so is this platform. What you get is a map, a practice, and an honest account of what each is for — which, in a town that has bought everything else, tends to be the novel product.',
+        ],
+      },
+      {
+        label: '02 · Sessions around Pacific hours',
+        heading: 'PT, in dollars, zero commute',
+        paragraphs: [
+          'Propose two or three windows in your local time; sessions routinely land 7–9am PT before the workday and 6–9pm after it, from San Francisco, Oakland, Berkeley, San Jose, or wherever you actually are that week. USD pricing is automatic and international cards are accepted — the Shadow Dossier\'s written summary lands in your inbox, not in a follow-up funnel.',
+        ],
+        bullets: [
+          'Free 30-minute Archival Discovery call — the standard first step',
+          'Pattern Consultation — $29 / 60 minutes, one loop mapped in depth',
+          'Shadow Dossier — $49 / 90 minutes, written summary included',
+          'Ten Doors email course — free, ten days, the full framework first',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: 'Do you serve the whole Bay Area — San Jose, Oakland, Berkeley?',
+        a: 'Yes — the consultation is online, so "the Bay" means anywhere from San Francisco to Santa Cruz and out to Walnut Creek — San Jose, Oakland, Berkeley, the Peninsula, all of it. There is no office to reach and no traffic to fight; the session happens over WhatsApp video at whatever desk, couch, or parked car has the forty-five quiet minutes you need.',
+      },
+      {
+        q: 'What time do sessions run for Pacific Time?',
+        a: 'You propose the windows; sessions routinely land 7–9am PT and 6–9pm PT. The discovery call is thirty minutes, consultations run sixty or ninety. The time-zone math is handled on this side — you just pick slots that fit your calendar.',
+      },
+      {
+        q: 'The Bay has every consciousness product on earth. Why this?',
+        a: 'Because almost none of it comes with a documented corpus or an evidence grade. KALKI\'s claims are graded — textual authority, practitioner report, cross-source, or labeled interpretation — and the archive is readable before you spend anything. It is the opposite of a retreat upsell: a map you can audit, practices with the tradition\'s own caution gates intact, and no promises about outcomes.',
+      },
+      {
+        q: 'Is this therapy? I am in California — does the licensing question apply?',
+        a: 'No — this is not psychotherapy, medical care, or a licensed discipline, and it does not pretend to be one; it is pattern consultation grounded in a classical textual tradition. Where a situation clearly needs clinical care, the honest answer is a referral out — the session distinguishes documented contemplative experiences from things a therapist or physician should handle, and says so plainly.',
+      },
+      {
+        q: 'How do I start from the Bay?',
+        a: 'The free 30-minute Archival Discovery call is the standard entry — no payment, no obligation. Read first if you prefer: the Pattern Atlas is free and takes about twenty minutes, and the Ten Doors course teaches the full framework in ten days. Start anywhere; nothing auto-bills.',
+      },
+    ],
+    related: [
+      { href: '/usa', label: 'KALKI for the United States' },
+      { href: '/usa/vedic-astrology-consultation', label: 'The Pattern Consultation' },
+      { href: '/karma', label: 'Karma as Tantric Psychology' },
+      { href: '/usa/austin', label: 'Austin, TX' },
+    ],
+    area: { city: 'San Francisco', region: 'California', country: 'United States' },
+  },
+  {
+    slug: 'london',
+    path: '/usa/london',
+    topic: 'usa-london',
+    title: 'Vedic Astrologer for London — Online Tantric Consultations | KALKI',
+    description:
+      'Evidence-graded Tantric pattern work for London seekers. Online consultations on UK time — free discovery call, honest pricing, zero fortune-telling.',
+    label: 'KALKI · London',
+    h1: 'London has tasted every kind of Tantra.',
+    h1Accent: 'Here is the one with sources.',
+    intro: [
+      'London\'s spiritual marketplace is enormous and well-worn — Camden workshops, Soho tarot, festivals selling "Tantra" that has never seen a text. KALKI exists for the seeker who has been burned by that market once already and wants the real discipline underneath: a documented Tantric corpus, every claim graded (Āgama, Anubhāva, Parīkṣā, Pratibimba), and consultations that read patterns instead of predicting futures. This is not the Tantra of a weekend workshop; it is the tradition with its own sources on the table.',
+      'The Mirror Method fuses classical Tantric psychology — Kashmiri Shaivism, the Shakta tradition, the Aghorī path — with modern pattern analysis. The recurring relationship, the career loop, the practice that plateaued: those are named, mapped structures in this corpus, and the session\'s job is to show you the structure and prescribe what the tradition actually prescribes. Your chart, when it adds diagnostic value, is read as an instrument — never as a verdict on your year.',
+      'Sessions run one-on-one over WhatsApp video, scheduled in UK time — lunch hours and evenings both routine, no gym-honed dawn required unless you like those. Pricing is displayed in USD for visitors outside India ($29 for the 60-minute consultation, $49 for the 90-minute Shadow Dossier, free 30-minute discovery call); your card is billed in USD and your bank handles the conversion at its rate. The work is the reading — no venue, no waiting room, no incense upcharge.',
+    ],
+    sections: [
+      {
+        label: '01 · London, the archive, and the long game',
+        heading: 'A discipline with sources, not a scene with vibes',
+        paragraphs: [
+          'The UK\'s Tantra conversation has volume and very little documentation — which is exactly backwards from how a discipline earns trust. KALKI\'s platform holds an Akashic Archive of evidence-graded sādhana folios, a Pattern Atlas of twenty named loops, the ten Mahāvidyās as diagnostic archetypes, and karma taught as the tradition\'s own psychology of cause and conditioning. Contested claims are labeled contested. "The texts attest this" and "a practitioner reports this" never quietly merge — the merger is how the weekend-workshop economy makes its money.',
+          'If you have sat in enough London workshops to recognize the pattern — an experience, a burst of insight, and by Thursday the same loop running — the missing piece was never another experience. It was a map with sources. That is what a consultation here provides, and what the free archive lets you audit before you spend a pound.',
+        ],
+      },
+      {
+        label: '02 · Working with Kaustubh from the UK',
+        heading: 'UK hours, honest pricing, nothing auto-billing',
+        paragraphs: [
+          'Propose two or three windows in your local time; sessions routinely land 12–2pm and 6–9pm UK time. The entry point most London seekers take is the free 30-minute discovery call; the paid tiers are the 60-minute Pattern Consultation ($29) and the 90-minute Shadow Dossier ($49, written summary included). Cards are charged in USD — the amount your bank shows in GBP depends on its conversion rate, which is stated plainly here because "mystery currency margins" belong to the industry this platform is skeptical of.',
+        ],
+        bullets: [
+          'Free 30-minute Archival Discovery call — the standard first step',
+          'Pattern Consultation — $29 / 60 minutes, one loop mapped in depth',
+          'Shadow Dossier — $49 / 90 minutes, written summary included',
+          'Ten Doors email course — free, ten days, the full framework first',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: 'Do you see London clients in person, or online only?',
+        a: 'Online only — by design, not as a compromise. The consultation is a reading and a working conversation; a room adds nothing to it. Sessions run over WhatsApp video in UK-friendly hours, which means the work fits a lunch break or an evening in the flat rather than a cross-town journey.',
+      },
+      {
+        q: 'What time do sessions run for the UK?',
+        a: 'You propose two or three windows; 12–2pm and 6–9pm UK time are both routine. The discovery call is thirty minutes and consultations run sixty or ninety. Scheduling and time-zone handling are this side\'s job.',
+      },
+      {
+        q: 'London\'s Tantra scene is busy — workshops, festivals, classes. Where does this fit?',
+        a: 'Most of that scene delivers experiences; this delivers a map with sources. They are not enemies — a practice you met at a workshop can be examined, graded, and sequenced properly inside the corpus here. What the session will not do is sell "Tantra" as a euphemism, promise neon transcendence, or initiate you in an evening; the tradition\'s own gates are respected, plainly.',
+      },
+      {
+        q: 'Do you charge in GBP?',
+        a: 'Pricing is displayed and charged in USD ($29 consultation, $49 dossier, free discovery call) because the payment stack is one system worldwide; your bank converts at its rate and shows you the GBP amount. It is stated here rather than hidden, because a platform this skeptical of astrology-stall pricing has no business introducing its own opaque fees.',
+      },
+      {
+        q: 'How do I start from London?',
+        a: 'The free 30-minute Archival Discovery call is the honest entry — no payment, no obligation, thirty minutes on where you are. If you would rather read first, the Akashic Archive and the Pattern Atlas are free, and the Ten Doors course teaches the whole framework in ten days. Start anywhere; nothing auto-bills.',
+      },
+    ],
+    related: [
+      { href: '/usa', label: 'KALKI worldwide' },
+      { href: '/aghori-tantra', label: 'The Aghorī Tantra Course' },
+      { href: '/library', label: 'The Library — free reading' },
+      { href: '/usa/new-york', label: 'New York City' },
+    ],
+    area: { city: 'London', country: 'United Kingdom' },
   },
 ];
 

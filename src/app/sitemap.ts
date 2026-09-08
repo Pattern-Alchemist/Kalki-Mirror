@@ -46,6 +46,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/usa/kundli-birth-chart-reading`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/usa/relationship-pattern-reading`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/usa/spiritual-consultation`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.8 },
+    // Vol. 5 #15 — the city surfaces (local-intent doors; London rides here
+    // with an honest International crumb — one layer, one conversion spine)
+    { url: `${base}/usa/austin`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.75 },
+    { url: `${base}/usa/new-york`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.75 },
+    { url: `${base}/usa/san-francisco-bay`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.75 },
+    { url: `${base}/usa/london`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.75 },
     { url: `${base}/aghori-tantra`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.75 },
     { url: `${base}/guhya`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/library`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.7 },
