@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
   buildFeedXml,
+  buildFeedJson,
   LETTER_LIMIT,
   escapeXml,
   type FeedLetter,
@@ -157,6 +158,60 @@ describe('buildFeedXml — letters as first-class citizens', () => {
 
   it('escapeXml covers all five XML specials', () => {
     expect(escapeXml(`&<>"'`)).toBe('&amp;&lt;&gt;&quot;&apos;');
+  });
+
+  // ── Vol. 5 #13 — JSON Feed 1.1: truth parity with the RSS gate ──
+
+  describe('buildFeedJson — same window, one serializer over', () => {
+    it('declares the JSON Feed 1.1 contract fields', () => {
+      const feed = buildFeedJson({ ...base, letters: [] });
+      expect(feed.version).toBe('https://jsonfeed.org/version/1.1');
+      expect(feed.feed_url).toBe('https://www.astrokalki.com/feed.json');
+      expect(feed.home_page_url).toBe('https://www.astrokalki.com');
+      expect(feed.title).toContain('KALKI');
+      expect(feed.language).toBe('en-us');
+    });
+
+    it('carries the SAME items as the RSS window — folios, patterns, letters, full body', () => {
+      const letter: FeedLetter = {
+        slug: PUBLIC_LETTER.slug,
+        subject: PUBLIC_LETTER.subject,
+        body: PUBLIC_LETTER.body,
+        sentAt: PUBLIC_LETTER.sentAt,
+      };
+      const feed = buildFeedJson({ ...base, letters: [letter] });
+      expect(feed.items.map((i) => i.url)).toEqual([
+        'https://www.astrokalki.com/archive/manasika-japa',
+        'https://www.astrokalki.com/patterns/the-witness',
+        'https://www.astrokalki.com/letters/the-mirror-does-not-flatter',
+      ]);
+      const letterItem = feed.items[2];
+      expect(letterItem.title).toBe('The mirror does not flatter');
+      expect(letterItem.content_text).toBe(PUBLIC_LETTER.body); // full body, not a headline
+      expect(letterItem.tags).toEqual(['Letter']);
+    });
+
+    it('dates are honest: letters carry sentAt, code-backed folios carry none', () => {
+      const feed = buildFeedJson({
+        ...base,
+        letters: [{ slug: 'l', subject: 'L', body: 'b', sentAt: new Date('2026-09-01T06:30:00.000Z') }],
+      });
+      expect(feed.items[0].date_published).toBeUndefined();
+      expect(feed.items[1].date_published).toBeUndefined();
+      expect(feed.items[2].date_published).toBe('2026-09-01T06:30:00.000Z');
+    });
+
+    it(`caps letters at ${LETTER_LIMIT} — parity with the RSS window`, () => {
+      const six: FeedLetter[] = Array.from({ length: 6 }, (_, i) => ({
+        slug: `letter-${i}`,
+        subject: `L${i}`,
+        body: 'b',
+        sentAt: new Date(),
+      }));
+      const feed = buildFeedJson({ ...base, letters: six });
+      const letterItems = feed.items.filter((i) => i.tags?.includes('Letter'));
+      expect(letterItems).toHaveLength(LETTER_LIMIT);
+    });
   });
 });
 

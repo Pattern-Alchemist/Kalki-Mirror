@@ -34,7 +34,20 @@ function utm(path: string, day: string): string {
 
 // ── email-safe HTML shell (dark, serif, matches the platform) ──
 
+// Vol. 5 #13 — Door 3+ carries a quiet footer link to the letters hub:
+// by day three the reader knows the voice; the archive (proof-of-life)
+// is the honest next step. Days 1–2, welcome and completion stay quiet.
+function lettersHubUrl(day: string): string | null {
+  const n = Number(day.replace(/^day-/, ""));
+  if (!Number.isFinite(n) || n < 3) return null;
+  return utm("/letters", day);
+}
+
 function shell(dayLabel: string, title: string, bodyHtml: string, day: string, email: string): string {
+  const lettersUrl = lettersHubUrl(day);
+  const lettersHtml = lettersUrl
+    ? `<br><a href="${lettersUrl}" style="color:#6b6154;">Every letter, archived</a> — the broadcast record.`
+    : "";
   return `<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title></head>
 <body style="margin:0;padding:0;background:#0d0b09;font-family:Georgia,'Times New Roman',serif;">
@@ -43,7 +56,7 @@ function shell(dayLabel: string, title: string, bodyHtml: string, day: string, e
 ${bodyHtml}
 <p style="font-size:14px;line-height:1.6;color:#a89880;margin:24px 0 0;">— Kaustubh</p>
 <hr style="border:none;border-top:1px solid #2a241d;margin:32px 0 16px;">
-<p style="font-size:12px;line-height:1.6;color:#6b6154;margin:0;">The 10 Doors · astrokalki.com<br><a href="${unsubscribeUrl(email)}" style="color:#6b6154;">Close this door</a> — one click, no questions, no friction.</p>
+<p style="font-size:12px;line-height:1.6;color:#6b6154;margin:0;">The 10 Doors · astrokalki.com${lettersHtml}<br><a href="${unsubscribeUrl(email)}" style="color:#6b6154;">Close this door</a> — one click, no questions, no friction.</p>
 </div></body></html>`;
 }
 
@@ -82,9 +95,12 @@ function listenLineText(day: number): string {
   return `Prefer to listen? Narrated edition: ${url}`;
 }
 
-function textFooter(email: string): string {
+function textFooter(email: string, day?: string): string {
+  const lettersUrl = day ? lettersHubUrl(day) : null;
   return `———
-The 10 Doors · astrokalki.com
+The 10 Doors · astrokalki.com${
+    lettersUrl ? `\nEvery letter, archived: ${lettersUrl}` : ""
+  }
 Close this door (unsubscribe): ${unsubscribeUrl(email)}`;
 }
 
@@ -255,7 +271,7 @@ function renderDoor(d: DoorCopy, email: string): CourseEmail {
     "",
     "— Kaustubh",
     "",
-    textFooter(email),
+    textFooter(email, day),
   ]
     .filter((s) => s !== "")
     .join("\n");

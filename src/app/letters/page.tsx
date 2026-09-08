@@ -19,6 +19,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { db } from '@/lib/db';
 import { pageAlternates } from '@/lib/utils/metadata';
+import CaptureBand from '@/components/capture/CaptureBand';
 
 export const dynamic = 'force-dynamic';
 
@@ -72,6 +73,19 @@ export default async function LettersPage() {
           </header>
 
           <div className="divider-subtle mb-12" />
+
+          {/* Vol. 5 #13 — /letters had no capture. The house capture band
+              (honeypot, attribution, welcome + one-click unsub posture)
+              posts to the existing course subscribe route — one list,
+              one brain; the letters hub just offers the door. */}
+          <div className="mb-14">
+            <CaptureBand
+              topic="letters-hub"
+              kicker="The letters, in your inbox"
+              heading="Every letter lands here — get it first by email."
+              note="Practice notes and mirror observations from the Archive — one letter at a time, unsubscribe in one click, no friction."
+            />
+          </div>
 
           {letters.length === 0 ? (
             <div className="glass-chip px-6 py-10 text-center">
