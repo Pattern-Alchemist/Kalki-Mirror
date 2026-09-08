@@ -9,6 +9,7 @@ import {
   setPaymentWaived,
   saveOutcome,
   getFollowUpsDue,
+  nudgeTestimonialEmail,
   type ConsultationRow,
 } from "./actions";
 
@@ -262,6 +263,14 @@ export default function ConsultationsPage() {
     [],
   );
 
+  // Vol. 5 #14 — the manual leg of the testimonial flywheel: send the ask now.
+  const nudgeTestimonialFor = useCallback(
+    async (lead: ConsultationRow): Promise<{ success: boolean; error?: string }> => {
+      return nudgeTestimonialEmail(lead.id);
+    },
+    [],
+  );
+
   const deleteLead = useCallback(
     async (lead: ConsultationRow) => {
       setSavingStatus(true);
@@ -487,6 +496,7 @@ export default function ConsultationsPage() {
           onSavePaymentWaived={() => savePaymentWaived(selected)}
           onSaveOutcome={(input) => saveOutcomeFor(selected, input)}
           onDelete={() => deleteLead(selected)}
+          onNudgeTestimonial={nudgeTestimonialFor}
         />
       )}
     </div>
@@ -704,6 +714,7 @@ function LeadDrawer({
   onSavePaymentWaived,
   onSaveOutcome,
   onDelete,
+  onNudgeTestimonial,
 }: {
   lead: ConsultationRow;
   saving: boolean;
@@ -714,7 +725,11 @@ function LeadDrawer({
   onSavePaymentWaived: () => void;
   onSaveOutcome: (input: OutcomeInput) => void;
   onDelete: () => void;
+  onNudgeTestimonial: (lead: ConsultationRow) => Promise<{ success: boolean; error?: string }>;
 }) {
+  // Vol. 5 #14 — nudge state (the ask-for-a-testimonial email button)
+  const [nudgeBusy, setNudgeBusy] = useState(false);
+  const [nudgeNotice, setNudgeNotice] = useState("");
   const [notes, setNotes] = useState(lead.notes ?? "");
   const [utr, setUtr] = useState(lead.utrRef ?? "");
   // Render-time state adjustment (react-hooks/set-state-in-effect): reset the
@@ -727,6 +742,7 @@ function LeadDrawer({
     setPrevNotes(lead.notes);
     setNotes(lead.notes ?? "");
     setUtr(lead.utrRef ?? "");
+    setNudgeNotice("");
   }
 
   useEffect(() => {
@@ -822,6 +838,28 @@ function LeadDrawer({
             </svg>
             Follow up on WhatsApp
           </a>
+        )}
+
+        {/* Vol. 5 #14 — testimonial ask: the manual leg of the flywheel.
+            COMPLETED leads with an email get the one-tap ask; the scheduled
+            t+14d leg runs via /api/cron/testimonial-followup. */}
+        {lead.status === "COMPLETED" && lead.email && (
+          <div className="mt-3">
+            <button
+              onClick={async () => {
+                setNudgeBusy(true);
+                setNudgeNotice("");
+                const res = await onNudgeTestimonial(lead);
+                setNudgeNotice(res.success ? "Ask sent — the reply lands in /admin/testimonials." : res.error ?? "Send failed.");
+                setNudgeBusy(false);
+              }}
+              disabled={nudgeBusy}
+              className="w-full rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-2.5 text-sm font-medium text-amber-300 transition-colors hover:bg-amber-500/20 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {nudgeBusy ? "Sending ask…" : "Ask for a testimonial (email)"}
+            </button>
+            {nudgeNotice && <p className="mt-1.5 text-xs text-zinc-400">{nudgeNotice}</p>}
+          </div>
         )}
 
         {/* Intake */}

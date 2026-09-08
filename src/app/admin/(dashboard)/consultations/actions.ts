@@ -439,3 +439,45 @@ export async function getFollowUpsDue(take: number = 20) {
     },
   });
 }
+
+/**
+ * Vol. 5 #14 — the testimonial nudge. One button on the archivist's
+ * queue: sends the t+14d follow-up email NOW (the cron handles the
+ * scheduled leg; this is the manual leg for "they were happy, ask
+ * them today"). Re-nudges are honest re-sends: the ledger row upserts
+ * (channel 'manual'), every send audited.
+ */
+export async function nudgeTestimonialEmail(
+  consultationId: string
+): Promise<{ success: boolean; error?: string }> {
+  await requireAdmin();
+
+  const consultation = await db.consultation.findUnique({
+    where: { id: consultationId },
+    select: { status: true },
+  });
+  if (!consultation) return { success: false, error: "Consultation not found." };
+  if (consultation.status === "CANCELLED") {
+    return { success: false, error: "A cancelled consultation has nothing to ask about." };
+  }
+
+  const { sendTestimonialFollowUp } = await import("@/lib/ops/testimonial-followup");
+  const res = await sendTestimonialFollowUp(consultationId, {
+    force: true,
+    channel: "manual",
+    sentBy: "archivist",
+  });
+
+  if (!res.ok) {
+    return {
+      success: false,
+      error:
+        res.skipped === "no_email"
+          ? "This lead has no email address — use the WhatsApp ask instead."
+          : `Send failed: ${res.error ?? res.skipped ?? "unknown"}`,
+    };
+  }
+
+  revalidatePath("/admin/consultations");
+  return { success: true };
+}

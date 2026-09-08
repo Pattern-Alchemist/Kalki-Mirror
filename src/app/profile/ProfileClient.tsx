@@ -384,9 +384,11 @@ export default function ProfileClient({
           </a>
         </motion.section>
 
-        {/* ── Testimony (Vol. 4 #5) ── */}
+        {/* ── Testimony (Vol. 4 #5) — #testimonial anchor is the deep-link
+                target of the t+14d follow-up email (Vol. 5 #14) ── */}
         <motion.section
-          className="border border-white/10 rounded-lg p-6 bg-white/[0.02]"
+          id="testimonial"
+          className="border border-white/10 rounded-lg p-6 bg-white/[0.02] scroll-mt-24"
           initial={fadeInUp.hidden}
           whileInView={fadeInUp.visible}
           viewport={{ once: true }}

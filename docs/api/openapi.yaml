@@ -1263,6 +1263,15 @@ paths:
         '200':
           description: OK (shape documented in the route module)
 
+  /api/cron/testimonial-followup:
+    get:
+      operationId: apiCronTestimonialFollowupGet
+      tags: [Cron]
+      summary: Send the t+14d testimonial ask to COMPLETED consultations (once each, ledger upserted by the manual nudge); deep-links the /profile intake form (Vol. 5 #14). ?dryRun=1 lists due candidates and sends nothing. CRON_SECRET gated.
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
   /api/cron/cleanup:
     get:
       operationId: apiCronCleanupGet

@@ -59,7 +59,8 @@ export type CronName =
   | "chain-health"
   | "daily-digest"
   | "cleanup"
-  | "course-send";
+  | "course-send"
+  | "testimonial-followup";
 
 export const CRON_LEDGER_MAX_AGE_H = 26;
 
@@ -71,6 +72,7 @@ export const REGISTERED_CRONS: Record<CronName, { schedule: string; description:
   "daily-digest": { schedule: "30 2 * * *", description: "Founder ops digest email" },
   "cleanup": { schedule: "45 3 * * *", description: "TTL cleanup (cache, sessions, events)" },
   "course-send": { schedule: "30 14 * * *", description: "Email course door deliveries" },
+  "testimonial-followup": { schedule: "25 2 * * *", description: "t+14d testimonial ask after COMPLETED consultations (Vol. 5 #14)" },
 };
 
 export interface CronRunRow {

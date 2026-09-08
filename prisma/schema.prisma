@@ -41,42 +41,42 @@ enum UserRole {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  name          String?
-  passwordHash  String?   // For credentials-based admin login
-  role          UserRole  @default(USER)
-  tier          String    @default("prithvi") // prithvi, jal, agni, akash
-  natalMoonLng  Float?   // Vedic Moon longitude at birth (0-360)
-  birthDate     DateTime?
-  birthPlace    String?
-  latitude      Float?    // For Brahma Muhūrta computation (The Pulse)
-  longitude     Float?    // For Brahma Muhūrta computation (The Pulse)
-  timezone      String?   // IANA timezone e.g. "Asia/Kolkata" (The Pulse)
+  id                   String    @id @default(cuid())
+  email                String    @unique
+  name                 String?
+  passwordHash         String? // For credentials-based admin login
+  role                 UserRole  @default(USER)
+  tier                 String    @default("prithvi") // prithvi, jal, agni, akash
+  natalMoonLng         Float? // Vedic Moon longitude at birth (0-360)
+  birthDate            DateTime?
+  birthPlace           String?
+  latitude             Float? // For Brahma Muhūrta computation (The Pulse)
+  longitude            Float? // For Brahma Muhūrta computation (The Pulse)
+  timezone             String? // IANA timezone e.g. "Asia/Kolkata" (The Pulse)
   lastTransmissionDate DateTime? // Idempotency guard — prevents double-scheduling
-  invitedByCode String?   // The Golden Key used to enter
-  goldKeysRemaining Int     @default(0) // Remaining keys to transmit
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  invitedByCode        String? // The Golden Key used to enter
+  goldKeysRemaining    Int       @default(0) // Remaining keys to transmit
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
 
   // A1: 2FA/TOTP fields
-  twoFactorSecret   String?   // Encrypted TOTP secret (base32)
-  twoFactorEnabled  Boolean  @default(false)
+  twoFactorSecret      String? // Encrypted TOTP secret (base32)
+  twoFactorEnabled     Boolean @default(false)
   twoFactorBackupCodes String? // JSON array of backup codes
 
   // Vol. 2 #12: when the user was granted ADMIN/SUPERADMIN (backfilled to
   // the migration run for pre-existing admins). Anchors the 2FA grace
   // window — see src/lib/admin/two-factor-policy.ts.
-  elevatedAt        DateTime?
+  elevatedAt DateTime?
 
   // Relations
-  streaks       SadhanaStreak[]
+  streaks        SadhanaStreak[]
   resolutions    PatternResolution[]
-  keysGenerated InviteCode[]  @relation("GeneratedKeys")
-  keysUsed      InviteUsage[]    @relation("UsedKeys")
+  keysGenerated  InviteCode[]        @relation("GeneratedKeys")
+  keysUsed       InviteUsage[]       @relation("UsedKeys")
   activeSessions ActiveSession[]
   notifications  AdminNotification[]
-  memberships   Membership[]
+  memberships    Membership[]
 }
 
 // ============================================================
@@ -87,16 +87,16 @@ model User {
 // ============================================================
 
 model SadhanaStreak {
-  id        String   @id @default(cuid())
-  userId    String
-  practice  String   // Practice slug (e.g. "nadi-shuddhi-basic")
-  practiceName String  // Display name (e.g. "Nadi Suddhi")
-  currentStreak Int    @default(0)
-  longestStreak  Int    @default(0)
-  totalDays    Int    @default(0)
+  id              String    @id @default(cuid())
+  userId          String
+  practice        String // Practice slug (e.g. "nadi-shuddhi-basic")
+  practiceName    String // Display name (e.g. "Nadi Suddhi")
+  currentStreak   Int       @default(0)
+  longestStreak   Int       @default(0)
+  totalDays       Int       @default(0)
   lastPracticedAt DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -109,15 +109,15 @@ model SadhanaStreak {
 // ============================================================
 
 model PatternResolution {
-  id          String   @id @default(cuid())
-  userId      String
-  patternSlug String   // e.g. "the-rescuer"
-  patternName String   // e.g. "THE RESCUER"
-  recognizedAt DateTime // When the pattern was first identified
-  resolvedAt   DateTime // When the subject marked it integrated
-  daysToResolve Int     // How long the integration took
-  notes       String?  // The subject's own summary
-  createdAt   DateTime @default(now())
+  id            String   @id @default(cuid())
+  userId        String
+  patternSlug   String // e.g. "the-rescuer"
+  patternName   String // e.g. "THE RESCUER"
+  recognizedAt  DateTime // When the pattern was first identified
+  resolvedAt    DateTime // When the subject marked it integrated
+  daysToResolve Int // How long the integration took
+  notes         String? // The subject's own summary
+  createdAt     DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -132,18 +132,18 @@ model PatternResolution {
 // ============================================================
 
 model InviteCode {
-  id          String   @id @default(cuid())
-  code        String   @unique // The actual key (e.g. "KALKI-7X3R-M9VK")
-  createdBy   String   // User ID who generated it
-  tierGranted String   @default("jal") // Tier this key unlocks
-  maxUses    Int      @default(1)
-  usesUsed   Int      @default(0)
+  id          String    @id @default(cuid())
+  code        String    @unique // The actual key (e.g. "KALKI-7X3R-M9VK")
+  createdBy   String // User ID who generated it
+  tierGranted String    @default("jal") // Tier this key unlocks
+  maxUses     Int       @default(1)
+  usesUsed    Int       @default(0)
   expiresAt   DateTime?
-  active      Boolean  @default(true)
-  createdAt   DateTime @default(now())
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
 
-  creator  User          @relation("GeneratedKeys", fields: [createdBy], references: [id])
-  usages   InviteUsage[]
+  creator User          @relation("GeneratedKeys", fields: [createdBy], references: [id])
+  usages  InviteUsage[]
 
   @@index([code])
 }
@@ -161,11 +161,11 @@ model InviteCode {
 
 model FolioChunk {
   id        String  @id @default(cuid())
-  slug      String  // siddhi folio slug (e.g. "nadi-shuddhi", "bagalamukhi-sadhana")
+  slug      String // siddhi folio slug (e.g. "nadi-shuddhi", "bagalamukhi-sadhana")
   archetype String? // linked archetype id if applicable
-  section   String  // summary | benefits | warnings | mantra | lineage | bibliography
-  caution   String  // OPEN | MODERATE | HIGH | SEALED
-  text      String  // the actual chunk text
+  section   String // summary | benefits | warnings | mantra | lineage | bibliography
+  caution   String // OPEN | MODERATE | HIGH | SEALED
+  text      String // the actual chunk text
   embedding String  @default("[]") // JSON array of floats; empty = use keyword fallback
 
   @@index([slug])
@@ -175,26 +175,26 @@ model FolioChunk {
 
 model Membership {
   id        String    @id @default(cuid())
-  userId    String?   // console user granted the tier — null until grant (seeker may have no account yet)
+  userId    String? // console user granted the tier — null until grant (seeker may have no account yet)
   email     String
   name      String    @default("")
   phone     String    @default("")
-  plan      String    // plan slug from src/lib/data/pricing.ts (jal | agni | akash)
-  tier      String    // granted tier: prithvi | jal | agni | akash
+  plan      String // plan slug from src/lib/data/pricing.ts (jal | agni | akash)
+  tier      String // granted tier: prithvi | jal | agni | akash
   status    String    @default("PENDING") // PENDING | ACTIVE | CANCELLED
-  utrRef    String?   // UPI reference if paid via the manual rail
+  utrRef    String? // UPI reference if paid via the manual rail
   grantedAt DateTime?
 
   // Vol. 2 #5 — renewal ledger. Memberships had no renewal concept; the
   // monthly/quarterly cycle is the LTV engine. The archivist sets the
   // cycle when activating (or leaves it null for one-time/lifetime grants
   // like prithvi or comped access); the digest lists what's coming due.
-  renewalCycle String?   // MONTHLY | QUARTERLY | null (no auto-renewal)
-  nextDueAt    DateTime? // when the next UPI payment is expected
+  renewalCycle  String? // MONTHLY | QUARTERLY | null (no auto-renewal)
+  nextDueAt     DateTime? // when the next UPI payment is expected
   lastRenewedAt DateTime?
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
@@ -211,7 +211,7 @@ model Membership {
 
 model Testimonial {
   id          String    @id @default(cuid())
-  quote       String    // the seeker's words, lightly copy-edited with consent
+  quote       String // the seeker's words, lightly copy-edited with consent
   name        String    @default("") // display name ("Ananya M.") — never full identity without consent
   context     String    @default("") // what they did: "Pattern Consultation", "3-month japa guidance"
   location    String    @default("") // optional texture: "Mumbai", "Austin, TX"
@@ -229,13 +229,13 @@ model Testimonial {
 }
 
 model InviteUsage {
-  id        String   @id @default(cuid())
-  codeId    String
-  usedBy   String // User ID who used the key
-  usedAt    DateTime @default(now())
+  id     String   @id @default(cuid())
+  codeId String
+  usedBy String // User ID who used the key
+  usedAt DateTime @default(now())
 
-  code  InviteCode @relation(fields: [codeId], references: [id], onDelete: Cascade)
-  user  User       @relation("UsedKeys", fields: [usedBy], references: [id], onDelete: Cascade)
+  code InviteCode @relation(fields: [codeId], references: [id], onDelete: Cascade)
+  user User       @relation("UsedKeys", fields: [usedBy], references: [id], onDelete: Cascade)
 
   @@index([codeId])
   @@index([usedBy])
@@ -249,11 +249,11 @@ model InviteUsage {
 model AdminAuditLog {
   id        String   @id @default(cuid())
   actorId   String
-  action    String   // e.g. "user.tier.upgrade", "content.publish", "key.revoke"
-  entity    String   // e.g. "User", "InviteCode", "ContentEntry"
+  action    String // e.g. "user.tier.upgrade", "content.publish", "key.revoke"
+  entity    String // e.g. "User", "InviteCode", "ContentEntry"
   entityId  String?
-  before    String?  // JSON snapshot before the change
-  after     String?  // JSON snapshot after the change
+  before    String? // JSON snapshot before the change
+  after     String? // JSON snapshot after the change
   ipHash    String?
   createdAt DateTime @default(now())
 
@@ -268,21 +268,21 @@ model AdminAuditLog {
 // ============================================================
 
 model ContentEntry {
-  id           String    @id @default(cuid())
-  type         String    // practice | archetype | pattern | research | codex
-  slug         String    @unique
-  title        String
-  excerpt      String?
-  body         String    @default("")
-  status       String    @default("DRAFT") // DRAFT | IN_REVIEW | PUBLISHED | ARCHIVED
-  minTier      String    @default("prithvi")
-  caution      String    @default("OPEN") // OPEN | MODERATE | HIGH | SEALED
-  heroAssetId  String?
-  publishedAt  DateTime?
-  createdById  String
-  updatedById  String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id          String    @id @default(cuid())
+  type        String // practice | archetype | pattern | research | codex
+  slug        String    @unique
+  title       String
+  excerpt     String?
+  body        String    @default("")
+  status      String    @default("DRAFT") // DRAFT | IN_REVIEW | PUBLISHED | ARCHIVED
+  minTier     String    @default("prithvi")
+  caution     String    @default("OPEN") // OPEN | MODERATE | HIGH | SEALED
+  heroAssetId String?
+  publishedAt DateTime?
+  createdById String
+  updatedById String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([type, status])
   @@index([minTier, caution])
@@ -294,39 +294,40 @@ model ContentEntry {
 
 model Consultation {
   id           String    @id @default(cuid())
-  userId       String?   // Linked user if authenticated
+  userId       String? // Linked user if authenticated
   name         String
   email        String    @default("")
   phone        String    @default("") // WhatsApp / contact number
-  request      String    // What they're seeking
+  request      String // What they're seeking
   status       String    @default("NEW") // NEW | SCHEDULED | COMPLETED | CANCELLED
   scheduledFor DateTime?
-  notes        String?   // Internal archivist notes
+  notes        String? // Internal archivist notes
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
   // Outcome tracking (added post-consultation by archivist)
-  patternDiagnosis  String?   // JSON string of diagnosed pattern slugs e.g. '["the-rescuer","the-controller"]'
-  prescribedSequence String? // Sequence slug if a sequence was assigned
-  prescribedSiddhis String? // JSON string of recommended siddhi slugs
-  sessionNotes     String? // Archivist's notes from the session
-  outcome          String?   // PENDING | IN_PROGRESS | RESOLVED | DISCONTINUED
-  followUpDate     DateTime?
-  completedAt      DateTime?
+  patternDiagnosis    String? // JSON string of diagnosed pattern slugs e.g. '["the-rescuer","the-controller"]'
+  prescribedSequence  String? // Sequence slug if a sequence was assigned
+  prescribedSiddhis   String? // JSON string of recommended siddhi slugs
+  testimonialFollowUp TestimonialFollowUp?
+  sessionNotes        String? // Archivist's notes from the session
+  outcome             String? // PENDING | IN_PROGRESS | RESOLVED | DISCONTINUED
+  followUpDate        DateTime?
+  completedAt         DateTime?
 
   // ── Attribution layer (written once at submit; never edited afterwards) ──
   // Flat columns power the pipeline view's chips and rollups; the full
   // first-touch/last-touch snapshot is preserved for drill-down.
-  utmSource       String?   // utm_source | referral host | 'direct'
-  utmMedium       String?   // utm_medium | 'referral' | 'cpc' | 'direct'
+  utmSource       String? // utm_source | referral host | 'direct'
+  utmMedium       String? // utm_medium | 'referral' | 'cpc' | 'direct'
   utmCampaign     String?
   utmTerm         String?
   utmContent      String?
-  clickId         String?   // gclid | fbclid | msclkid | ttclid
-  country         String?   // ISO-3166 alpha-2 from Vercel edge (x-vercel-ip-country); captured via kr_country cookie / submit header — geo rollups without UTM tags
-  referrerDomain  String?   // rollup-ready domain of document.referrer
-  landingPath     String?   // first-touch path+query on astrokalki.com
-  attributionJson String?   // full AttributionSnapshot (first/last/sessions)
+  clickId         String? // gclid | fbclid | msclkid | ttclid
+  country         String? // ISO-3166 alpha-2 from Vercel edge (x-vercel-ip-country); captured via kr_country cookie / submit header — geo rollups without UTM tags
+  referrerDomain  String? // rollup-ready domain of document.referrer
+  landingPath     String? // first-touch path+query on astrokalki.com
+  attributionJson String? // full AttributionSnapshot (first/last/sessions)
 
   // ── UPI payment reconciliation (Tier-1 roadmap; manual rail by design) ──
   // UNPAID → CLAIMED (seeker hit "I've paid — confirm on WhatsApp") →
@@ -334,8 +335,8 @@ model Consultation {
   // manual rail means reconciliation is a human act — these columns are
   // its ledger.
   paymentState   String    @default("UNPAID")
-  paymentSession String?   // PAID_SESSIONS slug the seeker chose
-  utrRef         String?   // UPI reference / UTR quoted by the seeker
+  paymentSession String? // PAID_SESSIONS slug the seeker chose
+  utrRef         String? // UPI reference / UTR quoted by the seeker
   paidAt         DateTime?
 
   // Vol. 2 #7 — structured pattern selection from wizard step 2 (slugs,
@@ -358,7 +359,7 @@ model Consultation {
 model ActiveSession {
   id        String   @id @default(cuid())
   userId    String
-  tokenHash String   // Hashed JWT jti or session identifier
+  tokenHash String // Hashed JWT jti or session identifier
   ip        String?
   userAgent String?
   lastSeen  DateTime @default(now())
@@ -377,12 +378,12 @@ model ActiveSession {
 
 model AdminNotification {
   id        String   @id @default(cuid())
-  userId    String?  // Null = broadcast to all admins
+  userId    String? // Null = broadcast to all admins
   title     String
   body      String
   type      String   @default("info") // info | warning | success | error
   read      Boolean  @default(false)
-  href      String?  // Optional navigation link
+  href      String? // Optional navigation link
   createdAt DateTime @default(now())
 
   user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -396,16 +397,16 @@ model AdminNotification {
 // ============================================================
 
 model Webhook {
-  id        String   @id @default(cuid())
-  url       String
-  events    String   // JSON array of event types
-  active    Boolean  @default(true)
-  secret    String?  // HMAC signing secret
+  id              String    @id @default(cuid())
+  url             String
+  events          String // JSON array of event types
+  active          Boolean   @default(true)
+  secret          String? // HMAC signing secret
   lastTriggeredAt DateTime?
-  lastStatus    String? // last HTTP status code
-  createdBy String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  lastStatus      String? // last HTTP status code
+  createdBy       String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   @@index([active])
 }
@@ -419,13 +420,13 @@ model Webhook {
 
 model PracticeSession {
   id          String   @id @default(cuid())
-  userId      String   @default("anonymous")  // Future auth support
-  siddhiSlug  String   // Practice slug
-  siddhiName  String   // Display name
-  durationMin Int      // Minutes practiced
-  journal     String?  // Optional journal entry
-  moodBefore  Int?     // 1-5 scale
-  moodAfter   Int?     // 1-5 scale
+  userId      String   @default("anonymous") // Future auth support
+  siddhiSlug  String // Practice slug
+  siddhiName  String // Display name
+  durationMin Int // Minutes practiced
+  journal     String? // Optional journal entry
+  moodBefore  Int? // 1-5 scale
+  moodAfter   Int? // 1-5 scale
   createdAt   DateTime @default(now())
 
   @@index([userId, siddhiSlug, createdAt])
@@ -443,10 +444,10 @@ model PracticeSession {
 // ============================================================
 
 model EmailSubscriber {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  status    String   @default("active") // active | unsubscribed
-  doorDay   Int?     // which Door (1-10) the signup referenced; null = generic entry
+  id      String @id @default(cuid())
+  email   String @unique
+  status  String @default("active") // active | unsubscribed
+  doorDay Int? // which Door (1-10) the signup referenced; null = generic entry
 
   // ── Attribution layer (same convention as Consultation) ──
   utmSource       String?
@@ -455,10 +456,10 @@ model EmailSubscriber {
   utmTerm         String?
   utmContent      String?
   clickId         String?
-  country         String?   // ISO-3166 alpha-2 (kr_country cookie / edge header)
+  country         String? // ISO-3166 alpha-2 (kr_country cookie / edge header)
   referrerDomain  String?
   landingPath     String?
-  attributionJson String?   // full AttributionSnapshot (first/last/sessions)
+  attributionJson String? // full AttributionSnapshot (first/last/sessions)
 
   // Vol. 2 #18 — personal share-link attribution. The referrer's share
   // token (namespaced HMAC over THEIR email) lands here when a newcomer
@@ -483,12 +484,12 @@ model EmailSubscriber {
 // non-opener segment without touching the subscriber table's shape.
 
 model EmailSend {
-  id      String  @id @default(cuid())
-  emailId String  @unique // Resend email id from POST /emails response
-  email   String  // recipient address (denormalized for direct joins)
-  kind    String  // welcome | door | completion | ops
-  doorDay Int?    // set when kind = "door"
-  subject String  @default("")
+  id      String   @id @default(cuid())
+  emailId String   @unique // Resend email id from POST /emails response
+  email   String // recipient address (denormalized for direct joins)
+  kind    String // welcome | door | completion | ops
+  doorDay Int? // set when kind = "door"
+  subject String   @default("")
   sentAt  DateTime @default(now())
 
   @@index([email])
@@ -497,11 +498,11 @@ model EmailSend {
 
 model EmailEvent {
   id         String   @id @default(cuid())
-  emailId    String   // Resend email id (correlates to EmailSend.emailId)
-  email      String   // recipient address from the webhook payload
-  type       String   // email.sent | email.delivered | email.opened | email.clicked | email.bounced | email.complained
-  url        String?  // click target when type = email.clicked
-  payload    String?  // raw signed webhook JSON (truncated) for forensics
+  emailId    String // Resend email id (correlates to EmailSend.emailId)
+  email      String // recipient address from the webhook payload
+  type       String // email.sent | email.delivered | email.opened | email.clicked | email.bounced | email.complained
+  url        String? // click target when type = email.clicked
+  payload    String? // raw signed webhook JSON (truncated) for forensics
   occurredAt DateTime @default(now())
 
   @@index([emailId])
@@ -542,7 +543,7 @@ model DraftLead {
   id        String    @id @default(cuid())
   name      String    @default("")
   phone     String    @default("") // normalized digits — the dedup key
-  step      Int       @default(0)  // wizard step reached (1-based)
+  step      Int       @default(0) // wizard step reached (1-based)
   payload   String    @default("{}") // full wizard snapshot JSON
   status    String    @default("OPEN") // OPEN | CONVERTED | DISMISSED
   resumedAt DateTime? // last client-side re-save on an existing draft
@@ -563,7 +564,7 @@ model DraftLead {
 model SynthesisCache {
   id        String   @id @default(cuid())
   cacheKey  String   @unique // sha256(query+patterns+folioSlugs+tier)
-  output    String   // JSON-serialized SynthesisOutput (validated contract)
+  output    String // JSON-serialized SynthesisOutput (validated contract)
   model     String   @default("") // OpenRouter model that produced it
   hits      Int      @default(0)
   createdAt DateTime @default(now())
@@ -580,7 +581,7 @@ model SynthesisCache {
 // render the "most common companions" line. Zero rows → folio renders
 // nothing, exactly the pre-feature behaviour.
 model PatternPairAffinity {
-  slugA     String   // canonical (alphabetical) — slugA < slugB
+  slugA     String // canonical (alphabetical) — slugA < slugB
   slugB     String
   pairCount Int      @default(0) // co-occurrences across submissions
   updatedAt DateTime @updatedAt
@@ -615,7 +616,7 @@ model OpsState {
 // push (Prisma 7 P1013 on libsql://). Rows are pruned per-key per request;
 // the cleanup cron removes orphans older than an hour.
 model RateLimitHit {
-  id  BigInt  @id @default(autoincrement()) // sqlite AUTOINCREMENT; raw inserts omit it
+  id  BigInt @id @default(autoincrement()) // sqlite AUTOINCREMENT; raw inserts omit it
   key String
   ts  BigInt // unix ms
 
@@ -630,12 +631,26 @@ model RateLimitHit {
 // daily digest alerts when any registered cron goes silent > 26h.
 model CronRun {
   id         String   @id @default(cuid())
-  name       String   // indexnow | cred-audit | chain-health | daily-digest | cleanup | course-send
+  name       String // indexnow | cred-audit | chain-health | daily-digest | cleanup | course-send | testimonial-followup
   startedAt  DateTime
   durationMs Int
   items      Int?
-  outcome    String   // ok | error
+  outcome    String // ok | error
   error      String?
 
   @@index([name, startedAt])
+}
+
+// Vol. 5 #14 — the testimonial flywheel's send ledger. One row per
+// consultation that received the t+14d follow-up (channel: cron | manual
+// nudge); the unique consultationId makes the cron idempotent and the
+// manual re-nudge an upsert. The remote table self-heals via DDL in
+// src/lib/ops/testimonial-followup.ts (the CronRun pattern).
+model TestimonialFollowUp {
+  id             String       @id @default(cuid())
+  consultationId String       @unique
+  sentAt         DateTime     @default(now())
+  channel        String       @default("cron") // cron | manual
+  sentBy         String       @default("system") // system | archivist email/name
+  consultation   Consultation @relation(fields: [consultationId], references: [id])
 }
