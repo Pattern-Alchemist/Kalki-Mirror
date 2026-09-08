@@ -45,18 +45,14 @@ SILENT=$(curl -s -m 90 -X POST "${BASE_URL}/api/ai/ask" -H "Content-Type: applic
 OKS=$(printf '%s' "$SILENT" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(1 if d.get("grounded") is False and d.get("reason") in ("ungrounded_output","corpus_silent") else 0)' 2>/dev/null || echo 0)
 check "out-of-corpus query → honest silence" "$OKS" "$(printf '%s' "$SILENT" | head -c 120)"
 
-# 4. rate limit: the shared distributed backend engages. Burst the
-#    LIGHTWEIGHT transit route (20/min, same Turso-backed limiter) —
-#    bursting /ask itself is wrong: 6 sequential AI calls span past the
-#    60s window, so old hits are legitimately pruned and nothing 429s.
-RL=0
-CODES=""
-for i in $(seq 1 22); do
-  C=$(curl -s -o /dev/null -w '%{http_code}' -m 15 "${BASE_URL}/api/transits")
-  CODES="$CODES $C"
-  [ "$C" = "429" ] && RL=1
-done
-check "rate limit backend engages (burst /api/transits 21+ calls)" "$RL" "codes:$CODES"
+# 4. rate limit: the shared distributed backend engages. The health
+#    endpoint runs a one-shot self-test through the EXACT production
+#    path with a stable key (external bursts can't do this — the runner's
+#    egress IP may rotate, making every call a fresh key). Assert ok=true
+#    and a distributed backend label.
+ST=$(curl -s -m 30 "${BASE_URL}/api/health" | python3 -c 'import json,sys; d=json.load(sys.stdin); st=d.get("rateLimitSelfTest") or {}; print(st.get("ok"), st.get("backend"), st.get("error") or "-")' 2>/dev/null || echo "err - -")
+OKRL=$(printf '%s' "$ST" | python3 -c 'import sys; parts=sys.stdin.read().split(); print(1 if len(parts)>=2 and parts[0]=="True" and parts[1] in ("turso","upstash","vercel-kv") else 0)' 2>/dev/null || echo 0)
+check "limiter self-test ok + distributed backend" "$OKRL" "selfTest=$ST"
 
 if [ "$FAIL" = "0" ]; then say "SMOKE /ask: ALL PASS"; else say "SMOKE /ask: FAILURES — investigate before promoting"; fi
 exit "$FAIL"

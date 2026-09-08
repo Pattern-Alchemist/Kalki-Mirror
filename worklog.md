@@ -1166,3 +1166,24 @@ Work Log:
 Stage Summary:
 - Vol. 4 closed with a clean 54/54 production sweep; Vol. 5 enlisted with its first tier written by the week's two silent-rot incidents (free-tier chain delisting, stale vault credential).
 - Founder-gated carry-overs (unchanged, NOT counted): TOTP before ~2026-09-12, EMBED_API_KEY swap (rehearsed), GSC OAuth (+ Turso token rotation in the vault).
+
+---
+Task ID: vol5-week-a
+Agent: Z (Super Z, main session)
+Task: Founder: "go" — Vol. 5 Week A (1 → 2 → 16 → 3 → 4), full workflow per item.
+
+Work Log:
+- #1 chain-health: src/lib/ai/chain-health.ts probes EVERY resolved model in parallel with the real-size /ask contract prompt (the ling-sante lesson: toy prompts lie); judgeProbeCompletion treats honest grounded=false silence as a WORKING model. /api/cron/chain-health (CRON_SECRET, dryRun) → OpsState; war-room 'AI chain — which model rots' panel; digest alert (dead/degraded-naming/stale>26h); cron 15 2 * * *.
+- #2 cred-audit: src/lib/ops/cred-audit.ts pings Turso/OpenRouter/Resend/Cloudinary verify endpoints; /api/cron/cred-audit (10 2 * * *); war-room panel; digest alert; scripts/audit-credentials.sh. LIVE FINDING on day one: cloudinary verdict 'unconfigured' → CLOUDINARY_URL does not reach the function runtime on Vercel (media library runs on the same env — founder dashboard action); compound-URL parsing added (2 tests).
+- #16 ask-contract: BUG the gate caught — parseAskOutput claimed trim defends against trailing punctuation but only stripped whitespace ('pranava-japa.' silenced valid answers) → fixed (strip trailing punct, strictness intact). Cache round trip pinned against the real local store (store→lookup→hit→breach→miss) with self-provisioning beforeAll. scripts/smoke-ask.sh = the post-deploy drill.
+- #3 rate-limit: libSQL backend in the chain (upstash→kv→turso→memory), 4-statement batch (prune→insert→count→oldest), circuit breaker, honest activation (remote-only), RateLimitHit model (P1012 → autoincrement id). LIVE PROOF: /api/health self-test remaining 4→3→2→1→0→limited ACROSS separate serverless instances — one shared window. /api/health gains rateLimitSelfTest (backend, ok, error).
+- #4 cron-ledger: CronRun model + withCronLedger on all six crons (indexnow, cred-audit, chain-health, daily-digest, cleanup, course-send) — records ok/error + items, rethrows unchanged, soft-fail writes, self-healing table via server-env token. REGISTERED_CRONS mirrors vercel.json; digest alarms >26h silence; war-room 'Crons — which schedule went silent' panel. One refactor bug caught by the pre-existing api tests (destructure collision returning the wrapper object instead of the NextResponse — all six response contracts preserved).
+- OPS: production CRON_SECRET restored to the documented value (de346…, was diverged on Vercel — cron gates are founder-triggerable again). Push-protection incident: git add -A staged the untracked env.local — caught by GitHub, amended out, env.local added to .gitignore (the .env* rule never covered the dotless name).
+- Gauntlet: 800/800 vitest (61 files; +69 this week), prisma validate + format --check green, build green (327 pages).
+- Shipped: c6bbb4d → 4217433 → b92f396 → dca209b → fc7aa51 → 495d17d → 6b7b171, all git-trigger deploys READY, live smoke per item.
+- Live smoke highlights: chain 1/4 alive (dots 573ms contract_ok; nemotron empty; gemma 429; lfm http_error — all named, all visible); creds 3/4 (cloudinary unconfigured — the finding); ledger rows flowing (cleanup/cred-audit/chain-health ok, the rest 'never' → alarm honest on day one); smoke-ask.sh ALL PASS.
+
+Stage Summary:
+- Week A complete: the tier-17 vigilance plane is live — chain rot, credential rot and cron silence now announce themselves to the war-room and the founder's inbox.
+- Founder actions surfaced: add CLOUDINARY_URL to Vercel env (or discrete trio), rotate the vault Turso token, TOTP before ~2026-09-12, EMBED swap + GSC OAuth unchanged.
+- Remainder: Week B 6 → 7 → 8 → 9 (letters launch, bake path, hi scale, audio tail).
