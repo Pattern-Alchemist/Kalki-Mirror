@@ -420,7 +420,8 @@ export const ModelName = {
   SynthesisCache: 'SynthesisCache',
   PatternPairAffinity: 'PatternPairAffinity',
   OpsState: 'OpsState',
-  RateLimitHit: 'RateLimitHit'
+  RateLimitHit: 'RateLimitHit',
+  CronRun: 'CronRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -436,7 +437,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState" | "rateLimitHit"
+    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState" | "rateLimitHit" | "cronRun"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2216,6 +2217,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CronRun: {
+      payload: Prisma.$CronRunPayload<ExtArgs>
+      fields: Prisma.CronRunFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CronRunFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CronRunPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CronRunFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CronRunPayload>
+        }
+        findFirst: {
+          args: Prisma.CronRunFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CronRunPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CronRunFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CronRunPayload>
+        }
+        findMany: {
+          args: Prisma.CronRunFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CronRunPayload>[]
+        }
+        create: {
+          args: Prisma.CronRunCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CronRunPayload>
+        }
+        createMany: {
+          args: Prisma.CronRunCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CronRunCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CronRunPayload>[]
+        }
+        delete: {
+          args: Prisma.CronRunDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CronRunPayload>
+        }
+        update: {
+          args: Prisma.CronRunUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CronRunPayload>
+        }
+        deleteMany: {
+          args: Prisma.CronRunDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CronRunUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CronRunUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CronRunPayload>[]
+        }
+        upsert: {
+          args: Prisma.CronRunUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CronRunPayload>
+        }
+        aggregate: {
+          args: Prisma.CronRunAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCronRun>
+        }
+        groupBy: {
+          args: Prisma.CronRunGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CronRunGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CronRunCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CronRunCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2639,6 +2714,19 @@ export const RateLimitHitScalarFieldEnum = {
 export type RateLimitHitScalarFieldEnum = (typeof RateLimitHitScalarFieldEnum)[keyof typeof RateLimitHitScalarFieldEnum]
 
 
+export const CronRunScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  startedAt: 'startedAt',
+  durationMs: 'durationMs',
+  items: 'items',
+  outcome: 'outcome',
+  error: 'error'
+} as const
+
+export type CronRunScalarFieldEnum = (typeof CronRunScalarFieldEnum)[keyof typeof CronRunScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2884,6 +2972,7 @@ export type GlobalOmitConfig = {
   patternPairAffinity?: Prisma.PatternPairAffinityOmit
   opsState?: Prisma.OpsStateOmit
   rateLimitHit?: Prisma.RateLimitHitOmit
+  cronRun?: Prisma.CronRunOmit
 }
 
 /* Types for Logging */

@@ -74,7 +74,8 @@ export const ModelName = {
   SynthesisCache: 'SynthesisCache',
   PatternPairAffinity: 'PatternPairAffinity',
   OpsState: 'OpsState',
-  RateLimitHit: 'RateLimitHit'
+  RateLimitHit: 'RateLimitHit',
+  CronRun: 'CronRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -475,6 +476,19 @@ export const RateLimitHitScalarFieldEnum = {
 } as const
 
 export type RateLimitHitScalarFieldEnum = (typeof RateLimitHitScalarFieldEnum)[keyof typeof RateLimitHitScalarFieldEnum]
+
+
+export const CronRunScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  startedAt: 'startedAt',
+  durationMs: 'durationMs',
+  items: 'items',
+  outcome: 'outcome',
+  error: 'error'
+} as const
+
+export type CronRunScalarFieldEnum = (typeof CronRunScalarFieldEnum)[keyof typeof CronRunScalarFieldEnum]
 
 
 export const SortOrder = {

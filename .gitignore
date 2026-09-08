@@ -113,3 +113,4 @@ db/e2e-local.db*
 env.local
 !scripts/audit-credentials.sh
 !scripts/smoke-ask.sh
+!scripts/apply-vol5-schema.ts

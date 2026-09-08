@@ -28,6 +28,7 @@ import {
   CHAIN_HEALTH_OPS_KEY,
   type ChainHealthReport,
 } from "@/lib/ai/chain-health";
+import { withCronLedger } from "@/lib/cron-ledger";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -48,18 +49,21 @@ export async function GET(request: NextRequest) {
 
   const dryRun = request.nextUrl.searchParams.get("dryRun") === "1";
 
-  let report: ChainHealthReport;
-  try {
-    report = await probeChain();
-  } catch (error) {
-    // probeChain never throws by design; this guard keeps the cron honest
-    return NextResponse.json(
-      { ok: false, error: `probe failed: ${String(error).slice(0, 200)}` },
-      { status: 500 }
-    );
+  if (dryRun) {
+    const report = await probeChain();
+    return NextResponse.json({ ok: true, stored: false, dryRun: true, summary: report.summary, models: report.models, checkedAt: report.checkedAt });
   }
 
-  if (!dryRun) {
+  // Vol. 5 #4 — the probe+store IS the cron's work; the ledger observes it.
+  const { result: payload } = await withCronLedger("chain-health", async () => {
+    let report: ChainHealthReport;
+    try {
+      report = await probeChain();
+    } catch (error) {
+      throw new Error(`probe failed: ${String(error).slice(0, 200)}`);
+    }
+    let stored = true;
+    let warning: string | undefined;
     try {
       await db.opsState.upsert({
         where: { key: CHAIN_HEALTH_OPS_KEY },
@@ -67,26 +71,28 @@ export async function GET(request: NextRequest) {
         create: { key: CHAIN_HEALTH_OPS_KEY, value: JSON.stringify(report) },
       });
     } catch (error) {
-      return NextResponse.json(
-        { ok: true, report, stored: false, warning: `OpsState write failed: ${String(error).slice(0, 200)}` },
-        { status: 200 }
-      );
+      stored = false;
+      warning = `OpsState write failed: ${String(error).slice(0, 200)}`;
     }
-  }
-
-  return NextResponse.json({
-    ok: true,
-    stored: !dryRun,
-    probeMs: Date.now() - t0,
-    summary: report.summary,
-    models: report.models.map((m) => ({
-      model: m.model,
-      ok: m.ok,
-      reason: m.reason,
-      latencyMs: m.latencyMs,
-      status: m.status,
-      detail: m.detail,
-    })),
-    checkedAt: report.checkedAt,
+    return {
+      items: report.models.length,
+      payload: NextResponse.json({
+        ok: true,
+        stored,
+        probeMs: Date.now() - t0,
+        summary: report.summary,
+        models: report.models.map((m) => ({
+          model: m.model,
+          ok: m.ok,
+          reason: m.reason,
+          latencyMs: m.latencyMs,
+          status: m.status,
+          detail: m.detail,
+        })),
+        checkedAt: report.checkedAt,
+        ...(warning ? { warning } : {}),
+      }),
+    };
   });
+  return payload.payload;
 }

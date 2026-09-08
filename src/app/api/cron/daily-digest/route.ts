@@ -36,6 +36,12 @@ import {
   parseStoredCredAudit,
   CRED_AUDIT_OPS_KEY,
 } from "@/lib/ops/cred-audit";
+import {
+  withCronLedger,
+  cronRunStatuses,
+  cronLedgerDigestLine,
+  type CronRunStatus,
+} from "@/lib/cron-ledger";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -292,6 +298,16 @@ export async function GET(request: NextRequest) {
     // OpsState transient — silence is the healthy default
   }
 
+  // Vol. 5 #4 — cron ledger: alarm when any registered cron is silent
+  // > 26h (a daily cron with 26h of silence is dead). Fail-soft.
+  let cronLine = "";
+  try {
+    const statuses: CronRunStatus[] = await cronRunStatuses();
+    cronLine = cronLedgerDigestLine(statuses);
+  } catch {
+    // ledger table transient — silence is the healthy default
+  }
+
   // Vol. 4 #3 — list funnel (weekly cohort): joined → Door-3 open → any
   // click → /consultations → intake. Fail-soft like every other block:
   // a dead join dims one line, never the digest.
@@ -357,6 +373,7 @@ export async function GET(request: NextRequest) {
     cleanupLine,
     ...(chainLine ? [chainLine] : []),
     ...(credLine ? [credLine] : []),
+    ...(cronLine ? [cronLine] : []),
     "",
     `— CONSOLE —`,
     `${unreadBell} unread bell notification${unreadBell === 1 ? "" : "s"}`,
@@ -388,9 +405,13 @@ export async function GET(request: NextRequest) {
   const to = process.env.DIGEST_TO ?? "doors@astrokalki.com";
   const html = `<div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;line-height:1.6;color:#e4e4e7;background:#09090b;padding:24px;white-space:pre-wrap">${esc(lines.join("\n"))}</div>`;
 
-  const res = await sendEmail({ to, subject, html, text: lines.join("\n") });
-  if (!res.ok) {
-    return NextResponse.json({ ok: false, error: res.error ?? "send failed", skipped: res.skipped ?? false }, { status: res.skipped ? 200 : 502 });
-  }
-  return NextResponse.json({ ok: true, to, subject });
+  // Vol. 5 #4 — the send IS the cron's work; the ledger observes it.
+  const { result } = await withCronLedger("daily-digest", async () => {
+    const res = await sendEmail({ to, subject, html, text: lines.join("\n") });
+    if (!res.ok) {
+      throw new Error(res.error ?? "digest send failed");
+    }
+    return { response: NextResponse.json({ ok: true, to, subject }), items: 1 };
+  });
+  return result.response;
 }

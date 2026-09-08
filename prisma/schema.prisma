@@ -621,3 +621,21 @@ model RateLimitHit {
 
   @@index([key, ts])
 }
+
+// ── Vol. 5 #4: cron outcome ledger ────────────────────────────────────────
+// Four crons ran daily blind — no record of duration, items touched, or
+// whether they ran at all. Every cron route now wraps its body in
+// withCronLedger() which appends one row per run (soft-fail: the ledger
+// must never break the cron). The war-room renders last-run per name; the
+// daily digest alerts when any registered cron goes silent > 26h.
+model CronRun {
+  id         String   @id @default(cuid())
+  name       String   // indexnow | cred-audit | chain-health | daily-digest | cleanup | course-send
+  startedAt  DateTime
+  durationMs Int
+  items      Int?
+  outcome    String   // ok | error
+  error      String?
+
+  @@index([name, startedAt])
+}

@@ -84,6 +84,16 @@ interface WarRoomData {
     }[];
     summary: { total: number; ok: number; fail: number };
   } | null;
+  cronRuns: {
+    name: string;
+    schedule: string;
+    description: string;
+    lastRunAt: string | null;
+    lastOutcome: string | null;
+    lastError: string | null;
+    ageHours: number | null;
+    alarm: boolean;
+  }[];
 }
 
 const RANGES = [
@@ -773,6 +783,54 @@ export default function WarRoomPage() {
             ) : (
               <p className="py-2 text-xs text-zinc-600">
                 Never audited — the cred-audit cron (02:10 UTC) stores its first verdict here.
+              </p>
+            )}
+          </Card>
+
+          {/* Cron outcome ledger — last run per registered cron (Vol. 5 #4) */}
+          <Card
+            title="Crons — which schedule went silent"
+            icon={<Radio className="h-4 w-4 text-amber-500" />}
+          >
+            {data?.cronRuns && data.cronRuns.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
+                      <th className="pb-2 font-medium">Cron</th>
+                      <th className="pb-2 font-medium">Schedule</th>
+                      <th className="pb-2 text-right font-medium">Last run</th>
+                      <th className="pb-2 text-right font-medium">Outcome</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-800/50">
+                    {data.cronRuns.map((c) => (
+                      <tr key={c.name}>
+                        <td className="py-2 font-medium text-zinc-200">
+                          <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ backgroundColor: c.alarm ? "#f43f5e" : c.lastOutcome === "ok" ? "#10b981" : "#f59e0b" }} />
+                          {c.name}
+                        </td>
+                        <td className="py-2 text-zinc-500">{c.schedule}</td>
+                        <td className="py-2 text-right text-zinc-400">
+                          {c.lastRunAt ? `${c.ageHours ?? "?"}h ago` : "never"}
+                        </td>
+                        <td className={`py-2 text-right ${c.lastOutcome === "error" ? "text-rose-400" : "text-zinc-300"}`}>
+                          {c.lastOutcome ?? "—"}
+                          {c.lastError ? ` · ${c.lastError.slice(0, 60)}` : ""}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="mt-2 text-[0.65rem] leading-relaxed text-zinc-600">
+                  One CronRun row per run (Vol. 5 #4) — duration, items, outcome. Rose = silent
+                  &gt; 26h (a daily cron with 26h of silence is dead) or errored on the latest run;
+                  amber = ran but not clean. The digest carries the same alarm.
+                </p>
+              </div>
+            ) : (
+              <p className="py-2 text-xs text-zinc-600">
+                No runs recorded yet — the ledger fills as each cron fires.
               </p>
             )}
           </Card>

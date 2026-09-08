@@ -14,6 +14,7 @@ import {
   CRED_AUDIT_OPS_KEY,
   type CredAuditReport,
 } from "@/lib/ops/cred-audit";
+import { cronRunStatuses, type CronRunStatus } from "@/lib/cron-ledger";
 
 export const dynamic = "force-dynamic";
 
@@ -308,6 +309,14 @@ export async function GET(request: NextRequest) {
       credAudit = null;
     }
 
+    // ── Cron outcome ledger (Vol. 5 #4) — last run per registered cron.
+    let cronRuns: CronRunStatus[] = [];
+    try {
+      cronRuns = await cronRunStatuses(now);
+    } catch {
+      cronRuns = [];
+    }
+
     return NextResponse.json({
       generatedAt: now.toISOString(),
       range: rangeParam,
@@ -329,6 +338,7 @@ export async function GET(request: NextRequest) {
       aiRoutes,
       aiChain,
       credAudit,
+      cronRuns,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";

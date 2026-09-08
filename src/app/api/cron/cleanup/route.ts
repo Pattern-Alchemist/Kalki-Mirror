@@ -31,6 +31,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { withCronLedger } from "@/lib/cron-ledger";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -62,6 +63,31 @@ export async function GET(request: NextRequest) {
   const eventCutoff = new Date(now - EMAIL_EVENT_DAYS * 86_400_000);
   const draftCutoff = new Date(now - DRAFT_DISMISS_DAYS * 86_400_000);
 
+  // Vol. 5 #4 — the ledger observes the run; its rethrow maps to the
+  // pre-existing 500 contract below. DryRun runs are recorded too (a
+  // successful probe is evidence the cron works).
+  try {
+    const { result } = await withCronLedger("cleanup", async () => {
+      const inner = await runCleanupBody(dryRun, now, sessionCutoff, eventCutoff, draftCutoff);
+      return { response: inner.response, items: inner.items };
+    });
+    return result.response;
+  } catch (error) {
+    console.error("[cleanup] failed:", error);
+    return NextResponse.json(
+      { ok: false, error: "cleanup failed", detail: String(error).slice(0, 200) },
+      { status: 500 },
+    );
+  }
+}
+
+async function runCleanupBody(
+  dryRun: boolean,
+  now: number,
+  sessionCutoff: Date,
+  eventCutoff: Date,
+  draftCutoff: Date
+): Promise<{ response: NextResponse; items: number }> {
   try {
     // 1. SynthesisCache — enforce the contract the schema already declares.
     const synthesisPruned = await db.synthesisCache.deleteMany({
@@ -166,7 +192,9 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    return NextResponse.json({
+    const items = synthesisPruned + sessionsPruned + eventsPruned + draftsPruned + scheduledPublishFlips;
+    return {
+      response: NextResponse.json({
       ok: true,
       dryRun,
       pruned: {
@@ -185,12 +213,11 @@ export async function GET(request: NextRequest) {
         emailEvents: eventCutoff.toISOString(),
         dismissedDrafts: draftCutoff.toISOString(),
       },
-    });
+    }),
+      items,
+    };
   } catch (error) {
-    console.error("[cleanup] failed:", error);
-    return NextResponse.json(
-      { ok: false, error: "cleanup failed", detail: String(error).slice(0, 200) },
-      { status: 500 },
-    );
+    console.error("[cleanup] body failed:", error);
+    throw error; // the ledger records the error; the caller maps to 500
   }
 }

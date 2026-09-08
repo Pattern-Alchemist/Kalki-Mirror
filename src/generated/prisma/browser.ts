@@ -137,3 +137,8 @@ export type OpsState = Prisma.OpsStateModel
  * 
  */
 export type RateLimitHit = Prisma.RateLimitHitModel
+/**
+ * Model CronRun
+ * 
+ */
+export type CronRun = Prisma.CronRunModel

@@ -27,6 +27,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { withCronLedger } from "@/lib/cron-ledger";
 import {
   computeCourseDay,
   computeDueDoors,
@@ -58,6 +59,18 @@ export async function GET(request: NextRequest) {
 
   const dryRun = request.nextUrl.searchParams.get("dryRun") === "1";
 
+  // Vol. 5 #4 — the ledger observes the run. The only realistic throw is
+  // the subscriber query; its 500 contract is preserved by the outer catch.
+  try {
+    const { result } = await withCronLedger("course-send", async () => runCourseSend(dryRun));
+    return result.response;
+  } catch (err) {
+    console.error("[course-send] run failed", err);
+    return NextResponse.json({ ok: false, error: "subscriber query failed" }, { status: 500 });
+  }
+}
+
+async function runCourseSend(dryRun: boolean): Promise<{ response: NextResponse; items: number }> {
   let subscribers: { email: string; createdAt: Date }[];
   try {
     subscribers = await db.emailSubscriber.findMany({
@@ -68,7 +81,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (err) {
     console.error("[course-send] subscriber query failed", err);
-    return NextResponse.json({ ok: false, error: "subscriber query failed" }, { status: 500 });
+    throw err; // the ledger records the error; the caller preserves the 500 contract
   }
 
   // ── Vol. 3 #9: read the ledger once for the whole batch ──
@@ -126,7 +139,8 @@ export async function GET(request: NextRequest) {
   }).length;
 
   if (dryRun) {
-    return NextResponse.json({
+    return {
+      response: NextResponse.json({
       ok: true,
       dryRun: true,
       activeSubscribers: subscribers.length,
@@ -138,7 +152,9 @@ export async function GET(request: NextRequest) {
         day: p.day,
         action: p.action === "completion" ? "completion" : `door-${p.door}`,
       })),
-    });
+    }),
+      items: 0,
+    };
   }
 
   const results: { email: string; action: string; ok: boolean; id?: string; error?: string }[] = [];
@@ -173,7 +189,8 @@ export async function GET(request: NextRequest) {
     `[course-send] active=${subscribers.length} due=${due.length} sent=${sent} failed=${failed} backfill=${backfillCount} overflow=${overflow}`,
   );
 
-  return NextResponse.json({
+  return {
+    response: NextResponse.json({
     ok: true,
     activeSubscribers: subscribers.length,
     due: due.length,
@@ -182,5 +199,7 @@ export async function GET(request: NextRequest) {
     backfill: backfillCount,
     overflow,
     ...(process.env.VERCEL !== "1" ? { results } : {}),
-  });
+  }),
+    items: sent,
+  };
 }

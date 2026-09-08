@@ -29,6 +29,7 @@ import {
   CRED_AUDIT_OPS_KEY,
   type CredAuditReport,
 } from "@/lib/ops/cred-audit";
+import { withCronLedger } from "@/lib/cron-ledger";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -49,17 +50,21 @@ export async function GET(request: NextRequest) {
 
   const dryRun = request.nextUrl.searchParams.get("dryRun") === "1";
 
-  let report: CredAuditReport;
-  try {
-    report = await auditCredentials();
-  } catch (error) {
-    return NextResponse.json(
-      { ok: false, error: `audit failed: ${String(error).slice(0, 200)}` },
-      { status: 500 }
-    );
+  if (dryRun) {
+    const report = await auditCredentials();
+    return NextResponse.json({ ok: true, stored: false, dryRun: true, summary: report.summary, credentials: report.credentials, checkedAt: report.checkedAt });
   }
 
-  if (!dryRun) {
+  // Vol. 5 #4 — the audit+store IS the cron's work; the ledger observes it.
+  const { result: payload } = await withCronLedger("cred-audit", async () => {
+    let report: CredAuditReport;
+    try {
+      report = await auditCredentials();
+    } catch (error) {
+      throw new Error(`audit failed: ${String(error).slice(0, 200)}`);
+    }
+    let stored = true;
+    let warning: string | undefined;
     try {
       await db.opsState.upsert({
         where: { key: CRED_AUDIT_OPS_KEY },
@@ -67,19 +72,21 @@ export async function GET(request: NextRequest) {
         create: { key: CRED_AUDIT_OPS_KEY, value: JSON.stringify(report) },
       });
     } catch (error) {
-      return NextResponse.json(
-        { ok: true, report, stored: false, warning: `OpsState write failed: ${String(error).slice(0, 200)}` },
-        { status: 200 }
-      );
+      stored = false;
+      warning = `OpsState write failed: ${String(error).slice(0, 200)}`;
     }
-  }
-
-  return NextResponse.json({
-    ok: true,
-    stored: !dryRun,
-    auditMs: Date.now() - t0,
-    summary: report.summary,
-    credentials: report.credentials,
-    checkedAt: report.checkedAt,
+    return {
+      items: report.credentials.length,
+      payload: NextResponse.json({
+        ok: true,
+        stored,
+        auditMs: Date.now() - t0,
+        summary: report.summary,
+        credentials: report.credentials,
+        checkedAt: report.checkedAt,
+        ...(warning ? { warning } : {}),
+      }),
+    };
   });
+  return payload.payload;
 }

@@ -28,6 +28,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { INDEXNOW_KEY, pingIndexNow, allSitemapUrls, filterOwnUrls } from '@/lib/seo/indexnow';
+import { withCronLedger } from '@/lib/cron-ledger';
 
 export const dynamic = 'force-dynamic';
 
@@ -68,11 +69,18 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ dryRun: true, wouldSubmit: urls.length, sample: urls.slice(0, 8) });
   }
 
-  const result = await pingIndexNow(urls);
-  return NextResponse.json(
-    { ...result, host: 'www.astrokalki.com', source: 'sitemap' },
-    { status: result.ok ? 200 : 502 },
-  );
+  // Vol. 5 #4 — ledger observes the ping (items = URLs submitted).
+  const { result } = await withCronLedger('indexnow', async () => {
+    const ping = await pingIndexNow(urls);
+    return {
+      response: NextResponse.json(
+        { ...ping, host: 'www.astrokalki.com', source: 'sitemap' },
+        { status: ping.ok ? 200 : 502 },
+      ),
+      items: typeof (ping as { submitted?: number }).submitted === 'number' ? (ping as { submitted: number }).submitted : urls.length,
+    };
+  });
+  return result.response;
 }
 
 export async function POST(request: NextRequest) {
