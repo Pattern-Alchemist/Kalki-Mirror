@@ -50,8 +50,27 @@ export type AskResult = AskGrounded | AskSilent;
 
 // ─── Thresholds (method-aware — the two scores are different units) ────────
 
-/** Raw cosine floor for the hashed-TFIDF embedder (cosine ∈ [0,1] here). */
-export const ASK_MIN_EMBED_SIMILARITY = 0.42;
+/**
+ * DEGENERATE-RETRIEVAL floor for the hashed-TFIDF embedder (cosine ∈ [0,1]),
+ * recalibrated live 2026-09-08 with scripts/calibrate-ask-floor.ts (Vol. 5 #5):
+ *   · in-corpus battery (20 sadhana queries): min 0.047 · p25 0.075
+ *   · out-of-corpus battery (10 off-topic queries): min 0.057
+ * The two distributions OVERLAP — hashed-TFIDF cosine over the 42-chunk OPEN
+ * pool cannot discriminate topical relevance (a cookie recipe outscores most
+ * real queries). This floor's job is therefore narrow: reject DEGENERATE
+ * retrievals (near-orthogonal vectors — gibberish, URLs, alien vocabularies)
+ * before an LLM round-trip is burned, the latency side of Vol. 5 #5. Topical
+ * honesty stays with gate #2 (the strict parser + the LLM's own grounded=false),
+ * which is where production's honest silences have always come from. The
+ * neural embedder swap (EMBED_API_KEY, founder-gated) is what would give this
+ * gate real discrimination; recalibrate this floor at that re-bake.
+ * 2026-09-08 archaeology: the gate was DEAD in production since Week E —
+ * rawTopSimilarity was read after retrieval's normalization pass (constant
+ * 1.0), so 0.42 never fired and the gate never silenced anything. The fix
+ * that revived the gate is in retrieval.ts; 0.42 would have silenced the
+ * ENTIRE corpus in the current embedding space.
+ */
+export const ASK_MIN_EMBED_SIMILARITY = 0.03;
 /** Raw term-overlap floor for the keyword fallback (count of term hits). */
 export const ASK_MIN_KEYWORD_SCORE = 3;
 

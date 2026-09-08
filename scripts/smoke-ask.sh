@@ -24,7 +24,9 @@ check() { # check <name> <ok> <detail>
 }
 
 # 1. page + noindex (+ the 3s non-LLM surface budget, Vol. 5 #5)
-PAGE_TIME=$(curl -s -m 30 -D - -o /tmp/kask-page.html -w '%{time_total}' "${BASE_URL}/ask")
+PAGE_OUT=$(curl -s -m 30 -D - -o /tmp/kask-page.html -w '\n%{time_total}' "${BASE_URL}/ask")
+PAGE_TIME=$(printf '%s' "$PAGE_OUT" | tail -1)
+PAGE=$(printf '%s' "$PAGE_OUT" | sed '$d')
 STATUS=$(printf '%s' "$PAGE" | head -1 | awk '{print $2}')
 XROBOTS=$(printf '%s' "$PAGE" | tr -d '\r' | rg -i '^x-robots-tag:' | head -1 || true)
 METAROBOTS=$(rg -io '<meta[^>]*name="robots"[^>]*>' /tmp/kask-page.html | head -1 || true)

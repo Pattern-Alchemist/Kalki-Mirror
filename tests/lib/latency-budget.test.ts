@@ -11,6 +11,7 @@ import {
 } from '@/lib/ai/latency-budget';
 import { PREWARM_QUERIES } from '@/lib/ai/prewarm-queries';
 import { REGISTERED_CRONS } from '@/lib/cron-ledger';
+import { ASK_MIN_EMBED_SIMILARITY } from '@/lib/ai/ask';
 
 /* ═══════════════════════════════════════════════════════════════════════════
    Vol. 5 #5 — the AI route latency budget: the budget, not the model, is
@@ -124,6 +125,20 @@ describe('PREWARM_QUERIES: the top-10 pre-warm set', () => {
     // pre-warms it. If the smoke changes its query, this pin fails loud.
     const smoke = fs.readFileSync(path.join(process.cwd(), 'scripts', 'smoke-ask.sh'), 'utf8');
     expect(smoke).toContain('How do I practice ajapa japa?');
+  });
+});
+
+describe('the silence floor: recalibrated, never again stale (Vol. 5 #5)', () => {
+  it('the degenerate-retrieval floor is 0.03 — below the calibrated in-corpus minimum', () => {
+    // scripts/calibrate-ask-floor.ts, live 2026-09-08 over db/custom.db:
+    //   in-corpus battery (20 queries)  : min 0.047 · p25 0.075 · max 0.173
+    //   out-of-corpus battery (10)      : min 0.057 · max 0.145
+    // The distributions overlap — the floor rejects DEGENERATE retrievals
+    // only; topical honesty is gate #2. The old 0.42 was calibrated to a
+    // dead gate (rawTopSimilarity read post-normalization = constant 1.0)
+    // and would have silenced the whole corpus once the gate came alive.
+    expect(ASK_MIN_EMBED_SIMILARITY).toBe(0.03);
+    expect(ASK_MIN_EMBED_SIMILARITY).toBeLessThan(0.047); // below in-corpus min
   });
 });
 
