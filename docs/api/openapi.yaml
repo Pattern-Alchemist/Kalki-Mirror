@@ -1154,6 +1154,32 @@ paths:
         '401':
           description: Unauthorized — admin session required
 
+  /api/admin/letters:
+    get:
+      operationId: apiAdminLettersGet
+      tags: [Admin]
+      summary: LETTERS ARCHIVE CURATION — list Letter rows (metadata only; bodies stay admin-side).
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK — { letters: [{ id, slug, subject, isPublic, sentAt, recipientCount }] }
+        '401':
+          description: Unauthorized — admin session required
+    post:
+      operationId: apiAdminLettersPost
+      tags: [Admin]
+      summary: Upsert letters by slug — the seed + publish path (Vol. 5 #6 launch-letters pipeline).
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK — { letters: [{ slug, isPublic, created }] }
+        '401':
+          description: Unauthorized — admin session required
+        '422':
+          description: Invalid batch (slug/subject/body contract)
+
   /api/admin/stats:
     get:
       operationId: apiAdminStatsGet

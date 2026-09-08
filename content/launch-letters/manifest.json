@@ -1,0 +1,35 @@
+{
+  "$comment": "Vol. 5 #6 — the five launch letters. Drafted FROM existing corpus folios (founder-review register): every letter grounds in verified site surfaces. Seed with scripts/seed-launch-letters.mjs (drafts); publish is the founder's POST with isPublic:true (docs/letters-launch-checklist.md). Bodies live beside this manifest; the first comment line of each file is metadata, stripped by the seeder.",
+  "letters": [
+    {
+      "slug": "the-mirror-does-not-flatter",
+      "subject": "The mirror does not flatter",
+      "file": "01-the-mirror-does-not-flatter.md",
+      "grounds": ["/patterns/the-witness", "/patterns/the-pleaser"]
+    },
+    {
+      "slug": "the-mantra-that-breathes-you",
+      "subject": "The mantra that breathes you",
+      "file": "02-the-mantra-that-breathes-you.md",
+      "grounds": ["/glossary/prana", "/email-course"]
+    },
+    {
+      "slug": "one-flame-one-thought",
+      "subject": "One flame, one thought",
+      "file": "03-one-flame-one-thought.md",
+      "grounds": ["/patterns/the-void", "/email-course"]
+    },
+    {
+      "slug": "prana-is-not-the-breath",
+      "subject": "Prāṇa is not the breath",
+      "file": "04-prana-is-not-the-breath.md",
+      "grounds": ["/glossary/prana", "/patterns/the-architect"]
+    },
+    {
+      "slug": "why-the-archive-stays-silent",
+      "subject": "Why the archive stays silent",
+      "file": "05-why-the-archive-stays-silent.md",
+      "grounds": ["/ask", "/letters"]
+    }
+  ]
+}

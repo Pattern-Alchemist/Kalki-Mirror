@@ -114,3 +114,5 @@ env.local
 !scripts/audit-credentials.sh
 !scripts/smoke-ask.sh
 !scripts/apply-vol5-schema.ts
+# Vol. 5 #6 — the launch-letters pipeline ships with the repo (seeder + tests read it)
+!scripts/seed-launch-letters.mjs
