@@ -1219,6 +1219,15 @@ paths:
         '200':
           description: OK (shape documented in the route module)
 
+  /api/cron/chain-health:
+    get:
+      operationId: apiCronChainHealthGet
+      tags: [Cron]
+      summary: Probe every OpenRouter chain model with a real-size /ask contract prompt; per-model verdict + latency into OpsState (Vol. 5 #1). ?dryRun=1 stores nothing. CRON_SECRET gated.
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
   /api/cron/cleanup:
     get:
       operationId: apiCronCleanupGet

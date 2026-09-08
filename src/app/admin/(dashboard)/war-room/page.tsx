@@ -60,6 +60,18 @@ interface WarRoomData {
       lastAt: string | null;
     }[];
   } | null;
+  aiChain: {
+    checkedAt: string;
+    models: {
+      model: string;
+      ok: boolean;
+      reason: string;
+      latencyMs: number;
+      status?: number;
+      detail?: string;
+    }[];
+    summary: { total: number; alive: number; dead: number; chainOk: boolean };
+  } | null;
 }
 
 const RANGES = [
@@ -664,6 +676,49 @@ export default function WarRoomPage() {
                 {data?.aiRoutes && !data.aiRoutes.available
                   ? "Event store unavailable — AI telemetry is fail-open and never blocks routes."
                   : "No AI traffic in this window — the layer is quiet, not broken."}
+              </p>
+            )}
+          </Card>
+
+          {/* AI chain health — per-model probe verdict (Vol. 5 #1) */}
+          <Card
+            title="AI chain — which model rots"
+            icon={<Radio className="h-4 w-4 text-amber-500" />}
+          >
+            {data?.aiChain ? (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
+                      <th className="pb-2 font-medium">Model</th>
+                      <th className="pb-2 text-right font-medium">Verdict</th>
+                      <th className="pb-2 text-right font-medium">Latency</th>
+                      <th className="pb-2 font-medium">Detail</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-800/50">
+                    {data.aiChain.models.map((m) => (
+                      <tr key={m.model}>
+                        <td className="py-2 font-medium text-zinc-200">
+                          <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ backgroundColor: m.ok ? "#10b981" : "#f43f5e" }} />
+                          {m.model}
+                        </td>
+                        <td className="py-2 text-right text-zinc-300">{m.reason}</td>
+                        <td className="py-2 text-right text-zinc-400">{m.latencyMs ? `${m.latencyMs}ms` : "—"}</td>
+                        <td className="py-2 text-zinc-500">{m.detail ?? "—"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="mt-2 text-[0.65rem] leading-relaxed text-zinc-600">
+                  Last probe {data.aiChain.checkedAt.slice(0, 16).replace("T", " ")}Z · {data.aiChain.summary.alive}/{data.aiChain.summary.total} models answer the real-size /ask contract
+                  {data.aiChain.summary.chainOk ? "" : " — CHAIN DOWN"}. Free tiers delist without notice (the
+                  2026-09-08 incident): emerald = contract-honoring, rose = dead. Cron: 02:15 UTC daily.
+                </p>
+              </div>
+            ) : (
+              <p className="py-2 text-xs text-zinc-600">
+                Never probed — the chain-health cron (02:15 UTC) stores its first verdict here, or run it now.
               </p>
             )}
           </Card>

@@ -26,6 +26,11 @@ import { buildPairAffinities } from "@/lib/admin/pair-affinity";
 import { computeTopReferrers } from "@/lib/emails/course-share";
 import { getListFunnel } from "@/lib/admin/list-funnel-db";
 import { listFunnelDigestLine } from "@/lib/admin/list-funnel";
+import {
+  chainHealthDigestLine,
+  parseStoredChainHealth,
+  CHAIN_HEALTH_OPS_KEY,
+} from "@/lib/ai/chain-health";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -262,6 +267,16 @@ export async function GET(request: NextRequest) {
     // OpsState not present / transient — keep the default lines
   }
 
+  // Vol. 5 #1 — AI chain health: the digest goes quiet on green; a dead,
+  // degraded, stale or never-probed chain gets an alert line. Fail-soft.
+  let chainLine = "";
+  try {
+    const marker = await db.opsState.findUnique({ where: { key: CHAIN_HEALTH_OPS_KEY } });
+    chainLine = chainHealthDigestLine(parseStoredChainHealth(marker?.value));
+  } catch {
+    // OpsState transient — silence is the healthy default
+  }
+
   // Vol. 4 #3 — list funnel (weekly cohort): joined → Door-3 open → any
   // click → /consultations → intake. Fail-soft like every other block:
   // a dead join dims one line, never the digest.
@@ -325,6 +340,7 @@ export async function GET(request: NextRequest) {
     `— OPS HEALTH —`,
     backupLine,
     cleanupLine,
+    ...(chainLine ? [chainLine] : []),
     "",
     `— CONSOLE —`,
     `${unreadBell} unread bell notification${unreadBell === 1 ? "" : "s"}`,

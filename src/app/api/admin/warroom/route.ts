@@ -4,6 +4,11 @@ import { db } from "@/lib/db";
 import { getListFunnel } from "@/lib/admin/list-funnel-db";
 import { readAiRouteStats } from "@/lib/analytics-db";
 import type { ListFunnelResult } from "@/lib/admin/list-funnel";
+import {
+  parseStoredChainHealth,
+  CHAIN_HEALTH_OPS_KEY,
+  type ChainHealthReport,
+} from "@/lib/ai/chain-health";
 
 export const dynamic = "force-dynamic";
 
@@ -279,6 +284,16 @@ export async function GET(request: NextRequest) {
       // keep the silent default
     }
 
+    // ── AI chain health (Vol. 5 #1) — the last stored probe verdict from
+    // OpsState. Fail-soft: a missing marker renders as "never probed".
+    let aiChain: ChainHealthReport | null = null;
+    try {
+      const marker = await db.opsState.findUnique({ where: { key: CHAIN_HEALTH_OPS_KEY } });
+      aiChain = parseStoredChainHealth(marker?.value);
+    } catch {
+      aiChain = null;
+    }
+
     return NextResponse.json({
       generatedAt: now.toISOString(),
       range: rangeParam,
@@ -298,6 +313,7 @@ export async function GET(request: NextRequest) {
       emailCourse,
       listFunnel,
       aiRoutes,
+      aiChain,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";

@@ -108,3 +108,6 @@ bun.lock
 # E2E auth state (minted by e2e/auth.setup.ts, never committed)
 e2e/.auth/
 db/e2e-local.db*
+
+# founder local env (no leading dot — .env* does not cover it)
+env.local
