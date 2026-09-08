@@ -120,3 +120,6 @@ env.local
 !scripts/bake-corpus.sh
 !scripts/ingest-folios.ts
 !scripts/ingest-folio-json.ts
+# Vol. 5 #8 — the hi bridge batch-2 insertions (atomic, re-runnable, skip-if-present)
+!scripts/add-hi-bridge-vol5.py
+!scripts/add-pattern-hi-vol5.py

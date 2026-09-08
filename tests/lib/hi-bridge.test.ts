@@ -9,7 +9,8 @@
 // =============================================================
 import { describe, expect, it } from "vitest";
 import { glossaryEntries } from "@/lib/data/glossary";
-import { pickDefinition } from "@/lib/i18n/lexicon-bridge";
+import { allPatterns } from "@/lib/data/patterns";
+import { pickDefinition, pickPatternDescription } from "@/lib/i18n/lexicon-bridge";
 import en from "@/i18n/messages/en.json";
 import hi from "@/i18n/messages/hi.json";
 
@@ -19,8 +20,19 @@ const DEVANAGARI = /[\u0900-\u097F]/;
 const translated = glossaryEntries.filter((e) => e.hi?.definition);
 
 describe("the corpus bridge — translated terms", () => {
-  it("at least 20 terms carry a hi definition (the roadmap first move)", () => {
-    expect(translated.length).toBeGreaterThanOrEqual(20);
+  it("at least 60 terms carry a hi definition (Vol. 5 #8 scale-out: 20 + 40)", () => {
+    expect(translated.length).toBeGreaterThanOrEqual(60);
+  });
+
+  it("the Vol. 5 #8 batch-2 terms are covered (Mudrā, Bandha, the kumbhakas, Nāḍī Śuddhi, Mahāvidyā, Guru...)", () => {
+    const terms = new Set(translated.map((e) => e.term));
+    for (const t of ["Mudrā", "Bandha", "Drisṭi", "Bindu", "Ojas", "Tejas", "Sattva", "Rajas", "Tamas",
+      "Antara Kumbhaka", "Bahya Kumbhaka", "Sahita Kumbhaka", "Kevala Kumbhaka", "Trāṭaka", "Śītalī",
+      "Bhastrika", "Bhramarī", "Ujjāyī", "Kapālabhāti", "Sūrya Bhedana", "Candra Bhedana", "Nāḍī Śuddhi",
+      "Kaula", "Śākta", "Śaiva", "Yantra", "Maṇḍala", "Śrī Cakra", "Śrī Yantra", "Mahāvidyā",
+      "Kāmakalā", "Vidyā", "Dīkṣā", "Sādhaka", "Guru", "Nyāsa", "Puja", "Homa", "Ārati", "Prasād"]) {
+      expect(terms.has(t), `${t} must be in the Vol. 5 #8 batch-2 bridge set`).toBe(true);
+    }
   });
 
   it("every hi definition is real Devanagari — never Latin transliteration", () => {
@@ -117,5 +129,36 @@ describe("lexicon chrome namespace (parity-locked)", () => {
     expect(hiLex.termCount).toContain("{count}");
     expect(enLex.tierPractice).toContain("{tier}");
     expect(hiLex.tierPractice).toContain("{tier}");
+  });
+});
+
+// ── Vol. 5 #8 — the bridge reaches the pattern folios ─────────────
+
+const translatedPatterns = allPatterns.filter((p) => p.hi?.definition);
+
+describe("the pattern bridge — Vol. 5 #8 batch (10 OPEN folios)", () => {
+  it("the first 10 pattern folios carry a hi description", () => {
+    expect(translatedPatterns.length).toBeGreaterThanOrEqual(10);
+  });
+
+  it("every pattern hi description is real Devanagari, substantial, and never an EN echo", () => {
+    for (const p of translatedPatterns) {
+      expect(
+        DEVANAGARI.test(p.hi!.definition),
+        `${p.slug}: pattern hi description carries no Devanagari`
+      ).toBe(true);
+      expect(p.hi!.definition.length, `${p.slug}: pattern hi too short`).toBeGreaterThan(60);
+      expect(p.hi!.definition, `${p.slug}: pattern hi equals EN`).not.toBe(p.description);
+      const latinWords = p.hi!.definition.split(/\s+/).filter((w) => /^[A-Za-z]{4,}$/.test(w));
+      expect(latinWords.length, `${p.slug}: too much Latin prose in hi`).toBeLessThanOrEqual(4);
+    }
+  });
+
+  it("the pattern bridge serves through the ONE canonical picker (shape adapter only)", () => {
+    const bridged = translatedPatterns[0];
+    expect(pickPatternDescription(bridged, "hi").text).toBe(bridged.hi!.definition);
+    expect(pickPatternDescription(bridged, "hi").isHi).toBe(true);
+    expect(pickPatternDescription(bridged, "en").text).toBe(bridged.description);
+    expect(pickPatternDescription(bridged, undefined).text).toBe(bridged.description);
   });
 });

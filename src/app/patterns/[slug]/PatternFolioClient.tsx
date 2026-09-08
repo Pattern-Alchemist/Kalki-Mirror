@@ -18,21 +18,27 @@ import { CinematicImage } from '@/components/ui/CinematicImage';
 import { ScrollParallax, ParallaxText } from '@/components/ui/ScrollParallax';
 import { fadeInUp } from '@/lib/motion/tokens';
 import { TIER_BADGE_STYLES } from '@/lib/utils/tier-gate';
+import { pickPatternDescription } from '@/lib/i18n/lexicon-bridge';
 
 const PatternExplainer = dynamic(() => import('@/components/ai/PatternExplainer').then(m => ({ default: m.PatternExplainer })), { ssr: false, loading: () => <div className="h-32" /> });
 const GatedContent = dynamic(() => import('@/components/monetization/GatedContent').then(m => ({ default: m.GatedContent })), { ssr: false, loading: () => <div className="min-h-[100px]" /> });
 
-export default function PatternFolioClient({ pattern, relatedSiddhis, archetype, companions = [] }: {
+export default function PatternFolioClient({ pattern, relatedSiddhis, archetype, companions = [], locale }: {
   pattern: Pattern;
   relatedSiddhis: Siddhi[];
   archetype: Archetype | null;
   companions?: Array<{ slug: string; name: string; pairCount: number }>;
+  locale?: string;
 }) {
   useEffect(() => { track('pattern_viewed', { slug: pattern.slug }); }, [pattern.slug]);
   const slug = pattern.slug;
   const reduced = useNativeReducedMotion();
   const [loading, setLoading] = useState(true);
   const patternTier = pattern.minTier as Tier | undefined;
+  // Vol. 5 #8 — the hi bridge: the Overview follows the seeker's locale
+  // (hi + translated pattern → sadhu-register description; EN otherwise).
+  // The EN text stays on the page when hi serves, always checkable.
+  const picked = pickPatternDescription(pattern, locale);
 
   const handleLoadComplete = useCallback(() => setLoading(false), []);
 
@@ -119,7 +125,20 @@ export default function PatternFolioClient({ pattern, relatedSiddhis, archetype,
 
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>
           <p className="section-label mb-4">Overview</p>
-          <p className="text-text-secondary text-lg leading-relaxed editorial-spacing"><TermText text={pattern.description} /></p>
+          {picked.isHi && (
+            <span className="mb-3 inline-block text-[0.6rem] font-mono tracking-[0.15em] uppercase px-2 py-1 rounded-sm border border-gold/30 text-gold">
+              हिंदी
+            </span>
+          )}
+          <p className="text-text-secondary text-lg leading-relaxed editorial-spacing"><TermText text={picked.text} /></p>
+          {picked.isHi && (
+            <div className="mt-6 rounded-md border border-gold/20 bg-surface/40 px-5 py-4">
+              <p className="section-label mb-3">{pattern.name} — English</p>
+              <p className="text-sm text-text-muted leading-relaxed editorial-spacing">
+                <TermText text={pattern.description} />
+              </p>
+            </div>
+          )}
         </motion.section>
 
         <motion.section initial={reduced ? { opacity: 1 } : fadeInUp.hidden} whileInView={fadeInUp.visible} viewport={{ once: true }}>

@@ -46,3 +46,16 @@ export function pickDefinition(entry: BridgeableEntry, locale: string | undefine
     hiAvailable: !!hi,
   };
 }
+
+/**
+ * Vol. 5 #8 — shape adapter for the pattern folios: Pattern carries
+ * `description` (not `definition`), its hi block rides `hi.definition`
+ * unchanged. The adapter normalizes the shape and delegates to the ONE
+ * canonical picker — there is no second picking rule anywhere on the site.
+ */
+export function pickPatternDescription(
+  pattern: { description: string; hi?: { definition: string } },
+  locale: string | undefined,
+): PickedDefinition {
+  return pickDefinition({ definition: pattern.description, hi: pattern.hi }, locale);
+}

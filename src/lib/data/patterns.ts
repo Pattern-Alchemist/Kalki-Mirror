@@ -19,7 +19,11 @@ export const allPatterns: Pattern[] = [
     practice: 'Nadi Suddhi (alternate nostril breathing) to observe the pattern without reacting. Journal prompt: "What am I avoiding by focusing on them?"',
     relatedSiddhis: ['nadi-shuddhi', 'soham-dhyana'],
     imageSlug: 'the-rescuer',
-    minTier: 'prithvi',
+        hi: {
+      definition:
+        'वह पैटर्न जहाँ आप अपनी पहचान और मूल्य दूसरों को सुधारने, सहारा देने या बचाने से पाते हैं। छाया: जब बचाने को कोई नहीं होता, भीतर शून्य गूँजता है। जड़ प्रायः वह बचपन है जहाँ उपयोगिता ही स्नेह की शर्त थी।',
+    },
+minTier: 'prithvi',
     archetypeIntegration: 'The Rescuer maps to Tara\'s loop of perpetual rescue — the inner ferryman has been forgotten. The practitioner substitutes external saving for self-navigation. Tara\'s ugra form holds the knife of discriminating wisdom: the cut between genuine compassion and the egoic need to be needed.',
     advancedNotes: 'In advanced practice, the Rescuer\'s pattern dissolves through Mahavidya Tara sadhana where the practitioner visualizes themselves as both the ferryman and the passenger. The integration point comes when the practitioner can witness suffering without reflexively intervening — not from indifference, but from the recognition that the other\'s crossing is not theirs to make.',
   },
@@ -38,7 +42,11 @@ export const allPatterns: Pattern[] = [
     practice: 'Trataka (candle gazing) to train single-pointed focus without attachment to outcome. Journal prompt: "What would I do if I knew I could not fail?"',
     relatedSiddhis: ['trataka', 'pranava-japa'],
     imageSlug: 'the-perfectionist',
-    minTier: 'prithvi',
+        hi: {
+      definition:
+        'वह पैटर्न जहाँ आत्म-मूल्य निर्दोष निष्पादन से बँधा है। छाया: कुछ भी कभी पर्याप्त नहीं — आप स्वयं भी नहीं। जड़ वह वातावरण है जहाँ केवल उपलब्धि ही स्वीकृति कमाती थी।',
+    },
+minTier: 'prithvi',
     archetypeIntegration: 'Sodasi\'s loop of beauty-as-avoidance: the Perfectionist curates a life of surfaces while the raw truth remains unexamined. The Sri Yantra\'s nine interlocking triangles teach that beauty is not the opposite of depth but its most refined expression — when it arises from wholeness rather than control.',
     advancedNotes: 'The Perfectionist integrates when they can distinguish between structural precision (which serves the practice) and aesthetic defense (which serves the ego). Advanced work uses Sodasi Tripurasundari sadhana to experience the 16-kalā perfection that already exists in the unpolished present moment.',
   },
@@ -57,7 +65,11 @@ export const allPatterns: Pattern[] = [
     practice: 'So\'ham Dhyana to anchor in "I am" without external reference. Journal prompt: "If no one were watching, what would I want?"',
     relatedSiddhis: ['soham-dhyana', 'yoga-nidra'],
     imageSlug: 'the-ghost',
-    minTier: 'prithvi',
+        hi: {
+      definition:
+        'सतत आत्म-विलोपन का पैटर्न — आप सिकुड़ते हैं, सहमत होते हैं, समायोजित होते हैं और गायब होते जाते हैं, जब तक कि स्वयं को न पहचान सकें। छाया: आप केवल दूसरों के परावर्तनों में अस्तित्व में हैं।',
+    },
+minTier: 'prithvi',
     archetypeIntegration: 'Bagalamukhi\'s loop of being silenced: the Ghost has internalized the silencing so completely that they no longer recognize it as imposed. The frozen rage Bagalamukhi governs lives beneath the Ghost\'s agreeable surface. Stambhana — the power to arrest hostile inner narratives — is the exact medicine, applied inward.',
     advancedNotes: 'At the Akash level, the Ghost\'s integration work involves Bagalamukhi sadhana combined with Chinnamasta\'s head-severance visualization — a practice of radical self-assertion that cuts the cord between the need for safety and the habit of disappearance.',
   },
@@ -76,7 +88,11 @@ export const allPatterns: Pattern[] = [
     practice: 'Kumbhaka (breath retention) to practice voluntary surrender. Journal prompt: "What am I afraid will happen if I let go?"',
     relatedSiddhis: ['kumbhaka', 'chakra-dharana'],
     imageSlug: 'the-controller',
-    minTier: 'prithvi',
+        hi: {
+      definition:
+        'वह पैटर्न जहाँ चिंता को आधिपत्य, पूर्वानुमेयता और वातावरण-व मनुष्यों के नियंत्रण से प्रबंधित किया जाता है। छाया: घनिष्ठता आत्म-समर्पण माँगती है, और समर्पण विलय-भय जैसा लगता है।',
+    },
+minTier: 'prithvi',
     archetypeIntegration: 'Bhuvaneshvari\'s loop of cosmic-sovereignty wound: the Controller confuses structural mastery with existential security. They build beautiful maps of territories never walked. Bhuvaneshvari teaches that true sovereignty is the capacity to hold all possibilities without grasping any single one.',
     advancedNotes: 'Advanced integration uses Bhuvaneshvari sadhana where the practitioner visualizes containing all worlds within the body — and then systematically releasing each one. The practice reveals that what the Controller truly fears is not chaos, but the unstructured vastness of their own awareness.',
   },
@@ -99,7 +115,11 @@ export const allPatterns: Pattern[] = [
     practice: 'Ajapa-Japa to feel connection in the breath itself (hamsah — "I am That"). Journal prompt: "What am I protecting by staying alone?"',
     relatedSiddhis: ['ajapa-japa', 'manasika-japa'],
     imageSlug: 'the-hermit',
-    minTier: 'prithvi',
+        hi: {
+      definition:
+        'रक्षात्मक एकांत का पैटर्न — अभिभूत होने पर आप संबंध से मुख मोड़ते हैं, फिर अकेलापन सताता है, फिर और गहरे मुख मोड़ते हैं। छाया: एकांत आश्रम के वेश में कारागार बन जाता है।',
+    },
+minTier: 'prithvi',
     archetypeIntegration: 'Dhumavati\'s loop of the widowhood-of-the-soul: the Hermit has made a home in ashes, identifying with barrenness. Dhumavati teaches that the void is not emptiness but the space before new creation — the Hermit\'s cave is actually a womb.',
     advancedNotes: 'Advanced Hermit integration uses Dhumavati sadhana combined with Matsyendranath Nath practice to rebuild the bridge between solitary depth and embodied engagement. The key insight: the practitioner must learn to dwell in the smoke without being consumed by it.',
   },
@@ -118,7 +138,11 @@ export const allPatterns: Pattern[] = [
     practice: 'Bija Mantra practice on the anahata cakra (heart center) to feel a fixed point within. Journal prompt: "Which version of me felt most alive?"',
     relatedSiddhis: ['bija-mantra', 'chakra-dharana'],
     imageSlug: 'the-chameleon',
-    minTier: 'prithvi',
+        hi: {
+      definition:
+        'प्रत्येक वातावरण से अपना रूप मिलाने का पैटर्न। छाया: वर्षों के अनुकूलन के बाद आप नहीं जानते कि क्या आपका मूल स्वभाव है और क्या अभिनय — पहचान दर्पणों में घुल जाती है।',
+    },
+minTier: 'prithvi',
     archetypeIntegration: 'Matangi\'s loop of the outcaste within: the Chameleon\'s authentic voice has been exiled — deemed too strange, too raw for polite society. The split between the acceptable self and the transgressive self is Matangi\'s domain. Her teaching: the sacred is found at the margins.',
     advancedNotes: 'Akash-level Chameleon work employs Matangi sadhana where the practitioner deliberately invokes their most "unacceptable" qualities and offers them into the fire of the heart cakra. The integration arrives when the practitioner realizes they have never needed to choose between belonging and truth.',
   },
@@ -137,7 +161,11 @@ export const allPatterns: Pattern[] = [
     practice: 'Maha Mrtyunjaya Mantra to work with the fear of annihilation that underlies self-sabotage. Journal prompt: "What am I afraid will happen if I succeed?"',
     relatedSiddhis: ['mahamrityunjaya', 'sandhya-vandanam'],
     imageSlug: 'the-saboteur',
-    minTier: 'prithvi',
+        hi: {
+      definition:
+        'आत्म-विनाश का पैटर्न — आप कुछ सुंदर रचते हैं और फिर उसे गिरा देते हैं। छाया: सफलता खतरनाक लगती है, क्योंकि सफलता दृश्यता लाती है और दृश्यता निंदा बुलाती है।',
+    },
+minTier: 'prithvi',
     archetypeIntegration: 'Kali\'s loop of ego-attachment: the Saboteur destroys what they have built because the building itself has become a new attachment, and Kali demands the severance of all clinging. Bhairavi\'s loop of refusing the teacher also operates here — the Saboteur undermines external guidance as reflexively as they undermine their own efforts.',
     advancedNotes: 'Advanced Saboteur integration uses Dakshina Kali sadhana where self-destruction is offered to Kali as prasad — not celebrated, but witnessed. The practitioner learns to distinguish between Kali\'s transformative destruction (which liberates) and the ego\'s self-sabotage (which imprisons).',
   },
@@ -156,7 +184,11 @@ export const allPatterns: Pattern[] = [
     practice: 'Yoga Nidra to enter the hypnagogic space where feeling re-emerges without overwhelm. Journal prompt: "What am I running from by staying busy?"',
     relatedSiddhis: ['yoga-nidra', 'nadi-shuddhi'],
     imageSlug: 'the-avoidant',
-    minTier: 'prithvi',
+        hi: {
+      definition:
+        'भावनात्मक उपेक्षा-मार्ग का पैटर्न — आप व्यस्त रहते हैं, उत्पादक रहते हैं, विचलित रहते हैं। छाया: आप धीरे-धीरे सब कुछ के प्रति संवेदनहीन होते जा रहे हैं — केवल पीड़ा नहीं। आनंद, शोक, प्रेम — सब सपाट होते जाते हैं।',
+    },
+minTier: 'prithvi',
     archetypeIntegration: 'Dhumavati\'s widowhood and Matangi\'s exile both operate in the Avoidant. The emotional landscape has been declared a forbidden zone — too vast, too unpredictable. Vajrayogini\'s loop of bypass-through-bliss is the spiritual variant: the practitioner substitutes peak experiences for genuine feeling.',
     advancedNotes: 'Akash-level integration combines Yoga Nidra with Vajrayogini sadhana, using the hypnagogic state as a charnel ground where frozen emotions are invited to dance. The practice requires extended retreat format — the Avoidant cannot integrate this in 20-minute sessions.',
   },
@@ -179,7 +211,11 @@ export const allPatterns: Pattern[] = [
     practice: 'Sri Cakra Contemplation to experience abundance as a structural principle, not a reward. Journal prompt: "What would I do if I believed I was already worthy?"',
     relatedSiddhis: ['sri-yantra-dhyana', 'gayatri-mantra'],
     imageSlug: 'the-martyr',
-    minTier: 'prithvi',
+        hi: {
+      definition:
+        'वह पैटर्न जहाँ पीड़ा मुद्रा बन जाती है — आप त्याग से प्रेम कमाते हैं और अपराध-बोध आपको बाँधे रखता है। छाया: पीड़ा के बिना आप विश्राम या आनंद के योग्य नहीं लगते।',
+    },
+minTier: 'prithvi',
     archetypeIntegration: 'Chinnamasta\'s loop of self-sacrifice: the Martyr gives until there is nothing left, confusing depletion with devotion. Chinnamasta\'s iconography — feeding two attendants from her own arterial spray — is the most direct statement in all of tantra: the energy you give away must be regenerated, or the source dies.',
     advancedNotes: 'Advanced Martyr work employs Chinnamasta sadhana combined with Kamala sadhana to rebuild the capacity to receive. The practitioner must learn that the lotus grows from mud — that nourishment flows in both directions through the same channel.',
   },
@@ -198,7 +234,11 @@ export const allPatterns: Pattern[] = [
     practice: 'Sandhya Vandanam to learn that discipline and devotion to truth can coexist. Journal prompt: "Whose approval am I still seeking?"',
     relatedSiddhis: ['sandhya-vandanam', 'manasika-japa'],
     imageSlug: 'the-pleaser',
-    minTier: 'prithvi',
+        hi: {
+      definition:
+        'वह पैटर्न जहाँ सामंजस्य किसी भी कीमत पर — अपने सत्य की कीमत सहित — बनाए रखा जाता है। छाया: आप चापलूसी को दया और मौन को शांति समझ बैठते हैं।',
+    },
+minTier: 'prithvi',
     archetypeIntegration: 'Tara\'s loop again: the Pleaser needs to be ferried across because they have forgotten their own capacity to navigate. Bagalamukhi\'s silencing also operates — the Pleaser\'s authentic voice has been frozen by the threat of displeasing. The integration requires finding the voice that Bagalamukhi guards.',
     advancedNotes: 'Akash-level Pleaser work uses Tara Ugra sadhana where the practitioner enacts radical truth-telling in a ritual context — saying the unsayable, naming the unnamed. This is preparation for the real-world practice of boundary-setting that the Pleaser has avoided their entire life.',
   },

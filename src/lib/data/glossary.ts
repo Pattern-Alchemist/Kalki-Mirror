@@ -174,7 +174,11 @@ category: 'foundational',
     pronunciation: 'MOO-drah',
     definition:
       'Seal or gesture — a physical or energetic configuration that redirects prāṇa and locks specific states of consciousness. Hand mudrās channel energy through the fingertips; body mudrās (such as mahāmudrā or khecarī mudrā) seal prāṇa within specific circuits. In the KALKI system, mudrās are treated as hardware-level controls for the subtle-body operating system.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'मुद्रा — प्राण को पुनर्निर्देशित करने और चेतना की विशिष्ट अवस्थाओं को सील करने का शारीरिक या सूक्ष्म विन्यास। हस्त-मुद्राएँ ऊर्जा को अंगुलियों के मार्ग से चैनलित करती हैं; शरीर-मुद्राएँ (महामुद्रा, खेचरी आदि) प्राण को विशिष्ट परिपथों में बंद कर देती हैं। काल्की पद्धति में मुद्रा कोई संकेत-चिह्न नहीं — ऊर्जा-परिपथ का स्विच है।',
+    },
+category: 'foundational',
     relatedTerms: ['Bandha', 'Prāṇa', 'Nyāsa'],
   },
   {
@@ -183,7 +187,11 @@ category: 'foundational',
     pronunciation: 'BAHN-dah',
     definition:
       'Lock or binding — the deliberate muscular contraction that redirects prāṇa within the body. The three primary bandhas are jālandhara (throat lock), uḍḍīyāna (abdominal lock), and mūla (perineal lock). When applied together as mahābandha, they create a sealed pressure system that forces prāṇa into the suṣumṇā.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'बंध — शरीर में प्राण को पुनर्निर्देशित करने के लिए की जाने वाली जानबूझकर मांसपेशीय संकुचन। तीन प्रधान बंध हैं — जालन्धर (कंठ), उड्डीयान (उदर) और मूल (मूलाधार)। तीनों के संयुक्त रूप (महाबंध) से एक सीलबंद दबाव-परिपथ बनता है, जहाँ प्राण ऊपर की ओर केवल सुषुम्ना में ही प्रवाहित हो सकता है।',
+    },
+category: 'foundational',
     relatedTerms: ['Mudrā', 'Prāṇāyāma', 'Kumbhaka'],
   },
   {
@@ -192,7 +200,11 @@ category: 'foundational',
     pronunciation: 'DRISH-tee',
     definition:
       'Gaze or focused seeing — the direction and quality of visual attention during practice. Each āsana, mudrā, and prāṇāyāma technique has a prescribed drisṭi that channels the nervous system into specific states. In the KALKI framework, drisṭi is the visual dimension of pattern recognition — where you look determines what you see.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'दृष्टि — अभ्यास के दौरान दृश्य-ध्यान की दिशा और गुणवत्ता। प्रत्येक आसन, मुद्रा और प्राणायाम की एक निर्धारित दृष्टि होती है, जो तंत्रिका तंत्र को विशिष्ट अवस्थाओं में चैनलित करती है। काल्की ढाँचे में दृष्टि ध्यान का दृश्य-आयाम है — जहाँ नेत्र जाते हैं, प्राण और चेतना का स्पन्दन उसी क्षण संगठित होता है।',
+    },
+category: 'foundational',
     relatedTerms: ['Trāṭaka', 'Dhyāna'],
   },
   {
@@ -201,7 +213,11 @@ category: 'foundational',
     pronunciation: 'BEEN-doo',
     definition:
       'Point or dot — the metaphysical point of origin from which all manifestation expands. In the subtle body, bindu refers to the nectar of immortality at the crown of the head, and to the point of consciousness from which all thought arises. The bindu is the geometric and philosophical zero-point of the KALKI system.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'बिन्दु — वह मूल-केंद्र जिससे समस्त सृष्टि का विस्तार होता है। सूक्ष्म-शरीर में बिन्दु शिरोत्कट (सहस्रार) में स्थित अमृत और वह बिंदु-चेतना दोनों है जिससे प्रत्येक विचार उदित होता है। यही यंत्रों की ज्यामिति का केंद्र भी है — जहाँ सारा विस्तार संकुचित होकर एक बिंदु में लौट आता है।',
+    },
+category: 'foundational',
     relatedTerms: ['Oṃ', 'Cakra', 'Kāmakalā'],
   },
   {
@@ -210,7 +226,11 @@ category: 'foundational',
     pronunciation: 'OH-jahs',
     definition:
       'The subtle essence of vitality — the refined product of properly digested prāṇa, tejas, and nutrition. Ojas is the immune system of consciousness: it confers resilience, radiance, and the capacity to sustain intense practice without depletion. The KALKI system treats ojas as the measure of a practitioner\'s energetic bank account.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'ओजस् — जीवन-शक्ति का सूक्ष्म सार: ठीक से परिपाकित प्राण, तेजस् और पोषण का परिष्कृत उत्पाद। ओजस् चेतना की प्रतिरक्षा-प्रणाली है — यह सहनशक्ति, तेज और बिना क्षय के तीव्र अभ्यास झेलने की क्षमता देता है। काल्की पद्धति की दीर्घकालिक अभ्यास-संरचना ओजस् के संरक्षण पर टिकी है।',
+    },
+category: 'foundational',
     relatedTerms: ['Tejas', 'Prāṇa', 'Kuṇḍalinī'],
   },
   {
@@ -219,7 +239,11 @@ category: 'foundational',
     pronunciation: 'TEH-jahs',
     definition:
       'The fire of intelligence and radiance — the subtle energy of discernment and transformation. Tejas is the refined product of properly directed prāṇa, and it fuels the faculty of viveka. When tejas is depleted, clarity collapses into confusion. When it is abundant, the practitioner sees through patterns with surgical precision.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'तेजस् — बुद्धि और तेज की अग्नि: विवेक और रूपांतरण की सूक्ष्म ऊर्जा। यह ठीक दिशा में निर्देशित प्राण का परिष्कृत उत्पाद है और विवेक-शक्ति का ईंधन। तेजस् क्षीण हो तो स्पष्टता भ्रम में गिर जाती है; प्रचुर हो तो पैटर्न को देखने वाला नेत्र खुल जाता है।',
+    },
+category: 'foundational',
     relatedTerms: ['Ojas', 'Prāṇa', 'Sattva'],
   },
   {
@@ -228,7 +252,11 @@ category: 'foundational',
     pronunciation: 'SAHT-vah',
     definition:
       'The quality of balance, clarity, and illumination — one of the three guṇas (fundamental constituents of nature). Sattva is the principle of harmonic coherence: when dominant, the mind is clear, the body is healthy, and perception is undistorted. The KALKI system aims to cultivate sattva as the baseline operating frequency of consciousness.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'सत्त्व — संतुलन, स्पष्टता और प्रकाश का गुण; तीन गुणों (प्रकृति के मूल घटकों) में सबसे हल्का। सत्त्व सामंजस्यपूर्ण सुसंगतता का सिद्धांत है — प्रधान होने पर मन स्पष्ट, शरीर स्वस्थ और प्रत्यक्षण विकृति-रहित रहता है। काल्की पद्धति का संपूर्ण अभ्यास सत्त्व को प्रधान बनाने की संरचना है।',
+    },
+category: 'foundational',
     relatedTerms: ['Rajas', 'Tamas', 'Tejas'],
   },
   {
@@ -237,7 +265,11 @@ category: 'foundational',
     pronunciation: 'RAH-jahs',
     definition:
       'The quality of activity, restlessness, and desire — the guṇa that drives motion and ambition. Rajas is not negative; it is the engine of action. But when unchecked, it produces the compulsive doing that the KALKI system identifies as a primary pattern architecture — the inability to stop, to be still, to allow transformation through non-action.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'रजस् — क्रिया, चंचलता और इच्छा का गुण; गति और महत्वाकांक्षा का चालक। रजस् नकारात्मक नहीं — कर्म का इंजन यही है। पर अनियंत्रित होने पर यही वह अनिवार्य-कर्तृत्व बनता है जिसे काल्की पद्धति पैटर्न-स्थापत्य का प्राथमिक स्तंभ मानती है।',
+    },
+category: 'foundational',
     relatedTerms: ['Sattva', 'Tamas', 'Karma'],
   },
   {
@@ -246,7 +278,11 @@ category: 'foundational',
     pronunciation: 'TAH-mahs',
     definition:
       'The quality of inertia, darkness, and ignorance — the guṇa that resists change and perpetuates the status quo. Tamas is the gravitational pull of the known, the comfort of the familiar pattern. In the KALKI system, tamas is the primary obstacle to pattern recognition: it is the force that keeps the practitioner asleep within their own loops.',
-    category: 'foundational',
+        hi: {
+      definition:
+        'तमस् — जड़ता, अंधकार और अज्ञान का गुण; परिवर्तन का प्रतिरोध करने वाला, यथास्थिति को टिकाए रखने वाला। तमस् ज्ञात का गुरुत्वाकर्षण है — पुराने, परिचित पैटर्न का आराम। काल्की पद्धति में तमस् पैटर्न-पुनर्प्राप्ति की प्राथमिक बाधा है; तपस् और प्राण-अग्नि इसी को जलाती हैं।',
+    },
+category: 'foundational',
     relatedTerms: ['Sattva', 'Rajas', 'Saṃskāra'],
   },
 
@@ -283,7 +319,11 @@ category: 'pranayama',
     pronunciation: 'ahn-TAH-rah koom-BHAH-kah',
     definition:
       'Internal breath retention — holding the breath after inhalation, with the lungs full. This is the primary kumbhaka for building prāṇic pressure and activating the suṣumṇā. Antara kumbhaka increases tejas and charges the system with the energy needed for intensive pattern confrontation.',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'अंतरा कुंभक — श्वास भरकर, फेफड़ों के पूर्ण होने पर श्वास रोकना। प्राणिक दबाव बनाने और सुषुम्ना को सक्रिय करने का प्राथमिक कुंभक यही है। यह तेजस् बढ़ाता है और तीव्र अभ्यास के लिए आवश्यक ऊर्जा से तंत्र को आवेशित करता है।',
+    },
+category: 'pranayama',
     relatedTerms: ['Kumbhaka', 'Bahya Kumbhaka', 'Prāṇāyāma'],
   },
   {
@@ -292,7 +332,11 @@ category: 'pranayama',
     pronunciation: 'BAH-hyah koom-BHAH-kah',
     definition:
       'External breath retention — holding the breath after exhalation, with the lungs empty. This is the most advanced form of kumbhaka, requiring significant prāṇic capacity. Bahya kumbhaka produces a deep parasympathetic state that allows access to unconscious pattern material.',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'बाह्य कुंभक — श्वास छोड़कर, फेफड़ों के रिक्त होने पर श्वास रोकना। यह कुंभक का सर्वाधिक उन्नत रूप है, जिसमें विशेष प्राणिक क्षमता चाहिए। बाह्य कुंभक गहरा अनुतेजी अवस्था उत्पन्न करता है, जहाँ अचेतन पैटर्नों तक पहुँच संभव होती है।',
+    },
+category: 'pranayama',
     relatedTerms: ['Kumbhaka', 'Antara Kumbhaka', 'Prāṇāyāma'],
     minTier: 'jal',
   },
@@ -302,7 +346,11 @@ category: 'pranayama',
     pronunciation: 'sah-HEE-tah koom-BHAH-kah',
     definition:
       'Connected breath retention — kumbhaka that is deliberately held and released through conscious effort. This is the preparatory stage before kevala kumbhaka. The practitioner uses will to extend the pause, gradually building the capacity for spontaneous retention.',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'सहित कुंभक — वह श्वास-रोध जो सचेत प्रयास से धारण और मुक्त किया जाता है। यह केवल कुंभक की पूर्व-तैयारी है: अभ्यासी इच्छा से विराम को लंबा करता है और क्रमशः स्वतः-स्पंदन के लिए क्षमता बनाता है।',
+    },
+category: 'pranayama',
     relatedTerms: ['Kumbhaka', 'Kevala Kumbhaka'],
   },
   {
@@ -311,7 +359,11 @@ category: 'pranayama',
     pronunciation: 'keh-VAH-lah koom-BHAH-kah',
     definition:
       'Spontaneous breath retention — the state where the breath suspends naturally without conscious effort. This is the advanced sign that the prāṇic system has been recalibrated and the nervous system has entered a new operating mode. Kevala kumbhaka is not achieved through forcing; it emerges as the natural consequence of sustained practice.',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'केवल कुंभक — स्वतः श्वास-रोध; वह अवस्था जहाँ श्वास बिना किसी सचेत प्रयास के स्वयं निलंबित हो जाती है। यह उन्नत संकेत है कि प्राणिक तंत्र पुनर्अंशांकित हो चुका है और तंत्रिका तंत्र नए संचालन-प्रकार में प्रविष्ट हो गया है। इसे हासिल नहीं किया जाता — यह उपलब्ध होता है।',
+    },
+category: 'pranayama',
     relatedTerms: ['Kumbhaka', 'Sahita Kumbhaka', 'Samādhi'],
     minTier: 'agni',
   },
@@ -321,7 +373,11 @@ category: 'pranayama',
     pronunciation: 'TRAH-tah-kah',
     definition:
       'Steady gazing — the practice of fixing the eyes on a single point (traditionally a candle flame) without blinking until tears flow. Trāṭaka develops concentration (dhāraṇā), purifies the visual channel, and directly trains the faculty of drisṭi. It is one of the six śaṭkarmas and a foundational practice in the KALKI system.',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'त्राटक — एक बिंदु पर (परंपरागत रूप से दीपक की लौ पर) बिना पलक झपकाए स्थिर दृष्टि टिकाना, जब तक नेत्र आर्द्र न हो जाएँ। त्राटक धारणा विकसित करता है, दृश्य-मार्ग शुद्ध करता है और दृष्टि-शक्ति को सीधे प्रशिक्षित करता है। यह एकाग्रता की सबसे पहुँच-योग्य प्रवेश-तकनीकों में एक है।',
+    },
+category: 'pranayama',
     relatedTerms: ['Drisṭi', 'Dhāraṇā', 'Dhyāna'],
   },
   {
@@ -330,7 +386,11 @@ category: 'pranayama',
     pronunciation: 'shee-TAH-lee',
     definition:
       'Cooling breath — inhalation through a rolled tongue, cooling the blood and calming the nervous system. Śītalī directly reduces pitta (excess heat) and is used to counterbalance the heating prāṇāyāmas. In the KALKI system, it is prescribed after intense pattern-confrontation sessions to prevent energetic overload.',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'शीतली — मुँठी हुई जिह्वा से श्वास लेना, जो रक्त को शीतल करता है और तंत्रिका तंत्र को शांत करता है। शीतली पित्त (अतिरिक्त ऊष्मा) को सीधे घटाती है और ऊष्ण प्राणायामों का संतुलन बनाती है। काल्की पद्धति में तीव्र पैटर्न-कार्य के बाद इसका विधान है।',
+    },
+category: 'pranayama',
     relatedTerms: ['Prāṇāyāma', 'Bhastrika'],
   },
   {
@@ -339,7 +399,11 @@ category: 'pranayama',
     pronunciation: 'bahs-TREE-kah',
     definition:
       'Bellows breath — rapid, forceful inhalations and exhalations through the nose, pumping prāṇa through the system like a blacksmith\'s bellows. Bhastrika generates intense heat (tapas), awakens kuṇḍalinī, and burns through tamas. It is the most aggressive prāṇāyāma and must be practiced with precise count and bandha application.',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'भस्त्रिका — नासाद्वार से तीव्र, प्रबल श्वास-प्रश्वास; लोहार की भाँति प्राण को धौंकनी की तरह तंत्र में संचालित करना। भस्त्रिका तीव्र ऊष्मा (तपस्) उत्पन्न करती है, कुंडलिनी जगाती है और तमस् को भस्म करती है। यह सर्वाधिक प्रबल प्राणायाम है — बिना पूर्व-तैयारी के वर्जित।',
+    },
+category: 'pranayama',
     relatedTerms: ['Prāṇāyāma', 'Kapālabhāti', 'Kumbhaka'],
     minTier: 'jal',
   },
@@ -349,7 +413,11 @@ category: 'pranayama',
     pronunciation: 'bhrah-MAH-ree',
     definition:
       'Bee breath — exhalation with a sustained, low-pitched humming sound created by the vocal cords. Bhramarī stimulates the vagus nerve, activates the parasympathetic system, and produces a measurable reduction in cortisol and blood pressure. The KALKI system uses bhramarī as a primary tool for nervous-system recalibration after pattern-confrontation work.',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'भ्रामरी — स्वर-रज्जुओं से निम्न-स्वर की सतत गूँज के साथ श्वास छोड़ना; भँवरे की भिनभिनाहट। भ्रामरी वेगस तंत्रिका को उद्दीपित करती है, अनुतेजी तंत्र सक्रिय करती है और रक्तचाप व तनाव-हार्मोन में मापनीय कमी लाती है। काल्की पद्धति इसे तंत्रिका-शांति का सर्वाधिक सुरक्षित साधन मानती है।',
+    },
+category: 'pranayama',
     relatedTerms: ['Prāṇāyāma', 'Nāḍī Śuddhi'],
   },
   {
@@ -358,7 +426,11 @@ category: 'pranayama',
     pronunciation: 'oo-JAH-yee',
     definition:
       'Victorious breath — a gentle constriction of the glottis that produces a soft, oceanic hissing sound during both inhalation and exhalation. Ujjāyī creates a slight back-pressure that warms the air, slows the breath, and activates the baroreceptor reflex. It is the default breath during all KALKI practice sessions.',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'उज्जायी — गलकोष के सौम्य संकुचन से उत्पन्न मृदु, समुद्री श्वास-ध्वनि; श्वास और प्रश्वास दोनों में। उज्जायी हल्का प्रतिदबाव बनाता है जो वायु को ऊष्ण करता है, श्वास को धीमा करता है और दबाव-प्रतिवर्त सक्रिय करता है। यह वह श्वास है जो अभ्यास को सतत ध्यान में बदल देता है।',
+    },
+category: 'pranayama',
     relatedTerms: ['Prāṇāyāma', 'Nāḍī Śuddhi'],
   },
   {
@@ -367,7 +439,11 @@ category: 'pranayama',
     pronunciation: 'kah-PAHL-bah-tee',
     definition:
       'Skull-shining breath — rapid, forceful exhalations through the nose with passive inhalations. Kapālabhāti clears the sinuses, stimulates the frontal lobe, and purges the system of stale prāṇa. Unlike bhastrika, inhalation is passive. It is classified as one of the six śaṭkarmas and is used in the KALKI system as an energetic reset.',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'कपालभाति — नासाद्वार से तीव्र, प्रबल प्रश्वास और सहज श्वास; कपाल को कांति देने वाली शुद्धि। यह नासा-पथ साफ करता है, अग्र-मस्तिष्क को उद्दीपित करता है और जीर्ण प्राण को बाहर निकालता है। भस्त्रिका से भेद यही है — यहाँ श्वास सहज होता है।',
+    },
+category: 'pranayama',
     relatedTerms: ['Prāṇāyāma', 'Bhastrika'],
   },
   {
@@ -376,7 +452,11 @@ category: 'pranayama',
     pronunciation: 'SOOR-yah bhay-DAH-nah',
     definition:
       'Solar-piercing breath — inhalation through the right nostril, exhalation through the left. Activates the piṅgalā nāḍī and increases sympathetic tone, body heat, and alertness. Used when tamas or lethargy dominates. Contra-indicated when agni is already excessive.',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'सूर्य भेदन — दाईं नासाद्वार से श्वास, बाईं से प्रश्वास। यह पिंगला नाड़ी को सक्रिय करता है और सौर स्वर, शरीर-ऊष्मा व सतर्कता बढ़ाता है। जब तमस् या सुस्ती प्रधान हो, तब विधेय; अग्नि पहले से प्रचुर हो तो निषिद्ध।',
+    },
+category: 'pranayama',
     relatedTerms: ['Prāṇāyāma', 'Candra Bhedana', 'Piṅgalā'],
   },
   {
@@ -385,7 +465,11 @@ category: 'pranayama',
     pronunciation: 'CHAHN-drah bhay-DAH-nah',
     definition:
       'Lunar-piercing breath — inhalation through the left nostril, exhalation through the right. Activates the iḍā nāḍī and increases parasympathetic tone, coolness, and receptivity. Used when rajas or anxiety dominates. The complementary practice to sūrya bhedana.',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'चंद्र भेदन — बाईं नासाद्वार से श्वास, दाईं से प्रश्वास। यह इड़ा नाड़ी को सक्रिय करता है और चांद्रिक स्वर, शीतलता व ग्राह्यता बढ़ाता है। जब रजस् या उद्वेग प्रधान हो, तब विधेय। सूर्य भेदन का पूरक अभ्यास है।',
+    },
+category: 'pranayama',
     relatedTerms: ['Prāṇāyāma', 'Sūrya Bhedana', 'Iḍā'],
   },
   {
@@ -394,7 +478,11 @@ category: 'pranayama',
     pronunciation: 'NAH-dee SHOO-dee',
     definition:
       'Nāḍī purification — alternate nostril breathing (anuloma viloma), the foundational prāṇāyāma that balances the iḍā and piṅgalā channels. By equalizing solar and lunar flows, nāḍī śuddhi prepares the system for suṣumṇā activation. It is the first prāṇāyāma taught in the KALKI system and remains a daily practice at every tier.',
-    category: 'pranayama',
+        hi: {
+      definition:
+        'नाड़ी शुद्धि — अनुलोम-विलोम (क्रमबद्ध नासाद्वार-श्वास), वह आधारभूत प्राणायाम जो इड़ा और पिंगला को संतुलित करता है। सौर और चांद्रिक प्रवाह को समान करके नाड़ी शुद्धि सुषुम्ना-सक्रियण की भूमि तैयार करती है। यह पहला प्राणायाम है जो हर साधक को सिखाया जाता है — शेष सब इसी पर खड़े होते हैं।',
+    },
+category: 'pranayama',
     relatedTerms: ['Prāṇāyāma', 'Nāḍī', 'Iḍā', 'Piṅgalā'],
   },
 
@@ -418,7 +506,11 @@ category: 'tantra',
     pronunciation: 'KOW-lah',
     definition:
       'The Kaula path — the innermost current of tantric practice, characterized by the use of all experiences (including those conventionally rejected) as fuel for transformation. The Kaula practitioner does not renounce the world but transmutes it. The KALKI system operates within the Kaula methodological framework.',
-    category: 'tantra',
+        hi: {
+      definition:
+        'कौल — तांत्रिक अभ्यास की अंतरतम धारा, जिसकी पहचान समस्त अनुभवों (परंपरागत रूप से तिरस्कृत सहित) को रूपांतरण के ईंधन के रूप में स्वीकार करने से है। कौल साधक जगत का त्याग नहीं करता — उसका पारण करता है। काल्की पद्धति स्वयं को कौल-दृष्टि की उत्तराधिकारी मानती है: अनुभव की सामग्री ही रूपांतरण का ईंधन है।',
+    },
+category: 'tantra',
     relatedTerms: ['Tantra', 'Śākta', 'Sādhana'],
     minTier: 'jal',
   },
@@ -428,7 +520,11 @@ category: 'tantra',
     pronunciation: 'SHAHK-tah',
     definition:
       'The tradition that holds Śakti — the divine feminine power — as the supreme reality. Śākta tantra recognizes consciousness as fundamentally dynamic, creative, and transformative. The KALKI system\'s use of the Mahāvidyā archetypes places it within the Śākta framework.',
-    category: 'tantra',
+        hi: {
+      definition:
+        'शाक्त — वह परंपरा जो शक्ति — दिव्य स्त्री-तत्व, गतिशील ऊर्जा — को परम तत्व मानती है। शाक्त तंत्र चेतना को मूलतः गतिशील, सृजनशील और रूपांतरणशील स्वीकार करता है। काल्की पद्धति का महाविद्या-चित्रण इसी शाक्त ढाँचे में खड़ा है।',
+    },
+category: 'tantra',
     relatedTerms: ['Śakti', 'Śiva', 'Tantra', 'Mahāvidyā'],
   },
   {
@@ -437,7 +533,11 @@ category: 'tantra',
     pronunciation: 'SHAHY-vah',
     definition:
       'The tradition centered on Śiva — pure consciousness, the unchanging witness. Śaiva tantra recognizes consciousness as fundamentally static, luminous, and free. The KALKI system integrates both Śākta and Śaiva perspectives: Śakti as the transformative power, Śiva as the witnessing awareness that observes the transformation.',
-    category: 'tantra',
+        hi: {
+      definition:
+        'शैव — वह परंपरा जो शिव — शुद्ध चेतना, अपरिवर्तनीय साक्षी — को केंद्र में रखती है। शैव तंत्र चेतना को मूलतः स्थिर, आत्मप्रकाश और मुक्त मानता है। काल्की पद्धति शाक्त और शैव दोनों दृष्टियों को समन्वित करती है: शक्ति रूपांतरण की शक्ति है, शिव वह शांत केंद्र जिसमें परिवर्तन देखा जाता है।',
+    },
+category: 'tantra',
     relatedTerms: ['Śiva', 'Śākta', 'Tantra'],
   },
   {
@@ -472,7 +572,11 @@ category: 'tantra',
     pronunciation: 'YAHN-trah',
     definition:
       'Instrument — a geometric diagram that encodes a specific energetic architecture. Unlike a mantra, which works through sound, a yantra works through spatial and visual frequency. The most famous is the Śrī Yantra, which encodes the entire process of manifestation from unity to multiplicity and back. In the KALKI system, yantras are treated as visual operating systems.',
-    category: 'tantra',
+        hi: {
+      definition:
+        'यंत्र — एक ज्यामितीय आरेख जो विशिष्ट ऊर्जा-स्थापत्य को संकेतित करता है। मंत्र जो ध्वनि से करता है, यंत्र वह स्थानिक और दृश्य आवृत्ति से करता है। सर्वाधिक प्रसिद्ध श्रीयंत्र है, जो सृष्टि की संपूर्ण प्रक्रिया को एक चित्र में संकोड़ित करता है। यंत्र चेतना का दृश्य-स्पन्दन-मानचित्र है।',
+    },
+category: 'tantra',
     relatedTerms: ['Maṇḍala', 'Śrī Yantra', 'Mantra'],
   },
   {
@@ -481,7 +585,11 @@ category: 'tantra',
     pronunciation: 'mahn-DAH-lah',
     definition:
       'Circle — a sacred geometric arrangement used as a map of consciousness, a ritual enclosure, or a meditative focus. The maṇḍala represents the totality of the cosmos and the psyche simultaneously. In the KALKI system, maṇḍalas are used as structural maps for organizing and navigating the terrain of consciousness.',
-    category: 'tantra',
+        hi: {
+      definition:
+        'मंडल — वृत्त; चेतना का मानचित्र, अनुष्ठानिक सीमा या ध्यान-केंद्र के रूप में प्रयुक्त पवित्र ज्यामितीय विन्यास। मंडल ब्रह्मांड और मन — दोनों की समग्रता का एक साथ प्रतिनिधित्व करता है। काल्की पद्धति में मंडल व्यवस्थित पैटर्न-कार्य के लिए संरचनात्मक मानचित्र है।',
+    },
+category: 'tantra',
     relatedTerms: ['Yantra', 'Śrī Cakra', 'Puja'],
   },
   {
@@ -490,7 +598,11 @@ category: 'tantra',
     pronunciation: 'SHREE CHAH-krah',
     definition:
       'The Śrī Cakra (also Śrī Yantra) — the supreme yantra of the Śākta tradition. Nine interlocking triangles (four upward, five downward) encoded in a lotus-and-gate framework, representing the entire process of creation, preservation, and dissolution. Each of its nine circuits (āvaraṇa) corresponds to a specific band of experience.',
-    category: 'tantra',
+        hi: {
+      definition:
+        'श्रीचक्र — शाक्त परंपरा का परम यंत्र। नौ परस्पर अंतर्वेधित त्रिभुज (चार ऊर्ध्वमुखी, पाँच अधोमुखी) कमल-द्वार ढाँचे में संकोड़ित — सृष्टि, स्थिति और प्रलय की संपूर्ण प्रक्रिया का प्रतिनिधित्व करते हुए। इसका प्रत्येक आवरण चेतना की एक स्पष्ट अवस्था है, जिसे अभ्यासी बाहर से केंद्र की ओर पार करता है।',
+    },
+category: 'tantra',
     relatedTerms: ['Śrī Yantra', 'Yantra', 'Maṇḍala'],
   },
   {
@@ -499,7 +611,11 @@ category: 'tantra',
     pronunciation: 'SHREE YAHN-trah',
     definition:
       'The instrument of auspiciousness — synonymous with Śrī Cakra. The most studied and most powerful yantra in the Tantric canon. Its geometry encodes the relationship between consciousness and its objects, between Śiva and Śakti, between the witness and the witnessed.',
-    category: 'tantra',
+        hi: {
+      definition:
+        'श्रीयंत्र — मंगल का यंत्र; श्रीचक्र का ही पर्याय। तांत्रिक संपदा का सर्वाधिक अध्ययनित और सर्वाधिक प्रभावशाली यंत्र। इसकी ज्यामिति चेतना और उसके विषयों का, शिव और शक्ति का, साक्षी और साक्ष्य का संबंध संकोड़ित करती है।',
+    },
+category: 'tantra',
     relatedTerms: ['Śrī Cakra', 'Yantra', 'Mantra'],
   },
   {
@@ -508,7 +624,11 @@ category: 'tantra',
     pronunciation: 'mah-HAH-vid-YAH',
     definition:
       'Great knowledge — the ten wisdom goddesses of the Śākta Tantric tradition. Each Mahāvidyā represents a specific mode of consciousness and governs a specific karmic-loop archetype. In the KALKI system, the ten Mahāvidyās are the primary classification framework for the emotional patterns that govern human behavior.',
-    category: 'tantra',
+        hi: {
+      definition:
+        'महाविद्या — शाक्त तंत्र की दस ज्ञान-देवियाँ। प्रत्येक महाविद्या चेतना की एक विशिष्ट मुद्रा का प्रतिनिधित्व करती है और एक विशिष्ट कर्म-लूप चाप पर शासन करती है। काल्की पद्धति में दस महाविद्याएँ पैटर्न-वर्गीकरण का प्राथमिक ढाँचा हैं।',
+    },
+category: 'tantra',
     relatedTerms: ['Śākta', 'Kāmakalā', 'Bīja'],
     relatedSiddhiSlugs: ['dakshina-kali-sadhana', 'tara-ugra-sadhana', 'chinnamasta-sadhana'],
   },
@@ -518,7 +638,11 @@ category: 'tantra',
     pronunciation: 'KAH-mah-KAH-lah',
     definition:
       'The desire-essence — the most esoteric doctrine in Śrī Vidyā, describing the union of Śiva and Śakti at the level of pure creative desire. Kāmakalā is the triangle within the bindu, the seed within the seed, the desire that is itself the engine of all manifestation.',
-    category: 'tantra',
+        hi: {
+      definition:
+        'कामकला — इच्छा-सार; श्रीविद्या का सर्वाधिक गूढ़ सिद्धांत, जो शिव-शक्ति के मिलन को शुद्ध सृजनात्मक इच्छा के स्तर पर वर्णित करता है। कामकला बिन्दु के भीतर का त्रिकोण है — बीज के भीतर का बीज — वह इच्छा जो स्वयं समस्त सृष्टि का इंजन है।',
+    },
+category: 'tantra',
     relatedTerms: ['Śrī Cakra', 'Bindu', 'Mahāvidyā'],
     minTier: 'akash',
   },
@@ -528,7 +652,11 @@ category: 'tantra',
     pronunciation: 'vid-YAH',
     definition:
       'Knowledge — specifically, liberating knowledge. Vidyā is the antidote to avidyā (ignorance), the fundamental misapprehension that the pattern is the self. Each Mahāvidyā is a "great knowledge" because she reveals a specific dimension of reality that the ordinary mind cannot access.',
-    category: 'tantra',
+        hi: {
+      definition:
+        'विद्या — ज्ञान; विशेषतः बंधन-तोड़ने वाला ज्ञान। विद्या अविद्या (अज्ञान) का प्रतिषेधक है — वह मूल भ्रम जिसमें पैटर्न को आत्मा समझ लिया जाता है। प्रत्येक महाविद्या "महान् ज्ञान" इसलिए है कि वह यथार्थ का एक विशिष्ट आयाम प्रकट करती है जो साधारण दृष्टि नहीं देख पाती।',
+    },
+category: 'tantra',
     relatedTerms: ['Mahāvidyā', 'Jñāna Yoga'],
   },
 
@@ -539,7 +667,11 @@ category: 'tantra',
     pronunciation: 'DEEK-shah',
     definition:
       'Initiation — the ritual transmission of a specific energetic frequency from teacher to student. Dīkṣā is not a ceremony but a calibration: the teacher\'s system acts as a template that rewires the student\'s subtle-body architecture to receive and transmit specific frequencies. Without dīkṣā, certain practices remain inert — the code exists but cannot execute.',
-    category: 'ritual',
+        hi: {
+      definition:
+        'दीक्षा — गुरु से शिष्य को विशिष्ट ऊर्जा-आवृत्ति का प्रतिष्ठित संचार। दीक्षा उत्सव नहीं — अंशांकन है: गुरु का तंत्र एक साँचे के रूप में कार्य करता है जो शिष्य के सूक्ष्म-शरीर स्थापत्य को विशिष्ट आवृत्तियाँ ग्रहण और संचारित करने योग्य बनाता है।',
+    },
+category: 'ritual',
     relatedTerms: ['Guru', 'Sādhana', 'Mantra'],
     minTier: 'jal',
   },
@@ -562,7 +694,11 @@ category: 'ritual',
     pronunciation: 'SAH-dhah-kah',
     definition:
       'The practitioner — one who has committed to a sustained sādhana. The word derives from the same root as sādhana (sādh, to accomplish). A sādhaka is not a student in the passive sense but an active agent of transformation. In the KALKI system, every user is a potential sādhaka.',
-    category: 'ritual',
+        hi: {
+      definition:
+        'साधक — वह अभ्यासी जो सतत साधना के लिए प्रतिबद्ध हो चुका है। शब्द साधना की ही जड़ (साध् — सिद्ध करना) से बना है। साधक निष्क्रिय छात्र नहीं — रूपांतरण का सक्रिय कर्ता है। काल्की पद्धति में प्रत्येक उपयोगकर्ता साधक है, ग्राहक नहीं।',
+    },
+category: 'ritual',
     relatedTerms: ['Sādhana', 'Guru', 'Dīkṣā'],
   },
   {
@@ -571,7 +707,11 @@ category: 'ritual',
     pronunciation: 'GOO-roo',
     definition:
       'Teacher — from gu (darkness) + ru (light): the one who dispels darkness. In the Tantric framework, the guru is not a person but a function: the transmission channel through which the energetic frequency of the lineage is delivered. The KALKI system acknowledges the guru principle as essential for advanced practices while providing a structured self-guided path for foundational work.',
-    category: 'ritual',
+        hi: {
+      definition:
+        'गुरु — गु (अंधकार) + रु (प्रकाश): अंधकार हरने वाला। तांत्रिक ढाँचे में गुरु कोई व्यक्ति नहीं — एक कार्य है: वह संचार-मार्ग जिससे परंपरा की ऊर्जा-आवृत्ति अगली पीढ़ी तक पहुँचती है। काल्की पद्धति जीवित गुरु-सिद्धांत का आदर करती है और यह भी स्वीकार करती है कि प्रामाणिक ग्रंथ-संग्रह स्वयं एक मौन गुरु है — जहाँ तक कि वह यथार्थ बोलता है।',
+    },
+category: 'ritual',
     relatedTerms: ['Dīkṣā', 'Sādhana', 'Sādhaka'],
   },
   {
@@ -580,7 +720,11 @@ category: 'ritual',
     pronunciation: 'NYAH-sah',
     definition:
       'Placement — the ritual installation of mantras and bījas at specific points on the body, transforming the physical form into a living yantra. Each finger, limb, and energy center receives a specific sonic installation. Nyāsa is the interface technology between the sonic body (mantra) and the spatial body (yantra).',
-    category: 'ritual',
+        hi: {
+      definition:
+        'न्यास — स्थापन; शरीर के विशिष्ट बिंदुओं पर मंत्रों और बीजों की अनुष्ठानिक प्रतिष्ठा, जिससे भौतिक शरीर एक जीवित यंत्र बन जाता है। प्रत्येक अंगुली, अवयव और ऊर्जा-केंद्र एक विशिष्ट ध्वनि-प्रतिष्ठा ग्रहण करता है। न्यास ध्वनि और रूप के बीच की संधि-प्रौद्योगिकी है।',
+    },
+category: 'ritual',
     relatedTerms: ['Mantra', 'Bīja', 'Mudrā', 'Puja'],
     minTier: 'agni',
   },
@@ -590,7 +734,11 @@ category: 'ritual',
     pronunciation: 'POO-jah',
     definition:
       'Worship — a structured ritual offering that establishes a reciprocal relationship between the practitioner and a specific principle or deity. Puja is not petitionary prayer; it is a calibration ritual that aligns the practitioner\'s system with the frequency of the invoked principle. Each element (flowers, incense, light, food) represents a specific sensory channel.',
-    category: 'ritual',
+        hi: {
+      definition:
+        'पूजा — एक संरचित अनुष्ठानिक अर्पण जो अभ्यासी और किसी विशिष्ट तत्व या देवता के बीच पारस्परिक संबंध स्थापित करता है। पूजा याचना-प्रार्थना नहीं — एक अंशांकन-अनुष्ठान है जो अभ्यासी के तंत्र को उस तत्व की आवृत्ति के साथ संरेखित करता है।',
+    },
+category: 'ritual',
     relatedTerms: ['Homa', 'Ārati', 'Prasād', 'Darśana'],
   },
   {
@@ -599,7 +747,11 @@ category: 'ritual',
     pronunciation: 'HO-mah',
     definition:
       'Fire offering — the Vedic/Tantric ritual of making offerings into a consecrated fire. Homa is the most ancient and most powerful form of ritual technology: fire is the only element that transforms matter into energy instantaneously. The offerings (ghee, herbs, mantras) are not symbolic but operational — each is a specific energetic payload delivered through the fire into the subtle realm.',
-    category: 'ritual',
+        hi: {
+      definition:
+        'होम — अभिषिक्त अग्नि में अर्पण का वैदिक/तांत्रिक अनुष्ठान। होम सर्वाधिक प्राचीन अनुष्ठान-प्रौद्योगिकी है: अग्नि एकमात्र तत्व है जो द्रव्य को क्षणभर में ऊर्जा में बदल देता है। अर्पित द्रव्य (घृत, औषधि, बीज-मंत्र) अग्नि के माध्यम से सूक्ष्म में पहुँचते हैं।',
+    },
+category: 'ritual',
     relatedTerms: ['Puja', 'Mantra', 'Bīja'],
     minTier: 'agni',
   },
@@ -609,7 +761,11 @@ category: 'ritual',
     pronunciation: 'ah-RAH-tee',
     definition:
       'The waving of light — the ritual circling of a lit lamp before a deity, guru, or sacred object. Ārati is the culminating act of puja, in which the element of fire (light) is used to establish the final energetic connection. The ghee lamp represents the individual soul (jīva), and its flame is the light of consciousness (cit).',
-    category: 'ritual',
+        hi: {
+      definition:
+        'आरती — प्रकाश की परिक्रमा; दीपक की ज्वाला को देवता, गुरु या पवित्र वस्तु के सामने घुमाने का अनुष्ठान। आरती पूजा की समापन क्रिया है, जिसमें अग्नि-तत्व (प्रकाश) द्वारा अंतिम ऊर्जा-संबंध स्थापित होता है। घृत-दीप व्यक्तिगत चेतना का प्रतीक है — जो उससे बड़े के सामने झुकता है और उसी से प्रकाशित होकर लौटता है।',
+    },
+category: 'ritual',
     relatedTerms: ['Puja', 'Homa', 'Prasād'],
   },
   {
@@ -618,7 +774,11 @@ category: 'ritual',
     pronunciation: 'prah-SAHD',
     definition:
       'Grace — the sacred substance that has been offered and returned by the deity. In the Tantric framework, prasād is not a symbol but a carrier medium: the food or substance that has been exposed to the ritual field absorbs the specific frequency of the ceremony and transmits it to the one who consumes it.',
-    category: 'ritual',
+        hi: {
+      definition:
+        'प्रसाद — कृपा; वह पवित्र द्रव्य जो अर्पित होकर देवता द्वारा लौटाया गया। तांत्रिक ढाँचे में प्रसाद प्रतीक नहीं — वाहक माध्यम है: अनुष्ठान-क्षेत्र के संपर्क में आया द्रव्य उस क्रिया की विशिष्ट आवृत्ति सोख लेता है और उसे ग्रहण करने वाले को सौंप देता है।',
+    },
+category: 'ritual',
     relatedTerms: ['Puja', 'Homa', 'Ārati'],
   },
   {

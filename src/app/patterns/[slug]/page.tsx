@@ -4,6 +4,7 @@ import { getArchetypeById, PATTERN_ARCHETYPE_MAP } from '@/lib/data/archetypes';
 import { getPatternCompanions } from '@/lib/data/pattern-affinities';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { getLocale } from 'next-intl/server';
 import PatternFolioClient from './PatternFolioClient';
 
 /* Vol. 2 #7 — folios are static + daily ISR so the "most common
@@ -47,6 +48,7 @@ export default async function PatternFolioPage({ params }: { params: Promise<{ s
       relatedSiddhis={relatedSiddhis}
       archetype={archetype}
       companions={companionNames}
+      locale={await getLocale()}
     />
   );
 }

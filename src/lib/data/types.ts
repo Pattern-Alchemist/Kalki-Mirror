@@ -63,6 +63,16 @@ export interface Pattern {
   name: string;
   subtitle: string;
   description: string;
+  /**
+   * Vol. 5 #8 — the hi corpus bridge reaches the pattern folios. Optional
+   * Hindi (sadhu register) description with EN fallback: the same
+   * pickDefinition contract the glossary uses (the shape matches
+   * BridgeableEntry). Scale stays founder-review — the sadhu register
+   * is not to be machine-diluted.
+   */
+  hi?: {
+    definition: string;
+  };
   signs: string[];
   origin: string;
   practice: string;
