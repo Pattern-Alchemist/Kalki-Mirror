@@ -1,11 +1,13 @@
 // =============================================================
-// KALKI — AUDIO NARRATION TRUTH tests (Vol. 4 #12)
+// KALKI — AUDIO NARRATION TRUTH tests (Vol. 4 #12 pilot → Vol. 5 #9 full)
 // -------------------------------------------------------------
 // The registry↔data↔files triangle: every narration row points at a
 // real breath pattern / door, its file is ACTUALLY COMMITTED under
 // public/ (an audio link that 404s is a broken promise to a seeker
 // mid-practice), and every bake script has a committed counterpart.
-// The Door 1 email carries the listen line; Door 2 must not.
+// Vol. 5 #9: the scope pins moved from the 4+1 pilot to the FULL
+// corpus — 12 patterns + 10 Doors, every door email carries the
+// listen line, every file committed.
 // =============================================================
 import { existsSync, statSync } from "node:fs";
 import { join } from "node:path";
@@ -38,13 +40,8 @@ describe("breath narrations ↔ pattern data", () => {
     expect(new Set(slugs).size).toBe(slugs.length);
   });
 
-  it("the pilot set is exactly the four entry patterns", () => {
-    expect(breathNarrations.map((n) => n.slug).sort()).toEqual([
-      "bhramari",
-      "nadi-shuddhi-basic",
-      "nadi-shuddhi-with-retention",
-      "ujjayi-pranayama",
-    ]);
+  it("the set is exactly the twelve breath patterns (Vol. 5 #9: fully voiced)", () => {
+    expect(breathNarrations.map((n) => n.slug).sort()).toEqual(breathPatterns.map((p) => p.slug).sort());
   });
 });
 
@@ -102,34 +99,42 @@ describe("bake scripts ↔ committed audio (the pipeline contract)", () => {
     }
   });
 
-  it("the pilot scope is 4 breath patterns + 1 Door sample (roadmap #12)", () => {
-    expect(breathNarrationScripts).toHaveLength(4);
-    expect(doorNarrationScripts).toHaveLength(1);
-    expect(doorNarrationScripts[0].slug).toBe("door-01");
+  it("the scope is the FULL corpus: 12 breath patterns + 10 Doors (Vol. 5 #9)", () => {
+    expect(breathNarrationScripts).toHaveLength(12);
+    expect(doorNarrationScripts).toHaveLength(10);
+    expect(doorNarrationScripts.map((s) => s.slug)).toEqual(
+      Array.from({ length: 10 }, (_, i) => `door-${String(i + 1).padStart(2, "0")}`)
+    );
   });
 });
 
 describe("registry getters", () => {
-  it("getBreathNarration returns undefined for unnarrated patterns", () => {
-    expect(getBreathNarration("sitali")).toBeUndefined(); // real pattern, not in pilot
+  it("getBreathNarration covers every real pattern; unknown slugs stay undefined", () => {
+    for (const p of breathPatterns) {
+      expect(getBreathNarration(p.slug), `${p.slug} must be narrated`).toBeDefined();
+    }
     expect(getBreathNarration("nonexistent")).toBeUndefined();
-    expect(getBreathNarration("bhramari")).toBeDefined();
   });
 
-  it("getDoorNarration: day 1 yes, day 2 not yet (pilot)", () => {
-    expect(getDoorNarration(1)).toBeDefined();
-    expect(getDoorNarration(2)).toBeUndefined();
+  it("getDoorNarration: every day 1–10 yes, day 11 undefined", () => {
+    for (let day = 1; day <= 10; day += 1) {
+      expect(getDoorNarration(day), `door ${day} must be narrated`).toBeDefined();
+    }
+    expect(getDoorNarration(11)).toBeUndefined();
   });
 
   it("doorNarrationAbsoluteUrl joins the site origin", () => {
     expect(doorNarrationAbsoluteUrl(1, "https://www.astrokalki.com")).toBe(
       "https://www.astrokalki.com/audio/doors/door-01.mp3"
     );
-    expect(doorNarrationAbsoluteUrl(3, "https://www.astrokalki.com")).toBeUndefined();
+    expect(doorNarrationAbsoluteUrl(3, "https://www.astrokalki.com")).toBe(
+      "https://www.astrokalki.com/audio/doors/door-03.mp3"
+    );
+    expect(doorNarrationAbsoluteUrl(11, "https://www.astrokalki.com")).toBeUndefined();
   });
 });
 
-describe("Door 1 email carries the listen line (Door 2 must not)", () => {
+describe("every Door email carries the listen line (Vol. 5 #9)", () => {
   const email = "seeker@example.com";
 
   it("Door 1 html links the narrated edition", () => {
@@ -140,10 +145,12 @@ describe("Door 1 email carries the listen line (Door 2 must not)", () => {
     expect(door!.text).toContain("/audio/doors/door-01.mp3");
   });
 
-  it("Door 2 has no listen line (no narration baked yet)", () => {
-    const door = buildDoorDay(2, email);
-    expect(door).not.toBeNull();
-    expect(door!.html).not.toContain("Prefer to listen?");
-    expect(door!.text).not.toContain("Narrated edition");
+  it("Doors 2–10 now carry the listen line too", () => {
+    for (let day = 2; day <= 10; day += 1) {
+      const door = buildDoorDay(day, email);
+      expect(door).not.toBeNull();
+      expect(door!.html, `door ${day} missing listen line`).toContain("Prefer to listen?");
+      expect(door!.html).toContain(`/audio/doors/door-${String(day).padStart(2, "0")}.mp3`);
+    }
   });
 });
