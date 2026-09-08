@@ -193,17 +193,30 @@ export async function syncIndexingQueue(): Promise<{
   });
   const plan = planIndexingDiff(current, known);
 
-  for (const { url, reason } of plan.inserts) {
-    await db.indexingRequest.create({ data: { url, state: "PENDING", reason, lastmodEpoch: epoch } });
-  }
-  for (const { url, reason } of plan.changes) {
-    await db.indexingRequest.update({
-      where: { url },
-      data: { state: "PENDING", reason, lastmodEpoch: epoch, error: null },
+  // Batch writes — the first run inserts ~289 rows, and one Prisma query
+  // per row over network Turso blows the 60s function cap (found live).
+  if (plan.inserts.length > 0) {
+    await db.indexingRequest.createMany({
+      data: plan.inserts.map(({ url, reason }) => ({
+        url,
+        state: "PENDING",
+        reason,
+        lastmodEpoch: epoch,
+      })),
     });
   }
-  for (const { url } of plan.removals) {
-    await db.indexingRequest.updateMany({ where: { url }, data: { state: "REMOVED" } });
+  if (plan.changes.length > 0) {
+    // all changes share reason 'changed' — one statement re-queues them
+    await db.indexingRequest.updateMany({
+      where: { url: { in: plan.changes.map((c) => c.url) } },
+      data: { state: "PENDING", reason: "changed", lastmodEpoch: epoch, error: null },
+    });
+  }
+  if (plan.removals.length > 0) {
+    await db.indexingRequest.updateMany({
+      where: { url: { in: plan.removals.map((r) => r.url) } },
+      data: { state: "REMOVED" },
+    });
   }
   return {
     inserted: plan.inserts.length,
