@@ -163,6 +163,113 @@ async function kvRateLimit(cfg: RateLimitConfig): Promise<RateLimitResult> {
 }
 
 /* ------------------------------------------------------------------
+   2c. libSQL backend (Turso in production) — shared across serverless
+       instances, zero new dependencies (@libsql/client ships with the
+       Prisma libsql adapter). Vol. 5 #3: the memory backend resets on
+       every cold start and never shares state — the "5 req/min" promise
+       was per-instance fiction. Sliding window via per-hit rows and a
+       four-statement batch (prune → insert → count → oldest).
+       Circuit breaker: one backend failure flips libsqlDead for the
+       process — a limiter must never hang or spam a broken store.
+   ------------------------------------------------------------------ */
+
+const libsqlUrl = process.env.TURSO_DATABASE_URL;
+const libsqlToken = process.env.TURSO_AUTH_TOKEN;
+// Distributed only when the store is REMOTE (libsql:// or https:// — a real
+// Turso instance). A file: redirect (e2e throwaway, CI) is per-instance by
+// definition — memory is the honest backend there.
+const hasLibsql = !!(libsqlUrl && libsqlToken) && /^(libsql|https):\/\//.test(libsqlUrl);
+
+export const _libsqlState: { dead: boolean; ensured: Promise<unknown> | null } = {
+  dead: false,
+  ensured: null,
+};
+
+let libsqlClient: LibsqlClient | null = null;
+
+export const RATE_LIMIT_TABLE_DDL = [
+  `CREATE TABLE IF NOT EXISTS "RateLimitHit" (
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "key" TEXT NOT NULL,
+    "ts" INTEGER NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS "RateLimitHit_key_ts_idx" ON "RateLimitHit"("key","ts")`,
+];
+
+async function getLibsql(): Promise<LibsqlClient | null> {
+  if (_libsqlState.dead || !hasLibsql) return null;
+  try {
+    const { createClient } = await import('@libsql/client');
+    if (!_libsqlState.ensured) {
+      const client = createClient({ url: libsqlUrl as string, authToken: libsqlToken });
+      _libsqlState.ensured = (async () => {
+        for (const ddl of RATE_LIMIT_TABLE_DDL) {
+          await client.execute(ddl);
+        }
+      })();
+      libsqlClient = client;
+    }
+    await _libsqlState.ensured;
+    return libsqlClient;
+  } catch {
+    _libsqlState.dead = true;
+    return null;
+  }
+}
+
+type LibsqlClient = Awaited<ReturnType<typeof import('@libsql/client').createClient>>;
+
+/**
+ * Sliding window over a libSQL client. Exported for tests (in-memory
+ * client exercises the identical SQL path with zero mocks).
+ */
+export async function libsqlSlidingWindow(
+  client: LibsqlClient,
+  cfg: RateLimitConfig
+): Promise<RateLimitResult> {
+  const prefix = cfg.prefix || 'rl';
+  const key = `${prefix}:${cfg.key}`;
+  const windowMs = cfg.window * 1000;
+  const now = Date.now();
+  const windowStart = now - windowMs;
+
+  const results = await client.batch(
+    [
+      { sql: 'DELETE FROM "RateLimitHit" WHERE "key" = ? AND "ts" < ?', args: [key, windowStart] },
+      { sql: 'INSERT INTO "RateLimitHit" ("key", "ts") VALUES (?, ?)', args: [key, now] },
+      { sql: 'SELECT COUNT(*) AS c FROM "RateLimitHit" WHERE "key" = ? AND "ts" >= ?', args: [key, windowStart] },
+      { sql: 'SELECT MIN("ts") AS oldest FROM "RateLimitHit" WHERE "key" = ? AND "ts" >= ?', args: [key, windowStart] },
+    ],
+    'write'
+  );
+
+  const count = Number(results[2]?.rows[0]?.c ?? 1);
+  const oldest = Number(results[3]?.rows[0]?.oldest ?? now);
+
+  if (count > cfg.max) {
+    return { limited: true, remaining: 0, reset: oldest + windowMs };
+  }
+  return {
+    limited: false,
+    remaining: Math.max(0, cfg.max - count),
+    reset: now + windowMs,
+  };
+}
+
+/** Returns null when the backend is absent or broken — caller falls to memory. */
+async function libsqlRateLimit(cfg: RateLimitConfig): Promise<RateLimitResult | null> {
+  const client = await getLibsql();
+  if (!client) return null;
+  try {
+    return await libsqlSlidingWindow(client, cfg);
+  } catch (error) {
+    console.error('[rate-limit] libSQL error, falling back to memory:', error);
+    _libsqlState.dead = true; // stop hammering a broken store this process
+    return null;
+  }
+}
+
+/* ------------------------------------------------------------------
    3. In-memory backend — dev fallback, per-process
    ------------------------------------------------------------------ */
 
@@ -240,19 +347,25 @@ export function rateLimit429Snapshot(): RateLimit429Snapshot {
 }
 
 export async function rateLimit(cfg: RateLimitConfig): Promise<RateLimitResult> {
-  const result = hasUpstash
-    ? await upstashRateLimit(cfg)
-    : hasKV
-      ? await kvRateLimit(cfg)
-      : memoryRateLimit(cfg);
+  let result: RateLimitResult;
+  if (hasUpstash) {
+    result = await upstashRateLimit(cfg); // falls back to memory internally
+  } else if (hasKV) {
+    result = await kvRateLimit(cfg); // falls back to memory internally
+  } else if (hasLibsql) {
+    result = (await libsqlRateLimit(cfg)) ?? memoryRateLimit(cfg);
+  } else {
+    result = memoryRateLimit(cfg);
+  }
   if (result.limited) count429(cfg);
   return result;
 }
 
 /** Observability: which backend is live (surfaced on /api/health). */
-export function rateLimitBackend(): 'upstash' | 'vercel-kv' | 'memory' {
+export function rateLimitBackend(): 'upstash' | 'vercel-kv' | 'turso' | 'memory' {
   if (hasUpstash) return 'upstash';
   if (hasKV) return 'vercel-kv';
+  if (hasLibsql) return 'turso';
   return 'memory';
 }
 

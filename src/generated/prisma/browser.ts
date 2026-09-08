@@ -132,3 +132,8 @@ export type PatternPairAffinity = Prisma.PatternPairAffinityModel
  * 
  */
 export type OpsState = Prisma.OpsStateModel
+/**
+ * Model RateLimitHit
+ * 
+ */
+export type RateLimitHit = Prisma.RateLimitHitModel

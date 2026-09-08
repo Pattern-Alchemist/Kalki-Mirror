@@ -419,7 +419,8 @@ export const ModelName = {
   DraftLead: 'DraftLead',
   SynthesisCache: 'SynthesisCache',
   PatternPairAffinity: 'PatternPairAffinity',
-  OpsState: 'OpsState'
+  OpsState: 'OpsState',
+  RateLimitHit: 'RateLimitHit'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -435,7 +436,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState"
+    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState" | "rateLimitHit"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2141,6 +2142,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RateLimitHit: {
+      payload: Prisma.$RateLimitHitPayload<ExtArgs>
+      fields: Prisma.RateLimitHitFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RateLimitHitFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RateLimitHitPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RateLimitHitFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RateLimitHitPayload>
+        }
+        findFirst: {
+          args: Prisma.RateLimitHitFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RateLimitHitPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RateLimitHitFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RateLimitHitPayload>
+        }
+        findMany: {
+          args: Prisma.RateLimitHitFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RateLimitHitPayload>[]
+        }
+        create: {
+          args: Prisma.RateLimitHitCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RateLimitHitPayload>
+        }
+        createMany: {
+          args: Prisma.RateLimitHitCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RateLimitHitCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RateLimitHitPayload>[]
+        }
+        delete: {
+          args: Prisma.RateLimitHitDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RateLimitHitPayload>
+        }
+        update: {
+          args: Prisma.RateLimitHitUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RateLimitHitPayload>
+        }
+        deleteMany: {
+          args: Prisma.RateLimitHitDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RateLimitHitUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RateLimitHitUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RateLimitHitPayload>[]
+        }
+        upsert: {
+          args: Prisma.RateLimitHitUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RateLimitHitPayload>
+        }
+        aggregate: {
+          args: Prisma.RateLimitHitAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRateLimitHit>
+        }
+        groupBy: {
+          args: Prisma.RateLimitHitGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RateLimitHitGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RateLimitHitCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RateLimitHitCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2555,6 +2630,15 @@ export const OpsStateScalarFieldEnum = {
 export type OpsStateScalarFieldEnum = (typeof OpsStateScalarFieldEnum)[keyof typeof OpsStateScalarFieldEnum]
 
 
+export const RateLimitHitScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  ts: 'ts'
+} as const
+
+export type RateLimitHitScalarFieldEnum = (typeof RateLimitHitScalarFieldEnum)[keyof typeof RateLimitHitScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2616,6 +2700,13 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'BigInt'
+ */
+export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
     
 
 /**
@@ -2792,6 +2883,7 @@ export type GlobalOmitConfig = {
   synthesisCache?: Prisma.SynthesisCacheOmit
   patternPairAffinity?: Prisma.PatternPairAffinityOmit
   opsState?: Prisma.OpsStateOmit
+  rateLimitHit?: Prisma.RateLimitHitOmit
 }
 
 /* Types for Logging */

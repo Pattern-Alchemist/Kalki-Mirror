@@ -605,3 +605,19 @@ model OpsState {
   value     String
   updatedAt DateTime @updatedAt
 }
+
+// ── Vol. 5 #3: distributed rate-limit store ──────────────────────────────
+// Sliding-window hit rows shared across serverless instances (the memory
+// backend resets on cold start and never shares state). Written raw via
+// @libsql/client by src/lib/rate-limit.ts — four-statement batch per call:
+// prune → insert → count → oldest. Applied to production through the
+// libsql-client DDL pipeline (scripts/apply-vol5-schema.ts), NOT prisma db
+// push (Prisma 7 P1013 on libsql://). Rows are pruned per-key per request;
+// the cleanup cron removes orphans older than an hour.
+model RateLimitHit {
+  id  BigInt  @id @default(autoincrement()) // sqlite AUTOINCREMENT; raw inserts omit it
+  key String
+  ts  BigInt // unix ms
+
+  @@index([key, ts])
+}

@@ -73,7 +73,8 @@ export const ModelName = {
   DraftLead: 'DraftLead',
   SynthesisCache: 'SynthesisCache',
   PatternPairAffinity: 'PatternPairAffinity',
-  OpsState: 'OpsState'
+  OpsState: 'OpsState',
+  RateLimitHit: 'RateLimitHit'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -465,6 +466,15 @@ export const OpsStateScalarFieldEnum = {
 } as const
 
 export type OpsStateScalarFieldEnum = (typeof OpsStateScalarFieldEnum)[keyof typeof OpsStateScalarFieldEnum]
+
+
+export const RateLimitHitScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  ts: 'ts'
+} as const
+
+export type RateLimitHitScalarFieldEnum = (typeof RateLimitHitScalarFieldEnum)[keyof typeof RateLimitHitScalarFieldEnum]
 
 
 export const SortOrder = {
