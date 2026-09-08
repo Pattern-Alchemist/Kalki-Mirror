@@ -18,6 +18,9 @@ export interface AiRouteStat {
   p50: number;
   p95: number;
   lastAt: string | null;
+  /** Vol. 5 #11 — per-referral-source call split (ai_ask funnel). Only
+   *  present when at least one call carried a valid `ref` property. */
+  refs?: Record<string, number>;
 }
 
 export interface AiEventRow {
@@ -58,6 +61,7 @@ export function aggregateAiRouteStats(
     lat: number[];
     outcomes: Record<AiOutcomeKey, number>;
     lastAt: string | null;
+    refs: Record<string, number>;
   }
   const aiSet = new Set(aiNames);
   const byEvent = new Map<string, Agg>();
@@ -67,19 +71,22 @@ export function aggregateAiRouteStats(
     if (!aiSet.has(ev)) continue;
     let agg = byEvent.get(ev);
     if (!agg) {
-      agg = { calls: 0, lat: [], outcomes: { ok: 0, limited: 0, invalid: 0, unconfigured: 0, error: 0 }, lastAt: null };
+      agg = { calls: 0, lat: [], outcomes: { ok: 0, limited: 0, invalid: 0, unconfigured: 0, error: 0 }, lastAt: null, refs: {} };
       byEvent.set(ev, agg);
     }
     agg.calls += 1;
     const raw = row.properties != null ? String(row.properties) : '';
     if (raw) {
       try {
-        const p = JSON.parse(raw) as { latency_ms?: unknown; outcome?: unknown };
+        const p = JSON.parse(raw) as { latency_ms?: unknown; outcome?: unknown; ref?: unknown };
         if (typeof p.latency_ms === 'number' && Number.isFinite(p.latency_ms) && p.latency_ms >= 0) {
           agg.lat.push(p.latency_ms);
         }
         if (typeof p.outcome === 'string' && (OUTCOMES as readonly string[]).includes(p.outcome)) {
           agg.outcomes[p.outcome as AiOutcomeKey] += 1;
+        }
+        if (typeof p.ref === 'string' && p.ref) {
+          agg.refs[p.ref] = (agg.refs[p.ref] ?? 0) + 1;
         }
       } catch {
         // malformed properties — the call still counts, the props are skipped
@@ -92,6 +99,7 @@ export function aggregateAiRouteStats(
   return [...byEvent.entries()]
     .map(([event, a]) => {
       const lat = [...a.lat].sort((x, y) => x - y);
+      const hasRefs = Object.keys(a.refs).length > 0;
       return {
         event,
         calls: a.calls,
@@ -103,6 +111,7 @@ export function aggregateAiRouteStats(
         p50: median(lat),
         p95: percentile(lat, 0.95),
         lastAt: a.lastAt,
+        ...(hasRefs ? { refs: a.refs } : {}),
       };
     })
     .sort((x, y) => y.calls - x.calls || x.event.localeCompare(y.event));

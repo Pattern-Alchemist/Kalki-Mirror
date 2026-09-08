@@ -58,6 +58,7 @@ interface WarRoomData {
       p50: number;
       p95: number;
       lastAt: string | null;
+      refs?: Record<string, number>;
     }[];
   } | null;
   aiChain: {
@@ -680,6 +681,12 @@ export default function WarRoomPage() {
                           <td className="py-2 font-medium text-zinc-200">
                             <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ backgroundColor: trouble ? "#f43f5e" : drift ? "#f59e0b" : "#10b981" }} />
                             {r.event.replace(/^ai_/, "").replace(/_/g, "-")}
+                            {r.refs && Object.keys(r.refs).length > 0 && (
+                              // Vol. 5 #11 — the ask funnel: which surface sent the question
+                              <span className="mt-0.5 block text-[0.65rem] font-normal text-zinc-500">
+                                via {Object.entries(r.refs).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join(" · ")}
+                              </span>
+                            )}
                           </td>
                           <td className="py-2 text-right text-zinc-300">{r.calls}</td>
                           <td className="py-2 text-right text-zinc-300">{r.ok}</td>

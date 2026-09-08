@@ -6,6 +6,7 @@ import { SIDDHI_COUNT } from '@/lib/data/siddhis';
 import { aghoriCourse } from '@/lib/data/aghori-tantra-course';
 import LibraryPageClient from './LibraryPageClient';
 import { CONTENT_TYPES, CONTENT_TYPE_LABELS, libraryTypePath } from '@/lib/seo/content-seo';
+import { AskTheArchiveCTA } from '@/components/ask/AskTheArchiveCTA';
 
 export const metadata: Metadata = {
   title: 'The Sādhanā Library — 13 Categories of Practice',
@@ -47,6 +48,9 @@ export default function LibraryPage() {
           </div>
         </div>
       </section>
+      {/* Vol. 5 #11 — the ask invitation: /ask is noindexed, so the corpus
+          needs visible doors. ref stamps the ai_ask funnel with the surface. */}
+      <AskTheArchiveCTA surface="library" />
     </>
   );
 }

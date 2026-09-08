@@ -162,6 +162,18 @@ describe('aiAskSchema', () => {
     expect(aiAskSchema.safeParse({ query: 'x'.repeat(501) }).success).toBe(false);
     expect(aiAskSchema.safeParse({ query: 'x'.repeat(500) }).success).toBe(true);
   });
+
+  it('accepts a valid referral source and rejects unknown ones (Vol. 5 #11)', () => {
+    expect(aiAskSchema.safeParse({ query: 'abc', ref: 'library' }).success).toBe(true);
+    expect(aiAskSchema.safeParse({ query: 'abc', ref: 'patterns' }).success).toBe(true);
+    expect(aiAskSchema.safeParse({ query: 'abc', ref: 'codex' }).success).toBe(true);
+    expect(aiAskSchema.safeParse({ query: 'abc', ref: 'ask_page' }).success).toBe(true);
+    // absent ref = direct ask — still valid (backward compatible)
+    expect(aiAskSchema.safeParse({ query: 'abc' }).success).toBe(true);
+    // closed vocabulary: anything else fails
+    expect(aiAskSchema.safeParse({ query: 'abc', ref: 'nope' }).success).toBe(false);
+    expect(aiAskSchema.safeParse({ query: 'abc', ref: 42 }).success).toBe(false);
+  });
 });
 
 describe('AskResult contract shape', () => {

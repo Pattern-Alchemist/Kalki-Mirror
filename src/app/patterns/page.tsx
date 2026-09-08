@@ -5,6 +5,7 @@ import { CANONICAL } from '@/lib/canonical';
 import dynamic from 'next/dynamic';
 import type { Pattern } from '@/lib/data/types';
 import type { Siddhi } from '@/lib/data/types';
+import { AskTheArchiveCTA } from '@/components/ask/AskTheArchiveCTA';
 
 export const metadata: Metadata = {
   title: `Pattern Atlas — ${CANONICAL.patterns} Emotional Patterns`,
@@ -31,5 +32,12 @@ const PatternsPageClient = dynamic(
 );
 
 export default function PatternsPage() {
-  return <PatternsPageClient patterns={allPatterns} siddhis={allSiddhis} />;
+  return (
+    <>
+      <PatternsPageClient patterns={allPatterns} siddhis={allSiddhis} />
+      {/* Vol. 5 #11 — the ask invitation: /ask is noindexed, so the corpus
+          needs visible doors. ref stamps the ai_ask funnel with the surface. */}
+      <AskTheArchiveCTA surface="patterns" />
+    </>
+  );
 }

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ASK_REF_SOURCES } from "@/lib/ai/ask-refs";
 
 // ── Consultation ──
 export const consultationSchema = z.object({
@@ -79,8 +80,12 @@ export const aiSearchSchema = z.object({
 });
 
 // ── API: /api/ai/ask (Vol. 4 #14 — public grounded Q&A) ──
+// Vol. 5 #11: optional referral source — which surface asked (CTA bands on
+// /library, /patterns, /codex, or the /ask page itself). Unknown values are
+// rejected so the ai_ask funnel stays a closed vocabulary.
 export const aiAskSchema = z.object({
   query: z.string().min(3, "Ask in at least 3 characters.").max(500, "Query too long."),
+  ref: z.enum(ASK_REF_SOURCES).optional(),
 });
 
 // ── API: /api/ai/explain (codex explainer) ──

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import { AskTheArchiveCTA } from '@/components/ask/AskTheArchiveCTA';
 
 export const metadata: Metadata = {
   title: 'The Kalki Codex — Digital Manifesto',
@@ -28,5 +29,12 @@ const CodexPageClient = dynamic(
 );
 
 export default function CodexPage() {
-  return <CodexPageClient />;
+  return (
+    <>
+      <CodexPageClient />
+      {/* Vol. 5 #11 — the ask invitation: /ask is noindexed, so the corpus
+          needs visible doors. ref stamps the ai_ask funnel with the surface. */}
+      <AskTheArchiveCTA surface="codex" />
+    </>
+  );
 }

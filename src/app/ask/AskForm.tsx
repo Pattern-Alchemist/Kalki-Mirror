@@ -4,9 +4,15 @@
  * /ask client island (Vol. 4 #14). Posts to /api/ai/ask and renders the
  * two honest outcomes: a grounded answer with citation chips (each chip
  * links to the cited folio at /archive/[slug]) or an explicit silence.
+ *
+ * Vol. 5 #11: the form accepts ?q= (prefilled question) and ?ref= (the
+ * surface that sent the asker — library / patterns / codex / ask_page).
+ * The ref rides the POST body and lands in the ai_ask event properties,
+ * so the funnel can say which surface asks come from.
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { askParamsFromSearch, type AskRefSource } from '@/lib/ai/ask-refs';
 
 interface AskCitation {
   slug: string;
@@ -37,6 +43,15 @@ export function AskForm() {
   const [query, setQuery] = useState('');
   const [pending, setPending] = useState(false);
   const [result, setResult] = useState<AskResponse | null>(null);
+  const [ref, setRef] = useState<AskRefSource | undefined>(undefined);
+
+  // Vol. 5 #11 — one-time prefill from the URL: ?q= seeds the question,
+  // ?ref= stamps the referral source. Read client-side (no Suspense dance).
+  useEffect(() => {
+    const { q, ref } = askParamsFromSearch(window.location.search);
+    if (q) setQuery(q);
+    if (ref) setRef(ref);
+  }, []);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -48,7 +63,7 @@ export function AskForm() {
       const res = await fetch('/api/ai/ask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: q }),
+        body: JSON.stringify({ query: q, ...(ref ? { ref } : {}) }),
       });
       const data = (await res.json()) as AskResponse;
       setResult(data);
