@@ -421,7 +421,8 @@ export const ModelName = {
   PatternPairAffinity: 'PatternPairAffinity',
   OpsState: 'OpsState',
   RateLimitHit: 'RateLimitHit',
-  CronRun: 'CronRun'
+  CronRun: 'CronRun',
+  TestimonialFollowUp: 'TestimonialFollowUp'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -437,7 +438,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState" | "rateLimitHit" | "cronRun"
+    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState" | "rateLimitHit" | "cronRun" | "testimonialFollowUp"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2291,6 +2292,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TestimonialFollowUp: {
+      payload: Prisma.$TestimonialFollowUpPayload<ExtArgs>
+      fields: Prisma.TestimonialFollowUpFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TestimonialFollowUpFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialFollowUpPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TestimonialFollowUpFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialFollowUpPayload>
+        }
+        findFirst: {
+          args: Prisma.TestimonialFollowUpFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialFollowUpPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TestimonialFollowUpFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialFollowUpPayload>
+        }
+        findMany: {
+          args: Prisma.TestimonialFollowUpFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialFollowUpPayload>[]
+        }
+        create: {
+          args: Prisma.TestimonialFollowUpCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialFollowUpPayload>
+        }
+        createMany: {
+          args: Prisma.TestimonialFollowUpCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TestimonialFollowUpCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialFollowUpPayload>[]
+        }
+        delete: {
+          args: Prisma.TestimonialFollowUpDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialFollowUpPayload>
+        }
+        update: {
+          args: Prisma.TestimonialFollowUpUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialFollowUpPayload>
+        }
+        deleteMany: {
+          args: Prisma.TestimonialFollowUpDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TestimonialFollowUpUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TestimonialFollowUpUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialFollowUpPayload>[]
+        }
+        upsert: {
+          args: Prisma.TestimonialFollowUpUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialFollowUpPayload>
+        }
+        aggregate: {
+          args: Prisma.TestimonialFollowUpAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTestimonialFollowUp>
+        }
+        groupBy: {
+          args: Prisma.TestimonialFollowUpGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TestimonialFollowUpGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TestimonialFollowUpCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TestimonialFollowUpCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2727,6 +2802,17 @@ export const CronRunScalarFieldEnum = {
 export type CronRunScalarFieldEnum = (typeof CronRunScalarFieldEnum)[keyof typeof CronRunScalarFieldEnum]
 
 
+export const TestimonialFollowUpScalarFieldEnum = {
+  id: 'id',
+  consultationId: 'consultationId',
+  sentAt: 'sentAt',
+  channel: 'channel',
+  sentBy: 'sentBy'
+} as const
+
+export type TestimonialFollowUpScalarFieldEnum = (typeof TestimonialFollowUpScalarFieldEnum)[keyof typeof TestimonialFollowUpScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2973,6 +3059,7 @@ export type GlobalOmitConfig = {
   opsState?: Prisma.OpsStateOmit
   rateLimitHit?: Prisma.RateLimitHitOmit
   cronRun?: Prisma.CronRunOmit
+  testimonialFollowUp?: Prisma.TestimonialFollowUpOmit
 }
 
 /* Types for Logging */

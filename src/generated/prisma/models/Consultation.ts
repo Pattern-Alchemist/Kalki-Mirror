@@ -406,6 +406,7 @@ export type ConsultationWhereInput = {
   utrRef?: Prisma.StringNullableFilter<"Consultation"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
   patternSlugs?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  testimonialFollowUp?: Prisma.XOR<Prisma.TestimonialFollowUpNullableScalarRelationFilter, Prisma.TestimonialFollowUpWhereInput> | null
 }
 
 export type ConsultationOrderByWithRelationInput = {
@@ -442,6 +443,7 @@ export type ConsultationOrderByWithRelationInput = {
   utrRef?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
   patternSlugs?: Prisma.SortOrderInput | Prisma.SortOrder
+  testimonialFollowUp?: Prisma.TestimonialFollowUpOrderByWithRelationInput
 }
 
 export type ConsultationWhereUniqueInput = Prisma.AtLeast<{
@@ -481,6 +483,7 @@ export type ConsultationWhereUniqueInput = Prisma.AtLeast<{
   utrRef?: Prisma.StringNullableFilter<"Consultation"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
   patternSlugs?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  testimonialFollowUp?: Prisma.XOR<Prisma.TestimonialFollowUpNullableScalarRelationFilter, Prisma.TestimonialFollowUpWhereInput> | null
 }, "id">
 
 export type ConsultationOrderByWithAggregationInput = {
@@ -595,6 +598,7 @@ export type ConsultationCreateInput = {
   utrRef?: string | null
   paidAt?: Date | string | null
   patternSlugs?: string | null
+  testimonialFollowUp?: Prisma.TestimonialFollowUpCreateNestedOneWithoutConsultationInput
 }
 
 export type ConsultationUncheckedCreateInput = {
@@ -631,6 +635,7 @@ export type ConsultationUncheckedCreateInput = {
   utrRef?: string | null
   paidAt?: Date | string | null
   patternSlugs?: string | null
+  testimonialFollowUp?: Prisma.TestimonialFollowUpUncheckedCreateNestedOneWithoutConsultationInput
 }
 
 export type ConsultationUpdateInput = {
@@ -667,6 +672,7 @@ export type ConsultationUpdateInput = {
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  testimonialFollowUp?: Prisma.TestimonialFollowUpUpdateOneWithoutConsultationNestedInput
 }
 
 export type ConsultationUncheckedUpdateInput = {
@@ -703,6 +709,7 @@ export type ConsultationUncheckedUpdateInput = {
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  testimonialFollowUp?: Prisma.TestimonialFollowUpUncheckedUpdateOneWithoutConsultationNestedInput
 }
 
 export type ConsultationCreateManyInput = {
@@ -921,6 +928,185 @@ export type ConsultationMinOrderByAggregateInput = {
   patternSlugs?: Prisma.SortOrder
 }
 
+export type ConsultationScalarRelationFilter = {
+  is?: Prisma.ConsultationWhereInput
+  isNot?: Prisma.ConsultationWhereInput
+}
+
+export type ConsultationCreateNestedOneWithoutTestimonialFollowUpInput = {
+  create?: Prisma.XOR<Prisma.ConsultationCreateWithoutTestimonialFollowUpInput, Prisma.ConsultationUncheckedCreateWithoutTestimonialFollowUpInput>
+  connectOrCreate?: Prisma.ConsultationCreateOrConnectWithoutTestimonialFollowUpInput
+  connect?: Prisma.ConsultationWhereUniqueInput
+}
+
+export type ConsultationUpdateOneRequiredWithoutTestimonialFollowUpNestedInput = {
+  create?: Prisma.XOR<Prisma.ConsultationCreateWithoutTestimonialFollowUpInput, Prisma.ConsultationUncheckedCreateWithoutTestimonialFollowUpInput>
+  connectOrCreate?: Prisma.ConsultationCreateOrConnectWithoutTestimonialFollowUpInput
+  upsert?: Prisma.ConsultationUpsertWithoutTestimonialFollowUpInput
+  connect?: Prisma.ConsultationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ConsultationUpdateToOneWithWhereWithoutTestimonialFollowUpInput, Prisma.ConsultationUpdateWithoutTestimonialFollowUpInput>, Prisma.ConsultationUncheckedUpdateWithoutTestimonialFollowUpInput>
+}
+
+export type ConsultationCreateWithoutTestimonialFollowUpInput = {
+  id?: string
+  userId?: string | null
+  name: string
+  email?: string
+  phone?: string
+  request: string
+  status?: string
+  scheduledFor?: Date | string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patternDiagnosis?: string | null
+  prescribedSequence?: string | null
+  prescribedSiddhis?: string | null
+  sessionNotes?: string | null
+  outcome?: string | null
+  followUpDate?: Date | string | null
+  completedAt?: Date | string | null
+  utmSource?: string | null
+  utmMedium?: string | null
+  utmCampaign?: string | null
+  utmTerm?: string | null
+  utmContent?: string | null
+  clickId?: string | null
+  country?: string | null
+  referrerDomain?: string | null
+  landingPath?: string | null
+  attributionJson?: string | null
+  paymentState?: string
+  paymentSession?: string | null
+  utrRef?: string | null
+  paidAt?: Date | string | null
+  patternSlugs?: string | null
+}
+
+export type ConsultationUncheckedCreateWithoutTestimonialFollowUpInput = {
+  id?: string
+  userId?: string | null
+  name: string
+  email?: string
+  phone?: string
+  request: string
+  status?: string
+  scheduledFor?: Date | string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patternDiagnosis?: string | null
+  prescribedSequence?: string | null
+  prescribedSiddhis?: string | null
+  sessionNotes?: string | null
+  outcome?: string | null
+  followUpDate?: Date | string | null
+  completedAt?: Date | string | null
+  utmSource?: string | null
+  utmMedium?: string | null
+  utmCampaign?: string | null
+  utmTerm?: string | null
+  utmContent?: string | null
+  clickId?: string | null
+  country?: string | null
+  referrerDomain?: string | null
+  landingPath?: string | null
+  attributionJson?: string | null
+  paymentState?: string
+  paymentSession?: string | null
+  utrRef?: string | null
+  paidAt?: Date | string | null
+  patternSlugs?: string | null
+}
+
+export type ConsultationCreateOrConnectWithoutTestimonialFollowUpInput = {
+  where: Prisma.ConsultationWhereUniqueInput
+  create: Prisma.XOR<Prisma.ConsultationCreateWithoutTestimonialFollowUpInput, Prisma.ConsultationUncheckedCreateWithoutTestimonialFollowUpInput>
+}
+
+export type ConsultationUpsertWithoutTestimonialFollowUpInput = {
+  update: Prisma.XOR<Prisma.ConsultationUpdateWithoutTestimonialFollowUpInput, Prisma.ConsultationUncheckedUpdateWithoutTestimonialFollowUpInput>
+  create: Prisma.XOR<Prisma.ConsultationCreateWithoutTestimonialFollowUpInput, Prisma.ConsultationUncheckedCreateWithoutTestimonialFollowUpInput>
+  where?: Prisma.ConsultationWhereInput
+}
+
+export type ConsultationUpdateToOneWithWhereWithoutTestimonialFollowUpInput = {
+  where?: Prisma.ConsultationWhereInput
+  data: Prisma.XOR<Prisma.ConsultationUpdateWithoutTestimonialFollowUpInput, Prisma.ConsultationUncheckedUpdateWithoutTestimonialFollowUpInput>
+}
+
+export type ConsultationUpdateWithoutTestimonialFollowUpInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  request?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduledFor?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patternDiagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prescribedSequence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prescribedSiddhis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  outcome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  utmSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmMedium?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCampaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmTerm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clickId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentState?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentSession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type ConsultationUncheckedUpdateWithoutTestimonialFollowUpInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  request?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduledFor?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patternDiagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prescribedSequence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prescribedSiddhis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  outcome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  utmSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmMedium?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCampaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmTerm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clickId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentState?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentSession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
 
 
 export type ConsultationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -957,6 +1143,7 @@ export type ConsultationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   utrRef?: boolean
   paidAt?: boolean
   patternSlugs?: boolean
+  testimonialFollowUp?: boolean | Prisma.Consultation$testimonialFollowUpArgs<ExtArgs>
 }, ExtArgs["result"]["consultation"]>
 
 export type ConsultationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1068,10 +1255,17 @@ export type ConsultationSelectScalar = {
 }
 
 export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "email" | "phone" | "request" | "status" | "scheduledFor" | "notes" | "createdAt" | "updatedAt" | "patternDiagnosis" | "prescribedSequence" | "prescribedSiddhis" | "sessionNotes" | "outcome" | "followUpDate" | "completedAt" | "utmSource" | "utmMedium" | "utmCampaign" | "utmTerm" | "utmContent" | "clickId" | "country" | "referrerDomain" | "landingPath" | "attributionJson" | "paymentState" | "paymentSession" | "utrRef" | "paidAt" | "patternSlugs", ExtArgs["result"]["consultation"]>
+export type ConsultationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  testimonialFollowUp?: boolean | Prisma.Consultation$testimonialFollowUpArgs<ExtArgs>
+}
+export type ConsultationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type ConsultationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $ConsultationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Consultation"
-  objects: {}
+  objects: {
+    testimonialFollowUp: Prisma.$TestimonialFollowUpPayload<ExtArgs> | null
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string | null
@@ -1500,6 +1694,7 @@ readonly fields: ConsultationFieldRefs;
  */
 export interface Prisma__ConsultationClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  testimonialFollowUp<T extends Prisma.Consultation$testimonialFollowUpArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Consultation$testimonialFollowUpArgs<ExtArgs>>): Prisma.Prisma__TestimonialFollowUpClient<runtime.Types.Result.GetResult<Prisma.$TestimonialFollowUpPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1579,6 +1774,10 @@ export type ConsultationFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    */
   omit?: Prisma.ConsultationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConsultationInclude<ExtArgs> | null
+  /**
    * Filter, which Consultation to fetch.
    */
   where: Prisma.ConsultationWhereUniqueInput
@@ -1597,6 +1796,10 @@ export type ConsultationFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    */
   omit?: Prisma.ConsultationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConsultationInclude<ExtArgs> | null
+  /**
    * Filter, which Consultation to fetch.
    */
   where: Prisma.ConsultationWhereUniqueInput
@@ -1614,6 +1817,10 @@ export type ConsultationFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the Consultation
    */
   omit?: Prisma.ConsultationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConsultationInclude<ExtArgs> | null
   /**
    * Filter, which Consultation to fetch.
    */
@@ -1663,6 +1870,10 @@ export type ConsultationFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    */
   omit?: Prisma.ConsultationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConsultationInclude<ExtArgs> | null
+  /**
    * Filter, which Consultation to fetch.
    */
   where?: Prisma.ConsultationWhereInput
@@ -1710,6 +1921,10 @@ export type ConsultationFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the Consultation
    */
   omit?: Prisma.ConsultationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConsultationInclude<ExtArgs> | null
   /**
    * Filter, which Consultations to fetch.
    */
@@ -1759,6 +1974,10 @@ export type ConsultationCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   omit?: Prisma.ConsultationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConsultationInclude<ExtArgs> | null
+  /**
    * The data needed to create a Consultation.
    */
   data: Prisma.XOR<Prisma.ConsultationCreateInput, Prisma.ConsultationUncheckedCreateInput>
@@ -1804,6 +2023,10 @@ export type ConsultationUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the Consultation
    */
   omit?: Prisma.ConsultationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConsultationInclude<ExtArgs> | null
   /**
    * The data needed to update a Consultation.
    */
@@ -1871,6 +2094,10 @@ export type ConsultationUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   omit?: Prisma.ConsultationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConsultationInclude<ExtArgs> | null
+  /**
    * The filter to search for the Consultation to update in case it exists.
    */
   where: Prisma.ConsultationWhereUniqueInput
@@ -1897,6 +2124,10 @@ export type ConsultationDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   omit?: Prisma.ConsultationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConsultationInclude<ExtArgs> | null
+  /**
    * Filter which Consultation to delete.
    */
   where: Prisma.ConsultationWhereUniqueInput
@@ -1917,6 +2148,25 @@ export type ConsultationDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
+ * Consultation.testimonialFollowUp
+ */
+export type Consultation$testimonialFollowUpArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TestimonialFollowUp
+   */
+  select?: Prisma.TestimonialFollowUpSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TestimonialFollowUp
+   */
+  omit?: Prisma.TestimonialFollowUpOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TestimonialFollowUpInclude<ExtArgs> | null
+  where?: Prisma.TestimonialFollowUpWhereInput
+}
+
+/**
  * Consultation without action
  */
 export type ConsultationDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1928,4 +2178,8 @@ export type ConsultationDefaultArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the Consultation
    */
   omit?: Prisma.ConsultationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConsultationInclude<ExtArgs> | null
 }

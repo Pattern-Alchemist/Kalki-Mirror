@@ -142,3 +142,8 @@ export type RateLimitHit = Prisma.RateLimitHitModel
  * 
  */
 export type CronRun = Prisma.CronRunModel
+/**
+ * Model TestimonialFollowUp
+ * 
+ */
+export type TestimonialFollowUp = Prisma.TestimonialFollowUpModel

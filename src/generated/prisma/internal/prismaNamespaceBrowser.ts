@@ -75,7 +75,8 @@ export const ModelName = {
   PatternPairAffinity: 'PatternPairAffinity',
   OpsState: 'OpsState',
   RateLimitHit: 'RateLimitHit',
-  CronRun: 'CronRun'
+  CronRun: 'CronRun',
+  TestimonialFollowUp: 'TestimonialFollowUp'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -489,6 +490,17 @@ export const CronRunScalarFieldEnum = {
 } as const
 
 export type CronRunScalarFieldEnum = (typeof CronRunScalarFieldEnum)[keyof typeof CronRunScalarFieldEnum]
+
+
+export const TestimonialFollowUpScalarFieldEnum = {
+  id: 'id',
+  consultationId: 'consultationId',
+  sentAt: 'sentAt',
+  channel: 'channel',
+  sentBy: 'sentBy'
+} as const
+
+export type TestimonialFollowUpScalarFieldEnum = (typeof TestimonialFollowUpScalarFieldEnum)[keyof typeof TestimonialFollowUpScalarFieldEnum]
 
 
 export const SortOrder = {
