@@ -94,6 +94,13 @@ interface WarRoomData {
     ageHours: number | null;
     alarm: boolean;
   }[];
+  bakePending: {
+    available: true;
+    publishedEntries: number;
+    corpusSlugs: number;
+    pending: { slug: string; type: string }[];
+    pendingCount: number;
+  } | { available: false; reason: string } | null;
 }
 
 const RANGES = [
@@ -831,6 +838,51 @@ export default function WarRoomPage() {
             ) : (
               <p className="py-2 text-xs text-zinc-600">
                 No runs recorded yet — the ledger fills as each cron fires.
+              </p>
+            )}
+          </Card>
+
+          {/* Bake pending — studio vs baked corpus (Vol. 5 #7) */}
+          <Card
+            title="Bake pending — studio vs corpus"
+            icon={<Flame className="h-4 w-4 text-orange-500" />}
+          >
+            {data?.bakePending?.available ? (
+              <div>
+                <div className="flex items-baseline gap-6 mb-3">
+                  <p className="text-sm text-zinc-400">
+                    Published entries:{" "}
+                    <span className="font-medium text-zinc-200">{data.bakePending.publishedEntries}</span>
+                  </p>
+                  <p className="text-sm text-zinc-400">
+                    Baked corpus slugs:{" "}
+                    <span className="font-medium text-zinc-200">{data.bakePending.corpusSlugs}</span>
+                  </p>
+                  <p className={`text-sm ${data.bakePending.pendingCount > 0 ? "text-amber-400" : "text-emerald-400"}`}>
+                    Pending bake: {data.bakePending.pendingCount}
+                  </p>
+                </div>
+                {data.bakePending.pendingCount > 0 && (
+                  <ul className="mb-3 space-y-1">
+                    {data.bakePending.pending.map((p) => (
+                      <li key={p.slug} className="text-xs text-zinc-400">
+                        <span className="text-amber-400">●</span> {p.slug}{" "}
+                        <span className="text-zinc-600">({p.type})</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <p className="text-[0.65rem] leading-relaxed text-zinc-600">
+                  Published ContentEntry slugs missing from the baked FolioChunk corpus —
+                  retrieval and /ask cannot see them until the bake runs. One command:
+                  <code className="ml-1 text-zinc-500">bash scripts/bake-corpus.sh</code>
+                </p>
+              </div>
+            ) : (
+              <p className="py-2 text-xs text-zinc-600">
+                {data?.bakePending && !data.bakePending.available
+                  ? `Unknown — ${data.bakePending.reason}`
+                  : "Unknown — either world (studio DB or baked corpus) was unreadable."}
               </p>
             )}
           </Card>

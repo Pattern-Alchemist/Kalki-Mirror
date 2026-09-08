@@ -15,6 +15,11 @@ import {
   type CredAuditReport,
 } from "@/lib/ops/cred-audit";
 import { cronRunStatuses, type CronRunStatus } from "@/lib/cron-ledger";
+import {
+  computeBakePending,
+  type BakePendingResult,
+} from "@/lib/admin/bake-pending";
+import { staticDb } from "@/lib/static-db";
 
 export const dynamic = "force-dynamic";
 
@@ -317,6 +322,24 @@ export async function GET(request: NextRequest) {
       cronRuns = [];
     }
 
+    // ── Bake pending (Vol. 5 #7) — published ContentEntry slugs vs the baked
+    // FolioChunk corpus. Two worlds (Turso vs committed sqlite) drifting
+    // silently is exactly what this panel exists to announce. Fail-soft like
+    // every satellite panel.
+    let bakePending: BakePendingResult | null = null;
+    try {
+      const [entries, chunks] = await Promise.all([
+        db.contentEntry.findMany({ select: { slug: true, type: true, status: true } }),
+        staticDb.folioChunk.findMany({ distinct: ["slug"], select: { slug: true } }),
+      ]);
+      bakePending = computeBakePending({
+        entries,
+        corpusSlugs: chunks.map((c) => c.slug),
+      });
+    } catch {
+      bakePending = null; // either world unreadable — panel renders "unknown"
+    }
+
     return NextResponse.json({
       generatedAt: now.toISOString(),
       range: rangeParam,
@@ -339,6 +362,7 @@ export async function GET(request: NextRequest) {
       aiChain,
       credAudit,
       cronRuns,
+      bakePending,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";

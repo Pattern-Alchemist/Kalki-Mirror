@@ -116,3 +116,7 @@ env.local
 !scripts/apply-vol5-schema.ts
 # Vol. 5 #6 — the launch-letters pipeline ships with the repo (seeder + tests read it)
 !scripts/seed-launch-letters.mjs
+# Vol. 5 #7 — the one-command corpus bake ships with the repo (orchestrator + ingest CLI)
+!scripts/bake-corpus.sh
+!scripts/ingest-folios.ts
+!scripts/ingest-folio-json.ts
