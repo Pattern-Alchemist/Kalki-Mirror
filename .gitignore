@@ -112,3 +112,4 @@ db/e2e-local.db*
 # founder local env (no leading dot — .env* does not cover it)
 env.local
 !scripts/audit-credentials.sh
+!scripts/smoke-ask.sh

@@ -165,10 +165,15 @@ export function parseAskOutput(
   const cited: string[] = [];
   for (const raw of obj.cited_folios) {
     if (typeof raw !== 'string') return null;
-    // Accept only bare slugs that exist in the retrieved set (trim defends
-    // against trailing punctuation; the strictness is deliberate — a slug
-    // the model never saw cannot be cited).
-    const slug = raw.trim().toLowerCase();
+    // Accept only bare slugs that exist in the retrieved set. Trim alone
+    // defends against whitespace but NOT trailing punctuation (the 2026-09-08
+    // truth-gate catch: "pranava-japa." failed the pool check and silenced a
+    // valid answer) — strip trailing punctuation, then lower-case. The
+    // strictness stays deliberate: a slug the model never saw cannot be cited.
+    const slug = raw
+      .trim()
+      .toLowerCase()
+      .replace(/[.,;:!?"'`)\]}]+$/g, '');
     if (!allowed.has(slug)) return null;
     if (!cited.includes(slug)) cited.push(slug);
   }
