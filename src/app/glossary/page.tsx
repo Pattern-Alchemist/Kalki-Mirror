@@ -45,7 +45,8 @@ const glossaryJsonLd = {
         '@type': 'DefinedTerm',
         name: entry.term,
         alternateName: entry.sanskrit,
-        description: definitionPreview(entry.definition, 180),
+        // Vol. 5 #18 — descriptions live on the term pages (each with its own
+        // full DefinedTerm); the hub graph carries the term COORDINATES.
         url: `${SITE_URL}${glossaryTermPath(entry.term)}`,
         inDefinedTermSet: { '@id': `${SITE_URL}/glossary#termset` },
       })),
@@ -78,11 +79,11 @@ const GlossaryPageClient = dynamic(
 );
 
 export default function GlossaryPage() {
-  // Vol. 5 #18 — the hub payload diet: the cards render a PREVIEW of each
-  // definition (the full text lives on /glossary/[term], one click away),
-  // and the hi bridge objects ride in the payload without ever being
-  // rendered by this client (the hi parity lives on the detail pages).
-  // Together: ~-190KB off the heaviest page on the site.
+  // Vol. 5 #18 — the hub payload diet, two layers:
+  //   · previews, not full definitions (the term pages carry the depth)
+  //   · only the first 24 terms ride the HTML; the client hydrates the
+  //     full 86 from /api/glossary-index once on mount (fail-soft: the
+  //     inline 24 keep serving if the route hiccups)
   const hubEntries = glossaryEntries.map((e) => ({
     term: e.term,
     sanskrit: e.sanskrit,
@@ -93,13 +94,14 @@ export default function GlossaryPage() {
     relatedSiddhiSlugs: e.relatedSiddhiSlugs,
     minTier: e.minTier,
   }));
+  const inlineEntries = hubEntries.slice(0, 24);
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(glossaryJsonLd) }}
       />
-      <GlossaryPageClient entries={hubEntries} categories={CATEGORIES} />
+      <GlossaryPageClient entries={inlineEntries} categories={CATEGORIES} />
     </>
   );
 }

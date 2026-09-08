@@ -1318,6 +1318,15 @@ paths:
         '200':
           description: OK (shape documented in the route module)
 
+  /api/glossary-index:
+    get:
+      operationId: apiGlossaryIndexGet
+      tags: [Search]
+      summary: The full projected Lexicon (86 terms, 300-char definition previews) as JSON — hydrated once by the /glossary client instead of riding inline in the HTML (Vol. 5 #18). Revalidated hourly.
+      responses:
+        '200':
+          description: OK (array of projected GlossaryEntry)
+
   /api/search-index:
     get:
       operationId: apiSearchIndexGet

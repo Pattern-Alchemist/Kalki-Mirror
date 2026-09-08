@@ -250,8 +250,30 @@ function CardInner({ entry }: { entry: GlossaryEntry }) {
 /* ══════════════════════════════════════════════════════════════
    THE LEXICON — Main Page
    ══════════════════════════════════════════════════════════════ */
-export default function GlossaryPage({ entries: glossaryEntries, categories: CATEGORIES }: GlossaryPageProps) {
+export default function GlossaryPage({ entries: inlineEntries, categories: CATEGORIES }: GlossaryPageProps) {
   const reduced = useNativeReducedMotion();
+
+  // Vol. 5 #18 — the HTML ships the first 24 terms; the full 86 hydrate
+  // once from /api/glossary-index (fail-soft: the inline set keeps serving).
+  const [glossaryEntries, setGlossaryEntries] = useState<GlossaryEntry[]>(inlineEntries);
+
+  useEffect(() => {
+    let alive = true;
+    fetch('/api/glossary-index')
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then((d: GlossaryEntry[]) => {
+        if (alive && Array.isArray(d) && d.length > inlineEntries.length) {
+          setGlossaryEntries(d);
+        }
+      })
+      .catch(() => {
+        /* the inline terms keep serving — never block the hub on the index */
+      });
+    return () => {
+      alive = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [search, setSearch] = useState('');
 
