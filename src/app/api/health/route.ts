@@ -3,7 +3,7 @@ export const runtime = 'nodejs';
 import { NextResponse } from 'next/server';
 import { getCorpusStats } from '@/lib/static-db';
 import { db } from '@/lib/db';
-import { rateLimitBackend, rateLimit429Snapshot } from '@/lib/rate-limit';
+import { rateLimitBackend, rateLimit429Snapshot, selfTestRateLimit } from '@/lib/rate-limit';
 import { CORPUS_SIZE } from '@/lib/rag/idf-generated';
 
 /**
@@ -101,6 +101,10 @@ export async function GET() {
       // Vol. 3 #19 — backup freshness (null marker = never marked)
       backup,
       rateLimitBackend: rateLimitBackend(),
+      // Vol. 5 #3 — one-shot limiter self-test against the real backend
+      // (bounded: a single hit into the rl:health-selftest window). A broken
+      // backend self-reports here instead of silently never limiting.
+      rateLimitSelfTest: await selfTestRateLimit(),
       // Vol. 2 #14 — throttling visibility (per serverless instance)
       rateLimit429: rateLimit429Snapshot(),
       environment: process.env.VERCEL === '1' ? 'serverless' : 'local',

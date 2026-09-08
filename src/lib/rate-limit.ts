@@ -370,6 +370,29 @@ export function rateLimitBackend(): 'upstash' | 'vercel-kv' | 'turso' | 'memory'
 }
 
 /**
+ * One-shot self-test against the LIVE backend (Vol. 5 #3): exercises the
+ * exact production path — backend selection, table ensure, batch — with a
+ * single bounded hit into the rl:health-selftest window. Never throws;
+ * surfaces the error string so a silently-never-limiting limiter is
+ * legible from /api/health alone.
+ */
+export async function selfTestRateLimit(): Promise<{
+  backend: ReturnType<typeof rateLimitBackend>;
+  ok: boolean;
+  limited: boolean;
+  remaining?: number;
+  error?: string;
+}> {
+  const backend = rateLimitBackend();
+  try {
+    const r = await rateLimit({ key: 'health-selftest', max: 5, window: 60, prefix: 'health' });
+    return { backend, ok: true, limited: r.limited, remaining: r.remaining };
+  } catch (err) {
+    return { backend, ok: false, limited: false, error: String(err).slice(0, 160) };
+  }
+}
+
+/**
  * Creates a pre-configured rate limiter with fixed settings.
  *
  * @example
