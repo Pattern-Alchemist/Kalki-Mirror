@@ -11,10 +11,6 @@
       "schedule": "0 2 * * *"
     },
     {
-      "path": "/api/cron/course-send",
-      "schedule": "30 14 * * *"
-    },
-    {
       "path": "/api/cron/cred-audit",
       "schedule": "10 2 * * *"
     },
@@ -23,16 +19,24 @@
       "schedule": "15 2 * * *"
     },
     {
+      "path": "/api/cron/prewarm-ask",
+      "schedule": "20 2 * * *"
+    },
+    {
+      "path": "/api/cron/testimonial-followup",
+      "schedule": "25 2 * * *"
+    },
+    {
+      "path": "/api/cron/course-send",
+      "schedule": "30 14 * * *"
+    },
+    {
       "path": "/api/cron/daily-digest",
       "schedule": "30 2 * * *"
     },
     {
       "path": "/api/cron/cleanup",
       "schedule": "45 3 * * *"
-    },
-    {
-      "path": "/api/cron/testimonial-followup",
-      "schedule": "25 2 * * *"
     }
   ]
 }

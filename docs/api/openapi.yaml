@@ -1272,6 +1272,15 @@ paths:
         '200':
           description: OK (shape documented in the route module)
 
+  /api/cron/prewarm-ask:
+    get:
+      operationId: apiCronPrewarmAskGet
+      tags: [Cron]
+      summary: Pre-warm the ask-cache for the top-10 corpus queries through the exact /ask path (retrieval at the prithvi tier, silence gate, strict parse, storeAsk) so seekers never pay the cold LLM cost (Vol. 5 #5). ?dryRun=1 runs retrieval-only coverage proof and stores nothing. CRON_SECRET gated.
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+
   /api/cron/cleanup:
     get:
       operationId: apiCronCleanupGet

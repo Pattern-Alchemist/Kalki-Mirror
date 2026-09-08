@@ -42,6 +42,8 @@ import {
   cronLedgerDigestLine,
   type CronRunStatus,
 } from "@/lib/cron-ledger";
+import { askBudgetDigestLine } from "@/lib/ai/latency-budget";
+import { readAiRouteStats } from "@/lib/analytics-db";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -308,6 +310,18 @@ export async function GET(request: NextRequest) {
     // ledger table transient — silence is the healthy default
   }
 
+  // Vol. 5 #5 — /ask latency budget: page only when the headline metric
+  // (ai_ask p95) runs over its 12s budget over the digest window. The
+  // other AI routes' 3s budgets stay visible in the war-room; the inbox
+  // stays quiet unless the flagship surface is actually slow. Fail-soft.
+  let aiBudgetLine = "";
+  try {
+    const { routes } = await readAiRouteStats(1);
+    aiBudgetLine = askBudgetDigestLine(routes);
+  } catch {
+    // telemetry transient — silence is the healthy default
+  }
+
   // Vol. 4 #3 — list funnel (weekly cohort): joined → Door-3 open → any
   // click → /consultations → intake. Fail-soft like every other block:
   // a dead join dims one line, never the digest.
@@ -374,6 +388,7 @@ export async function GET(request: NextRequest) {
     ...(chainLine ? [chainLine] : []),
     ...(credLine ? [credLine] : []),
     ...(cronLine ? [cronLine] : []),
+    ...(aiBudgetLine ? [aiBudgetLine] : []),
     "",
     `— CONSOLE —`,
     `${unreadBell} unread bell notification${unreadBell === 1 ? "" : "s"}`,

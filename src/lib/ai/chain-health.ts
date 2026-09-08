@@ -16,6 +16,7 @@
 
 import { resolveModelChain } from "./openrouter";
 import { askSystemPrompt } from "@/lib/ai/ask";
+import { CHAIN_TIMEOUT_MS } from "./latency-budget";
 
 export const CHAIN_HEALTH_OPS_KEY = "ai_chain_health";
 
@@ -132,7 +133,10 @@ export async function probeModel(
     return { model, ok: false, reason: "probe_error", latencyMs: 0, detail: "OPENROUTER_API_KEY not set" };
   }
   const doFetch = opts.fetchImpl ?? fetch;
-  const timeoutMs = opts.timeoutMs ?? 20_000;
+  // Vol. 5 #5: the probe shares the route's CHAIN_TIMEOUT_MS — a model that
+  // cannot answer inside the route budget must probe as unusable, so the
+  // probe verdict and route reality can never disagree.
+  const timeoutMs = opts.timeoutMs ?? CHAIN_TIMEOUT_MS;
   try {
     const res = await doFetch(OPENROUTER_URL, {
       method: "POST",

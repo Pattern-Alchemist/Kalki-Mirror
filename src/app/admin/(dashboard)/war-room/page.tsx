@@ -10,6 +10,7 @@ import {
   DoorOpen, Link2, Radio, TrendingUp, Users, CalendarCheck,
 } from "lucide-react";
 import { pctOf } from "@/lib/admin/funnel";
+import { judgeLatencyBudget } from "@/lib/ai/latency-budget";
 
 /* ─── Types ──────────────────────────────────────────────────────────────── */
 
@@ -669,6 +670,7 @@ export default function WarRoomPage() {
                       <th className="pb-2 text-right font-medium">Errors</th>
                       <th className="pb-2 text-right font-medium">p50</th>
                       <th className="pb-2 text-right font-medium">p95</th>
+                      <th className="pb-2 text-right font-medium">Budget</th>
                       <th className="pb-2 text-right font-medium">Last call</th>
                     </tr>
                   </thead>
@@ -676,6 +678,9 @@ export default function WarRoomPage() {
                     {data.aiRoutes.routes.map((r) => {
                       const trouble = r.error > 0 || r.unconfigured > 0;
                       const drift = r.p95 > 0 && r.p95 >= 4 * Math.max(1, r.p50);
+                      // Vol. 5 #5 — the latency budget, judged where the p95 lives:
+                      // ask 12s, other AI routes 3s. amber = over budget (decide),
+                      // rose = 2×+ over (the budget is dead).
                       return (
                         <tr key={r.event}>
                           <td className="py-2 font-medium text-zinc-200">
@@ -694,6 +699,16 @@ export default function WarRoomPage() {
                           <td className={`py-2 text-right ${r.error > 0 ? "text-rose-400" : "text-zinc-400"}`}>{r.error}</td>
                           <td className="py-2 text-right text-zinc-400">{r.p50 ? `${r.p50}ms` : "—"}</td>
                           <td className={`py-2 text-right ${drift ? "text-amber-400" : "text-zinc-400"}`}>{r.p95 ? `${r.p95}ms` : "—"}</td>
+                          <td className="py-2 text-right">
+                            {r.p95 > 0 ? (() => {
+                              const j = judgeLatencyBudget(r.event, r.p95);
+                              return (
+                                <span className={j.verdict === "breach" ? "text-rose-400" : j.verdict === "warn" ? "text-amber-400" : "text-zinc-500"}>
+                                  {(r.p95 / 1000).toFixed(1)}s/{(j.budgetMs / 1000).toFixed(0)}s
+                                </span>
+                              );
+                            })() : <span className="text-zinc-600">—</span>}
+                          </td>
                           <td className="py-2 text-right text-zinc-500">{r.lastAt ? r.lastAt.slice(0, 16).replace("T", " ") : "—"}</td>
                         </tr>
                       );
@@ -704,6 +719,9 @@ export default function WarRoomPage() {
                   Server-fired first-party events (Vol. 4 #17): every /api/ai/* call reports
                   latency_ms + outcome through the #18 dictionary gate. Dot: emerald = healthy,
                   amber = p95 ≥ 4× p50 (latency drift), rose = errors or unconfigured provider.
+                  Budget (Vol. 5 #5): p95 against the route's latency budget — ask 12s, others 3s;
+                  amber over budget, rose at 2×+. LLM-backed routes running over 3s on the free
+                  chain is a cost signal to decide on, not an outage.
                   Limited = rate-limited (429) — a throttle working as designed, not a failure.
                 </p>
               </div>

@@ -23,6 +23,7 @@
  */
 
 import { resolveModelChain } from './openrouter';
+import { CHAIN_TIMEOUT_MS } from './latency-budget';
 
 // Groq is the default provider for the generic path (free, fast,
 // OpenAI-compatible). Override with LLM_BASE_URL and LLM_MODEL env vars
@@ -131,7 +132,9 @@ async function callGenericProvider(
 
 /**
  * OpenRouter fallback path (OPENROUTER_API_KEY) — mirrors the posture of
- * openrouter.ts: walk resolveModelChain(), 25s hard timeout per model,
+ * openrouter.ts: walk resolveModelChain(), 12s hard timeout per model
+ * (Vol. 5 #5 tightened 25s → 12s: the budget, not the model, is the
+ * contract — a dying chain must not burn 4 × 25s before failing honest),
  * log-and-continue on any per-model failure, throw only when the whole
  * chain is exhausted (callers catch and degrade to 502/500). An explicit
  * options.model override pins the call to that single model, matching the
@@ -197,7 +200,7 @@ async function callOpenRouterModel(
       ...(process.env.OPENROUTER_APP_TITLE ? { 'X-Title': process.env.OPENROUTER_APP_TITLE } : {}),
     },
     body: JSON.stringify(body),
-    signal: AbortSignal.timeout(25_000),
+    signal: AbortSignal.timeout(CHAIN_TIMEOUT_MS),
   });
 
   if (!res.ok) {

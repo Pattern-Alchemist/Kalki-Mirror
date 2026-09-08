@@ -16,8 +16,11 @@
        spans FOUR provider pools (dots-studio, NVIDIA, Google AI Studio,
        Liquid) so one pool's outage never silences the AI layer. Override
        with OPENROUTER_MODELS (comma-separated) or OPENROUTER_MODEL (primary).
-     · 20s hard timeout per model — synthesis must never hang the dossier.
+     · 12s hard timeout per model (Vol. 5 #5 CHAIN_TIMEOUT_MS — the budget,
+       not the model, is the contract; shared with llm.ts and the probe).
    ═══════════════════════════════════════════════════════════════════════════ */
+
+import { CHAIN_TIMEOUT_MS } from './latency-budget';
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
@@ -66,7 +69,7 @@ export async function chatComplete(
 
   const maxTokens = opts?.maxTokens ?? 700;
   const temperature = opts?.temperature ?? 0.6;
-  const timeoutMs = opts?.timeoutMs ?? 20_000;
+  const timeoutMs = opts?.timeoutMs ?? CHAIN_TIMEOUT_MS;
 
   for (const model of resolveModelChain()) {
     try {
