@@ -61,6 +61,11 @@ const REGISTERED_ROUTES = [
   "src/app/usa/relationship-pattern-reading/opengraph-image.tsx",
   "src/app/usa/spiritual-consultation/opengraph-image.tsx",
   "src/app/usa/vedic-astrology-consultation/opengraph-image.tsx",
+  // Vol. 5 #15 — the city surfaces carry their own bespoke cards
+  "src/app/usa/austin/opengraph-image.tsx",
+  "src/app/usa/new-york/opengraph-image.tsx",
+  "src/app/usa/san-francisco-bay/opengraph-image.tsx",
+  "src/app/usa/london/opengraph-image.tsx",
 ];
 
 describe("og-image registry (fs-exhaustive)", () => {
