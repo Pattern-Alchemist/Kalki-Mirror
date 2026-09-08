@@ -58,7 +58,7 @@ paths:
     get:
       operationId: livenessProbe
       tags: [Health]
-      summary: Liveness probe
+      summary: Liveness probe of the deployment - 200 with the canonical identity when the edge is serving; used by monitors and the restore drill.
       description: Returns a simple status check. No authentication or rate limiting.
       responses:
         '200':
@@ -191,7 +191,7 @@ paths:
     post:
       operationId: aiAsk
       tags: [AI]
-      summary: Public grounded Q&A (Vol. 4 #14)
+      summary: Public grounded Q&A over the folio corpus (Vol. 4 #14) - retrieval at the prithvi tier, corpus-or-silence gates, strict citation contract, ask-cache. Rate limited 5/min per IP.
       description: >-
         Corpus-grounded question answering for the public /ask surface.
         Reuses the wizard's citation pool at the public 'prithvi' tier plus
@@ -269,7 +269,7 @@ paths:
     post:
       operationId: aiSearch
       tags: [AI]
-      summary: AI semantic search
+      summary: AI semantic siddhi search - the LLM ranks the full siddhi catalogue against a natural-language query; deterministic fallback serves on LLM failure. Rate limited.
       description: >-
         Semantic search over the corpus. No auth required.
         Rate limited to 5/min/IP. Returns 503 if LLM is not configured.
@@ -313,7 +313,7 @@ paths:
     post:
       operationId: aiJapaGuide
       tags: [AI]
-      summary: AI japa (mantra repetition) guide
+      summary: AI japa (mantra repetition) guidance matched to the seekers experience level. Rate limited.
       description: >-
         Generates a personalized japa guide for a given mantra.
         No auth. Rate limited 5/min/IP.
@@ -353,7 +353,7 @@ paths:
     post:
       operationId: aiConsultationScreen
       tags: [AI]
-      summary: AI consultation screening
+      summary: AI screening of consultation intake answers before a human reads them. Rate limited.
       description: >-
         Screens a user's consultation message before routing.
         No auth. Rate limited 5/min/IP.
@@ -391,7 +391,7 @@ paths:
     post:
       operationId: aiArchetypeQuiz
       tags: [AI]
-      summary: AI archetype quiz analysis
+      summary: The archetype quiz scorer - LLM-enriched Mahavidya analysis over the deterministic answer-weight fallback. Rate limited.
       description: >-
         Analyzes archetype quiz answers to determine dominant patterns.
         No auth. Rate limited 5/min/IP.
@@ -428,7 +428,7 @@ paths:
     post:
       operationId: aiExplain
       tags: [AI]
-      summary: AI content explanation
+      summary: AI explanation of any archive term or concept in the YANTRA voice, with the deterministic fallback on LLM failure. Rate limited.
       description: >-
         Explains Vedic/tantrik content in beginner or technical style.
         No auth. Rate limited 5/min/IP.
@@ -466,7 +466,7 @@ paths:
     post:
       operationId: aiBreathwork
       tags: [AI]
-      summary: AI breathwork session generator
+      summary: AI breathwork session generator - a paced practice matched to the seekers state. Rate limited.
       description: >-
         Generates a guided breathwork session of the specified type and duration.
         No auth. Rate limited 5/min/IP.
@@ -511,7 +511,7 @@ paths:
     post:
       operationId: aiPatternExplain
       tags: [AI]
-      summary: AI pattern explanation
+      summary: AI explanation of a named Pattern Atlas loop - the loop, its origin text, and the prescribed exit. Rate limited.
       description: >-
         Explains a specific pattern by its slug with optional context.
         No auth. Rate limited 5/min/IP.
@@ -547,7 +547,7 @@ paths:
     post:
       operationId: aiRecommendTier
       tags: [AI]
-      summary: AI tier recommendation
+      summary: AI tier recommendation from a seeker description, with the deterministic scoring fallback on LLM failure. Rate limited.
       description: >-
         Recommends a membership tier based on quiz answers.
         No auth. Rate limited 5/min/IP.
@@ -584,7 +584,7 @@ paths:
     post:
       operationId: aiTransitInterpretation
       tags: [AI]
-      summary: AI transit interpretation
+      summary: AI interpretation of a transit against the seeker pattern context - horoscopy-free, pattern-first. Rate limited.
       description: >-
         Generates an interpretation for given planetary positions.
         No auth. Rate limited 5/min/IP.
@@ -619,7 +619,7 @@ paths:
     post:
       operationId: aiDraft
       tags: [AI]
-      summary: AI content draft generation
+      summary: Studio draft assistant for admin-authored content (founder tooling). SUPERADMIN gated.
       description: >-
         Generates a content draft for practice, archetype, pattern, research, or codex.
         **Requires authentication.** Rate limited 5/min/IP.
@@ -652,7 +652,7 @@ paths:
     get:
       operationId: getUserTier
       tags: [User]
-      summary: Get current user tier
+      summary: The authenticated members current tier and entitlements. Session-gated.
       description: Returns the authenticated user's tier and remaining gold keys.
       security:
         - bearerAuth: []
@@ -671,7 +671,7 @@ paths:
     get:
       operationId: getKeys
       tags: [Keys]
-      summary: List keys for a vault
+      summary: The callers vault - invite keys bound to the sessions email, with redemption state.
       description: >-
         Lists keys for the authenticated user's vault, or another vault
         if the user is ADMIN/SUPERADMIN. The `vault` query param is an optional
@@ -702,7 +702,7 @@ paths:
     post:
       operationId: createKey
       tags: [Keys]
-      summary: Generate a new invite key
+      summary: Generate a new invite key bound to the authenticated members email. Session-gated.
       description: >-
         Generates a new key (format `KALKI-XXXX-XXXX`).
         Requires Jal tier or above and `goldKeysRemaining > 0`.
@@ -738,7 +738,7 @@ paths:
     post:
       operationId: redeemKey
       tags: [Keys]
-      summary: Redeem an invite key
+      summary: Redeem an invite key - binds the keys tier to the authenticated member, idempotent per key. Session-gated.
       description: >-
         Redeems a key code to grant the user the associated tier.
       security:
@@ -778,7 +778,7 @@ paths:
     post:
       operationId: verify2FA
       tags: [Auth]
-      summary: Verify 2FA code
+      summary: Verify a TOTP code for the current session (the founder-gated MFA enrollment flow).
       description: >-
         Verifies a 6-digit 2FA code using a pre-auth token.
         On success, sets a `next-auth.session-token` cookie.
@@ -812,7 +812,7 @@ paths:
     get:
       operationId: validateSession
       tags: [Auth]
-      summary: Validate JWT session
+      summary: Validate the JWT session cookie - returns the session claims when valid, 401 otherwise.
       description: >-
         Validates a JWT session using custom headers. The token must
         contain both `id` and `jti` claims.
@@ -866,7 +866,7 @@ paths:
     get:
       operationId: adminSearch
       tags: [Admin]
-      summary: Admin global search
+      summary: Admin global search across members, keys, consultations and content rows. SUPERADMIN gated.
       description: >-
         Searches across members, keys, and consultations.
         Requires ADMIN, SUPERADMIN, EDITOR, or REVIEWER role.
@@ -898,7 +898,7 @@ paths:
     get:
       operationId: getAdminNotifications
       tags: [Admin]
-      summary: List admin notifications
+      summary: List admin bell notifications (unread first). SUPERADMIN gated.
       description: >-
         Returns notifications for the admin dashboard.
         Requires ADMIN, SUPERADMIN, EDITOR, or REVIEWER role.
@@ -946,7 +946,7 @@ paths:
     patch:
       operationId: patchAdminNotification
       tags: [Admin]
-      summary: Mark notification(s) as read
+      summary: Mark admin bell notifications read (by id or all). SUPERADMIN gated.
       description: >-
         Marks a single notification or all notifications as read.
         Requires ADMIN, SUPERADMIN, EDITOR, or REVIEWER role.
@@ -969,10 +969,11 @@ paths:
           $ref: '#/components/responses/BadRequest'
 
 # ── Components ──────────────────────────────────────────────
-  # ── Auto-documented fills (scripts/gen-openapi-paths.mjs — Vol. 3 #20) ──
-  # Minimal truthful entries for routes the hand-written section never
-  # covered. Summaries are quoted from each route module header. Enrich
-  # by hand as needed — tests/lib/openapi-truth.test.ts pins the set.
+  # ── Route fills (Vol. 3 #20 walk; summaries hand-audited per Vol. 5 #19 census) ──
+  # Entries for routes the hand-written section never covered, with real
+  # summaries audited against each route module header. tests/lib/
+  # openapi-truth.test.ts pins the set; tests/lib/openapi-census.test.ts
+  # pins the DOCUMENTATION quality — no stub may return.
 
   /api/admin/analytics:
     get:
@@ -991,7 +992,7 @@ paths:
     get:
       operationId: apiAdminAuditLogsGet
       tags: [Admin]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: The audit trail of privileged actions (who did what, when) feeding the admin console. SUPERADMIN gated.
       security:
         - adminAuth: []
       responses:
@@ -1004,7 +1005,7 @@ paths:
     get:
       operationId: apiAdminConsultationsGet
       tags: [Admin]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: The consultation lead ledger — every seeker intake with status, payment state and follow-up tracking. SUPERADMIN gated.
       security:
         - adminAuth: []
       responses:
@@ -1030,7 +1031,7 @@ paths:
     get:
       operationId: apiAdminContentGet
       tags: [Admin]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: Studio content management — ContentEntry rows (drafts, published, scheduled) behind the /library shelves. SUPERADMIN gated.
       security:
         - adminAuth: []
       responses:
@@ -1043,7 +1044,7 @@ paths:
     get:
       operationId: apiAdminEnvCheckGet
       tags: [Admin]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: Runtime environment verification — which env var NAMES are present in the live function runtime (never values). SUPERADMIN gated.
       security:
         - adminAuth: []
       responses:
@@ -1056,7 +1057,7 @@ paths:
     get:
       operationId: apiAdminFolioGet
       tags: [Admin]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: Folio management — ContentEntry vs baked FolioChunk state and manual folio operations. SUPERADMIN gated.
       security:
         - adminAuth: []
       responses:
@@ -1082,7 +1083,7 @@ paths:
     get:
       operationId: apiAdminKeysGet
       tags: [Admin]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: The access key ledger — generated keys, redemption state, tier binding. SUPERADMIN gated.
       security:
         - adminAuth: []
       responses:
@@ -1095,7 +1096,7 @@ paths:
     get:
       operationId: apiAdminMembersGet
       tags: [Admin]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: The membership roster — seekers with tier, renewal state and redemption history. SUPERADMIN gated.
       security:
         - adminAuth: []
       responses:
@@ -1108,7 +1109,7 @@ paths:
     get:
       operationId: apiAdminMembersIdGet
       tags: [Admin]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: One member's full record — tier, keys, consultations. SUPERADMIN gated.
       security:
         - adminAuth: []
       responses:
@@ -1121,7 +1122,7 @@ paths:
     get:
       operationId: apiAdminSessionGet
       tags: [Admin]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: The current admin session introspection — who is logged in and MFA state. SUPERADMIN gated.
       security:
         - adminAuth: []
       responses:
@@ -1185,7 +1186,7 @@ paths:
     get:
       operationId: apiAdminStatsGet
       tags: [Admin]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: The war-room KPI source — members, keys, consultations, drafts and funnel rollups. SUPERADMIN gated.
       security:
         - adminAuth: []
       responses:
@@ -1224,7 +1225,7 @@ paths:
     get:
       operationId: apiAuthNextauthGet
       tags: [Auth]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: The NextAuth credentials catch-all (csrf, signin, signout, session). Alias-exported handlers — the wire contract is NextAuth’s own.
       responses:
         '200':
           description: OK (shape documented in the route module)
@@ -1232,7 +1233,7 @@ paths:
     post:
       operationId: apiAuthNextauthPost
       tags: [Auth]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: The NextAuth credentials catch-all (csrf, signin, signout, session). Alias-exported handlers — the wire contract is NextAuth’s own.
       responses:
         '200':
           description: OK (shape documented in the route module)
@@ -1241,7 +1242,7 @@ paths:
     post:
       operationId: apiAuthAdminLoginPost
       tags: [Auth]
-      summary: POST /api/auth/admin-login
+      summary: The SUPERADMIN credentials sign-in (NextAuth credentials provider callback for the archivist account).
       responses:
         '200':
           description: OK (shape documented in the route module)
@@ -1295,7 +1296,7 @@ paths:
     get:
       operationId: apiCronCleanupGet
       tags: [Cron]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: TTL cleanup (cache rows, expired sessions, stale events) — ledger-recorded (Vol. 5 #4). CRON_SECRET gated.
       responses:
         '200':
           description: OK (shape documented in the route module)
@@ -1304,7 +1305,7 @@ paths:
     get:
       operationId: apiCronCourseSendGet
       tags: [Cron]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: The Ten Doors email course daily delivery — doors due today go out via Resend, one door per seeker per day. CRON_SECRET gated.
       responses:
         '200':
           description: OK (shape documented in the route module)
@@ -1313,7 +1314,7 @@ paths:
     get:
       operationId: apiCronDailyDigestGet
       tags: [Cron]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: The founder's 08:00 IST ops digest — leads, payments, doors, funnels, plus the vigilance alert lines (chain, creds, crons, AI budget). ?dryRun=1 reports and sends nothing. CRON_SECRET gated.
       responses:
         '200':
           description: OK (shape documented in the route module)
@@ -1358,7 +1359,7 @@ paths:
     get:
       operationId: apiEmailCourseUnsubscribeGet
       tags: [Email Course]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: One-click course unsubscribe — token-verified and list-wide. GET renders the confirm surface; POST performs it.
       responses:
         '200':
           description: OK (shape documented in the route module)
@@ -1366,7 +1367,7 @@ paths:
     post:
       operationId: apiEmailCourseUnsubscribePost
       tags: [Email Course]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: One-click course unsubscribe — token-verified and list-wide. GET renders the confirm surface; POST performs it.
       responses:
         '200':
           description: OK (shape documented in the route module)
@@ -1384,7 +1385,7 @@ paths:
     get:
       operationId: apiGscVerificationTokenGet
       tags: [GSC]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: Google Search Console HTML-file ownership verification — serves the verification body when the token matches GSC_VERIFICATION_TOKEN, fail-closed otherwise.
       responses:
         '200':
           description: OK (shape documented in the route module)
@@ -1393,7 +1394,7 @@ paths:
     get:
       operationId: apiIndexnowGet
       tags: [IndexNow]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: IndexNow fan-out (Bing, Yandex, Seznam, Naver). GET: daily full-sitemap ping (cron) with ?dryRun=1. POST: targeted instant ping for published or materially edited URLs. Every URL must belong to this site — never an open relay.
       responses:
         '200':
           description: OK (shape documented in the route module)
@@ -1401,7 +1402,7 @@ paths:
     post:
       operationId: apiIndexnowPost
       tags: [IndexNow]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: IndexNow fan-out (Bing, Yandex, Seznam, Naver). GET: daily full-sitemap ping (cron) with ?dryRun=1. POST: targeted instant ping for published or materially edited URLs. Every URL must belong to this site — never an open relay.
       responses:
         '200':
           description: OK (shape documented in the route module)
@@ -1428,7 +1429,7 @@ paths:
     post:
       operationId: apiUserDeletePost
       tags: [User]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: GDPR erasure — deletes the authenticated member’s account rows. Session-gated.
       security:
         - bearerAuth: []
       responses:
@@ -1441,7 +1442,7 @@ paths:
     get:
       operationId: apiUserExportGet
       tags: [User]
-      summary: Route module — see src for the contract. (Auto-documented; enrich by hand.)
+      summary: GDPR data export — the authenticated member’s rows as downloadable JSON. Session-gated.
       security:
         - bearerAuth: []
       responses:
