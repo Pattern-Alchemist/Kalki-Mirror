@@ -42,6 +42,20 @@ export interface LLMOptions {
   maxTokens?: number;
   systemPrompt?: string;
   jsonMode?: boolean;
+  /**
+   * Contract gate for the OpenRouter chain walk (2026-09-09). When set, a
+   * NON-EMPTY completion that fails validate() is treated as a chain
+   * failure — the walk continues to the next model instead of returning
+   * poison. Without it the walk returns the first non-empty completion,
+   * and a contract-breaking model (hidden-reasoning burners, non-JSON
+   * chatter) reaches the caller's strict parser even when later chain
+   * models are healthy — found live 2026-09-09 when 3/4 chain models died
+   * and the one survivor's off-contract output silenced /ask as
+   * ungrounded_output. The /ask route passes its parseAskOutput
+   * strictness; callers without validate keep first-non-empty exactly as
+   * before.
+   */
+  validate?: (text: string) => boolean;
 }
 
 export interface LLMResult {
@@ -161,7 +175,12 @@ async function callViaOpenRouter(
 
   for (const model of resolveModelChain()) {
     try {
-      return await callOpenRouterModel(apiKey, model, formattedMessages, maxTokens, temperature, options);
+      const result = await callOpenRouterModel(apiKey, model, formattedMessages, maxTokens, temperature, options);
+      if (options.validate && !options.validate(result.text)) {
+        console.warn(`[llm/openrouter] ${model} broke the output contract — walking on`);
+        continue;
+      }
+      return result;
     } catch (err) {
       console.warn(`[llm/openrouter] ${model} failed:`, err instanceof Error ? err.message : err);
       continue;

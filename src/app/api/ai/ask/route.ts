@@ -101,6 +101,15 @@ async function handle(request: NextRequest): Promise<NextResponse> {
       jsonMode: true,
       temperature: 0.3,
       maxTokens: 1024,
+      // The chain walk enforces THIS route's output contract per model:
+      // a completion parseAskOutput would reject sends the walk to the
+      // next model instead of surfacing as ungrounded_output silence.
+      // Found live 2026-09-09 — 3/4 chain models dead, the single survivor
+      // returned off-contract text, and the route silenced while a healthy
+      // model sat later in its own chain. Gate #2 below still stands as
+      // the final honesty floor (the walk validator can only save an ask
+      // when a LATER model answers clean; it can never loosen strictness).
+      validate: (text) => parseAskOutput(text, retrievedSlugs) !== null,
     });
 
     const parsedOut = parseAskOutput(result.text, retrievedSlugs);

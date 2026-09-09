@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { extractJsonPayload, isLLMConfigured } from '@/lib/ai/llm';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { callLLM, extractJsonPayload, isLLMConfigured } from '@/lib/ai/llm';
 
 /* ══════════════════════════════════════════════════════════════
    2026-09-06 ops fix — provider resolution + JSON payload cleaning.
@@ -79,5 +79,93 @@ describe('extractJsonPayload', () => {
     expect(JSON.parse(extractJsonPayload(raw))).toEqual({
       results: [{ slug: 'the-ghost' }],
     });
+  });
+});
+
+/* ══════════════════════════════════════════════════════════════
+   2026-09-09 — the chain walk's CONTRACT GATE. Found live: 3/4
+   chain models died within a day of enlistment; the single
+   survivor returned off-contract text; the walk (first-non-empty)
+   handed it to /ask's strict parser and the route silenced as
+   ungrounded_output while a healthy model sat later in the chain.
+   The walk now accepts a validate() — a non-empty completion that
+   fails it is treated like any other chain failure.
+   ══════════════════════════════════════════════════════════════ */
+describe('callLLM chain walk — the contract gate', () => {
+  const saved: Record<string, string | undefined> = {};
+
+  beforeEach(() => {
+    saved.OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+    saved.OPENROUTER_MODELS = process.env.OPENROUTER_MODELS;
+    process.env.OPENROUTER_API_KEY = 'sk-or-test';
+    process.env.OPENROUTER_MODELS = 'poison-model,clean-model';
+  });
+
+  afterEach(() => {
+    for (const [k, v] of Object.entries(saved)) {
+      if (v === undefined) delete process.env[k];
+      else process.env[k] = v;
+    }
+    vi.unstubAllGlobals();
+  });
+
+  function completion(model: string, content: string) {
+    return {
+      ok: true,
+      json: async () => ({
+        model,
+        choices: [{ message: { content }, finish_reason: 'stop' }],
+      }),
+    };
+  }
+
+  it('skips a non-empty completion that fails validate and walks to the clean model', async () => {
+    vi.stubGlobal('fetch', vi.fn(async (_url: string | URL, init?: { body?: string }) => {
+      const model = JSON.parse(init?.body ?? '{}').model as string;
+      if (model === 'poison-model') {
+        // The live failure shape: fluent, non-empty, but NOT the JSON contract.
+        return completion('poison-model', 'I cannot share that information.');
+      }
+      return completion('clean-model', '{"cited_folios":["soham-dhyana"],"grounded":true,"answer":"Begin with the breath."}');
+    }));
+
+    const result = await callLLM([{ role: 'user', content: 'q' }], {
+      systemPrompt: 'contract',
+      jsonMode: true,
+      validate: (text) => {
+        try {
+          return JSON.parse(text).grounded === true;
+        } catch {
+          return false;
+        }
+      },
+    });
+    expect(result.model).toBe('clean-model');
+    expect(JSON.parse(result.text).grounded).toBe(true);
+  });
+
+  it('keeps first-non-empty when no validate is set (legacy posture unchanged)', async () => {
+    vi.stubGlobal('fetch', vi.fn(async (_url: string | URL, init?: { body?: string }) => {
+      const model = JSON.parse(init?.body ?? '{}').model as string;
+      if (model === 'poison-model') return completion('poison-model', 'plain prose, no json');
+      return completion('clean-model', '{"ok":true}');
+    }));
+
+    const result = await callLLM([{ role: 'user', content: 'q' }], { jsonMode: true });
+    expect(result.model).toBe('poison-model');
+  });
+
+  it('throws the chain-exhausted error when every model fails the contract', async () => {
+    vi.stubGlobal('fetch', vi.fn(async (_url: string | URL, init?: { body?: string }) => {
+      const model = JSON.parse(init?.body ?? '{}').model as string;
+      return completion(model, 'off-contract chatter');
+    }));
+
+    await expect(
+      callLLM([{ role: 'user', content: 'q' }], {
+        jsonMode: true,
+        validate: () => false,
+      })
+    ).rejects.toThrow('All OpenRouter models in the chain failed.');
   });
 });

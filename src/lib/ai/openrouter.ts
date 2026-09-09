@@ -13,9 +13,10 @@
        of enlistment; production /api/ai/ask degraded to total chain
        failure until this swap). One model is never enough — the client
        walks the chain and returns the first completion. The default chain
-       spans FOUR provider pools (dots-studio, NVIDIA, Google AI Studio,
-       Liquid) so one pool's outage never silences the AI layer. Override
-       with OPENROUTER_MODELS (comma-separated) or OPENROUTER_MODEL (primary).
+       spans THREE distinct pools (Liquid, the OpenRouter meta-router, and
+       Google AI Studio) so one pool's outage never silences the AI layer.
+       Override with OPENROUTER_MODELS (comma-separated) or OPENROUTER_MODEL
+       (primary).
      · 12s hard timeout per model (Vol. 5 #5 CHAIN_TIMEOUT_MS — the budget,
        not the model, is the contract; shared with llm.ts and the probe).
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -24,14 +25,27 @@ import { CHAIN_TIMEOUT_MS } from './latency-budget';
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
-/** Default chain — free-tier, JSON-capable, probed live 2026-09-08 with the
- *  real /ask contract prompt at production size. ling-3.0-flash-sante was
- *  dropped: clean on toy prompts, HTTP 400 on every real-size body. */
+/** Default chain — free-tier, JSON-capable, probed at CONTRACT size (the real
+ *  /ask system prompt + real corpus chunks, 12s budget, parseAskOutput
+ *  strictness; scripts/probe methodology). Re-probed 2026-09-09 — the 09-08
+ *  chain had rotted within a day: dots-3-note burns its whole token floor on
+ *  hidden reasoning (finish=length, no content), nemotron-3-ultra answers
+ *  grounded=false at real size, the Google pool sat hard behind 429, and the
+ *  only then-alive model (liquid) failed the route's strict parse while the
+ *  walk kept handing it the contract. Survivors of the 18-model sweep:
+ *    · liquid/lfm-2.5-2.6b — contract PASS 8.4s (also PASS 09-08) → primary
+ *    · openrouter/free — the meta-router, PASS 11.0s; routes across whatever
+ *      capacity exists, one failure mode away from any single pool
+ *    · google/gemma-4-31b — fast-fail slot: 429 answers in ~100ms and the
+ *      pool historically recovers; kept as tail, not head
+ *  nex-n2.5-mini/pro (24–92s) and nemotron-3-super (39s) passed the contract
+ *  but blow the 12s budget — unusable by doctrine (#5: the budget is the
+ *  contract, probe and route share one number). ling pair still 400 at real
+ *  size; inkling pair 403 agentic-only; laguna-xs silent with reasoning on. */
 const DEFAULT_MODELS = [
-  "dots-studio/dots-3-note-preview:free", // non-reasoning primary, JSON-capable, probed PASS
-  "nvidia/nemotron-3-ultra-550b-a55b:free", // reasoning-heavy but contract-clean; 1600-token floor protects
-  "google/gemma-4-31b-it:free", // best persona quality; congested upstream, recovers on retry
-  "liquid/lfm-2.5-2.6b:free", // tiny last resort, probed PASS
+  "liquid/lfm-2.5-2.6b:free", // contract PASS 8.4s at real size, two probes running
+  "openrouter/free", // meta-router, PASS 11.0s — diversity against pool rot
+  "google/gemma-4-31b-it:free", // best persona; 429 today (fast-fail), recovers on retry
 ];
 
 export function resolveModelChain(): string[] {
