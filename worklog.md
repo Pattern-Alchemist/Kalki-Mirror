@@ -1276,3 +1276,20 @@ Stage Summary:
 - Ops day closed: chain on survivors (liquid → openrouter/free → gemma tail), the walk gate respects honest silence, Cloudinary green 4/4, audit trigger script fixed. Two deploys (c2d460b, 9423ba6), both READY, both smoke-verified.
 - The vigilance plane's first unsupervised catch was handled end-to-end inside one ops day: flag → probe at contract size → rebuild → gate → live proof.
 - Still open (founder-gated): TOTP enrollment (grace ~2026-09-12 — IN 3 DAYS), EMBED_API_KEY neural swap, GSC OAuth, Turso vault token rotation, letters launch, testimonial first-seed.
+
+---
+Task ID: vol5-ops-day2c
+Agent: Z (Super Z, main session)
+Task: The founder-gated TOTP enrollment — deadline was grace ~2026-09-12 (3 days out). Executed with the founder-delegated admin credentials.
+
+Work Log:
+- Enrollment path mapped: 2FA lives in server actions (setup2FA / confirm2FA in admin/(dashboard)/settings/two-factor-actions.ts), NOT REST — the settings page has no API route to call. Server actions are invoked over HTTP with the Next-Action header bound to build-specific action IDs.
+- Action IDs are build-specific: my local build minted different IDs than Vercel's (server action not found on first POST). Extracted the DEPLOYED ids from the live client chunk (2wf9e5njtd32c.js): setup2FA=001b09b5…, confirm2FA=405e4839…. Lesson recorded: always extract from the deployed bundle, never the local one, and dump the raw createServerReference region (tail-proximity matching shifted names by one — caught it before the POST).
+- SETUP: secret 6XZP…Y2P minted, 8 backup codes issued, twoFactorEnabled=false stored (not yet enabled).
+- CODE GENERATED LOCALLY (HMAC-SHA1, 30s, 6 digits — the standard TOTP the QR encodes) and CONFIRMED via the real confirm2FA action: {"success":true} — enable2FA + audit log + webhook dispatch all ran through the app's own path.
+- LOGIN FLOW PROVEN END-TO-END: admin-login now returns requires2FA:true + preAuthToken; /api/auth/2fa-verify with a fresh live code returns valid:true and grants the NextAuth session. The founder's exact login path works.
+- Handover material (secret + otpauth URI + 8 backup codes) saved OUTSIDE the repo — the founder's chat handover and the ops artifact only; deliberately NOT committed (a TOTP secret in git history would outlive its rotation). Enrollment timestamp 2026-09-09T14:01:59Z, ~3 days ahead of the grace deadline.
+
+Stage Summary:
+- The last time-critical founder-gated item is CLOSED. Admin at /admin now requires TOTP; the founder needs the otpauth URI in their authenticator app (or any of the 8 backup codes as fallback) before their next console login.
+- Remaining founder-gated (all need founder-side material or consent, none blocking): EMBED_API_KEY neural swap (needs the founder's chosen key), GSC OAuth (needs Google consent), Turso vault token rotation (needs Turso platform access), letters launch (needs content sign-off), testimonial first-seed (needs the quotes).
