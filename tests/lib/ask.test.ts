@@ -4,6 +4,7 @@ import {
   patternSlugsMentioned,
   buildAskMessages,
   parseAskOutput,
+  validateAskChainOutput,
   buildCitations,
   askSystemPrompt,
   ASK_MIN_EMBED_SIMILARITY,
@@ -189,5 +190,58 @@ describe('AskResult contract shape', () => {
     const silent: AskResult = { grounded: false, reason: 'corpus_silent' };
     expect(grounded.grounded).toBe(true);
     expect(silent).toEqual({ grounded: false, reason: 'corpus_silent' });
+  });
+});
+
+
+/* ══════════════════════════════════════════════════════════════
+   2026-09-09 — the walk-level contract gate. An honest grounded=false
+   is a VALID completion: the first gate draft validated with
+   parseAskOutput alone and turned every honest corpus-silence into a
+   chain-exhaustion 500 (found by the live smoke drill minutes after
+   deploy). The gate accepts exactly two branches; everything else
+   walks on.
+   ══════════════════════════════════════════════════════════════ */
+describe('validateAskChainOutput — the walk gate', () => {
+  const POOL = ['soham-dhyana', 'manasika-japa'];
+
+  it('accepts an honest grounded=false — silence must come home, not walk on', () => {
+    expect(
+      validateAskChainOutput('{"cited_folios":[],"grounded":false,"answer":""}', POOL)
+    ).toBe(true);
+  });
+
+  it('accepts a fully contract-clean grounded answer', () => {
+    expect(
+      validateAskChainOutput(
+        '{"cited_folios":["soham-dhyana"],"grounded":true,"answer":"Begin with the soham breath."}',
+        POOL
+      )
+    ).toBe(true);
+  });
+
+  it('rejects prose garbage (the live failure shape) — walk on', () => {
+    expect(validateAskChainOutput('I cannot share that information.', POOL)).toBe(false);
+  });
+
+  it('rejects grounded=true with pool-violating citations — walk on', () => {
+    expect(
+      validateAskChainOutput(
+        '{"cited_folios":["bitcoin-whitepaper"],"grounded":true,"answer":"Buy the dip."}',
+        POOL
+      )
+    ).toBe(false);
+  });
+
+  it('rejects grounded=true with an empty answer — walk on', () => {
+    expect(
+      validateAskChainOutput('{"cited_folios":["soham-dhyana"],"grounded":true,"answer":""}', POOL)
+    ).toBe(false);
+  });
+
+  it('rejects non-JSON and JSON non-objects — walk on', () => {
+    expect(validateAskChainOutput('42', POOL)).toBe(false);
+    expect(validateAskChainOutput('"grounded"', POOL)).toBe(false);
+    expect(validateAskChainOutput('', POOL)).toBe(false);
   });
 });

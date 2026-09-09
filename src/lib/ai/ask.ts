@@ -200,6 +200,38 @@ export function parseAskOutput(
   return { answer, citedSlugs: cited };
 }
 
+/**
+ * The WALK-level contract check — what the chain walk (llm.ts validate) uses
+ * to decide whether a completion is worth returning to this route. Lighter
+ * than parseAskOutput in exactly one way, and that way is the point:
+ * a completion answering `grounded=false` is a VALID honest corpus-silence —
+ * the doctrine's whole purpose — and must stop the walk and come home, not
+ * be skipped as contract garbage. Found live 2026-09-09: the first gate
+ * draft validated with parseAskOutput alone, so every honest silence burned
+ * the whole chain and surfaced as a 500 instead of the silence the seeker
+ * is owed. Two acceptance branches, nothing else:
+ *   · parseable object with grounded=false          → honest silence, accept
+ *   · parseable object that parseAskOutput accepts  → grounded answer, accept
+ * Everything else (prose, fences-residue, wrong fields, pool-violating
+ * citations, grounded=true with an empty answer) is a broken completion —
+ * walk on. Pool truth stays with parseAskOutput at the route; this gate can
+ * never loosen what the seeker finally receives.
+ */
+export function validateAskChainOutput(
+  text: string,
+  retrievedSlugs: readonly string[],
+): boolean {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    return false;
+  }
+  if (typeof parsed !== 'object' || parsed === null) return false;
+  if ((parsed as { grounded?: unknown }).grounded === false) return true;
+  return parseAskOutput(text, retrievedSlugs) !== null;
+}
+
 // ─── Response assembly ─────────────────────────────────────────────────────
 
 /**
