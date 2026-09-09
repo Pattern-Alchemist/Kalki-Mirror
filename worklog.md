@@ -1259,3 +1259,20 @@ Stage Summary:
 - The vigilance plane's first unsupervised catch: it flagged the rot, the operator probed at contract size, the chain was rebuilt on evidence, and the walk can no longer be poisoned by a single off-contract survivor. /ask should answer grounded again on live traffic.
 - Free-tier doctrine re-confirmed: chains rot in ~24h, probes must run at CONTRACT size, over-budget models are dead regardless of contract compliance. probe-chain.py is now a permanent ops script for the next rotation.
 - Still open (founder-gated): TOTP enrollment (grace ~2026-09-12 — IN 3 DAYS), EMBED_API_KEY neural swap, GSC OAuth, Turso vault token rotation, letters launch, testimonial first-seed.
+
+---
+Task ID: vol5-ops-day2b
+Agent: Z (Super Z, main session)
+Task: Follow-through on vol5-ops-day2 — the smoke caught the walk gate, the fix shipped, the new chain proved live, Cloudinary verified 4/4.
+
+Work Log:
+- THE SMOKE CAUGHT MY OWN GATE (deploy c2d460b, smoke 6/7): the honest-silence drill returned a 500 instead of grounded:false. The first gate draft validated completions with parseAskOutput alone — but a model answering grounded=false is a VALID honest corpus-silence, the doctrine's whole purpose. Walking past it exhausted the chain and threw. Fix: validateAskChainOutput (ask.ts) — exactly two acceptance branches (parseable grounded=false, or a parseAskOutput-clean grounded answer); everything else walks on. Gate #2 unchanged as the final floor. 6 new vitest cases; 941/941; deploy 9423ba6 READY.
+- SMOKE 7/7 ALL PASS post-fix: page noindex, grounded w/ citations, warm p95 0.93–3.1s (< 12s), honest silence restored, limiter turso, health 1.5s.
+- NEW CHAIN PROVEN LIVE UN-CACHED: fresh query ("How should I prepare for gayatri mantra practice?") → grounded:true served by liquid/lfm-2.5-2.6b:free, citation gayatri-mantra (1.0), archivist voice intact. The prewarm-cached ajapa sample still served by the dots-era cache — by design (cache is keyed by query·retrieval, not by model).
+- CLOUDINARY CLOSES 4/4: the stored Vercel value never parsed (var existed since 2026-08-18; vault credential pings 200 LIVE); PATCHed via v10 API with the known-good compound URL; server-side audit re-run on demand: turso/openrouter/resend/cloudinary ALL ok, stored=True. The Week A #2 leftover finding is closed at the source.
+- scripts/audit-credentials.sh repaired (26 escaped-quote bytes — the trigger script itself had been erroring before any verdict printed; block rewritten conflict-free and re-verified live).
+
+Stage Summary:
+- Ops day closed: chain on survivors (liquid → openrouter/free → gemma tail), the walk gate respects honest silence, Cloudinary green 4/4, audit trigger script fixed. Two deploys (c2d460b, 9423ba6), both READY, both smoke-verified.
+- The vigilance plane's first unsupervised catch was handled end-to-end inside one ops day: flag → probe at contract size → rebuild → gate → live proof.
+- Still open (founder-gated): TOTP enrollment (grace ~2026-09-12 — IN 3 DAYS), EMBED_API_KEY neural swap, GSC OAuth, Turso vault token rotation, letters launch, testimonial first-seed.

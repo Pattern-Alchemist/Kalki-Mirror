@@ -26,10 +26,15 @@ curl -fsS -m 90 "${BASE_URL}/api/cron/cred-audit?${QUERY}" \
 import json, sys
 d = json.load(sys.stdin)
 s = d.get("summary", {})
-print(f"summary: {s.get(\"ok\", \"?\")}/{s.get(\"total\", \"?\")} credentials verify · stored={d.get(\"stored\")} · {d.get(\"auditMs\", \"?\")}ms")
+ok = s.get("ok", "?")
+total = s.get("total", "?")
+stored = d.get("stored")
+audit_ms = d.get("auditMs", "?")
+print(f"summary: {ok}/{total} credentials verify - stored={stored} - {audit_ms}ms")
 for c in d.get("credentials", []):
     mark = "OK  " if c.get("ok") else "FAIL"
-    status = f" HTTP {c[\"status\"]}" if c.get("status") else ""
-    detail = f" — {c[\"detail\"]}" if c.get("detail") else ""
-    print(f"  [{mark}] {c[\"provider\"]:<12} {c[\"reason\"]}{status} {c.get(\"latencyMs\", \"?\")}ms{detail}")
+    status = " HTTP " + str(c["status"]) if c.get("status") else ""
+    detail = " - " + c["detail"] if c.get("detail") else ""
+    lat = c.get("latencyMs", "?")
+    print("  [" + mark + "] " + c["provider"].ljust(12) + " " + c["reason"] + status + " " + str(lat) + "ms" + detail)
 '
