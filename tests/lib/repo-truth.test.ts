@@ -38,14 +38,12 @@ const CITATION_RE = /scripts\/[A-Za-z0-9][A-Za-z0-9_./-]*\.[A-Za-z0-9]+/g;
 /** Amnestied citations: path → reason. SELF-PURGING — see gate 3.
  *  Every entry must state why the tree may legitimately lack the file. */
 const AMNESTY: Record<string, string> = {
-  // ── Evaporation ghosts — Week A re-materializes these (roadmap #2, #4).
-  //    Each entry is removed by the item that creates the file; until then
-  //    the ghost stays VISIBLE here, by name.
-  //    [Week A #2 landed: ping-indexnow.sh, probe-chain.py,
-  //     smoke-page-weight.sh, rehearse-turso-failover.sh — entries removed
-  //     per the self-purge rule; production-sweep.py still pending #4.]
-  'scripts/production-sweep.py':
-    'evaporation ghost — Week A #4 re-materializes',
+  // ── Evaporation ghosts — Week A re-materialized ALL FIVE (roadmap #2, #4).
+  //    ping-indexnow.sh, probe-chain.py, smoke-page-weight.sh,
+  //    rehearse-turso-failover.sh (item #2) and production-sweep.py (item #4)
+  //    are committed drills now; their amnesty entries were removed by the
+  //    self-purge rule. The gate stays here so the next ghost is named on
+  //    the day the record drifts, not the day the sandbox dies.
 
   // ── Planned, not yet built — a roadmap first-move PROMISE. The entry
   //    self-purges the day the file lands (item #12, Week C).

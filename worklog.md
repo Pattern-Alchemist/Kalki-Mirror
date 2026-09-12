@@ -1343,3 +1343,20 @@ Work Log:
 
 Stage Summary:
 - The drills are a ritual no more: page-weight, failover and chain-probe now run weekly on the runner, verdicts land in OpsState, the digest pages on failure OR silence, and the war-room shows which rehearsal went stale. The evaporation class is closed on all three fronts: in the tree (#1/#2), on a schedule (#3), and named when silent (the alarm).
+
+---
+Task ID: vol6-week-a-item4
+Agent: Z (Super Z, main session)
+Task: Vol. 6 Week A #4 — the sweep goes permanent. The 54-check production truth sweep as a committed script + weekly workflow.
+
+Work Log:
+- scripts/production-sweep.py: generalized from the documented checks — health (status ok + db ok), 27 core pages 200, /ask noindexed, soft-404 noindex posture on bogus slugs, sitemap canonical shape (293 URLs, /ask ABSENT, letters present, total bounded 250–400), robots/RSS/JSON-Feed/llms.txt green, 12 cron+admin gates 401, home JSON-LD parseable. --json for machines, --report to POST a production-sweep verdict into the drill ledger (CRON_SECRET-gated; digest staleness covers a sweep that dies silently).
+- The sweep joins the DRILLS roster (drills.ts now four names; the all-green digest line renders dynamically) — war-room panel, digest alarm and staleness doctrine all inherited for free from #3.
+- .github/workflows/production-sweep.yml: weekly Thursday 05:00 UTC (drills own Monday) + workflow_dispatch; failure fails the workflow (GitHub emails on scheduled-workflow failure) AND posts the drill-alert line.
+- LIVE: 11/11 PASS against production (corpus 327, 293 URLs, all 12 gates 401, JSON-LD 2 blocks clean).
+- THE GATE CAUGHT ME: gate 6 failed on the new sweep script — cited, existing, but still gitignored (the scripts/* blanket needed its fifth negation). The evaporation trap is now self-enforcing: the whitelist is no longer a memory exercise.
+- Amnesty now carries ZERO ghosts — only launch-letters.sh (#12, Week C promise) + the 11 documented ephemeral one-shots remain.
+- 961/961 vitest (73 files), tsc clean, build green (344 pages).
+
+Stage Summary:
+- Production truth is no longer archaeology: the sweep runs weekly on the runner, its verdict rides the same ledger as the drills, and the quarterly full sweep is a button. The five ghosts of Vol. 5 are all home, and the gate that named them now guards the tree by itself.

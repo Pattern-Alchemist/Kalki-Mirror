@@ -18,7 +18,7 @@ import { db } from "@/lib/db";
 
 export const DRILL_OPS_PREFIX = "drill:";
 
-export const DRILLS = ["page-weight", "turso-failover", "chain-probe"] as const;
+export const DRILLS = ["page-weight", "turso-failover", "chain-probe", "production-sweep"] as const;
 export type DrillName = (typeof DRILLS)[number];
 
 export const DRILL_NAMES: readonly string[] = DRILLS;
@@ -99,7 +99,7 @@ export function drillsDigestLine(
     const fresh = DRILLS.map((n) => states[n])
       .filter((s): s is StoredDrill => !!s)
       .map((s) => s.at.slice(0, 10));
-    return `DRILLS: all green (page-weight · turso-failover · chain-probe, latest ${fresh.sort().at(-1) ?? "?"})`;
+    return `DRILLS: all green (${DRILLS.join(" · ")}, latest ${fresh.sort().at(-1) ?? "?"})`;
   }
   return `DRILLS ALERT: ${problems.join(" · ")}`;
 }

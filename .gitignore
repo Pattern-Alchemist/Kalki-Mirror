@@ -128,6 +128,7 @@ env.local
 !scripts/probe-chain.py
 !scripts/smoke-page-weight.sh
 !scripts/rehearse-turso-failover.sh
+!scripts/production-sweep.py
 !scripts/ingest-folios.ts
 !scripts/ingest-folio-json.ts
 # Vol. 5 #8 — the hi bridge batch-2 insertions (atomic, re-runnable, skip-if-present)

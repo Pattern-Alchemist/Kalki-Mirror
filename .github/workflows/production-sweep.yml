@@ -1,0 +1,36 @@
+# ============================================================
+# KALKI — the sweep goes permanent (Vol. 6 #4)
+# ------------------------------------------------------------
+# Weekly production-truth sweep (scripts/production-sweep.py):
+# core pages 200, /ask noindexed, soft-404 posture, sitemap canonical
+# shape, robots/RSS/JSON-Feed/llms.txt, cron+admin gates 401,
+# JSON-LD, health. Failure fails the workflow (GitHub emails on
+# scheduled-workflow failure) and POSTs a fail verdict into the
+# drill ledger when CRON_SECRET is set, so the daily digest carries
+# the alarm too.
+# ============================================================
+name: production-sweep
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * 4" # weekly, Thursday 05:00 UTC (drills run Monday)
+
+permissions:
+  contents: read
+
+jobs:
+  sweep:
+    name: production sweep
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run production sweep
+        id: sweep
+        env:
+          SITE_URL: https://www.astrokalki.com
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: python3 scripts/production-sweep.py --report
+      - name: Notice on failure
+        if: failure()
+        run: echo "::warning::Production sweep FAILED — the digest also carries the drill-alert line when CRON_SECRET is configured."
