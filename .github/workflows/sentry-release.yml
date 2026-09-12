@@ -1,0 +1,56 @@
+# ============================================================
+# KALKI — Sentry release marking (Vol. 6 #5)
+# ------------------------------------------------------------
+# Marks each production commit as a deployed Sentry release once the
+# founder flips the repo secrets (SENTRY_AUTH_TOKEN / SENTRY_ORG /
+# SENTRY_PROJECT). Until then: an honest skip notice, never a failure.
+#
+# Source-map upload rides the VERCEL build itself via withSentryConfig
+# (already wrapping next.config.ts): set SENTRY_AUTH_TOKEN +
+# SENTRY_ORG + SENTRY_PROJECT + SENTRY_DSN/NEXT_PUBLIC_SENTRY_DSN as
+# Vercel env vars and the build uploads maps for every deploy. This
+# workflow only answers "which release is live in production".
+# ============================================================
+name: sentry-release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Mark release deployed (secrets-gated)
+        if: ${{ secrets.SENTRY_AUTH_TOKEN != '' }}
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+          SHA: ${{ github.sha }}
+        run: |
+          VERSION="kalki-mirror@${SHA::8}"
+          echo "marking release $VERSION"
+          curl -fsS -X POST "https://sentry.io/api/0/organizations/$SENTRY_ORG/releases/" \
+            -H "Authorization: Bearer $SENTRY_AUTH_TOKEN" -H "Content-Type: application/json" \
+            -d "{\"version\":\"$VERSION\",\"projects\":[\"$SENTRY_PROJECT\"],\"dateReleased\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" \
+            || echo "::warning::release create failed (may already exist — non-fatal)"
+          curl -fsS -X POST "https://sentry.io/api/0/organizations/$SENTRY_ORG/releases/$VERSION/deploys/" \
+            -H "Authorization: Bearer $SENTRY_AUTH_TOKEN" -H "Content-Type: application/json" \
+            -d '{"environment":"production","name":"Vercel"}' \
+            || echo "::warning::deploy mark failed (non-fatal)"
+          curl -fsS -X POST "https://sentry.io/api/0/organizations/$SENTRY_ORG/releases/$VERSION/set-commits/" \
+            -H "Authorization: Bearer $SENTRY_AUTH_TOKEN" -H "Content-Type: application/json" \
+            -d "{\"refs\":[{\"repository\":\"Pattern-Alchemist/Kalki-Mirror\",\"commit\":\"$SHA\"}]}" \
+            || echo "::warning::set-commits failed (non-fatal)"
+      - name: Secrets not configured
+        if: ${{ secrets.SENTRY_AUTH_TOKEN == '' }}
+        run: |
+          echo "::notice::SENTRY_* repo secrets not set — release marking skipped. Flip SENTRY_DSN/NEXT_PUBLIC_SENTRY_DSN (capture) + SENTRY_AUTH_TOKEN/SENTRY_ORG/SENTRY_PROJECT (sourcemaps at build + this marking) to activate the error plane."

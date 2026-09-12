@@ -1360,3 +1360,34 @@ Work Log:
 
 Stage Summary:
 - Production truth is no longer archaeology: the sweep runs weekly on the runner, its verdict rides the same ledger as the drills, and the quarterly full sweep is a button. The five ghosts of Vol. 5 are all home, and the gate that named them now guards the tree by itself.
+
+---
+Task ID: vol6-week-a-item5
+Agent: Z (Super Z, main session)
+Task: Vol. 6 Week A #5 — the error plane: Sentry, wired and waiting. Sensors + release marking + digest spike line, all behind the env gate.
+
+Work Log:
+- THE ISLAND FOUND: withSentryConfig already wrapped the build and the three config files existed, but captureError had ZERO callers — the error logger was an island and every production server error died in serverless logs nobody read. Wiring, not adding, was the item.
+- SENSOR LAYER: src/instrumentation.ts (the file that never existed) — register() loads sentry.server/edge.config per runtime, onRequestError hands EVERY uncaught server error to Sentry via captureRequestError. Client side was already covered by sentry.client.config.ts. Honest no-op: Sentry.init in all three configs keys off SENTRY_DSN / NEXT_PUBLIC_SENTRY_DSN — nothing dials Sentry until the founder flips one variable.
+- RELEASE MARKING: .github/workflows/sentry-release.yml — on push to main, when SENTRY_AUTH_TOKEN/SENTRY_ORG/SENTRY_PROJECT repo secrets exist, creates the release kalki-mirror@<sha8>, marks the production deploy, sets commits (three curl steps, each non-fatal); until then a clear skip notice. Source-map uploads ride the VERCEL build itself via withSentryConfig (org/project/auth token env vars are all the plugin reads) — the runbook note documents the exact flip set.
+- DIGEST SPIKE LINE: src/lib/ops/sentry-observe.ts — readSentrySpike() fetches the org's last-24h unresolved issues when the env trio is set (15s timeout, fail-soft to null), countNewIssues() defines "new" by firstSeen (statsPeriod bounds active; firstSeen bounds new), sentryDigestLine() emits NOTHING when unconfigured or clean and one SENTRY line (count, unresolved total, top issue) on a genuine spike. Digest block mirrors every other fail-soft block.
+- Vitest: tests/lib/sentry-observe.test.ts (8 cases — defensive payload parsing, the firstSeen window, line doctrine incl. singular grammar). 969/969 across 74 files; tsc clean; build green.
+
+Stage Summary:
+- The error plane is wired end to end and waiting for one env flip: DSN activates capture (all server errors via instrumentation, client errors via the existing config), the trio activates observation (sourcemaps at build + release marking + the digest's spike line). Nothing dials out until then.
+- Week A doctrine proven: a founder-gated dependency does NOT have to block the machine that will use it — build the bed, gate the sensor, document the flip (the #12 posture, now applied to errors).
+
+---
+Task ID: vol6-week-a-closeout
+Agent: Z (Super Z, main session)
+Task: Vol. 6 Week A (1 → 2 → 3 → 4 → 5) — batch closeout. Permanence tier complete.
+
+Work Log:
+- Shipped: a0fd25a (#1 repo-truth gate) → b007194 (#2 the drills come home) → f23f4eb (#3 the drills run themselves) → 6ba1845 (#4 the sweep goes permanent) → <this> (#5 Sentry wired and waiting). All git-trigger deploys READY, live smoke per item.
+- THE EVAPORATION CLOSED ON ALL FRONTS: root cause solved (.gitignore scripts/* blanket + manual whitelist — five Vol.5 tools swallowed silently), the five ghosts re-materialized and live-verified (probe 1/3 chain alive at contract size · page-weight 28/28 · failover 18/18 · ping 293 URLs accepted · sweep 11/11), drills + sweep now run WEEKLY on the runner with verdicts in the drill ledger, the digest alarms on failure OR silence (>8d stale / never-reported), the war-room shows which rehearsal went stale, and the repo-truth gate (6 checks) names the next ghost the day the record drifts — including the gitignore trap that made them.
+- Gate catches logged: the OpenAPI census caught its own new route (#3); repo-truth gate 6 caught its own author forgetting a whitelist negation (#4). The gates police the operator too — that is what makes them gates.
+- Founder-gated posture after Week A: Sentry flip is now ONE env set (DSN = capture; trio = sourcemaps + release marking + digest spike line); OPENROUTER_API_KEY repo secret enables the weekly chain-probe job; CRON_SECRET repo secret enables verdict POSTs from the workflows (digest staleness covers silence without it). Letters sign-off → one command via #12 (Week C); EMBED swap lands on the #7 bed (Week B); GSC trio wakes the #9 observatory (Week B); Turso vault rotation + testimonial first-seed unchanged.
+- Final state: 969/969 vitest (74 files) · tsc clean · build green (344 pages) · drill ledger seeded with today's four live verdicts (page-weight, turso-failover, chain-probe, production-sweep — all pass, latest 2026-09-12) · health ok / db ok / limiter turso.
+
+Stage Summary:
+- VOL. 6 WEEK A CLOSED: 5 of 20. The tree is the truth (#1), the drills are born committed and verified live (#2), they run themselves (#3), production truth is on a weekly cadence (#4), and the error plane waits for its flip (#5). Next: Week B — 6 → 7 → 8 → 9 → 10 (Proof: golden set, retrieval bed, payload schemas, observatory, abuse gate).

@@ -41,6 +41,7 @@ import {
   parseStoredDrill,
   DRILL_OPS_PREFIX,
 } from "@/lib/ops/drills";
+import { readSentrySpike, sentryDigestLine } from "@/lib/ops/sentry-observe";
 import {
   withCronLedger,
   cronRunStatuses,
@@ -321,6 +322,16 @@ export async function GET(request: NextRequest) {
     // OpsState transient — silence is the healthy default
   }
 
+  // Vol. 6 #5 — Sentry error plane: one line when NEW issues appeared in
+  // the last 24h; silent while clean; ABSENT while the founder-gated env
+  // trio is unflipped (an absent sensor is not an incident). Fail-soft.
+  let sentryLine = "";
+  try {
+    sentryLine = sentryDigestLine(await readSentrySpike());
+  } catch (err) {
+    console.error("[daily-digest] sentry block failed", err);
+  }
+
   // Vol. 5 #4 — cron ledger: alarm when any registered cron is silent
   // > 26h (a daily cron with 26h of silence is dead). Fail-soft.
   let cronLine = "";
@@ -409,6 +420,7 @@ export async function GET(request: NextRequest) {
     ...(chainLine ? [chainLine] : []),
     ...(credLine ? [credLine] : []),
     ...(drillsLine ? [drillsLine] : []),
+    ...(sentryLine ? [sentryLine] : []),
     ...(cronLine ? [cronLine] : []),
     ...(aiBudgetLine ? [aiBudgetLine] : []),
     "",
