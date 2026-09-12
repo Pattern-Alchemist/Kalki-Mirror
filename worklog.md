@@ -1310,3 +1310,19 @@ Work Log:
 Stage Summary:
 - Vol. 6 enlisted with its first tier written by the evaporation incident: the tools that guard truth must themselves live in the tree, or the record lies.
 - Nothing in this cycle touched runtime code (roadmap + worklog only) — the deploy is a content refresh; all Vol. 5 surfaces remain live and verified.
+
+---
+Task ID: vol6-week-a-item2
+Agent: Z (Super Z, main session)
+Task: Vol. 6 Week A #2 — the drills come home. Re-materialize the four evaporated scripts as committed files, each verified live once.
+
+Work Log:
+- scripts/ping-indexnow.sh: ownership-proof-first (GET /<key>.txt must 200 before submitting — key drift fails loud, never silently no-ops), sitemap fetch → 293 URLs → one batch to api.indexnow.org. LIVE: HTTP 200 accepted, exit 0. The package.json live-wire `npm run ping:indexnow` works again.
+- scripts/probe-chain.py: the contract-size methodology as a permanent tool — reads the REAL ASK_SYSTEM_PROMPT from src/lib/ai/ask.ts (single source of truth), loads 6 real OPEN chunks (longest per distinct slug) from db/custom.db, mirrors buildAskMessages byte-for-byte, fires every model at 12s budget with parseAskOutput + validateAskChainOutput strictness in python (fences stripped, first-{..last-}, citations ⊆ pool; honest grounded=false silence = working model). --all-free sweeps the whole OpenRouter :free list. LIVE (default chain): liquid/lfm-2.5-2.6b PASS 6.0s honest_silence; openrouter/free breach (prose, no JSON — the walk gate's job); gemma 429 0.4s (fast-fail tail as designed). Chain alive 1/3 — matches the war-room's live verdict. Exit 0.
+- scripts/smoke-page-weight.sh: the #18 budget back as a drill — 22 hubs + 6 sitemap-resolved details, UNCOMPRESSED payload (Accept-Encoding: identity; gzip would hide the budget), hub <250KB / detail <120KB. LIVE: 28/28 ALL PASS — glossary 181KB, aghori 210KB, archive 202KB, details ≤116KB — the diet holds.
+- scripts/rehearse-turso-failover.sh: per docs/ops/failover-rehearsal.md — production binary (next start) with TURSO_DATABASE_URL=libsql://127.0.0.1:9/…, boot-wait proves the lazy-client invariant, 18 assertions (12 static 200 on baked sqlite · health 503 + status critical + database.status error · /redeem + /profile honest 200 · keys/admin 401 · 15s ceiling per probe). LIVE: 18/18 PASS.
+- Repo-truth gate amnesty shrunk by 4 entries (self-purge rule) — remaining ghosts: production-sweep.py (#4), launch-letters.sh (#12).
+
+Stage Summary:
+- Four drills committed and live-verified in one item. The methodology survives sandbox resets now: probe, budgets, outage posture and the IndexNow ping are all in the tree, and the gate names any future ghost the day the record drifts.
+- ROOT CAUSE OF THE EVAPORATION, SOLVED: .gitignore line 67 is a blanket `scripts/*` with a manual `!` whitelist (the file even carries a Vol.4 #2 comment about it swallowing restore-drill.sh and run-e2e.sh the same way). New scripts written sandbox-side are skipped by `git add .` WITHOUT ERROR, so the worklog claimed permanence while the tree never got the files; the sandbox reset did the rest. Five Vol.5 tools died through that one line. Fix shipped with this item: four whitelist negations (+ production-sweep.py lands with #4), and repo-truth gate 6 — any cited path that exists but is gitignored fails the suite in the sandbox where the ghost is born. The Vol.4 comment knew the trap; now the gate enforces the lesson.

@@ -41,14 +41,9 @@ const AMNESTY: Record<string, string> = {
   // ── Evaporation ghosts — Week A re-materializes these (roadmap #2, #4).
   //    Each entry is removed by the item that creates the file; until then
   //    the ghost stays VISIBLE here, by name.
-  'scripts/ping-indexnow.sh':
-    'evaporation ghost — Week A #2 re-materializes (package.json live-wire)',
-  'scripts/probe-chain.py':
-    'evaporation ghost — Week A #2 re-materializes',
-  'scripts/smoke-page-weight.sh':
-    'evaporation ghost — Week A #2 re-materializes (runbook-cited)',
-  'scripts/rehearse-turso-failover.sh':
-    'evaporation ghost — Week A #2 re-materializes (runbook-cited)',
+  //    [Week A #2 landed: ping-indexnow.sh, probe-chain.py,
+  //     smoke-page-weight.sh, rehearse-turso-failover.sh — entries removed
+  //     per the self-purge rule; production-sweep.py still pending #4.]
   'scripts/production-sweep.py':
     'evaporation ghost — Week A #4 re-materializes',
 
@@ -174,5 +169,26 @@ describe('repo-truth gate (Vol.6 #1) — the tree is the truth', () => {
         expect(AMNESTY[ghost], `${ghost} is missing and UNNAMED — amnesty must carry it or the file must land`).toBeTruthy();
       }
     }
+  });
+
+  it('gate 6 — no cited path may be gitignored (the evaporation trap)', () => {
+    // The founding incident's true mechanism: `scripts/*` + whitelist means
+    // `git add .` silently skips new scripts, the record claims them, the
+    // sandbox reset takes them. A cited path that exists but is ignored is
+    // a ghost-in-waiting — fail HERE, in the sandbox where it is born.
+    const { spawnSync } = require('node:child_process') as typeof import('node:child_process');
+    const git = spawnSync('git', ['--version'], { encoding: 'utf8' });
+    if (git.status !== 0) return; // no git — CI clones always have it
+    const all = auditRepoTruth(['worklog.md', ...docs], isFile).cited;
+    const existing = all.filter(isFile);
+    if (existing.length === 0) return;
+    const res = spawnSync('git', ['check-ignore', '--', ...existing], {
+      cwd: ROOT, encoding: 'utf8',
+    });
+    const ignored = (res.stdout ?? '').split('\n').map((s) => s.trim()).filter(Boolean);
+    expect(
+      ignored,
+      `cited paths the tree REFUSES to track (add a !scripts/... negation to .gitignore):\n  ${ignored.join('\n  ')}`,
+    ).toEqual([]);
   });
 });

@@ -118,6 +118,16 @@ env.local
 !scripts/seed-launch-letters.mjs
 # Vol. 5 #7 — the one-command corpus bake ships with the repo (orchestrator + ingest CLI)
 !scripts/bake-corpus.sh
+# Vol. 6 #2 — THE EVAPORATION ITEM. scripts/* + whitelist silently swallowed
+# five Vol.5 tools (probe-chain.py, smoke-page-weight.sh, rehearse-turso-failover.sh,
+# production-sweep.py, ping-indexnow.sh): written sandbox-local, `git add .`
+# skipped them without error, the worklog claimed permanence, the reset took
+# them. Whitelist the drills the moment they are born (the repo-truth gate
+# now also fails any cited-but-gitignored path):
+!scripts/ping-indexnow.sh
+!scripts/probe-chain.py
+!scripts/smoke-page-weight.sh
+!scripts/rehearse-turso-failover.sh
 !scripts/ingest-folios.ts
 !scripts/ingest-folio-json.ts
 # Vol. 5 #8 — the hi bridge batch-2 insertions (atomic, re-runnable, skip-if-present)
