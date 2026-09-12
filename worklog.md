@@ -1293,3 +1293,20 @@ Work Log:
 Stage Summary:
 - The last time-critical founder-gated item is CLOSED. Admin at /admin now requires TOTP; the founder needs the otpauth URI in their authenticator app (or any of the 8 backup codes as fallback) before their next console login.
 - Remaining founder-gated (all need founder-side material or consent, none blocking): EMBED_API_KEY neural swap (needs the founder's chosen key), GSC OAuth (needs Google consent), Turso vault token rotation (needs Turso platform access), letters launch (needs content sign-off), testimonial first-seed (needs the quotes).
+
+---
+Task ID: vol6-enlistment
+Agent: Z (Super Z, main session)
+Task: Founder: "go for Vol. 6 enlistment" — survey the post-Vol.5 tree, ground 20 items in live evidence, write docs/roadmap-vol6-next-20.md.
+
+Work Log:
+- STATE ARCHAEOLOGY II: the inherited working summary claimed Vol.5 Week B unstarted — the repo proved (again) Vol. 5 closed 20/20 (5011d5f) with two ops days after it (chain rebuilt c2d460b, walk gate 9423ba6, audit trigger 47c7dba) and TOTP enrolled 26956b4. The worklog is the truth; summaries are rumors.
+- THE EVAPORATION (the volume's founding incident): five tools the record calls permanent have ZERO git history — scripts/probe-chain.py ("saved as a permanent script", ops-day2), scripts/smoke-page-weight.sh and scripts/rehearse-turso-failover.sh (vol5 finale, 18/18 PASS claimed), production-sweep.py (the 54/54 sweeper), scripts/ping-indexnow.sh (wired into package.json — `npm run ping:indexnow` broken today). They lived sandbox-local and died with the sandbox reset. Vol. 6 Tier 21 makes the tree the truth.
+- Survey findings that became items: /api/keys/redeem + /api/events carry no limiter (redeem = credential oracle, events = open write relay); the OpenAPI census pins prose but declares no payload schemas; search-observatory-phase-b.md still DESIGNED NOT BUILT; the EMBED swap is rehearsed but retrieval reads no vectors; 5 launch letters sit in review drafts with /letters/[slug] missing OG cards; keys are minted one-by-one, 0 redeemed, no campaign attribution; hi is served same-URL via the lexicon-bridge picker → invisible to search engines (no /hi/ URLs, no hreflang); lighthouse a11y gate covers only 6 URLs; census usa floor 6 documented "→ 10 today"; consultations 0 with no stale-pending nudge; the subscriber list gets only the Doors course and transactional mail.
+- docs/roadmap-vol6-next-20.md: "Vol. 6 — Permanence, Proof & the First Hundred Seekers", 20 items in Tiers 21–24: T21 permanence (repo-truth gate, the drills come home, the drills run themselves, the sweep goes permanent, Sentry wired-and-waiting), T22 proof (/ask golden-set eval harness, hybrid retrieval bed, OpenAPI payload truth III, observatory engine credential-gated, the abuse gate), T23 the first hundred seekers (campaign key batches, letters one-command drill, the seeker weekly digest, consultation outcome loop, USA local-pack layer), T24 reach & never-regress III (hi completion batch, hi URLs decision, a11y floors II, census II floor hygiene, restore drill III + the December cadence). Every item cites what exists + what dead-ends + a first move; Week A = 1→2→3→4→5.
+- Gauntlet: tsc clean · 941/941 vitest (71 files — my rg-based "951/74" count overcounted comments and shell fixtures; the suite gate remains 941/71) · build green. Docs-only change; no runtime code touched.
+- Founder-gated carry-overs updated by this volume: letters sign-off → becomes one command via #12; EMBED swap → lands on the #7 bed; GSC service account → wakes #9 same-day; Sentry DSN → one env var via #5; Turso vault rotation + testimonial first-seed unchanged.
+
+Stage Summary:
+- Vol. 6 enlisted with its first tier written by the evaporation incident: the tools that guard truth must themselves live in the tree, or the record lies.
+- Nothing in this cycle touched runtime code (roadmap + worklog only) — the deploy is a content refresh; all Vol. 5 surfaces remain live and verified.
