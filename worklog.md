@@ -1326,3 +1326,20 @@ Work Log:
 Stage Summary:
 - Four drills committed and live-verified in one item. The methodology survives sandbox resets now: probe, budgets, outage posture and the IndexNow ping are all in the tree, and the gate names any future ghost the day the record drifts.
 - ROOT CAUSE OF THE EVAPORATION, SOLVED: .gitignore line 67 is a blanket `scripts/*` with a manual `!` whitelist (the file even carries a Vol.4 #2 comment about it swallowing restore-drill.sh and run-e2e.sh the same way). New scripts written sandbox-side are skipped by `git add .` WITHOUT ERROR, so the worklog claimed permanence while the tree never got the files; the sandbox reset did the rest. Five Vol.5 tools died through that one line. Fix shipped with this item: four whitelist negations (+ production-sweep.py lands with #4), and repo-truth gate 6 — any cited path that exists but is gitignored fails the suite in the sandbox where the ghost is born. The Vol.4 comment knew the trap; now the gate enforces the lesson.
+
+---
+Task ID: vol6-week-a-item3
+Agent: Z (Super Z, main session)
+Task: Vol. 6 Week A #3 — the drills run themselves. Weekly GH workflow + verdict ingestion + digest alarm + war-room panel.
+
+Work Log:
+- .github/workflows/drills.yml: three jobs, weekly Monday 05:00 UTC + workflow_dispatch — page-weight against PRODUCTION (no secrets; the budgets are the contract), turso-failover (builds the production binary on the runner, Turso BLOCKED, 18 assertions — no secrets either: the outage IS the point), chain-probe (pure python stdlib, OPENROUTER_API_KEY-gated with the restore-drill skip-notice pattern). Each job POSTs its verdict to /api/cron/drill-status when CRON_SECRET is a repo secret; without it the verdict stays summary-only and the digest's staleness alarm still covers silence (a drill that never reports IS a failure — no secret needed to catch that).
+- src/lib/ops/drills.ts: the verdict ledger — OpsState rows drill:<name>, strict parseStoredDrill shape check, isDrillStale (8-day window; no verdict = stale), drillsDigestLine (quiet on green+fresh, one ALERT line naming failed/stale/never-reported), storeDrillVerdict upsert, readDrillPanel for the war-room.
+- src/app/api/cron/drill-status/route.ts: POST-only ingestion (CRON_SECRET bearer/?key=, the shared authorize pattern), 400 on unknown name/verdict, GET 405 by design (write-only; readers go through OpsState).
+- Daily digest gains the DRILLS block (fail-soft, mirrors chain/cred blocks): "DRILLS: all green" on fresh passes, "DRILLS ALERT: <name>: FAILED|stale|never reported" otherwise.
+- War-room gains the "Drills — which rehearsal went stale" panel (route aggregates readDrillPanel; page renders verdict/age/source with rose dots on fail-or-stale).
+- THE CENSUS FIRED ON ITS OWN NEW ROUTE: openapi-truth failed with "routes missing from openapi.yaml: /api/cron/drill-status" — the Vol.3 gate working as designed; spec entry added (POST + 405 GET marker).
+- Vitest: tests/lib/drills.test.ts (14 cases — parse strictness, staleness boundary at exactly 8d, digest line for every verdict class). 961/961 across 73 files; tsc clean; build green (344 pages).
+
+Stage Summary:
+- The drills are a ritual no more: page-weight, failover and chain-probe now run weekly on the runner, verdicts land in OpsState, the digest pages on failure OR silence, and the war-room shows which rehearsal went stale. The evaporation class is closed on all three fronts: in the tree (#1/#2), on a schedule (#3), and named when silent (the alarm).

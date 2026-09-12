@@ -15,6 +15,7 @@ import {
   CRED_AUDIT_OPS_KEY,
   type CredAuditReport,
 } from "@/lib/ops/cred-audit";
+import { readDrillPanel, type DrillPanelRow } from "@/lib/ops/drills";
 import { cronRunStatuses, type CronRunStatus } from "@/lib/cron-ledger";
 import {
   computeBakePending,
@@ -315,6 +316,14 @@ export async function GET(request: NextRequest) {
       credAudit = null;
     }
 
+    // ── Drill ledger (Vol. 6 #3) — last verdict per self-running drill.
+    let drills: DrillPanelRow[] = [];
+    try {
+      drills = await readDrillPanel(now);
+    } catch {
+      drills = [];
+    }
+
     // ── Cron outcome ledger (Vol. 5 #4) — last run per registered cron.
     let cronRuns: CronRunStatus[] = [];
     try {
@@ -371,6 +380,7 @@ export async function GET(request: NextRequest) {
       aiRoutes,
       aiChain,
       credAudit,
+      drills,
       cronRuns,
       bakePending,
       indexing,

@@ -86,6 +86,15 @@ interface WarRoomData {
     }[];
     summary: { total: number; ok: number; fail: number };
   } | null;
+  drills: {
+    name: string;
+    verdict: "pass" | "fail";
+    at: string;
+    source: string;
+    details?: string;
+    stale: boolean;
+    ageHours: number;
+  }[];
   cronRuns: {
     name: string;
     schedule: string;
@@ -871,6 +880,52 @@ export default function WarRoomPage() {
             ) : (
               <p className="py-2 text-xs text-zinc-600">
                 Never audited — the cred-audit cron (02:10 UTC) stores its first verdict here.
+              </p>
+            )}
+          </Card>
+
+          {/* Drill ledger — the self-running rehearsals (Vol. 6 #3) */}
+          <Card
+            title="Drills — which rehearsal went stale"
+            icon={<Radio className="h-4 w-4 text-amber-500" />}
+          >
+            {data?.drills && data.drills.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
+                      <th className="pb-2 font-medium">Drill</th>
+                      <th className="pb-2 text-right font-medium">Verdict</th>
+                      <th className="pb-2 text-right font-medium">Age</th>
+                      <th className="pb-2 font-medium">Source</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-800/50">
+                    {data.drills.map((d) => (
+                      <tr key={d.name}>
+                        <td className="py-2 font-medium text-zinc-200">
+                          <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ backgroundColor: d.verdict === "fail" || d.stale ? "#f43f5e" : "#10b981" }} />
+                          {d.name}
+                        </td>
+                        <td className="py-2 text-right text-zinc-300">
+                          {d.verdict}{d.stale ? " · STALE >8d" : ""}
+                        </td>
+                        <td className="py-2 text-right text-zinc-400">{d.ageHours}h</td>
+                        <td className="py-2 text-zinc-500">{d.source}{d.details ? ` · ${d.details}` : ""}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="mt-2 text-[0.65rem] leading-relaxed text-zinc-600">
+                  The evaporation lesson as a panel: a drill that never reports reads as FAILED
+                  after 8 days (the digest carries the same alarm). The weekly drills workflow
+                  reports here; missing drills mean the workflow itself went silent.
+                </p>
+              </div>
+            ) : (
+              <p className="py-2 text-xs text-zinc-600">
+                No drill verdicts yet — the weekly drills workflow (or a local run reported to
+                /api/cron/drill-status) stores the first row here.
               </p>
             )}
           </Card>

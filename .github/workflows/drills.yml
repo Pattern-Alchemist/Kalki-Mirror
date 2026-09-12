@@ -1,0 +1,114 @@
+# ============================================================
+# KALKI — the drills run themselves (Vol. 6 #3)
+# ------------------------------------------------------------
+# Weekly scheduled execution of the three committed drills:
+#
+#   page-weight     — hub <250KB / detail <120KB against PRODUCTION
+#                     (no secrets needed; the budgets are the contract)
+#   turso-failover  — boots the production binary with Turso BLOCKED
+#                     and asserts the 18-assertion outage posture
+#                     (no secrets needed: the outage is the point)
+#   chain-probe     — the real /ask contract at real size against the
+#                     default chain (needs OPENROUTER_API_KEY repo
+#                     secret; skips with a clear notice until set)
+#
+# Verdicts POST to /api/cron/drill-status when CRON_SECRET is a repo
+# secret (war-room panel + digest alarm); without it, verdicts stay in
+# the run summary and the digest's >8d staleness alarm still covers a
+# silent drill — a drill that never reports IS a failure.
+#
+# GitHub also emails on scheduled-workflow failure by default, so a
+# red drill pages the founder twice (email + digest line).
+# ============================================================
+name: drills
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * 1" # weekly, Monday 05:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  page-weight:
+    name: page-weight drill (production)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run page-weight drill
+        id: drill
+        env:
+          SITE_URL: https://www.astrokalki.com
+        run: bash scripts/smoke-page-weight.sh
+      - name: Report verdict
+        if: always() && steps.drill.outcome != 'skipped'
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          OUTCOME: ${{ steps.drill.outcome }}
+        run: |
+          [ -n "$CRON_SECRET" ] || { echo "::notice::CRON_SECRET repo secret not set — verdict stays summary-only (digest staleness still covers silence)"; exit 0; }
+          V=fail; [ "$OUTCOME" = "success" ] && V=pass
+          curl -fsS -m 20 -X POST "https://www.astrokalki.com/api/cron/drill-status" \
+            -H "Authorization: Bearer $CRON_SECRET" -H "Content-Type: application/json" \
+            -d "{\"name\":\"page-weight\",\"verdict\":\"$V\",\"source\":\"gh\"}" \
+            || echo "::warning::verdict POST failed (non-fatal)"
+
+  turso-failover:
+    name: turso-failover drill (production binary)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build production binary
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://www.astrokalki.com
+      - name: Run failover drill
+        id: drill
+        run: bash scripts/rehearse-turso-failover.sh
+      - name: Report verdict
+        if: always() && steps.drill.outcome != 'skipped'
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          OUTCOME: ${{ steps.drill.outcome }}
+        run: |
+          [ -n "$CRON_SECRET" ] || { echo "::notice::CRON_SECRET repo secret not set — verdict stays summary-only (digest staleness still covers silence)"; exit 0; }
+          V=fail; [ "$OUTCOME" = "success" ] && V=pass
+          curl -fsS -m 20 -X POST "https://www.astrokalki.com/api/cron/drill-status" \
+            -H "Authorization: Bearer $CRON_SECRET" -H "Content-Type: application/json" \
+            -d "{\"name\":\"turso-failover\",\"verdict\":\"$V\",\"source\":\"gh\"}" \
+            || echo "::warning::verdict POST failed (non-fatal)"
+
+  chain-probe:
+    name: chain probe (contract size)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run contract-size chain probe
+        id: drill
+        if: ${{ secrets.OPENROUTER_API_KEY != '' }}
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: python3 scripts/probe-chain.py
+      - name: Secret not configured
+        if: ${{ secrets.OPENROUTER_API_KEY == '' }}
+        run: |
+          echo "::notice::OPENROUTER_API_KEY repo secret not set — chain probe skipped. Add it under Settings → Secrets to enable; the production chain-health cron (02:15 UTC) covers the daily verdict meanwhile."
+      - name: Report verdict
+        if: always() && steps.drill.outcome != 'skipped' && steps.drill.outcome != ''
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          OUTCOME: ${{ steps.drill.outcome }}
+        run: |
+          [ -n "$CRON_SECRET" ] || { echo "::notice::CRON_SECRET repo secret not set — verdict stays summary-only (digest staleness still covers silence)"; exit 0; }
+          V=fail; [ "$OUTCOME" = "success" ] && V=pass
+          curl -fsS -m 20 -X POST "https://www.astrokalki.com/api/cron/drill-status" \
+            -H "Authorization: Bearer $CRON_SECRET" -H "Content-Type: application/json" \
+            -d "{\"name\":\"chain-probe\",\"verdict\":\"$V\",\"source\":\"gh\"}" \
+            || echo "::warning::verdict POST failed (non-fatal)"

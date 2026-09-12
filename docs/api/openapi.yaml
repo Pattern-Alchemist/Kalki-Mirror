@@ -1265,6 +1265,24 @@ paths:
         '200':
           description: OK (shape documented in the route module)
 
+  /api/cron/drill-status:
+    post:
+      operationId: apiCronDrillStatusPost
+      tags: [Cron]
+      summary: Ingest one drill verdict {name, verdict pass|fail, source, details?} from the weekly drills workflow or a local operator; upserts the drill:<name> OpsState row behind the war-room drills panel and the digest's 8-day staleness alarm (Vol. 6 #3). Write-only by design. CRON_SECRET gated.
+      responses:
+        '200':
+          description: OK ({ok, name, verdict, at}); 400 on unknown drill name or verdict
+        '401':
+          description: Unauthorized
+    get:
+      operationId: apiCronDrillStatusGet
+      tags: [Cron]
+      summary: Method-not-allowed marker — ingestion is write-only; the war-room and digest read OpsState directly. Returns 405.
+      responses:
+        '405':
+          description: POST only
+
   /api/cron/testimonial-followup:
     get:
       operationId: apiCronTestimonialFollowupGet

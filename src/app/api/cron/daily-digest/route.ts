@@ -37,6 +37,11 @@ import {
   CRED_AUDIT_OPS_KEY,
 } from "@/lib/ops/cred-audit";
 import {
+  drillsDigestLine,
+  parseStoredDrill,
+  DRILL_OPS_PREFIX,
+} from "@/lib/ops/drills";
+import {
   withCronLedger,
   cronRunStatuses,
   cronLedgerDigestLine,
@@ -300,6 +305,22 @@ export async function GET(request: NextRequest) {
     // OpsState transient — silence is the healthy default
   }
 
+  // Vol. 6 #3 — drill ledger: alarm when any drill FAILED or went stale
+  // > 8d (a drill that never reports is a guard that died quietly).
+  // Fail-soft like every block.
+  let drillsLine = "";
+  try {
+    const drillRows = await db.opsState.findMany({
+      where: { key: { startsWith: DRILL_OPS_PREFIX } },
+    });
+    const drillStates = Object.fromEntries(
+      drillRows.map((r) => [r.key.slice(DRILL_OPS_PREFIX.length), parseStoredDrill(r.value)]),
+    );
+    drillsLine = drillsDigestLine(drillStates, new Date());
+  } catch {
+    // OpsState transient — silence is the healthy default
+  }
+
   // Vol. 5 #4 — cron ledger: alarm when any registered cron is silent
   // > 26h (a daily cron with 26h of silence is dead). Fail-soft.
   let cronLine = "";
@@ -387,6 +408,7 @@ export async function GET(request: NextRequest) {
     cleanupLine,
     ...(chainLine ? [chainLine] : []),
     ...(credLine ? [credLine] : []),
+    ...(drillsLine ? [drillsLine] : []),
     ...(cronLine ? [cronLine] : []),
     ...(aiBudgetLine ? [aiBudgetLine] : []),
     "",
