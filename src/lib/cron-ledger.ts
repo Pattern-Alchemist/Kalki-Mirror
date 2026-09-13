@@ -62,7 +62,8 @@ export type CronName =
   | "course-send"
   | "testimonial-followup"
   | "prewarm-ask"
-  | "gsc-indexing";
+  | "gsc-indexing"
+  | "completion-nudge";
 
 export const CRON_LEDGER_MAX_AGE_H = 26;
 
@@ -77,6 +78,7 @@ export const REGISTERED_CRONS: Record<CronName, { schedule: string; description:
   "testimonial-followup": { schedule: "25 2 * * *", description: "t+14d testimonial ask after COMPLETED consultations (Vol. 5 #14)" },
   "prewarm-ask": { schedule: "20 2 * * *", description: "Pre-warm the ask-cache for the top-10 corpus queries (Vol. 5 #5)" },
   "gsc-indexing": { schedule: "40 2 * * *", description: "GSC indexing queue: sitemap diff + submit when OAuth lands (Vol. 5 #12)" },
+  "completion-nudge": { schedule: "0 15 * * *", description: "Stale-consultation 48h nudge (Vol. 6 #14)" },
 };
 
 export interface CronRunRow {

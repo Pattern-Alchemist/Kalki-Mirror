@@ -60,6 +60,7 @@ import {
   observatoryDigestLine,
   OBSERVATORY_OPS_KEY,
 } from "@/lib/observatory/gsc";
+import { countStaleConsultations } from "@/lib/ops/completion-nudge";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -274,6 +275,19 @@ export async function GET(request: NextRequest) {
     console.error("[daily-digest] draft block failed", err);
   }
 
+  // Vol. 6 #14 — stale consultations: NEW > 48h without closure. The
+  // completion-nudge cron fires at 21:00 IST; this block reports the
+  // backlog so the founder sees stuck leads in the morning inbox.
+  let staleConsultationsLine = "";
+  try {
+    const staleCount = await countStaleConsultations();
+    if (staleCount > 0) {
+      staleConsultationsLine = `STALE CONSULTATIONS: ${staleCount} lead${staleCount === 1 ? "" : "s"} > 48h without closure — completion-nudge cron running`;
+    }
+  } catch {
+    // count failure — keep the line silent (the cron still fires)
+  }
+
   const nowIst = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
   const subject = `KALKI daily digest — ${leads24h.length > 0 ? `${leads24h.length}+ new lead${leads24h.length === 1 ? "" : "s"}` : "quiet night"} · ${claimed} claim${claimed === 1 ? "" : "s"} pending`;
 
@@ -458,6 +472,7 @@ export async function GET(request: NextRequest) {
     ...(aiBudgetLine ? [aiBudgetLine] : []),
     ...(goldenAskLine ? [goldenAskLine] : []),
     ...(observatoryLine ? [observatoryLine] : []),
+    ...(staleConsultationsLine ? [staleConsultationsLine] : []),
     "",
     `— CONSOLE —`,
     `${unreadBell} unread bell notification${unreadBell === 1 ? "" : "s"}`,

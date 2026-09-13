@@ -1261,7 +1261,6 @@ paths:
           description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
 
   /api/cron/chain-health:
-  /api/cron/chain-health:
     get:
       operationId: apiCronChainHealthGet
       tags: [Cron]
@@ -1352,33 +1351,6 @@ paths:
           description: Configured but pull failed
 
   /api/cron/testimonial-followup:
-  /api/cron/ask-eval:
-    get:
-      operationId: apiCronAskEvalGet
-      tags: [Cron]
-      summary: Nightly /ask golden-set eval (Vol. 6 #6). ?case=<id> probes one case; ?finalize=1 computes rollup; ?bed=1 runs retrieval bed (Vol. 6 #7). CRON_SECRET gated.
-      responses:
-        '200':
-          description: OK — case verdict OR rollup OR list
-        '400':
-          description: Unknown case id or finalize incomplete
-        '401':
-          description: Unauthorized
-
-  /api/cron/observatory:
-    get:
-      operationId: apiCronObservatoryGet
-      tags: [Cron]
-      summary: GSC observatory weekly pull (Vol. 6 #9). Lands asleep when GSC trio unset. CRON_SECRET gated.
-      responses:
-        '200':
-          description: OK ({status, snapshot, wowDelta, alarm}) OR skipped when unconfigured
-        '401':
-          description: Unauthorized
-        '502':
-          description: Configured but pull failed
-
-  /api/cron/testimonial-followup:
     get:
       operationId: apiCronTestimonialFollowupGet
       tags: [Cron]
@@ -1389,7 +1361,18 @@ paths:
         '401':
           description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
 
-  /api/cron/prewarm-ask:
+
+  /api/cron/completion-nudge:
+    get:
+      operationId: apiCronCompletionNudgeGet
+      tags: [Cron]
+      summary: Stale-consultation nudge (Vol. 6 #14) — sends one gentle email per consultation that is NEW > 48h without closure (completedAt null + outcome not terminal). Idempotent via the CompletionNudge ledger (unique on consultationId). ?dryRun=1 lists candidates. CRON_SECRET gated. Daily 21:00 IST.
+      responses:
+        '200':
+          description: OK ({ok, dueCount, sent, failed, results?, sentAt}) OR dry-run ({ok, dryRun, staleCount, candidates})
+        '401':
+          description: Unauthorized — CRON_SECRET missing or mismatched
+
   /api/cron/prewarm-ask:
     get:
       operationId: apiCronPrewarmAskGet
@@ -1402,7 +1385,6 @@ paths:
           description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
 
   /api/cron/gsc-indexing:
-  /api/cron/gsc-indexing:
     get:
       operationId: apiCronGscIndexingGet
       tags: [Cron]
@@ -1413,7 +1395,6 @@ paths:
         '401':
           description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
 
-  /api/cron/cleanup:
   /api/cron/cleanup:
     get:
       operationId: apiCronCleanupGet
@@ -1426,7 +1407,6 @@ paths:
           description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
 
   /api/cron/course-send:
-  /api/cron/course-send:
     get:
       operationId: apiCronCourseSendGet
       tags: [Cron]
@@ -1438,7 +1418,6 @@ paths:
           description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
 
   /api/cron/daily-digest:
-  /api/cron/daily-digest:
     get:
       operationId: apiCronDailyDigestGet
       tags: [Cron]
@@ -1449,7 +1428,6 @@ paths:
         '401':
           description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
 
-  /api/glossary-index:
   /api/glossary-index:
     get:
       operationId: apiGlossaryIndexGet
