@@ -45,6 +45,7 @@ export type InviteCodeMinAggregateOutputType = {
   usesUsed: number | null
   expiresAt: Date | null
   active: boolean | null
+  campaign: string | null
   createdAt: Date | null
 }
 
@@ -57,6 +58,7 @@ export type InviteCodeMaxAggregateOutputType = {
   usesUsed: number | null
   expiresAt: Date | null
   active: boolean | null
+  campaign: string | null
   createdAt: Date | null
 }
 
@@ -69,6 +71,7 @@ export type InviteCodeCountAggregateOutputType = {
   usesUsed: number
   expiresAt: number
   active: number
+  campaign: number
   createdAt: number
   _all: number
 }
@@ -93,6 +96,7 @@ export type InviteCodeMinAggregateInputType = {
   usesUsed?: true
   expiresAt?: true
   active?: true
+  campaign?: true
   createdAt?: true
 }
 
@@ -105,6 +109,7 @@ export type InviteCodeMaxAggregateInputType = {
   usesUsed?: true
   expiresAt?: true
   active?: true
+  campaign?: true
   createdAt?: true
 }
 
@@ -117,6 +122,7 @@ export type InviteCodeCountAggregateInputType = {
   usesUsed?: true
   expiresAt?: true
   active?: true
+  campaign?: true
   createdAt?: true
   _all?: true
 }
@@ -216,6 +222,7 @@ export type InviteCodeGroupByOutputType = {
   usesUsed: number
   expiresAt: Date | null
   active: boolean
+  campaign: string | null
   createdAt: Date
   _count: InviteCodeCountAggregateOutputType | null
   _avg: InviteCodeAvgAggregateOutputType | null
@@ -251,6 +258,7 @@ export type InviteCodeWhereInput = {
   usesUsed?: Prisma.IntFilter<"InviteCode"> | number
   expiresAt?: Prisma.DateTimeNullableFilter<"InviteCode"> | Date | string | null
   active?: Prisma.BoolFilter<"InviteCode"> | boolean
+  campaign?: Prisma.StringNullableFilter<"InviteCode"> | string | null
   createdAt?: Prisma.DateTimeFilter<"InviteCode"> | Date | string
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   usages?: Prisma.InviteUsageListRelationFilter
@@ -265,6 +273,7 @@ export type InviteCodeOrderByWithRelationInput = {
   usesUsed?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   active?: Prisma.SortOrder
+  campaign?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   creator?: Prisma.UserOrderByWithRelationInput
   usages?: Prisma.InviteUsageOrderByRelationAggregateInput
@@ -282,6 +291,7 @@ export type InviteCodeWhereUniqueInput = Prisma.AtLeast<{
   usesUsed?: Prisma.IntFilter<"InviteCode"> | number
   expiresAt?: Prisma.DateTimeNullableFilter<"InviteCode"> | Date | string | null
   active?: Prisma.BoolFilter<"InviteCode"> | boolean
+  campaign?: Prisma.StringNullableFilter<"InviteCode"> | string | null
   createdAt?: Prisma.DateTimeFilter<"InviteCode"> | Date | string
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   usages?: Prisma.InviteUsageListRelationFilter
@@ -296,6 +306,7 @@ export type InviteCodeOrderByWithAggregationInput = {
   usesUsed?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   active?: Prisma.SortOrder
+  campaign?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.InviteCodeCountOrderByAggregateInput
   _avg?: Prisma.InviteCodeAvgOrderByAggregateInput
@@ -316,6 +327,7 @@ export type InviteCodeScalarWhereWithAggregatesInput = {
   usesUsed?: Prisma.IntWithAggregatesFilter<"InviteCode"> | number
   expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"InviteCode"> | Date | string | null
   active?: Prisma.BoolWithAggregatesFilter<"InviteCode"> | boolean
+  campaign?: Prisma.StringNullableWithAggregatesFilter<"InviteCode"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"InviteCode"> | Date | string
 }
 
@@ -327,6 +339,7 @@ export type InviteCodeCreateInput = {
   usesUsed?: number
   expiresAt?: Date | string | null
   active?: boolean
+  campaign?: string | null
   createdAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutKeysGeneratedInput
   usages?: Prisma.InviteUsageCreateNestedManyWithoutCodeInput
@@ -341,6 +354,7 @@ export type InviteCodeUncheckedCreateInput = {
   usesUsed?: number
   expiresAt?: Date | string | null
   active?: boolean
+  campaign?: string | null
   createdAt?: Date | string
   usages?: Prisma.InviteUsageUncheckedCreateNestedManyWithoutCodeInput
 }
@@ -353,6 +367,7 @@ export type InviteCodeUpdateInput = {
   usesUsed?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  campaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutKeysGeneratedNestedInput
   usages?: Prisma.InviteUsageUpdateManyWithoutCodeNestedInput
@@ -367,6 +382,7 @@ export type InviteCodeUncheckedUpdateInput = {
   usesUsed?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  campaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usages?: Prisma.InviteUsageUncheckedUpdateManyWithoutCodeNestedInput
 }
@@ -380,6 +396,7 @@ export type InviteCodeCreateManyInput = {
   usesUsed?: number
   expiresAt?: Date | string | null
   active?: boolean
+  campaign?: string | null
   createdAt?: Date | string
 }
 
@@ -391,6 +408,7 @@ export type InviteCodeUpdateManyMutationInput = {
   usesUsed?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  campaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -403,6 +421,7 @@ export type InviteCodeUncheckedUpdateManyInput = {
   usesUsed?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  campaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -425,6 +444,7 @@ export type InviteCodeCountOrderByAggregateInput = {
   usesUsed?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  campaign?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -442,6 +462,7 @@ export type InviteCodeMaxOrderByAggregateInput = {
   usesUsed?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  campaign?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -454,6 +475,7 @@ export type InviteCodeMinOrderByAggregateInput = {
   usesUsed?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  campaign?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -531,6 +553,7 @@ export type InviteCodeCreateWithoutCreatorInput = {
   usesUsed?: number
   expiresAt?: Date | string | null
   active?: boolean
+  campaign?: string | null
   createdAt?: Date | string
   usages?: Prisma.InviteUsageCreateNestedManyWithoutCodeInput
 }
@@ -543,6 +566,7 @@ export type InviteCodeUncheckedCreateWithoutCreatorInput = {
   usesUsed?: number
   expiresAt?: Date | string | null
   active?: boolean
+  campaign?: string | null
   createdAt?: Date | string
   usages?: Prisma.InviteUsageUncheckedCreateNestedManyWithoutCodeInput
 }
@@ -584,6 +608,7 @@ export type InviteCodeScalarWhereInput = {
   usesUsed?: Prisma.IntFilter<"InviteCode"> | number
   expiresAt?: Prisma.DateTimeNullableFilter<"InviteCode"> | Date | string | null
   active?: Prisma.BoolFilter<"InviteCode"> | boolean
+  campaign?: Prisma.StringNullableFilter<"InviteCode"> | string | null
   createdAt?: Prisma.DateTimeFilter<"InviteCode"> | Date | string
 }
 
@@ -595,6 +620,7 @@ export type InviteCodeCreateWithoutUsagesInput = {
   usesUsed?: number
   expiresAt?: Date | string | null
   active?: boolean
+  campaign?: string | null
   createdAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutKeysGeneratedInput
 }
@@ -608,6 +634,7 @@ export type InviteCodeUncheckedCreateWithoutUsagesInput = {
   usesUsed?: number
   expiresAt?: Date | string | null
   active?: boolean
+  campaign?: string | null
   createdAt?: Date | string
 }
 
@@ -635,6 +662,7 @@ export type InviteCodeUpdateWithoutUsagesInput = {
   usesUsed?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  campaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutKeysGeneratedNestedInput
 }
@@ -648,6 +676,7 @@ export type InviteCodeUncheckedUpdateWithoutUsagesInput = {
   usesUsed?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  campaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -659,6 +688,7 @@ export type InviteCodeCreateManyCreatorInput = {
   usesUsed?: number
   expiresAt?: Date | string | null
   active?: boolean
+  campaign?: string | null
   createdAt?: Date | string
 }
 
@@ -670,6 +700,7 @@ export type InviteCodeUpdateWithoutCreatorInput = {
   usesUsed?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  campaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usages?: Prisma.InviteUsageUpdateManyWithoutCodeNestedInput
 }
@@ -682,6 +713,7 @@ export type InviteCodeUncheckedUpdateWithoutCreatorInput = {
   usesUsed?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  campaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usages?: Prisma.InviteUsageUncheckedUpdateManyWithoutCodeNestedInput
 }
@@ -694,6 +726,7 @@ export type InviteCodeUncheckedUpdateManyWithoutCreatorInput = {
   usesUsed?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  campaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -737,6 +770,7 @@ export type InviteCodeSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   usesUsed?: boolean
   expiresAt?: boolean
   active?: boolean
+  campaign?: boolean
   createdAt?: boolean
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   usages?: boolean | Prisma.InviteCode$usagesArgs<ExtArgs>
@@ -752,6 +786,7 @@ export type InviteCodeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   usesUsed?: boolean
   expiresAt?: boolean
   active?: boolean
+  campaign?: boolean
   createdAt?: boolean
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["inviteCode"]>
@@ -765,6 +800,7 @@ export type InviteCodeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   usesUsed?: boolean
   expiresAt?: boolean
   active?: boolean
+  campaign?: boolean
   createdAt?: boolean
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["inviteCode"]>
@@ -778,10 +814,11 @@ export type InviteCodeSelectScalar = {
   usesUsed?: boolean
   expiresAt?: boolean
   active?: boolean
+  campaign?: boolean
   createdAt?: boolean
 }
 
-export type InviteCodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "createdBy" | "tierGranted" | "maxUses" | "usesUsed" | "expiresAt" | "active" | "createdAt", ExtArgs["result"]["inviteCode"]>
+export type InviteCodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "createdBy" | "tierGranted" | "maxUses" | "usesUsed" | "expiresAt" | "active" | "campaign" | "createdAt", ExtArgs["result"]["inviteCode"]>
 export type InviteCodeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   usages?: boolean | Prisma.InviteCode$usagesArgs<ExtArgs>
@@ -809,6 +846,7 @@ export type $InviteCodePayload<ExtArgs extends runtime.Types.Extensions.Internal
     usesUsed: number
     expiresAt: Date | null
     active: boolean
+    campaign: string | null
     createdAt: Date
   }, ExtArgs["result"]["inviteCode"]>
   composites: {}
@@ -1243,6 +1281,7 @@ export interface InviteCodeFieldRefs {
   readonly usesUsed: Prisma.FieldRef<"InviteCode", 'Int'>
   readonly expiresAt: Prisma.FieldRef<"InviteCode", 'DateTime'>
   readonly active: Prisma.FieldRef<"InviteCode", 'Boolean'>
+  readonly campaign: Prisma.FieldRef<"InviteCode", 'String'>
   readonly createdAt: Prisma.FieldRef<"InviteCode", 'DateTime'>
 }
     

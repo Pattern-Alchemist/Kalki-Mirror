@@ -162,3 +162,8 @@ export type EmbedCache = Prisma.EmbedCacheModel
  * 
  */
 export type GscSnapshot = Prisma.GscSnapshotModel
+/**
+ * Model CompletionNudge
+ * 
+ */
+export type CompletionNudge = Prisma.CompletionNudgeModel

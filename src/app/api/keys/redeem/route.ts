@@ -110,8 +110,30 @@ export async function POST(request: NextRequest) {
       entity: 'inviteCode',
       entityId: invite.code,
       actorId: userId,
-      after: { tierGranted: invite.tierGranted },
+      after: { tierGranted: invite.tierGranted, campaign: invite.campaign },
     });
+
+    // Vol. 6 #11 — stamp redeemedCode on the user's most recent consultation
+    // (if one exists). This bridges the key→consultation ledger: a campaign
+    // can now be measured by how many of its keys led to a real intake.
+    // Best-effort (soft-fail): a missing consultation is not an error.
+    if (user?.email) {
+      try {
+        const recentConsultation = await db.consultation.findFirst({
+          where: { email: user.email },
+          orderBy: { createdAt: 'desc' },
+          take: 1,
+        });
+        if (recentConsultation && !recentConsultation.redeemedCode) {
+          await db.consultation.update({
+            where: { id: recentConsultation.id },
+            data: { redeemedCode: invite.code },
+          });
+        }
+      } catch {
+        // stamp failure never blocks redemption
+      }
+    }
 
     // Ring the bell (Admin OS v2 §7.1): "golden key redeemed" is a
     // high-signal growth event — the covenant map just changed. A silent

@@ -425,7 +425,8 @@ export const ModelName = {
   TestimonialFollowUp: 'TestimonialFollowUp',
   IndexingRequest: 'IndexingRequest',
   EmbedCache: 'EmbedCache',
-  GscSnapshot: 'GscSnapshot'
+  GscSnapshot: 'GscSnapshot',
+  CompletionNudge: 'CompletionNudge'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -441,7 +442,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState" | "rateLimitHit" | "cronRun" | "testimonialFollowUp" | "indexingRequest" | "embedCache" | "gscSnapshot"
+    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState" | "rateLimitHit" | "cronRun" | "testimonialFollowUp" | "indexingRequest" | "embedCache" | "gscSnapshot" | "completionNudge"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2591,6 +2592,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CompletionNudge: {
+      payload: Prisma.$CompletionNudgePayload<ExtArgs>
+      fields: Prisma.CompletionNudgeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CompletionNudgeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompletionNudgePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CompletionNudgeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompletionNudgePayload>
+        }
+        findFirst: {
+          args: Prisma.CompletionNudgeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompletionNudgePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CompletionNudgeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompletionNudgePayload>
+        }
+        findMany: {
+          args: Prisma.CompletionNudgeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompletionNudgePayload>[]
+        }
+        create: {
+          args: Prisma.CompletionNudgeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompletionNudgePayload>
+        }
+        createMany: {
+          args: Prisma.CompletionNudgeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CompletionNudgeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompletionNudgePayload>[]
+        }
+        delete: {
+          args: Prisma.CompletionNudgeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompletionNudgePayload>
+        }
+        update: {
+          args: Prisma.CompletionNudgeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompletionNudgePayload>
+        }
+        deleteMany: {
+          args: Prisma.CompletionNudgeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CompletionNudgeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CompletionNudgeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompletionNudgePayload>[]
+        }
+        upsert: {
+          args: Prisma.CompletionNudgeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompletionNudgePayload>
+        }
+        aggregate: {
+          args: Prisma.CompletionNudgeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCompletionNudge>
+        }
+        groupBy: {
+          args: Prisma.CompletionNudgeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompletionNudgeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CompletionNudgeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompletionNudgeCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2694,6 +2769,7 @@ export const InviteCodeScalarFieldEnum = {
   usesUsed: 'usesUsed',
   expiresAt: 'expiresAt',
   active: 'active',
+  campaign: 'campaign',
   createdAt: 'createdAt'
 } as const
 
@@ -2832,7 +2908,8 @@ export const ConsultationScalarFieldEnum = {
   paymentSession: 'paymentSession',
   utrRef: 'utrRef',
   paidAt: 'paidAt',
-  patternSlugs: 'patternSlugs'
+  patternSlugs: 'patternSlugs',
+  redeemedCode: 'redeemedCode'
 } as const
 
 export type ConsultationScalarFieldEnum = (typeof ConsultationScalarFieldEnum)[keyof typeof ConsultationScalarFieldEnum]
@@ -3073,6 +3150,17 @@ export const GscSnapshotScalarFieldEnum = {
 } as const
 
 export type GscSnapshotScalarFieldEnum = (typeof GscSnapshotScalarFieldEnum)[keyof typeof GscSnapshotScalarFieldEnum]
+
+
+export const CompletionNudgeScalarFieldEnum = {
+  id: 'id',
+  consultationId: 'consultationId',
+  sentAt: 'sentAt',
+  channel: 'channel',
+  sentBy: 'sentBy'
+} as const
+
+export type CompletionNudgeScalarFieldEnum = (typeof CompletionNudgeScalarFieldEnum)[keyof typeof CompletionNudgeScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3325,6 +3413,7 @@ export type GlobalOmitConfig = {
   indexingRequest?: Prisma.IndexingRequestOmit
   embedCache?: Prisma.EmbedCacheOmit
   gscSnapshot?: Prisma.GscSnapshotOmit
+  completionNudge?: Prisma.CompletionNudgeOmit
 }
 
 /* Types for Logging */

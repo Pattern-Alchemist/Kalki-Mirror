@@ -58,6 +58,7 @@ export type ConsultationMinAggregateOutputType = {
   utrRef: string | null
   paidAt: Date | null
   patternSlugs: string | null
+  redeemedCode: string | null
 }
 
 export type ConsultationMaxAggregateOutputType = {
@@ -94,6 +95,7 @@ export type ConsultationMaxAggregateOutputType = {
   utrRef: string | null
   paidAt: Date | null
   patternSlugs: string | null
+  redeemedCode: string | null
 }
 
 export type ConsultationCountAggregateOutputType = {
@@ -130,6 +132,7 @@ export type ConsultationCountAggregateOutputType = {
   utrRef: number
   paidAt: number
   patternSlugs: number
+  redeemedCode: number
   _all: number
 }
 
@@ -168,6 +171,7 @@ export type ConsultationMinAggregateInputType = {
   utrRef?: true
   paidAt?: true
   patternSlugs?: true
+  redeemedCode?: true
 }
 
 export type ConsultationMaxAggregateInputType = {
@@ -204,6 +208,7 @@ export type ConsultationMaxAggregateInputType = {
   utrRef?: true
   paidAt?: true
   patternSlugs?: true
+  redeemedCode?: true
 }
 
 export type ConsultationCountAggregateInputType = {
@@ -240,6 +245,7 @@ export type ConsultationCountAggregateInputType = {
   utrRef?: true
   paidAt?: true
   patternSlugs?: true
+  redeemedCode?: true
   _all?: true
 }
 
@@ -349,6 +355,7 @@ export type ConsultationGroupByOutputType = {
   utrRef: string | null
   paidAt: Date | null
   patternSlugs: string | null
+  redeemedCode: string | null
   _count: ConsultationCountAggregateOutputType | null
   _min: ConsultationMinAggregateOutputType | null
   _max: ConsultationMaxAggregateOutputType | null
@@ -406,7 +413,9 @@ export type ConsultationWhereInput = {
   utrRef?: Prisma.StringNullableFilter<"Consultation"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
   patternSlugs?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  redeemedCode?: Prisma.StringNullableFilter<"Consultation"> | string | null
   testimonialFollowUp?: Prisma.XOR<Prisma.TestimonialFollowUpNullableScalarRelationFilter, Prisma.TestimonialFollowUpWhereInput> | null
+  completionNudges?: Prisma.CompletionNudgeListRelationFilter
 }
 
 export type ConsultationOrderByWithRelationInput = {
@@ -443,7 +452,9 @@ export type ConsultationOrderByWithRelationInput = {
   utrRef?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
   patternSlugs?: Prisma.SortOrderInput | Prisma.SortOrder
+  redeemedCode?: Prisma.SortOrderInput | Prisma.SortOrder
   testimonialFollowUp?: Prisma.TestimonialFollowUpOrderByWithRelationInput
+  completionNudges?: Prisma.CompletionNudgeOrderByRelationAggregateInput
 }
 
 export type ConsultationWhereUniqueInput = Prisma.AtLeast<{
@@ -483,7 +494,9 @@ export type ConsultationWhereUniqueInput = Prisma.AtLeast<{
   utrRef?: Prisma.StringNullableFilter<"Consultation"> | string | null
   paidAt?: Prisma.DateTimeNullableFilter<"Consultation"> | Date | string | null
   patternSlugs?: Prisma.StringNullableFilter<"Consultation"> | string | null
+  redeemedCode?: Prisma.StringNullableFilter<"Consultation"> | string | null
   testimonialFollowUp?: Prisma.XOR<Prisma.TestimonialFollowUpNullableScalarRelationFilter, Prisma.TestimonialFollowUpWhereInput> | null
+  completionNudges?: Prisma.CompletionNudgeListRelationFilter
 }, "id">
 
 export type ConsultationOrderByWithAggregationInput = {
@@ -520,6 +533,7 @@ export type ConsultationOrderByWithAggregationInput = {
   utrRef?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
   patternSlugs?: Prisma.SortOrderInput | Prisma.SortOrder
+  redeemedCode?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ConsultationCountOrderByAggregateInput
   _max?: Prisma.ConsultationMaxOrderByAggregateInput
   _min?: Prisma.ConsultationMinOrderByAggregateInput
@@ -562,6 +576,7 @@ export type ConsultationScalarWhereWithAggregatesInput = {
   utrRef?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
   paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Consultation"> | Date | string | null
   patternSlugs?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
+  redeemedCode?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
 }
 
 export type ConsultationCreateInput = {
@@ -598,7 +613,9 @@ export type ConsultationCreateInput = {
   utrRef?: string | null
   paidAt?: Date | string | null
   patternSlugs?: string | null
+  redeemedCode?: string | null
   testimonialFollowUp?: Prisma.TestimonialFollowUpCreateNestedOneWithoutConsultationInput
+  completionNudges?: Prisma.CompletionNudgeCreateNestedManyWithoutConsultationInput
 }
 
 export type ConsultationUncheckedCreateInput = {
@@ -635,7 +652,9 @@ export type ConsultationUncheckedCreateInput = {
   utrRef?: string | null
   paidAt?: Date | string | null
   patternSlugs?: string | null
+  redeemedCode?: string | null
   testimonialFollowUp?: Prisma.TestimonialFollowUpUncheckedCreateNestedOneWithoutConsultationInput
+  completionNudges?: Prisma.CompletionNudgeUncheckedCreateNestedManyWithoutConsultationInput
 }
 
 export type ConsultationUpdateInput = {
@@ -672,7 +691,9 @@ export type ConsultationUpdateInput = {
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  redeemedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   testimonialFollowUp?: Prisma.TestimonialFollowUpUpdateOneWithoutConsultationNestedInput
+  completionNudges?: Prisma.CompletionNudgeUpdateManyWithoutConsultationNestedInput
 }
 
 export type ConsultationUncheckedUpdateInput = {
@@ -709,7 +730,9 @@ export type ConsultationUncheckedUpdateInput = {
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  redeemedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   testimonialFollowUp?: Prisma.TestimonialFollowUpUncheckedUpdateOneWithoutConsultationNestedInput
+  completionNudges?: Prisma.CompletionNudgeUncheckedUpdateManyWithoutConsultationNestedInput
 }
 
 export type ConsultationCreateManyInput = {
@@ -746,6 +769,7 @@ export type ConsultationCreateManyInput = {
   utrRef?: string | null
   paidAt?: Date | string | null
   patternSlugs?: string | null
+  redeemedCode?: string | null
 }
 
 export type ConsultationUpdateManyMutationInput = {
@@ -782,6 +806,7 @@ export type ConsultationUpdateManyMutationInput = {
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  redeemedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ConsultationUncheckedUpdateManyInput = {
@@ -818,6 +843,7 @@ export type ConsultationUncheckedUpdateManyInput = {
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  redeemedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ConsultationCountOrderByAggregateInput = {
@@ -854,6 +880,7 @@ export type ConsultationCountOrderByAggregateInput = {
   utrRef?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
   patternSlugs?: Prisma.SortOrder
+  redeemedCode?: Prisma.SortOrder
 }
 
 export type ConsultationMaxOrderByAggregateInput = {
@@ -890,6 +917,7 @@ export type ConsultationMaxOrderByAggregateInput = {
   utrRef?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
   patternSlugs?: Prisma.SortOrder
+  redeemedCode?: Prisma.SortOrder
 }
 
 export type ConsultationMinOrderByAggregateInput = {
@@ -926,6 +954,7 @@ export type ConsultationMinOrderByAggregateInput = {
   utrRef?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
   patternSlugs?: Prisma.SortOrder
+  redeemedCode?: Prisma.SortOrder
 }
 
 export type ConsultationScalarRelationFilter = {
@@ -945,6 +974,20 @@ export type ConsultationUpdateOneRequiredWithoutTestimonialFollowUpNestedInput =
   upsert?: Prisma.ConsultationUpsertWithoutTestimonialFollowUpInput
   connect?: Prisma.ConsultationWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ConsultationUpdateToOneWithWhereWithoutTestimonialFollowUpInput, Prisma.ConsultationUpdateWithoutTestimonialFollowUpInput>, Prisma.ConsultationUncheckedUpdateWithoutTestimonialFollowUpInput>
+}
+
+export type ConsultationCreateNestedOneWithoutCompletionNudgesInput = {
+  create?: Prisma.XOR<Prisma.ConsultationCreateWithoutCompletionNudgesInput, Prisma.ConsultationUncheckedCreateWithoutCompletionNudgesInput>
+  connectOrCreate?: Prisma.ConsultationCreateOrConnectWithoutCompletionNudgesInput
+  connect?: Prisma.ConsultationWhereUniqueInput
+}
+
+export type ConsultationUpdateOneRequiredWithoutCompletionNudgesNestedInput = {
+  create?: Prisma.XOR<Prisma.ConsultationCreateWithoutCompletionNudgesInput, Prisma.ConsultationUncheckedCreateWithoutCompletionNudgesInput>
+  connectOrCreate?: Prisma.ConsultationCreateOrConnectWithoutCompletionNudgesInput
+  upsert?: Prisma.ConsultationUpsertWithoutCompletionNudgesInput
+  connect?: Prisma.ConsultationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ConsultationUpdateToOneWithWhereWithoutCompletionNudgesInput, Prisma.ConsultationUpdateWithoutCompletionNudgesInput>, Prisma.ConsultationUncheckedUpdateWithoutCompletionNudgesInput>
 }
 
 export type ConsultationCreateWithoutTestimonialFollowUpInput = {
@@ -981,6 +1024,8 @@ export type ConsultationCreateWithoutTestimonialFollowUpInput = {
   utrRef?: string | null
   paidAt?: Date | string | null
   patternSlugs?: string | null
+  redeemedCode?: string | null
+  completionNudges?: Prisma.CompletionNudgeCreateNestedManyWithoutConsultationInput
 }
 
 export type ConsultationUncheckedCreateWithoutTestimonialFollowUpInput = {
@@ -1017,6 +1062,8 @@ export type ConsultationUncheckedCreateWithoutTestimonialFollowUpInput = {
   utrRef?: string | null
   paidAt?: Date | string | null
   patternSlugs?: string | null
+  redeemedCode?: string | null
+  completionNudges?: Prisma.CompletionNudgeUncheckedCreateNestedManyWithoutConsultationInput
 }
 
 export type ConsultationCreateOrConnectWithoutTestimonialFollowUpInput = {
@@ -1069,6 +1116,8 @@ export type ConsultationUpdateWithoutTestimonialFollowUpInput = {
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  redeemedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completionNudges?: Prisma.CompletionNudgeUpdateManyWithoutConsultationNestedInput
 }
 
 export type ConsultationUncheckedUpdateWithoutTestimonialFollowUpInput = {
@@ -1105,8 +1154,207 @@ export type ConsultationUncheckedUpdateWithoutTestimonialFollowUpInput = {
   utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  redeemedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completionNudges?: Prisma.CompletionNudgeUncheckedUpdateManyWithoutConsultationNestedInput
 }
 
+export type ConsultationCreateWithoutCompletionNudgesInput = {
+  id?: string
+  userId?: string | null
+  name: string
+  email?: string
+  phone?: string
+  request: string
+  status?: string
+  scheduledFor?: Date | string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patternDiagnosis?: string | null
+  prescribedSequence?: string | null
+  prescribedSiddhis?: string | null
+  sessionNotes?: string | null
+  outcome?: string | null
+  followUpDate?: Date | string | null
+  completedAt?: Date | string | null
+  utmSource?: string | null
+  utmMedium?: string | null
+  utmCampaign?: string | null
+  utmTerm?: string | null
+  utmContent?: string | null
+  clickId?: string | null
+  country?: string | null
+  referrerDomain?: string | null
+  landingPath?: string | null
+  attributionJson?: string | null
+  paymentState?: string
+  paymentSession?: string | null
+  utrRef?: string | null
+  paidAt?: Date | string | null
+  patternSlugs?: string | null
+  redeemedCode?: string | null
+  testimonialFollowUp?: Prisma.TestimonialFollowUpCreateNestedOneWithoutConsultationInput
+}
+
+export type ConsultationUncheckedCreateWithoutCompletionNudgesInput = {
+  id?: string
+  userId?: string | null
+  name: string
+  email?: string
+  phone?: string
+  request: string
+  status?: string
+  scheduledFor?: Date | string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patternDiagnosis?: string | null
+  prescribedSequence?: string | null
+  prescribedSiddhis?: string | null
+  sessionNotes?: string | null
+  outcome?: string | null
+  followUpDate?: Date | string | null
+  completedAt?: Date | string | null
+  utmSource?: string | null
+  utmMedium?: string | null
+  utmCampaign?: string | null
+  utmTerm?: string | null
+  utmContent?: string | null
+  clickId?: string | null
+  country?: string | null
+  referrerDomain?: string | null
+  landingPath?: string | null
+  attributionJson?: string | null
+  paymentState?: string
+  paymentSession?: string | null
+  utrRef?: string | null
+  paidAt?: Date | string | null
+  patternSlugs?: string | null
+  redeemedCode?: string | null
+  testimonialFollowUp?: Prisma.TestimonialFollowUpUncheckedCreateNestedOneWithoutConsultationInput
+}
+
+export type ConsultationCreateOrConnectWithoutCompletionNudgesInput = {
+  where: Prisma.ConsultationWhereUniqueInput
+  create: Prisma.XOR<Prisma.ConsultationCreateWithoutCompletionNudgesInput, Prisma.ConsultationUncheckedCreateWithoutCompletionNudgesInput>
+}
+
+export type ConsultationUpsertWithoutCompletionNudgesInput = {
+  update: Prisma.XOR<Prisma.ConsultationUpdateWithoutCompletionNudgesInput, Prisma.ConsultationUncheckedUpdateWithoutCompletionNudgesInput>
+  create: Prisma.XOR<Prisma.ConsultationCreateWithoutCompletionNudgesInput, Prisma.ConsultationUncheckedCreateWithoutCompletionNudgesInput>
+  where?: Prisma.ConsultationWhereInput
+}
+
+export type ConsultationUpdateToOneWithWhereWithoutCompletionNudgesInput = {
+  where?: Prisma.ConsultationWhereInput
+  data: Prisma.XOR<Prisma.ConsultationUpdateWithoutCompletionNudgesInput, Prisma.ConsultationUncheckedUpdateWithoutCompletionNudgesInput>
+}
+
+export type ConsultationUpdateWithoutCompletionNudgesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  request?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduledFor?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patternDiagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prescribedSequence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prescribedSiddhis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  outcome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  utmSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmMedium?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCampaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmTerm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clickId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentState?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentSession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  redeemedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  testimonialFollowUp?: Prisma.TestimonialFollowUpUpdateOneWithoutConsultationNestedInput
+}
+
+export type ConsultationUncheckedUpdateWithoutCompletionNudgesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  request?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduledFor?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patternDiagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prescribedSequence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prescribedSiddhis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  outcome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  followUpDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  utmSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmMedium?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCampaign?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmTerm?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clickId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referrerDomain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attributionJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentState?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentSession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utrRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  patternSlugs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  redeemedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  testimonialFollowUp?: Prisma.TestimonialFollowUpUncheckedUpdateOneWithoutConsultationNestedInput
+}
+
+
+/**
+ * Count Type ConsultationCountOutputType
+ */
+
+export type ConsultationCountOutputType = {
+  completionNudges: number
+}
+
+export type ConsultationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  completionNudges?: boolean | ConsultationCountOutputTypeCountCompletionNudgesArgs
+}
+
+/**
+ * ConsultationCountOutputType without action
+ */
+export type ConsultationCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ConsultationCountOutputType
+   */
+  select?: Prisma.ConsultationCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ConsultationCountOutputType without action
+ */
+export type ConsultationCountOutputTypeCountCompletionNudgesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CompletionNudgeWhereInput
+}
 
 
 export type ConsultationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1143,7 +1391,10 @@ export type ConsultationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   utrRef?: boolean
   paidAt?: boolean
   patternSlugs?: boolean
+  redeemedCode?: boolean
   testimonialFollowUp?: boolean | Prisma.Consultation$testimonialFollowUpArgs<ExtArgs>
+  completionNudges?: boolean | Prisma.Consultation$completionNudgesArgs<ExtArgs>
+  _count?: boolean | Prisma.ConsultationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["consultation"]>
 
 export type ConsultationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1180,6 +1431,7 @@ export type ConsultationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   utrRef?: boolean
   paidAt?: boolean
   patternSlugs?: boolean
+  redeemedCode?: boolean
 }, ExtArgs["result"]["consultation"]>
 
 export type ConsultationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1216,6 +1468,7 @@ export type ConsultationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   utrRef?: boolean
   paidAt?: boolean
   patternSlugs?: boolean
+  redeemedCode?: boolean
 }, ExtArgs["result"]["consultation"]>
 
 export type ConsultationSelectScalar = {
@@ -1252,11 +1505,14 @@ export type ConsultationSelectScalar = {
   utrRef?: boolean
   paidAt?: boolean
   patternSlugs?: boolean
+  redeemedCode?: boolean
 }
 
-export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "email" | "phone" | "request" | "status" | "scheduledFor" | "notes" | "createdAt" | "updatedAt" | "patternDiagnosis" | "prescribedSequence" | "prescribedSiddhis" | "sessionNotes" | "outcome" | "followUpDate" | "completedAt" | "utmSource" | "utmMedium" | "utmCampaign" | "utmTerm" | "utmContent" | "clickId" | "country" | "referrerDomain" | "landingPath" | "attributionJson" | "paymentState" | "paymentSession" | "utrRef" | "paidAt" | "patternSlugs", ExtArgs["result"]["consultation"]>
+export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "email" | "phone" | "request" | "status" | "scheduledFor" | "notes" | "createdAt" | "updatedAt" | "patternDiagnosis" | "prescribedSequence" | "prescribedSiddhis" | "sessionNotes" | "outcome" | "followUpDate" | "completedAt" | "utmSource" | "utmMedium" | "utmCampaign" | "utmTerm" | "utmContent" | "clickId" | "country" | "referrerDomain" | "landingPath" | "attributionJson" | "paymentState" | "paymentSession" | "utrRef" | "paidAt" | "patternSlugs" | "redeemedCode", ExtArgs["result"]["consultation"]>
 export type ConsultationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   testimonialFollowUp?: boolean | Prisma.Consultation$testimonialFollowUpArgs<ExtArgs>
+  completionNudges?: boolean | Prisma.Consultation$completionNudgesArgs<ExtArgs>
+  _count?: boolean | Prisma.ConsultationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ConsultationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 export type ConsultationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1265,6 +1521,7 @@ export type $ConsultationPayload<ExtArgs extends runtime.Types.Extensions.Intern
   name: "Consultation"
   objects: {
     testimonialFollowUp: Prisma.$TestimonialFollowUpPayload<ExtArgs> | null
+    completionNudges: Prisma.$CompletionNudgePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1300,6 +1557,7 @@ export type $ConsultationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     utrRef: string | null
     paidAt: Date | null
     patternSlugs: string | null
+    redeemedCode: string | null
   }, ExtArgs["result"]["consultation"]>
   composites: {}
 }
@@ -1695,6 +1953,7 @@ readonly fields: ConsultationFieldRefs;
 export interface Prisma__ConsultationClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   testimonialFollowUp<T extends Prisma.Consultation$testimonialFollowUpArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Consultation$testimonialFollowUpArgs<ExtArgs>>): Prisma.Prisma__TestimonialFollowUpClient<runtime.Types.Result.GetResult<Prisma.$TestimonialFollowUpPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  completionNudges<T extends Prisma.Consultation$completionNudgesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Consultation$completionNudgesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompletionNudgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1757,6 +2016,7 @@ export interface ConsultationFieldRefs {
   readonly utrRef: Prisma.FieldRef<"Consultation", 'String'>
   readonly paidAt: Prisma.FieldRef<"Consultation", 'DateTime'>
   readonly patternSlugs: Prisma.FieldRef<"Consultation", 'String'>
+  readonly redeemedCode: Prisma.FieldRef<"Consultation", 'String'>
 }
     
 
@@ -2164,6 +2424,30 @@ export type Consultation$testimonialFollowUpArgs<ExtArgs extends runtime.Types.E
    */
   include?: Prisma.TestimonialFollowUpInclude<ExtArgs> | null
   where?: Prisma.TestimonialFollowUpWhereInput
+}
+
+/**
+ * Consultation.completionNudges
+ */
+export type Consultation$completionNudgesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CompletionNudge
+   */
+  select?: Prisma.CompletionNudgeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CompletionNudge
+   */
+  omit?: Prisma.CompletionNudgeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CompletionNudgeInclude<ExtArgs> | null
+  where?: Prisma.CompletionNudgeWhereInput
+  orderBy?: Prisma.CompletionNudgeOrderByWithRelationInput | Prisma.CompletionNudgeOrderByWithRelationInput[]
+  cursor?: Prisma.CompletionNudgeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CompletionNudgeScalarFieldEnum | Prisma.CompletionNudgeScalarFieldEnum[]
 }
 
 /**

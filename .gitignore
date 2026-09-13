@@ -137,3 +137,5 @@ env.local
 # Vol. 6 #7+#9 — the Week B schema applier (embed_cache + gsc_snapshots tables;
 # Prisma 7 P1013 libsql:// forces raw DDL — the file lives here, not in prisma/migrations)
 !scripts/apply-vol6b-schema.ts
+# Vol. 6 #11+#14 — the Week C schema applier (campaign + redeemedCode + CompletionNudge)
+!scripts/apply-vol6c-schema.ts

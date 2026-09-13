@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef, type FormEvent } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
@@ -82,6 +83,7 @@ function formatDate(dateStr: string | null): string {
 export default function RedeemPage() {
   const { tier: currentTier, refreshTier } = useTier();
   const reduced = useNativeReducedMotion();
+  const searchParams = useSearchParams();
 
   const [code, setCode] = useState('');
   const [state, setState] = useState<RedeemState>('idle');
@@ -90,6 +92,18 @@ export default function RedeemPage() {
   const [vault, setVault] = useState<VaultData | null>(null);
   const [vaultLoading, setVaultLoading] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Vol. 6 #11 — ?key= deep-link auto-fill: campaign links can carry the
+  // code in the query string so the seeker doesn't have to type it.
+  // Runs once on mount; respects any code the user already typed.
+  useEffect(() => {
+    const keyParam = searchParams.get('key');
+    if (keyParam && !code) {
+      setCode(formatCode(keyParam));
+      // autofocus the submit button so the seeker can activate immediately
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [searchParams, code]);
 
   // Fetch vault data on mount
   useEffect(() => {

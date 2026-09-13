@@ -79,7 +79,8 @@ export const ModelName = {
   TestimonialFollowUp: 'TestimonialFollowUp',
   IndexingRequest: 'IndexingRequest',
   EmbedCache: 'EmbedCache',
-  GscSnapshot: 'GscSnapshot'
+  GscSnapshot: 'GscSnapshot',
+  CompletionNudge: 'CompletionNudge'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -162,6 +163,7 @@ export const InviteCodeScalarFieldEnum = {
   usesUsed: 'usesUsed',
   expiresAt: 'expiresAt',
   active: 'active',
+  campaign: 'campaign',
   createdAt: 'createdAt'
 } as const
 
@@ -300,7 +302,8 @@ export const ConsultationScalarFieldEnum = {
   paymentSession: 'paymentSession',
   utrRef: 'utrRef',
   paidAt: 'paidAt',
-  patternSlugs: 'patternSlugs'
+  patternSlugs: 'patternSlugs',
+  redeemedCode: 'redeemedCode'
 } as const
 
 export type ConsultationScalarFieldEnum = (typeof ConsultationScalarFieldEnum)[keyof typeof ConsultationScalarFieldEnum]
@@ -541,6 +544,17 @@ export const GscSnapshotScalarFieldEnum = {
 } as const
 
 export type GscSnapshotScalarFieldEnum = (typeof GscSnapshotScalarFieldEnum)[keyof typeof GscSnapshotScalarFieldEnum]
+
+
+export const CompletionNudgeScalarFieldEnum = {
+  id: 'id',
+  consultationId: 'consultationId',
+  sentAt: 'sentAt',
+  channel: 'channel',
+  sentBy: 'sentBy'
+} as const
+
+export type CompletionNudgeScalarFieldEnum = (typeof CompletionNudgeScalarFieldEnum)[keyof typeof CompletionNudgeScalarFieldEnum]
 
 
 export const SortOrder = {

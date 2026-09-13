@@ -45,8 +45,17 @@ export async function getKeys(query: string, page: number = 1) {
   return { keys, total, pages: Math.ceil(total / take) };
 }
 
-export async function generateKeys(count: number, tierGranted: string, maxUses: number, expiresAt?: Date) {
+export async function generateKeys(
+  count: number,
+  tierGranted: string,
+  maxUses: number,
+  expiresAt?: Date,
+  campaign?: string,
+) {
   const actorId = await requireRole('admin_plus');
+
+  // Vol. 6 #11 — campaign tag is optional; trim + lowercase for consistency
+  const tag = campaign?.trim().toLowerCase().slice(0, 60) || null;
 
   const codes = await Promise.all(
     Array.from({ length: count }, () =>
@@ -57,6 +66,7 @@ export async function generateKeys(count: number, tierGranted: string, maxUses: 
           tierGranted,
           maxUses,
           expiresAt: expiresAt || null,
+          campaign: tag,
         },
       })
     )
@@ -66,13 +76,13 @@ export async function generateKeys(count: number, tierGranted: string, maxUses: 
     action: "key.generate",
     entity: "InviteCode",
     entityId: codes[0]?.id,
-    after: { count, tierGranted, maxUses, expiresAt },
+    after: { count, tierGranted, maxUses, expiresAt, campaign: tag },
   });
 
-  await dispatchWebhooks('key.generate', { count, tierGranted, codes: codes.map(c => c.code) });
+  await dispatchWebhooks('key.generate', { count, tierGranted, campaign: tag, codes: codes.map(c => c.code) });
   await broadcastNotification({
     title: 'Keys Generated',
-    body: `${count} Golden Keys created (tier: ${tierGranted})`,
+    body: `${count} Golden Keys created (tier: ${tierGranted}${tag ? `, campaign: ${tag}` : ''})`,
     type: 'success',
     href: '/admin/keys',
   });

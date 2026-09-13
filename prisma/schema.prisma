@@ -140,12 +140,14 @@ model InviteCode {
   usesUsed    Int       @default(0)
   expiresAt   DateTime?
   active      Boolean   @default(true)
+  campaign    String?   // Vol. 6 #11 — campaign tag for batch attribution
   createdAt   DateTime  @default(now())
 
   creator User          @relation("GeneratedKeys", fields: [createdBy], references: [id])
   usages  InviteUsage[]
 
   @@index([code])
+  @@index([campaign])
 }
 
 // ============================================================
@@ -310,6 +312,7 @@ model Consultation {
   prescribedSequence  String? // Sequence slug if a sequence was assigned
   prescribedSiddhis   String? // JSON string of recommended siddhi slugs
   testimonialFollowUp TestimonialFollowUp?
+  completionNudges    CompletionNudge[] // Vol. 6 #14 — the 48h stale-nudge ledger (one-to-many: a consultation could be nudged multiple times)
   sessionNotes        String? // Archivist's notes from the session
   outcome             String? // PENDING | IN_PROGRESS | RESOLVED | DISCONTINUED
   followUpDate        DateTime?
@@ -346,9 +349,13 @@ model Consultation {
   // verdict, not the seeker's self-selection — different signal).
   patternSlugs String?
 
+  // Vol. 6 #11 — campaign attribution: which invite code redeemed this user (the key→consultation bridge)
+  redeemedCode String?
+
   @@index([status, scheduledFor])
   @@index([phone])
   @@index([paymentState])
+  @@index([redeemedCode])
 }
 
 // ============================================================
@@ -695,4 +702,19 @@ model GscSnapshot {
   position     Float
   topQueries   String   // JSON: [{q, i, c, p}]
   createdAt    DateTime @default(now())
+}
+
+// ── Vol. 6 #14: completion-nudge ledger ─────────────────────────────────────
+// Mirrors the TestimonialFollowUp pattern (Vol. 5 #14): one row per
+// consultation that received the 48h stale-completion nudge. The unique
+// consultationId makes the cron idempotent and the manual nudge an
+// upsert. DDL applied via scripts/apply-vol6c-schema.ts.
+model CompletionNudge {
+  id             String       @id @default(cuid())
+  consultationId String       @unique
+  sentAt         DateTime     @default(now())
+  channel        String       @default("cron") // cron | manual
+  sentBy         String       @default("system") // system | archivist email/name
+
+  consultation   Consultation @relation(fields: [consultationId], references: [id])
 }
