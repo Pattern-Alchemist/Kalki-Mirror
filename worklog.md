@@ -1413,3 +1413,23 @@ Stage Summary:
 - VOL. 6 WEEK B CLOSED: 5 of 5. The doctrine proven: a founder-gated dependency does NOT have to block the machine that will use it — build the bed, gate the sensor, document the flip. Sentry (#5), EMBED (#7), GSC (#9) all live asleep, all wake on one env flip.
 - FOUNDER-ONLY REMAINING: TOTP re-enroll, admin password rotate, $5-10 OpenRouter credit, GSC OAuth consent, GitHub PAT rotation.
 
+
+---
+Task ID: vol6-week-c
+Agent: Z (Super Z, main session)
+Task: Vol. 6 Week C (11 → 12 → 14 → 13) — The First Hundred Seekers tier. Campaign keys, letters drill, consultation loop, seeker digest.
+
+Work Log:
+- #11 CAMPAIGN KEY BATCHES: InviteCode.campaign + Consultation.redeemedCode (DDL live-applied). generateKeys() action extended with campaign param (trim+lowercase+60char cap). Keys page renders batch-mint form (count/tier/maxUses/campaign). /redeem reads ?key= via useSearchParams + auto-fills. /api/keys/redeem stamps redeemedCode on user's most recent consultation (one-way, best-effort). Search now covers campaign. 4 tests pin normalization + formatCode + one-way stamp.
+- #12 LETTERS LAUNCH DRILL: scripts/launch-letters.sh (post-publish verification: sitemap letters URLs → page 200 → OG image 200 → feed Letter items → IndexNow targeted ping). src/app/letters/[slug]/opengraph-image.tsx (bespoke card via letterOgCardData helper). Repo-truth gate amnesty entry self-purged (the file landed). OG registry test updated. 8 tests pin the card builder.
+- #14 CONSULTATION OUTCOME LOOP: src/lib/ops/completion-nudge.ts (isStaleConsultation pure detector — NEW > 48h without closure, findStaleConsultations cron batch, sendCompletionNudge idempotent via CompletionNudge ledger, countStaleConsultations for digest). src/lib/emails/completion-nudge.ts ("Your reading — three minutes to close the loop?" deep-link /consultations). /api/cron/completion-nudge route (daily 21:00 IST, ?dryRun=1). Daily digest gains STALE CONSULTATIONS block. CronName + REGISTERED_CRONS updated. CompletionNudge DDL live-applied. 18 tests pin stale detection + email template.
+- #13 SEEKER WEEKLY DIGEST: src/lib/emails/weekly-digest.ts (buildWeeklyDigestEmail — subject reflects count, spotlight block, UTM-tagged links, full archive link). src/lib/ops/weekly-digest.ts (gatherWeeklyContent — letters this week + spotlight from EmailEvent clicks, runWeeklyDigest idempotent via OpsState marker 20h window, BATCH_CAP=200). /api/cron/weekly-digest route (Monday 17:30 IST, ?dryRun=1). cron-ledger gains cadence field: weekly crons get 8-day staleness threshold (not 26h). Static-arrays dead-end (glossary/patterns have no addedAt) — weekly digest reports ONLY letters. 15 tests pin UTM tagging + excerpt + email builder.
+- FINAL GAUNTLET: 1127/1127 vitest (85 files, +45 new since Week B). tsc clean. Build green (344 pages).
+- FOUR COMMITS pushed to GitHub (9420c77..87da319). One production deploy (READY). Live smoke: health ok / completion-nudge dryRun 0 stale / weekly-digest dryRun 0 content (no letters published yet) / observatory skip / retrieval bed dense:null / keys page 307 (auth gate) / redeem?key= 200 (autofill).
+- BUGS CAUGHT + FIXED: (1) tsc caught 'completion-nudge' not in CronName type — added. (2) tsc caught 'weekly-digest' not in REGISTERED_CRONS Record — added. (3) weekly cron would false-alarm on 26h threshold — added cadence field (weekly=8d, daily=26h). (4) Test expectation miscounted slice(0,20) — fixed. (5) openapi.yaml had duplicate observatory/ask-eval entries from Week B patch — cleaned up.
+- GATE SELF-PURGE: repo-truth gate's launch-letters.sh amnesty entry removed (the file landed; the gate's own rule enforces it).
+
+Stage Summary:
+- VOL. 6 WEEK C CLOSED: 4 of 4. The rails for the first hundred seekers are in place: campaign keys are an instrument (mint with attribution, deep-link auto-fill, consultation join), letters launch is one command (the drill proves the gate worked, bespoke OG cards land with the same commit), the consultation loop cannot fall through the floor (48h stale detector + nudge + digest block), the subscriber list gets a weekly beat (letters + spotlight, UTM-tagged, idempotent).
+- FOUNDER-ONLY REMAINING: TOTP re-enroll (still burned), admin password rotate, $5-10 OpenRouter credit, GSC OAuth consent, EMBED_API_KEY. The letters launch needs the founder's sign-off on the 5 draft letters (the drill publishes what's reviewed). The first campaign needs the founder to mint keys with a campaign tag + distribute the ?key= deep-links.
+
