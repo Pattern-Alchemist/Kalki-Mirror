@@ -8,6 +8,7 @@ import { allSequences } from '@/lib/data/sequences';
 import { aghoriCourse } from '@/lib/data/aghori-tantra-course';
 import { glossaryEntries } from '@/lib/data/glossary';
 import { glossaryTermPath } from '@/lib/seo/glossary-seo';
+import { termAnchor } from '@/lib/utils/term-anchor';
 import { CONTENT_TYPES } from '@/lib/seo/content-seo';
 import { SITE_LASTMOD } from '@/lib/canonical';
 
@@ -83,6 +84,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(SITE_LASTMOD),
     changeFrequency: 'monthly' as const,
     priority: 0.75,
+    // Vol. 6 #17 — hreflang alternates: EN (canonical) + hi (reading layer)
+    alternates: {
+      languages: {
+        'en-US': `${base}/patterns/${p.slug}`,
+        'hi': `${base}/hi/patterns/${p.slug}`,
+      },
+    },
   }));
 
   const breathworkPages: MetadataRoute.Sitemap = allBreathPatterns.map((b) => ({
@@ -122,6 +130,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(SITE_LASTMOD),
     changeFrequency: 'monthly' as const,
     priority: 0.5,
+    // Vol. 6 #17 — hreflang alternates: EN (canonical) + hi (reading layer)
+    alternates: {
+      languages: {
+        'en-US': `${base}${glossaryTermPath(e.term)}`,
+        'hi': `${base}/hi/glossary/${termAnchor(e.term)}`,
+      },
+    },
   }));
 
   // Studio entries (Vol. 3 #2) — PUBLISHED ContentEntry rows render at
