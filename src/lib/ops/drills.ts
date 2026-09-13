@@ -18,13 +18,21 @@ import { db } from "@/lib/db";
 
 export const DRILL_OPS_PREFIX = "drill:";
 
-export const DRILLS = ["page-weight", "turso-failover", "chain-probe", "production-sweep"] as const;
+export const DRILLS = ["page-weight", "turso-failover", "chain-probe", "production-sweep", "restore-drill"] as const;
 export type DrillName = (typeof DRILLS)[number];
 
 export const DRILL_NAMES: readonly string[] = DRILLS;
 
 /** A drill silent longer than this reads as failed in the digest. */
 export const DRILL_STALE_MS = 8 * 24 * 3600 * 1000;
+
+/** Vol. 6 #20 — quarterly drills get a 95-day staleness threshold (not 8 days). */
+export const DRILL_STALE_MS_QUARTERLY = 95 * 24 * 3600 * 1000;
+
+/** Per-drill staleness threshold — quarterly drills get the extended window. */
+export function drillStaleMs(name: string): number {
+  return name === 'restore-drill' ? DRILL_STALE_MS_QUARTERLY : DRILL_STALE_MS;
+}
 
 export interface StoredDrill {
   name: string;
@@ -73,10 +81,12 @@ export function parseStoredDrill(value: string | null | undefined): StoredDrill 
 export function isDrillStale(
   stored: StoredDrill | null | undefined,
   now: Date,
-  staleMs: number = DRILL_STALE_MS,
+  staleMs?: number,
 ): boolean {
   if (!stored) return true;
-  return now.getTime() - Date.parse(stored.at) > staleMs;
+  // Vol. 6 #20 — quarterly drills (restore-drill) get the extended threshold
+  const threshold = staleMs ?? drillStaleMs(stored.name);
+  return now.getTime() - Date.parse(stored.at) > threshold;
 }
 
 /** Digest line: quiet on green+fresh; one alert line otherwise. */

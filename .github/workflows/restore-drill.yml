@@ -1,12 +1,16 @@
-# Vol. 2 #13 — quarterly backup restore drill (workflow_dispatch).
+# Vol. 2 #13 + Vol. 6 #20 — quarterly backup restore drill + December cadence.
 # Runs scripts/restore-drill.sh against the production Turso DB using
 # secrets; skips with a clear notice when secrets are not configured.
+# Vol. 6 #20: verdict POSTed to /api/cron/drill-status (the war-room
+# panel + digest staleness alarm now cover this drill too). Schedule
+# includes December (the "December cadence" the roadmap named).
 name: restore-drill
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 4 2 1,4,7,10 *" # quarterly: Jan/Apr/Jul/Oct 2nd, 04:00 UTC
+    # Quarterly: Jan/Apr/Jul/Oct 2nd + December (Vol. 6 #20 — the December cadence)
+    - cron: "0 4 2 1,4,7,10,12 *"
 
 permissions:
   contents: read
@@ -25,6 +29,7 @@ jobs:
         run: npm ci
 
       - name: Run restore drill
+        id: drill
         if: ${{ secrets.TURSO_DATABASE_URL != '' }}
         env:
           DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
@@ -36,3 +41,17 @@ jobs:
         if: ${{ secrets.TURSO_DATABASE_URL == '' }}
         run: |
           echo "::notice::TURSO_DATABASE_URL / TURSO_AUTH_TOKEN repo secrets are not set — drill skipped. Add them under Settings → Secrets to enable."
+
+      # Vol. 6 #20 — POST the verdict to the drill ledger (war-room + digest)
+      - name: Report verdict
+        if: always() && steps.drill.outcome != 'skipped' && steps.drill.outcome != ''
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          OUTCOME: ${{ steps.drill.outcome }}
+        run: |
+          [ -n "$CRON_SECRET" ] || { echo "::notice::CRON_SECRET repo secret not set — verdict stays summary-only (digest staleness covers silence)"; exit 0; }
+          V=fail; [ "$OUTCOME" = "success" ] && V=pass
+          curl -fsS -m 20 -X POST "https://www.astrokalki.com/api/cron/drill-status" \
+            -H "Authorization: Bearer $CRON_SECRET" -H "Content-Type: application/json" \
+            -d "{\"name\":\"restore-drill\",\"verdict\":\"$V\",\"source\":\"gh\",\"details\":\"quarterly restore drill\"}" \
+            || echo "::warning::verdict POST failed (non-fatal)"
