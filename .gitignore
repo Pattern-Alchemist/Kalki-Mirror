@@ -141,3 +141,5 @@ env.local
 !scripts/apply-vol6c-schema.ts
 # Vol. 6 #12 — the letters launch one-command drill (post-publish verification)
 !scripts/launch-letters.sh
+# Vol. 6 #16 — the hi bridge completion batch (final 26 glossary terms)
+!scripts/add-hi-bridge-vol6.py

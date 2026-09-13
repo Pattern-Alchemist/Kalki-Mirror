@@ -42,6 +42,9 @@ export interface CourseLesson {
   mantras?: { sanskrit: string; transliteration: string; meaning: string; count?: string }[];
   warnings?: string[];
   materials?: string[];
+  // Vol. 6 #16 — hi bridge: when present, the lesson renders in Devanagari
+  // for hi-locale seekers. Same sadhu-register contract as the glossary.
+  hi?: { content: string };
 }
 
 export const aghoriCourse: CourseModule[] = [
