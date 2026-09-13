@@ -45,10 +45,10 @@ const AMNESTY: Record<string, string> = {
   //    self-purge rule. The gate stays here so the next ghost is named on
   //    the day the record drifts, not the day the sandbox dies.
 
-  // ── Planned, not yet built — a roadmap first-move PROMISE. The entry
-  //    self-purges the day the file lands (item #12, Week C).
-  'scripts/launch-letters.sh':
-    'Vol.6 #12 first-move promise — lands in Week C',
+  // Vol. 6 #12 — launch-letters.sh LANDED. The amnesty entry self-purged
+  // (the gate's own rule: the moment the file exists in the tree, the
+  // amnesty must be removed or the gate fails on the contradiction).
+  // 'scripts/launch-letters.sh': 'Vol.6 #12 first-move promise — lands in Week C',
 
   // ── Session-ephemeral one-shots: historical worklog citations whose
   //    OUTPUT landed in commits; the scripts themselves were never meant

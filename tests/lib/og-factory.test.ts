@@ -66,6 +66,7 @@ const REGISTERED_ROUTES = [
   "src/app/usa/new-york/opengraph-image.tsx",
   "src/app/usa/san-francisco-bay/opengraph-image.tsx",
   "src/app/usa/london/opengraph-image.tsx",
+  "src/app/letters/[slug]/opengraph-image.tsx",
 ];
 
 describe("og-image registry (fs-exhaustive)", () => {

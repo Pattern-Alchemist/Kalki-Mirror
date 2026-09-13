@@ -139,3 +139,5 @@ env.local
 !scripts/apply-vol6b-schema.ts
 # Vol. 6 #11+#14 — the Week C schema applier (campaign + redeemedCode + CompletionNudge)
 !scripts/apply-vol6c-schema.ts
+# Vol. 6 #12 — the letters launch one-command drill (post-publish verification)
+!scripts/launch-letters.sh

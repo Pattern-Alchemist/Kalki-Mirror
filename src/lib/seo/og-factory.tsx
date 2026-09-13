@@ -207,6 +207,25 @@ export function usaOgCardData(page: { h1: string; h1Accent?: string }): OgCardDa
   };
 }
 
+/**
+ * Letter card copy (Vol. 6 #12) — each /letters/[slug] gets a bespoke
+ * card with the letter's subject as the title. The first 120 chars of
+ * the body serve as the subtitle (Satori clamps the rest). Falls back
+ * to a brand card when the letter is not found (the page 404s — OG
+ * consumers only ever follow URLs the page rendered).
+ */
+export function letterOgCardData(letter: { subject: string; body?: string | null }): OgCardData {
+  const bodyExcerpt = letter.body
+    ? letter.body.replace(/\s+/g, ' ').trim().slice(0, 120)
+    : 'A letter from the KALKI broadcast archive.';
+  return {
+    label: 'KALKI · LETTERS',
+    title: letter.subject,
+    subtitle: bodyExcerpt,
+    footer: 'EVIDENCE-FIRST TANTRA · KALKI',
+  };
+}
+
 /** Card copy for the studio type shelves (DB-free — brand-level card). */
 export const OG_LIBRARY_TYPE_COPY: Record<string, { title: string; subtitle: string }> = {
   practice: { title: 'Sādhana Practice', subtitle: 'Practice notes from the studio corpus — published under the evidence-first discipline.' },
