@@ -29,7 +29,7 @@ const FLOORS: Record<string, number> = {
   breathwork: 13, // 12 patterns + hub
   sequences: 7, // 6 sequences + hub
   glossary: 87, // 86 lexicon terms + hub
-  usa: 6, // hub + 5 service pages (+4 cities → 10 today)
+  usa: 10, // Vol. 6 #19 — fixed: 1 hub + 5 services + 4 cities (was stale at 6)
   aghori: 63, // 8 phases + 54 lessons + hub
   tantra: 6, // reclaimed /tantra hub + 5 children
   letters: 1, // the hub must exist even with zero public letters
@@ -51,6 +51,10 @@ function classify(pathname: string): string {
   if (p.startsWith('/tantra')) return 'tantra';
   if (p.startsWith('/letters')) return 'letters';
   if (p.startsWith('/library')) return 'library';
+  // Vol. 6 #17 — /hi/ twins are noindex (canonical-only); they should
+  // NEVER appear in the sitemap. If one does, classify it as UNREGISTERED
+  // so the census fails loud.
+  if (p.startsWith('/hi/')) return 'UNREGISTERED';
   // the closed set of one-off top-level pages — extend static-core ONLY by
   // editing this list (registering the class), never by relaxing the census
   const STATIC_TOP = new Set([
