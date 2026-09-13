@@ -10,7 +10,13 @@
         "http://localhost:3456/archetypes",
         "http://localhost:3456/patterns",
         "http://localhost:3456/archive",
-        "http://localhost:3456/aghori-tantra"
+        "http://localhost:3456/aghori-tantra",
+        "http://localhost:3456/usa",
+        "http://localhost:3456/usa/austin",
+        "http://localhost:3456/usa/vedic-astrology-consultation",
+        "http://localhost:3456/glossary",
+        "http://localhost:3456/letters",
+        "http://localhost:3456/hi/glossary/om"
       ]
     },
     "assert": {
