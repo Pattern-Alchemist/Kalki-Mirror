@@ -17,6 +17,7 @@ import { SITE_URL, canonicalUrl, pageAlternates } from '@/lib/utils/metadata';
 import { TrackView } from '@/components/analytics/TrackView';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import type { UsaPage } from '@/lib/data/usa-pages';
+import { usaPages, usaCityPages } from '@/lib/data/usa-pages';
 
 /**
  * The Service JSON-LD builder — exported pure for the Vol. 5 #15 truth
@@ -48,6 +49,57 @@ export function usaServiceJsonLd(
       availability: 'https://schema.org/InStock',
       url: `${SITE_URL}${page.path}`,
     },
+  };
+}
+
+/**
+ * Vol. 6 #15 — LocalBusiness JSON-LD for city pages.
+ * The city surface now carries entity-grade local data: areaServed
+ * narrowed to the city, priceRange, sameAs (social proof), and the
+ * service catalog. This is the schema Google's local pack reads.
+ */
+export function usaLocalBusinessJsonLd(
+  page: Pick<UsaPage, 'path' | 'area' | 'h1'>,
+  services: Array<{ name: string; priceUSD: number }>,
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': `${SITE_URL}${page.path}#localbusiness`,
+    name: `KALKI — ${page.area?.city ?? 'United States'}`,
+    description: 'Evidence-first Vedic astrology and pattern consultation. Online sessions for US seekers.',
+    url: `${SITE_URL}${page.path}`,
+    image: `${SITE_URL}${page.path}/opengraph-image`,
+    telephone: undefined, // no public phone — WhatsApp CTA is the door
+    priceRange: '$$',
+    areaServed: page.area
+      ? [
+          { '@type': 'City', name: page.area.city },
+          ...(page.area.region ? [{ '@type': 'State', name: page.area.region }] : []),
+          { '@type': 'Country', name: page.area.country },
+        ]
+      : { '@type': 'Country', name: 'United States' },
+    address: page.area
+      ? {
+          '@type': 'PostalAddress',
+          addressCountry: page.area.country,
+          ...(page.area.region ? { addressRegion: page.area.region } : {}),
+          addressLocality: page.area.city,
+        }
+      : undefined,
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Consultation Services',
+      itemListElement: services.map((s) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: s.name },
+        price: s.priceUSD,
+        priceCurrency: 'USD',
+      })),
+    },
+    sameAs: [
+      'https://www.astrokalki.com',
+    ],
   };
 }
 
@@ -113,6 +165,15 @@ export function UsaPageShell({ page, crumbs, trackSlug, service }: UsaPageShellP
   // Vol. 5 #15 — one builder, one truth: city pages emit City+Country scope.
   const serviceJsonLd = service ? usaServiceJsonLd(service, page) : null;
 
+  // Vol. 6 #15 — LocalBusiness JSON-LD for city pages (entity-grade local data).
+  // Emitted ONLY when page.area is set (city pages) — service/hub pages don't qualify.
+  const localBusinessJsonLd = page.area
+    ? usaLocalBusinessJsonLd(
+        page,
+        service ? [{ name: service.name, priceUSD: service.priceUSD }] : [],
+      )
+    : null;
+
   return (
     <div className="bg-deep-black min-h-screen pt-28 md:pt-36 pb-32">
       <TrackView event="usa_page_viewed" slug={trackSlug} />
@@ -128,6 +189,12 @@ export function UsaPageShell({ page, crumbs, trackSlug, service }: UsaPageShellP
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+        />
+      )}
+      {localBusinessJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
         />
       )}
 
@@ -240,6 +307,48 @@ export function UsaPageShell({ page, crumbs, trackSlug, service }: UsaPageShellP
             ))}
           </div>
         </section>
+
+        {/* ── Vol. 6 #15 — City↔Service Cross-Link Grid ── */}
+        {page.area && (
+          <section className="mb-16">
+            <p className="section-label mb-6">Services for {page.area.city}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {usaPages.map((sp) => (
+                <Link
+                  key={sp.slug}
+                  href={sp.path}
+                  className="glass-chip p-4 hover:border-gold/30 transition-colors group"
+                >
+                  <p className="font-display text-sm text-foreground group-hover:text-gold transition-colors">
+                    {sp.h1}
+                  </p>
+                  <p className="text-xs text-text-muted mt-1">$29 · 60 min</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+        {!page.area && page.slug !== 'usa' && (
+          <section className="mb-16">
+            <p className="section-label mb-6">Available in</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {usaCityPages.map((cp) => (
+                <Link
+                  key={cp.slug}
+                  href={cp.path}
+                  className="glass-chip p-4 text-center hover:border-gold/30 transition-colors group"
+                >
+                  <p className="font-display text-sm text-foreground group-hover:text-gold transition-colors">
+                    {cp.area?.city}
+                  </p>
+                  {cp.area?.region && (
+                    <p className="text-xs text-text-muted mt-1">{cp.area.region}</p>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* ── Related ── */}
         <section>
