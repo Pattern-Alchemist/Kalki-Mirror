@@ -1373,6 +1373,17 @@ paths:
         '401':
           description: Unauthorized — CRON_SECRET missing or mismatched
 
+  /api/cron/weekly-digest:
+    get:
+      operationId: apiCronWeeklyDigestGet
+      tags: [Cron]
+      summary: Seeker weekly digest (Vol. 6 #13) — gathers the week's new letters + spotlight, sends one email per active subscriber (capped 200/run), stamps the OpsState marker (idempotent: re-running on the same Monday skips). ?dryRun=1 reports recipient count + content preview. CRON_SECRET gated. Monday 17:30 IST.
+      responses:
+        '200':
+          description: OK ({ok, dryRun, recipientCount, sent, failed, letterCount, spotlight, sentAt}) OR skipped ({skipped:'already_sent_today'|'no_content'})
+        '401':
+          description: Unauthorized — CRON_SECRET missing or mismatched
+
   /api/cron/prewarm-ask:
     get:
       operationId: apiCronPrewarmAskGet

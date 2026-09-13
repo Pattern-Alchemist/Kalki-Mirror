@@ -63,12 +63,13 @@ export type CronName =
   | "testimonial-followup"
   | "prewarm-ask"
   | "gsc-indexing"
-  | "completion-nudge";
+  | "completion-nudge"
+  | "weekly-digest";
 
 export const CRON_LEDGER_MAX_AGE_H = 26;
 
-/** vercel.json mirrored — a registered cron with no row in 26h is an alarm. */
-export const REGISTERED_CRONS: Record<CronName, { schedule: string; description: string }> = {
+/** vercel.json mirrored — a registered cron with no row in its staleness window is an alarm. */
+export const REGISTERED_CRONS: Record<CronName, { schedule: string; description: string; cadence?: 'daily' | 'weekly' }> = {
   "indexnow": { schedule: "0 2 * * *", description: "IndexNow ping of changed URLs" },
   "cred-audit": { schedule: "10 2 * * *", description: "Provider credential verify pings (Vol. 5 #2)" },
   "chain-health": { schedule: "15 2 * * *", description: "OpenRouter chain probe (Vol. 5 #1)" },
@@ -79,6 +80,7 @@ export const REGISTERED_CRONS: Record<CronName, { schedule: string; description:
   "prewarm-ask": { schedule: "20 2 * * *", description: "Pre-warm the ask-cache for the top-10 corpus queries (Vol. 5 #5)" },
   "gsc-indexing": { schedule: "40 2 * * *", description: "GSC indexing queue: sitemap diff + submit when OAuth lands (Vol. 5 #12)" },
   "completion-nudge": { schedule: "0 15 * * *", description: "Stale-consultation 48h nudge (Vol. 6 #14)" },
+  "weekly-digest": { schedule: "0 12 * * 1", description: "Seeker weekly digest — letters + spotlight (Vol. 6 #13)", cadence: 'weekly' },
 };
 
 export interface CronRunRow {
@@ -168,13 +170,15 @@ export async function cronRunStatuses(now: Date = new Date()): Promise<CronRunSt
   for (const name of names) {
     const last = latestByName.get(name) ?? null;
     const ageHours = last ? Math.max(0, (now.getTime() - last.getTime()) / 3_600_000) : null;
+    // Vol. 6 #13 — weekly crons get an 8-day threshold; daily crons get 26h
+    const threshold = REGISTERED_CRONS[name].cadence === 'weekly' ? 8 * 24 : CRON_LEDGER_MAX_AGE_H;
     statuses.push({
       name,
       schedule: REGISTERED_CRONS[name].schedule,
       description: REGISTERED_CRONS[name].description,
       lastRunAt: last,
       ageHours: ageHours === null ? null : Math.round(ageHours * 10) / 10,
-      alarm: ageHours === null || ageHours > CRON_LEDGER_MAX_AGE_H,
+      alarm: ageHours === null || ageHours > threshold,
       lastOutcome: null,
       lastError: null,
     });
