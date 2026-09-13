@@ -738,7 +738,7 @@ paths:
     post:
       operationId: redeemKey
       tags: [Keys]
-      summary: Redeem an invite key - binds the keys tier to the authenticated member, idempotent per key. Session-gated.
+      summary: Redeem an invite key - binds the keys tier to the authenticated member, idempotent per key. Session-gated. Vol. 6 #10 — 5/10min/IP rate limited (fail-closed).
       description: >-
         Redeems a key code to grant the user the associated tier.
       security:
@@ -772,6 +772,8 @@ paths:
           $ref: '#/components/responses/Conflict'
         '410':
           $ref: '#/components/responses/Gone'
+        '429':
+          description: Rate limited — 5 attempts / 10 min / IP exceeded. Returns {error:'rate_limited', retryAfter} + Retry-After header.
 
   # ── Auth ─────────────────────────────────────────────────
   /api/auth/2fa-verify:
@@ -1255,7 +1257,10 @@ paths:
       responses:
         '200':
           description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
 
+  /api/cron/chain-health:
   /api/cron/chain-health:
     get:
       operationId: apiCronChainHealthGet
@@ -1264,6 +1269,41 @@ paths:
       responses:
         '200':
           description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
+
+  /api/cron/drill-status:
+    post:
+      operationId: apiCronDrillStatusPost
+      tags: [Cron]
+      summary: Ingest one drill verdict {name, verdict pass|fail, source, details?} from the weekly drills workflow or a local operator; upserts the drill:<name> OpsState row behind the war-room drills panel and the digest's 8-day staleness alarm (Vol. 6 #3). Body parsed via parseBody + zod schema (Vol. 6 #8) — every shape failure becomes a typed 400 with the issue list. Write-only by design. CRON_SECRET gated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DrillVerdictIngest'
+      responses:
+        '200':
+          description: OK ({ok, name, verdict, at})
+        '400':
+          description: Bad request — invalid JSON body OR schema violation. Returns {error, issues?}.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseBodyError'
+        '401':
+          description: Unauthorized — CRON_SECRET missing or mismatched
+    get:
+      operationId: apiCronDrillStatusGet
+      tags: [Cron]
+      summary: Method-not-allowed marker — ingestion is write-only. Returns 405.
+      responses:
+        '401':
+          description: Unauthorized — CRON_SECRET missing or mismatched
+        '405':
+          description: POST only
+
 
   /api/cron/drill-status:
     post:
@@ -1282,6 +1322,61 @@ paths:
       responses:
         '405':
           description: POST only
+        '401':
+          description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
+
+  /api/cron/ask-eval:
+    get:
+      operationId: apiCronAskEvalGet
+      tags: [Cron]
+      summary: Nightly /ask golden-set eval (Vol. 6 #6). ?case=<id> probes one case; ?finalize=1 computes rollup; ?bed=1 runs retrieval bed (Vol. 6 #7). CRON_SECRET gated.
+      responses:
+        '200':
+          description: OK — case verdict OR rollup OR list
+        '400':
+          description: Unknown case id or finalize incomplete
+        '401':
+          description: Unauthorized
+
+  /api/cron/observatory:
+    get:
+      operationId: apiCronObservatoryGet
+      tags: [Cron]
+      summary: GSC observatory weekly pull (Vol. 6 #9). Lands asleep when GSC trio unset. CRON_SECRET gated.
+      responses:
+        '200':
+          description: OK ({status, snapshot, wowDelta, alarm}) OR skipped when unconfigured
+        '401':
+          description: Unauthorized
+        '502':
+          description: Configured but pull failed
+
+  /api/cron/testimonial-followup:
+  /api/cron/ask-eval:
+    get:
+      operationId: apiCronAskEvalGet
+      tags: [Cron]
+      summary: Nightly /ask golden-set eval (Vol. 6 #6). ?case=<id> probes one case; ?finalize=1 computes rollup; ?bed=1 runs retrieval bed (Vol. 6 #7). CRON_SECRET gated.
+      responses:
+        '200':
+          description: OK — case verdict OR rollup OR list
+        '400':
+          description: Unknown case id or finalize incomplete
+        '401':
+          description: Unauthorized
+
+  /api/cron/observatory:
+    get:
+      operationId: apiCronObservatoryGet
+      tags: [Cron]
+      summary: GSC observatory weekly pull (Vol. 6 #9). Lands asleep when GSC trio unset. CRON_SECRET gated.
+      responses:
+        '200':
+          description: OK ({status, snapshot, wowDelta, alarm}) OR skipped when unconfigured
+        '401':
+          description: Unauthorized
+        '502':
+          description: Configured but pull failed
 
   /api/cron/testimonial-followup:
     get:
@@ -1291,7 +1386,10 @@ paths:
       responses:
         '200':
           description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
 
+  /api/cron/prewarm-ask:
   /api/cron/prewarm-ask:
     get:
       operationId: apiCronPrewarmAskGet
@@ -1300,7 +1398,10 @@ paths:
       responses:
         '200':
           description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
 
+  /api/cron/gsc-indexing:
   /api/cron/gsc-indexing:
     get:
       operationId: apiCronGscIndexingGet
@@ -1309,7 +1410,10 @@ paths:
       responses:
         '200':
           description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
 
+  /api/cron/cleanup:
   /api/cron/cleanup:
     get:
       operationId: apiCronCleanupGet
@@ -1318,7 +1422,10 @@ paths:
       responses:
         '200':
           description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
 
+  /api/cron/course-send:
   /api/cron/course-send:
     get:
       operationId: apiCronCourseSendGet
@@ -1327,7 +1434,10 @@ paths:
       responses:
         '200':
           description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
 
+  /api/cron/daily-digest:
   /api/cron/daily-digest:
     get:
       operationId: apiCronDailyDigestGet
@@ -1336,7 +1446,10 @@ paths:
       responses:
         '200':
           description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — CRON_SECRET missing or mismatched (bearer token or ?key=)
 
+  /api/glossary-index:
   /api/glossary-index:
     get:
       operationId: apiGlossaryIndexGet
@@ -1394,10 +1507,19 @@ paths:
     post:
       operationId: apiEventsPost
       tags: [Events]
-      summary: POST /api/events — first-party analytics ingestion (TGA §12).
+      summary: POST /api/events — first-party analytics ingestion (TGA §12). Vol. 6 #10 — 60/5min/IP rate limited (fail-open).
+      description: >-
+        Fire-and-forget from the client; returns 204 regardless of storage
+        outcome. Vol. 3 #18: unknown event names rejected with 422.
+        Vol. 6 #10: rate-limited at the head (limiter first, schema/enum
+        second). Fail-OPEN: limiter-down degrades to unlimited-ingestion.
       responses:
-        '200':
-          description: OK (shape documented in the route module)
+        '204':
+          description: Accepted (no body)
+        '422':
+          description: Unknown event name (not in EVENT_NAMES)
+        '429':
+          description: Rate limited — 60 events / 5 min / IP exceeded. Returns {error:'rate_limited', retryAfter} + Retry-After header.
 
   /api/gsc-verification/{token}:
     get:
@@ -2072,7 +2194,41 @@ components:
           type: boolean
           example: true
 
+    # ── Vol. 6 #8 — drill verdict ingestion (parseBody'd) ─────────────────────
+    DrillVerdictIngest:
+      type: object
+      required: [name, verdict]
+      properties:
+        name:
+          type: string
+          enum: [page-weight, turso-failover, chain-probe, production-sweep]
+        verdict:
+          type: string
+          enum: [pass, fail]
+        source:
+          type: string
+          maxLength: 16
+          default: unknown
+        details:
+          type: string
+          maxLength: 300
 
-
-
-
+    # ── Vol. 6 #8 — parseBody 400 issue shape ─────────────────────────────────
+    ParseBodyError:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          enum: [invalid_json, schema_violation]
+        issues:
+          type: array
+          description: Present only when error=schema_violation
+          items:
+            type: object
+            required: [path, message]
+            properties:
+              path:
+                type: string
+              message:
+                type: string

@@ -1,0 +1,41 @@
+# ============================================================
+# KALKI — GSC observatory weekly pull (Vol. 6 #9)
+# ------------------------------------------------------------
+# Sunday 06:00 UTC — pulls 28 days of GSC data and upserts the
+# week's snapshot into the gsc_snapshots table. Reads the
+# previous week's snapshot for the WoW delta + the
+# cannibalization alarm (impressions drop > 40%).
+#
+# Lands asleep like Sentry: until the founder provides
+# GSC_REFRESH_TOKEN + GSC_CLIENT_ID + GSC_CLIENT_SECRET repo
+# secrets, the cron reports {status:'skipped', reason:'awaiting
+# founder consent'} — the OpsState marker is set so the digest
+# surfaces the consent line (NOT an alarm). Silence detection
+# stays armed: a stale > 7d marker is an alarm regardless.
+#
+# Why Sunday 06:00 UTC: spaced from Mon 05:00 drills, Thu 05:00
+# sweep, 03:30 nightly eval — a quiet hour carries all four.
+# ============================================================
+name: observatory
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 6 * * 0"  # Sunday 06:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  observatory:
+    name: GSC observatory weekly pull
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger observatory pull
+        env:
+          SITE: https://www.astrokalki.com
+          SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          [ -n "$SECRET" ] || { echo "::notice::CRON_SECRET repo secret not set — observatory skipped. Add it under Settings → Secrets to enable; digest staleness covers silence."; exit 0; }
+          curl -fsS -m 60 -H "Authorization: Bearer $SECRET" \
+            "$SITE/api/cron/observatory" | jq .

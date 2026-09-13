@@ -1,18 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
-import { requireAuth } from '@/lib/api-auth';
+import { requireAuth, getClientIp } from '@/lib/api-auth';
 import { redeemKeySchema } from '@/lib/validators/schemas';
 import { afterAudit } from '@/lib/after-audit';
 import { eventKeyRedeemed } from '@/lib/admin/notify-events';
+import { redeemRateLimit, tooManyRequestsResponse } from '@/lib/rate-limit';
 
 /**
  * POST /api/keys/redeem
- * 
+ *
  * Redeems a Golden Key to unlock a tier.
  * Requires authentication. userId is derived from session.
+ *
+ * Vol. 6 #10 — abuse gate at the head: 5 attempts / 10 min / IP.
+ * fail-CLOSED: redeem is a credential oracle — when the limiter
+ * is blind (down/error), the route returns 503 rather than
+ * redeem blind. A real seeker rarely mistypes more than twice;
+ * an attacker tries 50.
  */
 export async function POST(request: NextRequest) {
   try {
+    // Vol. 6 #10 — rate limit BEFORE auth (an unauthenticated burst
+    // is still a burst). fail-closed: limiter-down = 503.
+    const ip = getClientIp(request);
+    const rl = await redeemRateLimit(ip);
+    if (rl.limited) {
+      return tooManyRequestsResponse(rl.reset);
+    }
+
     const { error: authError, token } = await requireAuth(request);
     if (authError) return authError;
 

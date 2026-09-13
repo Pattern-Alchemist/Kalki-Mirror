@@ -15,6 +15,8 @@
      if (limited) return NextResponse.json({ error: '...' }, { status: 429 });
    ══════════════════════════════════════════════════════════════ */
 
+import { NextResponse } from 'next/server';
+
 /* ------------------------------------------------------------------
    1. Types
    ------------------------------------------------------------------ */
@@ -426,3 +428,35 @@ export const yantraRateLimit = createRateLimiter({ max: 20, window: 60, prefix: 
 /** Abandoned-intake drafts (Tier-5 #2): fires on wizard step transitions +
  * a client debounce — generous but bounded so it can't be used as a write sink. */
 export const draftRateLimit = createRateLimiter({ max: 10, window: 300, prefix: 'draft' });
+
+/* ------------------------------------------------------------------
+   7. Vol. 6 #10 — the abuse gate
+   ------------------------------------------------------------------
+   /api/keys/redeem and /api/events had ZERO rate limiting (verified
+   2026-09-13) — redeem is a credential oracle (each attempt is a
+   possible valid key), events is an open write relay. Both ship with
+   generous-first thresholds and the existing 429 snapshot covers the
+   observation plane; tightenable after 48h of false-positive watching.
+   ------------------------------------------------------------------ */
+
+/** /api/keys/redeem — credential oracle. fail-CLOSED: when the limiter
+ *  itself is blind (down/error), the route returns 503 rather than
+ *  redeem blind. 5 attempts / 10 min / IP — a real seeker rarely
+ *  mistypes more than twice; an attacker tries 50. */
+export const redeemRateLimit = createRateLimiter({ max: 5, window: 600, prefix: 'redeem' });
+
+/** /api/events — beacon ingestion. fail-OPEN: a beacon loss is tolerable
+ *  (the dashboards already dampen noise), so a limiter failure degrades
+ *  to unlimited-ingestion rather than 503'ing telemetry. 60 / 5 min / IP. */
+export const eventsRateLimit = createRateLimiter({ max: 60, window: 300, prefix: 'events' });
+
+/** Standardized 429 response with Retry-After header.
+ *  Used by both redeem (fail-closed) and events (fail-open) — the
+ *  shape is identical, the doctrine is in WHERE it's returned. */
+export function tooManyRequestsResponse(resetMs: number): NextResponse {
+  const retryAfterSec = Math.max(1, Math.ceil((resetMs - Date.now()) / 1000));
+  return NextResponse.json(
+    { error: 'rate_limited', retryAfter: retryAfterSec },
+    { status: 429, headers: { 'Retry-After': String(retryAfterSec) } },
+  );
+}

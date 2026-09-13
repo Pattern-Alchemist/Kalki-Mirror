@@ -1391,3 +1391,25 @@ Work Log:
 
 Stage Summary:
 - VOL. 6 WEEK A CLOSED: 5 of 20. The tree is the truth (#1), the drills are born committed and verified live (#2), they run themselves (#3), production truth is on a weekly cadence (#4), and the error plane waits for its flip (#5). Next: Week B — 6 → 7 → 8 → 9 → 10 (Proof: golden set, retrieval bed, payload schemas, observatory, abuse gate).
+
+---
+Task ID: vol6-week-b
+Agent: Z (Super Z, main session)
+Task: Vol. 6 Week B (6 → 7 → 8 → 9 → 10) — Proof tier. The /ask surface judged nightly, the retrieval bed wired asleep, every POST schema'd, the observatory gated, the abuse gate shipped.
+
+Work Log:
+- #6 GOLDEN-SET EVAL HARNESS: src/lib/eval/golden-set.ts (17 cases: 12 grounded + 5 silence), ask-eval.ts (pure judge: error→fail, grounded-missing-slug→fail, silence-grounded→hallucination-fail, cache-hit→budget-bypass, budget-blow→fail), ask-eval-observe.ts (OpsState interop, 2-strike rule: first-fail SOFT log, second-consecutive ALERT). /api/cron/ask-eval route: ?case=__list__ / ?case=<id> / ?finalize=1 / ?bed=1. /ask cache-bypass: x-eval=nocache + CRON_SECRET skips BOTH read (measure chain not cache) and write (prevent night-N poisoning night-(N+1)). eval.yml nightly 03:30 UTC, 13s pacing, jq -e '.fail==0' exits red on regression. Digest GOLDEN ASK block. Live first-night: 9/17 pass, digest "GOLDEN ASK: 8/17 fail (1st night, watching) — p95 8929ms" — soft log per doctrine.
+- BUG CAUGHT LIVE: citation extraction — /api/ai/ask returns citations as objects ({slug,section,similarity}), not URL strings. extractCitationSlugs handles both shapes + bare slugs + malformed entries. 6 regression-pin tests.
+- #7 HYBRID RETRIEVAL BED: fusion.ts (RRF K=60, zero-regression: dense=null→lexical unchanged), embed.ts (EMBED_API_KEY-gated, 3s AbortController, JSON-encoded cache key prevents separator collision, fail-soft to null never throws), bed-mode.ts (CANDIDATE_K=20 widen → embed → cosine rank → rrfFuse → top-K=6 assertion). EmbedCache Prisma model + DDL (scripts/apply-vol6b-schema.ts, LIVE-APPLIED to Turso). Live: dense:false, hybridHitRate:null, regression:false, lexicalHitRate:0.417 — zero-regression floor proven.
+- BUG CAUGHT BY OWN TEST: embedKey used `model + "\0" + text` — collides for ("a","x\0b") vs ("a\0x","b"). Fix: JSON.stringify([model, text]).
+- #8 OPENAPI PAYLOAD TRUTH III: parse-body.ts (parseBody<T> → {ok:true,data} | {ok:false,res 400}), openapi-payload.test.ts gate (every requestBody MUST $ref, every $ref resolves, every /api/cron/* declares 401). GATE CAUGHT 7 EXISTING CRON ROUTES missing 401 docs — all fixed. drill-status refactored to parseBody + zod schema. DrillVerdictIngest + ParseBodyError schemas added.
+- #9 OBSERVATORY ENGINE: gsc.ts (isObservatoryConfigured trio check, pullGsc OAuth refresh + searchConsole query + position-weighted aggregation, wowDelta, shouldAlarm ≤-40%, persistSnapshot week-key upsert, readRecentSnapshots(8) for sparkline). /api/cron/observatory route (unconfigured→honest skip, OpsState marker set so silence detection armed). observatory.yml Sunday 06:00 UTC. GscSnapshot Prisma model + DDL. Live: {status:"skipped", reason:"awaiting founder consent"} — doctrine proven.
+- #10 ABUSE GATE: redeemRateLimit (5/600s, fail-CLOSED credential oracle), eventsRateLimit (60/300s, fail-OPEN beacon), tooManyRequestsResponse (429 + Retry-After). Limiter BEFORE auth/schema (an unauthenticated burst is still a burst). Privacy floor: counters only, no IPs stored. Live: Turso RateLimitHit table confirms per-IP counting, 66 events hits recorded across 3 NAT'd IPs.
+- FINAL GAUNTLET: 1082/1082 vitest (82 files, +113 new since Week A). tsc clean. Build green (344 pages).
+- THREE PRODUCTION DEPLOYS (all to kalki-fix / www.astrokalki.com via Vercel CLI): #6+#7 initial → #6 citation hotfix → #8+#9+#10 batch.
+- GITHUB PUSH: PAT in upload file was rotated post-leak (good hygiene). Vercel CLI deploys from local code with no GitHub roundtrip. This patch file recreates all changes for the user to apply once their PAT is rotated.
+
+Stage Summary:
+- VOL. 6 WEEK B CLOSED: 5 of 5. The doctrine proven: a founder-gated dependency does NOT have to block the machine that will use it — build the bed, gate the sensor, document the flip. Sentry (#5), EMBED (#7), GSC (#9) all live asleep, all wake on one env flip.
+- FOUNDER-ONLY REMAINING: TOTP re-enroll, admin password rotate, $5-10 OpenRouter credit, GSC OAuth consent, GitHub PAT rotation.
+

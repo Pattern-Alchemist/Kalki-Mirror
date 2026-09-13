@@ -423,7 +423,9 @@ export const ModelName = {
   RateLimitHit: 'RateLimitHit',
   CronRun: 'CronRun',
   TestimonialFollowUp: 'TestimonialFollowUp',
-  IndexingRequest: 'IndexingRequest'
+  IndexingRequest: 'IndexingRequest',
+  EmbedCache: 'EmbedCache',
+  GscSnapshot: 'GscSnapshot'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -439,7 +441,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState" | "rateLimitHit" | "cronRun" | "testimonialFollowUp" | "indexingRequest"
+    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState" | "rateLimitHit" | "cronRun" | "testimonialFollowUp" | "indexingRequest" | "embedCache" | "gscSnapshot"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2441,6 +2443,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    EmbedCache: {
+      payload: Prisma.$EmbedCachePayload<ExtArgs>
+      fields: Prisma.EmbedCacheFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EmbedCacheFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbedCachePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EmbedCacheFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbedCachePayload>
+        }
+        findFirst: {
+          args: Prisma.EmbedCacheFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbedCachePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EmbedCacheFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbedCachePayload>
+        }
+        findMany: {
+          args: Prisma.EmbedCacheFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbedCachePayload>[]
+        }
+        create: {
+          args: Prisma.EmbedCacheCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbedCachePayload>
+        }
+        createMany: {
+          args: Prisma.EmbedCacheCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EmbedCacheCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbedCachePayload>[]
+        }
+        delete: {
+          args: Prisma.EmbedCacheDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbedCachePayload>
+        }
+        update: {
+          args: Prisma.EmbedCacheUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbedCachePayload>
+        }
+        deleteMany: {
+          args: Prisma.EmbedCacheDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EmbedCacheUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EmbedCacheUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbedCachePayload>[]
+        }
+        upsert: {
+          args: Prisma.EmbedCacheUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbedCachePayload>
+        }
+        aggregate: {
+          args: Prisma.EmbedCacheAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEmbedCache>
+        }
+        groupBy: {
+          args: Prisma.EmbedCacheGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmbedCacheGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EmbedCacheCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmbedCacheCountAggregateOutputType> | number
+        }
+      }
+    }
+    GscSnapshot: {
+      payload: Prisma.$GscSnapshotPayload<ExtArgs>
+      fields: Prisma.GscSnapshotFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GscSnapshotFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GscSnapshotPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GscSnapshotFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GscSnapshotPayload>
+        }
+        findFirst: {
+          args: Prisma.GscSnapshotFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GscSnapshotPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GscSnapshotFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GscSnapshotPayload>
+        }
+        findMany: {
+          args: Prisma.GscSnapshotFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GscSnapshotPayload>[]
+        }
+        create: {
+          args: Prisma.GscSnapshotCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GscSnapshotPayload>
+        }
+        createMany: {
+          args: Prisma.GscSnapshotCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GscSnapshotCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GscSnapshotPayload>[]
+        }
+        delete: {
+          args: Prisma.GscSnapshotDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GscSnapshotPayload>
+        }
+        update: {
+          args: Prisma.GscSnapshotUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GscSnapshotPayload>
+        }
+        deleteMany: {
+          args: Prisma.GscSnapshotDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GscSnapshotUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GscSnapshotUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GscSnapshotPayload>[]
+        }
+        upsert: {
+          args: Prisma.GscSnapshotUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GscSnapshotPayload>
+        }
+        aggregate: {
+          args: Prisma.GscSnapshotAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGscSnapshot>
+        }
+        groupBy: {
+          args: Prisma.GscSnapshotGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GscSnapshotGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GscSnapshotCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GscSnapshotCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2903,6 +3053,28 @@ export const IndexingRequestScalarFieldEnum = {
 export type IndexingRequestScalarFieldEnum = (typeof IndexingRequestScalarFieldEnum)[keyof typeof IndexingRequestScalarFieldEnum]
 
 
+export const EmbedCacheScalarFieldEnum = {
+  cacheKey: 'cacheKey',
+  model: 'model',
+  vec: 'vec',
+  createdAt: 'createdAt'
+} as const
+
+export type EmbedCacheScalarFieldEnum = (typeof EmbedCacheScalarFieldEnum)[keyof typeof EmbedCacheScalarFieldEnum]
+
+
+export const GscSnapshotScalarFieldEnum = {
+  snapshotDate: 'snapshotDate',
+  impressions: 'impressions',
+  clicks: 'clicks',
+  position: 'position',
+  topQueries: 'topQueries',
+  createdAt: 'createdAt'
+} as const
+
+export type GscSnapshotScalarFieldEnum = (typeof GscSnapshotScalarFieldEnum)[keyof typeof GscSnapshotScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3151,6 +3323,8 @@ export type GlobalOmitConfig = {
   cronRun?: Prisma.CronRunOmit
   testimonialFollowUp?: Prisma.TestimonialFollowUpOmit
   indexingRequest?: Prisma.IndexingRequestOmit
+  embedCache?: Prisma.EmbedCacheOmit
+  gscSnapshot?: Prisma.GscSnapshotOmit
 }
 
 /* Types for Logging */

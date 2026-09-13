@@ -668,3 +668,31 @@ model IndexingRequest {
 
   @@index([state])
 }
+
+// ── Vol. 6 #7: neural embedding cache ─────────────────────────────────────
+// The EMBED_API_KEY landing surface. When the key is unset, this table
+// stays empty (embedBatch returns null); when set, embed.ts writes one
+// row per (model, text) pair on first miss, then hits on every subsequent
+// call. Cache key = sha256(JSON([model, text])) — JSON encoding prevents
+// the separator-collision bug. DDL applied via scripts/apply-vol6b-schema.ts.
+model EmbedCache {
+  cacheKey  String   @id
+  model     String
+  vec       String
+  createdAt DateTime @default(now())
+
+  @@index([model])
+}
+
+// ── Vol. 6 #9: GSC weekly aggregates ─────────────────────────────────────
+// The observatory engine's materialized state. pullGsc() writes one row
+// per week-key (Sunday 00:00 UTC) — idempotent upsert. The war-room reads
+// the last 8 rows for the sparkline; the digest reads the latest two for WoW.
+model GscSnapshot {
+  snapshotDate String   @id // YYYY-MM-DD, the Sunday week-key
+  impressions  Int
+  clicks       Int
+  position     Float
+  topQueries   String   // JSON: [{q, i, c, p}]
+  createdAt    DateTime @default(now())
+}

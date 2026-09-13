@@ -50,6 +50,16 @@ import {
 } from "@/lib/cron-ledger";
 import { askBudgetDigestLine } from "@/lib/ai/latency-budget";
 import { readAiRouteStats } from "@/lib/analytics-db";
+import {
+  parseStoredGoldenAsk,
+  goldenAskDigestLine,
+  GOLDEN_ASK_OPS_KEY,
+} from "@/lib/eval/ask-eval-observe";
+import {
+  parseStoredObservatory,
+  observatoryDigestLine,
+  OBSERVATORY_OPS_KEY,
+} from "@/lib/observatory/gsc";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -354,6 +364,29 @@ export async function GET(request: NextRequest) {
     // telemetry transient — silence is the healthy default
   }
 
+  // Vol. 6 #6 — golden-ask eval: 2-strike rule — first night's fail logs
+  // SOFT (digest surfaces, no alarm); second consecutive fail ALERTS.
+  // Stale > 25h is an alarm (the eval cron is dead). Silent on green.
+  let goldenAskLine = "";
+  try {
+    const marker = await db.opsState.findUnique({ where: { key: GOLDEN_ASK_OPS_KEY } });
+    goldenAskLine = goldenAskDigestLine(parseStoredGoldenAsk(marker?.value));
+  } catch {
+    // OpsState transient — silence is the healthy default
+  }
+
+  // Vol. 6 #9 — GSC observatory: absent while unflipped (the doctrine's
+  // resting state — mirrors Sentry), surfaces the consent line, ALERTS
+  // on impressions > 40% WoW drop (cannibalization/regression), ALERTS
+  // when stale > 7d (observatory cron dead). Silent on green.
+  let observatoryLine = "";
+  try {
+    const marker = await db.opsState.findUnique({ where: { key: OBSERVATORY_OPS_KEY } });
+    observatoryLine = observatoryDigestLine(parseStoredObservatory(marker?.value));
+  } catch {
+    // OpsState transient — silence is the healthy default
+  }
+
   // Vol. 4 #3 — list funnel (weekly cohort): joined → Door-3 open → any
   // click → /consultations → intake. Fail-soft like every other block:
   // a dead join dims one line, never the digest.
@@ -423,6 +456,8 @@ export async function GET(request: NextRequest) {
     ...(sentryLine ? [sentryLine] : []),
     ...(cronLine ? [cronLine] : []),
     ...(aiBudgetLine ? [aiBudgetLine] : []),
+    ...(goldenAskLine ? [goldenAskLine] : []),
+    ...(observatoryLine ? [observatoryLine] : []),
     "",
     `— CONSOLE —`,
     `${unreadBell} unread bell notification${unreadBell === 1 ? "" : "s"}`,

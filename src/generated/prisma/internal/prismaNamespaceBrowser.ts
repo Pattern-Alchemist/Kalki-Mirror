@@ -77,7 +77,9 @@ export const ModelName = {
   RateLimitHit: 'RateLimitHit',
   CronRun: 'CronRun',
   TestimonialFollowUp: 'TestimonialFollowUp',
-  IndexingRequest: 'IndexingRequest'
+  IndexingRequest: 'IndexingRequest',
+  EmbedCache: 'EmbedCache',
+  GscSnapshot: 'GscSnapshot'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -517,6 +519,28 @@ export const IndexingRequestScalarFieldEnum = {
 } as const
 
 export type IndexingRequestScalarFieldEnum = (typeof IndexingRequestScalarFieldEnum)[keyof typeof IndexingRequestScalarFieldEnum]
+
+
+export const EmbedCacheScalarFieldEnum = {
+  cacheKey: 'cacheKey',
+  model: 'model',
+  vec: 'vec',
+  createdAt: 'createdAt'
+} as const
+
+export type EmbedCacheScalarFieldEnum = (typeof EmbedCacheScalarFieldEnum)[keyof typeof EmbedCacheScalarFieldEnum]
+
+
+export const GscSnapshotScalarFieldEnum = {
+  snapshotDate: 'snapshotDate',
+  impressions: 'impressions',
+  clicks: 'clicks',
+  position: 'position',
+  topQueries: 'topQueries',
+  createdAt: 'createdAt'
+} as const
+
+export type GscSnapshotScalarFieldEnum = (typeof GscSnapshotScalarFieldEnum)[keyof typeof GscSnapshotScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -81,8 +81,17 @@ async function handle(request: NextRequest): Promise<NextResponse> {
     }
 
     // ── Cache: identical (query · retrieved folio set) → zero LLM cost ────
+    // Vol. 6 #6 — eval harness bypass: x-eval=nocache + valid CRON_SECRET
+    // skips BOTH read and write. Skipping read measures the chain, not the
+    // cache (the doctrine); skipping write prevents night-N's eval answer
+    // from poisoning night-(N+1)'s fresh probe. Both checks required — a
+    // missing secret means the flag is ignored, never abused.
+    const evalBypass =
+      request.headers.get('x-eval') === 'nocache' &&
+      !!process.env.CRON_SECRET &&
+      request.headers.get('authorization') === `Bearer ${process.env.CRON_SECRET}`;
     const cacheKey = askCacheKey(query, retrievedSlugs);
-    const cached = await lookupAsk(cacheKey);
+    const cached = evalBypass ? null : await lookupAsk(cacheKey);
     if (cached) {
       recordAskHit(cacheKey);
       const hit: AskResult = {
@@ -121,11 +130,13 @@ async function handle(request: NextRequest): Promise<NextResponse> {
       return NextResponse.json(silent);
     }
 
-    await storeAsk(
-      cacheKey,
-      { answer: parsedOut.answer, cited_folios: parsedOut.citedSlugs },
-      result.model
-    );
+    if (!evalBypass) {
+      await storeAsk(
+        cacheKey,
+        { answer: parsedOut.answer, cited_folios: parsedOut.citedSlugs },
+        result.model
+      );
+    }
 
     const grounded: AskResult = {
       grounded: true,

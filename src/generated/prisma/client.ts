@@ -176,3 +176,13 @@ export type TestimonialFollowUp = Prisma.TestimonialFollowUpModel
  * 
  */
 export type IndexingRequest = Prisma.IndexingRequestModel
+/**
+ * Model EmbedCache
+ * 
+ */
+export type EmbedCache = Prisma.EmbedCacheModel
+/**
+ * Model GscSnapshot
+ * 
+ */
+export type GscSnapshot = Prisma.GscSnapshotModel

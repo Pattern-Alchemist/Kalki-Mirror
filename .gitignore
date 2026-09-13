@@ -134,3 +134,6 @@ env.local
 # Vol. 5 #8 — the hi bridge batch-2 insertions (atomic, re-runnable, skip-if-present)
 !scripts/add-hi-bridge-vol5.py
 !scripts/add-pattern-hi-vol5.py
+# Vol. 6 #7+#9 — the Week B schema applier (embed_cache + gsc_snapshots tables;
+# Prisma 7 P1013 libsql:// forces raw DDL — the file lives here, not in prisma/migrations)
+!scripts/apply-vol6b-schema.ts

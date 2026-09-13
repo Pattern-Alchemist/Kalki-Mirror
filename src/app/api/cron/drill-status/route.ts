@@ -1,5 +1,5 @@
 // =============================================================
-// KALKI — drill verdict ingestion (Vol. 6 #3)
+// KALKI — drill verdict ingestion (Vol. 6 #3, parseBody'd Vol. 6 #8)
 // -------------------------------------------------------------
 // POST /api/cron/drill-status
 //   Authorization: Bearer <CRON_SECRET>  (or ?key=<CRON_SECRET>)
@@ -9,17 +9,32 @@
 // outcomes here; verdicts land in OpsState as drill:<name> rows for
 // the war-room panel and the digest's staleness alarm. Ingestion is
 // write-only by design — the digest reads OpsState directly.
+//
+// Vol. 6 #8 — body parsing now goes through parseBody + a zod schema.
+// Every shape failure becomes a typed 400 with the issue list, never
+// an unhandled throw. The schema is mirrored in openapi.yaml under
+// components.schemas.DrillVerdictIngest.
 // =============================================================
 
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import {
   DRILLS,
   isDrillName,
   isDrillVerdict,
   storeDrillVerdict,
 } from "@/lib/ops/drills";
+import { parseBody } from "@/lib/api/parse-body";
 
 export const dynamic = "force-dynamic";
+
+// The body schema — mirrored in openapi.yaml components.schemas.DrillVerdictIngest
+const drillVerdictBodySchema = z.object({
+  name: z.string().min(1).max(40),
+  verdict: z.enum(["pass", "fail"]),
+  source: z.string().trim().min(1).max(16).default("unknown"),
+  details: z.string().max(300).optional(),
+});
 
 function authorize(request: NextRequest): boolean {
   const secret = process.env.CRON_SECRET;
@@ -34,18 +49,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: "invalid JSON body" }, { status: 400 });
-  }
-
-  const obj = (body ?? {}) as Record<string, unknown>;
-  const name = obj.name;
-  const verdict = obj.verdict;
-  const source = typeof obj.source === "string" && obj.source.trim() ? obj.source.trim().slice(0, 16) : "unknown";
-  const details = typeof obj.details === "string" ? obj.details.slice(0, 300) : undefined;
+  const r = await parseBody(request, drillVerdictBodySchema);
+  if (!r.ok) return r.res;
+  const { name, verdict, source, details } = r.data;
 
   if (!isDrillName(name)) {
     return NextResponse.json(
@@ -54,6 +60,7 @@ export async function POST(request: NextRequest) {
     );
   }
   if (!isDrillVerdict(verdict)) {
+    // zod enum already enforced, but the type guard stays defensive
     return NextResponse.json(
       { error: "verdict must be 'pass' or 'fail'" },
       { status: 400 },

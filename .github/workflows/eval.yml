@@ -1,0 +1,70 @@
+# ============================================================
+# KALKI — golden-ask nightly eval (Vol. 6 #6)
+# ------------------------------------------------------------
+# Nightly 03:30 UTC — spaced from Monday 05:00 drills + Thursday
+# production-sweep so a quiet hour carries all three.
+#
+# Pacing: GitHub Actions owns the 13s limiter-pacing (≥13s between
+# /ask probes — the route's 5/min/IP limiter is shared, and a
+# burst here would 429 the real seekers). One case per request
+# keeps the serverless runtime under 60s — hobby-safe.
+#
+# Verdicts accumulate in the per-day OpsState bucket
+# (eval:golden_ask:bucket:<date>); finalize reads the bucket,
+# computes the rollup + the 2-strike consecutiveFailures counter,
+# and upserts eval:golden_ask (the digest + war-room source).
+#
+# The workflow exits red on regression (fail > 0) too — GitHub
+# emails the founder on scheduled-workflow failure, so a
+# real regression pages twice (email + digest line).
+# ============================================================
+name: golden-ask
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "30 3 * * *"  # nightly 03:30 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  eval:
+    name: golden-ask nightly eval
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe each golden case + finalize
+        env:
+          SITE: https://www.astrokalki.com
+          SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          [ -n "$SECRET" ] || { echo "::notice::CRON_SECRET repo secret not set — eval skipped. Add it under Settings → Secrets to enable; digest staleness alarm (>25h) still covers silence."; exit 0; }
+
+          # 1. enumerate the case list
+          IDS=$(curl -fsS -m 20 -H "Authorization: Bearer $SECRET" \
+            "$SITE/api/cron/ask-eval?case=__list__" \
+            | jq -r '.cases[].id')
+
+          if [ -z "$IDS" ]; then
+            echo "::error::empty case list — the route is misconfigured"
+            exit 1
+          fi
+
+          # 2. probe each case, 13s pacing (route limiter contract)
+          FAILS=0
+          for id in $IDS; do
+            V=$(curl -fsS -m 60 -H "Authorization: Bearer $SECRET" \
+              "$SITE/api/cron/ask-eval?case=$id")
+            echo "$V" | jq -c .
+            OK=$(echo "$V" | jq -r '.ok')
+            [ "$OK" = "true" ] || FAILS=$((FAILS + 1))
+            sleep 13
+          done
+
+          # 3. finalize — rollup + 2-strike counter into OpsState
+          R=$(curl -fsS -m 30 -H "Authorization: Bearer $SECRET" \
+            "$SITE/api/cron/ask-eval?finalize=1")
+          echo "$R" | jq .
+
+          # 4. exit red on regression (digest + war-room are already wired)
+          echo "$R" | jq -e '.fail == 0' > /dev/null
