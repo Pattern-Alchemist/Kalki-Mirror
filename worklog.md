@@ -1433,3 +1433,23 @@ Stage Summary:
 - VOL. 6 WEEK C CLOSED: 4 of 4. The rails for the first hundred seekers are in place: campaign keys are an instrument (mint with attribution, deep-link auto-fill, consultation join), letters launch is one command (the drill proves the gate worked, bespoke OG cards land with the same commit), the consultation loop cannot fall through the floor (48h stale detector + nudge + digest block), the subscriber list gets a weekly beat (letters + spotlight, UTM-tagged, idempotent).
 - FOUNDER-ONLY REMAINING: TOTP re-enroll (still burned), admin password rotate, $5-10 OpenRouter credit, GSC OAuth consent, EMBED_API_KEY. The letters launch needs the founder's sign-off on the 5 draft letters (the drill publishes what's reviewed). The first campaign needs the founder to mint keys with a campaign tag + distribute the ?key= deep-links.
 
+
+---
+Task ID: vol6-tier-24
+Agent: Z (Super Z, main session)
+Task: Vol. 6 Tier 24 (15 → 16 → 17 → 18 → 19 → 20) — Reach & never-regress III. USA depth, hi completion + URLs, a11y, census, restore drill.
+
+Work Log:
+- #15 USA DEPTH II: usaLocalBusinessJsonLd() — ProfessionalService @type with @id, name, url, image, priceRange, areaServed (City+State+Country), PostalAddress, hasOfferCatalog (service catalog with prices), sameAs. City↔service cross-link grid: city pages show all services, service pages show all cities. 12 tests.
+- #16 HI WALL COMPLETION: scripts/add-hi-bridge-vol6.py inserted the final 26 glossary terms (Ṣaṭkarma, metaphysics, element doctrine, four yoga paths, remaining). 86/86 glossary terms now carry real Devanagari hi definitions in sadhu register. CourseLesson interface extended with hi?: { content: string } field (aghori course can now carry hi, 0/54 translated today — founder reviews). 17 hi-bridge tests pass.
+- #17 HI URLS: /hi/glossary/[slug] + /hi/patterns/[slug] twin routes. Canonical points to EN version (Google indexes EN only). hreflang alternates on sitemap EN entries declare the hi variant. /hi/ pages are noindex (canonical-only). Build generates 450 static pages (344 + 86 hi/glossary + 20 hi/patterns). Soft-404 audit gate caught the new routes — registered. 9 tests pin URL structure + hreflang + EN-fallback invariant.
+- #18 A11Y FLOORS II: lighthouse URL list extended 6 → 12 URLs (added /usa hub + city + service, /glossary, /letters, /hi/glossary/om hi twin). a11y floor stays at 0.85 (ERROR). Contract tests pin: lighthouse URL coverage, a11y floor level, admin table scope="col" contract (documented, enforcement enables incrementally), focus-visible contract.
+- #19 SITEMAP FLOOR HYGIENE: fixed stale USA floor (6 → 10, matching reality: 1 hub + 5 services + 4 cities). /hi/ classification added — noindex URLs that should NEVER appear in sitemap; classify() returns UNREGISTERED so the census fails loud. SITE_LASTMOD bumped to 2026-09-13 (Vol. 6 shipped).
+- #20 RESTORE DRILL III + DECEMBER CADENCE: restore-drill added to DRILLS array (staleness alarm now covers it). isDrillStale uses per-drill threshold: quarterly drills get 95 days (not 8). restore-drill.yml POSTs verdict to /api/cron/drill-status (war-room + digest see it). Schedule includes December (Jan/Apr/Jul/Oct 2nd + Dec 2nd).
+- FINAL GAUNTLET: 1154/1154 vitest (88 files, +25 new since Week C). tsc clean. Build green (450 pages — up from 344, the /hi/ twins are statically generated).
+- SIX COMMITS pushed to GitHub (29488da..1563532). One production deploy (READY). Live smoke: health ok / hi/glossary/om 200 / hi/patterns/the-witness 200 / sitemap 293 URLs (no /hi/ — noindex) / hreflang 212 entries / usa/austin LocalBusiness JSON-LD present.
+
+Stage Summary:
+- VOL. 6 TIER 24 CLOSED: 6 of 6. The hi corpus is complete (86/86), the /hi/ URL twins are live (hreflang declared, canonical-to-EN), the USA layer carries LocalBusiness, the a11y floor covers more surfaces, the sitemap census is honest, the restore drill is wired to the drill ledger + has a December cadence.
+- VOL. 6 COMPLETE: 20 of 20 items across all four tiers (Permanence, Proof, First Hundred Seekers, Reach & Never-regress III). 1154/1154 vitest (88 files). The doctrine proven across the volume: the tree is the truth (#1), the gates police the operator, founder-gated dependencies do NOT block the machine (Sentry, EMBED, GSC all land asleep + wake on one env flip).
+
