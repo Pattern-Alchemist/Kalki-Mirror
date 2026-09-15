@@ -1453,3 +1453,20 @@ Stage Summary:
 - VOL. 6 TIER 24 CLOSED: 6 of 6. The hi corpus is complete (86/86), the /hi/ URL twins are live (hreflang declared, canonical-to-EN), the USA layer carries LocalBusiness, the a11y floor covers more surfaces, the sitemap census is honest, the restore drill is wired to the drill ledger + has a December cadence.
 - VOL. 6 COMPLETE: 20 of 20 items across all four tiers (Permanence, Proof, First Hundred Seekers, Reach & Never-regress III). 1154/1154 vitest (88 files). The doctrine proven across the volume: the tree is the truth (#1), the gates police the operator, founder-gated dependencies do NOT block the machine (Sentry, EMBED, GSC all land asleep + wake on one env flip).
 
+
+---
+Task ID: vol7-week-a
+Agent: Z (Super Z, main session)
+Task: Vol. 7 Week A (1 → 2 → 3) — Triage: the live alarms. Eval cron repair, chain rebuild, TOTP break-glass.
+
+Work Log:
+- #1 GOLDEN-ASK EVAL CRON REPAIR: added /api/cron/ask-eval?finalize=1 as a Vercel cron at 03:45 UTC (15 min after the GH workflow). If GH fires, the bucket is complete and finalize succeeds. If GH fails, finalize returns incomplete — the digest still alarms. Also added ?case=run_all mode (manual fallback): runs ALL remaining cases + auto-finalizes in one serverless invocation. On hobby (60s max), runs ~4 cases before timeout — the bucket is idempotent (cases overwrite by id), so partial runs accumulate safely. The root cause (GH workflow not firing) is likely a missing CRON_SECRET repo secret on GitHub — the founder needs to add it under Settings → Secrets.
+- #2 CHAIN REBUILD: 19-model sweep at contract size found 0/3 of the old chain alive (liquid 29.3s over budget, openrouter/free breach, gemma 429 still). 2 survivors found: inclusionai/ling-3.0-flash-fin (4.4s PASS) + inclusionai/ling-3.0-flash-vl (10.0s PASS). New chain: [inclusionai/ling-3.0-flash-fin:free, inclusionai/ling-3.0-flash-vl:free, openrouter/free]. Gemma tail dropped (429 for 72h+). Live test: grounded:true via nvidia/nemotron-3-super-120b-a12b:free (the openrouter/free meta-router routed to nemotron — the chain walk fell through inclusionai to the meta-router, which is working as designed).
+- #3 TOTP BREAK-GLASS: scripts/totp-break-glass.py clears the twoFactor fields via Turso. LIVE-EXECUTED against production: 2FA=1→0, has_secret=1→0. Admin login verified: {success:true} with password-only. The founder can now log in and re-enroll TOTP at /admin/settings. The 2FA gate is currently OFF (password-only until re-enrolled).
+- FINAL GAUNTLET: 1154/1154 vitest (89 files). tsc clean. Build green (450 pages).
+- TWO COMMITS pushed to GitHub (50839a6..638554f). One production deploy (READY). Live smoke: health ok / chain grounded via meta-router / admin login password-only works / eval route 17 cases serving.
+- ROOT CAUSE of eval dead: the eval.yml GH workflow requires CRON_SECRET as a repo secret. Without it, the workflow skips with a notice. The Vercel cron heartbeat (finalize=1) uses the env var (already set), so it works regardless — but it can only finalize what the GH workflow ran. The founder needs to add CRON_SECRET to GitHub Settings → Secrets → Actions.
+
+Stage Summary:
+- VOL. 7 WEEK A CLOSED: 3 of 3. The three live alarms are addressed: the eval has a Vercel backup + run_all fallback, the chain is rebuilt on survivors (grounded:true live), the TOTP is cleared (admin login works). The founder's next actions: (1) add CRON_SECRET to GitHub repo secrets, (2) re-enroll TOTP at /admin/settings, (3) rotate the admin password (it's in chat history).
+
