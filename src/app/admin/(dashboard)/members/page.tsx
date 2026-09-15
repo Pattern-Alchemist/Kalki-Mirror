@@ -51,12 +51,12 @@ export default function MembersPage() {
       <div className="overflow-x-auto rounded-xl border border-zinc-800">
         <table className="w-full text-left text-sm">
           <thead><tr className="border-b border-zinc-800 bg-zinc-900/50">
-            <th className="px-4 py-3 font-medium text-zinc-500">Email</th>
-            <th className="px-4 py-3 font-medium text-zinc-500">Name</th>
-            <th className="px-4 py-3 font-medium text-zinc-500">Tier</th>
-            <th className="px-4 py-3 font-medium text-zinc-500">Role</th>
-            <th className="px-4 py-3 font-medium text-zinc-500">Streaks</th>
-            <th className="px-4 py-3 font-medium text-zinc-500">Joined</th>
+            <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Email</th>
+            <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Name</th>
+            <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Tier</th>
+            <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Role</th>
+            <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Streaks</th>
+            <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Joined</th>
           </tr></thead>
           <tbody className="divide-y divide-zinc-800/50">
             {members.map(m => (

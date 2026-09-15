@@ -50,9 +50,8 @@ const AMNESTY: Record<string, string> = {
   // amnesty must be removed or the gate fails on the contradiction).
   // 'scripts/launch-letters.sh': 'Vol.6 #12 first-move promise — lands in Week C',
 
-  // Vol. 7 #4 — aghori hi bridge script (first-move promise — lands in Week B).
-  // Same self-purging pattern: the moment the file exists, remove this entry.
-  'scripts/add-aghori-hi-vol7.py': 'Vol.7 #4 first-move promise — lands in Week B',
+  // Vol. 7 #4 — aghori hi bridge script LANDED. The amnesty entry self-purged.
+  // 'scripts/add-aghori-hi-vol7.py': 'Vol.7 #4 first-move promise — lands in Week B',
 
   // ── Session-ephemeral one-shots: historical worklog citations whose
   //    OUTPUT landed in commits; the scripts themselves were never meant

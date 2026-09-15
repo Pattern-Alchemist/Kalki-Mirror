@@ -109,13 +109,13 @@ export default function KeysPage() {
       <div className="overflow-x-auto rounded-xl border border-zinc-800">
         <table className="w-full text-left text-sm">
           <thead><tr className="border-b border-zinc-800 bg-zinc-900/50">
-            <th className="px-4 py-3 font-medium text-zinc-500">Code</th>
-            <th className="px-4 py-3 font-medium text-zinc-500">Tier</th>
-            <th className="px-4 py-3 font-medium text-zinc-500">Uses</th>
-            <th className="px-4 py-3 font-medium text-zinc-500">Campaign</th>
-            <th className="px-4 py-3 font-medium text-zinc-500">Active</th>
-            <th className="px-4 py-3 font-medium text-zinc-500">Created</th>
-            <th className="px-4 py-3 font-medium text-zinc-500"></th>
+            <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Code</th>
+            <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Tier</th>
+            <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Uses</th>
+            <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Campaign</th>
+            <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Active</th>
+            <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Created</th>
+            <th scope="col" className="px-4 py-3 font-medium text-zinc-500"></th>
           </tr></thead>
           <tbody className="divide-y divide-zinc-800/50">
             {keys.map(k => (

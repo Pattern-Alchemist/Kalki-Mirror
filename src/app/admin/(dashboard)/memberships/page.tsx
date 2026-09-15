@@ -255,12 +255,12 @@ export default function MembershipsPage() {
         <table className="w-full min-w-[860px] text-left text-sm">
           <thead>
             <tr className="border-b border-zinc-800 bg-zinc-900/60 text-xs uppercase tracking-wider text-zinc-500">
-              <th className="px-4 py-3 font-medium">Seeker</th>
-              <th className="px-4 py-3 font-medium">Plan</th>
-              <th className="px-4 py-3 font-medium">Status</th>
-              <th className="px-4 py-3 font-medium">UTR</th>
-              <th className="px-4 py-3 font-medium">Requested</th>
-              <th className="px-4 py-3 font-medium">Actions</th>
+              <th scope="col" className="px-4 py-3 font-medium">Seeker</th>
+              <th scope="col" className="px-4 py-3 font-medium">Plan</th>
+              <th scope="col" className="px-4 py-3 font-medium">Status</th>
+              <th scope="col" className="px-4 py-3 font-medium">UTR</th>
+              <th scope="col" className="px-4 py-3 font-medium">Requested</th>
+              <th scope="col" className="px-4 py-3 font-medium">Actions</th>
             </tr>
           </thead>
           <tbody>

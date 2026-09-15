@@ -23,7 +23,15 @@
     "ping:indexnow": "bash scripts/ping-indexnow.sh",
     "ping:indexnow:cron": "curl -fsS -H \"Authorization: Bearer ${CRON_SECRET}\" \"${SITE_URL:-https://www.astrokalki.com}/api/indexnow\"",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "probe:chain": "python3 scripts/probe-chain.py",
+    "rehearse:failover": "bash scripts/rehearse-turso-failover.sh",
+    "sweep:production": "python3 scripts/production-sweep.py",
+    "letters:launch": "bash scripts/launch-letters.sh",
+    "audit:creds": "bash scripts/audit-credentials.sh",
+    "bake:folios": "npx tsx scripts/bake-folio-embeddings.ts",
+    "bake:audio": "node scripts/bake-breathwork-audio.mjs",
+    "seed:letters": "node scripts/seed-launch-letters.mjs"
   },
   "dependencies": {
     "@libsql/client": "^0.17.4",

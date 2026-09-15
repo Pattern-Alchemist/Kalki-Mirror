@@ -502,11 +502,11 @@ export default function WarRoomPage() {
                   <table className="w-full text-left text-sm">
                     <thead>
                       <tr className="border-b border-zinc-800 text-xs text-zinc-600">
-                        <th className="pb-2 pr-4 font-medium">Campaign</th>
-                        <th className="pb-2 pr-4 font-medium">Leads</th>
-                        <th className="pb-2 pr-4 font-medium">Booked</th>
-                        <th className="pb-2 pr-4 font-medium">Book %</th>
-                        <th className="pb-2 font-medium">Last lead</th>
+                        <th scope="col" className="pb-2 pr-4 font-medium">Campaign</th>
+                        <th scope="col" className="pb-2 pr-4 font-medium">Leads</th>
+                        <th scope="col" className="pb-2 pr-4 font-medium">Booked</th>
+                        <th scope="col" className="pb-2 pr-4 font-medium">Book %</th>
+                        <th scope="col" className="pb-2 font-medium">Last lead</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-zinc-800/50">
@@ -632,12 +632,12 @@ export default function WarRoomPage() {
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
-                      <th className="pb-2 font-medium">Cohort</th>
-                      <th className="pb-2 text-right font-medium">Joined</th>
-                      <th className="pb-2 text-right font-medium">Door-3 open</th>
-                      <th className="pb-2 text-right font-medium">Clicked</th>
-                      <th className="pb-2 text-right font-medium">→ /consultations</th>
-                      <th className="pb-2 text-right font-medium">Intake</th>
+                      <th scope="col" className="pb-2 font-medium">Cohort</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Joined</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Door-3 open</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Clicked</th>
+                      <th scope="col" className="pb-2 text-right font-medium">→ /consultations</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Intake</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-800/50">
@@ -678,15 +678,15 @@ export default function WarRoomPage() {
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
-                      <th className="pb-2 font-medium">Route</th>
-                      <th className="pb-2 text-right font-medium">Calls</th>
-                      <th className="pb-2 text-right font-medium">Ok</th>
-                      <th className="pb-2 text-right font-medium">Limited</th>
-                      <th className="pb-2 text-right font-medium">Errors</th>
-                      <th className="pb-2 text-right font-medium">p50</th>
-                      <th className="pb-2 text-right font-medium">p95</th>
-                      <th className="pb-2 text-right font-medium">Budget</th>
-                      <th className="pb-2 text-right font-medium">Last call</th>
+                      <th scope="col" className="pb-2 font-medium">Route</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Calls</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Ok</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Limited</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Errors</th>
+                      <th scope="col" className="pb-2 text-right font-medium">p50</th>
+                      <th scope="col" className="pb-2 text-right font-medium">p95</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Budget</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Last call</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-800/50">
@@ -809,10 +809,10 @@ export default function WarRoomPage() {
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
-                      <th className="pb-2 font-medium">Model</th>
-                      <th className="pb-2 text-right font-medium">Verdict</th>
-                      <th className="pb-2 text-right font-medium">Latency</th>
-                      <th className="pb-2 font-medium">Detail</th>
+                      <th scope="col" className="pb-2 font-medium">Model</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Verdict</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Latency</th>
+                      <th scope="col" className="pb-2 font-medium">Detail</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-800/50">
@@ -852,10 +852,10 @@ export default function WarRoomPage() {
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
-                      <th className="pb-2 font-medium">Provider</th>
-                      <th className="pb-2 text-right font-medium">Verdict</th>
-                      <th className="pb-2 text-right font-medium">Latency</th>
-                      <th className="pb-2 font-medium">Detail</th>
+                      <th scope="col" className="pb-2 font-medium">Provider</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Verdict</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Latency</th>
+                      <th scope="col" className="pb-2 font-medium">Detail</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-800/50">
@@ -894,10 +894,10 @@ export default function WarRoomPage() {
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
-                      <th className="pb-2 font-medium">Drill</th>
-                      <th className="pb-2 text-right font-medium">Verdict</th>
-                      <th className="pb-2 text-right font-medium">Age</th>
-                      <th className="pb-2 font-medium">Source</th>
+                      <th scope="col" className="pb-2 font-medium">Drill</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Verdict</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Age</th>
+                      <th scope="col" className="pb-2 font-medium">Source</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-800/50">
@@ -940,10 +940,10 @@ export default function WarRoomPage() {
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
-                      <th className="pb-2 font-medium">Cron</th>
-                      <th className="pb-2 font-medium">Schedule</th>
-                      <th className="pb-2 text-right font-medium">Last run</th>
-                      <th className="pb-2 text-right font-medium">Outcome</th>
+                      <th scope="col" className="pb-2 font-medium">Cron</th>
+                      <th scope="col" className="pb-2 font-medium">Schedule</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Last run</th>
+                      <th scope="col" className="pb-2 text-right font-medium">Outcome</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-800/50">

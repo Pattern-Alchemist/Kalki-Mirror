@@ -59,9 +59,9 @@ export default function MemberDetailPage() {
           <div className="overflow-x-auto rounded-xl border border-zinc-800">
             <table className="w-full text-left text-sm">
               <thead><tr className="border-b border-zinc-800 bg-zinc-900/50">
-                <th className="px-4 py-3 font-medium text-zinc-500">Practice</th>
-                <th className="px-4 py-3 font-medium text-zinc-500">Current</th>
-                <th className="px-4 py-3 font-medium text-zinc-500">Longest</th>
+                <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Practice</th>
+                <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Current</th>
+                <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Longest</th>
               </tr></thead>
               <tbody className="divide-y divide-zinc-800/50">
                 {u.streaks.map((s: any) => (

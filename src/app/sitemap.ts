@@ -122,6 +122,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(SITE_LASTMOD),
     changeFrequency: 'monthly' as const,
     priority: 0.5,
+    // Vol. 7 #5 — hreflang alternates: EN (canonical) + hi (reading layer)
+    alternates: {
+      languages: {
+        'en-US': `${base}/sequences/${s.slug}`,
+        'hi': `${base}/hi/sequences/${s.slug}`,
+      },
+    },
   }));
 
   // Lexicon term pages (Vol. 3 #4) — 86 programmatic pages off glossary.ts
@@ -186,10 +193,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Mahāvidyā folio pages (/archetypes/[id]) — 10 authoritative pages, spec §5
   const mahavidyaPages: MetadataRoute.Sitemap = TEN_MAHAVIDYAS.map((m) => ({
+    // Vol. 7 #5 — hreflang alternates on archetypes (mahavidyas)
     url: `${base}/archetypes/${m.id}`,
     lastModified: new Date(SITE_LASTMOD),
     changeFrequency: 'monthly' as const,
     priority: 0.75,
+    alternates: {
+      languages: {
+        'en-US': `${base}/archetypes/${m.id}`,
+        'hi': `${base}/hi/archetypes/${m.id}`,
+      },
+    },
   }));
 
   // Tantra educational cluster (US engine Phase A): reclaimed /tantra hub + 5 children

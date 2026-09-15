@@ -145,3 +145,5 @@ env.local
 !scripts/add-hi-bridge-vol6.py
 # Vol. 7 #3 — the TOTP break-glass script (clears 2FA fields via Turso)
 !scripts/totp-break-glass.py
+# Vol. 7 #4 — the aghori course hi bridge (8/54 lessons, one per phase)
+!scripts/add-aghori-hi-vol7.py

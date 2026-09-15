@@ -137,12 +137,12 @@ export default function SubscribersPage() {
           <table className="w-full min-w-[900px] text-left text-sm">
             <thead>
               <tr className="border-b border-zinc-800 text-xs uppercase tracking-wider text-zinc-500">
-                <th className="px-4 py-3">Email</th>
-                <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">Source chip</th>
-                <th className="px-4 py-3">Country</th>
-                <th className="px-4 py-3">Landing path</th>
-                <th className="px-4 py-3">Joined</th>
+                <th scope="col" className="px-4 py-3">Email</th>
+                <th scope="col" className="px-4 py-3">Status</th>
+                <th scope="col" className="px-4 py-3">Source chip</th>
+                <th scope="col" className="px-4 py-3">Country</th>
+                <th scope="col" className="px-4 py-3">Landing path</th>
+                <th scope="col" className="px-4 py-3">Joined</th>
               </tr>
             </thead>
             <tbody>

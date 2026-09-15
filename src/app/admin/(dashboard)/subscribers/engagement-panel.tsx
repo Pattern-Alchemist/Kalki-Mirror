@@ -114,10 +114,10 @@ export function EngagementPanel() {
             <table className="w-full min-w-[640px] text-left text-sm">
               <thead>
                 <tr className="border-b border-zinc-800 text-xs uppercase tracking-wider text-zinc-500">
-                  <th className="px-4 py-2.5">URL</th>
-                  <th className="px-4 py-2.5">Clicks</th>
-                  <th className="px-4 py-2.5">Share of clicks</th>
-                  <th className="px-4 py-2.5">Last click</th>
+                  <th scope="col" className="px-4 py-2.5">URL</th>
+                  <th scope="col" className="px-4 py-2.5">Clicks</th>
+                  <th scope="col" className="px-4 py-2.5">Share of clicks</th>
+                  <th scope="col" className="px-4 py-2.5">Last click</th>
                 </tr>
               </thead>
               <tbody>
@@ -180,12 +180,12 @@ export function EngagementPanel() {
           <table className="w-full min-w-[760px] text-left text-sm">
             <thead>
               <tr className="border-b border-zinc-800 text-xs uppercase tracking-wider text-zinc-500">
-                <th className="px-4 py-3">Email</th>
-                <th className="px-4 py-3">Sent</th>
-                <th className="px-4 py-3">Delivered</th>
-                <th className="px-4 py-3">Opened</th>
-                <th className="px-4 py-3">Clicked</th>
-                <th className="px-4 py-3">Last event</th>
+                <th scope="col" className="px-4 py-3">Email</th>
+                <th scope="col" className="px-4 py-3">Sent</th>
+                <th scope="col" className="px-4 py-3">Delivered</th>
+                <th scope="col" className="px-4 py-3">Opened</th>
+                <th scope="col" className="px-4 py-3">Clicked</th>
+                <th scope="col" className="px-4 py-3">Last event</th>
               </tr>
             </thead>
             <tbody>
