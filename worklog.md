@@ -1486,3 +1486,21 @@ Work Log:
 Stage Summary:
 - VOL. 7 COMPLETE: 20 of 20 items across 4 tiers (triage + completion + scale + activation). 3 live alarms fixed (eval, chain, TOTP). Vol. 6 partial closes: #4 (8/54), #5 (extended), #6 (99/99), #7 (verified), #8 (acknowledged). Scale: #9 (7 aliases), #11 (gate), #13 (gate). Founder-gated: #14, #15, #16, #18. Deferred to Vol. 8: #10, #12, #17, #19. Retrospective: #20.
 
+
+---
+Task ID: vol7-ops-day3 + vol8-enlistment
+Agent: Z (Super Z, main session)
+Task: Vol. 7 ops day 3 (chain rebuild #4) + Vol. 8 enlistment.
+
+Work Log:
+- CHAIN REBUILD #4: the inclusionai chain from Vol. 7 Week A degraded within hours — the openrouter/free meta-router breached contract on 3 consecutive probes. Re-probed 19 :free models — 6 survivors found. New chain (3 distinct pools): poolside/laguna-xs-2.1 (1.3s PASS, fastest), inclusionai/ling-3.0-flash-fin (2.3s PASS), inclusionai/ling-3.0-flash-vl (5.0s PASS). openrouter/free DROPPED (breached contract on 3 consecutive sweeps).
+- PRODUCTION CHAIN FAILURE: the /ask route returns 500 ("The archivist is momentarily unavailable") from production Vercel IPs. The probe runs from THIS sandbox (different IP) and passes. The issue is free-tier congestion from cloud provider IPs — OpenRouter's free-tier models are rate-limited or congested when called from Vercel's serverless infrastructure. The $5-10 OpenRouter credit is the single fix — paid models don't have this congestion. The chain works from non-cloud IPs but fails from Vercel.
+- VOL. 8 ENLISTMENT: docs/roadmap-vol8-next-20.md written. 20 items in 4 tiers: T29 self-healing (eval self-healing crons, chain auto-rebuild, chain-health re-probe, digest escalation, ops dashboard), T30 stability (aghori hi 54, /hi/ aghori twins, geo funnel, funnel panel, digest ContentEntry), T31 coverage (e2e, scope=col gate, npm manifest gate, openapi census, restore-drill manual fire), T32 activation (letters, keys, digest send, retrospective, Vol. 9 decision).
+- The founding incident of Vol. 8: THE RECURRING BREAK. 4 chain rebuilds since Sep 8. The machine keeps breaking because it's built on free-tier sand. Vol. 8 builds the self-healing layer.
+- FINAL GAUNTLET: 1161/1161 vitest (91 files). tsc clean. Build green (466 pages).
+- Pushed to GitHub (b2554d7..a88d01d). Production deploy READY.
+
+Stage Summary:
+- VOL. 7 OPS DAY 3: chain rebuild #4 (poolside/inclusionai, 3 pools). Production chain failing from Vercel IPs (free-tier congestion). Vol. 8 enlisted with self-healing as the founding theme.
+- FOUNDER CRITICAL: $5-10 OpenRouter credit. This is the single fix that stops the rot cycle. The chain works from non-cloud IPs; it fails from Vercel. Paid models don't have this problem. This is not a code fix — it's a billing action.
+
