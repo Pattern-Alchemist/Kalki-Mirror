@@ -1328,10 +1328,10 @@ paths:
     get:
       operationId: apiCronAskEvalGet
       tags: [Cron]
-      summary: Nightly /ask golden-set eval (Vol. 6 #6). ?case=<id> probes one case; ?finalize=1 computes rollup; ?bed=1 runs retrieval bed (Vol. 6 #7). CRON_SECRET gated.
+      summary: Nightly /ask golden-set eval (Vol. 6 #6 + Vol. 7 #1). ?case=<id> probes one case; ?case=run_all runs all remaining cases + auto-finalizes (manual fallback); ?finalize=1 computes rollup (Vercel cron heartbeat at 03:45 UTC); ?bed=1 runs retrieval bed (Vol. 6 #7). CRON_SECRET gated.
       responses:
         '200':
-          description: OK — case verdict OR rollup OR list
+          description: OK — case verdict OR rollup OR list OR run_all progress
         '400':
           description: Unknown case id or finalize incomplete
         '401':

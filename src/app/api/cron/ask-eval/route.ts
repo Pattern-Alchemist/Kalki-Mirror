@@ -171,6 +171,58 @@ export async function GET(req: NextRequest) {
 
   // ── list ──────────────────────────────────────────────────────
   const id = p.get('case');
+
+  // ── run_all: run ALL cases + finalize in one shot (Vol. 7 #1) ────
+  // This is the manual fallback when the GH workflow (eval.yml) is dead.
+  // The founder or the agent can trigger this via curl or workflow_dispatch.
+  // On hobby (60s max), this will run ~4 cases before timing out — the
+  // remaining cases run on the next invocation. The bucket is idempotent
+  // (cases overwrite by id), so partial runs accumulate safely.
+  if (id === 'run_all') {
+    const key = bucketKey(today());
+    const existing = await readBucket(key);
+    const existingIds = new Set(existing.map((v) => v.id));
+    const remaining = GOLDEN_SET.filter((c) => !existingIds.has(c.id));
+    const newVerdicts: CaseVerdict[] = [];
+
+    for (const c of remaining) {
+      const outcome = await probe(c.query);
+      const verdict = judge(c, outcome, c.maxMs ?? BUDGET);
+      newVerdicts.push(verdict);
+      // pace to respect the 5/min/IP limiter (13s between probes)
+      await new Promise((r) => setTimeout(r, 13_000));
+    }
+
+    const allCases = [...existing, ...newVerdicts];
+    await writeBucket(key, allCases);
+
+    // auto-finalize if complete
+    if (allCases.length >= GOLDEN_SET.length) {
+      const r = rollup(allCases);
+      const prev = parseStoredGoldenAsk((await db.opsState.findUnique({ where: { key: GOLDEN_ASK_OPS_KEY } }))?.value ?? null);
+      const stored: StoredGoldenAsk = {
+        rollup: r,
+        consecutiveFailures: nextConsecutiveFailures(prev, r),
+        checkedAt: new Date().toISOString(),
+      };
+      await db.opsState.upsert({
+        where: { key: GOLDEN_ASK_OPS_KEY },
+        create: { key: GOLDEN_ASK_OPS_KEY, value: JSON.stringify(stored) },
+        update: { value: JSON.stringify(stored) },
+      });
+      return NextResponse.json({ ok: true, mode: 'run_all', ...r, consecutiveFailures: stored.consecutiveFailures });
+    }
+
+    return NextResponse.json({
+      ok: true,
+      mode: 'run_all',
+      status: 'incomplete',
+      done: allCases.length,
+      total: GOLDEN_SET.length,
+      newThisRun: newVerdicts.length,
+    });
+  }
+
   if (!id || id === '__list__') {
     return NextResponse.json({
       cases: GOLDEN_SET.map((c) => ({ id: c.id, kind: c.kind })),
