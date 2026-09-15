@@ -27,25 +27,22 @@ const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
 /** Default chain — free-tier, JSON-capable, probed at CONTRACT size (the real
  *  /ask system prompt + real corpus chunks, 12s budget, parseAskOutput
- *  strictness; scripts/probe methodology). Re-probed 2026-09-09 — the 09-08
- *  chain had rotted within a day: dots-3-note burns its whole token floor on
- *  hidden reasoning (finish=length, no content), nemotron-3-ultra answers
- *  grounded=false at real size, the Google pool sat hard behind 429, and the
- *  only then-alive model (liquid) failed the route's strict parse while the
- *  walk kept handing it the contract. Survivors of the 18-model sweep:
- *    · liquid/lfm-2.5-2.6b — contract PASS 8.4s (also PASS 09-08) → primary
- *    · openrouter/free — the meta-router, PASS 11.0s; routes across whatever
- *      capacity exists, one failure mode away from any single pool
- *    · google/gemma-4-31b — fast-fail slot: 429 answers in ~100ms and the
- *      pool historically recovers; kept as tail, not head
- *  nex-n2.5-mini/pro (24–92s) and nemotron-3-super (39s) passed the contract
- *  but blow the 12s budget — unusable by doctrine (#5: the budget is the
- *  contract, probe and route share one number). ling pair still 400 at real
- *  size; inkling pair 403 agentic-only; laguna-xs silent with reasoning on. */
+ *  strictness; scripts/probe methodology). Re-probed 2026-09-15 — the
+ *  09-09 chain had rotted again: liquid/lfm-2.5-2.6b took 29.3s (over budget),
+ *  openrouter/free breached contract (no JSON), gemma-4-31b 429 (still).
+ *  19-model sweep found 2 survivors:
+ *    · inclusionai/ling-3.0-flash-fin — contract PASS 4.4s grounded → primary
+ *    · inclusionai/ling-3.0-flash-vl — contract PASS 10.0s grounded → secondary
+ *  Both are the same pool (inclusionai), so pool-diversity is reduced — but
+ *  the openrouter/free meta-router stays as the third slot (it routes across
+ *  whatever capacity exists; if inclusionai rots, the meta-router finds the
+ *  next survivor). The gemma tail is dropped (429 for 72h+ — not recovering).
+ *  nex-n2.5-pro (16.4s) passes contract but blows budget — same doctrine as
+ *  09-09. dots-3-note (18.4s) same class. */
 const DEFAULT_MODELS = [
-  "liquid/lfm-2.5-2.6b:free", // contract PASS 8.4s at real size, two probes running
-  "openrouter/free", // meta-router, PASS 11.0s — diversity against pool rot
-  "google/gemma-4-31b-it:free", // best persona; 429 today (fast-fail), recovers on retry
+  "inclusionai/ling-3.0-flash-fin:free", // contract PASS 4.4s grounded (2026-09-15)
+  "inclusionai/ling-3.0-flash-vl:free", // contract PASS 10.0s grounded (2026-09-15)
+  "openrouter/free", // meta-router — diversity against pool rot
 ];
 
 export function resolveModelChain(): string[] {
