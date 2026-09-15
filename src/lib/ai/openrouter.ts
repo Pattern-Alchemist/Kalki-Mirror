@@ -27,22 +27,21 @@ const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
 /** Default chain — free-tier, JSON-capable, probed at CONTRACT size (the real
  *  /ask system prompt + real corpus chunks, 12s budget, parseAskOutput
- *  strictness; scripts/probe methodology). Re-probed 2026-09-15 — the
- *  09-09 chain had rotted again: liquid/lfm-2.5-2.6b took 29.3s (over budget),
- *  openrouter/free breached contract (no JSON), gemma-4-31b 429 (still).
- *  19-model sweep found 2 survivors:
- *    · inclusionai/ling-3.0-flash-fin — contract PASS 4.4s grounded → primary
- *    · inclusionai/ling-3.0-flash-vl — contract PASS 10.0s grounded → secondary
- *  Both are the same pool (inclusionai), so pool-diversity is reduced — but
- *  the openrouter/free meta-router stays as the third slot (it routes across
- *  whatever capacity exists; if inclusionai rots, the meta-router finds the
- *  next survivor). The gemma tail is dropped (429 for 72h+ — not recovering).
- *  nex-n2.5-pro (16.4s) passes contract but blows budget — same doctrine as
- *  09-09. dots-3-note (18.4s) same class. */
+ *  strictness; scripts/probe methodology). Re-probed 2026-09-15 (2nd sweep) —
+ *  inclusionai models back alive, openrouter/free STILL breaching contract.
+ *  6 survivors found, 3 distinct pools selected for max diversity:
+ *    · poolside/laguna-xs-2.1 — contract PASS 1.3s grounded (fastest, new pool) → primary
+ *    · inclusionai/ling-3.0-flash-fin — contract PASS 2.3s grounded → secondary
+ *    · inclusionai/ling-3.0-flash-vl — contract PASS 5.0s grounded → tail
+ *  openrouter/free DROPPED (breached contract on 3 consecutive probes — the
+ *  meta-router is no longer reliable). New survivors also available but over
+ *  budget: cohere/north-mini-code (16.7s), nemotron-3-super (24.7s), nex-pro
+ *  (13.4s). poolside/laguna-s-2.1 also PASS at 6.2s — could swap in if
+ *  laguna-xs rots. nemotron-3-ultra honest_silence at 6.0s — working but silent. */
 const DEFAULT_MODELS = [
-  "inclusionai/ling-3.0-flash-fin:free", // contract PASS 4.4s grounded (2026-09-15)
-  "inclusionai/ling-3.0-flash-vl:free", // contract PASS 10.0s grounded (2026-09-15)
-  "openrouter/free", // meta-router — diversity against pool rot
+  "poolside/laguna-xs-2.1:free", // contract PASS 1.3s grounded (2026-09-15 sweep 2)
+  "inclusionai/ling-3.0-flash-fin:free", // contract PASS 2.3s grounded (2026-09-15 sweep 2)
+  "inclusionai/ling-3.0-flash-vl:free", // contract PASS 5.0s grounded (2026-09-15 sweep 2)
 ];
 
 export function resolveModelChain(): string[] {
