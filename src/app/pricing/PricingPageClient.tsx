@@ -417,9 +417,9 @@ export default function PricingPageClient({ pricingTiers: tiers }: PricingPagePr
                       })}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="gold-cta w-full justify-center inline-flex mb-3"
+                      className="gold-cta w-full justify-center inline-flex mb-3 text-xs sm:text-sm whitespace-nowrap overflow-hidden"
                     >
-                      Pay {formatINR(monthlyINR(requestTier))} — Google Pay / UPI
+                      Pay {formatINR(monthlyINR(requestTier))} — UPI
                     </a>
                   ) : (
                     <p className="mb-3 text-xs text-text-muted">

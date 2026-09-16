@@ -41,6 +41,19 @@ export function KalkiChatWidget() {
   const [tab, setTab] = useState<Tab>('ai');
   const [hasInteracted, setHasInteracted] = useState(false);
 
+  // Vol. 8 fix: auto-open after 3s delay, but ONLY once per session
+  // (the screenshots showed the widget was appearing immediately, blocking content)
+  useEffect(() => {
+    const seen = sessionStorage.getItem('kalki_chat_seen');
+    if (!seen) {
+      const timer = setTimeout(() => {
+        setOpen(true);
+        sessionStorage.setItem('kalki_chat_seen', '1');
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   // Exclude the widget on /admin/* (gated) and /ask (redundant — /ask IS the AI surface)
   const isAdmin = pathname?.startsWith('/admin');
   const isAskPage = pathname === '/ask';
@@ -184,13 +197,24 @@ export function KalkiChatWidget() {
       {/* Chat Panel */}
       <AnimatePresence>
         {open && (
+          <>
+          {/* Backdrop overlay — dims the background so text doesn't bleed through */}
+          <motion.div
+            key="backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[55] bg-black/60 backdrop-blur-sm"
+            onClick={() => setOpen(false)}
+          />
           <motion.div
             key="panel"
             initial={reduced ? { opacity: 0 } : { y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={reduced ? { opacity: 0 } : { y: 20, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-6 right-6 z-50 w-[calc(100vw-3rem)] max-w-[400px] h-[520px] max-h-[calc(100vh-3rem)] glass-panel rounded-2xl flex flex-col overflow-hidden border border-gold/15 shadow-2xl shadow-black/50"
+            className="fixed bottom-6 right-6 z-[60] w-[calc(100vw-3rem)] max-w-[400px] h-[520px] max-h-[calc(100vh-3rem)] bg-deep-black/95 backdrop-blur-xl rounded-2xl flex flex-col overflow-hidden border border-gold/15 shadow-2xl shadow-black/80"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-gold/10 bg-deep-black/80">
@@ -392,6 +416,7 @@ export function KalkiChatWidget() {
               )}
             </div>
           </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
