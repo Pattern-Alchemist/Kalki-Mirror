@@ -8,6 +8,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { SwRegister } from "@/components/pwa/SwRegister";
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
+import { KalkiChatWidget } from '@/components/chat/KalkiChatWidget';
+import { TawkToScript } from '@/components/chat/TawkToScript';
 
 /* ============================================================
    TYPOGRAPHY
@@ -124,6 +126,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             <AttributionCapture />
             <SwRegister />
             <PublicShell>{children}</PublicShell>
+            <KalkiChatWidget />
+            <TawkToScript />
             <Analytics />
           </TierProvider>
         </NextIntlClientProvider>

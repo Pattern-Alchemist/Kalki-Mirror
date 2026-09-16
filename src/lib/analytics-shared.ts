@@ -56,6 +56,11 @@ export const EVENT_NAMES = [
   'ai_search',
   'ai_transit_interpretation',
   'ai_ask',
+  // Vol. 7 chat widget — tracks which path the seeker took
+  'chat_widget_ask_grounded',
+  'chat_widget_ask_silence',
+  'chat_widget_whatsapp_click',
+  'chat_widget_subscribe',
 ] as const;
 
 export type EventName = (typeof EVENT_NAMES)[number];
@@ -105,6 +110,10 @@ export const EVENT_META: Record<
   ai_search: { label: 'AI semantic search route called', group: 'Discovery' },
   ai_transit_interpretation: { label: 'AI transit-interpretation route called', group: 'Education' },
   ai_ask: { label: 'AI grounded /ask answered (Vol. 4 #14)', group: 'Discovery' },
+  chat_widget_ask_grounded: { label: 'Chat widget: AI answered (Vol. 7)', group: 'Conversion' },
+  chat_widget_ask_silence: { label: 'Chat widget: honest silence (Vol. 7)', group: 'Conversion' },
+  chat_widget_whatsapp_click: { label: 'Chat widget: WhatsApp click (Vol. 7)', group: 'Conversion' },
+  chat_widget_subscribe: { label: 'Chat widget: email subscribe (Vol. 7)', group: 'Conversion' },
 };
 
 export const GROUP_NAMES = ['Discovery', 'Education', 'Practice', 'Conversion', 'Retention'] as const;
