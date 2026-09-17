@@ -68,7 +68,7 @@ export default function KeysPage() {
       </div>
 
       {/* Vol. 6 #11 — Batch Mint Form */}
-      <form onSubmit={handleMint} className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] p-5 space-y-4">
+      <form onSubmit={handleMint} className="aw-card">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-medium text-[var(--aw-text)]">Batch Mint</h2>
           <span className="text-xs text-[var(--aw-text-3)]">Vol. 6 #11 — campaign attribution</span>
@@ -106,7 +106,7 @@ export default function KeysPage() {
 
       <input type="text" placeholder="Search code, creator, or campaign..." value={query} onChange={e => { setQuery(e.target.value); setPage(1); }} className="w-full max-w-sm rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-2 text-sm text-[var(--aw-text)] placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none" />
       {loading && <p className="text-[var(--aw-text-2)] text-sm">Loading...</p>}
-      <div className="overflow-x-auto rounded-xl border border-[var(--aw-border-2)]">
+      <div className="overflow-x-auto aw-table">
         <table className="w-full text-left text-sm">
           <thead><tr className="border-b border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]">
             <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Code</th>

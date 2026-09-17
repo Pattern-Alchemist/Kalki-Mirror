@@ -92,7 +92,7 @@ export function WebhookSection() {
   };
 
   return (
-    <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 space-y-5">
+    <section className="aw-card">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Webhook Integrations</h2>
         <button

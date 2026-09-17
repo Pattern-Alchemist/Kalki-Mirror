@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useAdminSession } from "./session-provider";
 import { useState, useEffect, type JSX } from "react";
-import { getVisibleNav, type NavItem } from "@/lib/admin/role-ui";
+import { getVisibleNavGrouped, NAV_SECTIONS, type NavItem } from "@/lib/admin/role-ui";
 import { NotificationBell } from "./notification-bell";
 
 export function AdminSidebar() {
@@ -15,8 +15,9 @@ export function AdminSidebar() {
   const [cmdOpen, setCmdOpen] = useState(false);
   const [cmdFilter, setCmdFilter] = useState("");
 
-  // A15: Role-based navigation
-  const navigation = getVisibleNav(user.role);
+  // Vol. 8 #10: Grouped navigation
+  const navGroups = getVisibleNavGrouped(user.role);
+  const allNav = Object.values(navGroups).flat();
 
   // Session timer
   useEffect(() => {
@@ -51,10 +52,10 @@ export function AdminSidebar() {
   }, [cmdOpen]);
 
   const filteredNav = cmdFilter
-    ? navigation.filter((n) =>
+    ? allNav.filter((n) =>
         n.name.toLowerCase().includes(cmdFilter.toLowerCase())
       )
-    : navigation;
+    : allNav;
 
   return (
     <>
@@ -101,29 +102,43 @@ export function AdminSidebar() {
           </button>
         </div>
 
-        {/* Nav — A15: role-filtered */}
+        {/* Nav — Vol. 8 #10: section-grouped + role-filtered */}
         <nav className="flex-1 overflow-y-auto px-3 py-4">
-          <ul className="space-y-1">
-            {filteredNav.map((item) => {
-              const isActive = pathname === item.href || (item.href !== "/admin/overview" && pathname.startsWith(item.href + "/"));
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm transition ${
-                      isActive
-                        ? "bg-amber-500/10 text-amber-400"
-                        : "text-[var(--aw-text-2)] hover:bg-zinc-900 hover:text-[var(--aw-text)]"
-                    }`}
-                  >
-                    <NavIcon name={item.name} className="h-4 w-4 shrink-0" />
-                    {item.name}
-                    <kbd className={`ml-auto hidden text-[10px] font-mono ${isActive ? "text-amber-500/40" : "text-[var(--aw-text-3)]"} group-hover:inline`}>{item.shortcut}</kbd>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+          {NAV_SECTIONS.map((section) => {
+            const sectionItems = cmdFilter
+              ? allNav.filter((n) => n.section === section.id && n.name.toLowerCase().includes(cmdFilter.toLowerCase()))
+              : (navGroups[section.id ?? 'system'] || []);
+            if (sectionItems.length === 0) return null;
+            return (
+              <div key={section.id} className="mb-4">
+                <p className="px-3 mb-1.5 text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--aw-text-3)]">{section.label}</p>
+                <ul className="space-y-0.5">
+                  {sectionItems.map((item) => {
+                    const isActive = pathname === item.href || (item.href !== "/admin/overview" && pathname.startsWith(item.href + "/"));
+                    return (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm transition ${
+                            isActive
+                              ? "aw-nav-link aw-nav-link--active"
+                              : "aw-nav-link"
+                          }`}
+                        >
+                          <NavIcon name={item.name} className="h-4 w-4 shrink-0" />
+                          {item.name}
+                          {item.badgeSource && (
+                            <span className="ml-auto aw-badge aw-badge--warning text-[8px] py-0 px-1.5">!</span>
+                          )}
+                          <kbd className={`ml-auto hidden text-[10px] font-mono ${isActive ? "text-[var(--aw-cyan)] opacity-40" : "text-[var(--aw-text-3)]"} group-hover:inline`}>{item.shortcut}</kbd>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            );
+          })}
         </nav>
 
         {/* Footer */}

@@ -16,7 +16,7 @@ export default function FolioLoading() {
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-5 animate-pulse"
+              className="aw-card"
             >
               <div className="flex items-start justify-between">
                 <div className="space-y-2">

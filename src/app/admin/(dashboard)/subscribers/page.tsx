@@ -101,7 +101,7 @@ export default function SubscribersPage() {
           { label: "Last 7 days", value: stats.week },
           { label: "Campaigns", value: stats.campaigns },
         ].map((s) => (
-          <div key={s.label} className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] p-4">
+          <div key={s.label} className="aw-card">
             <p className="text-xs uppercase tracking-wider text-[var(--aw-text-2)]">{s.label}</p>
             <p className="mt-1 text-2xl font-semibold text-[var(--aw-text)]">{s.value}</p>
           </div>
@@ -133,7 +133,7 @@ export default function SubscribersPage() {
           </p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-[var(--aw-border-2)]">
+        <div className="overflow-x-auto aw-table">
           <table className="w-full min-w-[900px] text-left text-sm">
             <thead>
               <tr className="border-b border-[var(--aw-border-2)] text-xs uppercase tracking-wider text-[var(--aw-text-2)]">

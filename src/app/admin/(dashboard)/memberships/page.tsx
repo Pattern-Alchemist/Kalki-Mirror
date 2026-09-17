@@ -192,7 +192,7 @@ export default function MembershipsPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
         {STATUSES.map((s) => (
-          <div key={s} className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-4">
+          <div key={s} className="aw-card">
             <p className="text-xs text-[var(--aw-text-2)]">{s}</p>
             <p className="mt-1 text-xl font-semibold text-[var(--aw-text)]">{loading ? "—" : counts[s] ?? 0}</p>
           </div>
@@ -203,7 +203,7 @@ export default function MembershipsPage() {
       {notice && <p className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">{notice}</p>}
 
       {/* Manual ledger entry */}
-      <div className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-5">
+      <div className="aw-card">
         <p className="text-xs font-semibold uppercase tracking-wider text-[var(--aw-text-2)]">New ledger entry</p>
         <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           <input
@@ -251,7 +251,7 @@ export default function MembershipsPage() {
       </div>
 
       {/* Ledger table */}
-      <div className="overflow-x-auto rounded-xl border border-[var(--aw-border-2)]">
+      <div className="overflow-x-auto aw-table">
         <table className="w-full min-w-[860px] text-left text-sm">
           <thead>
             <tr className="border-b border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 text-xs uppercase tracking-wider text-[var(--aw-text-2)]">

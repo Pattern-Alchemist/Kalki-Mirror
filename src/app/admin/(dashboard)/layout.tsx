@@ -10,6 +10,7 @@ import { ThemeToggle } from "@/components/admin/theme-toggle";
 import { TwoFactorGraceBanner } from "@/components/admin/two-factor-grace-banner";
 import { TourProvider, useTour } from "@/components/admin/onboarding/TourProvider";
 import { QuickTourFAB } from "@/components/admin/onboarding/QuickTourFAB";
+import { TopbarHUD } from "@/components/admin/TopbarHUD";
 
 export const dynamic = "force-dynamic";
 
@@ -59,6 +60,7 @@ export default async function AdminDashboardLayout({
           </div>
           <main className="flex-1 overflow-y-auto">
             <MobileSidebarToggle />
+            <TopbarHUD />
             <div className="aw-topbar sticky top-0 z-50 flex items-center gap-3 px-4 py-2 pl-14 lg:pl-6" data-tour="aw-topbar">
               <GlobalSearch />
               <div className="ml-auto flex items-center gap-1">

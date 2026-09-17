@@ -306,7 +306,7 @@ export function ContentClient({
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-xl border border-[var(--aw-border-2)]">
+      <div className="overflow-x-auto aw-table">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]">

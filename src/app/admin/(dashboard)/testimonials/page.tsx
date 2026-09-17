@@ -123,7 +123,7 @@ export default function TestimonialsPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
         {STATUSES.map((s) => (
-          <div key={s} className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-4">
+          <div key={s} className="aw-card">
             <p className="text-xs text-[var(--aw-text-2)]">{s}</p>
             <p className="mt-1 text-xl font-semibold text-[var(--aw-text)]">{loading ? "—" : counts[s] ?? 0}</p>
           </div>
@@ -134,7 +134,7 @@ export default function TestimonialsPage() {
       {notice && <p className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">{notice}</p>}
 
       {/* New entry */}
-      <div className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-5">
+      <div className="aw-card">
         <p className="text-xs font-semibold uppercase tracking-wider text-[var(--aw-text-2)]">New testimonial (enter with consent)</p>
         <textarea
           value={form.quote}
@@ -192,7 +192,7 @@ export default function TestimonialsPage() {
       </div>
 
       {/* Ledger */}
-      <div className="overflow-x-auto rounded-xl border border-[var(--aw-border-2)]">
+      <div className="overflow-x-auto aw-table">
         <table className="w-full min-w-[900px] text-left text-sm">
           <thead>
             <tr className="border-b border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 text-xs uppercase tracking-wider text-[var(--aw-text-2)]">

@@ -165,7 +165,7 @@ export default function BroadcastPage() {
               value: Math.max(1, Math.ceil(audience.count / audience.cap)),
             },
           ].map((s) => (
-            <div key={s.label} className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] p-4">
+            <div key={s.label} className="aw-card">
               <p className="text-xs uppercase tracking-wider text-[var(--aw-text-2)]">{s.label}</p>
               <p className="mt-1 text-2xl font-semibold text-[var(--aw-text)]">{s.value}</p>
             </div>
@@ -180,7 +180,7 @@ export default function BroadcastPage() {
             { label: "Suppressed (win-backed <30d)", value: winback.suppressed },
             { label: "Per-run cap", value: winback.cap },
           ].map((s) => (
-            <div key={s.label} className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] p-4">
+            <div key={s.label} className="aw-card">
               <p className="text-xs uppercase tracking-wider text-[var(--aw-text-2)]">{s.label}</p>
               <p className="mt-1 text-2xl font-semibold text-[var(--aw-text)]">{s.value}</p>
             </div>

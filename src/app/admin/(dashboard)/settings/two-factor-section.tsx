@@ -69,7 +69,7 @@ export function TwoFactorSection() {
   };
 
   return (
-    <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 space-y-5">
+    <section className="aw-card">
       <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Two-Factor Authentication</h2>
 
       {enabled ? (

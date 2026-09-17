@@ -87,7 +87,7 @@ export function SessionsSection() {
   const others = sessions.filter((s) => !s.current).length;
 
   return (
-    <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 space-y-4">
+    <section className="aw-card">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Active Sessions</h2>
         {others > 0 && (

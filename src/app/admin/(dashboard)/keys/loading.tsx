@@ -12,7 +12,7 @@ export default function KeysLoading() {
         {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={i}
-            className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-5 animate-pulse"
+            className="aw-card"
           >
             <div className="h-3 w-20 rounded bg-zinc-700" />
             <div className="mt-3 h-8 w-14 rounded bg-zinc-700" />

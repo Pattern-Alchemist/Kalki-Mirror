@@ -88,7 +88,7 @@ export function EngagementPanel() {
           { label: "Click rate", value: data.totals.clickRate === null ? "—" : `${data.totals.clickRate}%` },
           { label: "Bounced", value: data.totals.bounced },
         ].map((s) => (
-          <div key={s.label} className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] p-4">
+          <div key={s.label} className="aw-card">
             <p className="text-xs uppercase tracking-wider text-[var(--aw-text-2)]">{s.label}</p>
             <p className="mt-1 text-2xl font-semibold text-[var(--aw-text)]">{s.value}</p>
           </div>
@@ -96,7 +96,7 @@ export function EngagementPanel() {
       </div>
 
       {/* Vol. 3 #8 — per-URL click report */}
-      <div className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] p-4">
+      <div className="aw-card">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="text-sm font-semibold text-[var(--aw-text)]">Clicked URLs (CTR report)</h2>
@@ -140,7 +140,7 @@ export function EngagementPanel() {
       </div>
 
       {/* Non-opener segment + re-send */}
-      <div className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] p-4">
+      <div className="aw-card">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="text-sm font-semibold text-[var(--aw-text)]">Doors 1–5 non-openers</h2>
@@ -176,7 +176,7 @@ export function EngagementPanel() {
 
       {/* Per-subscriber engagement table */}
       {data.rows.length > 0 && (
-        <div className="overflow-x-auto rounded-xl border border-[var(--aw-border-2)]">
+        <div className="overflow-x-auto aw-table">
           <table className="w-full min-w-[760px] text-left text-sm">
             <thead>
               <tr className="border-b border-[var(--aw-border-2)] text-xs uppercase tracking-wider text-[var(--aw-text-2)]">

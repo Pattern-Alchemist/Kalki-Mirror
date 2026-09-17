@@ -16,7 +16,7 @@ export default function AuditLoading() {
         </div>
 
         {/* Log entries - 8 rows with timestamp, action, actor columns */}
-        <div className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30">
+        <div className="aw-card">
           {/* Column headers */}
           <div className="flex items-center gap-4 border-b border-[var(--aw-border-2)] px-5 py-3">
             <div className="h-3 w-28 rounded bg-zinc-700 animate-pulse" />

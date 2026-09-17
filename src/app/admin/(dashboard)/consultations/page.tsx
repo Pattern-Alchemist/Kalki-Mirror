@@ -401,7 +401,7 @@ export default function ConsultationsPage() {
           { label: "Completed", value: counts["COMPLETED"] ?? 0 },
           { label: "Booking rate", value: `${conversionRate}%` },
         ].map((s) => (
-          <div key={s.label} className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-4">
+          <div key={s.label} className="aw-card">
             <p className="text-xs text-[var(--aw-text-2)]">{s.label}</p>
             <p className="mt-1 text-xl font-semibold text-[var(--aw-text)]">{loading ? "—" : s.value}</p>
           </div>
@@ -665,7 +665,7 @@ function LeadCard({ lead, onOpen }: { lead: ConsultationRow; onOpen: () => void 
   return (
     <button
       onClick={onOpen}
-      className="w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] p-3 text-left transition-colors hover:border-[var(--aw-border-2)] hover:bg-[var(--aw-glass-1)]"
+      className="w-full aw-card p- text-left transition-colors hover:border-[var(--aw-border-2)] hover:bg-[var(--aw-glass-1)]"
     >
       <div className="flex items-start justify-between gap-2">
         <p className="truncate text-sm font-medium text-[var(--aw-text)]">{lead.name}</p>

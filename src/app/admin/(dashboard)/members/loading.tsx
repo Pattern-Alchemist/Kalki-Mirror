@@ -12,7 +12,7 @@ export default function MembersLoading() {
         <div className="h-10 w-full max-w-md rounded-lg bg-zinc-800/60 animate-pulse" />
 
         {/* Table skeleton */}
-        <div className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30">
+        <div className="aw-card">
           {/* Table header */}
           <div className="flex items-center gap-4 border-b border-[var(--aw-border-2)] px-5 py-3">
             <div className="h-3 w-28 rounded bg-zinc-700 animate-pulse" />

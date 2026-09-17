@@ -39,7 +39,7 @@ export default function MemberDetailPage() {
         </div>
       </div>
 
-      <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6">
+      <section className="aw-card">
         <h2 className="mb-4 text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Profile</h2>
         <div className="grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
           <Field label="ID" value={u.id} mono />
@@ -54,9 +54,9 @@ export default function MemberDetailPage() {
       </section>
 
       {u.streaks?.length > 0 && (
-        <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6">
+        <section className="aw-card">
           <h2 className="mb-4 text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Sadhana Streaks</h2>
-          <div className="overflow-x-auto rounded-xl border border-[var(--aw-border-2)]">
+          <div className="overflow-x-auto aw-table">
             <table className="w-full text-left text-sm">
               <thead><tr className="border-b border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]">
                 <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Practice</th>

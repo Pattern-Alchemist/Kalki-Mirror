@@ -45,7 +45,7 @@ export default function FolioPage() {
       {loading && <p className="text-[var(--aw-text-2)] text-sm">Loading...</p>}
       <div className="space-y-3">
         {chunks.map(c => (
-          <div key={c.id} className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-5">
+          <div key={c.id} className="aw-card">
             <div className="flex items-start justify-between">
               <div><p className="font-mono text-xs text-[var(--aw-cyan)]">{c.slug}</p><p className="mt-1 text-xs text-[var(--aw-text-2)]">Section: {c.section} / Caution: {c.caution}</p></div>
             </div>

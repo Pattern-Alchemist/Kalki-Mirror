@@ -72,7 +72,7 @@ export default function SettingsPage() {
     <div className="space-y-8">
       <div><h1 className="text-2xl font-semibold text-[var(--aw-text)]">Settings</h1><p className="mt-1 text-sm text-[var(--aw-text-2)]">Archivist console configuration</p></div>
 
-      <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 space-y-4">
+      <section className="aw-card">
         <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Current Session</h2>
         <div className="grid gap-4 sm:grid-cols-3">
           <div><p className="text-xs text-[var(--aw-text-3)]">Email</p><p className="mt-0.5 text-sm text-[var(--aw-text-2)]">{session?.email || "-"}</p></div>
@@ -93,7 +93,7 @@ export default function SettingsPage() {
       <WebhookSection />
 
       {dbStats && (
-        <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 space-y-4">
+        <section className="aw-card">
           <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Database Summary</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {Object.entries(dbStats).map(([k, v]) => <StatBlock key={k} label={k} value={v} />)}
@@ -101,7 +101,7 @@ export default function SettingsPage() {
         </section>
       )}
 
-      <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 space-y-4">
+      <section className="aw-card">
         <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Environment Variables</h2>
         <div className="space-y-2">
           {REQUIRED_ENVS.map(({ name, note }) => <EnvCheck key={name} name={name} note={note} />)}
@@ -112,7 +112,7 @@ export default function SettingsPage() {
         </div>
       </section>
 
-      <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 space-y-4">
+      <section className="aw-card">
         <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Seed Admin Account</h2>
         <p className="text-xs text-[var(--aw-text-2)]">
           First-time setup or password rotation. Targets PRODUCTION Turso when TURSO_DATABASE_URL is set (env or .env.local),

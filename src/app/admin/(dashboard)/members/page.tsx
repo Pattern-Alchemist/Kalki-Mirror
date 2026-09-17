@@ -48,7 +48,7 @@ export default function MembersPage() {
       {err && <p className="text-red-400 text-sm">{err}</p>}
       {loading && <p className="text-[var(--aw-text-2)] text-sm">Loading...</p>}
 
-      <div className="overflow-x-auto rounded-xl border border-[var(--aw-border-2)]">
+      <div className="overflow-x-auto aw-table">
         <table className="w-full text-left text-sm">
           <thead><tr className="border-b border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]">
             <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Email</th>

@@ -1817,3 +1817,83 @@ button:disabled,
   .aw-shell::before, .aw-btn-primary, .aw-badge::before, .aw-topbar::after, .aw-scanline::after { animation: none !important; }
   .aw-card { transition: none; }
 }
+
+/* ============================================================
+   VOL. 8 #7 — LIGHT THEME OVERRIDES (Admin)
+   Activated by [data-admin-theme="light"] on <html>
+   ============================================================ */
+[data-admin-theme="light"] .aw-shell {
+  --aw-bg: #eef0f6;
+  --aw-bg-2: #f4f5fa;
+  --aw-bg-grid: rgba(0, 100, 130, 0.04);
+  --aw-glass-1: rgba(255, 255, 255, 0.55);
+  --aw-glass-2: rgba(255, 255, 255, 0.75);
+  --aw-glass-3: rgba(240, 242, 250, 0.6);
+  --aw-cyan: #0099b8;
+  --aw-cyan-dim: #007a94;
+  --aw-purple: #6d28d9;
+  --aw-purple-dim: #5b21b6;
+  --aw-success: #00a85a;
+  --aw-warning: #d97700;
+  --aw-danger: #dc2626;
+  --aw-text: #0f172a;
+  --aw-text-2: #475569;
+  --aw-text-3: #94a3b8;
+  --aw-border: rgba(0, 153, 184, 0.12);
+  --aw-border-2: rgba(0, 153, 184, 0.20);
+  --aw-border-strong: rgba(0, 153, 184, 0.40);
+  --aw-glow-cyan: rgba(0, 153, 184, 0.30);
+  --aw-glow-purple: rgba(109, 40, 217, 0.25);
+  --aw-glow-danger: rgba(220, 38, 38, 0.30);
+}
+[data-admin-theme="light"] .aw-shell::before {
+  background:
+    radial-gradient(1200px 800px at 85% -10%, rgba(109,40,217,0.05), transparent 60%),
+    radial-gradient(1000px 700px at -10% 110%, rgba(0,153,184,0.05), transparent 60%),
+    linear-gradient(to right, var(--aw-bg-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--aw-bg-grid) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+}
+[data-admin-theme="light"] .aw-sidebar {
+  background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(240,242,250,0.92));
+}
+[data-admin-theme="light"] .aw-topbar {
+  background: rgba(255,255,255,0.80) !important;
+}
+[data-admin-theme="light"] .aw-table thead th {
+  background: linear-gradient(180deg, rgba(0,153,184,0.06), rgba(0,153,184,0.02));
+  color: var(--aw-cyan);
+}
+[data-admin-theme="light"] .aw-input,
+[data-admin-theme="light"] .aw-select,
+[data-admin-theme="light"] .aw-textarea {
+  background: rgba(255,255,255,0.7);
+}
+
+/* ============================================================
+   VOL. 8 #8 — TOPBAR HUD STRIP
+   Persistent status bar showing env, 2FA, pending counts, clock
+   ============================================================ */
+.aw-hud-strip {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1rem;
+  height: 28px;
+  font-family: var(--aw-font-mono);
+  font-size: .65rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--aw-text-2);
+  background: linear-gradient(90deg, rgba(0,240,255,0.04), transparent 70%);
+  border-bottom: 1px solid var(--aw-border);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.aw-hud-item { display: flex; align-items: center; gap: .35rem; }
+.aw-hud-dot { width: 6px; height: 6px; border-radius: 50%; }
+.aw-hud-dot--ok { background: var(--aw-success); box-shadow: 0 0 6px var(--aw-success); }
+.aw-hud-dot--warn { background: var(--aw-warning); box-shadow: 0 0 6px var(--aw-warning); }
+.aw-hud-dot--err { background: var(--aw-danger); box-shadow: 0 0 6px var(--aw-danger); }
+.aw-hud-sep { color: var(--aw-text-3); opacity: .4; }
+.aw-hud-value { color: var(--aw-cyan); font-weight: 600; }
