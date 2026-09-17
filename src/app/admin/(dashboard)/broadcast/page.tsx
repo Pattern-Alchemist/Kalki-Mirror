@@ -27,6 +27,30 @@ export default function BroadcastPage() {
   const [result, setResult] = useState<BroadcastSendResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  const [aiComposing, setAiComposing] = useState(false);
+  const [aiPrompt, setAiPrompt] = useState("");
+
+  const handleAiCompose = async () => {
+    if (!aiPrompt.trim() || aiComposing) return;
+    setAiComposing(true);
+    try {
+      const res = await fetch('/api/ai/draft', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: aiPrompt, context: 'broadcast' }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.subject) setSubject(data.subject);
+        if (data.body) setBody(data.body);
+      }
+    } catch {
+      // fail-soft
+    } finally {
+      setAiComposing(false);
+    }
+  };
+
   // Vol. 4 #4 — win-back mode: same compose → preview → confirm discipline,
   // different audience (the silently cold) and send path (suppression-aware).
   const [mode, setMode] = useState<"all" | "cold">("all");
@@ -191,6 +215,25 @@ export default function BroadcastPage() {
       {/* Compose */}
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="space-y-4">
+          {/* Vol. 8 #15 — AI Magic Compose */}
+          <div className="aw-card p-3 flex items-center gap-2">
+            <svg className="w-4 h-4 text-[var(--aw-purple)] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z" /></svg>
+            <input
+              value={aiPrompt}
+              onChange={(e) => setAiPrompt(e.target.value)}
+              placeholder="Describe the letter: 'a reflection on the autumn equinox and letting go'"
+              className="aw-input text-xs flex-1 border-0 bg-transparent focus:ring-0"
+              onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAiCompose(); } }}
+            />
+            <button
+              onClick={handleAiCompose}
+              disabled={aiComposing || !aiPrompt.trim()}
+              className="aw-btn aw-btn-secondary text-xs shrink-0 disabled:opacity-40"
+            >
+              {aiComposing ? '✦ Composing...' : '✦ AI Draft'}
+            </button>
+          </div>
+
           <div>
             <label htmlFor="broadcast-subject" className="text-xs uppercase tracking-wider text-[var(--aw-text-2)]">
               Subject

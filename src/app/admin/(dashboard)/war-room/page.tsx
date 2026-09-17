@@ -9,6 +9,7 @@ import {
   RefreshCw, Download, Copy, Check, Crosshair, Globe, Flame,
   DoorOpen, Link2, Radio, TrendingUp, Users, CalendarCheck,
 } from "lucide-react";
+import { AnomalyCallouts } from "./anomaly-callouts";
 import { pctOf } from "@/lib/admin/funnel";
 import { judgeLatencyBudget } from "@/lib/ai/latency-budget";
 
@@ -370,6 +371,7 @@ export default function WarRoomPage() {
 
   return (
     <div className="space-y-6">
+      <AnomalyCallouts />
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>

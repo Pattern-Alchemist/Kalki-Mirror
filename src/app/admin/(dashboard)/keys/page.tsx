@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, useCallback, type FormEvent } from "react";
 import { generateKeys, revokeKey } from "./actions";
+import { KeyQRModal } from "./KeyQRModal";
 
 export default function KeysPage() {
   const [keys, setKeys] = useState<any[]>([]);
@@ -17,6 +18,7 @@ export default function KeysPage() {
   const [mintMaxUses, setMintMaxUses] = useState(1);
   const [mintCampaign, setMintCampaign] = useState("");
   const [mintResult, setMintResult] = useState<string | null>(null);
+  const [qrCode, setQrCode] = useState<string | null>(null);
 
   const fetchKeys = useCallback(async () => {
     setLoading(true);
@@ -126,13 +128,19 @@ export default function KeysPage() {
                 <td className="px-4 py-3 text-xs text-[var(--aw-text-2)]">{k.campaign ? <span className="rounded bg-zinc-800 px-1.5 py-0.5 text-[var(--aw-cyan)]/80">{k.campaign}</span> : <span className="text-zinc-700">—</span>}</td>
                 <td className="px-4 py-3">{k.active ? <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500" /> : <span className="inline-flex h-2 w-2 rounded-full bg-zinc-600" />}</td>
                 <td className="px-4 py-3 text-xs text-[var(--aw-text-2)]">{new Date(k.createdAt).toLocaleDateString()}</td>
-                <td className="px-4 py-3">{k.active && <button onClick={() => handleRevoke(k.id)} className="text-xs text-[var(--aw-text-3)] hover:text-red-400 transition">revoke</button>}</td>
+                <td className="px-4 py-3 flex items-center gap-2">
+                  <button onClick={() => setQrCode(k.code)} className="text-[var(--aw-cyan)] hover:text-[var(--aw-cyan)] transition" title="Show QR code">
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z" /></svg>
+                  </button>
+                  {k.active && <button onClick={() => handleRevoke(k.id)} className="text-xs text-[var(--aw-text-3)] hover:text-red-400 transition">revoke</button>}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
       {pages > 1 && <div className="flex justify-center gap-2">{Array.from({ length: Math.min(pages, 10) }, (_, i) => i + 1).map(p => <button key={p} onClick={() => setPage(p)} className={`rounded-lg px-3 py-1.5 text-sm ${p === page ? "bg-amber-500 text-black font-medium" : "text-[var(--aw-text-2)] hover:text-[var(--aw-text-2)]"}`}>{p}</button>)}</div>}
+      {qrCode && <KeyQRModal code={qrCode} onClose={() => setQrCode(null)} />}
     </div>
   );
 }

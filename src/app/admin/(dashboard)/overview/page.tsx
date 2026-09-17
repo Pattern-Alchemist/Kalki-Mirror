@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CampaignPulse } from "./pulse-client";
 import { ConsultationFunnel } from "./funnel-client";
 import { ThrottleCard } from "./throttle-card";
+import { MorningBrief } from "./morning-brief";
 
 const TIER_CONFIG: Record<string, { label: string; color: string; element: string }> = {
   prithvi: { label: "Prithvi", color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20", element: "Earth" },
@@ -73,6 +74,8 @@ export default function OverviewPage() {
         <h1 className="text-2xl font-semibold text-[var(--aw-text)]">Archivist Overview</h1>
         <p className="mt-1 text-sm text-[var(--aw-text-2)]">Live operational metrics for Kalki Mirror</p>
       </div>
+
+      <MorningBrief />
 
       <div data-tour="overview-pulse">
         <CampaignPulse />
