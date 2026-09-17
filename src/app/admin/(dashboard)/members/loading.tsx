@@ -12,9 +12,9 @@ export default function MembersLoading() {
         <div className="h-10 w-full max-w-md rounded-lg bg-zinc-800/60 animate-pulse" />
 
         {/* Table skeleton */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/30">
+        <div className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30">
           {/* Table header */}
-          <div className="flex items-center gap-4 border-b border-zinc-800 px-5 py-3">
+          <div className="flex items-center gap-4 border-b border-[var(--aw-border-2)] px-5 py-3">
             <div className="h-3 w-28 rounded bg-zinc-700 animate-pulse" />
             <div className="h-3 w-36 rounded bg-zinc-700 animate-pulse" />
             <div className="h-3 w-24 rounded bg-zinc-700 animate-pulse" />
@@ -26,7 +26,7 @@ export default function MembersLoading() {
           {Array.from({ length: 5 }).map((_, i) => (
             <div
               key={i}
-              className="flex items-center gap-4 border-b border-zinc-800/50 px-5 py-3 last:border-b-0 animate-pulse"
+              className="flex items-center gap-4 border-b border-[var(--aw-border-2)]/50 px-5 py-3 last:border-b-0 animate-pulse"
             >
               <div className="h-8 w-8 rounded-full bg-zinc-700" />
               <div className="flex-1 space-y-1">

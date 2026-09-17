@@ -36,7 +36,7 @@ function timeAgo(iso: string): string {
 }
 
 function DeviceIcon({ kind }: { kind: SessionRow["kind"] }) {
-  const cls = "h-4 w-4 shrink-0 text-zinc-500";
+  const cls = "h-4 w-4 shrink-0 text-[var(--aw-text-2)]";
   if (kind === "mobile") return <Smartphone className={cls} />;
   if (kind === "tablet") return <Tablet className={cls} />;
   return <Monitor className={cls} />;
@@ -87,9 +87,9 @@ export function SessionsSection() {
   const others = sessions.filter((s) => !s.current).length;
 
   return (
-    <section className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 space-y-4">
+    <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Active Sessions</h2>
+        <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Active Sessions</h2>
         {others > 0 && (
           <button
             onClick={() =>
@@ -107,20 +107,20 @@ export function SessionsSection() {
         )}
       </div>
 
-      {notice && <p className="text-xs text-amber-400">{notice}</p>}
+      {notice && <p className="text-xs text-[var(--aw-cyan)]">{notice}</p>}
 
       {sessions.length === 0 ? (
-        <p className="text-xs text-zinc-600">No tracked sessions yet — this list fills in as you use the console.</p>
+        <p className="text-xs text-[var(--aw-text-3)]">No tracked sessions yet — this list fills in as you use the console.</p>
       ) : (
         <ul className="space-y-2">
           {sessions.map((s) => (
             <li
               key={s.id}
-              className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg bg-zinc-950 px-3 py-2.5"
+              className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg bg-transparent px-3 py-2.5"
             >
               <DeviceIcon kind={s.kind} />
               <div className="min-w-0 flex-1">
-                <p className="flex flex-wrap items-center gap-2 text-sm text-zinc-300">
+                <p className="flex flex-wrap items-center gap-2 text-sm text-[var(--aw-text-2)]">
                   <span className="truncate">{s.device}</span>
                   {s.current && (
                     <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-0.5 text-[0.65rem] font-medium text-emerald-400">
@@ -128,7 +128,7 @@ export function SessionsSection() {
                     </span>
                   )}
                 </p>
-                <p className="truncate text-[0.65rem] text-zinc-600" title={s.ip ?? undefined}>
+                <p className="truncate text-[0.65rem] text-[var(--aw-text-3)]" title={s.ip ?? undefined}>
                   {s.ip ?? "ip hidden"} · seen {timeAgo(s.lastSeen)} · started {timeAgo(s.createdAt)}
                 </p>
               </div>
@@ -136,7 +136,7 @@ export function SessionsSection() {
                 <button
                   onClick={() => revoke({ id: s.id }, `Sign out ${s.device}?`)}
                   disabled={busyId !== null}
-                  className="rounded-lg border border-zinc-800 px-2.5 py-1 text-[0.65rem] font-medium text-zinc-400 transition hover:border-red-500/40 hover:text-red-400 disabled:opacity-50"
+                  className="rounded-lg border border-[var(--aw-border-2)] px-2.5 py-1 text-[0.65rem] font-medium text-[var(--aw-text-2)] transition hover:border-red-500/40 hover:text-red-400 disabled:opacity-50"
                 >
                   {busyId === s.id ? "…" : "Revoke"}
                 </button>
@@ -146,7 +146,7 @@ export function SessionsSection() {
         </ul>
       )}
 
-      <p className="text-[0.65rem] leading-relaxed text-zinc-600">
+      <p className="text-[0.65rem] leading-relaxed text-[var(--aw-text-3)]">
         Sessions expire after 12 hours; at most 3 devices stay signed in at once (oldest is evicted). Revocations take
         effect on the device&apos;s next request and are recorded in the audit log.
       </p>

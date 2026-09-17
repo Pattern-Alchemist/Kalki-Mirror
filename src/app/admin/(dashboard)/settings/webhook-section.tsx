@@ -92,39 +92,39 @@ export function WebhookSection() {
   };
 
   return (
-    <section className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 space-y-5">
+    <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 space-y-5">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Webhook Integrations</h2>
+        <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Webhook Integrations</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="rounded-lg bg-zinc-800 px-3 py-1.5 text-xs text-zinc-300 transition hover:bg-zinc-700"
+          className="rounded-lg bg-zinc-800 px-3 py-1.5 text-xs text-[var(--aw-text-2)] transition hover:bg-zinc-700"
         >
           {showForm ? 'Cancel' : '+ Add Webhook'}
         </button>
       </div>
 
       {showForm && (
-        <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-4 space-y-3">
+        <div className="rounded-lg border border-[var(--aw-border-2)] bg-transparent p-4 space-y-3">
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">Endpoint URL</label>
+            <label className="block text-xs text-[var(--aw-text-2)] mb-1">Endpoint URL</label>
             <input
               type="url"
               value={url}
               onChange={e => setUrl(e.target.value)}
               placeholder="https://hooks.slack.com/services/..."
-              className="w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none"
+              className="w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-2 text-sm text-[var(--aw-text)] placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none"
             />
           </div>
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">Events</label>
+            <label className="block text-xs text-[var(--aw-text-2)] mb-1">Events</label>
             <div className="grid grid-cols-2 gap-2">
               {EVENT_OPTIONS.map(ev => (
-                <label key={ev.value} className="flex items-center gap-2 text-xs text-zinc-400 cursor-pointer">
+                <label key={ev.value} className="flex items-center gap-2 text-xs text-[var(--aw-text-2)] cursor-pointer">
                   <input
                     type="checkbox"
                     checked={events.includes(ev.value)}
                     onChange={() => toggleEvent(ev.value)}
-                    className="rounded border-zinc-700 bg-zinc-800 text-amber-500 focus:ring-amber-500/50"
+                    className="rounded border-zinc-700 bg-zinc-800 text-[var(--aw-cyan)] focus:ring-amber-500/50"
                   />
                   {ev.label}
                 </label>
@@ -142,8 +142,8 @@ export function WebhookSection() {
       )}
 
       {webhooks.length === 0 && !showForm ? (
-        <div className="rounded-lg border border-dashed border-zinc-800 p-8 text-center">
-          <p className="text-sm text-zinc-600">No webhooks configured.</p>
+        <div className="rounded-lg border border-dashed border-[var(--aw-border-2)] p-8 text-center">
+          <p className="text-sm text-[var(--aw-text-3)]">No webhooks configured.</p>
           <p className="mt-1 text-xs text-zinc-700">Add a webhook to receive real-time notifications to Slack, Discord, or any endpoint.</p>
         </div>
       ) : (
@@ -151,23 +151,23 @@ export function WebhookSection() {
           {webhooks.map(wh => {
             const eventsList: string[] = JSON.parse(wh.events);
             return (
-              <div key={wh.id} className="flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-950 p-3">
+              <div key={wh.id} className="flex items-center gap-3 rounded-lg border border-[var(--aw-border-2)] bg-transparent p-3">
                 <button
                   onClick={() => handleToggle(wh.id, wh.active)}
                   className={`h-3 w-3 rounded-full transition ${wh.active ? 'bg-emerald-400' : 'bg-zinc-700'}`}
                   aria-label={wh.active ? 'Disable' : 'Enable'}
                 />
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs text-zinc-300 truncate font-mono">{wh.url}</p>
+                  <p className="text-xs text-[var(--aw-text-2)] truncate font-mono">{wh.url}</p>
                   <div className="mt-1 flex gap-1 flex-wrap">
                     {eventsList.map(ev => (
-                      <span key={ev} className="rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] text-zinc-500">
+                      <span key={ev} className="rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] text-[var(--aw-text-2)]">
                         {ev.split('.').pop()}
                       </span>
                     ))}
                   </div>
                   {wh.lastStatus && (
-                    <p className="mt-1 text-[10px] text-zinc-600">
+                    <p className="mt-1 text-[10px] text-[var(--aw-text-3)]">
                       Last: {wh.lastStatus} {wh.lastTriggeredAt ? `at ${new Date(wh.lastTriggeredAt).toLocaleTimeString()}` : ''}
                     </p>
                   )}
@@ -180,7 +180,7 @@ export function WebhookSection() {
                 <button onClick={() => handleTest(wh.id)} disabled={pending} className="text-xs text-blue-400 hover:text-blue-300 disabled:opacity-50">
                   Test
                 </button>
-                <button onClick={() => handleDelete(wh.id)} disabled={pending} className="text-xs text-zinc-600 hover:text-red-400 transition">
+                <button onClick={() => handleDelete(wh.id)} disabled={pending} className="text-xs text-[var(--aw-text-3)] hover:text-red-400 transition">
                   Remove
                 </button>
               </div>

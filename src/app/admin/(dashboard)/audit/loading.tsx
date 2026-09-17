@@ -16,9 +16,9 @@ export default function AuditLoading() {
         </div>
 
         {/* Log entries - 8 rows with timestamp, action, actor columns */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/30">
+        <div className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30">
           {/* Column headers */}
-          <div className="flex items-center gap-4 border-b border-zinc-800 px-5 py-3">
+          <div className="flex items-center gap-4 border-b border-[var(--aw-border-2)] px-5 py-3">
             <div className="h-3 w-28 rounded bg-zinc-700 animate-pulse" />
             <div className="h-3 w-40 rounded bg-zinc-700 animate-pulse" />
             <div className="h-3 w-28 rounded bg-zinc-700 animate-pulse" />
@@ -29,7 +29,7 @@ export default function AuditLoading() {
           {Array.from({ length: 8 }).map((_, i) => (
             <div
               key={i}
-              className="flex items-center gap-4 border-b border-zinc-800/50 px-5 py-3 last:border-b-0 animate-pulse"
+              className="flex items-center gap-4 border-b border-[var(--aw-border-2)]/50 px-5 py-3 last:border-b-0 animate-pulse"
             >
               <div className="h-3 w-28 rounded bg-zinc-800" />
               <div className="flex-1">

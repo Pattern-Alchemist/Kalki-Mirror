@@ -69,8 +69,8 @@ export function TwoFactorSection() {
   };
 
   return (
-    <section className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 space-y-5">
-      <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Two-Factor Authentication</h2>
+    <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 space-y-5">
+      <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Two-Factor Authentication</h2>
 
       {enabled ? (
         <div className="space-y-4">
@@ -82,16 +82,16 @@ export function TwoFactorSection() {
             </span>
             <div>
               <p className="text-sm font-medium text-emerald-400">2FA Enabled</p>
-              <p className="text-xs text-zinc-500">Your account requires a TOTP code on each login. {backupCodesRemaining > 0 && `(${backupCodesRemaining} backup codes remaining)`}</p>
+              <p className="text-xs text-[var(--aw-text-2)]">Your account requires a TOTP code on each login. {backupCodesRemaining > 0 && `(${backupCodesRemaining} backup codes remaining)`}</p>
             </div>
           </div>
 
           {backupCodesShown && backupCodes.length > 0 && (
-            <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-4">
-              <p className="text-xs font-medium text-amber-400 mb-2">Backup Codes (save these now)</p>
+            <div className="rounded-lg border border-amber-500/20 bg-[rgba(0,240,255,0.04)] p-4">
+              <p className="text-xs font-medium text-[var(--aw-cyan)] mb-2">Backup Codes (save these now)</p>
               <div className="grid grid-cols-2 gap-1">
                 {backupCodes.map((c, i) => (
-                  <code key={i} className="rounded bg-zinc-950 px-2 py-1 text-xs font-mono text-zinc-300">
+                  <code key={i} className="rounded bg-transparent px-2 py-1 text-xs font-mono text-[var(--aw-text-2)]">
                     {c}
                   </code>
                 ))}
@@ -109,13 +109,13 @@ export function TwoFactorSection() {
         </div>
       ) : step === 'scanning' ? (
         <div className="space-y-4">
-          <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-6 text-center space-y-4">
-            <p className="text-sm text-zinc-300">Scan this QR code with your authenticator app</p>
+          <div className="rounded-lg border border-[var(--aw-border-2)] bg-transparent p-6 text-center space-y-4">
+            <p className="text-sm text-[var(--aw-text-2)]">Scan this QR code with your authenticator app</p>
             {qrDataUrl ? (
               <img src={qrDataUrl} alt="2FA QR Code" className="mx-auto rounded-xl" width={200} height={200} />
             ) : (
-              <div className="mx-auto flex h-48 w-48 items-center justify-center rounded-xl border-2 border-dashed border-zinc-700 bg-zinc-900">
-                <span className="text-xs text-zinc-600">Loading QR...</span>
+              <div className="mx-auto flex h-48 w-48 items-center justify-center rounded-xl border-2 border-dashed border-zinc-700 bg-[var(--aw-glass-1)]">
+                <span className="text-xs text-[var(--aw-text-3)]">Loading QR...</span>
               </div>
             )}
           </div>
@@ -126,7 +126,7 @@ export function TwoFactorSection() {
               value={code}
               onChange={e => { setCode(e.target.value.replace(/\D/g, '')); setError(''); }}
               placeholder="6-digit code"
-              className="w-32 rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-center text-sm font-mono text-zinc-100 tracking-widest placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none"
+              className="w-32 rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-2 text-center text-sm font-mono text-[var(--aw-text)] tracking-widest placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none"
             />
             <button
               onClick={handleVerify}
@@ -137,7 +137,7 @@ export function TwoFactorSection() {
             </button>
             <button
               onClick={() => { setStep('idle'); setCode(''); setError(''); }}
-              className="rounded-lg border border-zinc-800 px-4 py-2 text-sm text-zinc-400 transition hover:bg-zinc-800"
+              className="rounded-lg border border-[var(--aw-border-2)] px-4 py-2 text-sm text-[var(--aw-text-2)] transition hover:bg-zinc-800"
             >
               Cancel
             </button>
@@ -146,7 +146,7 @@ export function TwoFactorSection() {
         </div>
       ) : (
         <div className="space-y-3">
-          <p className="text-sm text-zinc-400">
+          <p className="text-sm text-[var(--aw-text-2)]">
             Add an extra layer of security to your account. After enabling, you will need to enter a code from your authenticator app (Google Authenticator, Authy, etc.) when logging in.
           </p>
           <button

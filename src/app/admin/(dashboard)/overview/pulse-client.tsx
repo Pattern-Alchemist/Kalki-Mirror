@@ -58,20 +58,20 @@ export function CampaignPulse() {
     <div className="rounded-xl border border-amber-500/20 bg-gradient-to-r from-amber-500/[0.06] to-transparent p-5">
       <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
         <div className="flex items-center gap-2">
-          <Crosshair className="h-4 w-4 text-amber-500" />
+          <Crosshair className="h-4 w-4 text-[var(--aw-cyan)]" />
           <span className="text-xs font-semibold uppercase tracking-wider text-amber-300/90">Campaign pulse</span>
         </div>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
           {chips.map((c) => (
             <div key={c.label} className="flex items-baseline gap-1.5">
-              <span className="text-[0.65rem] uppercase tracking-wide text-zinc-600">{c.label}</span>
-              <span className="max-w-[16rem] truncate text-sm font-semibold tabular-nums text-zinc-100" title={c.value}>{c.value}</span>
+              <span className="text-[0.65rem] uppercase tracking-wide text-[var(--aw-text-3)]">{c.label}</span>
+              <span className="max-w-[16rem] truncate text-sm font-semibold tabular-nums text-[var(--aw-text)]" title={c.value}>{c.value}</span>
             </div>
           ))}
         </div>
         <Link
           href="/admin/war-room"
-          className="ml-auto flex items-center gap-1 text-xs font-medium text-amber-400 transition hover:text-amber-300"
+          className="ml-auto flex items-center gap-1 text-xs font-medium text-[var(--aw-cyan)] transition hover:text-amber-300"
         >
           Open War Room <ArrowRight className="h-3.5 w-3.5" />
         </Link>

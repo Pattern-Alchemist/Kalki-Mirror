@@ -13,9 +13,9 @@ import {
 
 const STATUSES = ["PENDING", "APPROVED", "HIDDEN"] as const;
 const STATUS_CHIP: Record<string, string> = {
-  PENDING: "border-amber-500/40 bg-amber-500/10 text-amber-300",
+  PENDING: "border-amber-500/40 bg-[rgba(0,240,255,0.08)] text-amber-300",
   APPROVED: "border-emerald-500/40 bg-emerald-500/10 text-emerald-300",
-  HIDDEN: "border-zinc-700 text-zinc-500",
+  HIDDEN: "border-zinc-700 text-[var(--aw-text-2)]",
 };
 
 function fmtDate(iso: unknown): string {
@@ -107,14 +107,14 @@ export default function TestimonialsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-zinc-100">Testimonials</h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <h1 className="text-2xl font-semibold text-[var(--aw-text)]">Testimonials</h1>
+          <p className="mt-1 text-sm text-[var(--aw-text-2)]">
             Social proof ledger — WhatsApp words → consent → curate. Featured + approved render on /consultations.
           </p>
         </div>
         <button
           onClick={load}
-          className="rounded-lg border border-zinc-800 px-3 py-2 text-xs font-medium text-zinc-400 transition-colors hover:border-amber-500/30 hover:text-amber-300"
+          className="rounded-lg border border-[var(--aw-border-2)] px-3 py-2 text-xs font-medium text-[var(--aw-text-2)] transition-colors hover:border-[var(--aw-border-2)] hover:text-amber-300"
         >
           Refresh
         </button>
@@ -123,9 +123,9 @@ export default function TestimonialsPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
         {STATUSES.map((s) => (
-          <div key={s} className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
-            <p className="text-xs text-zinc-500">{s}</p>
-            <p className="mt-1 text-xl font-semibold text-zinc-100">{loading ? "—" : counts[s] ?? 0}</p>
+          <div key={s} className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-4">
+            <p className="text-xs text-[var(--aw-text-2)]">{s}</p>
+            <p className="mt-1 text-xl font-semibold text-[var(--aw-text)]">{loading ? "—" : counts[s] ?? 0}</p>
           </div>
         ))}
       </div>
@@ -134,38 +134,38 @@ export default function TestimonialsPage() {
       {notice && <p className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">{notice}</p>}
 
       {/* New entry */}
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5">
-        <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">New testimonial (enter with consent)</p>
+      <div className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-5">
+        <p className="text-xs font-semibold uppercase tracking-wider text-[var(--aw-text-2)]">New testimonial (enter with consent)</p>
         <textarea
           value={form.quote}
           onChange={(e) => setForm({ ...form, quote: e.target.value })}
           placeholder="The seeker's words, lightly copy-edited…"
           rows={3}
-          className="mt-3 w-full rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-amber-500/40 focus:outline-none"
+          className="mt-3 w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 text-sm text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-amber-500/40 focus:outline-none"
         />
         <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <input
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             placeholder="Display name — e.g. Ananya M."
-            className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-amber-500/40 focus:outline-none"
+            className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 text-sm text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-amber-500/40 focus:outline-none"
           />
           <input
             value={form.context}
             onChange={(e) => setForm({ ...form, context: e.target.value })}
             placeholder="Context — e.g. Shadow Dossier"
-            className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-amber-500/40 focus:outline-none"
+            className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 text-sm text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-amber-500/40 focus:outline-none"
           />
           <input
             value={form.location}
             onChange={(e) => setForm({ ...form, location: e.target.value })}
             placeholder="Location (optional) — e.g. Austin, TX"
-            className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-amber-500/40 focus:outline-none"
+            className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 text-sm text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-amber-500/40 focus:outline-none"
           />
           <select
             value={form.source}
             onChange={(e) => setForm({ ...form, source: e.target.value })}
-            className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 focus:border-amber-500/40 focus:outline-none"
+            className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 text-sm text-[var(--aw-text)] focus:border-amber-500/40 focus:outline-none"
           >
             <option value="consultation">consultation</option>
             <option value="membership">membership</option>
@@ -173,7 +173,7 @@ export default function TestimonialsPage() {
             <option value="other">other</option>
           </select>
         </div>
-        <label className="mt-3 flex items-center gap-2 text-xs text-zinc-400">
+        <label className="mt-3 flex items-center gap-2 text-xs text-[var(--aw-text-2)]">
           <input
             type="checkbox"
             checked={form.consent}
@@ -192,10 +192,10 @@ export default function TestimonialsPage() {
       </div>
 
       {/* Ledger */}
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className="overflow-x-auto rounded-xl border border-[var(--aw-border-2)]">
         <table className="w-full min-w-[900px] text-left text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 bg-zinc-900/60 text-xs uppercase tracking-wider text-zinc-500">
+            <tr className="border-b border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 text-xs uppercase tracking-wider text-[var(--aw-text-2)]">
               <th scope="col" className="px-4 py-3 font-medium">Quote</th>
               <th scope="col" className="px-4 py-3 font-medium">Seeker</th>
               <th scope="col" className="px-4 py-3 font-medium">Status</th>
@@ -205,27 +205,27 @@ export default function TestimonialsPage() {
           </thead>
           <tbody>
             {loading && (
-              <tr><td colSpan={5} className="px-4 py-6 text-center text-zinc-500">Loading ledger…</td></tr>
+              <tr><td colSpan={5} className="px-4 py-6 text-center text-[var(--aw-text-2)]">Loading ledger…</td></tr>
             )}
             {!loading && rows.length === 0 && (
-              <tr><td colSpan={5} className="px-4 py-6 text-center text-zinc-500">Nothing yet — after a session, ask the seeker for three honest sentences and their consent, then enter them above.</td></tr>
+              <tr><td colSpan={5} className="px-4 py-6 text-center text-[var(--aw-text-2)]">Nothing yet — after a session, ask the seeker for three honest sentences and their consent, then enter them above.</td></tr>
             )}
             {!loading && rows.map((t) => (
-              <tr key={t.id} className="border-b border-zinc-800/60 last:border-0 align-top">
+              <tr key={t.id} className="border-b border-[var(--aw-border-2)]/60 last:border-0 align-top">
                 <td className="max-w-md px-4 py-3">
-                  <p className="text-zinc-300">&ldquo;{t.quote.length > 180 ? t.quote.slice(0, 180) + "…" : t.quote}&rdquo;</p>
-                  {t.submittedBy && <p className="mt-1 text-[10px] text-zinc-600">entered by {t.submittedBy}</p>}
+                  <p className="text-[var(--aw-text-2)]">&ldquo;{t.quote.length > 180 ? t.quote.slice(0, 180) + "…" : t.quote}&rdquo;</p>
+                  {t.submittedBy && <p className="mt-1 text-[10px] text-[var(--aw-text-3)]">entered by {t.submittedBy}</p>}
                 </td>
                 <td className="px-4 py-3">
-                  <p className="text-zinc-300">{t.name || "—"}</p>
-                  <p className="text-xs text-zinc-500">{t.context || "—"}{t.location ? ` · ${t.location}` : ""}</p>
-                  <p className="text-[10px] text-zinc-600">{t.source}{t.consent ? " · consent ✓" : " · NO CONSENT"}</p>
+                  <p className="text-[var(--aw-text-2)]">{t.name || "—"}</p>
+                  <p className="text-xs text-[var(--aw-text-2)]">{t.context || "—"}{t.location ? ` · ${t.location}` : ""}</p>
+                  <p className="text-[10px] text-[var(--aw-text-3)]">{t.source}{t.consent ? " · consent ✓" : " · NO CONSENT"}</p>
                 </td>
                 <td className="px-4 py-3">
                   <span className={`rounded-full border px-2.5 py-0.5 text-xs ${STATUS_CHIP[t.status] ?? ""}`}>{t.status}</span>
-                  {t.featured && <span className="ml-1 rounded-full border border-gold-500/40 bg-amber-500/10 px-2 py-0.5 text-xs text-amber-300">★</span>}
+                  {t.featured && <span className="ml-1 rounded-full border border-gold-500/40 bg-[rgba(0,240,255,0.08)] px-2 py-0.5 text-xs text-amber-300">★</span>}
                 </td>
-                <td className="px-4 py-3 text-xs text-zinc-500">{fmtDate(t.createdAt)}</td>
+                <td className="px-4 py-3 text-xs text-[var(--aw-text-2)]">{fmtDate(t.createdAt)}</td>
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-2">
                     {t.status !== "APPROVED" && (
@@ -241,7 +241,7 @@ export default function TestimonialsPage() {
                       <button
                         onClick={() => onAction(() => toggleFeatured(t.id), t.featured ? "Unfeatured." : "Featured on /consultations.")}
                         disabled={busy}
-                        className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-300 transition-colors hover:bg-amber-500/20 disabled:cursor-not-allowed disabled:opacity-40"
+                        className="rounded-lg border border-amber-500/40 bg-[rgba(0,240,255,0.08)] px-3 py-1.5 text-xs font-medium text-amber-300 transition-colors hover:bg-amber-500/20 disabled:cursor-not-allowed disabled:opacity-40"
                       >
                         {t.featured ? "Unfeature" : "Feature"}
                       </button>
@@ -250,7 +250,7 @@ export default function TestimonialsPage() {
                       <button
                         onClick={() => onAction(() => hideTestimonial(t.id), "Hidden from the public surface.")}
                         disabled={busy}
-                        className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-400 transition-colors hover:text-zinc-200 disabled:cursor-not-allowed disabled:opacity-40"
+                        className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-medium text-[var(--aw-text-2)] transition-colors hover:text-[var(--aw-text)] disabled:cursor-not-allowed disabled:opacity-40"
                       >
                         Hide
                       </button>

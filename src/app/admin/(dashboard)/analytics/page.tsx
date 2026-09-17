@@ -14,7 +14,7 @@ import {
 } from "@/lib/analytics-shared";
 
 const ACCENTS: Record<string, string> = {
-  amber: "border-amber-500/20 text-amber-400",
+  amber: "border-amber-500/20 text-[var(--aw-cyan)]",
   emerald: "border-emerald-500/20 text-emerald-400",
   blue: "border-blue-500/20 text-blue-400",
   violet: "border-violet-500/20 text-violet-400",
@@ -37,7 +37,7 @@ function Delta({ cur, prev }: { cur: number; prev: number }) {
   const pct = Math.round(((cur - prev) / prev) * 100);
   if (pct === 0) {
     return (
-      <span className="inline-flex items-center rounded-full border border-zinc-700 bg-zinc-800/50 px-1.5 py-0.5 text-[10px] font-medium text-zinc-500">
+      <span className="inline-flex items-center rounded-full border border-zinc-700 bg-zinc-800/50 px-1.5 py-0.5 text-[10px] font-medium text-[var(--aw-text-2)]">
         flat
       </span>
     );
@@ -64,13 +64,13 @@ function StatCard({
   delta?: { cur: number; prev: number };
 }) {
   return (
-    <div className={`rounded-xl border ${ACCENTS[accent] || ACCENTS.amber} bg-zinc-900/50 p-5`}>
-      <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">{label}</p>
+    <div className={`rounded-xl border ${ACCENTS[accent] || ACCENTS.amber} bg-[var(--aw-glass-1)] p-5`}>
+      <p className="text-xs font-medium uppercase tracking-wider text-[var(--aw-text-2)]">{label}</p>
       <div className="mt-2 flex items-center gap-2">
-        <p className="text-3xl font-semibold tabular-nums text-zinc-100">{value}</p>
+        <p className="text-3xl font-semibold tabular-nums text-[var(--aw-text)]">{value}</p>
         {delta && <Delta cur={delta.cur} prev={delta.prev} />}
       </div>
-      {sub && <p className="mt-1 text-xs text-zinc-500">{sub}</p>}
+      {sub && <p className="mt-1 text-xs text-[var(--aw-text-2)]">{sub}</p>}
     </div>
   );
 }
@@ -81,9 +81,9 @@ function Panel({
   title: string; action?: React.ReactNode; children: React.ReactNode; className?: string;
 }) {
   return (
-    <section className={`rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 ${className}`}>
+    <section className={`rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 ${className}`}>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">{title}</h2>
+        <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">{title}</h2>
         {action}
       </div>
       {children}
@@ -93,9 +93,9 @@ function Panel({
 
 function EmptyNote({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-start gap-2 rounded-lg border border-dashed border-zinc-800 px-4 py-5">
-      <Inbox className="mt-0.5 h-4 w-4 shrink-0 text-zinc-600" aria-hidden />
-      <p className="text-sm text-zinc-600">{children}</p>
+    <div className="flex items-start gap-2 rounded-lg border border-dashed border-[var(--aw-border-2)] px-4 py-5">
+      <Inbox className="mt-0.5 h-4 w-4 shrink-0 text-[var(--aw-text-3)]" aria-hidden />
+      <p className="text-sm text-[var(--aw-text-3)]">{children}</p>
     </div>
   );
 }
@@ -196,7 +196,7 @@ export default function AnalyticsPage() {
   if (!data) {
     return (
       <div className="py-20 text-center">
-        <p className="animate-pulse text-sm text-zinc-500">Consulting the event store…</p>
+        <p className="animate-pulse text-sm text-[var(--aw-text-2)]">Consulting the event store…</p>
       </div>
     );
   }
@@ -205,12 +205,12 @@ export default function AnalyticsPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-semibold text-zinc-100">First-Party Analytics</h1>
-          <p className="mt-1 text-sm text-zinc-500">The 15-event dictionary (TGA §12) across every public surface</p>
+          <h1 className="text-2xl font-semibold text-[var(--aw-text)]">First-Party Analytics</h1>
+          <p className="mt-1 text-sm text-[var(--aw-text-2)]">The 15-event dictionary (TGA §12) across every public surface</p>
         </div>
-        <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-6">
-          <p className="text-sm text-amber-400">Event store unreachable.</p>
-          <p className="mt-2 text-sm text-zinc-400">
+        <div className="rounded-xl border border-amber-500/20 bg-[rgba(0,240,255,0.04)] p-6">
+          <p className="text-sm text-[var(--aw-cyan)]">Event store unreachable.</p>
+          <p className="mt-2 text-sm text-[var(--aw-text-2)]">
             The analytics tables live in Turso and self-create on the first write. This is expected
             in local development without Turso credentials, or when no event has been recorded yet.
             In production, verify{" "}
@@ -264,8 +264,8 @@ export default function AnalyticsPage() {
       {/* Header + controls */}
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-zinc-100">First-Party Analytics</h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <h1 className="text-2xl font-semibold text-[var(--aw-text)]">First-Party Analytics</h1>
+          <p className="mt-1 text-sm text-[var(--aw-text-2)]">
             The 15-event dictionary (TGA §12) across every public surface
           </p>
         </div>
@@ -273,7 +273,7 @@ export default function AnalyticsPage() {
           <div
             role="group"
             aria-label="Analytics window"
-            className="flex rounded-lg border border-zinc-800 bg-zinc-900/60 p-0.5"
+            className="flex rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 p-0.5"
           >
             {ANALYTICS_RANGES.map((r) => (
               <button
@@ -281,7 +281,7 @@ export default function AnalyticsPage() {
                 onClick={() => setRange(r)}
                 aria-pressed={range === r}
                 className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500 ${
-                  range === r ? "bg-amber-500/15 text-amber-400" : "text-zinc-400 hover:text-zinc-200"
+                  range === r ? "bg-amber-500/15 text-[var(--aw-cyan)]" : "text-[var(--aw-text-2)] hover:text-[var(--aw-text)]"
                 }`}
               >
                 {r}d
@@ -295,7 +295,7 @@ export default function AnalyticsPage() {
             className={`inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500 ${
               autoRefresh
                 ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-400"
-                : "border-zinc-800 bg-zinc-900/60 text-zinc-500 hover:text-zinc-300"
+                : "border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 text-[var(--aw-text-2)] hover:text-[var(--aw-text-2)]"
             }`}
           >
             {autoRefresh ? <Pause className="h-3.5 w-3.5" aria-hidden /> : <Play className="h-3.5 w-3.5" aria-hidden />}
@@ -305,12 +305,12 @@ export default function AnalyticsPage() {
             onClick={() => void fetchAnalytics()}
             disabled={refreshing}
             aria-label="Refresh analytics now"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900/60 px-2.5 py-1.5 text-xs font-medium text-zinc-400 transition-colors hover:text-zinc-200 disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-2.5 py-1.5 text-xs font-medium text-[var(--aw-text-2)] transition-colors hover:text-[var(--aw-text)] disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`} aria-hidden />
             <span className="hidden sm:inline">Refresh</span>
           </button>
-          <p className="text-xs text-zinc-600" title={updated.toISOString()}>
+          <p className="text-xs text-[var(--aw-text-3)]" title={updated.toISOString()}>
             Updated {timeAgo(data.generatedAt, now)} · UTC
           </p>
         </div>
@@ -364,7 +364,7 @@ export default function AnalyticsPage() {
                 aria-pressed={!hiddenGroups.has(group)}
                 className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[11px] font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500 ${
                   hiddenGroups.has(group)
-                    ? "border-zinc-800 bg-transparent text-zinc-600"
+                    ? "border-[var(--aw-border-2)] bg-transparent text-[var(--aw-text-3)]"
                     : `${GROUP_BADGE_CLASSES[group]}`
                 }`}
               >
@@ -415,7 +415,7 @@ export default function AnalyticsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-zinc-800 text-xs uppercase tracking-wider text-zinc-600">
+                <tr className="border-b border-[var(--aw-border-2)] text-xs uppercase tracking-wider text-[var(--aw-text-3)]">
                   <th scope="col" className="pb-2 pr-4 font-medium">Signal</th>
                   <th scope="col" className="pb-2 pr-4 text-right font-medium">{data.range}d</th>
                   <th scope="col" className="pb-2 pr-4 text-right font-medium">7d</th>
@@ -427,22 +427,22 @@ export default function AnalyticsPage() {
                 {data.events.map((e) => {
                   const group = e.group as EventGroup;
                   return (
-                    <tr key={e.event} className="border-b border-zinc-800/50 last:border-0">
+                    <tr key={e.event} className="border-b border-[var(--aw-border-2)]/50 last:border-0">
                       <td className="py-2 pr-4">
                         <span className={`inline-block rounded border px-1.5 py-0.5 text-[10px] font-medium ${GROUP_BADGE_CLASSES[group] || GROUP_BADGE_CLASSES.Discovery}`}>
                           {e.group}
                         </span>
-                        <span className="ml-2 text-zinc-300">{e.label}</span>
+                        <span className="ml-2 text-[var(--aw-text-2)]">{e.label}</span>
                         <span
                           className="mt-1 block h-0.5 rounded-full bg-amber-500/40"
                           style={{ width: `${Math.max(2, Math.round((e.countWindow / maxWindow) * 100))}%` }}
                           aria-hidden
                         />
                       </td>
-                      <td className="py-2 pr-4 text-right tabular-nums text-zinc-100">{fmt(e.countWindow)}</td>
-                      <td className="py-2 pr-4 text-right tabular-nums text-zinc-400">{fmt(e.count7d)}</td>
-                      <td className="py-2 pr-4 text-right tabular-nums text-zinc-200">{fmt(e.count30d)}</td>
-                      <td className="py-2 text-right tabular-nums text-zinc-500">{fmt(e.countAll)}</td>
+                      <td className="py-2 pr-4 text-right tabular-nums text-[var(--aw-text)]">{fmt(e.countWindow)}</td>
+                      <td className="py-2 pr-4 text-right tabular-nums text-[var(--aw-text-2)]">{fmt(e.count7d)}</td>
+                      <td className="py-2 pr-4 text-right tabular-nums text-[var(--aw-text)]">{fmt(e.count30d)}</td>
+                      <td className="py-2 text-right tabular-nums text-[var(--aw-text-2)]">{fmt(e.countAll)}</td>
                     </tr>
                   );
                 })}
@@ -468,14 +468,14 @@ export default function AnalyticsPage() {
                   return (
                     <li key={s.key}>
                       <div className="flex items-baseline justify-between gap-2">
-                        <span className="text-xs text-zinc-400">{s.label}</span>
+                        <span className="text-xs text-[var(--aw-text-2)]">{s.label}</span>
                         <span className="flex items-baseline gap-2">
                           {stepPct !== null && (
-                            <span className={`text-[10px] tabular-nums ${stepPct >= 50 ? "text-emerald-400" : "text-zinc-500"}`}>
+                            <span className={`text-[10px] tabular-nums ${stepPct >= 50 ? "text-emerald-400" : "text-[var(--aw-text-2)]"}`}>
                               {stepPct}% of prev
                             </span>
                           )}
-                          <span className="text-sm font-semibold tabular-nums text-zinc-200">{fmt(count)}</span>
+                          <span className="text-sm font-semibold tabular-nums text-[var(--aw-text)]">{fmt(count)}</span>
                         </span>
                       </div>
                       <div className="mt-1.5 h-2 w-full rounded-full bg-zinc-800">
@@ -490,9 +490,9 @@ export default function AnalyticsPage() {
               </ol>
             )}
             {data.funnel.dossierStarted > 0 && (
-              <p className="mt-4 text-xs text-zinc-500">
+              <p className="mt-4 text-xs text-[var(--aw-text-2)]">
                 Assessment completion rate:{" "}
-                <span className="font-semibold text-zinc-300">{completionRate}%</span> — the hybrid
+                <span className="font-semibold text-[var(--aw-text-2)]">{completionRate}%</span> — the hybrid
                 station gate (TGA §8) will eventually read this same signal.
               </p>
             )}
@@ -508,15 +508,15 @@ export default function AnalyticsPage() {
                   const href = contentHref(t.event, t.slug);
                   const label = (
                     <>
-                      <span className="flex-1 truncate font-mono text-xs text-zinc-300">{t.slug}</span>
-                      <span className="text-[10px] uppercase tracking-wide text-zinc-600">
+                      <span className="flex-1 truncate font-mono text-xs text-[var(--aw-text-2)]">{t.slug}</span>
+                      <span className="text-[10px] uppercase tracking-wide text-[var(--aw-text-3)]">
                         {t.event.replace(/_(viewed|page_viewed)$/, "").replace(/_/g, " ")}
                       </span>
                     </>
                   );
                   return (
                     <li key={`${t.event}-${t.slug}`} className="flex items-center gap-3 text-sm">
-                      <span className="w-5 text-right text-xs tabular-nums text-zinc-600">{i + 1}</span>
+                      <span className="w-5 text-right text-xs tabular-nums text-[var(--aw-text-3)]">{i + 1}</span>
                       {href ? (
                         <a
                           href={href}
@@ -525,12 +525,12 @@ export default function AnalyticsPage() {
                           className="flex flex-1 items-center gap-2 rounded px-1 py-0.5 transition-colors hover:bg-zinc-800/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500"
                         >
                           {label}
-                          <ExternalLink className="h-3 w-3 shrink-0 text-zinc-600" aria-hidden />
+                          <ExternalLink className="h-3 w-3 shrink-0 text-[var(--aw-text-3)]" aria-hidden />
                         </a>
                       ) : (
                         <span className="flex flex-1 items-center gap-2">{label}</span>
                       )}
-                      <span className="tabular-nums text-zinc-400">{fmt(t.views)}</span>
+                      <span className="tabular-nums text-[var(--aw-text-2)]">{fmt(t.views)}</span>
                     </li>
                   );
                 })}
@@ -548,7 +548,7 @@ export default function AnalyticsPage() {
                   const maxVisits = Math.max(...data.topReferrers.map((x) => x.visits), 1);
                   return (
                     <li key={r.domain} className="flex items-center gap-3 text-sm">
-                      <span className={`flex-1 truncate font-mono text-xs ${r.domain === "(direct)" ? "text-zinc-500" : "text-zinc-300"}`}>
+                      <span className={`flex-1 truncate font-mono text-xs ${r.domain === "(direct)" ? "text-[var(--aw-text-2)]" : "text-[var(--aw-text-2)]"}`}>
                         {r.domain}
                       </span>
                       <span className="h-1.5 w-20 overflow-hidden rounded-full bg-zinc-800" aria-hidden>
@@ -557,7 +557,7 @@ export default function AnalyticsPage() {
                           style={{ width: `${Math.max(2, Math.round((r.visits / maxVisits) * 100))}%` }}
                         />
                       </span>
-                      <span className="w-12 text-right tabular-nums text-zinc-400" title={`${fmt(r.sessions)} sessions`}>
+                      <span className="w-12 text-right tabular-nums text-[var(--aw-text-2)]" title={`${fmt(r.sessions)} sessions`}>
                         {fmt(r.visits)}
                       </span>
                     </li>
@@ -570,7 +570,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Recent activity feed */}
-      <Panel title="Recent Activity" action={<span className="text-xs text-zinc-600">latest 15 · newest first</span>}>
+      <Panel title="Recent Activity" action={<span className="text-xs text-[var(--aw-text-3)]">latest 15 · newest first</span>}>
         {data.recentEvents.length === 0 ? (
           <EmptyNote>The event store is empty. The next visitor to any tracked surface lands here.</EmptyNote>
         ) : (
@@ -584,13 +584,13 @@ export default function AnalyticsPage() {
                   className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-zinc-800/30"
                 >
                   <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: GROUP_COLORS[group] || GROUP_COLORS.Discovery }} aria-hidden />
-                  <span className="text-zinc-300">{e.label}</span>
+                  <span className="text-[var(--aw-text-2)]">{e.label}</span>
                   {e.path && (
                     <a
                       href={e.path}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="truncate font-mono text-xs text-zinc-500 transition-colors hover:text-amber-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500"
+                      className="truncate font-mono text-xs text-[var(--aw-text-2)] transition-colors hover:text-[var(--aw-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500"
                     >
                       {e.path}
                     </a>
@@ -601,11 +601,11 @@ export default function AnalyticsPage() {
                     </span>
                   )}
                   {e.sessionId && (
-                    <span className="hidden font-mono text-[10px] text-zinc-600 sm:inline" title={e.sessionId}>
+                    <span className="hidden font-mono text-[10px] text-[var(--aw-text-3)] sm:inline" title={e.sessionId}>
                       {e.sessionId.slice(0, 8)}
                     </span>
                   )}
-                  <span className="ml-auto shrink-0 text-xs tabular-nums text-zinc-600" title={e.createdAt}>
+                  <span className="ml-auto shrink-0 text-xs tabular-nums text-[var(--aw-text-3)]" title={e.createdAt}>
                     {timeAgo(e.createdAt, now)}
                   </span>
                 </li>
@@ -624,7 +624,7 @@ export default function AnalyticsPage() {
               onClick={() => void copyEmails()}
               disabled={data.totals.subscribers === 0}
               aria-label="Copy all subscriber email addresses"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900/60 px-2.5 py-1.5 text-xs font-medium text-zinc-400 transition-colors hover:text-zinc-200 disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-2.5 py-1.5 text-xs font-medium text-[var(--aw-text-2)] transition-colors hover:text-[var(--aw-text)] disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500"
             >
               {copyState === "done" ? <Check className="h-3.5 w-3.5 text-emerald-400" aria-hidden /> : <Copy className="h-3.5 w-3.5" aria-hidden />}
               {copyState === "done" ? "Copied" : copyState === "error" ? "Copy failed" : "Copy all"}
@@ -633,7 +633,7 @@ export default function AnalyticsPage() {
               href="/api/admin/analytics?format=csv"
               download
               aria-label="Download all subscribers as CSV"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900/60 px-2.5 py-1.5 text-xs font-medium text-zinc-400 transition-colors hover:text-zinc-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-2.5 py-1.5 text-xs font-medium text-[var(--aw-text-2)] transition-colors hover:text-[var(--aw-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500"
             >
               <Download className="h-3.5 w-3.5" aria-hidden />
               CSV
@@ -650,7 +650,7 @@ export default function AnalyticsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-zinc-800 text-xs uppercase tracking-wider text-zinc-600">
+                <tr className="border-b border-[var(--aw-border-2)] text-xs uppercase tracking-wider text-[var(--aw-text-3)]">
                   <th scope="col" className="pb-2 pr-4 font-medium">Email</th>
                   <th scope="col" className="pb-2 pr-4 font-medium">Source</th>
                   <th scope="col" className="pb-2 font-medium">Joined</th>
@@ -658,10 +658,10 @@ export default function AnalyticsPage() {
               </thead>
               <tbody>
                 {data.recentSubscribers.map((s) => (
-                  <tr key={s.email} className="border-b border-zinc-800/50 last:border-0">
-                    <td className="py-2 pr-4 text-zinc-200">{s.email}</td>
-                    <td className="py-2 pr-4 text-zinc-500">{s.source || "footer"}</td>
-                    <td className="py-2 text-zinc-500">
+                  <tr key={s.email} className="border-b border-[var(--aw-border-2)]/50 last:border-0">
+                    <td className="py-2 pr-4 text-[var(--aw-text)]">{s.email}</td>
+                    <td className="py-2 pr-4 text-[var(--aw-text-2)]">{s.source || "footer"}</td>
+                    <td className="py-2 text-[var(--aw-text-2)]">
                       <span title={s.createdAt}>{timeAgo(s.createdAt, now)}</span>
                     </td>
                   </tr>
@@ -669,7 +669,7 @@ export default function AnalyticsPage() {
               </tbody>
             </table>
             {data.totals.subscribers > data.recentSubscribers.length && (
-              <p className="mt-3 text-xs text-zinc-600">
+              <p className="mt-3 text-xs text-[var(--aw-text-3)]">
                 Showing the {data.recentSubscribers.length} most recent of{" "}
                 {fmt(data.totals.subscribers)} — use CSV for the full list.
               </p>

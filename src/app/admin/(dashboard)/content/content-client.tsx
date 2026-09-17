@@ -11,15 +11,15 @@ import { rowPublishState } from "@/lib/admin/scheduled-publish";
 import { AdminAIDraft } from "@/components/ai/AdminAIDraft";
 
 const STATUS_STYLES: Record<string, string> = {
-  DRAFT: "bg-zinc-800 text-zinc-400",
+  DRAFT: "bg-zinc-800 text-[var(--aw-text-2)]",
   IN_REVIEW: "bg-blue-500/10 text-blue-400",
   PUBLISHED: "bg-emerald-500/10 text-emerald-400",
-  ARCHIVED: "bg-zinc-800/50 text-zinc-600",
+  ARCHIVED: "bg-zinc-800/50 text-[var(--aw-text-3)]",
 };
 
 const CAUTION_STYLES: Record<string, string> = {
-  OPEN: "text-zinc-500",
-  MODERATE: "text-amber-400",
+  OPEN: "text-[var(--aw-text-2)]",
+  MODERATE: "text-[var(--aw-cyan)]",
   HIGH: "text-orange-400",
   SEALED: "text-red-400",
 };
@@ -220,22 +220,22 @@ export function ContentClient({
     <div className="space-y-4">
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3">
-        <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none">
+        <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-2 text-sm text-[var(--aw-text)] focus:border-amber-500/50 focus:outline-none">
           <option value="ALL">All Types</option>
           {CONTENT_TYPES.map((t) => (<option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>))}
         </select>
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none">
+        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-2 text-sm text-[var(--aw-text)] focus:border-amber-500/50 focus:outline-none">
           <option value="ALL">All Statuses</option>
           {STATUSES.map((s) => (<option key={s} value={s}>{s}</option>))}
         </select>
-        <button onClick={applyFilters} disabled={isPending} className="rounded-lg bg-zinc-800 px-4 py-2 text-sm text-zinc-300 transition hover:bg-zinc-700 disabled:opacity-50">Filter</button>
+        <button onClick={applyFilters} disabled={isPending} className="rounded-lg bg-zinc-800 px-4 py-2 text-sm text-[var(--aw-text-2)] transition hover:bg-zinc-700 disabled:opacity-50">Filter</button>
         <button onClick={openCreate} className="ml-auto rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-zinc-950 transition hover:bg-amber-500">
           New Entry
         </button>
       </div>
 
       {/* AI Draft Generator */}
-      <div className="rounded-xl border border-zinc-800 p-4">
+      <div className="rounded-xl border border-[var(--aw-border-2)] p-4">
         <AdminAIDraft
           type={form.type as any}
           title={form.title || undefined || ''}
@@ -252,14 +252,14 @@ export function ContentClient({
       </div>
 
       {/* Media Library (Vol. 3 #5 — the uploader finally has callers) */}
-      <div className="rounded-xl border border-zinc-800 p-4">
+      <div className="rounded-xl border border-[var(--aw-border-2)] p-4">
         <div className="flex items-center gap-3">
-          <button onClick={toggleMediaPanel} className="text-sm font-medium text-zinc-300 hover:text-amber-400 transition-colors">
+          <button onClick={toggleMediaPanel} className="text-sm font-medium text-[var(--aw-text-2)] hover:text-[var(--aw-cyan)] transition-colors">
             Media Library {mediaOpen ? "▾" : "▸"}
           </button>
-          {mediaState === "ready" && <span className="text-xs text-zinc-600">{mediaAssets.length} asset(s) in kalki-mirror/</span>}
+          {mediaState === "ready" && <span className="text-xs text-[var(--aw-text-3)]">{mediaAssets.length} asset(s) in kalki-mirror/</span>}
           {mediaOpen && (
-            <label className="ml-auto cursor-pointer rounded-lg border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 transition hover:border-amber-500/50 hover:text-amber-400">
+            <label className="ml-auto cursor-pointer rounded-lg border border-zinc-700 px-3 py-1.5 text-xs text-[var(--aw-text-2)] transition hover:border-amber-500/50 hover:text-[var(--aw-cyan)]">
               {uploading ? "Uploading…" : "Upload image"}
               <input
                 type="file"
@@ -277,24 +277,24 @@ export function ContentClient({
         </div>
         {mediaOpen && (
           <div className="mt-4">
-            {mediaState === "loading" && <p className="text-sm text-zinc-500">Opening the media library…</p>}
+            {mediaState === "loading" && <p className="text-sm text-[var(--aw-text-2)]">Opening the media library…</p>}
             {mediaState === "not-configured" && (
-              <p className="rounded-lg border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-sm text-amber-400">{mediaMessage}</p>
+              <p className="rounded-lg border border-amber-500/20 bg-[rgba(0,240,255,0.04)] px-4 py-3 text-sm text-[var(--aw-cyan)]">{mediaMessage}</p>
             )}
             {mediaState === "error" && <p className="rounded-lg border border-red-500/20 bg-red-500/5 px-4 py-3 text-sm text-red-400">{mediaMessage}</p>}
             {mediaState === "ready" && mediaAssets.length === 0 && (
-              <p className="text-sm text-zinc-600">No assets yet — upload the first image for this entry.</p>
+              <p className="text-sm text-[var(--aw-text-3)]">No assets yet — upload the first image for this entry.</p>
             )}
             {mediaState === "ready" && mediaAssets.length > 0 && (
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
                 {mediaAssets.map((asset) => (
-                  <div key={asset.publicId} className="group space-y-1 rounded-lg border border-zinc-800 p-2">
+                  <div key={asset.publicId} className="group space-y-1 rounded-lg border border-[var(--aw-border-2)] p-2">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={asset.secureUrl} alt={asset.publicId} className="h-24 w-full rounded object-cover" />
-                    <p className="truncate font-mono text-[0.625rem] text-zinc-600" title={asset.publicId}>{asset.publicId.split("/").pop()}</p>
+                    <p className="truncate font-mono text-[0.625rem] text-[var(--aw-text-3)]" title={asset.publicId}>{asset.publicId.split("/").pop()}</p>
                     <div className="flex gap-1">
-                      <button onClick={() => copyAssetMarkdown(asset)} className="flex-1 rounded bg-zinc-800 px-1.5 py-1 text-[0.625rem] text-zinc-300 transition hover:bg-zinc-700">Copy ![]()</button>
-                      <button onClick={() => window.open(asset.secureUrl, "_blank")} className="rounded bg-zinc-800 px-1.5 py-1 text-[0.625rem] text-zinc-300 transition hover:bg-zinc-700">↗</button>
+                      <button onClick={() => copyAssetMarkdown(asset)} className="flex-1 rounded bg-zinc-800 px-1.5 py-1 text-[0.625rem] text-[var(--aw-text-2)] transition hover:bg-zinc-700">Copy ![]()</button>
+                      <button onClick={() => window.open(asset.secureUrl, "_blank")} className="rounded bg-zinc-800 px-1.5 py-1 text-[0.625rem] text-[var(--aw-text-2)] transition hover:bg-zinc-700">↗</button>
                     </div>
                   </div>
                 ))}
@@ -306,30 +306,30 @@ export function ContentClient({
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className="overflow-x-auto rounded-xl border border-[var(--aw-border-2)]">
         <table className="w-full text-left text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 bg-zinc-900/50">
-              <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Title</th>
-              <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Type</th>
-              <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Status</th>
-              <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Caution</th>
-              <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Tier</th>
-              <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Updated</th>
-              <th scope="col" className="px-4 py-3 font-medium text-zinc-500">Actions</th>
+            <tr className="border-b border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]">
+              <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Title</th>
+              <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Type</th>
+              <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Status</th>
+              <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Caution</th>
+              <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Tier</th>
+              <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Updated</th>
+              <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-800/50">
             {initialEntries.length === 0 && (
-              <tr><td colSpan={7} className="px-4 py-12 text-center text-zinc-600">No content entries.</td></tr>
+              <tr><td colSpan={7} className="px-4 py-12 text-center text-[var(--aw-text-3)]">No content entries.</td></tr>
             )}
             {initialEntries.map((entry) => (
-              <tr key={entry.id} className="transition hover:bg-zinc-900/30">
+              <tr key={entry.id} className="transition hover:bg-[var(--aw-glass-1)]/30">
                 <td className="px-4 py-3">
-                  <p className="font-medium text-zinc-200">{entry.title}</p>
-                  <p className="text-xs text-zinc-600 font-mono">/{entry.type}/{entry.slug}</p>
+                  <p className="font-medium text-[var(--aw-text)]">{entry.title}</p>
+                  <p className="text-xs text-[var(--aw-text-3)] font-mono">/{entry.type}/{entry.slug}</p>
                 </td>
-                <td className="px-4 py-3 capitalize text-zinc-400">{entry.type}</td>
+                <td className="px-4 py-3 capitalize text-[var(--aw-text-2)]">{entry.type}</td>
                 <td className="px-4 py-3">
                   <select
                     value={entry.status}
@@ -347,11 +347,11 @@ export function ContentClient({
                   )}
                 </td>
                 <td className={`px-4 py-3 text-xs font-medium ${CAUTION_STYLES[entry.caution] || ""}`}>{entry.caution}</td>
-                <td className="px-4 py-3 text-xs text-zinc-500 capitalize">{entry.minTier}</td>
-                <td className="whitespace-nowrap px-4 py-3 text-xs text-zinc-500">{new Date(entry.updatedAt).toLocaleDateString()}</td>
+                <td className="px-4 py-3 text-xs text-[var(--aw-text-2)] capitalize">{entry.minTier}</td>
+                <td className="whitespace-nowrap px-4 py-3 text-xs text-[var(--aw-text-2)]">{new Date(entry.updatedAt).toLocaleDateString()}</td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <button onClick={() => openEdit(entry)} disabled={isPending} className="text-xs text-amber-500 hover:text-amber-400 disabled:opacity-50">Edit</button>
+                    <button onClick={() => openEdit(entry)} disabled={isPending} className="text-xs text-[var(--aw-cyan)] hover:text-[var(--aw-cyan)] disabled:opacity-50">Edit</button>
                     <button onClick={() => window.open(`/admin/content/preview?id=${entry.id}`, '_blank')} disabled={isPending} className="text-xs text-blue-400 hover:text-blue-300 disabled:opacity-50">Preview</button>
                     <button onClick={() => handleDelete(entry.id)} disabled={isPending} className="text-xs text-red-400 hover:text-red-300 disabled:opacity-50">Delete</button>
                   </div>
@@ -365,50 +365,50 @@ export function ContentClient({
       {/* Create/Edit Modal */}
       {showCreate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => { setShowCreate(false); setEditId(null); }}>
-          <div className="w-full max-w-4xl rounded-xl border border-zinc-700 bg-zinc-900 p-6 space-y-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-sm font-medium text-zinc-200">{editId ? "Edit Entry" : "New Content Entry"}</h3>
+          <div className="w-full max-w-4xl rounded-xl border border-zinc-700 bg-[var(--aw-glass-1)] p-6 space-y-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-sm font-medium text-[var(--aw-text)]">{editId ? "Edit Entry" : "New Content Entry"}</h3>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1">
-                <label className="block text-xs font-medium text-zinc-400">Type</label>
-                <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} disabled={!!editId} className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none">
+                <label className="block text-xs font-medium text-[var(--aw-text-2)]">Type</label>
+                <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} disabled={!!editId} className="w-full rounded-lg border border-[var(--aw-border-2)] bg-transparent px-3 py-2 text-sm text-[var(--aw-text)] focus:border-amber-500/50 focus:outline-none">
                   {CONTENT_TYPES.map((t) => (<option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>))}
                 </select>
               </div>
               <div className="space-y-1">
-                <label className="block text-xs font-medium text-zinc-400">Slug</label>
-                <input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} disabled={!!editId} placeholder="my-entry-slug" className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none font-mono" />
+                <label className="block text-xs font-medium text-[var(--aw-text-2)]">Slug</label>
+                <input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} disabled={!!editId} placeholder="my-entry-slug" className="w-full rounded-lg border border-[var(--aw-border-2)] bg-transparent px-3 py-2 text-sm text-[var(--aw-text)] focus:border-amber-500/50 focus:outline-none font-mono" />
               </div>
             </div>
             <div className="space-y-1">
-              <label className="block text-xs font-medium text-zinc-400">Title</label>
-              <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Entry title" className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none" />
+              <label className="block text-xs font-medium text-[var(--aw-text-2)]">Title</label>
+              <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Entry title" className="w-full rounded-lg border border-[var(--aw-border-2)] bg-transparent px-3 py-2 text-sm text-[var(--aw-text)] focus:border-amber-500/50 focus:outline-none" />
             </div>
             <div className="space-y-1">
-              <label className="block text-xs font-medium text-zinc-400">Excerpt</label>
-              <input value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} placeholder="Brief description…" className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none" />
+              <label className="block text-xs font-medium text-[var(--aw-text-2)]">Excerpt</label>
+              <input value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} placeholder="Brief description…" className="w-full rounded-lg border border-[var(--aw-border-2)] bg-transparent px-3 py-2 text-sm text-[var(--aw-text)] focus:border-amber-500/50 focus:outline-none" />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
-                  <label className="block text-xs font-medium text-zinc-400">Body (Markdown)</label>
-                  <button onClick={openPicker} className="text-[0.625rem] text-amber-500 transition hover:text-amber-400">Insert image ↓</button>
+                  <label className="block text-xs font-medium text-[var(--aw-text-2)]">Body (Markdown)</label>
+                  <button onClick={openPicker} className="text-[0.625rem] text-[var(--aw-cyan)] transition hover:text-[var(--aw-cyan)]">Insert image ↓</button>
                 </div>
-                <textarea ref={bodyRef} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} rows={12} placeholder="Write content body in Markdown…" className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none resize-none font-mono" />
+                <textarea ref={bodyRef} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} rows={12} placeholder="Write content body in Markdown…" className="w-full rounded-lg border border-[var(--aw-border-2)] bg-transparent px-3 py-2 text-sm text-[var(--aw-text)] focus:border-amber-500/50 focus:outline-none resize-none font-mono" />
                 {pickerOpen && (
-                  <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-3">
+                  <div className="rounded-lg border border-[var(--aw-border-2)] bg-transparent p-3">
                     <div className="mb-2 flex items-center justify-between">
-                      <span className="text-xs text-zinc-500">Media library</span>
-                      <button onClick={() => setPickerOpen(false)} className="text-xs text-zinc-600 hover:text-zinc-400">close</button>
+                      <span className="text-xs text-[var(--aw-text-2)]">Media library</span>
+                      <button onClick={() => setPickerOpen(false)} className="text-xs text-[var(--aw-text-3)] hover:text-[var(--aw-text-2)]">close</button>
                     </div>
-                    {mediaState === "loading" && <p className="text-xs text-zinc-600">Loading…</p>}
-                    {mediaState === "not-configured" && <p className="text-xs text-amber-400">{mediaMessage}</p>}
-                    {mediaState === "ready" && mediaAssets.length === 0 && <p className="text-xs text-zinc-600">No assets — close this picker and upload from the Media Library panel first.</p>}
+                    {mediaState === "loading" && <p className="text-xs text-[var(--aw-text-3)]">Loading…</p>}
+                    {mediaState === "not-configured" && <p className="text-xs text-[var(--aw-cyan)]">{mediaMessage}</p>}
+                    {mediaState === "ready" && mediaAssets.length === 0 && <p className="text-xs text-[var(--aw-text-3)]">No assets — close this picker and upload from the Media Library panel first.</p>}
                     {mediaState === "ready" && mediaAssets.length > 0 && (
                       <div className="grid max-h-48 grid-cols-4 gap-2 overflow-y-auto">
                         {mediaAssets.map((asset) => (
                           <button key={asset.publicId} onClick={() => insertAsset(asset)} title={`Insert ${asset.publicId.split("/").pop()}`} className="group relative">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={asset.secureUrl} alt={asset.publicId} className="h-16 w-full rounded border border-zinc-800 object-cover transition group-hover:border-amber-500/50" />
+                            <img src={asset.secureUrl} alt={asset.publicId} className="h-16 w-full rounded border border-[var(--aw-border-2)] object-cover transition group-hover:border-amber-500/50" />
                           </button>
                         ))}
                       </div>
@@ -417,50 +417,50 @@ export function ContentClient({
                 )}
               </div>
               <div className="space-y-1">
-                <label className="block text-xs font-medium text-zinc-400">Preview</label>
-                <div className="h-[280px] overflow-y-auto rounded-lg border border-zinc-800 bg-zinc-950 p-3 text-sm text-zinc-300 prose prose-invert prose-sm prose-zinc max-w-none">
-                  {form.body ? <ReactMarkdown>{form.body}</ReactMarkdown> : <span className="text-zinc-600">Nothing to preview</span>}
+                <label className="block text-xs font-medium text-[var(--aw-text-2)]">Preview</label>
+                <div className="h-[280px] overflow-y-auto rounded-lg border border-[var(--aw-border-2)] bg-transparent p-3 text-sm text-[var(--aw-text-2)] prose prose-invert prose-sm prose-zinc max-w-none">
+                  {form.body ? <ReactMarkdown>{form.body}</ReactMarkdown> : <span className="text-[var(--aw-text-3)]">Nothing to preview</span>}
                 </div>
               </div>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1">
-                <label className="block text-xs font-medium text-zinc-400">Min Tier</label>
-                <select value={form.minTier} onChange={(e) => setForm({ ...form, minTier: e.target.value })} className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none">
+                <label className="block text-xs font-medium text-[var(--aw-text-2)]">Min Tier</label>
+                <select value={form.minTier} onChange={(e) => setForm({ ...form, minTier: e.target.value })} className="w-full rounded-lg border border-[var(--aw-border-2)] bg-transparent px-3 py-2 text-sm text-[var(--aw-text)] focus:border-amber-500/50 focus:outline-none">
                   {TIERS.map((t) => (<option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>))}
                 </select>
               </div>
               <div className="space-y-1">
-                <label className="block text-xs font-medium text-zinc-400">Caution</label>
-                <select value={form.caution} onChange={(e) => setForm({ ...form, caution: e.target.value })} className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none">
+                <label className="block text-xs font-medium text-[var(--aw-text-2)]">Caution</label>
+                <select value={form.caution} onChange={(e) => setForm({ ...form, caution: e.target.value })} className="w-full rounded-lg border border-[var(--aw-border-2)] bg-transparent px-3 py-2 text-sm text-[var(--aw-text)] focus:border-amber-500/50 focus:outline-none">
                   {CAUTIONS.map((c) => (<option key={c} value={c}>{c}</option>))}
                 </select>
               </div>
             </div>
             <div className="space-y-1">
-              <label className="block text-xs font-medium text-zinc-400">
-                Schedule publish <span className="text-zinc-600">(optional — admin only)</span>
+              <label className="block text-xs font-medium text-[var(--aw-text-2)]">
+                Schedule publish <span className="text-[var(--aw-text-3)]">(optional — admin only)</span>
               </label>
               <div className="flex items-center gap-2">
                 <input
                   type="datetime-local"
                   value={form.publishAt}
                   onChange={(e) => setForm({ ...form, publishAt: e.target.value })}
-                  className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 focus:border-amber-500/50 focus:outline-none font-mono"
+                  className="w-full rounded-lg border border-[var(--aw-border-2)] bg-transparent px-3 py-2 text-sm text-[var(--aw-text)] focus:border-amber-500/50 focus:outline-none font-mono"
                 />
                 {form.publishAt && (
-                  <button type="button" onClick={() => setForm({ ...form, publishAt: "" })} className="rounded-lg border border-zinc-700 px-2.5 py-2 text-xs text-zinc-400 hover:border-red-500/50 hover:text-red-400" title="Clear the input (leaves the existing stamp untouched)">
+                  <button type="button" onClick={() => setForm({ ...form, publishAt: "" })} className="rounded-lg border border-zinc-700 px-2.5 py-2 text-xs text-[var(--aw-text-2)] hover:border-red-500/50 hover:text-red-400" title="Clear the input (leaves the existing stamp untouched)">
                     Clear
                   </button>
                 )}
               </div>
-              <p className="text-[0.625rem] leading-relaxed text-zinc-600">
+              <p className="text-[0.625rem] leading-relaxed text-[var(--aw-text-3)]">
                 Vol. 4 #8 — a future date on a PUBLISHED entry hides it from the public site until this moment;
                 the daily cron announces it when due. Clearing the input never erases an existing stamp.
               </p>
             </div>
             <div className="flex justify-end gap-2 pt-2">
-              <button onClick={() => { setShowCreate(false); setEditId(null); }} className="rounded-lg bg-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-700">Cancel</button>
+              <button onClick={() => { setShowCreate(false); setEditId(null); }} className="rounded-lg bg-zinc-800 px-4 py-2 text-sm text-[var(--aw-text-2)] hover:bg-zinc-700">Cancel</button>
               <button onClick={handleSave} disabled={isPending || !form.slug || !form.title} className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-zinc-950 hover:bg-amber-500 disabled:opacity-50">
                 {isPending ? "Saving…" : editId ? "Update" : "Create"}
               </button>
@@ -471,7 +471,7 @@ export function ContentClient({
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between text-sm text-zinc-500">
+        <div className="flex items-center justify-between text-sm text-[var(--aw-text-2)]">
           <span>Page {currentPage} of {totalPages}</span>
           <div className="flex gap-2">
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
@@ -481,7 +481,7 @@ export function ContentClient({
                 if (statusFilter !== "ALL") params.set("status", statusFilter);
                 if (p > 1) params.set("page", String(p));
                 router.push(`/admin/content?${params.toString()}`);
-              }} className={`rounded px-2.5 py-1 text-xs transition ${p === currentPage ? "bg-amber-500/10 text-amber-400" : "hover:bg-zinc-800 text-zinc-400"}`}>
+              }} className={`rounded px-2.5 py-1 text-xs transition ${p === currentPage ? "bg-[rgba(0,240,255,0.08)] text-[var(--aw-cyan)]" : "hover:bg-zinc-800 text-[var(--aw-text-2)]"}`}>
                 {p}
               </button>
             ))}

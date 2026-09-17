@@ -48,29 +48,29 @@ export default async function ContentPreviewPage({ searchParams }: Props) {
   if (!content) notFound();
 
   const cautionColors: Record<string, string> = {
-    OPEN: "text-zinc-500",
-    MODERATE: "text-amber-400",
+    OPEN: "text-[var(--aw-text-2)]",
+    MODERATE: "text-[var(--aw-cyan)]",
     HIGH: "text-orange-400",
     SEALED: "text-red-400",
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="min-h-screen bg-transparent">
       <div className="mx-auto max-w-3xl px-6 py-12">
-        <div className="mb-8 flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-900/50 px-4 py-3">
+        <div className="mb-8 flex items-center justify-between rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-4 py-3">
           <div className="flex items-center gap-3">
-            <span className="rounded bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-400">Preview Mode</span>
-            <span className="text-xs text-zinc-500 capitalize">{content.type}</span>
+            <span className="rounded bg-[rgba(0,240,255,0.08)] px-2 py-0.5 text-xs font-medium text-[var(--aw-cyan)]">Preview Mode</span>
+            <span className="text-xs text-[var(--aw-text-2)] capitalize">{content.type}</span>
             <span className={`text-xs font-medium capitalize ${cautionColors[content.caution] || ""}`}>{content.caution}</span>
-            <span className="rounded bg-zinc-800 px-2 py-0.5 text-xs text-zinc-400">{content.status}</span>
+            <span className="rounded bg-zinc-800 px-2 py-0.5 text-xs text-[var(--aw-text-2)]">{content.status}</span>
           </div>
-          <span className="text-xs text-zinc-600">Min tier: {content.minTier}</span>
+          <span className="text-xs text-[var(--aw-text-3)]">Min tier: {content.minTier}</span>
         </div>
 
-        <article className="prose prose-invert prose-zinc prose-headings:text-zinc-100 prose-p:text-zinc-300 prose-strong:text-zinc-200 prose-a:text-amber-400 prose-code:text-amber-300 max-w-none">
+        <article className="prose prose-invert prose-zinc prose-headings:text-[var(--aw-text)] prose-p:text-[var(--aw-text-2)] prose-strong:text-[var(--aw-text)] prose-a:text-[var(--aw-cyan)] prose-code:text-amber-300 max-w-none">
           <h1>{content.title}</h1>
           {content.excerpt && (
-            <p className="text-lg text-zinc-400 border-l-2 border-amber-500/30 pl-4 italic">{content.excerpt}</p>
+            <p className="text-lg text-[var(--aw-text-2)] border-l-2 border-[var(--aw-border-2)] pl-4 italic">{content.excerpt}</p>
           )}
           <ReactMarkdown>{content.body}</ReactMarkdown>
         </article>

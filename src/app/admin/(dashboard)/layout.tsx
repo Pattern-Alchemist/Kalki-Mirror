@@ -33,13 +33,13 @@ export default async function AdminDashboardLayout({
 
   return (
     <AdminSessionProvider user={userData}>
-      <div className="flex h-screen bg-zinc-950 text-zinc-100">
+      <div className="aw-shell flex h-screen text-[var(--aw-text)]">
         <div className="hidden lg:block">
           <AdminSidebar />
         </div>
         <main className="flex-1 overflow-y-auto">
           <MobileSidebarToggle />
-          <div className="sticky top-0 z-50 flex items-center gap-3 border-b border-zinc-800/50 bg-zinc-950/90 px-4 py-2 backdrop-blur-sm pl-14 lg:pl-6">
+          <div className="aw-topbar sticky top-0 z-50 flex items-center gap-3 px-4 py-2 pl-14 lg:pl-6">
             <GlobalSearch />
             <div className="ml-auto flex items-center gap-1">
               <ThemeToggle />

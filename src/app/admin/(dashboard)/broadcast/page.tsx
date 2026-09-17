@@ -110,12 +110,12 @@ export default function BroadcastPage() {
     <div className="space-y-6 p-6 lg:p-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-100">Broadcast</h1>
-        <p className="mt-1 text-sm text-zinc-500">
+        <h1 className="text-2xl font-semibold text-[var(--aw-text)]">Broadcast</h1>
+        <p className="mt-1 text-sm text-[var(--aw-text-2)]">
           One letter to the whole Doors list. Plain text — blank lines split
           paragraphs, &quot;- &quot; lines become bullets, &quot;## &quot; lines become section labels.
           Every send carries the signed one-click unsubscribe footer. Confirmed
-          sends are captured to the public archive at <span className="text-zinc-400">/letters</span> —
+          sends are captured to the public archive at <span className="text-[var(--aw-text-2)]">/letters</span> —
           the raw text you composed, never per-recipient links.
           Win-back mode sends only to the silently cold — active subscribers with zero
           opens in 21 days — and never more than one win-back per subscriber per 30 days.
@@ -128,8 +128,8 @@ export default function BroadcastPage() {
           onClick={() => switchMode("all")}
           className={
             mode === "all"
-              ? "rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-sm text-amber-300"
-              : "rounded-lg border border-zinc-800 px-3 py-1.5 text-sm text-zinc-400 transition hover:border-zinc-600 hover:text-zinc-200"
+              ? "rounded-lg border border-amber-500/40 bg-[rgba(0,240,255,0.08)] px-3 py-1.5 text-sm text-amber-300"
+              : "rounded-lg border border-[var(--aw-border-2)] px-3 py-1.5 text-sm text-[var(--aw-text-2)] transition hover:border-zinc-600 hover:text-[var(--aw-text)]"
           }
         >
           Full list
@@ -138,8 +138,8 @@ export default function BroadcastPage() {
           onClick={() => switchMode("cold")}
           className={
             mode === "cold"
-              ? "rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-sm text-amber-300"
-              : "rounded-lg border border-zinc-800 px-3 py-1.5 text-sm text-zinc-400 transition hover:border-zinc-600 hover:text-zinc-200"
+              ? "rounded-lg border border-amber-500/40 bg-[rgba(0,240,255,0.08)] px-3 py-1.5 text-sm text-amber-300"
+              : "rounded-lg border border-[var(--aw-border-2)] px-3 py-1.5 text-sm text-[var(--aw-text-2)] transition hover:border-zinc-600 hover:text-[var(--aw-text)]"
           }
         >
           Win-back — the silently cold
@@ -147,7 +147,7 @@ export default function BroadcastPage() {
         {mode === "cold" && (
           <button
             onClick={loadWinbackTemplate}
-            className="text-xs text-amber-400 underline-offset-2 hover:text-amber-300 hover:underline"
+            className="text-xs text-[var(--aw-cyan)] underline-offset-2 hover:text-amber-300 hover:underline"
           >
             Load the house letter
           </button>
@@ -165,9 +165,9 @@ export default function BroadcastPage() {
               value: Math.max(1, Math.ceil(audience.count / audience.cap)),
             },
           ].map((s) => (
-            <div key={s.label} className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
-              <p className="text-xs uppercase tracking-wider text-zinc-500">{s.label}</p>
-              <p className="mt-1 text-2xl font-semibold text-zinc-100">{s.value}</p>
+            <div key={s.label} className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] p-4">
+              <p className="text-xs uppercase tracking-wider text-[var(--aw-text-2)]">{s.label}</p>
+              <p className="mt-1 text-2xl font-semibold text-[var(--aw-text)]">{s.value}</p>
             </div>
           ))}
         </div>
@@ -180,9 +180,9 @@ export default function BroadcastPage() {
             { label: "Suppressed (win-backed <30d)", value: winback.suppressed },
             { label: "Per-run cap", value: winback.cap },
           ].map((s) => (
-            <div key={s.label} className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
-              <p className="text-xs uppercase tracking-wider text-zinc-500">{s.label}</p>
-              <p className="mt-1 text-2xl font-semibold text-zinc-100">{s.value}</p>
+            <div key={s.label} className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] p-4">
+              <p className="text-xs uppercase tracking-wider text-[var(--aw-text-2)]">{s.label}</p>
+              <p className="mt-1 text-2xl font-semibold text-[var(--aw-text)]">{s.value}</p>
             </div>
           ))}
         </div>
@@ -192,7 +192,7 @@ export default function BroadcastPage() {
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="space-y-4">
           <div>
-            <label htmlFor="broadcast-subject" className="text-xs uppercase tracking-wider text-zinc-500">
+            <label htmlFor="broadcast-subject" className="text-xs uppercase tracking-wider text-[var(--aw-text-2)]">
               Subject
             </label>
             <input
@@ -201,11 +201,11 @@ export default function BroadcastPage() {
               onChange={(e) => setSubject(e.target.value)}
               maxLength={200}
               placeholder="What the mirror saw this week"
-              className="mt-1 w-full rounded-lg border border-zinc-800 bg-zinc-900/50 px-4 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-zinc-600 focus:outline-none"
+              className="mt-1 w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-4 py-2.5 text-sm text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-zinc-600 focus:outline-none"
             />
           </div>
           <div>
-            <label htmlFor="broadcast-body" className="text-xs uppercase tracking-wider text-zinc-500">
+            <label htmlFor="broadcast-body" className="text-xs uppercase tracking-wider text-[var(--aw-text-2)]">
               Body (plain text)
             </label>
             <textarea
@@ -215,16 +215,16 @@ export default function BroadcastPage() {
               rows={14}
               maxLength={20_000}
               placeholder={"A short letter.\n\n- one point\n- another point\n\n## A section label\nClosing words."}
-              className="mt-1 w-full rounded-lg border border-zinc-800 bg-zinc-900/50 px-4 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-zinc-600 focus:outline-none"
+              className="mt-1 w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-4 py-2.5 text-sm text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-zinc-600 focus:outline-none"
             />
-            <p className="mt-1 text-xs text-zinc-600">{body.length} / 20,000</p>
+            <p className="mt-1 text-xs text-[var(--aw-text-3)]">{body.length} / 20,000</p>
           </div>
 
           <div className="flex flex-wrap gap-3">
             <button
               onClick={doPreview}
               disabled={pending || subject.trim().length < 3 || body.trim().length < 20}
-              className="rounded-lg border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition hover:border-zinc-500 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg border border-zinc-700 px-4 py-2 text-sm text-[var(--aw-text-2)] transition hover:border-zinc-500 hover:text-[var(--aw-text)] disabled:cursor-not-allowed disabled:opacity-40"
             >
               {pending && !preview ? "Rendering…" : "Preview"}
             </button>
@@ -237,7 +237,7 @@ export default function BroadcastPage() {
               {pending && armed ? "Sending…" : `Confirm send${preview ? ` to ${Math.min(preview.count, preview.cap)}` : ""}`}
             </button>
             {dirty && (
-              <span className="self-center text-xs text-amber-400">
+              <span className="self-center text-xs text-[var(--aw-cyan)]">
                 Edited since preview — preview again to re-arm the send.
               </span>
             )}
@@ -248,7 +248,7 @@ export default function BroadcastPage() {
           )}
 
           {result && (
-            <div className="rounded-lg border border-zinc-700 bg-zinc-900/50 p-4 text-sm text-zinc-300">
+            <div className="rounded-lg border border-zinc-700 bg-[var(--aw-glass-1)] p-4 text-sm text-[var(--aw-text-2)]">
               {result.needsConfirm ? (
                 <p>
                   Dry run complete — {result.total} active recipient(s) would receive
@@ -268,19 +268,19 @@ export default function BroadcastPage() {
 
         {/* Preview */}
         <div className="space-y-3">
-          <p className="text-xs uppercase tracking-wider text-zinc-500">
+          <p className="text-xs uppercase tracking-wider text-[var(--aw-text-2)]">
             Preview {preview ? `· ${preview.count} recipient(s) · first: ${preview.sample[0] ?? "—"}` : ""}
           </p>
           {preview ? (
             <>
               <div className="flex flex-wrap gap-1.5">
                 {preview.sample.map((e) => (
-                  <span key={e} className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs text-zinc-400">
+                  <span key={e} className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs text-[var(--aw-text-2)]">
                     {e}
                   </span>
                 ))}
                 {preview.count > preview.sample.length && (
-                  <span className="rounded-full border border-zinc-800 px-2 py-0.5 text-xs text-zinc-600">
+                  <span className="rounded-full border border-[var(--aw-border-2)] px-2 py-0.5 text-xs text-[var(--aw-text-3)]">
                     +{preview.count - preview.sample.length} more
                   </span>
                 )}
@@ -289,15 +289,15 @@ export default function BroadcastPage() {
                 title="Broadcast preview"
                 srcDoc={preview.html}
                 sandbox=""
-                className="h-[560px] w-full rounded-xl border border-zinc-800 bg-[#0d0b09]"
+                className="h-[560px] w-full rounded-xl border border-[var(--aw-border-2)] bg-[#0d0b09]"
               />
-              <p className="text-xs text-zinc-600">
+              <p className="text-xs text-[var(--aw-text-3)]">
                 Rendered for the first recipient of the batch — the unsubscribe footer is
                 personalized per send.
               </p>
             </>
           ) : (
-            <div className="rounded-xl border border-dashed border-zinc-800 p-10 text-center text-sm text-zinc-600">
+            <div className="rounded-xl border border-dashed border-[var(--aw-border-2)] p-10 text-center text-sm text-[var(--aw-text-3)]">
               No preview yet. Write, then press Preview — the confirm button arms only
               after a fresh render.
             </div>

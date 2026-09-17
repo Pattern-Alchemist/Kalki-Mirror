@@ -58,46 +58,46 @@ export function AdminSidebar() {
 
   return (
     <>
-      <aside className="flex h-screen w-64 flex-col border-r border-zinc-800 bg-zinc-950">
+      <aside className="aw-sidebar flex h-screen w-64 flex-col">
         {/* Brand */}
-        <div className="flex h-14 items-center gap-2 border-b border-zinc-800 px-4">
-          <div className="flex h-7 w-7 items-center justify-center rounded border border-amber-500/30 bg-amber-500/10">
+        <div className="flex h-14 items-center gap-2 border-b border-[var(--aw-border-2)] px-4">
+          <div className="aw-brand-mark flex h-7 w-7 items-center justify-center rounded">
             <span className="text-xs font-bold text-amber-500">K</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-semibold text-zinc-100">Archivist Console</span>
-            <span className="text-[10px] text-zinc-600">Kalki Mirror</span>
+            <span className="text-sm font-semibold text-[var(--aw-text)]">Archivist Console</span>
+            <span className="text-[10px] text-[var(--aw-text-3)]">Kalki Mirror</span>
           </div>
         </div>
 
         {/* User info — E3: logged-in user display */}
-        <div className="border-b border-zinc-800 px-4 py-3">
+        <div className="border-b border-[var(--aw-border-2)] px-4 py-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-500/10 text-xs font-bold text-amber-400">
+            <div className="aw-user-chip flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold">
               {(user.name || "A")[0].toUpperCase()}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-zinc-200">{user.name}</p>
-              <p className="truncate text-[10px] text-zinc-600">{user.email}</p>
+              <p className="truncate text-sm font-medium text-[var(--aw-text)]">{user.name}</p>
+              <p className="truncate text-[10px] text-[var(--aw-text-3)]">{user.email}</p>
             </div>
           </div>
-          <div className="mt-2 flex items-center justify-between text-[10px] text-zinc-600">
-            <span className="rounded bg-zinc-800 px-1.5 py-0.5 font-mono">{user.role}</span>
+          <div className="mt-2 flex items-center justify-between text-[10px] text-[var(--aw-text-3)]">
+            <span className="aw-user-chip rounded px-1.5 py-0.5 font-mono">{user.role}</span>
             <span>{formatDuration(sessionDuration)} active</span>
           </div>
         </div>
 
         {/* Search trigger */}
-        <div className="border-b border-zinc-800 px-3 py-2">
+        <div className="border-b border-[var(--aw-border-2)] px-3 py-2">
           <button
             onClick={() => { setCmdOpen(true); setCmdFilter(""); }}
-            className="flex w-full items-center gap-2 rounded-md border border-zinc-800 bg-zinc-900/50 px-2.5 py-1.5 text-xs text-zinc-500 transition hover:border-zinc-700 hover:text-zinc-400"
+            className="flex w-full items-center gap-2 rounded-md aw-cmd-trigger flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-xs transition"
           >
             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
             Navigate...
-            <kbd className="ml-auto rounded border border-zinc-700 bg-zinc-800 px-1 py-0.5 text-[10px] font-mono">Ctrl K</kbd>
+            <kbd className="ml-auto rounded border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-1 py-0.5 text-[10px] font-mono">Ctrl K</kbd>
           </button>
         </div>
 
@@ -113,12 +113,12 @@ export function AdminSidebar() {
                     className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm transition ${
                       isActive
                         ? "bg-amber-500/10 text-amber-400"
-                        : "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200"
+                        : "text-[var(--aw-text-2)] hover:bg-zinc-900 hover:text-[var(--aw-text)]"
                     }`}
                   >
                     <NavIcon name={item.name} className="h-4 w-4 shrink-0" />
                     {item.name}
-                    <kbd className={`ml-auto hidden text-[10px] font-mono ${isActive ? "text-amber-500/40" : "text-zinc-700"} group-hover:inline`}>{item.shortcut}</kbd>
+                    <kbd className={`ml-auto hidden text-[10px] font-mono ${isActive ? "text-amber-500/40" : "text-[var(--aw-text-3)]"} group-hover:inline`}>{item.shortcut}</kbd>
                   </Link>
                 </li>
               );
@@ -127,10 +127,10 @@ export function AdminSidebar() {
         </nav>
 
         {/* Footer */}
-        <div className="border-t border-zinc-800 p-3">
+        <div className="border-t border-[var(--aw-border-2)] p-3">
           <Link
             href="/"
-            className="flex items-center gap-2 rounded-md px-3 py-2 text-xs text-zinc-500 transition hover:bg-zinc-900 hover:text-zinc-300"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-xs text-[var(--aw-text-2)] transition hover:bg-[rgba(0,240,255,0.05)] hover:text-[var(--aw-cyan)]"
           >
             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
@@ -139,7 +139,7 @@ export function AdminSidebar() {
           </Link>
           <button
             onClick={logout}
-            className="mt-1 flex w-full items-center gap-2 rounded-md px-3 py-2 text-xs text-zinc-500 transition hover:bg-red-500/10 hover:text-red-400"
+            className="mt-1 flex w-full items-center gap-2 rounded-md px-3 py-2 text-xs text-[var(--aw-text-2)] transition hover:bg-red-500/10 hover:text-[var(--aw-danger)]"
           >
             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
@@ -156,7 +156,7 @@ export function AdminSidebar() {
           onClick={() => setCmdOpen(false)}
         >
           <div
-            className="w-full max-w-sm rounded-xl border border-zinc-700 bg-zinc-900 shadow-2xl"
+            className="w-full max-w-sm rounded-xl border border-[var(--aw-border-2)] bg-zinc-900 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="border-b border-zinc-800 px-4 py-3">
@@ -166,30 +166,30 @@ export function AdminSidebar() {
                 value={cmdFilter}
                 onChange={(e) => setCmdFilter(e.target.value)}
                 placeholder="Navigate to..."
-                className="w-full bg-transparent text-sm text-zinc-100 placeholder-zinc-500 outline-none"
+                className="w-full bg-transparent text-sm text-[var(--aw-text)] placeholder-zinc-500 outline-none"
               />
             </div>
             <ul className="max-h-64 overflow-y-auto py-2">
               {filteredNav.length === 0 && (
-                <li className="px-4 py-3 text-center text-xs text-zinc-600">No results</li>
+                <li className="px-4 py-3 text-center text-xs text-[var(--aw-text-3)]">No results</li>
               )}
               {filteredNav.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
                     onClick={() => setCmdOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-300 transition hover:bg-zinc-800"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--aw-text-2)] transition hover:bg-[var(--aw-glass-1)]"
                   >
-                    <NavIcon name={item.name} className="h-4 w-4 text-zinc-500" />
+                    <NavIcon name={item.name} className="h-4 w-4 text-[var(--aw-text-2)]" />
                     {item.name}
-                    <kbd className="ml-auto text-[10px] font-mono text-zinc-600">{item.shortcut}</kbd>
+                    <kbd className="ml-auto text-[10px] font-mono text-[var(--aw-text-3)]">{item.shortcut}</kbd>
                   </Link>
                 </li>
               ))}
             </ul>
-            <div className="border-t border-zinc-800 px-4 py-2 text-[10px] text-zinc-600">
-              <span className="mr-3"><kbd className="rounded border border-zinc-700 bg-zinc-800 px-1 py-0.5">Esc</kbd> close</span>
-              <span><kbd className="rounded border border-zinc-700 bg-zinc-800 px-1 py-0.5">Tab</kbd> navigate</span>
+            <div className="border-t border-zinc-800 px-4 py-2 text-[10px] text-[var(--aw-text-3)]">
+              <span className="mr-3"><kbd className="rounded border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-1 py-0.5">Esc</kbd> close</span>
+              <span><kbd className="rounded border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-1 py-0.5">Tab</kbd> navigate</span>
             </div>
           </div>
         </div>

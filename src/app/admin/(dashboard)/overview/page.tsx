@@ -20,13 +20,13 @@ const QUICK_ACTIONS = [
 ];
 
 function StatCard({ label, value, sub, accent }: { label: string; value: string | number; sub?: string; accent?: string }) {
-  const colors: Record<string, string> = { amber: "border-amber-500/20 text-amber-400", emerald: "border-emerald-500/20 text-emerald-400", blue: "border-blue-500/20 text-blue-400", violet: "border-violet-500/20 text-violet-400", rose: "border-rose-500/20 text-rose-400" };
+  const colors: Record<string, string> = { amber: "border-amber-500/20 text-[var(--aw-cyan)]", emerald: "border-emerald-500/20 text-emerald-400", blue: "border-blue-500/20 text-blue-400", violet: "border-violet-500/20 text-violet-400", rose: "border-rose-500/20 text-rose-400" };
   const c = colors[accent || "amber"] || colors.amber;
   return (
-    <div className={`rounded-xl border ${c} bg-zinc-900/50 p-5`}>
-      <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">{label}</p>
-      <p className="mt-2 text-3xl font-semibold tabular-nums text-zinc-100">{value}</p>
-      {sub && <p className="mt-1 text-xs text-zinc-500">{sub}</p>}
+    <div className={`rounded-xl border ${c} bg-[var(--aw-glass-1)] p-5`}>
+      <p className="text-xs font-medium uppercase tracking-wider text-[var(--aw-text-2)]">{label}</p>
+      <p className="mt-2 text-3xl font-semibold tabular-nums text-[var(--aw-text)]">{value}</p>
+      {sub && <p className="mt-1 text-xs text-[var(--aw-text-2)]">{sub}</p>}
     </div>
   );
 }
@@ -65,13 +65,13 @@ export default function OverviewPage() {
   useEffect(() => { fetchStats(); }, [fetchStats]);
 
   if (err) return <div className="text-center py-20"><p className="text-red-400">{err}</p><button onClick={fetchStats} className="mt-4 px-4 py-2 bg-amber-500 text-black rounded-lg text-sm font-medium hover:bg-amber-400">Retry</button></div>;
-  if (!stats) return <div className="text-center py-20 text-zinc-500">Loading overview...</div>;
+  if (!stats) return <div className="text-center py-20 text-[var(--aw-text-2)]">Loading overview...</div>;
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-100">Archivist Overview</h1>
-        <p className="mt-1 text-sm text-zinc-500">Live operational metrics for Kalki Mirror</p>
+        <h1 className="text-2xl font-semibold text-[var(--aw-text)]">Archivist Overview</h1>
+        <p className="mt-1 text-sm text-[var(--aw-text-2)]">Live operational metrics for Kalki Mirror</p>
       </div>
 
       <CampaignPulse />
@@ -81,7 +81,7 @@ export default function OverviewPage() {
       <ThrottleCard />
 
       <section className="space-y-4">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Members</h2>
+        <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Members</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard label="Total Members" value={stats.members.total} sub={`${stats.members.new} new this week`} accent="amber" />
           <StatCard label="Active Streaks" value={stats.members.activeStreaks} sub="practicing today" accent="emerald" />
@@ -91,20 +91,20 @@ export default function OverviewPage() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Quick Actions</h2>
+        <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Quick Actions</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {QUICK_ACTIONS.map(a => (
-            <Link key={a.href} href={a.href} className="group rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-amber-500/30 hover:bg-zinc-900/60">
+            <Link key={a.href} href={a.href} className="group rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-5 transition-colors hover:border-[var(--aw-border-2)] hover:bg-[var(--aw-glass-1)]/60">
               <span className="text-2xl">{a.icon}</span>
-              <p className="mt-3 text-sm font-medium text-zinc-200 group-hover:text-amber-400">{a.label}</p>
-              <p className="mt-1 text-xs text-zinc-500">{a.desc}</p>
+              <p className="mt-3 text-sm font-medium text-[var(--aw-text)] group-hover:text-[var(--aw-cyan)]">{a.label}</p>
+              <p className="mt-1 text-xs text-[var(--aw-text-2)]">{a.desc}</p>
             </Link>
           ))}
         </div>
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Tier Breakdown</h2>
+        <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Tier Breakdown</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {(stats.members.tierDistribution || []).map(t => {
             const cfg = TIER_CONFIG[t.tier] || TIER_CONFIG.prithvi;
@@ -123,7 +123,7 @@ export default function OverviewPage() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Keys & Content</h2>
+        <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Keys & Content</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard label="Golden Keys (Active)" value={stats.keys.active} sub={`${stats.keys.total} total generated`} accent="amber" />
           <StatCard label="Redemption Rate" value={`${stats.keys.redemptionRate}%`} sub={`${stats.keys.redeemed} redeemed`} accent="violet" />

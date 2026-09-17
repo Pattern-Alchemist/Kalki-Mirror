@@ -14,8 +14,8 @@ const CAMPAIGN_COLOR: Record<string, string> = {
 };
 
 function chipClass(campaign: string | null): string {
-  if (!campaign) return "bg-zinc-500/10 text-zinc-400 border-zinc-500/30";
-  return CAMPAIGN_COLOR[campaign] ?? "bg-zinc-500/10 text-zinc-400 border-zinc-500/30";
+  if (!campaign) return "bg-zinc-500/10 text-[var(--aw-text-2)] border-zinc-500/30";
+  return CAMPAIGN_COLOR[campaign] ?? "bg-zinc-500/10 text-[var(--aw-text-2)] border-zinc-500/30";
 }
 
 function timeAgo(iso: string | Date): string {
@@ -80,14 +80,14 @@ export default function SubscribersPage() {
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-zinc-100">Email Subscribers</h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <h1 className="text-2xl font-semibold text-[var(--aw-text)]">Email Subscribers</h1>
+          <p className="mt-1 text-sm text-[var(--aw-text-2)]">
             The 10 Doors nurture list — capture layer for the pre-consult funnel.
           </p>
         </div>
         <a
           href="/api/admin/subscribers/export"
-          className="rounded-lg border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition hover:border-zinc-500 hover:text-zinc-100"
+          className="rounded-lg border border-zinc-700 px-4 py-2 text-sm text-[var(--aw-text-2)] transition hover:border-zinc-500 hover:text-[var(--aw-text)]"
         >
           Export CSV
         </a>
@@ -101,9 +101,9 @@ export default function SubscribersPage() {
           { label: "Last 7 days", value: stats.week },
           { label: "Campaigns", value: stats.campaigns },
         ].map((s) => (
-          <div key={s.label} className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
-            <p className="text-xs uppercase tracking-wider text-zinc-500">{s.label}</p>
-            <p className="mt-1 text-2xl font-semibold text-zinc-100">{s.value}</p>
+          <div key={s.label} className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] p-4">
+            <p className="text-xs uppercase tracking-wider text-[var(--aw-text-2)]">{s.label}</p>
+            <p className="mt-1 text-2xl font-semibold text-[var(--aw-text)]">{s.value}</p>
           </div>
         ))}
       </div>
@@ -116,27 +116,27 @@ export default function SubscribersPage() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search email, source, campaign, country…"
-        className="w-full max-w-md rounded-lg border border-zinc-800 bg-zinc-900/50 px-4 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-zinc-600 focus:outline-none"
+        className="w-full max-w-md rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-4 py-2 text-sm text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-zinc-600 focus:outline-none"
       />
 
       {/* Table */}
       {loading ? (
-        <p className="text-sm text-zinc-500">Loading…</p>
+        <p className="text-sm text-[var(--aw-text-2)]">Loading…</p>
       ) : error ? (
         <p className="text-sm text-red-400">{error}</p>
       ) : filtered.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-zinc-800 p-10 text-center">
-          <p className="text-sm text-zinc-500">
+        <div className="rounded-xl border border-dashed border-[var(--aw-border-2)] p-10 text-center">
+          <p className="text-sm text-[var(--aw-text-2)]">
             No subscribers yet. The capture page is live at{" "}
-            <code className="text-zinc-400">/email-course</code> — link it from the
+            <code className="text-[var(--aw-text-2)]">/email-course</code> — link it from the
             wave content and the list fills itself.
           </p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-zinc-800">
+        <div className="overflow-x-auto rounded-xl border border-[var(--aw-border-2)]">
           <table className="w-full min-w-[900px] text-left text-sm">
             <thead>
-              <tr className="border-b border-zinc-800 text-xs uppercase tracking-wider text-zinc-500">
+              <tr className="border-b border-[var(--aw-border-2)] text-xs uppercase tracking-wider text-[var(--aw-text-2)]">
                 <th scope="col" className="px-4 py-3">Email</th>
                 <th scope="col" className="px-4 py-3">Status</th>
                 <th scope="col" className="px-4 py-3">Source chip</th>
@@ -147,14 +147,14 @@ export default function SubscribersPage() {
             </thead>
             <tbody>
               {filtered.map((r) => (
-                <tr key={r.id} className="border-b border-zinc-800/60 last:border-0 hover:bg-zinc-900/40">
-                  <td className="px-4 py-3 text-zinc-200">{r.email}</td>
+                <tr key={r.id} className="border-b border-[var(--aw-border-2)]/60 last:border-0 hover:bg-[var(--aw-glass-1)]/40">
+                  <td className="px-4 py-3 text-[var(--aw-text)]">{r.email}</td>
                   <td className="px-4 py-3">
                     <span
                       className={`rounded-full border px-2 py-0.5 text-xs ${
                         r.status === "active"
                           ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
-                          : "border-zinc-500/30 bg-zinc-500/10 text-zinc-400"
+                          : "border-zinc-500/30 bg-zinc-500/10 text-[var(--aw-text-2)]"
                       }`}
                     >
                       {r.status}
@@ -166,11 +166,11 @@ export default function SubscribersPage() {
                       {r.utmCampaign ? ` · ${r.utmCampaign}` : ""}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-zinc-400">{r.country ?? "—"}</td>
-                  <td className="px-4 py-3 font-mono text-xs text-zinc-500">
+                  <td className="px-4 py-3 text-[var(--aw-text-2)]">{r.country ?? "—"}</td>
+                  <td className="px-4 py-3 font-mono text-xs text-[var(--aw-text-2)]">
                     {r.landingPath ?? "—"}
                   </td>
-                  <td className="px-4 py-3 text-zinc-500">{timeAgo(r.createdAt)}</td>
+                  <td className="px-4 py-3 text-[var(--aw-text-2)]">{timeAgo(r.createdAt)}</td>
                 </tr>
               ))}
             </tbody>

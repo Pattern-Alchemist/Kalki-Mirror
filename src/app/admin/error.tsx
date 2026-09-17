@@ -21,14 +21,14 @@ export default function AdminError({
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-transparent px-4">
       <div className="w-full max-w-sm space-y-6 text-center">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-2 border-red-500/30">
           <span className="text-red-400 text-xl">!</span>
         </div>
         <div className="space-y-2">
-          <h1 className="text-xl font-semibold text-zinc-100">Console Error</h1>
-          <p className="text-sm text-zinc-400">
+          <h1 className="text-xl font-semibold text-[var(--aw-text)]">Console Error</h1>
+          <p className="text-sm text-[var(--aw-text-2)]">
             An unexpected error occurred in the Archivist Console.
           </p>
         </div>
@@ -38,7 +38,7 @@ export default function AdminError({
           </div>
         )}
         {error.digest && (
-          <p className="font-mono text-xs text-zinc-600">Error ID: {error.digest}</p>
+          <p className="font-mono text-xs text-[var(--aw-text-3)]">Error ID: {error.digest}</p>
         )}
         <button
           onClick={reset}

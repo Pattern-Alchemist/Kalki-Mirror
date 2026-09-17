@@ -5,10 +5,10 @@
  */
 export default function AdminLoading() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-950">
+    <div className="flex min-h-screen items-center justify-center bg-transparent">
       <div className="w-full max-w-sm space-y-8 animate-pulse">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-12 w-12 rounded-full border border-amber-500/30 bg-amber-500/10" />
+          <div className="mx-auto mb-4 h-12 w-12 rounded-full border border-[var(--aw-border-2)] bg-[rgba(0,240,255,0.08)]" />
           <div className="mx-auto h-6 w-40 rounded bg-zinc-800" />
           <div className="mx-auto mt-2 h-4 w-48 rounded bg-zinc-800/60" />
         </div>

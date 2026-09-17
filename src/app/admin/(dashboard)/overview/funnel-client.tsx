@@ -80,9 +80,9 @@ export function ConsultationFunnel() {
   if (dead) return null;
   if (!d) {
     return (
-      <div className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-5">
-        <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Consultation funnel</p>
-        <p className="mt-2 text-sm text-zinc-600">Loading…</p>
+      <div className="rounded-xl border border-[var(--aw-border-2)] bg-transparent/40 p-5">
+        <p className="text-xs font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Consultation funnel</p>
+        <p className="mt-2 text-sm text-[var(--aw-text-3)]">Loading…</p>
       </div>
     );
   }
@@ -96,7 +96,7 @@ export function ConsultationFunnel() {
       {/* Header */}
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <div className="flex items-center gap-2">
-          <Filter className="h-4 w-4 text-amber-500" />
+          <Filter className="h-4 w-4 text-[var(--aw-cyan)]" />
           <span className="text-xs font-semibold uppercase tracking-wider text-amber-300/90">
             The one funnel that matters
           </span>
@@ -108,8 +108,8 @@ export function ConsultationFunnel() {
               onClick={() => setRange(r)}
               className={`rounded-full border px-2.5 py-0.5 text-[0.65rem] font-medium transition ${
                 range === r
-                  ? "border-amber-500/40 bg-amber-500/10 text-amber-300"
-                  : "border-zinc-800 text-zinc-500 hover:text-zinc-300"
+                  ? "border-amber-500/40 bg-[rgba(0,240,255,0.08)] text-amber-300"
+                  : "border-[var(--aw-border-2)] text-[var(--aw-text-2)] hover:text-[var(--aw-text-2)]"
               }`}
             >
               {r}d
@@ -118,7 +118,7 @@ export function ConsultationFunnel() {
         </div>
         <Link
           href="/admin/consultations"
-          className="ml-auto flex items-center gap-1 text-xs font-medium text-amber-400 transition hover:text-amber-300"
+          className="ml-auto flex items-center gap-1 text-xs font-medium text-[var(--aw-cyan)] transition hover:text-amber-300"
         >
           Open pipeline <ArrowRight className="h-3.5 w-3.5" />
         </Link>
@@ -126,14 +126,14 @@ export function ConsultationFunnel() {
 
       {/* Headline — the blueprint's single number */}
       <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <span className="text-4xl font-semibold tabular-nums text-zinc-100">
+        <span className="text-4xl font-semibold tabular-nums text-[var(--aw-text)]">
           {pageConversion === null ? "—" : `${pageConversion}%`}
         </span>
-        <span className="text-xs text-zinc-500">
+        <span className="text-xs text-[var(--aw-text-2)]">
           wizard → submit · whether /consultations converts
         </span>
         {!d.eventsAvailable && (
-          <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] text-zinc-500">
+          <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] text-[var(--aw-text-2)]">
             event store unavailable — top stages dimmed
           </span>
         )}
@@ -147,21 +147,21 @@ export function ConsultationFunnel() {
           return (
             <div key={s.key} className="group grid grid-cols-[9.5rem_1fr] items-center gap-3 sm:grid-cols-[11rem_1fr]">
               <div className="min-w-0">
-                <p className={`truncate text-xs font-medium ${dimmed ? "text-zinc-600" : "text-zinc-300"}`}>
+                <p className={`truncate text-xs font-medium ${dimmed ? "text-[var(--aw-text-3)]" : "text-[var(--aw-text-2)]"}`}>
                   {s.label}
                 </p>
-                <p className="truncate text-[0.65rem] text-zinc-600" title={`${s.definition} — answers: ${s.question}`}>
+                <p className="truncate text-[0.65rem] text-[var(--aw-text-3)]" title={`${s.definition} — answers: ${s.question}`}>
                   {s.question}
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <div className="h-5 flex-1 overflow-hidden rounded-md bg-zinc-900/70">
+                <div className="h-5 flex-1 overflow-hidden rounded-md bg-[var(--aw-glass-1)]/70">
                   <div
                     className="h-full rounded-md bg-gradient-to-r from-amber-500/40 to-amber-500/15"
                     style={{ width: `${width}%` }}
                   />
                 </div>
-                <span className={`w-14 shrink-0 text-right text-sm font-semibold tabular-nums ${dimmed ? "text-zinc-600" : "text-zinc-100"}`}>
+                <span className={`w-14 shrink-0 text-right text-sm font-semibold tabular-nums ${dimmed ? "text-[var(--aw-text-3)]" : "text-[var(--aw-text)]"}`}>
                   {s.value === null ? "—" : s.value.toLocaleString()}
                 </span>
                 <span
@@ -180,10 +180,10 @@ export function ConsultationFunnel() {
 
       {/* Vol. 2 #4 — attribution: top campaigns + the Doors day board */}
       {d.attribution && (d.attribution.campaigns.length > 0 || d.attribution.doors.length > 0) && (
-        <div className="mt-4 space-y-3 border-t border-zinc-800/60 pt-3">
+        <div className="mt-4 space-y-3 border-t border-[var(--aw-border-2)]/60 pt-3">
           {d.attribution.campaigns.length > 0 && (
             <div>
-              <p className="text-[0.65rem] font-medium uppercase tracking-wider text-zinc-500">
+              <p className="text-[0.65rem] font-medium uppercase tracking-wider text-[var(--aw-text-2)]">
                 Where leads came from · utm campaigns in window
               </p>
               <div className="mt-1.5 flex flex-wrap gap-1.5">
@@ -191,7 +191,7 @@ export function ConsultationFunnel() {
                   <span
                     key={c.key}
                     title={`${c.label} — ${c.submitted} submitted · ${c.triaged} triaged · ${c.booked} booked`}
-                    className="rounded-full border border-zinc-800 bg-zinc-950/60 px-2.5 py-1 text-[0.65rem] text-zinc-300"
+                    className="rounded-full border border-[var(--aw-border-2)] bg-transparent/60 px-2.5 py-1 text-[0.65rem] text-[var(--aw-text-2)]"
                   >
                     {c.label}
                     <span className="ml-1.5 font-semibold tabular-nums text-amber-300/90">{c.submitted}</span>
@@ -203,7 +203,7 @@ export function ConsultationFunnel() {
           )}
           {d.attribution.doors.length > 0 && (
             <div>
-              <p className="text-[0.65rem] font-medium uppercase tracking-wider text-zinc-500">
+              <p className="text-[0.65rem] font-medium uppercase tracking-wider text-[var(--aw-text-2)]">
                 The 10 Doors · email day → wizard submissions (utm_content)
               </p>
               <div className="mt-1.5 flex flex-wrap gap-1.5">
@@ -213,8 +213,8 @@ export function ConsultationFunnel() {
                     title={`${door.submitted} submitted · ${door.triaged} triaged · ${door.booked} booked`}
                     className={`rounded-full border px-2.5 py-1 text-[0.65rem] ${
                       door.submitted > 0
-                        ? "border-amber-500/30 bg-amber-500/[0.07] text-amber-200/90"
-                        : "border-zinc-800 text-zinc-600"
+                        ? "border-[var(--aw-border-2)] bg-amber-500/[0.07] text-amber-200/90"
+                        : "border-[var(--aw-border-2)] text-[var(--aw-text-3)]"
                     }`}
                   >
                     {door.label}
@@ -223,7 +223,7 @@ export function ConsultationFunnel() {
                   </span>
                 ))}
               </div>
-              <p className="mt-1 text-[0.6rem] text-zinc-600">
+              <p className="mt-1 text-[0.6rem] text-[var(--aw-text-3)]">
                 Attribution end-to-end: email CTA (utm_content=day-N) → wizard → Consultation row → this board.
               </p>
             </div>
@@ -232,12 +232,12 @@ export function ConsultationFunnel() {
       )}
 
       {/* Footer links */}
-      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 border-t border-zinc-800/60 pt-3 text-[0.65rem] text-zinc-600">
+      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 border-t border-[var(--aw-border-2)]/60 pt-3 text-[0.65rem] text-[var(--aw-text-3)]">
         <span>{d.wizardSubmittedEvents ?? "—"} wizard_submitted events in window (tracker cross-check)</span>
-        <Link href="/admin/analytics" className="text-zinc-500 transition hover:text-amber-300">
+        <Link href="/admin/analytics" className="text-[var(--aw-text-2)] transition hover:text-amber-300">
           Analytics
         </Link>
-        <Link href="/admin/war-room" className="text-zinc-500 transition hover:text-amber-300">
+        <Link href="/admin/war-room" className="text-[var(--aw-text-2)] transition hover:text-amber-300">
           War Room
         </Link>
       </div>

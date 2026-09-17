@@ -16,10 +16,10 @@ import {
 /* Vol. 3 #1 — outcome lifecycle (mirrors dossier/actions.ts OutcomeStatus) */
 type OutcomeInput = Parameters<typeof saveOutcome>[1];
 const OUTCOME_COLOR: Record<string, string> = {
-  PENDING: "border-zinc-600 text-zinc-400",
+  PENDING: "border-zinc-600 text-[var(--aw-text-2)]",
   IN_PROGRESS: "border-blue-500/40 text-blue-300",
   RESOLVED: "border-emerald-500/40 text-emerald-300",
-  DISCONTINUED: "border-zinc-700 text-zinc-500",
+  DISCONTINUED: "border-zinc-700 text-[var(--aw-text-2)]",
 };
 
 /* ─── Pipeline constants ──────────────────────────────────────────────────── */
@@ -27,10 +27,10 @@ const OUTCOME_COLOR: Record<string, string> = {
 const PIPELINE = ["NEW", "ACKNOWLEDGED", "SCHEDULED", "COMPLETED", "CANCELLED"] as const;
 const STATUS_COLOR: Record<string, string> = {
   NEW: "bg-blue-500/10 text-blue-400 border-blue-500/30",
-  ACKNOWLEDGED: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+  ACKNOWLEDGED: "bg-[rgba(0,240,255,0.08)] text-[var(--aw-cyan)] border-[var(--aw-border-2)]",
   SCHEDULED: "bg-violet-500/10 text-violet-400 border-violet-500/30",
   COMPLETED: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
-  CANCELLED: "bg-zinc-500/10 text-zinc-400 border-zinc-500/30",
+  CANCELLED: "bg-zinc-500/10 text-[var(--aw-text-2)] border-zinc-500/30",
 };
 const STATUS_DOT: Record<string, string> = {
   NEW: "bg-blue-400",
@@ -90,14 +90,14 @@ const SOURCE_CHIP: Record<string, string> = {
   paid: "border-emerald-500/40 text-emerald-300",
   organic: "border-amber-500/40 text-amber-300",
   referral: "border-sky-500/40 text-sky-300",
-  direct: "border-zinc-700 text-zinc-400",
+  direct: "border-zinc-700 text-[var(--aw-text-2)]",
 };
 
 /* Tier-1 ① — UPI reconciliation ledger states */
 const PAYMENT_STATES = ["UNPAID", "CLAIMED", "PAID", "WAIVED"] as const;
 const PAYMENT_CHIP: Record<string, string> = {
-  UNPAID: "border-zinc-700 text-zinc-500",
-  CLAIMED: "border-amber-500/50 bg-amber-500/10 text-amber-300",
+  UNPAID: "border-zinc-700 text-[var(--aw-text-2)]",
+  CLAIMED: "border-amber-500/50 bg-[rgba(0,240,255,0.08)] text-amber-300",
   PAID: "border-emerald-500/50 bg-emerald-500/10 text-emerald-300",
   WAIVED: "border-violet-500/40 text-violet-300",
 };
@@ -346,10 +346,10 @@ export default function ConsultationsPage() {
               <button
                 key={f.id}
                 onClick={() => setSelected(f)}
-                className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-1.5 text-left transition-colors hover:border-cyan-500/40"
+                className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-1.5 text-left transition-colors hover:border-cyan-500/40"
               >
-                <span className="text-xs font-medium text-zinc-200">{f.name}</span>
-                <span className="ml-2 text-[0.65rem] text-zinc-500">
+                <span className="text-xs font-medium text-[var(--aw-text)]">{f.name}</span>
+                <span className="ml-2 text-[0.65rem] text-[var(--aw-text-2)]">
                   promised {f.followUpDate ? fmtDate(f.followUpDate) : "—"}
                   {f.outcome ? ` · ${f.outcome.toLowerCase()}` : ""}
                 </span>
@@ -362,8 +362,8 @@ export default function ConsultationsPage() {
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-zinc-100">Consultation Pipeline</h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <h1 className="text-2xl font-semibold text-[var(--aw-text)]">Consultation Pipeline</h1>
+          <p className="mt-1 text-sm text-[var(--aw-text-2)]">
             {total} lead{total === 1 ? "" : "s"} · wizard intake → WhatsApp handoff · sources attributed
           </p>
         </div>
@@ -373,18 +373,18 @@ export default function ConsultationsPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search name, phone, intake…"
-            className="w-56 rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-amber-500/40 focus:outline-none"
+            className="w-56 rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 text-sm text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-amber-500/40 focus:outline-none"
           />
           <a
             href="/api/admin/consultations/export"
-            className="rounded-lg border border-zinc-800 px-3 py-2 text-xs font-medium text-zinc-400 transition-colors hover:border-amber-500/30 hover:text-amber-300"
+            className="rounded-lg border border-[var(--aw-border-2)] px-3 py-2 text-xs font-medium text-[var(--aw-text-2)] transition-colors hover:border-[var(--aw-border-2)] hover:text-amber-300"
             title="Download every lead as CSV (ADMIN+; audit-logged)"
           >
             Export CSV
           </a>
           <button
             onClick={loadPipeline}
-            className="rounded-lg border border-zinc-800 px-3 py-2 text-xs font-medium text-zinc-400 transition-colors hover:border-amber-500/30 hover:text-amber-300"
+            className="rounded-lg border border-[var(--aw-border-2)] px-3 py-2 text-xs font-medium text-[var(--aw-text-2)] transition-colors hover:border-[var(--aw-border-2)] hover:text-amber-300"
           >
             Refresh
           </button>
@@ -401,9 +401,9 @@ export default function ConsultationsPage() {
           { label: "Completed", value: counts["COMPLETED"] ?? 0 },
           { label: "Booking rate", value: `${conversionRate}%` },
         ].map((s) => (
-          <div key={s.label} className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
-            <p className="text-xs text-zinc-500">{s.label}</p>
-            <p className="mt-1 text-xl font-semibold text-zinc-100">{loading ? "—" : s.value}</p>
+          <div key={s.label} className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-4">
+            <p className="text-xs text-[var(--aw-text-2)]">{s.label}</p>
+            <p className="mt-1 text-xl font-semibold text-[var(--aw-text)]">{loading ? "—" : s.value}</p>
           </div>
         ))}
       </div>
@@ -411,42 +411,42 @@ export default function ConsultationsPage() {
       {error && (
         <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</p>
       )}
-      {loading && <p className="text-sm text-zinc-500">Loading pipeline…</p>}
+      {loading && <p className="text-sm text-[var(--aw-text-2)]">Loading pipeline…</p>}
 
       {/* Geo + source-kind filter chips (client-side over the loaded board) */}
       {!loading && leads.length > 0 && (
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-zinc-600">Geo:</span>
+            <span className="text-[var(--aw-text-3)]">Geo:</span>
             {(["ALL", ...countries] as string[]).map((c) => (
               <button
                 key={c}
                 onClick={() => setCountryFilter(c)}
-                className={`rounded-full border px-2 py-0.5 transition ${countryFilter === c ? "border-amber-500/40 bg-amber-500/10 text-amber-300" : "border-zinc-800 text-zinc-500 hover:text-zinc-300"}`}
+                className={`rounded-full border px-2 py-0.5 transition ${countryFilter === c ? "border-amber-500/40 bg-[rgba(0,240,255,0.08)] text-amber-300" : "border-[var(--aw-border-2)] text-[var(--aw-text-2)] hover:text-[var(--aw-text-2)]"}`}
               >
                 {c === "ALL" ? "all" : c === "??" ? "unknown" : c}
               </button>
             ))}
           </div>
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-zinc-600">Source:</span>
+            <span className="text-[var(--aw-text-3)]">Source:</span>
             {(["ALL", "organic", "referral", "paid", "direct"] as const).map((kind) => (
               <button
                 key={kind}
                 onClick={() => setKindFilter(kind)}
-                className={`rounded-full border px-2 py-0.5 capitalize transition ${kindFilter === kind ? "border-amber-500/40 bg-amber-500/10 text-amber-300" : "border-zinc-800 text-zinc-500 hover:text-zinc-300"}`}
+                className={`rounded-full border px-2 py-0.5 capitalize transition ${kindFilter === kind ? "border-amber-500/40 bg-[rgba(0,240,255,0.08)] text-amber-300" : "border-[var(--aw-border-2)] text-[var(--aw-text-2)] hover:text-[var(--aw-text-2)]"}`}
               >
                 {kind.toLowerCase()}
               </button>
             ))}
           </div>
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-zinc-600">Payment:</span>
+            <span className="text-[var(--aw-text-3)]">Payment:</span>
             {PAYMENT_STATES.map((p) => (
               <button
                 key={p}
                 onClick={() => setPaymentFilter(p)}
-                className={`rounded-full border px-2 py-0.5 capitalize transition ${paymentFilter === p ? "border-amber-500/40 bg-amber-500/10 text-amber-300" : PAYMENT_CHIP[p]}`}
+                className={`rounded-full border px-2 py-0.5 capitalize transition ${paymentFilter === p ? "border-amber-500/40 bg-[rgba(0,240,255,0.08)] text-amber-300" : PAYMENT_CHIP[p]}`}
               >
                 {p.toLowerCase()}
               </button>
@@ -459,15 +459,15 @@ export default function ConsultationsPage() {
       <div className="overflow-x-auto pb-2 snap-x snap-mandatory xl:overflow-visible">
         <div className="grid min-w-[900px] grid-cols-5 gap-4 xl:min-w-0">
           {PIPELINE.map((status) => (
-            <div key={status} className="snap-start rounded-xl border border-zinc-800/80 bg-zinc-950/40 p-3">
+            <div key={status} className="snap-start rounded-xl border border-[var(--aw-border-2)]/80 bg-transparent/40 p-3">
               <div className="mb-3 flex items-center justify-between px-1">
                 <div className="flex items-center gap-2">
                   <span className={`h-2 w-2 rounded-full ${STATUS_DOT[status]}`} />
-                  <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                  <h2 className="text-xs font-semibold uppercase tracking-wider text-[var(--aw-text-2)]">
                     {status === "ACKNOWLEDGED" ? "Contacted" : status}
                   </h2>
                 </div>
-                <span className="rounded-full bg-zinc-800/80 px-2 py-0.5 text-xs text-zinc-400">
+                <span className="rounded-full bg-zinc-800/80 px-2 py-0.5 text-xs text-[var(--aw-text-2)]">
                   {loading ? "—" : counts[status] ?? 0}
                 </span>
               </div>
@@ -564,12 +564,12 @@ function OutcomeSection({
       </div>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className="space-y-1">
-          <span className="text-xs text-zinc-500">Outcome</span>
+          <span className="text-xs text-[var(--aw-text-2)]">Outcome</span>
           <select
             value={outcome}
             disabled={saving}
             onChange={(e) => setOutcome(e.target.value)}
-            className="w-full rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 focus:border-cyan-500/40 focus:outline-none"
+            className="w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 text-sm text-[var(--aw-text)] focus:border-cyan-500/40 focus:outline-none"
           >
             <option value="">— not set —</option>
             <option value="PENDING">PENDING</option>
@@ -579,60 +579,60 @@ function OutcomeSection({
           </select>
         </label>
         <label className="space-y-1">
-          <span className="text-xs text-zinc-500">Follow-up date (feeds the queue)</span>
+          <span className="text-xs text-[var(--aw-text-2)]">Follow-up date (feeds the queue)</span>
           <input
             type="datetime-local"
             value={followUpDate}
             disabled={saving}
             onChange={(e) => setFollowUpDate(e.target.value)}
-            className="w-full rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 focus:border-cyan-500/40 focus:outline-none"
+            className="w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 text-sm text-[var(--aw-text)] focus:border-cyan-500/40 focus:outline-none"
           />
         </label>
       </div>
       <label className="block space-y-1">
-        <span className="text-xs text-zinc-500">Pattern diagnosis (comma-separated slugs)</span>
+        <span className="text-xs text-[var(--aw-text-2)]">Pattern diagnosis (comma-separated slugs)</span>
         <input
           type="text"
           value={patternSlugs}
           disabled={saving}
           onChange={(e) => setPatternSlugs(e.target.value)}
           placeholder="the-rescuer, the-controller"
-          className="w-full rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 font-mono text-xs text-zinc-200 placeholder:text-zinc-600 focus:border-cyan-500/40 focus:outline-none"
+          className="w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 font-mono text-xs text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-cyan-500/40 focus:outline-none"
         />
       </label>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className="space-y-1">
-          <span className="text-xs text-zinc-500">Prescribed sequence (slug)</span>
+          <span className="text-xs text-[var(--aw-text-2)]">Prescribed sequence (slug)</span>
           <input
             type="text"
             value={sequenceSlug}
             disabled={saving}
             onChange={(e) => setSequenceSlug(e.target.value)}
             placeholder="foundation-of-stillness"
-            className="w-full rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 font-mono text-xs text-zinc-200 placeholder:text-zinc-600 focus:border-cyan-500/40 focus:outline-none"
+            className="w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 font-mono text-xs text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-cyan-500/40 focus:outline-none"
           />
         </label>
         <label className="space-y-1">
-          <span className="text-xs text-zinc-500">Prescribed siddhis (slugs)</span>
+          <span className="text-xs text-[var(--aw-text-2)]">Prescribed siddhis (slugs)</span>
           <input
             type="text"
             value={siddhiSlugs}
             disabled={saving}
             onChange={(e) => setSiddhiSlugs(e.target.value)}
             placeholder="nadi-shuddhi, soham-dhyana"
-            className="w-full rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 font-mono text-xs text-zinc-200 placeholder:text-zinc-600 focus:border-cyan-500/40 focus:outline-none"
+            className="w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 font-mono text-xs text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-cyan-500/40 focus:outline-none"
           />
         </label>
       </div>
       <label className="block space-y-1">
-        <span className="text-xs text-zinc-500">Session notes (visible in the dossier)</span>
+        <span className="text-xs text-[var(--aw-text-2)]">Session notes (visible in the dossier)</span>
         <textarea
           rows={3}
           value={sessionNotes}
           disabled={saving}
           onChange={(e) => setSessionNotes(e.target.value)}
           placeholder="What surfaced, what was prescribed, what to watch…"
-          className="w-full resize-none rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-cyan-500/40 focus:outline-none"
+          className="w-full resize-none rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 text-sm text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-cyan-500/40 focus:outline-none"
         />
       </label>
       <button
@@ -651,7 +651,7 @@ function OutcomeSection({
       >
         {saving ? "Saving…" : "Save outcome"}
       </button>
-      <p className="text-[0.65rem] text-zinc-600">
+      <p className="text-[0.65rem] text-[var(--aw-text-3)]">
         RESOLVED / DISCONTINUED stamp completedAt (once). Audited, webhook-fired, bell-rung.
       </p>
     </div>
@@ -665,14 +665,14 @@ function LeadCard({ lead, onOpen }: { lead: ConsultationRow; onOpen: () => void 
   return (
     <button
       onClick={onOpen}
-      className="w-full rounded-lg border border-zinc-800 bg-zinc-900/50 p-3 text-left transition-colors hover:border-amber-500/30 hover:bg-zinc-900"
+      className="w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] p-3 text-left transition-colors hover:border-[var(--aw-border-2)] hover:bg-[var(--aw-glass-1)]"
     >
       <div className="flex items-start justify-between gap-2">
-        <p className="truncate text-sm font-medium text-zinc-200">{lead.name}</p>
-        <span className="shrink-0 text-[0.65rem] text-zinc-600">{timeAgo(lead.createdAt)}</span>
+        <p className="truncate text-sm font-medium text-[var(--aw-text)]">{lead.name}</p>
+        <span className="shrink-0 text-[0.65rem] text-[var(--aw-text-3)]">{timeAgo(lead.createdAt)}</span>
       </div>
-      <p className="mt-0.5 truncate text-xs text-zinc-500">{lead.phone || lead.email || "—"}</p>
-      <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-zinc-400">{lead.request}</p>
+      <p className="mt-0.5 truncate text-xs text-[var(--aw-text-2)]">{lead.phone || lead.email || "—"}</p>
+      <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-[var(--aw-text-2)]">{lead.request}</p>
       <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
         <span className={`rounded-full border px-2 py-0.5 text-[0.65rem] ${SOURCE_CHIP[src.kind]}`}>
           {src.label}
@@ -693,7 +693,7 @@ function LeadCard({ lead, onOpen }: { lead: ConsultationRow; onOpen: () => void 
           </span>
         )}
         {lead.notes && (
-          <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] text-zinc-500" title={lead.notes}>
+          <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] text-[var(--aw-text-2)]" title={lead.notes}>
             note
           </span>
         )}
@@ -783,12 +783,12 @@ function LeadDrawer({
     if (visible.length === 0) return null;
     return (
       <div>
-        <p className="mb-1 text-xs font-medium text-zinc-400">{title}</p>
+        <p className="mb-1 text-xs font-medium text-[var(--aw-text-2)]">{title}</p>
         <dl className="space-y-1">
           {visible.map(([k, v]) => (
             <div key={k} className="flex gap-2 text-xs">
-              <dt className="w-20 shrink-0 text-zinc-600">{k}</dt>
-              <dd className="break-all text-zinc-300">{v}</dd>
+              <dt className="w-20 shrink-0 text-[var(--aw-text-3)]">{k}</dt>
+              <dd className="break-all text-[var(--aw-text-2)]">{v}</dd>
             </div>
           ))}
         </dl>
@@ -799,7 +799,7 @@ function LeadDrawer({
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm" onClick={onClose}>
       <aside
-        className="h-full w-full max-w-xl overflow-y-auto border-l border-zinc-800 bg-zinc-950 p-6 shadow-2xl"
+        className="h-full w-full max-w-xl overflow-y-auto border-l border-[var(--aw-border-2)] bg-transparent p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -811,14 +811,14 @@ function LeadDrawer({
               </span>
               <span className={`rounded-full border px-2.5 py-0.5 text-xs ${SOURCE_CHIP[src.kind]}`}>{src.label}</span>
             </div>
-            <h2 className="mt-2 text-xl font-semibold text-zinc-100">{lead.name}</h2>
-            <p className="mt-0.5 text-sm text-zinc-500">
+            <h2 className="mt-2 text-xl font-semibold text-[var(--aw-text)]">{lead.name}</h2>
+            <p className="mt-0.5 text-sm text-[var(--aw-text-2)]">
               {lead.phone || "no phone"} {lead.email ? `· ${lead.email}` : ""}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg border border-zinc-800 px-2.5 py-1 text-xs text-zinc-500 hover:text-zinc-300"
+            className="rounded-lg border border-[var(--aw-border-2)] px-2.5 py-1 text-xs text-[var(--aw-text-2)] hover:text-[var(--aw-text-2)]"
             aria-label="Close"
           >
             Esc ✕
@@ -854,41 +854,41 @@ function LeadDrawer({
                 setNudgeBusy(false);
               }}
               disabled={nudgeBusy}
-              className="w-full rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-2.5 text-sm font-medium text-amber-300 transition-colors hover:bg-amber-500/20 disabled:cursor-not-allowed disabled:opacity-40"
+              className="w-full rounded-lg border border-amber-500/40 bg-[rgba(0,240,255,0.08)] px-4 py-2.5 text-sm font-medium text-amber-300 transition-colors hover:bg-amber-500/20 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {nudgeBusy ? "Sending ask…" : "Ask for a testimonial (email)"}
             </button>
-            {nudgeNotice && <p className="mt-1.5 text-xs text-zinc-400">{nudgeNotice}</p>}
+            {nudgeNotice && <p className="mt-1.5 text-xs text-[var(--aw-text-2)]">{nudgeNotice}</p>}
           </div>
         )}
 
         {/* Intake */}
         <div className="mt-5">
-          <p className="mb-1 text-xs font-medium text-zinc-400">Intake</p>
-          <pre className="whitespace-pre-wrap rounded-lg border border-zinc-800 bg-zinc-900/40 p-3 text-xs leading-relaxed text-zinc-300">
+          <p className="mb-1 text-xs font-medium text-[var(--aw-text-2)]">Intake</p>
+          <pre className="whitespace-pre-wrap rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/40 p-3 text-xs leading-relaxed text-[var(--aw-text-2)]">
             {lead.request}
           </pre>
-          <p className="mt-1.5 text-[0.65rem] text-zinc-600">
+          <p className="mt-1.5 text-[0.65rem] text-[var(--aw-text-3)]">
             Received {fmtDate(lead.createdAt)} · Updated {fmtDate(lead.updatedAt)}
             {lead.landingPath ? ` · Landed on ${lead.landingPath}` : ""}
           </p>
         </div>
 
         {/* Attribution drill-down */}
-        <div className="mt-5 space-y-3 rounded-lg border border-zinc-800/80 bg-zinc-900/20 p-4">
-          <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Attribution</p>
+        <div className="mt-5 space-y-3 rounded-lg border border-[var(--aw-border-2)]/80 bg-[var(--aw-glass-1)]/20 p-4">
+          <p className="text-xs font-semibold uppercase tracking-wider text-[var(--aw-text-2)]">Attribution</p>
           {snapshot ? (
             <>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {touchRows(snapshot.first, "First touch")}
                 {touchRows(snapshot.last, "Last touch")}
               </div>
-              <p className="text-[0.65rem] text-zinc-600">
+              <p className="text-[0.65rem] text-[var(--aw-text-3)]">
                 {snapshot.sessions ?? 1} session{(snapshot.sessions ?? 1) === 1 ? "" : "s"} before submitting
               </p>
             </>
           ) : (
-            <p className="text-xs text-zinc-600">
+            <p className="text-xs text-[var(--aw-text-3)]">
               No snapshot recorded — this lead predates the attribution layer or cookies were blocked.
               Flat fields: {lead.utmSource || "—"} / {lead.utmMedium || "—"} {lead.referrerDomain ? `· ref ${lead.referrerDomain}` : ""} {lead.country ? `· ${lead.country}` : ""}
             </p>
@@ -896,14 +896,14 @@ function LeadDrawer({
         </div>
 
         {/* Tier-1 ① — Payment reconciliation */}
-        <div className="mt-5 rounded-lg border border-zinc-800/80 bg-zinc-900/20 p-4">
+        <div className="mt-5 rounded-lg border border-[var(--aw-border-2)]/80 bg-[var(--aw-glass-1)]/20 p-4">
           <div className="flex items-center justify-between gap-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Payment (UPI manual rail)</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-[var(--aw-text-2)]">Payment (UPI manual rail)</p>
             <span className={`rounded-full border px-2.5 py-0.5 text-[0.65rem] ${PAYMENT_CHIP[lead.paymentState] ?? PAYMENT_CHIP.UNPAID}`}>
               {PAYMENT_LABEL[lead.paymentState] ?? lead.paymentState.toLowerCase()}
             </span>
           </div>
-          <p className="mt-1.5 text-[0.65rem] text-zinc-600">
+          <p className="mt-1.5 text-[0.65rem] text-[var(--aw-text-3)]">
             {lead.paymentSession
               ? `Session: ${lead.paymentSession.replace(/-/g, " ")} · INR ${lead.paymentSession === "shadow-pattern-reading" ? "3,499" : "1,999"}`
               : "No session chosen yet — the seeker stayed on the free path."}
@@ -915,7 +915,7 @@ function LeadDrawer({
               value={utr}
               onChange={(e) => setUtr(e.target.value)}
               placeholder="UPI ref / UTR…"
-              className="w-40 rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-1.5 text-xs text-zinc-200 placeholder:text-zinc-600 focus:border-amber-500/40 focus:outline-none"
+              className="w-40 rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-1.5 text-xs text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-amber-500/40 focus:outline-none"
             />
             <button
               onClick={() => onSavePaymentPaid(utr)}
@@ -927,19 +927,19 @@ function LeadDrawer({
             <button
               onClick={() => onSavePaymentWaived()}
               disabled={saving}
-              className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-400 transition-colors hover:text-zinc-200 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-medium text-[var(--aw-text-2)] transition-colors hover:text-[var(--aw-text)] disabled:cursor-not-allowed disabled:opacity-40"
             >
               Waive
             </button>
           </div>
-          <p className="mt-1.5 text-[0.65rem] text-zinc-600">
+          <p className="mt-1.5 text-[0.65rem] text-[var(--aw-text-3)]">
             Reconciliation is audited and bell-rung. CLAIMED = seeker said they paid — verify the UTR in your UPI app.
           </p>
         </div>
 
         {/* Status */}
         <div className="mt-5">
-          <label htmlFor="lead-status" className="mb-1 block text-xs font-medium text-zinc-400">
+          <label htmlFor="lead-status" className="mb-1 block text-xs font-medium text-[var(--aw-text-2)]">
             Pipeline stage
           </label>
           <select
@@ -947,7 +947,7 @@ function LeadDrawer({
             value={lead.status}
             disabled={saving}
             onChange={(e) => onStatus(e.target.value)}
-            className="w-full rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 focus:border-amber-500/40 focus:outline-none"
+            className="w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 text-sm text-[var(--aw-text)] focus:border-amber-500/40 focus:outline-none"
           >
             {PIPELINE.map((s) => (
               <option key={s} value={s}>
@@ -955,12 +955,12 @@ function LeadDrawer({
               </option>
             ))}
           </select>
-          {saving && <p className="mt-1 text-xs text-amber-400/80">Saving…</p>}
+          {saving && <p className="mt-1 text-xs text-[var(--aw-cyan)]/80">Saving…</p>}
         </div>
 
         {/* Notes */}
         <div className="mt-5">
-          <label htmlFor="lead-notes" className="mb-1 block text-xs font-medium text-zinc-400">
+          <label htmlFor="lead-notes" className="mb-1 block text-xs font-medium text-[var(--aw-text-2)]">
             Archivist notes
           </label>
           <textarea
@@ -969,7 +969,7 @@ function LeadDrawer({
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Call outcomes, session notes, follow-ups…"
-            className="w-full resize-none rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-amber-500/40 focus:outline-none"
+            className="w-full resize-none rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 text-sm text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-amber-500/40 focus:outline-none"
           />
           <button
             onClick={() => onSaveNotes(notes)}
@@ -984,7 +984,7 @@ function LeadDrawer({
         <OutcomeSection key={lead.id} lead={lead} saving={saving} onSave={onSaveOutcome} />
 
         {/* Danger zone */}
-        <div className="mt-6 border-t border-zinc-800/80 pt-4">
+        <div className="mt-6 border-t border-[var(--aw-border-2)]/80 pt-4">
           <button
             onClick={() => {
               if (
@@ -1000,7 +1000,7 @@ function LeadDrawer({
           >
             Delete lead permanently
           </button>
-          <p className="mt-1.5 text-[0.65rem] text-zinc-600">
+          <p className="mt-1.5 text-[0.65rem] text-[var(--aw-text-3)]">
             Admin/Superadmin only · recorded in the audit log
           </p>
         </div>

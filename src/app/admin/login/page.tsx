@@ -26,10 +26,10 @@ function isSafeUrl(url: string): boolean {
 
 function AdminLoginSkeleton() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-transparent px-4">
       <div className="w-full max-w-sm space-y-8 animate-pulse">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-12 w-12 rounded-full border border-amber-500/30 bg-amber-500/10" />
+          <div className="mx-auto mb-4 h-12 w-12 rounded-full border border-[var(--aw-border-2)] bg-[rgba(0,240,255,0.08)]" />
           <div className="mx-auto h-6 w-40 rounded bg-zinc-800" />
           <div className="mx-auto mt-2 h-4 w-48 rounded bg-zinc-800/60" />
         </div>
@@ -215,7 +215,7 @@ function AdminLoginForm() {
   const strengthColors = ["", "bg-red-500", "bg-amber-500", "bg-blue-500", "bg-emerald-500"];
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-transparent px-4">
       <noscript>
         <meta httpEquiv="refresh" content="0;url=/admin/login?js=disabled" />
         <div style={{ padding: '2rem', textAlign: 'center', color: '#a1a1aa' }}>
@@ -230,13 +230,13 @@ function AdminLoginForm() {
       </noscript>
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10">
-            <svg className="h-6 w-6 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-[var(--aw-border-2)] bg-[rgba(0,240,255,0.08)]">
+            <svg className="h-6 w-6 text-[var(--aw-cyan)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
             </svg>
           </div>
-          <h1 className="text-2xl font-semibold text-zinc-100">Archivist Console</h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <h1 className="text-2xl font-semibold text-[var(--aw-text)]">Archivist Console</h1>
+          <p className="mt-1 text-sm text-[var(--aw-text-2)]">
             {step === '2fa' ? 'Two-Factor Authentication' : 'Kalki Mirror Administration'}
           </p>
         </div>
@@ -247,7 +247,7 @@ function AdminLoginForm() {
               <div className="rounded-md border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">{twoFAError}</div>
             )}
             <div className="text-center">
-              <p className="text-sm text-zinc-400">Enter the 6-digit code from your authenticator app.</p>
+              <p className="text-sm text-[var(--aw-text-2)]">Enter the 6-digit code from your authenticator app.</p>
             </div>
             <div className="space-y-3">
               <input
@@ -256,7 +256,7 @@ function AdminLoginForm() {
                 value={twoFACode}
                 onChange={e => { setTwoFACode(e.target.value.replace(/\D/g, '')); setTwoFAError(''); }}
                 placeholder="000000"
-                className="block w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-3 text-center text-xl font-mono text-zinc-100 tracking-[0.3em] placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/50"
+                className="block w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-3 text-center text-xl font-mono text-[var(--aw-text)] tracking-[0.3em] placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/50"
                 autoFocus
               />
               <button
@@ -269,7 +269,7 @@ function AdminLoginForm() {
             </div>
             <button
               onClick={handleBackToLogin}
-              className="w-full text-center text-xs text-zinc-600 hover:text-zinc-400"
+              className="w-full text-center text-xs text-[var(--aw-text-3)] hover:text-[var(--aw-text-2)]"
             >
               Back to login
             </button>
@@ -278,11 +278,11 @@ function AdminLoginForm() {
           <>
             {hydrated && loginState.attempts > 0 && !locked && (
               <div className="space-y-1">
-                <div className="flex justify-between text-[10px] text-zinc-600">
+                <div className="flex justify-between text-[10px] text-[var(--aw-text-3)]">
                   <span>Attempts used</span>
                   <span>{loginState.attempts}/{MAX_ATTEMPTS}</span>
                 </div>
-                <div className="h-1 w-full rounded-full bg-zinc-900">
+                <div className="h-1 w-full rounded-full bg-[var(--aw-glass-1)]">
                   <div
                     className={`h-full rounded-full transition-all duration-300 ${
                       loginState.attempts >= 4 ? "bg-red-500" : loginState.attempts >= 2 ? "bg-amber-500" : "bg-zinc-600"
@@ -297,7 +297,7 @@ function AdminLoginForm() {
               <div className="rounded-lg border border-red-500/20 bg-red-500/5 px-4 py-3 text-center">
                 <p className="text-sm font-medium text-red-400">Account Temporarily Locked</p>
                 <p className="mt-1 font-mono text-2xl tabular-nums text-red-300">{liveRemaining}s</p>
-                <p className="mt-1 text-xs text-zinc-600">Wait for the timer to expire or close this window to reset.</p>
+                <p className="mt-1 text-xs text-[var(--aw-text-3)]">Wait for the timer to expire or close this window to reset.</p>
               </div>
             )}
 
@@ -307,7 +307,7 @@ function AdminLoginForm() {
               )}
 
               <div className="space-y-2">
-                <label htmlFor="email" className="block text-sm font-medium text-zinc-400">Email</label>
+                <label htmlFor="email" className="block text-sm font-medium text-[var(--aw-text-2)]">Email</label>
                 <input
                   id="email"
                   type="email"
@@ -316,18 +316,18 @@ function AdminLoginForm() {
                   required
                   autoComplete="email"
                   disabled={locked}
-                  className="block w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2.5 text-sm text-zinc-100 placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/50 disabled:opacity-50"
+                  className="block w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-2.5 text-sm text-[var(--aw-text)] placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/50 disabled:opacity-50"
                   placeholder="archivist@kalki.mirror"
                 />
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label htmlFor="password" className="block text-sm font-medium text-zinc-400">Password</label>
+                  <label htmlFor="password" className="block text-sm font-medium text-[var(--aw-text-2)]">Password</label>
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="text-xs text-zinc-600 transition hover:text-zinc-400"
+                    className="text-xs text-[var(--aw-text-3)] transition hover:text-[var(--aw-text-2)]"
                   >{showPassword ? "Hide" : "Show"}</button>
                 </div>
                 <div className="relative">
@@ -339,7 +339,7 @@ function AdminLoginForm() {
                     required
                     autoComplete="current-password"
                     disabled={locked}
-                    className="block w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2.5 text-sm text-zinc-100 placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/50 disabled:opacity-50"
+                    className="block w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-2.5 text-sm text-[var(--aw-text)] placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/50 disabled:opacity-50"
                     placeholder="Enter password"
                   />
                 </div>
@@ -355,7 +355,7 @@ function AdminLoginForm() {
                         />
                       ))}
                     </div>
-                    <span className="text-[10px] text-zinc-600">{strengthLabels[passwordStrength] || ""}</span>
+                    <span className="text-[10px] text-[var(--aw-text-3)]">{strengthLabels[passwordStrength] || ""}</span>
                   </div>
                 )}
               </div>

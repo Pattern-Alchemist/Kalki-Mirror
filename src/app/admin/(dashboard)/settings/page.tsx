@@ -5,7 +5,7 @@ import { TwoFactorSection } from "./two-factor-section";
 import { WebhookSection } from "./webhook-section";
 
 function StatBlock({ label, value }: { label: string; value: string | number }) {
-  return <div><p className="text-xs text-zinc-600">{label}</p><p className="mt-0.5 text-lg font-semibold tabular-nums text-zinc-200">{value}</p></div>;
+  return <div><p className="text-xs text-[var(--aw-text-3)]">{label}</p><p className="mt-0.5 text-lg font-semibold tabular-nums text-[var(--aw-text)]">{value}</p></div>;
 }
 
 function EnvCheck({ name, note, optional }: { name: string; note?: string; optional?: boolean }) {
@@ -16,12 +16,12 @@ function EnvCheck({ name, note, optional }: { name: string; note?: string; optio
   // Required + unset  → red "Missing" (action needed).
   // Optional + unset  → amber "Optional" (feature gate, not a fault).
   const label = isSet ? "Set" : optional ? "Optional" : "Missing";
-  const tone = isSet ? "text-emerald-400" : optional ? "text-amber-400" : "text-red-400";
+  const tone = isSet ? "text-emerald-400" : optional ? "text-[var(--aw-cyan)]" : "text-red-400";
   return (
-    <div className="flex items-center justify-between rounded-lg bg-zinc-950 px-3 py-2">
+    <div className="flex items-center justify-between rounded-lg bg-transparent px-3 py-2">
       <div className="min-w-0">
-        <code className="text-xs text-zinc-400">{name}</code>
-        {note && <p className="mt-0.5 truncate text-[11px] text-zinc-600">{note}</p>}
+        <code className="text-xs text-[var(--aw-text-2)]">{name}</code>
+        {note && <p className="mt-0.5 truncate text-[11px] text-[var(--aw-text-3)]">{note}</p>}
       </div>
       <span className={`ml-3 shrink-0 text-xs font-medium ${tone}`}>{label}</span>
     </div>
@@ -64,20 +64,20 @@ export default function SettingsPage() {
     }).finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="text-center py-20 text-zinc-500">Loading settings...</div>;
+  if (loading) return <div className="text-center py-20 text-[var(--aw-text-2)]">Loading settings...</div>;
 
   const isSuperAdmin = session?.role === "SUPERADMIN";
 
   return (
     <div className="space-y-8">
-      <div><h1 className="text-2xl font-semibold text-zinc-100">Settings</h1><p className="mt-1 text-sm text-zinc-500">Archivist console configuration</p></div>
+      <div><h1 className="text-2xl font-semibold text-[var(--aw-text)]">Settings</h1><p className="mt-1 text-sm text-[var(--aw-text-2)]">Archivist console configuration</p></div>
 
-      <section className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 space-y-4">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Current Session</h2>
+      <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 space-y-4">
+        <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Current Session</h2>
         <div className="grid gap-4 sm:grid-cols-3">
-          <div><p className="text-xs text-zinc-600">Email</p><p className="mt-0.5 text-sm text-zinc-300">{session?.email || "-"}</p></div>
-          <div><p className="text-xs text-zinc-600">Name</p><p className="mt-0.5 text-sm text-zinc-300">{session?.name || "-"}</p></div>
-          <div><p className="text-xs text-zinc-600">Role</p><p className="mt-0.5 text-sm text-amber-400">{session?.role || "-"}</p></div>
+          <div><p className="text-xs text-[var(--aw-text-3)]">Email</p><p className="mt-0.5 text-sm text-[var(--aw-text-2)]">{session?.email || "-"}</p></div>
+          <div><p className="text-xs text-[var(--aw-text-3)]">Name</p><p className="mt-0.5 text-sm text-[var(--aw-text-2)]">{session?.name || "-"}</p></div>
+          <div><p className="text-xs text-[var(--aw-text-3)]">Role</p><p className="mt-0.5 text-sm text-[var(--aw-cyan)]">{session?.role || "-"}</p></div>
         </div>
       </section>
 
@@ -93,33 +93,33 @@ export default function SettingsPage() {
       <WebhookSection />
 
       {dbStats && (
-        <section className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 space-y-4">
-          <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Database Summary</h2>
+        <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 space-y-4">
+          <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Database Summary</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {Object.entries(dbStats).map(([k, v]) => <StatBlock key={k} label={k} value={v} />)}
           </div>
         </section>
       )}
 
-      <section className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 space-y-4">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Environment Variables</h2>
+      <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 space-y-4">
+        <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Environment Variables</h2>
         <div className="space-y-2">
           {REQUIRED_ENVS.map(({ name, note }) => <EnvCheck key={name} name={name} note={note} />)}
         </div>
-        <p className="pt-2 text-xs uppercase tracking-wider text-zinc-600">Optional — feature gates</p>
+        <p className="pt-2 text-xs uppercase tracking-wider text-[var(--aw-text-3)]">Optional — feature gates</p>
         <div className="space-y-2">
           {OPTIONAL_ENVS.map(({ name, note }) => <EnvCheck key={name} name={name} note={note} optional />)}
         </div>
       </section>
 
-      <section className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 space-y-4">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-zinc-500">Seed Admin Account</h2>
-        <p className="text-xs text-zinc-500">
+      <section className="rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-6 space-y-4">
+        <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Seed Admin Account</h2>
+        <p className="text-xs text-[var(--aw-text-2)]">
           First-time setup or password rotation. Targets PRODUCTION Turso when TURSO_DATABASE_URL is set (env or .env.local),
           otherwise the local SQLite file. Omit the password to have a strong one generated and printed once.
         </p>
-        <code className="block rounded-lg bg-zinc-950 p-3 text-xs text-zinc-400">node scripts/seed-admin.cjs [email] [password]</code>
-        <p className="text-xs text-zinc-600">
+        <code className="block rounded-lg bg-transparent p-3 text-xs text-[var(--aw-text-2)]">node scripts/seed-admin.cjs [email] [password]</code>
+        <p className="text-xs text-[var(--aw-text-3)]">
           Elevated roles carry a 7-day 2FA enrollment window (Vol. 2 #12) — after seeding, enroll at
           Two-Factor below before the deadline, or admin_plus surfaces lock until you do.
         </p>

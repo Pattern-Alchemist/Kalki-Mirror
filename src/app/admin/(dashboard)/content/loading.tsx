@@ -20,7 +20,7 @@ export default function ContentLoading() {
           {Array.from({ length: 5 }).map((_, i) => (
             <div
               key={i}
-              className="flex items-center gap-4 rounded-xl border border-zinc-800 bg-zinc-900/30 px-5 py-4 animate-pulse"
+              className="flex items-center gap-4 rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 px-5 py-4 animate-pulse"
             >
               <div className="h-10 w-10 rounded-lg bg-zinc-700" />
               <div className="flex-1 space-y-1.5">

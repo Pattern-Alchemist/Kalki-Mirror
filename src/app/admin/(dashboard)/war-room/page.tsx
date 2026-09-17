@@ -137,9 +137,9 @@ const STATUS_COLOR: Record<string, string> = {
 function FunnelCell({ n, whole }: { n: number; whole: number }) {
   const pct = pctOf(n, whole);
   return (
-    <td className="py-2 text-right text-zinc-300">
+    <td className="py-2 text-right text-[var(--aw-text-2)]">
       {n}
-      {pct !== null && <span className="ml-1 text-[0.65rem] text-zinc-600">{pct}%</span>}
+      {pct !== null && <span className="ml-1 text-[0.65rem] text-[var(--aw-text-3)]">{pct}%</span>}
     </td>
   );
 }
@@ -148,9 +148,9 @@ function Card({ title, icon, action, children, className = "" }: {
   title: string; icon?: React.ReactNode; action?: React.ReactNode; children: React.ReactNode; className?: string;
 }) {
   return (
-    <section className={`rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 ${className}`}>
+    <section className={`rounded-xl border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/30 p-5 ${className}`}>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="flex items-center gap-2 text-sm font-medium uppercase tracking-wider text-zinc-500">
+        <h2 className="flex items-center gap-2 text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">
           {icon}{title}
         </h2>
         {action}
@@ -164,33 +164,33 @@ function Kpi({ label, value, sub, delta }: {
   label: string; value: string | number; sub?: string; delta?: number | null;
 }) {
   return (
-    <div className="rounded-xl border border-amber-500/20 bg-zinc-900/50 p-4">
-      <p className="text-[0.65rem] font-medium uppercase tracking-wider text-zinc-500">{label}</p>
+    <div className="rounded-xl border border-amber-500/20 bg-[var(--aw-glass-1)] p-4">
+      <p className="text-[0.65rem] font-medium uppercase tracking-wider text-[var(--aw-text-2)]">{label}</p>
       <div className="mt-1.5 flex items-baseline gap-2">
-        <p className="text-2xl font-semibold tabular-nums text-zinc-100">{value}</p>
+        <p className="text-2xl font-semibold tabular-nums text-[var(--aw-text)]">{value}</p>
         {delta !== null && delta !== undefined && (
-          <span className={`text-xs font-medium tabular-nums ${delta > 0 ? "text-emerald-400" : delta < 0 ? "text-rose-400" : "text-zinc-500"}`}>
+          <span className={`text-xs font-medium tabular-nums ${delta > 0 ? "text-emerald-400" : delta < 0 ? "text-rose-400" : "text-[var(--aw-text-2)]"}`}>
             {delta > 0 ? "+" : ""}{delta}%
           </span>
         )}
       </div>
-      {sub && <p className="mt-0.5 text-[0.65rem] text-zinc-600">{sub}</p>}
+      {sub && <p className="mt-0.5 text-[0.65rem] text-[var(--aw-text-3)]">{sub}</p>}
     </div>
   );
 }
 
 function BarList({ rows, empty }: { rows: { label: string; n: number; hint?: string }[]; empty: string }) {
   const max = Math.max(1, ...rows.map((r) => r.n));
-  if (rows.length === 0) return <p className="py-3 text-xs text-zinc-600">{empty}</p>;
+  if (rows.length === 0) return <p className="py-3 text-xs text-[var(--aw-text-3)]">{empty}</p>;
   return (
     <div className="space-y-2">
       {rows.map((r) => (
         <div key={r.label} className="flex items-center gap-3">
-          <span className="w-32 shrink-0 truncate text-xs text-zinc-400" title={r.label}>{r.label}</span>
+          <span className="w-32 shrink-0 truncate text-xs text-[var(--aw-text-2)]" title={r.label}>{r.label}</span>
           <div className="h-2 flex-1 overflow-hidden rounded-full bg-zinc-800/60">
             <div className="h-full rounded-full bg-amber-500/70" style={{ width: `${(r.n / max) * 100}%` }} />
           </div>
-          <span className="w-8 shrink-0 text-right text-xs font-medium tabular-nums text-zinc-300">{r.n}</span>
+          <span className="w-8 shrink-0 text-right text-xs font-medium tabular-nums text-[var(--aw-text-2)]">{r.n}</span>
         </div>
       ))}
     </div>
@@ -235,7 +235,7 @@ function LinkBuilder() {
     } catch { /* clipboard unavailable */ }
   }
 
-  const inputCls = "rounded-lg border border-zinc-800 bg-zinc-950 px-2.5 py-1.5 text-xs text-zinc-200 focus:border-amber-500/40 focus:outline-none";
+  const inputCls = "rounded-lg border border-[var(--aw-border-2)] bg-transparent px-2.5 py-1.5 text-xs text-[var(--aw-text)] focus:border-amber-500/40 focus:outline-none";
 
   return (
     <div className="space-y-3">
@@ -259,18 +259,18 @@ function LinkBuilder() {
         </select>
       </div>
       <div className="flex items-center gap-2">
-        <code className="min-w-0 flex-1 truncate rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-[0.7rem] text-amber-200/80" title={url}>
+        <code className="min-w-0 flex-1 truncate rounded-lg border border-[var(--aw-border-2)] bg-transparent px-3 py-2 text-[0.7rem] text-amber-200/80" title={url}>
           {url}
         </code>
         <button
           onClick={copy}
-          className="flex shrink-0 items-center gap-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs font-medium text-amber-300 transition hover:bg-amber-500/20"
+          className="flex shrink-0 items-center gap-1.5 rounded-lg border border-[var(--aw-border-2)] bg-[rgba(0,240,255,0.08)] px-3 py-2 text-xs font-medium text-amber-300 transition hover:bg-amber-500/20"
         >
           {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
           {copied ? "Copied" : "Copy"}
         </button>
       </div>
-      <p className="text-[0.65rem] leading-relaxed text-zinc-600">
+      <p className="text-[0.65rem] leading-relaxed text-[var(--aw-text-3)]">
         Conventions per the wave-2 run sheet: YT comments <code>utm_medium=comment</code>, IG DMs <code>utm_medium=dm</code>,
         geo tags <code>utm_content=us|uk|ca|au|gcc|intl</code>. Door tags (<code>utm_content=door-N</code>) give per-night
         rollups in the Door board above — optional, additive to the doc.
@@ -361,8 +361,8 @@ export default function WarRoomPage() {
   }
 
   if (loading) {
-    return <div className="flex items-center justify-center py-24 text-sm text-zinc-500">
-      <Radio className="mr-2 h-4 w-4 animate-pulse text-amber-500" /> Warming up the war room…
+    return <div className="flex items-center justify-center py-24 text-sm text-[var(--aw-text-2)]">
+      <Radio className="mr-2 h-4 w-4 animate-pulse text-[var(--aw-cyan)]" /> Warming up the war room…
     </div>;
   }
 
@@ -373,10 +373,10 @@ export default function WarRoomPage() {
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-zinc-100">
-            <Crosshair className="h-6 w-6 text-amber-500" /> War Room
+          <h1 className="flex items-center gap-2 text-2xl font-semibold text-[var(--aw-text)]">
+            <Crosshair className="h-6 w-6 text-[var(--aw-cyan)]" /> War Room
           </h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-[var(--aw-text-2)]">
             Campaign intelligence · attribution rollups · the Tier-1 gate that decides Halloween
           </p>
         </div>
@@ -384,18 +384,18 @@ export default function WarRoomPage() {
           <select
             value={campaign}
             onChange={(e) => setCampaign(e.target.value)}
-            className="rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-200 focus:border-amber-500/40 focus:outline-none"
+            className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-2 text-sm text-[var(--aw-text)] focus:border-amber-500/40 focus:outline-none"
             aria-label="Campaign filter"
           >
             <option value="all">All campaigns</option>
             {(data?.campaignList ?? []).map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
-          <div className="flex overflow-hidden rounded-lg border border-zinc-800">
+          <div className="flex overflow-hidden rounded-lg border border-[var(--aw-border-2)]">
             {RANGES.map((r) => (
               <button
                 key={r.key}
                 onClick={() => setRange(r.key)}
-                className={`px-3 py-2 text-xs font-medium transition ${range === r.key ? "bg-amber-500/15 text-amber-300" : "text-zinc-500 hover:bg-zinc-900 hover:text-zinc-300"}`}
+                className={`px-3 py-2 text-xs font-medium transition ${range === r.key ? "bg-amber-500/15 text-amber-300" : "text-[var(--aw-text-2)] hover:bg-[var(--aw-glass-1)] hover:text-[var(--aw-text-2)]"}`}
               >
                 {r.label}
               </button>
@@ -403,15 +403,15 @@ export default function WarRoomPage() {
           </div>
           <button
             onClick={() => setAuto((a) => !a)}
-            className={`flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium transition ${auto ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" : "border-zinc-800 text-zinc-500 hover:text-zinc-300"}`}
+            className={`flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium transition ${auto ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" : "border-[var(--aw-border-2)] text-[var(--aw-text-2)] hover:text-[var(--aw-text-2)]"}`}
             title="Auto-refresh every 60s"
           >
             <Radio className={`h-3.5 w-3.5 ${auto ? "animate-pulse" : ""}`} /> Live
           </button>
-          <button onClick={() => load()} disabled={refreshing} className="flex items-center gap-1.5 rounded-lg border border-zinc-800 px-3 py-2 text-xs font-medium text-zinc-400 transition hover:border-amber-500/30 hover:text-amber-300 disabled:opacity-50">
+          <button onClick={() => load()} disabled={refreshing} className="flex items-center gap-1.5 rounded-lg border border-[var(--aw-border-2)] px-3 py-2 text-xs font-medium text-[var(--aw-text-2)] transition hover:border-[var(--aw-border-2)] hover:text-amber-300 disabled:opacity-50">
             <RefreshCw className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`} /> Refresh
           </button>
-          <button onClick={exportCsv} className="flex items-center gap-1.5 rounded-lg border border-zinc-800 px-3 py-2 text-xs font-medium text-zinc-400 transition hover:border-amber-500/30 hover:text-amber-300">
+          <button onClick={exportCsv} className="flex items-center gap-1.5 rounded-lg border border-[var(--aw-border-2)] px-3 py-2 text-xs font-medium text-[var(--aw-text-2)] transition hover:border-[var(--aw-border-2)] hover:text-amber-300">
             {exported ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Download className="h-3.5 w-3.5" />} CSV
           </button>
         </div>
@@ -423,14 +423,14 @@ export default function WarRoomPage() {
       {isEmpty ? (
         <div className="space-y-6">
           <div className="rounded-xl border border-dashed border-amber-500/25 bg-amber-500/[0.03] p-10 text-center">
-            <Flame className="mx-auto h-8 w-8 text-amber-500/60" />
-            <h2 className="mt-3 text-lg font-semibold text-zinc-200">The war room wakes with the first seeker.</h2>
-            <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-zinc-500">
+            <Flame className="mx-auto h-8 w-8 text-[var(--aw-cyan)]/60" />
+            <h2 className="mt-3 text-lg font-semibold text-[var(--aw-text)]">The war room wakes with the first seeker.</h2>
+            <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[var(--aw-text-2)]">
               No attributed leads yet. The moment a consultation form lands with UTM tags, velocity,
               geo split and door rollups light up here. Until then — arm the funnel below.
             </p>
           </div>
-          <Card title="Campaign URL Armory — copy, paste, launch" icon={<Link2 className="h-4 w-4 text-amber-500" />}>
+          <Card title="Campaign URL Armory — copy, paste, launch" icon={<Link2 className="h-4 w-4 text-[var(--aw-cyan)]" />}>
             <LinkBuilder />
           </Card>
         </div>
@@ -448,7 +448,7 @@ export default function WarRoomPage() {
 
           {/* Velocity + Geo */}
           <div className="grid gap-4 xl:grid-cols-3">
-            <Card title="Lead velocity" icon={<TrendingUp className="h-4 w-4 text-amber-500" />} className="xl:col-span-2">
+            <Card title="Lead velocity" icon={<TrendingUp className="h-4 w-4 text-[var(--aw-cyan)]" />} className="xl:col-span-2">
               <div className="h-56">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={data?.series ?? []} margin={{ top: 4, right: 4, bottom: 0, left: -18 }}>
@@ -466,13 +466,13 @@ export default function WarRoomPage() {
               </div>
             </Card>
 
-            <Card title="Geo split — the Halloween gate" icon={<Globe className="h-4 w-4 text-amber-500" />}>
+            <Card title="Geo split — the Halloween gate" icon={<Globe className="h-4 w-4 text-[var(--aw-cyan)]" />}>
               <div className="space-y-3">
                 {geoRows.map((r) => (
                   <div key={r.label}>
                     <div className="mb-1 flex items-center justify-between text-xs">
-                      <span className="text-zinc-400">{r.label}</span>
-                      <span className="tabular-nums text-zinc-300">{r.n} · {r.pct}%</span>
+                      <span className="text-[var(--aw-text-2)]">{r.label}</span>
+                      <span className="tabular-nums text-[var(--aw-text-2)]">{r.n} · {r.pct}%</span>
                     </div>
                     <div className="h-2 overflow-hidden rounded-full bg-zinc-800/60">
                       <div className={`h-full rounded-full ${r.label.startsWith("🇮🇳") ? "bg-orange-500/70" : r.label.startsWith("Tier-1") ? "bg-emerald-500/70" : "bg-sky-500/60"}`} style={{ width: `${r.pct}%` }} />
@@ -482,8 +482,8 @@ export default function WarRoomPage() {
                 <div className={`mt-3 rounded-lg border px-3 py-2.5 text-xs leading-relaxed ${(data?.geoTiers.gate ?? null) === true
                   ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
                   : (data?.geoTiers.gate ?? null) === false
-                    ? "border-zinc-800 bg-zinc-900/40 text-zinc-400"
-                    : "border-zinc-800 bg-zinc-900/40 text-zinc-500"}`}>
+                    ? "border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/40 text-[var(--aw-text-2)]"
+                    : "border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/40 text-[var(--aw-text-2)]"}`}>
                   {(data?.geoTiers.gate ?? null) === true
                     ? "Tier-1 ≥15% at ≥20 leads — the two-geo build gate is OPEN. Re-run the playbook decision on Nov 5."
                     : (data?.geoTiers.gate ?? null) === false
@@ -497,11 +497,11 @@ export default function WarRoomPage() {
           {/* Campaigns + Sources */}
           <div className="grid gap-4 xl:grid-cols-3">
             {data && data.campaigns.length > 0 && (
-              <Card title="Campaigns" icon={<Flame className="h-4 w-4 text-amber-500" />} className="xl:col-span-2">
+              <Card title="Campaigns" icon={<Flame className="h-4 w-4 text-[var(--aw-cyan)]" />} className="xl:col-span-2">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">
                     <thead>
-                      <tr className="border-b border-zinc-800 text-xs text-zinc-600">
+                      <tr className="border-b border-[var(--aw-border-2)] text-xs text-[var(--aw-text-3)]">
                         <th scope="col" className="pb-2 pr-4 font-medium">Campaign</th>
                         <th scope="col" className="pb-2 pr-4 font-medium">Leads</th>
                         <th scope="col" className="pb-2 pr-4 font-medium">Booked</th>
@@ -511,18 +511,18 @@ export default function WarRoomPage() {
                     </thead>
                     <tbody className="divide-y divide-zinc-800/50">
                       {data.campaigns.map((c) => (
-                        <tr key={c.campaign} className="transition hover:bg-zinc-900/30">
+                        <tr key={c.campaign} className="transition hover:bg-[var(--aw-glass-1)]/30">
                           <td className="py-2.5 pr-4">
-                            {c.campaign === "(none)" ? <span className="text-zinc-600">(untagged)</span> : (
+                            {c.campaign === "(none)" ? <span className="text-[var(--aw-text-3)]">(untagged)</span> : (
                               <button onClick={() => setCampaign(c.campaign)} className="font-mono text-xs text-amber-300 hover:text-amber-200">
                                 {c.campaign}
                               </button>
                             )}
                           </td>
-                          <td className="py-2.5 pr-4 tabular-nums text-zinc-200">{c.leads}</td>
-                          <td className="py-2.5 pr-4 tabular-nums text-zinc-400">{c.booked}</td>
-                          <td className="py-2.5 pr-4 tabular-nums text-zinc-400">{c.leads > 0 ? Math.round((c.booked / c.leads) * 100) : 0}%</td>
-                          <td className="py-2.5 text-xs text-zinc-500">{new Date(c.lastAt).toLocaleDateString()}</td>
+                          <td className="py-2.5 pr-4 tabular-nums text-[var(--aw-text)]">{c.leads}</td>
+                          <td className="py-2.5 pr-4 tabular-nums text-[var(--aw-text-2)]">{c.booked}</td>
+                          <td className="py-2.5 pr-4 tabular-nums text-[var(--aw-text-2)]">{c.leads > 0 ? Math.round((c.booked / c.leads) * 100) : 0}%</td>
+                          <td className="py-2.5 text-xs text-[var(--aw-text-2)]">{new Date(c.lastAt).toLocaleDateString()}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -530,14 +530,14 @@ export default function WarRoomPage() {
                 </div>
               </Card>
             )}
-            <Card title="Source mix" icon={<Users className="h-4 w-4 text-amber-500" />} className={data && data.campaigns.length > 0 ? "" : "xl:col-span-2"}>
+            <Card title="Source mix" icon={<Users className="h-4 w-4 text-[var(--aw-cyan)]" />} className={data && data.campaigns.length > 0 ? "" : "xl:col-span-2"}>
               <div className="mb-3 flex flex-wrap gap-2">
                 {([["organic", "Organic"], ["referral", "Referral"], ["paid", "Paid"], ["direct", "Direct"]] as const).map(([key, label]) => (
                   <span key={key} className={`rounded-full border px-2.5 py-1 text-xs tabular-nums ${
                     key === "organic" ? "border-amber-500/40 text-amber-300"
                       : key === "paid" ? "border-emerald-500/40 text-emerald-300"
                       : key === "referral" ? "border-sky-500/40 text-sky-300"
-                      : "border-zinc-700 text-zinc-400"}`}>
+                      : "border-zinc-700 text-[var(--aw-text-2)]"}`}>
                     {label} {data?.kinds[key] ?? 0}
                   </span>
                 ))}
@@ -548,10 +548,10 @@ export default function WarRoomPage() {
 
           {/* Doors + Landing */}
           <div className="grid gap-4 xl:grid-cols-2">
-            <Card title="Door board — utm_content rollup" icon={<DoorOpen className="h-4 w-4 text-amber-500" />}>
+            <Card title="Door board — utm_content rollup" icon={<DoorOpen className="h-4 w-4 text-[var(--aw-cyan)]" />}>
               <BarList rows={(data?.doors ?? []).map((d) => ({ label: d.content, n: d.n }))} empty="No door tags yet — tag pinned comments with utm_content=door-N to light this up." />
             </Card>
-            <Card title="Top landing paths" icon={<Link2 className="h-4 w-4 text-amber-500" />}>
+            <Card title="Top landing paths" icon={<Link2 className="h-4 w-4 text-[var(--aw-cyan)]" />}>
               <BarList rows={(data?.landing ?? []).map((l) => ({ label: l.path, n: l.n }))} empty="No landing paths recorded." />
             </Card>
           </div>
@@ -559,22 +559,22 @@ export default function WarRoomPage() {
           {/* Recent leads */}
           <Card
             title="Recent leads"
-            icon={<CalendarCheck className="h-4 w-4 text-amber-500" />}
-            action={<Link href="/admin/consultations" className="text-xs text-amber-400 hover:text-amber-300">Open pipeline →</Link>}
+            icon={<CalendarCheck className="h-4 w-4 text-[var(--aw-cyan)]" />}
+            action={<Link href="/admin/consultations" className="text-xs text-[var(--aw-cyan)] hover:text-amber-300">Open pipeline →</Link>}
           >
             {(data?.recent ?? []).length === 0 ? (
-              <p className="py-2 text-xs text-zinc-600">No leads in this window.</p>
+              <p className="py-2 text-xs text-[var(--aw-text-3)]">No leads in this window.</p>
             ) : (
               <ul className="divide-y divide-zinc-800/50">
                 {(data?.recent ?? []).map((r) => (
                   <li key={r.id} className="flex flex-wrap items-center gap-2 py-2.5 text-sm">
                     <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${STATUS_COLOR[r.status] ?? "bg-zinc-500"}`} />
-                    <span className="font-medium text-zinc-200">{r.name}</span>
-                    <span className="text-xs text-zinc-600">{new Date(r.createdAt).toLocaleString()}</span>
+                    <span className="font-medium text-[var(--aw-text)]">{r.name}</span>
+                    <span className="text-xs text-[var(--aw-text-3)]">{new Date(r.createdAt).toLocaleString()}</span>
                     <span className="ml-auto flex items-center gap-1.5 text-[0.65rem]">
-                      {r.country && <span className="rounded border border-zinc-700 px-1.5 py-0.5 text-zinc-400">{r.country}</span>}
-                      {r.utmCampaign && <span className="rounded border border-amber-500/30 px-1.5 py-0.5 font-mono text-amber-300/80">{r.utmCampaign}</span>}
-                      {r.utmSource && <span className="rounded border border-zinc-800 px-1.5 py-0.5 text-zinc-500">{r.utmSource}</span>}
+                      {r.country && <span className="rounded border border-zinc-700 px-1.5 py-0.5 text-[var(--aw-text-2)]">{r.country}</span>}
+                      {r.utmCampaign && <span className="rounded border border-[var(--aw-border-2)] px-1.5 py-0.5 font-mono text-amber-300/80">{r.utmCampaign}</span>}
+                      {r.utmSource && <span className="rounded border border-[var(--aw-border-2)] px-1.5 py-0.5 text-[var(--aw-text-2)]">{r.utmSource}</span>}
                     </span>
                   </li>
                 ))}
@@ -585,31 +585,31 @@ export default function WarRoomPage() {
           {/* Email course — capture layer health (all-time, not range-filtered) */}
           <Card
             title="Email course — The 10 Doors"
-            icon={<Users className="h-4 w-4 text-amber-500" />}
-            action={<Link href="/admin/subscribers" className="text-xs text-amber-400 hover:text-amber-300">Open list →</Link>}
+            icon={<Users className="h-4 w-4 text-[var(--aw-cyan)]" />}
+            action={<Link href="/admin/subscribers" className="text-xs text-[var(--aw-cyan)] hover:text-amber-300">Open list →</Link>}
           >
             {data?.emailCourse ? (
               <div>
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
-                    <p className="text-[0.65rem] uppercase tracking-wider text-zinc-500">Subscribers</p>
-                    <p className="mt-1 text-xl font-semibold text-zinc-100">{data.emailCourse.total}</p>
+                  <div className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/40 p-3">
+                    <p className="text-[0.65rem] uppercase tracking-wider text-[var(--aw-text-2)]">Subscribers</p>
+                    <p className="mt-1 text-xl font-semibold text-[var(--aw-text)]">{data.emailCourse.total}</p>
                   </div>
-                  <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
-                    <p className="text-[0.65rem] uppercase tracking-wider text-zinc-500">Active</p>
+                  <div className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/40 p-3">
+                    <p className="text-[0.65rem] uppercase tracking-wider text-[var(--aw-text-2)]">Active</p>
                     <p className="mt-1 text-xl font-semibold text-emerald-400">{data.emailCourse.active}</p>
                   </div>
-                  <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
-                    <p className="text-[0.65rem] uppercase tracking-wider text-zinc-500">Last 7d</p>
-                    <p className="mt-1 text-xl font-semibold text-amber-400">+{data.emailCourse.last7}</p>
+                  <div className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/40 p-3">
+                    <p className="text-[0.65rem] uppercase tracking-wider text-[var(--aw-text-2)]">Last 7d</p>
+                    <p className="mt-1 text-xl font-semibold text-[var(--aw-cyan)]">+{data.emailCourse.last7}</p>
                   </div>
                 </div>
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {data.emailCourse.topSources.length === 0 ? (
-                    <p className="text-xs text-zinc-600">No signups yet — /email-course is live and linked from consultations.</p>
+                    <p className="text-xs text-[var(--aw-text-3)]">No signups yet — /email-course is live and linked from consultations.</p>
                   ) : (
                     data.emailCourse.topSources.map((s) => (
-                      <span key={s.key} className="rounded border border-zinc-800 px-1.5 py-0.5 text-[0.65rem] text-zinc-400">
+                      <span key={s.key} className="rounded border border-[var(--aw-border-2)] px-1.5 py-0.5 text-[0.65rem] text-[var(--aw-text-2)]">
                         {s.key} · {s.count}
                       </span>
                     ))
@@ -617,21 +617,21 @@ export default function WarRoomPage() {
                 </div>
               </div>
             ) : (
-              <p className="py-2 text-xs text-zinc-600">Capture layer unavailable.</p>
+              <p className="py-2 text-xs text-[var(--aw-text-3)]">Capture layer unavailable.</p>
             )}
           </Card>
 
           {/* List funnel — weekly cohort truth (Vol. 4 #3) */}
           <Card
             title="List funnel — what the list converts"
-            icon={<TrendingUp className="h-4 w-4 text-amber-500" />}
-            action={<Link href="/admin/broadcast" className="text-xs text-amber-400 hover:text-amber-300">Compose →</Link>}
+            icon={<TrendingUp className="h-4 w-4 text-[var(--aw-cyan)]" />}
+            action={<Link href="/admin/broadcast" className="text-xs text-[var(--aw-cyan)] hover:text-amber-300">Compose →</Link>}
           >
             {data?.listFunnel && data.listFunnel.cohorts.some((c) => c.subscribed > 0) ? (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
+                    <tr className="text-[0.65rem] uppercase tracking-wider text-[var(--aw-text-2)]">
                       <th scope="col" className="pb-2 font-medium">Cohort</th>
                       <th scope="col" className="pb-2 text-right font-medium">Joined</th>
                       <th scope="col" className="pb-2 text-right font-medium">Door-3 open</th>
@@ -643,11 +643,11 @@ export default function WarRoomPage() {
                   <tbody className="divide-y divide-zinc-800/50">
                     {[...data.listFunnel.cohorts].reverse().map((c, i, arr) => (
                       <tr key={c.weekStart}>
-                        <td className="py-2 font-medium text-zinc-200">
+                        <td className="py-2 font-medium text-[var(--aw-text)]">
                           {c.weekLabel}
-                          {i === arr.length - 1 && <span className="ml-1.5 text-[0.6rem] text-zinc-600">in flight</span>}
+                          {i === arr.length - 1 && <span className="ml-1.5 text-[0.6rem] text-[var(--aw-text-3)]">in flight</span>}
                         </td>
-                        <td className="py-2 text-right text-zinc-300">{c.subscribed}</td>
+                        <td className="py-2 text-right text-[var(--aw-text-2)]">{c.subscribed}</td>
                         <FunnelCell n={c.d3Opened} whole={c.subscribed} />
                         <FunnelCell n={c.clicked} whole={c.subscribed} />
                         <FunnelCell n={c.consulted} whole={c.subscribed} />
@@ -656,28 +656,28 @@ export default function WarRoomPage() {
                     ))}
                   </tbody>
                 </table>
-                <p className="mt-2 text-[0.65rem] leading-relaxed text-zinc-600">
+                <p className="mt-2 text-[0.65rem] leading-relaxed text-[var(--aw-text-3)]">
                   Opens/clicks are provider-webhook truth counted independently — a reader who blocks
                   pixels but taps links shows in click stages, not open stages. Intake = Consultation
                   row created after joining. Cohort = week the seeker joined the list (Mon UTC).
                 </p>
               </div>
             ) : (
-              <p className="py-2 text-xs text-zinc-600">No subscribers in the last six weeks — the funnel starts when the list does.</p>
+              <p className="py-2 text-xs text-[var(--aw-text-3)]">No subscribers in the last six weeks — the funnel starts when the list does.</p>
             )}
           </Card>
 
           {/* AI layer — per-route observability (Vol. 4 #17) */}
           <Card
             title="AI layer — which route fails or drifts"
-            icon={<Radio className="h-4 w-4 text-amber-500" />}
-            action={<Link href="/ask" className="text-xs text-amber-400 hover:text-amber-300" target="_blank" rel="noopener noreferrer">/ask →</Link>}
+            icon={<Radio className="h-4 w-4 text-[var(--aw-cyan)]" />}
+            action={<Link href="/ask" className="text-xs text-[var(--aw-cyan)] hover:text-amber-300" target="_blank" rel="noopener noreferrer">/ask →</Link>}
           >
             {data?.aiRoutes && data.aiRoutes.routes.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
+                    <tr className="text-[0.65rem] uppercase tracking-wider text-[var(--aw-text-2)]">
                       <th scope="col" className="pb-2 font-medium">Route</th>
                       <th scope="col" className="pb-2 text-right font-medium">Calls</th>
                       <th scope="col" className="pb-2 text-right font-medium">Ok</th>
@@ -698,39 +698,39 @@ export default function WarRoomPage() {
                       // rose = 2×+ over (the budget is dead).
                       return (
                         <tr key={r.event}>
-                          <td className="py-2 font-medium text-zinc-200">
+                          <td className="py-2 font-medium text-[var(--aw-text)]">
                             <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ backgroundColor: trouble ? "#f43f5e" : drift ? "#f59e0b" : "#10b981" }} />
                             {r.event.replace(/^ai_/, "").replace(/_/g, "-")}
                             {r.refs && Object.keys(r.refs).length > 0 && (
                               // Vol. 5 #11 — the ask funnel: which surface sent the question
-                              <span className="mt-0.5 block text-[0.65rem] font-normal text-zinc-500">
+                              <span className="mt-0.5 block text-[0.65rem] font-normal text-[var(--aw-text-2)]">
                                 via {Object.entries(r.refs).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join(" · ")}
                               </span>
                             )}
                           </td>
-                          <td className="py-2 text-right text-zinc-300">{r.calls}</td>
-                          <td className="py-2 text-right text-zinc-300">{r.ok}</td>
-                          <td className="py-2 text-right text-zinc-400">{r.limited}</td>
-                          <td className={`py-2 text-right ${r.error > 0 ? "text-rose-400" : "text-zinc-400"}`}>{r.error}</td>
-                          <td className="py-2 text-right text-zinc-400">{r.p50 ? `${r.p50}ms` : "—"}</td>
-                          <td className={`py-2 text-right ${drift ? "text-amber-400" : "text-zinc-400"}`}>{r.p95 ? `${r.p95}ms` : "—"}</td>
+                          <td className="py-2 text-right text-[var(--aw-text-2)]">{r.calls}</td>
+                          <td className="py-2 text-right text-[var(--aw-text-2)]">{r.ok}</td>
+                          <td className="py-2 text-right text-[var(--aw-text-2)]">{r.limited}</td>
+                          <td className={`py-2 text-right ${r.error > 0 ? "text-rose-400" : "text-[var(--aw-text-2)]"}`}>{r.error}</td>
+                          <td className="py-2 text-right text-[var(--aw-text-2)]">{r.p50 ? `${r.p50}ms` : "—"}</td>
+                          <td className={`py-2 text-right ${drift ? "text-[var(--aw-cyan)]" : "text-[var(--aw-text-2)]"}`}>{r.p95 ? `${r.p95}ms` : "—"}</td>
                           <td className="py-2 text-right">
                             {r.p95 > 0 ? (() => {
                               const j = judgeLatencyBudget(r.event, r.p95);
                               return (
-                                <span className={j.verdict === "breach" ? "text-rose-400" : j.verdict === "warn" ? "text-amber-400" : "text-zinc-500"}>
+                                <span className={j.verdict === "breach" ? "text-rose-400" : j.verdict === "warn" ? "text-[var(--aw-cyan)]" : "text-[var(--aw-text-2)]"}>
                                   {(r.p95 / 1000).toFixed(1)}s/{(j.budgetMs / 1000).toFixed(0)}s
                                 </span>
                               );
-                            })() : <span className="text-zinc-600">—</span>}
+                            })() : <span className="text-[var(--aw-text-3)]">—</span>}
                           </td>
-                          <td className="py-2 text-right text-zinc-500">{r.lastAt ? r.lastAt.slice(0, 16).replace("T", " ") : "—"}</td>
+                          <td className="py-2 text-right text-[var(--aw-text-2)]">{r.lastAt ? r.lastAt.slice(0, 16).replace("T", " ") : "—"}</td>
                         </tr>
                       );
                     })}
                   </tbody>
                 </table>
-                <p className="mt-2 text-[0.65rem] leading-relaxed text-zinc-600">
+                <p className="mt-2 text-[0.65rem] leading-relaxed text-[var(--aw-text-3)]">
                   Server-fired first-party events (Vol. 4 #17): every /api/ai/* call reports
                   latency_ms + outcome through the #18 dictionary gate. Dot: emerald = healthy,
                   amber = p95 ≥ 4× p50 (latency drift), rose = errors or unconfigured provider.
@@ -741,7 +741,7 @@ export default function WarRoomPage() {
                 </p>
               </div>
             ) : (
-              <p className="py-2 text-xs text-zinc-600">
+              <p className="py-2 text-xs text-[var(--aw-text-3)]">
                 {data?.aiRoutes && !data.aiRoutes.available
                   ? "Event store unavailable — AI telemetry is fail-open and never blocks routes."
                   : "No AI traffic in this window — the layer is quiet, not broken."}
@@ -757,43 +757,43 @@ export default function WarRoomPage() {
             {data?.indexing?.available ? (
               <div>
                 <div className="flex items-baseline gap-6 mb-3">
-                  <p className="text-sm text-zinc-400">
+                  <p className="text-sm text-[var(--aw-text-2)]">
                     Pending:{" "}
-                    <span className={`font-medium ${data.indexing.counts.pending > 0 ? "text-amber-400" : "text-emerald-400"}`}>
+                    <span className={`font-medium ${data.indexing.counts.pending > 0 ? "text-[var(--aw-cyan)]" : "text-emerald-400"}`}>
                       {data.indexing.counts.pending}
                     </span>
                   </p>
-                  <p className="text-sm text-zinc-400">
-                    Submitted: <span className="font-medium text-zinc-200">{data.indexing.counts.submitted}</span>
+                  <p className="text-sm text-[var(--aw-text-2)]">
+                    Submitted: <span className="font-medium text-[var(--aw-text)]">{data.indexing.counts.submitted}</span>
                   </p>
-                  <p className="text-sm text-zinc-400">
-                    Failed: <span className={`font-medium ${data.indexing.counts.failed > 0 ? "text-rose-400" : "text-zinc-200"}`}>{data.indexing.counts.failed}</span>
+                  <p className="text-sm text-[var(--aw-text-2)]">
+                    Failed: <span className={`font-medium ${data.indexing.counts.failed > 0 ? "text-rose-400" : "text-[var(--aw-text)]"}`}>{data.indexing.counts.failed}</span>
                   </p>
                 </div>
                 {data.indexing.oauthPending && (
-                  <p className="mb-3 text-xs text-amber-400">
+                  <p className="mb-3 text-xs text-[var(--aw-cyan)]">
                     OAuth pending — the queue keeps itself warm nightly; set GSC_ACCESS_TOKEN in Vercel env and the next cron run submits for real.
                   </p>
                 )}
                 {data.indexing.pendingSample.length > 0 && (
                   <ul className="mb-3 space-y-1">
                     {data.indexing.pendingSample.map((p) => (
-                      <li key={p.url} className="text-xs text-zinc-400 truncate">
-                        <span className="text-amber-400">●</span>{" "}
-                        <a href={p.url} target="_blank" rel="noopener noreferrer" className="hover:text-zinc-200">{p.url.replace("https://www.astrokalki.com", "")}</a>{" "}
-                        <span className="text-zinc-600">({p.reason})</span>
+                      <li key={p.url} className="text-xs text-[var(--aw-text-2)] truncate">
+                        <span className="text-[var(--aw-cyan)]">●</span>{" "}
+                        <a href={p.url} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--aw-text)]">{p.url.replace("https://www.astrokalki.com", "")}</a>{" "}
+                        <span className="text-[var(--aw-text-3)]">({p.reason})</span>
                       </li>
                     ))}
                   </ul>
                 )}
-                <p className="text-[0.65rem] leading-relaxed text-zinc-600">
+                <p className="text-[0.65rem] leading-relaxed text-[var(--aw-text-3)]">
                   Nightly sitemap diff (Vol. 5 #12): never-seen URLs queue as PENDING/new, a SITE_LASTMOD
                   epoch bump re-queues known URLs as changed, URLs that left the map go REMOVED. Runner
                   submits via the Indexing API (100/day cap) once OAuth lands — until then it no-ops honestly.
                 </p>
               </div>
             ) : (
-              <p className="py-2 text-xs text-zinc-600">
+              <p className="py-2 text-xs text-[var(--aw-text-3)]">
                 Unknown — the queue table was unreadable (first cron run creates it; check back after 02:40 IST).
               </p>
             )}
@@ -802,13 +802,13 @@ export default function WarRoomPage() {
           {/* AI chain health — per-model probe verdict (Vol. 5 #1) */}
           <Card
             title="AI chain — which model rots"
-            icon={<Radio className="h-4 w-4 text-amber-500" />}
+            icon={<Radio className="h-4 w-4 text-[var(--aw-cyan)]" />}
           >
             {data?.aiChain ? (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
+                    <tr className="text-[0.65rem] uppercase tracking-wider text-[var(--aw-text-2)]">
                       <th scope="col" className="pb-2 font-medium">Model</th>
                       <th scope="col" className="pb-2 text-right font-medium">Verdict</th>
                       <th scope="col" className="pb-2 text-right font-medium">Latency</th>
@@ -818,25 +818,25 @@ export default function WarRoomPage() {
                   <tbody className="divide-y divide-zinc-800/50">
                     {data.aiChain.models.map((m) => (
                       <tr key={m.model}>
-                        <td className="py-2 font-medium text-zinc-200">
+                        <td className="py-2 font-medium text-[var(--aw-text)]">
                           <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ backgroundColor: m.ok ? "#10b981" : "#f43f5e" }} />
                           {m.model}
                         </td>
-                        <td className="py-2 text-right text-zinc-300">{m.reason}</td>
-                        <td className="py-2 text-right text-zinc-400">{m.latencyMs ? `${m.latencyMs}ms` : "—"}</td>
-                        <td className="py-2 text-zinc-500">{m.detail ?? "—"}</td>
+                        <td className="py-2 text-right text-[var(--aw-text-2)]">{m.reason}</td>
+                        <td className="py-2 text-right text-[var(--aw-text-2)]">{m.latencyMs ? `${m.latencyMs}ms` : "—"}</td>
+                        <td className="py-2 text-[var(--aw-text-2)]">{m.detail ?? "—"}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-                <p className="mt-2 text-[0.65rem] leading-relaxed text-zinc-600">
+                <p className="mt-2 text-[0.65rem] leading-relaxed text-[var(--aw-text-3)]">
                   Last probe {data.aiChain.checkedAt.slice(0, 16).replace("T", " ")}Z · {data.aiChain.summary.alive}/{data.aiChain.summary.total} models answer the real-size /ask contract
                   {data.aiChain.summary.chainOk ? "" : " — CHAIN DOWN"}. Free tiers delist without notice (the
                   2026-09-08 incident): emerald = contract-honoring, rose = dead. Cron: 02:15 UTC daily.
                 </p>
               </div>
             ) : (
-              <p className="py-2 text-xs text-zinc-600">
+              <p className="py-2 text-xs text-[var(--aw-text-3)]">
                 Never probed — the chain-health cron (02:15 UTC) stores its first verdict here, or run it now.
               </p>
             )}
@@ -845,13 +845,13 @@ export default function WarRoomPage() {
           {/* Credential audit — per-provider verify verdict (Vol. 5 #2) */}
           <Card
             title="Credentials — which vault entry rots"
-            icon={<Radio className="h-4 w-4 text-amber-500" />}
+            icon={<Radio className="h-4 w-4 text-[var(--aw-cyan)]" />}
           >
             {data?.credAudit ? (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
+                    <tr className="text-[0.65rem] uppercase tracking-wider text-[var(--aw-text-2)]">
                       <th scope="col" className="pb-2 font-medium">Provider</th>
                       <th scope="col" className="pb-2 text-right font-medium">Verdict</th>
                       <th scope="col" className="pb-2 text-right font-medium">Latency</th>
@@ -861,24 +861,24 @@ export default function WarRoomPage() {
                   <tbody className="divide-y divide-zinc-800/50">
                     {data.credAudit.credentials.map((c) => (
                       <tr key={c.provider}>
-                        <td className="py-2 font-medium text-zinc-200">
+                        <td className="py-2 font-medium text-[var(--aw-text)]">
                           <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ backgroundColor: c.ok ? "#10b981" : "#f43f5e" }} />
                           {c.provider}
                         </td>
-                        <td className="py-2 text-right text-zinc-300">{c.reason}</td>
-                        <td className="py-2 text-right text-zinc-400">{c.latencyMs ? `${c.latencyMs}ms` : "—"}</td>
-                        <td className="py-2 text-zinc-500">{c.detail ?? "—"}</td>
+                        <td className="py-2 text-right text-[var(--aw-text-2)]">{c.reason}</td>
+                        <td className="py-2 text-right text-[var(--aw-text-2)]">{c.latencyMs ? `${c.latencyMs}ms` : "—"}</td>
+                        <td className="py-2 text-[var(--aw-text-2)]">{c.detail ?? "—"}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-                <p className="mt-2 text-[0.65rem] leading-relaxed text-zinc-600">
+                <p className="mt-2 text-[0.65rem] leading-relaxed text-[var(--aw-text-3)]">
                   Last audit {data.credAudit.checkedAt.slice(0, 16).replace("T", " ")}Z · {data.credAudit.summary.ok}/{data.credAudit.summary.total} provider credentials verify.
                   The 2026-09-08 lesson: a vault credential is a hope until pinged — server env only, daily at 02:10 UTC.
                 </p>
               </div>
             ) : (
-              <p className="py-2 text-xs text-zinc-600">
+              <p className="py-2 text-xs text-[var(--aw-text-3)]">
                 Never audited — the cred-audit cron (02:10 UTC) stores its first verdict here.
               </p>
             )}
@@ -887,13 +887,13 @@ export default function WarRoomPage() {
           {/* Drill ledger — the self-running rehearsals (Vol. 6 #3) */}
           <Card
             title="Drills — which rehearsal went stale"
-            icon={<Radio className="h-4 w-4 text-amber-500" />}
+            icon={<Radio className="h-4 w-4 text-[var(--aw-cyan)]" />}
           >
             {data?.drills && data.drills.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
+                    <tr className="text-[0.65rem] uppercase tracking-wider text-[var(--aw-text-2)]">
                       <th scope="col" className="pb-2 font-medium">Drill</th>
                       <th scope="col" className="pb-2 text-right font-medium">Verdict</th>
                       <th scope="col" className="pb-2 text-right font-medium">Age</th>
@@ -903,27 +903,27 @@ export default function WarRoomPage() {
                   <tbody className="divide-y divide-zinc-800/50">
                     {data.drills.map((d) => (
                       <tr key={d.name}>
-                        <td className="py-2 font-medium text-zinc-200">
+                        <td className="py-2 font-medium text-[var(--aw-text)]">
                           <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ backgroundColor: d.verdict === "fail" || d.stale ? "#f43f5e" : "#10b981" }} />
                           {d.name}
                         </td>
-                        <td className="py-2 text-right text-zinc-300">
+                        <td className="py-2 text-right text-[var(--aw-text-2)]">
                           {d.verdict}{d.stale ? " · STALE >8d" : ""}
                         </td>
-                        <td className="py-2 text-right text-zinc-400">{d.ageHours}h</td>
-                        <td className="py-2 text-zinc-500">{d.source}{d.details ? ` · ${d.details}` : ""}</td>
+                        <td className="py-2 text-right text-[var(--aw-text-2)]">{d.ageHours}h</td>
+                        <td className="py-2 text-[var(--aw-text-2)]">{d.source}{d.details ? ` · ${d.details}` : ""}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-                <p className="mt-2 text-[0.65rem] leading-relaxed text-zinc-600">
+                <p className="mt-2 text-[0.65rem] leading-relaxed text-[var(--aw-text-3)]">
                   The evaporation lesson as a panel: a drill that never reports reads as FAILED
                   after 8 days (the digest carries the same alarm). The weekly drills workflow
                   reports here; missing drills mean the workflow itself went silent.
                 </p>
               </div>
             ) : (
-              <p className="py-2 text-xs text-zinc-600">
+              <p className="py-2 text-xs text-[var(--aw-text-3)]">
                 No drill verdicts yet — the weekly drills workflow (or a local run reported to
                 /api/cron/drill-status) stores the first row here.
               </p>
@@ -933,13 +933,13 @@ export default function WarRoomPage() {
           {/* Cron outcome ledger — last run per registered cron (Vol. 5 #4) */}
           <Card
             title="Crons — which schedule went silent"
-            icon={<Radio className="h-4 w-4 text-amber-500" />}
+            icon={<Radio className="h-4 w-4 text-[var(--aw-cyan)]" />}
           >
             {data?.cronRuns && data.cronRuns.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="text-[0.65rem] uppercase tracking-wider text-zinc-500">
+                    <tr className="text-[0.65rem] uppercase tracking-wider text-[var(--aw-text-2)]">
                       <th scope="col" className="pb-2 font-medium">Cron</th>
                       <th scope="col" className="pb-2 font-medium">Schedule</th>
                       <th scope="col" className="pb-2 text-right font-medium">Last run</th>
@@ -949,15 +949,15 @@ export default function WarRoomPage() {
                   <tbody className="divide-y divide-zinc-800/50">
                     {data.cronRuns.map((c) => (
                       <tr key={c.name}>
-                        <td className="py-2 font-medium text-zinc-200">
+                        <td className="py-2 font-medium text-[var(--aw-text)]">
                           <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ backgroundColor: c.alarm ? "#f43f5e" : c.lastOutcome === "ok" ? "#10b981" : "#f59e0b" }} />
                           {c.name}
                         </td>
-                        <td className="py-2 text-zinc-500">{c.schedule}</td>
-                        <td className="py-2 text-right text-zinc-400">
+                        <td className="py-2 text-[var(--aw-text-2)]">{c.schedule}</td>
+                        <td className="py-2 text-right text-[var(--aw-text-2)]">
                           {c.lastRunAt ? `${c.ageHours ?? "?"}h ago` : "never"}
                         </td>
-                        <td className={`py-2 text-right ${c.lastOutcome === "error" ? "text-rose-400" : "text-zinc-300"}`}>
+                        <td className={`py-2 text-right ${c.lastOutcome === "error" ? "text-rose-400" : "text-[var(--aw-text-2)]"}`}>
                           {c.lastOutcome ?? "—"}
                           {c.lastError ? ` · ${c.lastError.slice(0, 60)}` : ""}
                         </td>
@@ -965,14 +965,14 @@ export default function WarRoomPage() {
                     ))}
                   </tbody>
                 </table>
-                <p className="mt-2 text-[0.65rem] leading-relaxed text-zinc-600">
+                <p className="mt-2 text-[0.65rem] leading-relaxed text-[var(--aw-text-3)]">
                   One CronRun row per run (Vol. 5 #4) — duration, items, outcome. Rose = silent
                   &gt; 26h (a daily cron with 26h of silence is dead) or errored on the latest run;
                   amber = ran but not clean. The digest carries the same alarm.
                 </p>
               </div>
             ) : (
-              <p className="py-2 text-xs text-zinc-600">
+              <p className="py-2 text-xs text-[var(--aw-text-3)]">
                 No runs recorded yet — the ledger fills as each cron fires.
               </p>
             )}
@@ -986,36 +986,36 @@ export default function WarRoomPage() {
             {data?.bakePending?.available ? (
               <div>
                 <div className="flex items-baseline gap-6 mb-3">
-                  <p className="text-sm text-zinc-400">
+                  <p className="text-sm text-[var(--aw-text-2)]">
                     Published entries:{" "}
-                    <span className="font-medium text-zinc-200">{data.bakePending.publishedEntries}</span>
+                    <span className="font-medium text-[var(--aw-text)]">{data.bakePending.publishedEntries}</span>
                   </p>
-                  <p className="text-sm text-zinc-400">
+                  <p className="text-sm text-[var(--aw-text-2)]">
                     Baked corpus slugs:{" "}
-                    <span className="font-medium text-zinc-200">{data.bakePending.corpusSlugs}</span>
+                    <span className="font-medium text-[var(--aw-text)]">{data.bakePending.corpusSlugs}</span>
                   </p>
-                  <p className={`text-sm ${data.bakePending.pendingCount > 0 ? "text-amber-400" : "text-emerald-400"}`}>
+                  <p className={`text-sm ${data.bakePending.pendingCount > 0 ? "text-[var(--aw-cyan)]" : "text-emerald-400"}`}>
                     Pending bake: {data.bakePending.pendingCount}
                   </p>
                 </div>
                 {data.bakePending.pendingCount > 0 && (
                   <ul className="mb-3 space-y-1">
                     {data.bakePending.pending.map((p) => (
-                      <li key={p.slug} className="text-xs text-zinc-400">
-                        <span className="text-amber-400">●</span> {p.slug}{" "}
-                        <span className="text-zinc-600">({p.type})</span>
+                      <li key={p.slug} className="text-xs text-[var(--aw-text-2)]">
+                        <span className="text-[var(--aw-cyan)]">●</span> {p.slug}{" "}
+                        <span className="text-[var(--aw-text-3)]">({p.type})</span>
                       </li>
                     ))}
                   </ul>
                 )}
-                <p className="text-[0.65rem] leading-relaxed text-zinc-600">
+                <p className="text-[0.65rem] leading-relaxed text-[var(--aw-text-3)]">
                   Published ContentEntry slugs missing from the baked FolioChunk corpus —
                   retrieval and /ask cannot see them until the bake runs. One command:
-                  <code className="ml-1 text-zinc-500">bash scripts/bake-corpus.sh</code>
+                  <code className="ml-1 text-[var(--aw-text-2)]">bash scripts/bake-corpus.sh</code>
                 </p>
               </div>
             ) : (
-              <p className="py-2 text-xs text-zinc-600">
+              <p className="py-2 text-xs text-[var(--aw-text-3)]">
                 {data?.bakePending && !data.bakePending.available
                   ? `Unknown — ${data.bakePending.reason}`
                   : "Unknown — either world (studio DB or baked corpus) was unreadable."}
@@ -1024,7 +1024,7 @@ export default function WarRoomPage() {
           </Card>
 
           {/* Link armory */}
-          <Card title="Campaign URL Armory" icon={<Link2 className="h-4 w-4 text-amber-500" />}>
+          <Card title="Campaign URL Armory" icon={<Link2 className="h-4 w-4 text-[var(--aw-cyan)]" />}>
             <LinkBuilder />
           </Card>
         </>
