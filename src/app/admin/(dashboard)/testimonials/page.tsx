@@ -41,6 +41,46 @@ export default function TestimonialsPage() {
     source: "consultation",
     consent: false,
   });
+  // Vol. 8 #17 — WhatsApp paste-and-parse
+  const [waPaste, setWaPaste] = useState("");
+  const [showWaPaste, setShowWaPaste] = useState(false);
+
+  const parseWhatsAppPaste = () => {
+    const text = waPaste.trim();
+    if (!text) return;
+    // WhatsApp messages typically start with the sender name followed by a message
+    // Try to extract: first line or first few words = name, rest = quote
+    const lines = text.split('\n').filter(l => l.trim());
+    let name = '';
+    let quote = text;
+
+    if (lines.length > 1) {
+      // First line might be the name (WhatsApp format: "Name: message")
+      const firstLine = lines[0].trim();
+      if (firstLine.includes(':')) {
+        const colonIdx = firstLine.indexOf(':');
+        name = firstLine.substring(0, colonIdx).trim();
+        quote = firstLine.substring(colonIdx + 1).trim();
+        if (lines.length > 1) quote += '\n' + lines.slice(1).join('\n');
+      } else if (firstLine.length < 50 && !firstLine.includes('.')) {
+        // Short first line without punctuation = likely a name
+        name = firstLine;
+        quote = lines.slice(1).join('\n');
+      }
+    }
+
+    // Clean up the name (take first part if "First Last" → "First L.")
+    if (name) {
+      const parts = name.split(/\s+/);
+      if (parts.length > 1) {
+        name = parts[0] + ' ' + parts[parts.length - 1][0] + '.';
+      }
+    }
+
+    setForm(prev => ({ ...prev, quote: quote.trim(), name }));
+    setWaPaste('');
+    setShowWaPaste(false);
+  };
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -135,7 +175,27 @@ export default function TestimonialsPage() {
 
       {/* New entry */}
       <div className="aw-card">
-        <p className="text-xs font-semibold uppercase tracking-wider text-[var(--aw-text-2)]">New testimonial (enter with consent)</p>
+        <div className="flex items-center justify-between">
+          <p className="text-xs font-semibold uppercase tracking-wider text-[var(--aw-text-2)]">New testimonial (enter with consent)</p>
+          {/* Vol. 8 #17 — WhatsApp paste-and-parse */}
+          <button onClick={() => setShowWaPaste(!showWaPaste)} className="aw-btn aw-btn-ghost text-[10px]">
+            {showWaPaste ? '✕ Close' : '📋 Paste from WhatsApp'}
+          </button>
+        </div>
+        {showWaPaste && (
+          <div className="mt-3 aw-card p-3 bg-[rgba(37,211,102,0.04)]">
+            <textarea
+              value={waPaste}
+              onChange={(e) => setWaPaste(e.target.value)}
+              placeholder="Paste the WhatsApp message here — the name and quote will be auto-extracted…"
+              rows={4}
+              className="aw-input mt-1"
+            />
+            <button onClick={parseWhatsAppPaste} disabled={!waPaste.trim()} className="aw-btn aw-btn-primary mt-2 text-xs disabled:opacity-40">
+              Parse & Fill Form →
+            </button>
+          </div>
+        )}
         <textarea
           value={form.quote}
           onChange={(e) => setForm({ ...form, quote: e.target.value })}

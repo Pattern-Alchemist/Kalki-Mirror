@@ -50,6 +50,9 @@ export function ContentClient({
   const [showCreate, setShowCreate] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState({ type: "practice", slug: "", title: "", excerpt: "", body: "", minTier: "prithvi", caution: "OPEN", publishAt: "" });
+  // Vol. 8 #16 — autosave indicator
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
   // Vol. 4 #8 — the stamp this row had when the modal opened; the schedule
   // input only reaches the server when the editor actually CHANGED it
   // (re-sending an unchanged stamp would re-arm the flip pass).
@@ -171,6 +174,7 @@ export function ContentClient({
   async function handleSave() {
     if (!form.slug || !form.title) return;
     startTransition(async () => {
+      setSaveStatus('saving');
       // Only send a schedule the editor actually set/changed.
       const scheduleChanged = form.publishAt !== originalPublishAt;
       const publishAt = scheduleChanged && form.publishAt ? new Date(form.publishAt).toISOString() : undefined;
@@ -183,6 +187,8 @@ export function ContentClient({
           caution: form.caution,
           publishAt,
         });
+        setSaveStatus('saved');
+        setLastSaved(new Date());
       } else {
         await createContentEntry({
           type: form.type,
@@ -366,7 +372,16 @@ export function ContentClient({
       {showCreate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => { setShowCreate(false); setEditId(null); }}>
           <div className="w-full max-w-4xl rounded-xl border border-zinc-700 bg-[var(--aw-glass-1)] p-6 space-y-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-sm font-medium text-[var(--aw-text)]">{editId ? "Edit Entry" : "New Content Entry"}</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-medium text-[var(--aw-text)]">{editId ? "Edit Entry" : "New Content Entry"}</h3>
+              {/* Vol. 8 #16 — autosave indicator */}
+              {editId && saveStatus !== 'idle' && (
+                <span className="aw-mono text-[10px] flex items-center gap-1.5">
+                  {saveStatus === 'saving' && <span className="text-[var(--aw-warning)] animate-pulse">● saving...</span>}
+                  {saveStatus === 'saved' && lastSaved && <span className="text-[var(--aw-success)]">✓ saved {lastSaved.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' })} IST</span>}
+                </span>
+              )}
+            </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1">
                 <label className="block text-xs font-medium text-[var(--aw-text-2)]">Type</label>

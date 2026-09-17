@@ -171,9 +171,39 @@ export default function MembershipsPage() {
   }, [load]);
 
   const pending = rows.filter((m) => m.status === "PENDING");
+  const active = rows.filter((m) => m.status === "ACTIVE");
+
+  // Vol. 8 #19 — Revenue HUD
+  const PLAN_PRICES: Record<string, number> = { prithvi: 0, jal: 499, agni: 1499, akash: 4999 };
+  const mrr = active.reduce((sum, m) => sum + (PLAN_PRICES[m.tier?.toLowerCase()] ?? 0), 0);
+  const arr = mrr * 12;
+  const last30Collected = active.filter(m => {
+    const d = new Date(m.grantedAt ?? m.createdAt);
+    return Date.now() - d.getTime() < 30 * 86400000;
+  }).reduce((sum, m) => sum + (PLAN_PRICES[m.tier?.toLowerCase()] ?? 0), 0);
 
   return (
     <div className="space-y-6">
+      {/* Vol. 8 #19 — Revenue HUD */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="aw-card p-4">
+          <p className="aw-metric-label">MRR</p>
+          <p className="aw-metric aw-metric-value">₹{mrr.toLocaleString('en-IN')}</p>
+        </div>
+        <div className="aw-card p-4">
+          <p className="aw-metric-label">ARR (projected)</p>
+          <p className="aw-metric aw-metric-value">₹{arr.toLocaleString('en-IN')}</p>
+        </div>
+        <div className="aw-card p-4">
+          <p className="aw-metric-label">Active Members</p>
+          <p className="aw-metric aw-metric-value">{active.length}</p>
+        </div>
+        <div className="aw-card p-4">
+          <p className="aw-metric-label">Pending</p>
+          <p className="aw-metric aw-metric-value" style={{ color: pending.length > 0 ? 'var(--aw-warning)' : 'var(--aw-text)' }}>{pending.length}</p>
+        </div>
+      </div>
+
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-[var(--aw-text)]">Memberships</h1>
