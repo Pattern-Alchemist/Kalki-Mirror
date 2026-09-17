@@ -74,7 +74,9 @@ export default function OverviewPage() {
         <p className="mt-1 text-sm text-[var(--aw-text-2)]">Live operational metrics for Kalki Mirror</p>
       </div>
 
-      <CampaignPulse />
+      <div data-tour="overview-pulse">
+        <CampaignPulse />
+      </div>
 
       <ConsultationFunnel />
 
@@ -90,7 +92,7 @@ export default function OverviewPage() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4" data-tour="overview-quick-actions">
         <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Quick Actions</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {QUICK_ACTIONS.map(a => (
@@ -103,7 +105,7 @@ export default function OverviewPage() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4" data-tour="overview-tiers">
         <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Tier Breakdown</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {(stats.members.tierDistribution || []).map(t => {

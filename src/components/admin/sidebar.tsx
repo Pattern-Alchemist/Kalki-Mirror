@@ -58,7 +58,7 @@ export function AdminSidebar() {
 
   return (
     <>
-      <aside className="aw-sidebar flex h-screen w-64 flex-col">
+      <aside className="aw-sidebar flex h-screen w-64 flex-col" data-tour="aw-sidebar">
         {/* Brand */}
         <div className="flex h-14 items-center gap-2 border-b border-[var(--aw-border-2)] px-4">
           <div className="aw-brand-mark flex h-7 w-7 items-center justify-center rounded">
