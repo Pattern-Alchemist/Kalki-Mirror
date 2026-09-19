@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useIsMobile } from "@/components/admin/use-responsive";
+import { ExportButton } from "@/components/admin/ExportButton";
 import {
   getConsultations,
   updateConsultationStatus,
@@ -398,13 +399,23 @@ export default function ConsultationsPage() {
             placeholder="Search name, phone, intake…"
             className="w-56 rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 px-3 py-2 text-sm text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-amber-500/40 focus:outline-none"
           />
-          <a
-            href="/api/admin/consultations/export"
-            className="rounded-lg border border-[var(--aw-border-2)] px-3 py-2 text-xs font-medium text-[var(--aw-text-2)] transition-colors hover:border-[var(--aw-border-2)] hover:text-amber-300"
-            title="Download every lead as CSV (ADMIN+; audit-logged)"
-          >
-            Export CSV
-          </a>
+          <ExportButton
+            label="Consultations"
+            fetcher={async () => filtered}
+            mapRow={(r) => ({
+              id: (r as ConsultationRow).id,
+              name: (r as ConsultationRow).name,
+              email: (r as ConsultationRow).email,
+              phone: (r as ConsultationRow).phone,
+              status: (r as ConsultationRow).status,
+              paymentState: (r as ConsultationRow).paymentState,
+              utmSource: (r as ConsultationRow).utmSource ?? '',
+              utmCampaign: (r as ConsultationRow).utmCampaign ?? '',
+              country: (r as ConsultationRow).country ?? '',
+              createdAt: (r as ConsultationRow).createdAt,
+              scheduledFor: (r as ConsultationRow).scheduledFor ?? '',
+            })}
+          />
           <button
             onClick={loadPipeline}
             className="rounded-lg border border-[var(--aw-border-2)] px-3 py-2 text-xs font-medium text-[var(--aw-text-2)] transition-colors hover:border-[var(--aw-border-2)] hover:text-amber-300"

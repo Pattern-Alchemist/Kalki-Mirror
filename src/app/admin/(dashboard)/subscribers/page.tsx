@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { getSubscribers, type SubscriberRow } from "./actions";
+import { useEffect, useMemo, useState, useCallback, useRef } from "react";
+import { getSubscribers, importSubscribersFromCsv, type SubscriberRow } from "./actions";
 import { EngagementPanel } from "./engagement-panel";
+import { ExportButton } from "@/components/admin/ExportButton";
 
 /* ─── Constants ───────────────────────────────────────────────────────────── */
 
@@ -36,22 +37,51 @@ export default function SubscribersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  // Vol. 2 #6 — CSV import state
+  const [showImport, setShowImport] = useState(false);
+  const [importText, setImportText] = useState("");
+  const [importBusy, setImportBusy] = useState(false);
+  const [importResult, setImportResult] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const reload = useCallback(async () => {
+    try {
+      const r = await getSubscribers();
+      setRows(r);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Failed to load");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     let alive = true;
     getSubscribers()
-      .then((r) => {
-        if (alive) setRows(r);
-      })
-      .catch((e: unknown) => {
-        if (alive) setError(e instanceof Error ? e.message : "Failed to load");
-      })
-      .finally(() => {
-        if (alive) setLoading(false);
-      });
-    return () => {
-      alive = false;
-    };
+      .then((r) => { if (alive) setRows(r); })
+      .catch((e: unknown) => { if (alive) setError(e instanceof Error ? e.message : "Failed to load"); })
+      .finally(() => { if (alive) setLoading(false); });
+    return () => { alive = false; };
+  }, []);
+
+  const onImport = useCallback(async () => {
+    if (!importText.trim()) return;
+    setImportBusy(true);
+    setImportResult(null);
+    try {
+      const r = await importSubscribersFromCsv(importText);
+      setImportResult(`Added ${r.added} · Skipped ${r.skipped}${r.errors.length ? ` · ${r.errors.length} errors` : ''}`);
+      if (r.added > 0) await reload();
+    } catch (e) {
+      setImportResult(`Import failed: ${e instanceof Error ? e.message : 'unknown'}`);
+    } finally { setImportBusy(false); }
+  }, [importText, reload]);
+
+  const onFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const text = await file.text();
+    setImportText(text);
   }, []);
 
   const filtered = useMemo(() => {
@@ -85,13 +115,67 @@ export default function SubscribersPage() {
             The 10 Doors nurture list — capture layer for the pre-consult funnel.
           </p>
         </div>
-        <a
-          href="/api/admin/subscribers/export"
-          className="rounded-lg border border-zinc-700 px-4 py-2 text-sm text-[var(--aw-text-2)] transition hover:border-zinc-500 hover:text-[var(--aw-text)]"
-        >
-          Export CSV
-        </a>
+        <div className="flex items-center gap-2">
+          <ExportButton
+            label="Subscribers"
+            fetcher={async () => rows}
+            mapRow={(r) => ({
+              id: (r as SubscriberRow).id,
+              email: (r as SubscriberRow).email,
+              status: (r as SubscriberRow).status,
+              doorDay: (r as SubscriberRow).doorDay ?? '',
+              createdAt: (r as SubscriberRow).createdAt,
+              utmSource: (r as SubscriberRow).utmSource ?? '',
+              utmCampaign: (r as SubscriberRow).utmCampaign ?? '',
+              country: (r as SubscriberRow).country ?? '',
+            })}
+          />
+          <button
+            onClick={() => setShowImport(!showImport)}
+            className="rounded-lg border border-[var(--aw-border-2)] px-3 py-1.5 text-xs text-[var(--aw-text-2)] transition hover:border-[var(--aw-border-2)] hover:text-[var(--aw-text)]"
+          >
+            {showImport ? '✕ Close' : '⇪ Import CSV'}
+          </button>
+        </div>
       </div>
+
+      {/* Vol. 2 #6 — CSV Import panel */}
+      {showImport && (
+        <div className="aw-card">
+          <p className="text-xs font-semibold uppercase tracking-wider text-[var(--aw-text-2)]">Import subscribers from CSV</p>
+          <p className="mt-1 text-xs text-[var(--aw-text-3)]">
+            CSV must have an <code className="rounded bg-[var(--aw-glass-1)] px-1 font-mono text-[var(--aw-cyan)]">email</code> column.
+            Optional: <code className="rounded bg-[var(--aw-glass-1)] px-1 font-mono">status, utmSource, utmCampaign, country</code>.
+            Existing emails are skipped (idempotent).
+          </p>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".csv,text/csv"
+            onChange={onFileSelect}
+            className="mt-2 text-xs text-[var(--aw-text-2)] file:mr-2 file:rounded file:border file:border-[var(--aw-border-2)] file:bg-[var(--aw-glass-1)] file:px-2 file:py-1 file:text-xs file:text-[var(--aw-text-2)] hover:file:border-[var(--aw-border-2)]"
+          />
+          <textarea
+            value={importText}
+            onChange={(e) => setImportText(e.target.value)}
+            placeholder={`email,status,utmCampaign
+ananya@example.com,active,doors-email-course
+rahul@example.com,active,guhya-halloween-oct26`}
+            rows={5}
+            className="mt-2 w-full rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-2 font-mono text-xs text-[var(--aw-text)] placeholder:text-[var(--aw-text-3)] focus:border-amber-500/40 focus:outline-none"
+          />
+          <div className="mt-2 flex items-center gap-3">
+            <button
+              onClick={onImport}
+              disabled={importBusy || !importText.trim()}
+              className="rounded-lg bg-amber-500/20 px-3 py-1.5 text-xs font-medium text-amber-300 transition hover:bg-amber-500/30 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {importBusy ? 'Importing…' : 'Import'}
+            </button>
+            {importResult && <span className="text-xs text-[var(--aw-text-2)]">{importResult}</span>}
+          </div>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">

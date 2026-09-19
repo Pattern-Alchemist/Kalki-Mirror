@@ -92,6 +92,34 @@ export default function SettingsPage() {
 
       <WebhookSection />
 
+      {/* Vol. 2 #9 — Email templates editor link */}
+      <section className="aw-card">
+        <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Email Templates</h2>
+        <p className="mt-1 text-xs text-[var(--aw-text-2)]">
+          Override subject lines + body copy for transactional emails (completion nudge, weekly digest, testimonial follow-up) without a code deploy. Supports <code className="rounded bg-[var(--aw-glass-1)] px-1 font-mono text-[var(--aw-cyan)]">{`{{name}}`}</code> / <code className="rounded bg-[var(--aw-glass-1)] px-1 font-mono text-[var(--aw-cyan)]">{`{{link}}`}</code> placeholders. Preview with sample data before saving.
+        </p>
+        <a
+          href="/admin/settings/email-templates"
+          className="mt-3 inline-flex items-center gap-2 rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-2 text-xs font-medium text-[var(--aw-text-2)] transition hover:border-[var(--aw-border-2)] hover:text-[var(--aw-text)]"
+        >
+          Open Email Templates Editor →
+        </a>
+      </section>
+
+      {/* Vol. 2 #10 — Backup/Restore UI link */}
+      <section className="aw-card">
+        <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Backups & Restore</h2>
+        <p className="mt-1 text-xs text-[var(--aw-text-2)]">
+          Last backup timestamp + age + staleness. One-click manual backup trigger via GitHub Actions. Restore panel with 2-step confirmation. The daily backup runs at 21:30 UTC (03:00 IST); artifacts retained 30 days.
+        </p>
+        <a
+          href="/admin/settings/backups"
+          className="mt-3 inline-flex items-center gap-2 rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-2 text-xs font-medium text-[var(--aw-text-2)] transition hover:border-[var(--aw-border-2)] hover:text-[var(--aw-text)]"
+        >
+          Open Backup Console →
+        </a>
+      </section>
+
       {dbStats && (
         <section className="aw-card">
           <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Database Summary</h2>

@@ -52,6 +52,71 @@ export async function getSubscribers(): Promise<SubscriberRow[]> {
   });
 }
 
+/**
+ * Vol. 2 #6 — Import subscribers from a CSV string.
+ * Each row must have an "email" column. Optional: status, utmSource,
+ * utmCampaign, country. Returns { added, skipped, errors }.
+ * Idempotent: existing emails are skipped (status NOT overwritten).
+ */
+export async function importSubscribersFromCsv(csvText: string): Promise<{
+  added: number;
+  skipped: number;
+  errors: string[];
+}> {
+  await requireAdmin();
+  const { parseCsv, isValidEmail } = await import("@/lib/admin/export-import");
+  const { rows, errors } = parseCsv(csvText);
+  if (errors.length > 0 && rows.length === 0) {
+    return { added: 0, skipped: 0, errors };
+  }
+  let added = 0;
+  let skipped = 0;
+  const importErrors: string[] = [...errors];
+
+  for (let i = 0; i < rows.length; i++) {
+    const r = rows[i];
+    const email = String(r.email ?? '').trim().toLowerCase();
+    if (!email) {
+      importErrors.push(`Row ${i + 2}: missing email`);
+      continue;
+    }
+    if (!isValidEmail(email)) {
+      importErrors.push(`Row ${i + 2}: invalid email "${email}"`);
+      continue;
+    }
+    try {
+      // Idempotent: skip if email already exists
+      const existing = await db.emailSubscriber.findUnique({ where: { email }, select: { id: true } });
+      if (existing) {
+        skipped++;
+        continue;
+      }
+      await db.emailSubscriber.create({
+        data: {
+          email,
+          status: String(r.status ?? 'active'),
+          utmSource: r.utmSource ? String(r.utmSource) : null,
+          utmMedium: r.utmMedium ? String(r.utmMedium) : null,
+          utmCampaign: r.utmCampaign ? String(r.utmCampaign) : null,
+          utmContent: r.utmContent ? String(r.utmContent) : null,
+          country: r.country ? String(r.country) : null,
+        },
+      });
+      added++;
+    } catch (e) {
+      importErrors.push(`Row ${i + 2}: ${e instanceof Error ? e.message : 'unknown error'}`);
+    }
+  }
+
+  await logAudit({
+    action: 'subscriber.import.csv',
+    entity: 'EmailSubscriber',
+    after: { added, skipped, errors: importErrors.length },
+  });
+
+  return { added, skipped, errors: importErrors };
+}
+
 /* ════════════════════════════════════════════════════════════════════
    TIER 2 #10 — Email engagement analytics
    Per-subscriber engagement rollup (sends × webhook events) plus the

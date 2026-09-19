@@ -64,6 +64,7 @@ export const ModelName = {
   Consultation: 'Consultation',
   ActiveSession: 'ActiveSession',
   AdminNotification: 'AdminNotification',
+  EmailTemplate: 'EmailTemplate',
   Webhook: 'Webhook',
   PracticeSession: 'PracticeSession',
   EmailSubscriber: 'EmailSubscriber',
@@ -334,6 +335,19 @@ export const AdminNotificationScalarFieldEnum = {
 } as const
 
 export type AdminNotificationScalarFieldEnum = (typeof AdminNotificationScalarFieldEnum)[keyof typeof AdminNotificationScalarFieldEnum]
+
+
+export const EmailTemplateScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  subject: 'subject',
+  body: 'body',
+  notes: 'notes',
+  updatedAt: 'updatedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type EmailTemplateScalarFieldEnum = (typeof EmailTemplateScalarFieldEnum)[keyof typeof EmailTemplateScalarFieldEnum]
 
 
 export const WebhookScalarFieldEnum = {

@@ -1552,3 +1552,36 @@ Stage Summary:
 - VOL. 2 WEEK A CLOSED: 5 of 5. The admin is now keyboard-first (Cmd+K palette, g-prefix nav, page-local shortcuts), real-time (SWR on HUD + consultations), bulk-capable (BulkActionBar on testimonials/members/keys with 4-tier actions), and mobile-aware (sticky bottom action bar on consultations).
 - The founder can now: press Cmd+K → type "keys" → Enter to jump to /admin/keys (1 keystroke vs 2 clicks). Press g then m to jump to members (vim-style). Select 10 testimonials → click "Approve" → confirm (1 click vs 10). Open consultations on phone → tap Ack / Schedule / Done (3 large buttons, no menu diving). Watch the HUD pending count tick up live without refreshing.
 - Next: Week B (6-10) — Data Flow: CSV export/import, notifications panel, activity feed, email templates editor, backup/restore UI.
+
+---
+Task ID: admin-os-vol2-week-b
+Agent: Z (Super Z, main session)
+Task: Admin OS Vol. 2 Week B (6-10) — Data Flow: CSV export/import, notifications panel, activity feed, email templates editor, backup/restore UI.
+
+Work Log:
+- #6 CSV/JSON EXPORT + IMPORT: src/lib/admin/export-import.ts (pure functions: escapeCsvField RFC 4180, toCsv, toJson, parseCsv state machine w/ quoted fields + escaped quotes, contentDisposition, exportFilename, isValidEmail). src/components/admin/ExportButton.tsx — reusable dropdown button (CSV / JSON) with blob-URL download, fetcher+mapRow props. Wired into 4 list pages:
+  · TESTIMONIALS: ExportButton with full row mapping (id, quote, name, context, location, source, status, featured, consent, submittedBy, createdAt).
+  · MEMBERS: ExportButton (id, email, name, tier, role, streaks, createdAt) — uses /api/admin/members endpoint.
+  · KEYS: ExportButton (id, code, tierGranted, maxUses, uses, campaign, active, createdAt).
+  · CONSULTATIONS: ExportButton on the filtered list (id, name, email, phone, status, paymentState, utmSource, utmCampaign, country, createdAt, scheduledFor).
+  · SUBSCRIBERS: ExportButton + CSV IMPORT panel. New server action importSubscribersFromCsv (idempotent, validates emails, audit-logged). File upload + textarea paste. Reports added/skipped/errors.
+- #7 IN-APP NOTIFICATIONS PANEL: NotificationBell.tsx upgraded to useAdminSWR (15s refresh + on-focus + on-reconnect). Alien-warship styling: backdrop-blur-2xl panel, --aw-glass-2 bg, --aw-border-2 borders. Color-coded type dots (info=blue, warning=amber, success=emerald, error=red). Unread badge glows with --aw-glow-cyan. The existing /api/admin/notifications endpoint is unchanged.
+- #8 ACTIVITY FEED: src/app/admin/(dashboard)/overview/ActivityFeed.tsx — live tail of last 20 admin actions from /api/admin/audit-logs (existing endpoint). useAdminSWR (30s + on focus). Each entry: actor name/email + colored action verb + entity icon (👤🔑💬📄✍️✉️) + time-ago. Action color coding: create/generate=emerald, delete/revoke=red, update/change=amber, approve/publish=violet, login/session=blue. "Show more" expander (6 → 20). Link to /admin/audit for deep history. Mounted on /admin/overview between Quick Actions and Tier Breakdown.
+- #9 EMAIL TEMPLATES EDITOR: full stack.
+  · Schema: EmailTemplate model (key unique, subject, body markdown, notes, timestamps).
+  · DDL: scripts/apply-email-templates-schema.ts (idempotent CREATE TABLE IF NOT EXISTS, EXECUTED against production Turso — table is live).
+  · Lib: src/lib/admin/email-templates.ts (getEmailTemplate, listEmailTemplates, upsertEmailTemplate, deleteEmailTemplate, substitutePlaceholders, KNOWN_TEMPLATE_KEYS — 7 known keys: completion-nudge, testimonial-followup, weekly-digest, membership-request, course-welcome, course-day, broadcast).
+  · API: /api/admin/email-templates (GET list, POST upsert, DELETE revert, PATCH preview with sample data).
+  · UI: /admin/settings/email-templates — left-rail template list (with OVERRIDE/default badges), right-side editor (subject + markdown body + notes), Preview button (substitutes {{name}}, {{link}}, {{date}}, {{email}}, {{context}} with sample data). Revert to default for overridden templates.
+  · Link from /admin/settings → email-templates page.
+- #10 BACKUP/RESTORE UI:
+  · API: /api/admin/backups (GET — last backup timestamp + age + staleness from OpsState.last_backup_at + recent GH Actions runs if GH_TOKEN configured; POST — workflow_dispatch on backup.yml).
+  · UI: /admin/settings/backups — three sections: (1) Last Backup card with timestamp/age/status badge (Fresh/Stale>48h), Trigger Backup Now button (gated on GH_TOKEN env var). (2) Recent Backup Runs list with status dots + GH UI links. (3) Restore panel with 2-step confirmation modal: step 1 acknowledges destructive, step 2 requires typing "RESTORE" to enable the workflow link. Restore runs via the existing restore-drill.yml workflow (dry-run by default; real restores require direct founder execution of scripts/restore-db.sh).
+  · Link from /admin/settings → backups page.
+- TESTS: tests/lib/admin/vol2-week-b.test.ts (38 tests, jsdom env). Covers: escapeCsvField (null/undefined/number/boolean/simple string/comma/quote/newline/Date), toCsv (empty/header+rows CRLF/column ordering/null+undefined/embedded commas), parseCsv (simple/LF/quoted commas/escaped quotes/blank lines/mismatched columns/empty input), toJson (compact/pretty), contentDisposition (sanitization), exportFilename (regex pattern), isValidEmail (valid/missing @/missing domain/missing TLD/empty), substitutePlaceholders (known/unknown/missing/multiple), KNOWN_TEMPLATE_KEYS (completion-nudge + weekly-digest + shape invariant). test-count gate bumped EXPECTED 92→93. openapi.yaml updated with /api/admin/backups (GET+POST) + /api/admin/email-templates (GET+POST+DELETE+PATCH).
+- FINAL GAUNTLET: 1217/1217 vitest (93 files, +1 new). tsc clean. Build green (468 pages, +2 new routes).
+
+Stage Summary:
+- VOL. 2 WEEK B CLOSED: 5 of 5. Data is now portable (CSV/JSON export on every list page + CSV import on subscribers), the founder has a live notification panel + activity feed (no more "what happened since I last looked" page visits), email subject lines are A/B-testable without a deploy, and the backup console gives one-click trigger + 2-step restore confirmation.
+- The founder can now: click Export on Members → CSV opens in Excel. Paste a CSV of subscribers → import panel shows "Added N · Skipped M". Open /admin/overview → see "Ananya approved testimonial X · 5m ago" in the activity feed. Open /admin/settings/email-templates → tweak the completion-nudge subject → Preview → Save (no deploy needed). Open /admin/settings/backups → see last backup 6h ago Fresh → click "Trigger Backup Now" if needed.
+- Next: Week C (11-15) — Intelligence: AI auto-tagging for consultations, campaign analytics, content scheduling, folio visualizer, member enrichment.

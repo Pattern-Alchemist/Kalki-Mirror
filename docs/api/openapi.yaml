@@ -1003,6 +1003,78 @@ paths:
         '401':
           description: Unauthorized — admin session required
 
+  /api/admin/backups:
+    get:
+      operationId: apiAdminBackupsGet
+      tags: [Admin]
+      summary: VOL. 2 #10 — Backup status + recent backup workflow runs. Reads OpsState.last_backup_at + GH Actions API (if GH_TOKEN configured). SUPERADMIN gated.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+    post:
+      operationId: apiAdminBackupsPost
+      tags: [Admin]
+      summary: VOL. 2 #10 — Trigger a manual backup via GitHub Actions workflow_dispatch on backup.yml. Requires GH_TOKEN env var.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+        '503':
+          description: GH_TOKEN not configured
+
+  /api/admin/email-templates:
+    get:
+      operationId: apiAdminEmailTemplatesGet
+      tags: [Admin]
+      summary: VOL. 2 #9 — List all DB-backed email template overrides + known keys. ADMIN+ gated.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+    post:
+      operationId: apiAdminEmailTemplatesPost
+      tags: [Admin]
+      summary: VOL. 2 #9 — Upsert (create or update) an email template override. ADMIN+ gated.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+    delete:
+      operationId: apiAdminEmailTemplatesDelete
+      tags: [Admin]
+      summary: VOL. 2 #9 — Delete an email template override (revert to hardcoded default). ADMIN+ gated.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+    patch:
+      operationId: apiAdminEmailTemplatesPatch
+      tags: [Admin]
+      summary: VOL. 2 #9 — Preview an email template with sample data (substitutes placeholders). ADMIN+ gated.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
   /api/admin/consultations:
     get:
       operationId: apiAdminConsultationsGet

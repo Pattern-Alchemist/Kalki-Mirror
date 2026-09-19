@@ -5,6 +5,7 @@ import { CampaignPulse } from "./pulse-client";
 import { ConsultationFunnel } from "./funnel-client";
 import { ThrottleCard } from "./throttle-card";
 import { MorningBrief } from "./morning-brief";
+import { ActivityFeed } from "./ActivityFeed";
 
 const TIER_CONFIG: Record<string, { label: string; color: string; element: string }> = {
   prithvi: { label: "Prithvi", color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20", element: "Earth" },
@@ -107,6 +108,9 @@ export default function OverviewPage() {
           ))}
         </div>
       </section>
+
+      {/* Vol. 2 #8 — Activity feed (last 20 admin actions, live) */}
+      <ActivityFeed />
 
       <section className="space-y-4" data-tour="overview-tiers">
         <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Tier Breakdown</h2>

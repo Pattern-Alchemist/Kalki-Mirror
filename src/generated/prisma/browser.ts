@@ -83,6 +83,11 @@ export type ActiveSession = Prisma.ActiveSessionModel
  */
 export type AdminNotification = Prisma.AdminNotificationModel
 /**
+ * Model EmailTemplate
+ * 
+ */
+export type EmailTemplate = Prisma.EmailTemplateModel
+/**
  * Model Webhook
  * 
  */

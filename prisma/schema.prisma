@@ -398,6 +398,21 @@ model AdminNotification {
   @@index([userId, read, createdAt])
 }
 
+// ── Vol. 2 #9 — Email templates (DB-backed) ─────────────────────────────
+// Subject + body (markdown) overrides for transactional emails. If a row
+// exists for a given template key, the email sender uses it; otherwise it
+// falls back to the hardcoded default in src/lib/emails/*.ts. Supports
+// {{name}}, {{link}}, {{date}} placeholders.
+model EmailTemplate {
+  id        String   @id @default(cuid())
+  key       String   @unique // e.g. "completion-nudge", "weekly-digest", "welcome"
+  subject   String
+  body      String   // Markdown body
+  notes     String?  // Founder's notes about this version
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
 // ============================================================
 // A14: WEBHOOK CONFIGURATIONS — Outgoing webhook endpoints
 // Persisted webhook definitions for event-driven integrations.

@@ -15,6 +15,7 @@ import {
   type TestimonialRow,
 } from "./actions";
 import { BulkActionBar, useRowSelection } from "@/components/admin/BulkActionBar";
+import { ExportButton } from "@/components/admin/ExportButton";
 
 const STATUSES = ["PENDING", "APPROVED", "HIDDEN"] as const;
 const STATUS_CHIP: Record<string, string> = {
@@ -220,12 +221,31 @@ export default function TestimonialsPage() {
             Social proof ledger — WhatsApp words → consent → curate. Featured + approved render on /consultations.
           </p>
         </div>
-        <button
-          onClick={load}
-          className="rounded-lg border border-[var(--aw-border-2)] px-3 py-2 text-xs font-medium text-[var(--aw-text-2)] transition-colors hover:border-[var(--aw-border-2)] hover:text-amber-300"
-        >
-          Refresh
-        </button>
+        <div className="flex items-center gap-2">
+          <ExportButton
+            label="Testimonials"
+            fetcher={async () => { const d = await getTestimonials(); return d.testimonials; }}
+            mapRow={(r) => ({
+              id: (r as TestimonialRow).id,
+              quote: (r as TestimonialRow).quote,
+              name: (r as TestimonialRow).name,
+              context: (r as TestimonialRow).context,
+              location: (r as TestimonialRow).location,
+              source: (r as TestimonialRow).source,
+              status: (r as TestimonialRow).status,
+              featured: (r as TestimonialRow).featured,
+              consent: (r as TestimonialRow).consent,
+              submittedBy: (r as TestimonialRow).submittedBy,
+              createdAt: (r as TestimonialRow).createdAt,
+            })}
+          />
+          <button
+            onClick={load}
+            className="rounded-lg border border-[var(--aw-border-2)] px-3 py-2 text-xs font-medium text-[var(--aw-text-2)] transition-colors hover:border-[var(--aw-border-2)] hover:text-amber-300"
+          >
+            Refresh
+          </button>
+        </div>
       </div>
 
       {/* Stats */}

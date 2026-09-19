@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback, type FormEvent } from "react";
 import { generateKeys, revokeKey, bulkRevokeKeys } from "./actions";
 import { KeyQRModal } from "./KeyQRModal";
 import { BulkActionBar, useRowSelection } from "@/components/admin/BulkActionBar";
+import { ExportButton } from "@/components/admin/ExportButton";
 
 export default function KeysPage() {
   const [keys, setKeys] = useState<any[]>([]);
@@ -83,9 +84,30 @@ export default function KeysPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-[var(--aw-text)]">Golden Keys</h1>
-        <p className="mt-1 text-sm text-[var(--aw-text-2)]">{total} invite codes</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold text-[var(--aw-text)]">Golden Keys</h1>
+          <p className="mt-1 text-sm text-[var(--aw-text-2)]">{total} invite codes</p>
+        </div>
+        <ExportButton
+          label="Keys"
+          fetcher={async () => {
+            const r = await fetch(`/api/admin/keys?query=${encodeURIComponent(query)}&page=1`);
+            if (!r.ok) throw new Error('Export fetch failed');
+            const d = await r.json();
+            return d.keys as any[];
+          }}
+          mapRow={(r) => ({
+            id: (r as any).id,
+            code: (r as any).code,
+            tierGranted: (r as any).tierGranted,
+            maxUses: (r as any).maxUses,
+            uses: (r as any)._count?.usages ?? 0,
+            campaign: (r as any).campaign ?? '',
+            active: (r as any).active,
+            createdAt: (r as any).createdAt,
+          })}
+        />
       </div>
 
       {/* Vol. 6 #11 — Batch Mint Form */}

@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { BulkActionBar, useRowSelection } from "@/components/admin/BulkActionBar";
+import { ExportButton } from "@/components/admin/ExportButton";
 import { bulkUpdateTier } from "./actions";
 
 const TIERS = ["ALL", "prithvi", "jal", "agni", "akash"];
@@ -55,7 +56,27 @@ export default function MembersPage() {
 
   return (
     <div className="space-y-6">
-      <div><h1 className="text-2xl font-semibold text-[var(--aw-text)]">Members</h1><p className="mt-1 text-sm text-[var(--aw-text-2)]">{total} registered members</p></div>
+      <div className="flex items-start justify-between gap-3">
+        <div><h1 className="text-2xl font-semibold text-[var(--aw-text)]">Members</h1><p className="mt-1 text-sm text-[var(--aw-text-2)]">{total} registered members</p></div>
+        <ExportButton
+          label="Members"
+          fetcher={async () => {
+            const r = await fetch(`/api/admin/members?${new URLSearchParams({ page: '1', query, tier })}`);
+            if (!r.ok) throw new Error('Export fetch failed');
+            const d = await r.json();
+            return d.members as any[];
+          }}
+          mapRow={(r) => ({
+            id: (r as any).id,
+            email: (r as any).email,
+            name: (r as any).name || '',
+            tier: (r as any).tier,
+            role: (r as any).role,
+            streaks: (r as any)._count?.streaks ?? 0,
+            createdAt: (r as any).createdAt,
+          })}
+        />
+      </div>
 
       <div className="flex flex-wrap gap-3">
         <input type="text" placeholder="Search email, name, ID..." value={query} onChange={e => { setQuery(e.target.value); setPage(1); }} className="flex-1 min-w-[200px] rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-2 text-sm text-[var(--aw-text)] placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none" />
