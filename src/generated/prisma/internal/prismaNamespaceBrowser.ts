@@ -75,6 +75,7 @@ export const ModelName = {
   SynthesisCache: 'SynthesisCache',
   PatternPairAffinity: 'PatternPairAffinity',
   OpsState: 'OpsState',
+  Experiment: 'Experiment',
   RateLimitHit: 'RateLimitHit',
   CronRun: 'CronRun',
   TestimonialFollowUp: 'TestimonialFollowUp',
@@ -118,7 +119,8 @@ export const UserScalarFieldEnum = {
   twoFactorSecret: 'twoFactorSecret',
   twoFactorEnabled: 'twoFactorEnabled',
   twoFactorBackupCodes: 'twoFactorBackupCodes',
-  elevatedAt: 'elevatedAt'
+  elevatedAt: 'elevatedAt',
+  adminPrefs: 'adminPrefs'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -489,6 +491,22 @@ export const OpsStateScalarFieldEnum = {
 } as const
 
 export type OpsStateScalarFieldEnum = (typeof OpsStateScalarFieldEnum)[keyof typeof OpsStateScalarFieldEnum]
+
+
+export const ExperimentScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  hypothesis: 'hypothesis',
+  variants: 'variants',
+  metric: 'metric',
+  status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExperimentScalarFieldEnum = (typeof ExperimentScalarFieldEnum)[keyof typeof ExperimentScalarFieldEnum]
 
 
 export const RateLimitHitScalarFieldEnum = {

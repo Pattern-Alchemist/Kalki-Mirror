@@ -10,6 +10,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import { KalkiChatWidget } from '@/components/chat/KalkiChatWidget';
 import { TawkToScript } from '@/components/chat/TawkToScript';
+import { WebVitalsBeacon } from '@/components/WebVitalsBeacon';
 
 /* ============================================================
    TYPOGRAPHY
@@ -125,6 +126,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           <TierProvider>
             <AttributionCapture />
             <SwRegister />
+            {/* Vol. 2 #18 — Core Web Vitals RUM beacon (fires once per session) */}
+            <WebVitalsBeacon />
             <PublicShell>{children}</PublicShell>
             <KalkiChatWidget />
             <TawkToScript />

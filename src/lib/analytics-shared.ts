@@ -61,6 +61,12 @@ export const EVENT_NAMES = [
   'chat_widget_ask_silence',
   'chat_widget_whatsapp_click',
   'chat_widget_subscribe',
+  // Vol. 2 #17 — A/B testing framework. Properties: { experimentId, variant, path }.
+  // Fired when a visitor assigned to an experiment triggers the metric event.
+  'experiment_converted',
+  // Vol. 2 #18 — Core Web Vitals RUM. Properties: { metric, value, rating, path, device }.
+  // Fired once per session (beacon) with LCP/FID/CLS/INP/TTFB.
+  'web_vitals',
 ] as const;
 
 export type EventName = (typeof EVENT_NAMES)[number];
@@ -114,6 +120,8 @@ export const EVENT_META: Record<
   chat_widget_ask_silence: { label: 'Chat widget: honest silence (Vol. 7)', group: 'Conversion' },
   chat_widget_whatsapp_click: { label: 'Chat widget: WhatsApp click (Vol. 7)', group: 'Conversion' },
   chat_widget_subscribe: { label: 'Chat widget: email subscribe (Vol. 7)', group: 'Conversion' },
+  experiment_converted: { label: 'A/B experiment conversion (Vol. 2 #17)', group: 'Conversion' },
+  web_vitals: { label: 'Core Web Vitals beacon (Vol. 2 #18)', group: 'Discovery' },
 };
 
 export const GROUP_NAMES = ['Discovery', 'Education', 'Practice', 'Conversion', 'Retention'] as const;

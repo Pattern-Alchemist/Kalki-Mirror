@@ -1127,6 +1127,102 @@ paths:
         '401':
           description: Unauthorized — admin session required
 
+  /api/admin/seo:
+    get:
+      operationId: apiAdminSeoGet
+      tags: [Admin]
+      summary: VOL. 2 #16 — SEO dashboard. Sitemap URL count by type, last-mod freshness, internal-link graph (top linked + orphan pages), recent ContentEntry publications. ADMIN+ gated.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/experiments:
+    get:
+      operationId: apiAdminExperimentsGet
+      tags: [Admin]
+      summary: VOL. 2 #17 — List all A/B experiments. ADMIN+ gated.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+    post:
+      operationId: apiAdminExperimentsPost
+      tags: [Admin]
+      summary: VOL. 2 #17 — Create or update an A/B experiment. ADMIN+ gated.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+    patch:
+      operationId: apiAdminExperimentsPatch
+      tags: [Admin]
+      summary: VOL. 2 #17 — Set experiment status (DRAFT/RUNNING/PAUSED/COMPLETED). ADMIN+ gated.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+    delete:
+      operationId: apiAdminExperimentsDelete
+      tags: [Admin]
+      summary: VOL. 2 #17 — Delete an experiment. ADMIN+ gated.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/web-vitals:
+    get:
+      operationId: apiAdminWebVitalsGet
+      tags: [Admin]
+      summary: VOL. 2 #18 — Core Web Vitals RUM dashboard. p50/p75/p95 per metric (LCP/FID/CLS/INP/TTFB), per-route + per-device breakdowns. ADMIN+ gated.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
+  /api/admin/prefs:
+    get:
+      operationId: apiAdminPrefsGet
+      tags: [Admin]
+      summary: VOL. 2 #20 — Get current user's admin UI preferences (theme, landing page, default range, sidebar state, table page size). ADMIN+ gated.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+    post:
+      operationId: apiAdminPrefsPost
+      tags: [Admin]
+      summary: VOL. 2 #20 — Update admin preferences (merges with existing). ADMIN+ gated.
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: OK (shape documented in the route module)
+        '401':
+          description: Unauthorized — admin session required
+
   /api/admin/consultations/export:
     get:
       operationId: apiAdminConsultationsExportGet

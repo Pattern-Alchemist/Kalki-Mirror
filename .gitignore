@@ -93,6 +93,9 @@ scripts/geo-ops/logs/
 # Vol. 2 #9 + #11 — schema appliers for the EmailTemplate + aiTags columns
 !scripts/apply-email-templates-schema.ts
 !scripts/apply-consultation-aitags-schema.ts
+# Vol. 2 #17 + #20 — schema appliers for the Experiment + adminPrefs columns
+!scripts/apply-experiment-schema.ts
+!scripts/apply-admin-prefs-schema.ts
 # Vol. 4 #16 — the neural-swap rehearsal (keyless precondition checks) + its
 # fingerprint probe (both ship with the repo; the scripts/* rule would swallow them)
 !scripts/rehearse-neural-swap.sh

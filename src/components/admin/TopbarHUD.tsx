@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAdminSWR } from '@/components/admin/use-admin-swr';
+import { useAdminLanguage } from '@/components/admin/use-admin-language';
 
 // =============================================================
 // VOL. 8 #8 — Topbar HUD Strip
@@ -80,10 +81,30 @@ export function TopbarHUD() {
       {/* Spacer */}
       <div className="flex-1" />
 
+      {/* Vol. 2 #19 — Language toggle (en ↔ hi) */}
+      <LanguageToggle />
+
       {/* Clock */}
       <div className="aw-hud-item">
         <span className="aw-hud-value">{time}</span>
       </div>
     </div>
+  );
+}
+
+// Vol. 2 #19 — compact language toggle in the HUD strip
+function LanguageToggle() {
+  const { lang, toggle } = useAdminLanguage();
+  return (
+    <button
+      onClick={toggle}
+      className="aw-hud-item cursor-pointer transition hover:text-[var(--aw-cyan)]"
+      title="Toggle admin language (English / हिन्दी)"
+      aria-label="Toggle admin language"
+    >
+      <span className="text-[10px] font-mono uppercase tracking-wider">
+        {lang === 'en' ? 'EN' : 'हि'}
+      </span>
+    </button>
   );
 }

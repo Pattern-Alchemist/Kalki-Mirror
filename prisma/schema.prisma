@@ -69,6 +69,12 @@ model User {
   // window — see src/lib/admin/two-factor-policy.ts.
   elevatedAt DateTime?
 
+  // Vol. 2 #20 — admin UI preferences. JSON string with keys:
+  //   { theme: 'dark'|'light', landingPage: '/admin/overview'|..., defaultRange: '7'|'30'|'90',
+  //     sidebarCollapsed: boolean, tablePageSize: number }
+  // Hydrated by the AdminSessionProvider on login.
+  adminPrefs String?
+
   // Relations
   streaks        SadhanaStreak[]
   resolutions    PatternResolution[]
@@ -631,6 +637,27 @@ model OpsState {
   key       String   @id
   value     String
   updatedAt DateTime @updatedAt
+}
+
+// ── Vol. 2 #17 — A/B Testing Framework ─────────────────────────────────
+// Experiments assign visitors to variants via a cookie (kalki-exp-${id}).
+// Conversions are tracked via the existing AnalyticsEvent table (event =
+// 'experiment_converted' with properties.experimentId + properties.variant).
+// Thin: no statistical engine — raw counts + a "is this significant?"
+// heuristic at n>100 per variant.
+model Experiment {
+  id          String   @id @default(cuid())
+  name        String
+  hypothesis  String
+  variants    String   // JSON array: [{"id":"A","label":"Control","weight":50},{"id":"B","label":"Variant","weight":50}]
+  metric      String   // event name that counts as a conversion (e.g. "consultation_started")
+  status      String   @default("DRAFT") // DRAFT | RUNNING | PAUSED | COMPLETED
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
 }
 
 // ── Vol. 5 #3: distributed rate-limit store ──────────────────────────────

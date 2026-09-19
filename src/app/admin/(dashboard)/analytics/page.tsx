@@ -270,6 +270,30 @@ export default function AnalyticsPage() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          {/* Vol. 2 #16 — SEO dashboard link */}
+          <a
+            href="/admin/analytics/seo"
+            className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-1.5 text-xs font-medium text-[var(--aw-text-2)] transition hover:text-[var(--aw-text)]"
+            title="Vol. 2 #16 — Sitemap census, internal-link graph, orphan pages"
+          >
+            🔍 SEO Dashboard
+          </a>
+          {/* Vol. 2 #17 — A/B Experiments link */}
+          <a
+            href="/admin/analytics/experiments"
+            className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-1.5 text-xs font-medium text-[var(--aw-text-2)] transition hover:text-[var(--aw-text)]"
+            title="Vol. 2 #17 — A/B testing framework"
+          >
+            🧪 Experiments
+          </a>
+          {/* Vol. 2 #18 — Perf dashboard link */}
+          <a
+            href="/admin/analytics/perf"
+            className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-1.5 text-xs font-medium text-[var(--aw-text-2)] transition hover:text-[var(--aw-text)]"
+            title="Vol. 2 #18 — Core Web Vitals RUM"
+          >
+            ⚡ Perf
+          </a>
           <div
             role="group"
             aria-label="Analytics window"

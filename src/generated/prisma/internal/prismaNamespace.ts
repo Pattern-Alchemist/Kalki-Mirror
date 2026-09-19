@@ -421,6 +421,7 @@ export const ModelName = {
   SynthesisCache: 'SynthesisCache',
   PatternPairAffinity: 'PatternPairAffinity',
   OpsState: 'OpsState',
+  Experiment: 'Experiment',
   RateLimitHit: 'RateLimitHit',
   CronRun: 'CronRun',
   TestimonialFollowUp: 'TestimonialFollowUp',
@@ -443,7 +444,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "emailTemplate" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState" | "rateLimitHit" | "cronRun" | "testimonialFollowUp" | "indexingRequest" | "embedCache" | "gscSnapshot" | "completionNudge"
+    modelProps: "user" | "sadhanaStreak" | "patternResolution" | "inviteCode" | "folioChunk" | "membership" | "testimonial" | "inviteUsage" | "adminAuditLog" | "contentEntry" | "consultation" | "activeSession" | "adminNotification" | "emailTemplate" | "webhook" | "practiceSession" | "emailSubscriber" | "emailSend" | "emailEvent" | "letter" | "draftLead" | "synthesisCache" | "patternPairAffinity" | "opsState" | "experiment" | "rateLimitHit" | "cronRun" | "testimonialFollowUp" | "indexingRequest" | "embedCache" | "gscSnapshot" | "completionNudge"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2223,6 +2224,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Experiment: {
+      payload: Prisma.$ExperimentPayload<ExtArgs>
+      fields: Prisma.ExperimentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ExperimentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ExperimentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>
+        }
+        findFirst: {
+          args: Prisma.ExperimentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ExperimentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>
+        }
+        findMany: {
+          args: Prisma.ExperimentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>[]
+        }
+        create: {
+          args: Prisma.ExperimentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>
+        }
+        createMany: {
+          args: Prisma.ExperimentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ExperimentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>[]
+        }
+        delete: {
+          args: Prisma.ExperimentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>
+        }
+        update: {
+          args: Prisma.ExperimentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>
+        }
+        deleteMany: {
+          args: Prisma.ExperimentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ExperimentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ExperimentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>[]
+        }
+        upsert: {
+          args: Prisma.ExperimentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>
+        }
+        aggregate: {
+          args: Prisma.ExperimentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateExperiment>
+        }
+        groupBy: {
+          args: Prisma.ExperimentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExperimentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ExperimentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExperimentCountAggregateOutputType> | number
+        }
+      }
+    }
     RateLimitHit: {
       payload: Prisma.$RateLimitHitPayload<ExtArgs>
       fields: Prisma.RateLimitHitFieldRefs
@@ -2798,7 +2873,8 @@ export const UserScalarFieldEnum = {
   twoFactorSecret: 'twoFactorSecret',
   twoFactorEnabled: 'twoFactorEnabled',
   twoFactorBackupCodes: 'twoFactorBackupCodes',
-  elevatedAt: 'elevatedAt'
+  elevatedAt: 'elevatedAt',
+  adminPrefs: 'adminPrefs'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -3171,6 +3247,22 @@ export const OpsStateScalarFieldEnum = {
 export type OpsStateScalarFieldEnum = (typeof OpsStateScalarFieldEnum)[keyof typeof OpsStateScalarFieldEnum]
 
 
+export const ExperimentScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  hypothesis: 'hypothesis',
+  variants: 'variants',
+  metric: 'metric',
+  status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExperimentScalarFieldEnum = (typeof ExperimentScalarFieldEnum)[keyof typeof ExperimentScalarFieldEnum]
+
+
 export const RateLimitHitScalarFieldEnum = {
   id: 'id',
   key: 'key',
@@ -3497,6 +3589,7 @@ export type GlobalOmitConfig = {
   synthesisCache?: Prisma.SynthesisCacheOmit
   patternPairAffinity?: Prisma.PatternPairAffinityOmit
   opsState?: Prisma.OpsStateOmit
+  experiment?: Prisma.ExperimentOmit
   rateLimitHit?: Prisma.RateLimitHitOmit
   cronRun?: Prisma.CronRunOmit
   testimonialFollowUp?: Prisma.TestimonialFollowUpOmit

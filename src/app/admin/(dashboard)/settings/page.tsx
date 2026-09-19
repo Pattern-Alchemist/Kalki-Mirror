@@ -120,6 +120,20 @@ export default function SettingsPage() {
         </a>
       </section>
 
+      {/* Vol. 2 #20 — Personalization & preferences link */}
+      <section className="aw-card">
+        <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Preferences</h2>
+        <p className="mt-1 text-xs text-[var(--aw-text-2)]">
+          Your admin UI preferences — theme, default landing page, default analytics range, sidebar collapsed state, table page size. Saved per-user; applied on your next login.
+        </p>
+        <a
+          href="/admin/settings/preferences"
+          className="mt-3 inline-flex items-center gap-2 rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-2 text-xs font-medium text-[var(--aw-text-2)] transition hover:border-[var(--aw-border-2)] hover:text-[var(--aw-text)]"
+        >
+          Open Preferences →
+        </a>
+      </section>
+
       {dbStats && (
         <section className="aw-card">
           <h2 className="text-sm font-medium uppercase tracking-wider text-[var(--aw-text-2)]">Database Summary</h2>

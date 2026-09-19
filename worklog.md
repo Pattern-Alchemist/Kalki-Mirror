@@ -1621,3 +1621,43 @@ Stage Summary:
 - VOL. 2 WEEK C CLOSED: 5 of 5. The admin now has AI assistance on consultations (auto-tag), attribution analytics on campaigns (mint→redeem→revenue), a calendar view for scheduled content (queue Sunday's letter on Monday), a treemap of the 327-chunk folio corpus, and a unified seeker journey timeline per member.
 - The founder can now: open a NEW consultation → click "⚡ tag" → see #love + #career pills. Open /admin/keys/campaigns → see conversion rate per campaign. Open /admin/content → see the 7-day calendar of scheduled content. Open /admin/folio/visualize → see the treemap + spot corpus gaps. Open /admin/members/[id] → see the seeker's full journey (membership → consultation → key → testimonial) in one timeline.
 - Next: Week D (16-20) — Reach: SEO dashboard, A/B testing, Core Web Vitals RUM, /hi/admin twins, personalization & preferences.
+
+---
+Task ID: admin-os-vol2-week-d
+Agent: Z (Super Z, main session)
+Task: Admin OS Vol. 2 Week D (16-20) — Reach: SEO dashboard, A/B testing, Core Web Vitals RUM, /hi/admin Hindi twins, personalization & preferences. Vol. 2 retrospective.
+
+Work Log:
+- #16 SEO DASHBOARD:
+  · API: GET /api/admin/seo — fetches sitemap.xml, parses <url><loc> entries, classifies by type (homepage/archive/patterns/usa/hi-twins/etc.), fetches homepage HTML + extracts internal links, computes orphan pages (in sitemap but NOT linked from homepage). Also returns ContentEntry publications from last 30 days. GSC-configured flag (founder-gated).
+  · UI: /admin/analytics/seo page — top-line stats (Sitemap URLs, Homepage Links, Orphan Pages, Published 30d), "By Type" grid, "Orphan Pages" table with priority, "Top Internal Links" chip cloud, "Recent Publications" list. useAdminSWR (5min refresh).
+  · Linked from /admin/analytics header.
+- #17 A/B TESTING FRAMEWORK:
+  · Schema: Experiment model (id, name, hypothesis, variants JSON, metric, status DRAFT/RUNNING/PAUSED/COMPLETED, startDate, endDate). DDL: scripts/apply-experiment-schema.ts — EXECUTED on production Turso.
+  · Lib: src/lib/admin/experiments.ts — 8-tag taxonomy parseVariants/serializeVariants, validateVariantWeights (sum=100, 2-5 variants, unique IDs), assignVariant (deterministic seed-based, weighted random), experimentCookieName, listExperiments, upsertExperiment, deleteExperiment, setExperimentStatus, computeExperimentStats (significance heuristic: n>100 per variant AND leading beats control by >10% relative).
+  · Event names: 'experiment_converted' + 'web_vitals' added to EVENT_NAMES (39→41) + EVENT_META.
+  · API: /api/admin/experiments (GET list, POST create/update, PATCH status, DELETE).
+  · UI: /admin/analytics/experiments page — create/edit form (name, hypothesis, metric dropdown, variant editor with add/remove + weight validation), status badges, start/pause/resume/complete buttons, delete with confirm.
+- #18 CORE WEB VITALS RUM:
+  · Beacon: src/components/WebVitalsBeacon.tsx — mounted in root layout. Captures LCP (PerformanceObserver largest-contentful-paint), CLS (layout-shift, cumulative), FID (first-input), INP (event, max duration), TTFB (Navigation API responseStart - requestStart). Rates each metric per Google's 2024 thresholds (good/needs-improvement/poor). Fires ONE 'web_vitals' event per session (sessionStorage guard) on visibilitychange=hidden OR after 8s timeout. Properties: { metrics, path, device, connection }.
+  · API: GET /api/admin/web-vitals?range=7 — aggregates web_vitals events from AnalyticsEvent table. Returns per-metric p50/p75/p95 + good/NI/poor counts, per-route top 10 (median LCP + CLS), per-device breakdown.
+  · UI: /admin/analytics/perf page — per-metric table with color-coded p50/p75/p95 (green/amber/red per Google thresholds), per-route table, per-device chip row.
+- #19 /hi/admin HINDI TWINS:
+  · Lib: src/lib/admin/hi-labels.ts — 60-entry dictionary (sidebar sections, nav items, topbar, buttons, page headers, settings sections, statuses). hi() function with English fallback.
+  · Hook: src/components/admin/use-admin-language.ts — useAdminLanguage hook. Reads ?lang=hi query param (set by /hi/admin redirect), sets localStorage, strips param from URL. Toggle function for the HUD button.
+  · Route: /app/hi/admin/page.tsx — server-side redirect to /admin?lang=hi (preserves any callbackUrl). The admin tree is NOT duplicated — language is a client-side toggle.
+  · UI: LanguageToggle component in TopbarHUD (compact EN/हि button).
+- #20 PERSONALIZATION & PREFERENCES:
+  · Schema: User.adminPrefs column (TEXT, JSON string). DDL: scripts/apply-admin-prefs-schema.ts — EXECUTED on production Turso.
+  · Lib: src/lib/admin/prefs-shared.ts (client-safe: AdminPrefs interface, DEFAULT_PREFS, getLandingPageOptions, parsePrefs, serializePrefs). src/lib/admin/prefs.ts (server-only: getAdminPrefs, updateAdminPrefs with validation).
+  · API: /api/admin/prefs (GET current user's prefs, POST update — merges with existing).
+  · UI: /admin/settings/preferences page — theme toggle (dark/light), default landing page (7 options), default analytics range (7/30/90 days), sidebar collapsed toggle, table page size (10/20/50). Per-user, applied on next login.
+- CRITICAL FIX — prefs-shared.ts split: the original prefs.ts imported db (server-only), which broke the client bundle (node:module in client chunk). Split into prefs-shared.ts (pure constants + parse/serialize, client-safe) + prefs.ts (server-only DB functions). The preferences page imports from prefs-shared.
+- TESTS: tests/lib/admin/vol2-week-d.test.ts (28 tests, jsdom env). Covers: parseVariants/serializeVariants (round-trip, invalid JSON, non-array, malformed variants, 5-variant cap), validateVariantWeights (sum=100, sum=99, <2 variants, >5 variants, duplicate IDs), assignVariant (deterministic, distributes across variants, empty variants, 100/0 weight), experimentCookieName, computeExperimentStats (empty data, conversion rates, significance threshold, lift<10% not significant), HI_ADMIN_LABELS (sidebar labels, nav items, English fallback, hi() function), parsePrefs/serializePrefs (defaults, invalid JSON, round-trip, merge partial), getLandingPageOptions (7 options). test-count gate bumped EXPECTED 94→95. EVENT_NAMES dictionary test updated 39→41. openapi.yaml updated with /api/admin/seo, /api/admin/experiments (GET/POST/PATCH/DELETE), /api/admin/web-vitals, /api/admin/prefs (GET/POST). .gitignore + package.json updated for new scripts.
+- VOL. 2 RETROSPECTIVE: docs/admin-os-vol2-retrospective.md written. Reviews the founding incident (operator still manual), what shipped (20/20 across 4 weeks), the doctrine proven (tree is truth, founder-gated deps don't block, AI non-blocking + override-able, reuse > rebuild), metrics (91→95 test files, 1161→1271 tests, 466→475 pages, +8 API routes, +4 DDL), daily friction removed (~14 min/day, ~85 hours/year), founder-gated carry-overs (still open), Vol. 3 decision (Path A deeper vs Path B growth — agent recommends Path B).
+- FINAL GAUNTLET: 1271/1271 vitest (95 files, +1 new). tsc clean. Build green (475 pages, +4 new routes + 1 redirect).
+
+Stage Summary:
+- VOL. 2 WEEK D CLOSED: 5 of 5. The admin now has SEO intelligence (sitemap census + orphan pages), A/B testing (variant assignment + conversion tracking), Core Web Vitals RUM (real-user monitoring beacon + perf dashboard), Hindi language toggle (60-entry labels dictionary + /hi/admin entry point), and per-user personalization (theme/landing page/range/sidebar/page-size).
+- VOL. 2 COMPLETE: 20 of 20 across 4 weeks. The admin is now keyboard-first, real-time, bulk-capable, mobile-aware, AI-assisted, personalized, measured, and bilingual. The founder's daily friction dropped ~14 min/day. The compound ROI on A/B tests, campaign analytics, and AI auto-tagging is the actual return.
+- VOL. 2 RETROSPECTIVE WRITTEN: docs/admin-os-vol2-retrospective.md. Vol. 3 is a founder decision: Path A (deeper — e2e, hi twins, perf work, activation measurement) vs Path B (growth — campaign launch, content cadence, SEO sprint, first A/B test). Agent recommends Path B.

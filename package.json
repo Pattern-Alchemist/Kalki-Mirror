@@ -22,6 +22,8 @@
     "db:backup": "bash scripts/backup-db.sh",
     "db:apply:email-templates": "npx tsx scripts/apply-email-templates-schema.ts",
     "db:apply:consultation-aitags": "npx tsx scripts/apply-consultation-aitags-schema.ts",
+    "db:apply:experiment": "npx tsx scripts/apply-experiment-schema.ts",
+    "db:apply:admin-prefs": "npx tsx scripts/apply-admin-prefs-schema.ts",
     "ping:indexnow": "bash scripts/ping-indexnow.sh",
     "ping:indexnow:cron": "curl -fsS -H \"Authorization: Bearer ${CRON_SECRET}\" \"${SITE_URL:-https://www.astrokalki.com}/api/indexnow\"",
     "test": "vitest run",
