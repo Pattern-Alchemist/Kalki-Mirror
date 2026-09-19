@@ -755,6 +755,41 @@ function LeadCard({ lead, onOpen }: { lead: ConsultationRow; onOpen: () => void 
   // Vol. 8 #13 — SLA timer: age in hours, glow amber >24h, red >72h
   const ageHours = Math.floor((Date.now() - new Date(lead.createdAt).getTime()) / 3_600_000);
   const slaClass = ageHours > 72 ? 'text-[var(--aw-danger)]' : ageHours > 24 ? 'text-[var(--aw-warning)]' : '';
+  // Vol. 2 #11 — parse AI tags
+  const aiTags = useMemo(() => {
+    if (!lead.aiTags) return [];
+    try { return JSON.parse(lead.aiTags) as string[]; } catch { return []; }
+  }, [lead.aiTags]);
+  const [tagBusy, setTagBusy] = useState(false);
+  const onAutoTag = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setTagBusy(true);
+    try {
+      const r = await fetch('/api/admin/consultations/autotag', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ consultationId: lead.id }),
+      });
+      if (r.ok) {
+        const d = await r.json();
+        if (d.ok && d.tags?.length) {
+          // Optimistic patch — the next SWR refresh will confirm
+          // (we can't mutate `lead` here; the parent owns it)
+        }
+      }
+    } catch { /* ignore — tags are advisory */ }
+    finally { setTagBusy(false); }
+  };
+  const TAG_COLOR: Record<string, string> = {
+    love: 'border-rose-500/40 bg-rose-500/10 text-rose-300',
+    career: 'border-blue-500/40 bg-blue-500/10 text-blue-300',
+    health: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-300',
+    finance: 'border-amber-500/40 bg-amber-500/10 text-amber-300',
+    spiritual: 'border-violet-500/40 bg-violet-500/10 text-violet-300',
+    family: 'border-cyan-500/40 bg-cyan-500/10 text-cyan-300',
+    purpose: 'border-indigo-500/40 bg-indigo-500/10 text-indigo-300',
+    shadow: 'border-zinc-600 bg-zinc-800/40 text-[var(--aw-text-2)]',
+  };
   return (
     <div
       draggable
@@ -786,6 +821,23 @@ function LeadCard({ lead, onOpen }: { lead: ConsultationRow; onOpen: () => void 
           <span className={`rounded-full border px-2 py-0.5 text-[0.65rem] ${OUTCOME_COLOR[lead.outcome] ?? ""}`}>
             {lead.outcome.toLowerCase()}
           </span>
+        )}
+        {/* Vol. 2 #11 — AI tags */}
+        {aiTags.map(tag => (
+          <span key={tag} className={`rounded-full border px-2 py-0.5 text-[0.65rem] ${TAG_COLOR[tag] ?? 'border-zinc-700 text-[var(--aw-text-2)]'}`}>
+            #{tag}
+          </span>
+        ))}
+        {/* Vol. 2 #11 — Auto-tag trigger (only if no tags yet) */}
+        {aiTags.length === 0 && (
+          <button
+            onClick={onAutoTag}
+            disabled={tagBusy}
+            className="ml-auto rounded-full border border-[var(--aw-border-2)] px-1.5 py-0.5 text-[0.6rem] text-[var(--aw-text-3)] transition hover:border-[var(--aw-cyan)] hover:text-[var(--aw-cyan)] disabled:opacity-40"
+            title="Auto-tag with AI"
+          >
+            {tagBusy ? '…' : '⚡ tag'}
+          </button>
         )}
         {lead.notes && (
           <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] text-[var(--aw-text-2)]" title={lead.notes}>

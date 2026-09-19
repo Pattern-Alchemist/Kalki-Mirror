@@ -89,7 +89,15 @@ export default function KeysPage() {
           <h1 className="text-2xl font-semibold text-[var(--aw-text)]">Golden Keys</h1>
           <p className="mt-1 text-sm text-[var(--aw-text-2)]">{total} invite codes</p>
         </div>
-        <ExportButton
+        <div className="flex items-center gap-2">
+          <a
+            href="/admin/keys/campaigns"
+            className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-1.5 text-xs font-medium text-[var(--aw-text-2)] transition hover:text-[var(--aw-text)]"
+            title="Vol. 2 #12 — Campaign analytics"
+          >
+            📊 Campaigns
+          </a>
+          <ExportButton
           label="Keys"
           fetcher={async () => {
             const r = await fetch(`/api/admin/keys?query=${encodeURIComponent(query)}&page=1`);
@@ -108,6 +116,7 @@ export default function KeysPage() {
             createdAt: (r as any).createdAt,
           })}
         />
+        </div>
       </div>
 
       {/* Vol. 6 #11 — Batch Mint Form */}

@@ -36,6 +36,7 @@ export type ConsultationMinAggregateOutputType = {
   notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  aiTags: string | null
   patternDiagnosis: string | null
   prescribedSequence: string | null
   prescribedSiddhis: string | null
@@ -73,6 +74,7 @@ export type ConsultationMaxAggregateOutputType = {
   notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  aiTags: string | null
   patternDiagnosis: string | null
   prescribedSequence: string | null
   prescribedSiddhis: string | null
@@ -110,6 +112,7 @@ export type ConsultationCountAggregateOutputType = {
   notes: number
   createdAt: number
   updatedAt: number
+  aiTags: number
   patternDiagnosis: number
   prescribedSequence: number
   prescribedSiddhis: number
@@ -149,6 +152,7 @@ export type ConsultationMinAggregateInputType = {
   notes?: true
   createdAt?: true
   updatedAt?: true
+  aiTags?: true
   patternDiagnosis?: true
   prescribedSequence?: true
   prescribedSiddhis?: true
@@ -186,6 +190,7 @@ export type ConsultationMaxAggregateInputType = {
   notes?: true
   createdAt?: true
   updatedAt?: true
+  aiTags?: true
   patternDiagnosis?: true
   prescribedSequence?: true
   prescribedSiddhis?: true
@@ -223,6 +228,7 @@ export type ConsultationCountAggregateInputType = {
   notes?: true
   createdAt?: true
   updatedAt?: true
+  aiTags?: true
   patternDiagnosis?: true
   prescribedSequence?: true
   prescribedSiddhis?: true
@@ -333,6 +339,7 @@ export type ConsultationGroupByOutputType = {
   notes: string | null
   createdAt: Date
   updatedAt: Date
+  aiTags: string | null
   patternDiagnosis: string | null
   prescribedSequence: string | null
   prescribedSiddhis: string | null
@@ -391,6 +398,7 @@ export type ConsultationWhereInput = {
   notes?: Prisma.StringNullableFilter<"Consultation"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Consultation"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Consultation"> | Date | string
+  aiTags?: Prisma.StringNullableFilter<"Consultation"> | string | null
   patternDiagnosis?: Prisma.StringNullableFilter<"Consultation"> | string | null
   prescribedSequence?: Prisma.StringNullableFilter<"Consultation"> | string | null
   prescribedSiddhis?: Prisma.StringNullableFilter<"Consultation"> | string | null
@@ -430,6 +438,7 @@ export type ConsultationOrderByWithRelationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  aiTags?: Prisma.SortOrderInput | Prisma.SortOrder
   patternDiagnosis?: Prisma.SortOrderInput | Prisma.SortOrder
   prescribedSequence?: Prisma.SortOrderInput | Prisma.SortOrder
   prescribedSiddhis?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -472,6 +481,7 @@ export type ConsultationWhereUniqueInput = Prisma.AtLeast<{
   notes?: Prisma.StringNullableFilter<"Consultation"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Consultation"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Consultation"> | Date | string
+  aiTags?: Prisma.StringNullableFilter<"Consultation"> | string | null
   patternDiagnosis?: Prisma.StringNullableFilter<"Consultation"> | string | null
   prescribedSequence?: Prisma.StringNullableFilter<"Consultation"> | string | null
   prescribedSiddhis?: Prisma.StringNullableFilter<"Consultation"> | string | null
@@ -511,6 +521,7 @@ export type ConsultationOrderByWithAggregationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  aiTags?: Prisma.SortOrderInput | Prisma.SortOrder
   patternDiagnosis?: Prisma.SortOrderInput | Prisma.SortOrder
   prescribedSequence?: Prisma.SortOrderInput | Prisma.SortOrder
   prescribedSiddhis?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -554,6 +565,7 @@ export type ConsultationScalarWhereWithAggregatesInput = {
   notes?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Consultation"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Consultation"> | Date | string
+  aiTags?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
   patternDiagnosis?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
   prescribedSequence?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
   prescribedSiddhis?: Prisma.StringNullableWithAggregatesFilter<"Consultation"> | string | null
@@ -591,6 +603,7 @@ export type ConsultationCreateInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  aiTags?: string | null
   patternDiagnosis?: string | null
   prescribedSequence?: string | null
   prescribedSiddhis?: string | null
@@ -630,6 +643,7 @@ export type ConsultationUncheckedCreateInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  aiTags?: string | null
   patternDiagnosis?: string | null
   prescribedSequence?: string | null
   prescribedSiddhis?: string | null
@@ -669,6 +683,7 @@ export type ConsultationUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiTags?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   patternDiagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSequence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSiddhis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -708,6 +723,7 @@ export type ConsultationUncheckedUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiTags?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   patternDiagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSequence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSiddhis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -747,6 +763,7 @@ export type ConsultationCreateManyInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  aiTags?: string | null
   patternDiagnosis?: string | null
   prescribedSequence?: string | null
   prescribedSiddhis?: string | null
@@ -784,6 +801,7 @@ export type ConsultationUpdateManyMutationInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiTags?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   patternDiagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSequence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSiddhis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -821,6 +839,7 @@ export type ConsultationUncheckedUpdateManyInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiTags?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   patternDiagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSequence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSiddhis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -858,6 +877,7 @@ export type ConsultationCountOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  aiTags?: Prisma.SortOrder
   patternDiagnosis?: Prisma.SortOrder
   prescribedSequence?: Prisma.SortOrder
   prescribedSiddhis?: Prisma.SortOrder
@@ -895,6 +915,7 @@ export type ConsultationMaxOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  aiTags?: Prisma.SortOrder
   patternDiagnosis?: Prisma.SortOrder
   prescribedSequence?: Prisma.SortOrder
   prescribedSiddhis?: Prisma.SortOrder
@@ -932,6 +953,7 @@ export type ConsultationMinOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  aiTags?: Prisma.SortOrder
   patternDiagnosis?: Prisma.SortOrder
   prescribedSequence?: Prisma.SortOrder
   prescribedSiddhis?: Prisma.SortOrder
@@ -1002,6 +1024,7 @@ export type ConsultationCreateWithoutTestimonialFollowUpInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  aiTags?: string | null
   patternDiagnosis?: string | null
   prescribedSequence?: string | null
   prescribedSiddhis?: string | null
@@ -1040,6 +1063,7 @@ export type ConsultationUncheckedCreateWithoutTestimonialFollowUpInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  aiTags?: string | null
   patternDiagnosis?: string | null
   prescribedSequence?: string | null
   prescribedSiddhis?: string | null
@@ -1094,6 +1118,7 @@ export type ConsultationUpdateWithoutTestimonialFollowUpInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiTags?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   patternDiagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSequence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSiddhis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1132,6 +1157,7 @@ export type ConsultationUncheckedUpdateWithoutTestimonialFollowUpInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiTags?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   patternDiagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSequence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSiddhis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1170,6 +1196,7 @@ export type ConsultationCreateWithoutCompletionNudgesInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  aiTags?: string | null
   patternDiagnosis?: string | null
   prescribedSequence?: string | null
   prescribedSiddhis?: string | null
@@ -1208,6 +1235,7 @@ export type ConsultationUncheckedCreateWithoutCompletionNudgesInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  aiTags?: string | null
   patternDiagnosis?: string | null
   prescribedSequence?: string | null
   prescribedSiddhis?: string | null
@@ -1262,6 +1290,7 @@ export type ConsultationUpdateWithoutCompletionNudgesInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiTags?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   patternDiagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSequence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSiddhis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1300,6 +1329,7 @@ export type ConsultationUncheckedUpdateWithoutCompletionNudgesInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiTags?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   patternDiagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSequence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prescribedSiddhis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1369,6 +1399,7 @@ export type ConsultationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  aiTags?: boolean
   patternDiagnosis?: boolean
   prescribedSequence?: boolean
   prescribedSiddhis?: boolean
@@ -1409,6 +1440,7 @@ export type ConsultationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  aiTags?: boolean
   patternDiagnosis?: boolean
   prescribedSequence?: boolean
   prescribedSiddhis?: boolean
@@ -1446,6 +1478,7 @@ export type ConsultationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  aiTags?: boolean
   patternDiagnosis?: boolean
   prescribedSequence?: boolean
   prescribedSiddhis?: boolean
@@ -1483,6 +1516,7 @@ export type ConsultationSelectScalar = {
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  aiTags?: boolean
   patternDiagnosis?: boolean
   prescribedSequence?: boolean
   prescribedSiddhis?: boolean
@@ -1508,7 +1542,7 @@ export type ConsultationSelectScalar = {
   redeemedCode?: boolean
 }
 
-export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "email" | "phone" | "request" | "status" | "scheduledFor" | "notes" | "createdAt" | "updatedAt" | "patternDiagnosis" | "prescribedSequence" | "prescribedSiddhis" | "sessionNotes" | "outcome" | "followUpDate" | "completedAt" | "utmSource" | "utmMedium" | "utmCampaign" | "utmTerm" | "utmContent" | "clickId" | "country" | "referrerDomain" | "landingPath" | "attributionJson" | "paymentState" | "paymentSession" | "utrRef" | "paidAt" | "patternSlugs" | "redeemedCode", ExtArgs["result"]["consultation"]>
+export type ConsultationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "email" | "phone" | "request" | "status" | "scheduledFor" | "notes" | "createdAt" | "updatedAt" | "aiTags" | "patternDiagnosis" | "prescribedSequence" | "prescribedSiddhis" | "sessionNotes" | "outcome" | "followUpDate" | "completedAt" | "utmSource" | "utmMedium" | "utmCampaign" | "utmTerm" | "utmContent" | "clickId" | "country" | "referrerDomain" | "landingPath" | "attributionJson" | "paymentState" | "paymentSession" | "utrRef" | "paidAt" | "patternSlugs" | "redeemedCode", ExtArgs["result"]["consultation"]>
 export type ConsultationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   testimonialFollowUp?: boolean | Prisma.Consultation$testimonialFollowUpArgs<ExtArgs>
   completionNudges?: boolean | Prisma.Consultation$completionNudgesArgs<ExtArgs>
@@ -1535,6 +1569,7 @@ export type $ConsultationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     notes: string | null
     createdAt: Date
     updatedAt: Date
+    aiTags: string | null
     patternDiagnosis: string | null
     prescribedSequence: string | null
     prescribedSiddhis: string | null
@@ -1994,6 +2029,7 @@ export interface ConsultationFieldRefs {
   readonly notes: Prisma.FieldRef<"Consultation", 'String'>
   readonly createdAt: Prisma.FieldRef<"Consultation", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Consultation", 'DateTime'>
+  readonly aiTags: Prisma.FieldRef<"Consultation", 'String'>
   readonly patternDiagnosis: Prisma.FieldRef<"Consultation", 'String'>
   readonly prescribedSequence: Prisma.FieldRef<"Consultation", 'String'>
   readonly prescribedSiddhis: Prisma.FieldRef<"Consultation", 'String'>

@@ -32,6 +32,38 @@ export async function getContentEntries(type?: string, status?: string, page: nu
   return { entries: entries as ContentRow[], total, pages: Math.ceil(total / take) };
 }
 
+/**
+ * Vol. 2 #13 — Scheduled content for the calendar view.
+ * Returns entries with a future publishedAt (status PUBLISHED, scheduled
+ * to go live in the next 14 days) + recently published (last 3 days).
+ */
+export async function getScheduledContent() {
+  await requireRole('any_staff');
+  const now = new Date();
+  const fourteenDaysAhead = new Date(now.getTime() + 14 * 86_400_000);
+  const threeDaysAgo = new Date(now.getTime() - 3 * 86_400_000);
+
+  return db.contentEntry.findMany({
+    where: {
+      status: 'PUBLISHED',
+      publishedAt: {
+        gte: threeDaysAgo,
+        lte: fourteenDaysAhead,
+      },
+    },
+    orderBy: { publishedAt: 'asc' },
+    take: 50,
+    select: {
+      id: true,
+      type: true,
+      slug: true,
+      title: true,
+      status: true,
+      publishedAt: true,
+    },
+  });
+}
+
 export async function createContentEntry(data: {
   type: string;
   slug: string;

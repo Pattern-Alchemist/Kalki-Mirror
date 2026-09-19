@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { SeekerJourneyTimeline } from "./SeekerJourneyTimeline";
 
 const TIER_BADGE: Record<string, string> = { prithvi: "bg-emerald-500/10 text-emerald-400", jal: "bg-blue-500/10 text-blue-400", agni: "bg-orange-500/10 text-orange-400", akash: "bg-violet-500/10 text-violet-400" };
 
@@ -76,6 +77,9 @@ export default function MemberDetailPage() {
           </div>
         </section>
       )}
+
+      {/* Vol. 2 #15 — Seeker Journey Timeline */}
+      <SeekerJourneyTimeline seekerJourney={data.seekerJourney} timeline={data.timeline} />
     </div>
   );
 }

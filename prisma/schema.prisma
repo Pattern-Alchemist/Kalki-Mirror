@@ -307,6 +307,10 @@ model Consultation {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
+  // Vol. 2 #11 — AI auto-tagging. JSON array string e.g. '["love","career"]'.
+  // Empty/null = not yet tagged. The founder can edit/remove tags.
+  aiTags      String?
+
   // Outcome tracking (added post-consultation by archivist)
   patternDiagnosis    String? // JSON string of diagnosed pattern slugs e.g. '["the-rescuer","the-controller"]'
   prescribedSequence  String? // Sequence slug if a sequence was assigned

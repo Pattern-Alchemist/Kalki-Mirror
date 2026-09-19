@@ -2962,6 +2962,7 @@ export const ConsultationScalarFieldEnum = {
   notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  aiTags: 'aiTags',
   patternDiagnosis: 'patternDiagnosis',
   prescribedSequence: 'prescribedSequence',
   prescribedSiddhis: 'prescribedSiddhis',

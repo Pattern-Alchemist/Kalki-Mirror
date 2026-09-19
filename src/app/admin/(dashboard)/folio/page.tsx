@@ -64,13 +64,23 @@ export default function FolioPage() {
           <h1 className="text-2xl font-semibold text-[var(--aw-text)]">Folio Corpus</h1>
           <p className="mt-1 text-sm text-[var(--aw-text-2)]">{total} chunks indexed</p>
         </div>
-        {/* Vol. 8 #20 — AI Playground toggle */}
-        <button
-          onClick={() => setShowPlayground(!showPlayground)}
-          className={showPlayground ? "aw-btn aw-btn-primary text-xs" : "aw-btn aw-btn-ghost text-xs"}
-        >
+        <div className="flex items-center gap-2">
+          {/* Vol. 2 #14 — Visualizer link */}
+          <a
+            href="/admin/folio/visualize"
+            className="rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-1.5 text-xs font-medium text-[var(--aw-text-2)] transition hover:text-[var(--aw-text)]"
+            title="Vol. 2 #14 — Treemap of all folios by caution + chunk count"
+          >
+            🌐 Visualize
+          </a>
+          {/* Vol. 8 #20 — AI Playground toggle */}
+          <button
+            onClick={() => setShowPlayground(!showPlayground)}
+            className={showPlayground ? "aw-btn aw-btn-primary text-xs" : "aw-btn aw-btn-ghost text-xs"}
+          >
           {showPlayground ? '✦ Playground Active' : '✦ AI Playground'}
         </button>
+        </div>
       </div>
 
       {/* Vol. 8 #20 — AI Playground */}

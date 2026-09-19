@@ -28,6 +28,8 @@ export type ConsultationRow = {
   notes: string | null;
   createdAt: Date;
   updatedAt: Date;
+  // Vol. 2 #11 — AI auto-tags (JSON string array)
+  aiTags: string | null;
   // Attribution layer
   utmSource: string | null;
   utmMedium: string | null;

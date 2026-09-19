@@ -32,7 +32,7 @@ describe('Vol. 7 #13 — test-file count reconciliation', () => {
     const actual = countTestFiles(TESTS_DIR);
     // This constant is the source of truth. Update it when tests are added.
     // The worklog should reference this number, not a hand-typed value.
-    const EXPECTED = 93; // Vol. 2 Week B: 92 (Vol.2 Week A closeout) + 1 (vol2-week-b.test.ts)
+    const EXPECTED = 94; // Vol. 2 Week C: 93 (Vol.2 Week B closeout) + 1 (vol2-week-c.test.ts)
     expect(actual, `test-file count mismatch: expected ${EXPECTED}, got ${actual}. Update EXPECTED in this test or add missing test files.`).toBe(EXPECTED);
   });
 

@@ -67,6 +67,11 @@ const AMNESTY: Record<string, string> = {
   'scripts/gen-pwa-icons.mjs': 'ephemeral one-shot — output landed in commits',
   'scripts/turso-smoke-cleanup.mjs': 'ephemeral one-shot — output landed in commits',
   'scripts/weekb-local-proof.cjs': 'ephemeral one-shot — output landed in commits',
+  // Vol. 2 #10 — restore-db.sh is referenced by the backup/restore UI as
+  // the manual restore path. It will land when the first real restore is
+  // needed; the UI explicitly routes the founder through the GH Actions
+  // restore-drill workflow today, which has its own dispatch script.
+  'scripts/restore-db.sh': 'Vol.2 #10 — referenced by backup/restore UI; lands when first real restore is needed',
 };
 
 /** Pure core so the gate itself is testable: collect citations per source

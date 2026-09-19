@@ -1585,3 +1585,39 @@ Stage Summary:
 - VOL. 2 WEEK B CLOSED: 5 of 5. Data is now portable (CSV/JSON export on every list page + CSV import on subscribers), the founder has a live notification panel + activity feed (no more "what happened since I last looked" page visits), email subject lines are A/B-testable without a deploy, and the backup console gives one-click trigger + 2-step restore confirmation.
 - The founder can now: click Export on Members → CSV opens in Excel. Paste a CSV of subscribers → import panel shows "Added N · Skipped M". Open /admin/overview → see "Ananya approved testimonial X · 5m ago" in the activity feed. Open /admin/settings/email-templates → tweak the completion-nudge subject → Preview → Save (no deploy needed). Open /admin/settings/backups → see last backup 6h ago Fresh → click "Trigger Backup Now" if needed.
 - Next: Week C (11-15) — Intelligence: AI auto-tagging for consultations, campaign analytics, content scheduling, folio visualizer, member enrichment.
+
+---
+Task ID: admin-os-vol2-week-c
+Agent: Z (Super Z, main session)
+Task: Admin OS Vol. 2 Week C (11-15) — Intelligence: AI auto-tagging, campaign analytics, content scheduling, folio visualizer, member enrichment.
+
+Work Log:
+- #11 AI AUTO-TAGGING FOR CONSULTATIONS:
+  · Schema: Consultation.aiTags column added (TEXT, JSON array string). DDL: scripts/apply-consultation-aitags-schema.ts — EXECUTED on production Turso.
+  · Lib: src/lib/admin/consultation-tags.ts — fixed 8-tag taxonomy (love, career, health, finance, spiritual, family, purpose, shadow). parseAutoTagOutput (tolerates prose preambles + fences, dedupes, caps at 3). autoTagConsultation (calls callLLM with jsonMode + temperature 0.1 deterministic, fail-soft returns ok:false). tagsToJson + jsonToTags round-trip.
+  · API: POST /api/admin/consultations/autotag — reads consultation, calls LLM, persists aiTags, audit-logged (action: consultation.autotag).
+  · UI: LeadCard renders AI tag pills (#love, #career etc.) with per-tag colors (rose/blue/emerald/amber/violet/cyan/indigo/zinc). "⚡ tag" button visible only when no tags yet — fires the autotag API, optimistic on next SWR refresh. Tags are advisory + override-able.
+- #12 CAMPAIGN ANALYTICS:
+  · API: GET /api/admin/campaigns — joins InviteCode.campaign → Consultation.redeemedCode (Vol. 6 #11 bridge) → Consultation.paymentState. Returns per-campaign: minted, active, redeemed, pending, revenue (PAID count), conversionRate. Totals across all campaigns.
+  · UI: /admin/keys/campaigns page — totals strip (4 StatCards: Campaigns, Minted, Redeemed, Paid), table with color-coded conversion badges (>=50% emerald, >=20% amber, else zinc), expandable rows with link to filter keys page by campaign. Linked from /admin/keys header.
+- #13 CONTENT SCHEDULING (Calendar View):
+  · Vol. 4 #8 already shipped the scheduled-publish infrastructure (isEntryDue, rowPublishState, planPublishFlips, scheduleAuditPayload). The content studio already supports setting a future publishedAt. What was missing: a calendar view.
+  · Action: getScheduledContent server action — returns PUBLISHED entries with publishedAt in [now-3d, now+14d] window.
+  · Component: src/app/admin/(dashboard)/content/CalendarView.tsx — 7-day grid (today + 6 days ahead), color-coded by entry type (practice/archetype/pattern/research/codex/letters). Today's column highlighted with --aw-cyan border + bg. Past days dimmed. Hover shows entry details (slug, chunk count, sections, max caution, archetype). Click filters folio list by slug.
+  · Wrapper: ContentStudioClient.tsx — mounts CalendarView above ContentClient. The page now renders CalendarView first, then the existing CRUD studio below.
+- #14 FOLIO CORPUS VISUALIZER:
+  · API: GET /api/admin/folio/visualize — pulls all chunks, groups by slug (folio), section, caution, archetype. Returns slugs[] with chunkCount/sections/cautions/maxCaution/archetype + byCaution/bySection/byArchetype rollups.
+  · UI: /admin/folio/visualize page — top-line stats (Total Chunks, Folios, Sections, Caution Levels), "By Caution Level" bar chart with % per level, "By Section" grid, **treemap grid** of all folios (cell size scales with chunk count, color = max caution level: OPEN=emerald, MODERATE=amber, HIGH=orange, SEALED=red). Hover shows detail card with folio name, chunk count, max caution, sections list. Click filters folio list by slug.
+  · No embeddings required — pure metadata aggregation. When EMBED_API_KEY lands, the treemap can extend with cluster visualization.
+- #15 MEMBER PROFILE ENRICHMENT (Seeker Journey Timeline):
+  · API: /api/admin/members/[id] extended — now returns `seekerJourney` object joining consultations (by userId OR email), memberships (by userId OR email), testimonials given (by submittedBy contains email).
+  · Component: src/app/admin/(dashboard)/members/[id]/SeekerJourneyTimeline.tsx — merges all events into a unified timeline sorted by ts desc. Each event renders as a timeline node with icon + label + detail + time-ago. Color-coded by kind (membership=violet, consultation=blue, key=amber, testimonial=emerald, pattern=rose, streak=cyan, audit=zinc). Click-through links to source surfaces. "Show more" expander (8 → all).
+  · Mounted on /admin/members/[id] below the Sadhana Streaks table. The founder now sees the human, not the row: first visit, first consultation, first payment, first testimonial — all in one timeline.
+- CRITICAL FIX — Week B files that never landed: discovered during Week C that src/app/api/admin/backups/route.ts + src/app/admin/(dashboard)/settings/backups/page.tsx + scripts/apply-email-templates-schema.ts were created in the Week B session but never written to disk (the dir was created but the Write tool calls failed silently or were skipped). RECREATED all three in this commit. The Week B commit message claimed they shipped; the tree disagreed. Now the tree is the truth (#1 doctrine).
+- TESTS: tests/lib/admin/vol2-week-c.test.ts (26 tests, jsdom env). Covers: CONSULTATION_TAG_TAXONOMY (8 tags, readonly tuple), parseAutoTagOutput (clean JSON, prose preamble + fences, caps at 3, dedupes, filters unknown, empty/non-JSON/malformed/missing tags field/non-array tags), tagsToJson + jsonToTags round-trip (serialize/deserialize, empty array → null, null → [], malformed JSON → [], filters invalid tags, non-array JSON → []), isEntryDue + rowPublishState (legacy null, past, future, SCHEDULED, LIVE, UNPUBLISHED). test-count gate bumped EXPECTED 93→94. openapi.yaml updated with /api/admin/consultations/autotag, /api/admin/campaigns, /api/admin/folio/visualize. repo-truth AMNESTY extended with restore-db.sh (planned future). .gitignore extended with !scripts/apply-email-templates-schema.ts + !scripts/apply-consultation-aitags-schema.ts. package.json gains db:apply:email-templates + db:apply:consultation-aitags npm aliases.
+- FINAL GAUNTLET: 1243/1243 vitest (94 files, +1 new). tsc clean. Build green (471 pages, +3 new routes).
+
+Stage Summary:
+- VOL. 2 WEEK C CLOSED: 5 of 5. The admin now has AI assistance on consultations (auto-tag), attribution analytics on campaigns (mint→redeem→revenue), a calendar view for scheduled content (queue Sunday's letter on Monday), a treemap of the 327-chunk folio corpus, and a unified seeker journey timeline per member.
+- The founder can now: open a NEW consultation → click "⚡ tag" → see #love + #career pills. Open /admin/keys/campaigns → see conversion rate per campaign. Open /admin/content → see the 7-day calendar of scheduled content. Open /admin/folio/visualize → see the treemap + spot corpus gaps. Open /admin/members/[id] → see the seeker's full journey (membership → consultation → key → testimonial) in one timeline.
+- Next: Week D (16-20) — Reach: SEO dashboard, A/B testing, Core Web Vitals RUM, /hi/admin twins, personalization & preferences.

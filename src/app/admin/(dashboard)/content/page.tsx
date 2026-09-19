@@ -1,5 +1,5 @@
 import { getContentEntries } from "./actions";
-import { ContentClient } from "./content-client";
+import { ContentStudioClient } from "./ContentStudioClient";
 
 /**
  * Vol. 4 #2 — the LIVE Content Studio is the rich client.
@@ -11,6 +11,10 @@ import { ContentClient } from "./content-client";
  * panel port) and it is now structurally closed: the page renders the rich
  * client, and tests/lib/orphan-guard.test.ts fails CI on any future
  * zero-importer component.
+ *
+ * Vol. 2 #13 — CalendarView mounted above the ContentClient. Shows the
+ * next 7 days of scheduled content as a grid so the founder can queue
+ * Sunday's letter on Monday and see it land on the right day.
  *
  * Server component: paged query via the audited server action, then props
  * down. Mutations inside the client call their server actions and refresh
@@ -28,7 +32,7 @@ export default async function ContentPage({ searchParams }: { searchParams: Sear
   const { entries, pages } = await getContentEntries(type, status, page);
 
   return (
-    <ContentClient
+    <ContentStudioClient
       initialEntries={entries}
       totalPages={pages}
       currentPage={page}
