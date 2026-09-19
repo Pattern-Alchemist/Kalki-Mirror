@@ -96,6 +96,11 @@ scripts/geo-ops/logs/
 # Vol. 2 #17 + #20 — schema appliers for the Experiment + adminPrefs columns
 !scripts/apply-experiment-schema.ts
 !scripts/apply-admin-prefs-schema.ts
+# Path B — campaign launch prep + experiment creation + letter ops
+!scripts/mint-campaign-smoke.ts
+!scripts/create-pricing-experiment.ts
+!scripts/check-letters.ts
+!scripts/publish-launch-letters.ts
 # Vol. 4 #16 — the neural-swap rehearsal (keyless precondition checks) + its
 # fingerprint probe (both ship with the repo; the scripts/* rule would swallow them)
 !scripts/rehearse-neural-swap.sh

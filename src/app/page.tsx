@@ -122,6 +122,49 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ═══ Path B #1 — SEO sprint: internal-link the orphan pages ═══
+          These surfaces were in the sitemap but NOT linked from the
+          homepage body (only the footer). Google's crawler deprioritizes
+          footer-only links for crawl budget. This section gives every
+          orphan page a body-level internal link. */}
+      <section className="relative py-16 md:py-20 border-t border-gold/10" aria-labelledby="explore-heading">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+          <div className="max-w-5xl mx-auto">
+            <p className="section-label mb-6">Explore the Full Mirror</p>
+            <h2 id="explore-heading" className="font-display text-2xl md:text-3xl text-foreground leading-tight tracking-wide mb-8 hero-heading">
+              Every door, one tap away.
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {[
+                { href: '/pricing', label: 'Pricing & Tiers', desc: 'Jal · Agni · Akash' },
+                { href: '/consultations', label: 'Consultations', desc: '1:1 guidance' },
+                { href: '/letters', label: 'Letters', desc: 'Broadcast archive' },
+                { href: '/email-course', label: '10 Doors Course', desc: 'Free email sādhanā' },
+                { href: '/guhya', label: 'Guhya', desc: 'The threshold' },
+                { href: '/aghori-tantra', label: 'Aghorī Tantra', desc: '8-phase course' },
+                { href: '/karma', label: 'Karma Map', desc: 'The complete path' },
+                { href: '/codex', label: 'Kalki Codex', desc: 'Source texts' },
+                { href: '/library', label: 'Sādhana Library', desc: 'Curated practices' },
+                { href: '/research', label: 'Research', desc: 'Epistemic sources' },
+                { href: '/about', label: 'About', desc: 'The founder' },
+                { href: '/usa', label: 'USA', desc: 'Local astrology' },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="group rounded-xl border border-gold/15 bg-black/20 p-4 transition-all hover:border-gold/40 hover:bg-black/40"
+                >
+                  <p className="font-display text-sm text-foreground tracking-wide group-hover:text-gold transition-colors">
+                    {item.label}
+                  </p>
+                  <p className="text-[11px] text-foreground/50 mt-1">{item.desc}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ FAQ — server-rendered questions + FAQPage schema ═══
           Direct-answer blocks targeting the questions seekers actually
           ask AI engines and Google ("what is kalki", "is tantra safe

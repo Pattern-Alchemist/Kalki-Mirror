@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { FAQ_DATA } from './faq-data';
 import { track } from '@/lib/analytics/track';
+import { useExperiment } from '@/lib/analytics/use-experiment';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import { PageHero } from '@/components/layout/PageHero';
@@ -88,10 +89,22 @@ function buildWhatsAppLink(tierName: string, priceStr: string, cycle: BillingCyc
 }
 export default function PricingPageClient({ pricingTiers: tiers }: PricingPageProps) {
   const { tier: currentTier, currency, setCurrency } = useTier();
+  // Path B #3 — A/B test the pricing headline. Variant A = "The Covenant"
+  // (original). Variant B = "Choose Your Path" (more direct, action-oriented).
+  // Assignment is sticky (30-day cookie). Conversion metric: pricing_viewed.
+  const { variantId } = useExperiment('pricing-headline', [
+    { id: 'A', weight: 50 },
+    { id: 'B', weight: 50 },
+  ]);
+  const heroTitle = variantId === 'B' ? 'Choose Your Path' : 'The Covenant';
+  const heroSubtitle = variantId === 'B'
+    ? 'Four tiers. One destination. Pick the door that matches where you are right now.'
+    : 'Four access levels. One path to Shambhala. Each tier unlocks deeper layers of the Akashic Archive.';
   // Vol. 2 #3 — USD display A/B instrumentation: pricing_viewed now carries
-  // the currency the visitor actually saw + the billing cycle default, so
-  // the funnel can correlate display currency → wizard click-through.
-  useEffect(() => { track('pricing_viewed', { properties: { currency, billing: 'monthly' } }); }, [currency]);
+  // the currency the visitor actually saw + the billing cycle default + the
+  // experiment variant, so the funnel can correlate display currency → wizard
+  // click-through + A/B variant → conversion.
+  useEffect(() => { track('pricing_viewed', { properties: { currency, billing: 'monthly', expVariant: variantId } }); }, [currency, variantId]);
   const reduced = useNativeReducedMotion();
   const [billing, setBilling] = useState<BillingCycle>('monthly');
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
@@ -169,7 +182,7 @@ export default function PricingPageClient({ pricingTiers: tiers }: PricingPagePr
 
   return (
     <div className="bg-deep-black min-h-screen">
-      <PageHero image='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pricing/fire-ritual-yantra-hero' title="The Covenant" subtitle="Four access levels. One path to Shambhala. Each tier unlocks deeper layers of the Akashic Archive." sectionLabel="Sacred Offerings" minH='min-h-[90vh] md:min-h-[100vh]' />
+      <PageHero image='https://res.cloudinary.com/b9oo5abp/image/upload/f_auto,q_auto:good,w_1920,c_limit/kalki-mirror/pricing/fire-ritual-yantra-hero' title={heroTitle} subtitle={heroSubtitle} sectionLabel="Sacred Offerings" minH='min-h-[90vh] md:min-h-[100vh]' />
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 md:py-28">
         <BackButton href="/" label="Back to Home" className="mb-10" />
