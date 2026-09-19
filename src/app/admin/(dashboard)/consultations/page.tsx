@@ -247,6 +247,16 @@ export default function ConsultationsPage() {
     [],
   );
 
+  // Vol. 8 #13 — drag-and-drop: change status by lead ID (not object)
+  const changeStatusRaw = useCallback(
+    async (leadId: string, newStatus: string) => {
+      const lead = leads.find((l) => l.id === leadId);
+      if (!lead || lead.status === newStatus) return;
+      await changeStatus(lead, newStatus);
+    },
+    [leads, changeStatus],
+  );
+
   const saveNotes = useCallback(
     async (lead: ConsultationRow, notes: string) => {
       setSavingStatus(true);
@@ -455,11 +465,20 @@ export default function ConsultationsPage() {
         </div>
       )}
 
-      {/* Kanban board — horizontal snap-scroll on small screens, 5-col grid on xl */}
+      {/* Kanban board — Vol. 8 #13: HTML5 drag-and-drop + SLA timers */}
       <div className="overflow-x-auto pb-2 snap-x snap-mandatory xl:overflow-visible">
         <div className="grid min-w-[900px] grid-cols-5 gap-4 xl:min-w-0">
           {PIPELINE.map((status) => (
-            <div key={status} className="snap-start rounded-xl border border-[var(--aw-border-2)]/80 bg-transparent/40 p-3">
+            <div
+              key={status}
+              className="snap-start rounded-xl border border-[var(--aw-border-2)]/80 bg-transparent/40 p-3 transition-colors"
+              onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }}
+              onDrop={(e) => {
+                e.preventDefault();
+                const leadId = e.dataTransfer.getData('text/plain');
+                if (leadId) changeStatusRaw(leadId, status);
+              }}
+            >
               <div className="mb-3 flex items-center justify-between px-1">
                 <div className="flex items-center gap-2">
                   <span className={`h-2 w-2 rounded-full ${STATUS_DOT[status]}`} />
@@ -476,7 +495,9 @@ export default function ConsultationsPage() {
                   <LeadCard key={lead.id} lead={lead} onOpen={() => setSelected(lead)} />
                 ))}
                 {!loading && byStatus[status].length === 0 && (
-                  <p className="px-1 py-4 text-xs text-zinc-700">Empty</p>
+                  <div className="px-1 py-4 text-xs text-zinc-700 text-center border-2 border-dashed border-zinc-800/50 rounded-lg">
+                    Drop here
+                  </div>
                 )}
               </div>
             </div>
@@ -662,14 +683,19 @@ function OutcomeSection({
 
 function LeadCard({ lead, onOpen }: { lead: ConsultationRow; onOpen: () => void }) {
   const src = leadSource(lead);
+  // Vol. 8 #13 — SLA timer: age in hours, glow amber >24h, red >72h
+  const ageHours = Math.floor((Date.now() - new Date(lead.createdAt).getTime()) / 3_600_000);
+  const slaClass = ageHours > 72 ? 'text-[var(--aw-danger)]' : ageHours > 24 ? 'text-[var(--aw-warning)]' : '';
   return (
-    <button
+    <div
+      draggable
+      onDragStart={(e) => { e.dataTransfer.setData('text/plain', lead.id); e.dataTransfer.effectAllowed = 'move'; }}
       onClick={onOpen}
-      className="w-full aw-card p- text-left transition-colors hover:border-[var(--aw-border-2)] hover:bg-[var(--aw-glass-1)]"
+      className="w-full aw-card p-3 text-left transition-colors hover:border-[var(--aw-border-2)] hover:bg-[var(--aw-glass-1)] cursor-grab active:cursor-grabbing"
     >
       <div className="flex items-start justify-between gap-2">
         <p className="truncate text-sm font-medium text-[var(--aw-text)]">{lead.name}</p>
-        <span className="shrink-0 text-[0.65rem] text-[var(--aw-text-3)]">{timeAgo(lead.createdAt)}</span>
+        <span className={`shrink-0 text-[0.65rem] ${slaClass}`}>{timeAgo(lead.createdAt)}</span>
       </div>
       <p className="mt-0.5 truncate text-xs text-[var(--aw-text-2)]">{lead.phone || lead.email || "—"}</p>
       <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-[var(--aw-text-2)]">{lead.request}</p>
@@ -698,7 +724,7 @@ function LeadCard({ lead, onOpen }: { lead: ConsultationRow; onOpen: () => void 
           </span>
         )}
       </div>
-    </button>
+    </div>
   );
 }
 
