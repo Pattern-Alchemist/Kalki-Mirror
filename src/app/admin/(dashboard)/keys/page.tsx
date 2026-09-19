@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState, useCallback, type FormEvent } from "react";
-import { generateKeys, revokeKey } from "./actions";
+import { generateKeys, revokeKey, bulkRevokeKeys } from "./actions";
 import { KeyQRModal } from "./KeyQRModal";
+import { BulkActionBar, useRowSelection } from "@/components/admin/BulkActionBar";
 
 export default function KeysPage() {
   const [keys, setKeys] = useState<any[]>([]);
@@ -20,6 +21,10 @@ export default function KeysPage() {
   const [mintResult, setMintResult] = useState<string | null>(null);
   const [qrCode, setQrCode] = useState<string | null>(null);
 
+  // Vol. 2 #4 — bulk selection
+  const sel = useRowSelection();
+  const [bulkBusy, setBulkBusy] = useState(false);
+
   const fetchKeys = useCallback(async () => {
     setLoading(true);
     try {
@@ -30,6 +35,20 @@ export default function KeysPage() {
   }, [query, page]);
 
   useEffect(() => { fetchKeys(); }, [fetchKeys]);
+
+  const onBulkRevoke = useCallback(async () => {
+    if (sel.selectedCount === 0) return;
+    if (!confirm(`Revoke ${sel.selectedCount} keys? This cannot be undone.`)) return;
+    setBulkBusy(true);
+    try {
+      const r = await bulkRevokeKeys(sel.selectedIds);
+      setMintResult(`Revoked ${r.affected} keys.`);
+      sel.clear();
+      await fetchKeys();
+    } catch (e) {
+      setMintResult(`Bulk revoke failed: ${e instanceof Error ? e.message : 'unknown'}`);
+    } finally { setBulkBusy(false); }
+  }, [sel, fetchKeys]);
 
   const handleMint = useCallback(async (e: FormEvent) => {
     e.preventDefault();
@@ -108,9 +127,29 @@ export default function KeysPage() {
 
       <input type="text" placeholder="Search code, creator, or campaign..." value={query} onChange={e => { setQuery(e.target.value); setPage(1); }} className="w-full max-w-sm rounded-lg border border-[var(--aw-border-2)] bg-[var(--aw-glass-1)] px-3 py-2 text-sm text-[var(--aw-text)] placeholder-zinc-600 focus:border-amber-500/50 focus:outline-none" />
       {loading && <p className="text-[var(--aw-text-2)] text-sm">Loading...</p>}
+
+      {/* Vol. 2 #4 — BulkActionBar for revoke */}
+      <BulkActionBar
+        selectedCount={sel.selectedCount}
+        onClear={sel.clear}
+        actions={[
+          { label: 'Revoke selected', onClick: onBulkRevoke, variant: 'danger', loading: bulkBusy },
+        ]}
+      />
+
       <div className="overflow-x-auto aw-table">
         <table className="w-full text-left text-sm">
           <thead><tr className="border-b border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]">
+            <th scope="col" className="px-2 py-3 w-10">
+              <input
+                type="checkbox"
+                aria-label="Select all keys"
+                checked={keys.length > 0 && keys.every(k => sel.isSelected(k.id))}
+                ref={el => { if (el) el.indeterminate = sel.selectedCount > 0 && sel.selectedCount < keys.length; }}
+                onChange={() => sel.toggleAll(keys.map(k => k.id))}
+                className="h-3.5 w-3.5 accent-amber-500 cursor-pointer"
+              />
+            </th>
             <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Code</th>
             <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Tier</th>
             <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Uses</th>
@@ -121,7 +160,16 @@ export default function KeysPage() {
           </tr></thead>
           <tbody className="divide-y divide-zinc-800/50">
             {keys.map(k => (
-              <tr key={k.id} className="transition hover:bg-[var(--aw-glass-1)]/30">
+              <tr key={k.id} className={`transition hover:bg-[var(--aw-glass-1)]/30 ${sel.isSelected(k.id) ? 'bg-[var(--aw-glass-1)]/40' : ''}`}>
+                <td className="px-2 py-3">
+                  <input
+                    type="checkbox"
+                    aria-label={`Select key ${k.code}`}
+                    checked={sel.isSelected(k.id)}
+                    onChange={() => sel.toggle(k.id)}
+                    className="h-3.5 w-3.5 accent-amber-500 cursor-pointer"
+                  />
+                </td>
                 <td className="px-4 py-3 font-mono text-xs text-[var(--aw-cyan)]">{k.code}</td>
                 <td className="px-4 py-3 text-[var(--aw-text-2)] text-xs">{k.tierGranted}</td>
                 <td className="px-4 py-3 tabular-nums text-[var(--aw-text-2)] text-xs">{k._count.usages}/{k.maxUses}</td>

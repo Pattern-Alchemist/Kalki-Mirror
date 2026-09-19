@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   getTestimonials,
   createTestimonial,
@@ -8,8 +8,13 @@ import {
   hideTestimonial,
   toggleFeatured,
   deleteTestimonial,
+  bulkApproveTestimonials,
+  bulkHideTestimonials,
+  bulkDeleteTestimonials,
+  bulkFeatureTestimonials,
   type TestimonialRow,
 } from "./actions";
+import { BulkActionBar, useRowSelection } from "@/components/admin/BulkActionBar";
 
 const STATUSES = ["PENDING", "APPROVED", "HIDDEN"] as const;
 const STATUS_CHIP: Record<string, string> = {
@@ -31,6 +36,67 @@ export default function TestimonialsPage() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
+
+  // Vol. 2 #4 — bulk selection (declared early so load() can be referenced by handlers below)
+  const sel = useRowSelection();
+  const [bulkBusy, setBulkBusy] = useState(false);
+
+  // Forward-declared via useCallback so it can be referenced by bulk handlers
+  const loadRef = useRef<() => Promise<void>>(async () => {});
+
+  const onBulkApprove = useCallback(async () => {
+    if (sel.selectedCount === 0) return;
+    if (!confirm(`Approve ${sel.selectedCount} testimonials? They'll go live on /consultations.`)) return;
+    setBulkBusy(true);
+    try {
+      const r = await bulkApproveTestimonials(sel.selectedIds);
+      setNotice(`Approved ${r.affected} testimonials.`);
+      sel.clear();
+      await loadRef.current();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Bulk approve failed.");
+    } finally { setBulkBusy(false); }
+  }, [sel]);
+
+  const onBulkHide = useCallback(async () => {
+    if (sel.selectedCount === 0) return;
+    setBulkBusy(true);
+    try {
+      const r = await bulkHideTestimonials(sel.selectedIds);
+      setNotice(`Hid ${r.affected} testimonials.`);
+      sel.clear();
+      await loadRef.current();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Bulk hide failed.");
+    } finally { setBulkBusy(false); }
+  }, [sel]);
+
+  const onBulkDelete = useCallback(async () => {
+    if (sel.selectedCount === 0) return;
+    if (!confirm(`Permanently delete ${sel.selectedCount} testimonials? This cannot be undone.`)) return;
+    setBulkBusy(true);
+    try {
+      const r = await bulkDeleteTestimonials(sel.selectedIds);
+      setNotice(`Deleted ${r.affected} testimonials.`);
+      sel.clear();
+      await loadRef.current();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Bulk delete failed.");
+    } finally { setBulkBusy(false); }
+  }, [sel]);
+
+  const onBulkFeature = useCallback(async (featured: boolean) => {
+    if (sel.selectedCount === 0) return;
+    setBulkBusy(true);
+    try {
+      const r = await bulkFeatureTestimonials(sel.selectedIds, featured);
+      setNotice(`${featured ? 'Featured' : 'Unfeatured'} ${r.affected} testimonials.`);
+      sel.clear();
+      await loadRef.current();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Bulk feature failed.");
+    } finally { setBulkBusy(false); }
+  }, [sel]);
 
   // New-entry form — seeker words arrive over WhatsApp, entered here with consent.
   const [form, setForm] = useState({
@@ -95,6 +161,8 @@ export default function TestimonialsPage() {
       setLoading(false);
     }
   }, []);
+  // Keep the ref in sync so the bulk handlers above can call load()
+  loadRef.current = load;
 
   useEffect(() => {
     load();
@@ -251,11 +319,34 @@ export default function TestimonialsPage() {
         </button>
       </div>
 
+      {/* Vol. 2 #4 — BulkActionBar appears when rows are selected */}
+      <BulkActionBar
+        selectedCount={sel.selectedCount}
+        onClear={sel.clear}
+        actions={[
+          { label: 'Approve', onClick: onBulkApprove, variant: 'primary', loading: bulkBusy },
+          { label: 'Feature', onClick: () => onBulkFeature(true), loading: bulkBusy },
+          { label: 'Unfeature', onClick: () => onBulkFeature(false), loading: bulkBusy },
+          { label: 'Hide', onClick: onBulkHide, loading: bulkBusy },
+          { label: 'Delete', onClick: onBulkDelete, variant: 'danger', loading: bulkBusy },
+        ]}
+      />
+
       {/* Ledger */}
       <div className="overflow-x-auto aw-table">
         <table className="w-full min-w-[900px] text-left text-sm">
           <thead>
             <tr className="border-b border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]/60 text-xs uppercase tracking-wider text-[var(--aw-text-2)]">
+              <th scope="col" className="px-2 py-3 w-10">
+                <input
+                  type="checkbox"
+                  aria-label="Select all testimonials"
+                  checked={rows.length > 0 && rows.every(r => sel.isSelected(r.id))}
+                  ref={el => { if (el) el.indeterminate = sel.selectedCount > 0 && sel.selectedCount < rows.length; }}
+                  onChange={() => sel.toggleAll(rows.map(r => r.id))}
+                  className="h-3.5 w-3.5 accent-amber-500 cursor-pointer"
+                />
+              </th>
               <th scope="col" className="px-4 py-3 font-medium">Quote</th>
               <th scope="col" className="px-4 py-3 font-medium">Seeker</th>
               <th scope="col" className="px-4 py-3 font-medium">Status</th>
@@ -265,13 +356,22 @@ export default function TestimonialsPage() {
           </thead>
           <tbody>
             {loading && (
-              <tr><td colSpan={5} className="px-4 py-6 text-center text-[var(--aw-text-2)]">Loading ledger…</td></tr>
+              <tr><td colSpan={6} className="px-4 py-6 text-center text-[var(--aw-text-2)]">Loading ledger…</td></tr>
             )}
             {!loading && rows.length === 0 && (
-              <tr><td colSpan={5} className="px-4 py-6 text-center text-[var(--aw-text-2)]">Nothing yet — after a session, ask the seeker for three honest sentences and their consent, then enter them above.</td></tr>
+              <tr><td colSpan={6} className="px-4 py-6 text-center text-[var(--aw-text-2)]">Nothing yet — after a session, ask the seeker for three honest sentences and their consent, then enter them above.</td></tr>
             )}
             {!loading && rows.map((t) => (
-              <tr key={t.id} className="border-b border-[var(--aw-border-2)]/60 last:border-0 align-top">
+              <tr key={t.id} className={`border-b border-[var(--aw-border-2)]/60 last:border-0 align-top ${sel.isSelected(t.id) ? 'bg-[var(--aw-glass-1)]/40' : ''}`}>
+                <td className="px-2 py-3">
+                  <input
+                    type="checkbox"
+                    aria-label={`Select testimonial from ${t.name || 'anonymous'}`}
+                    checked={sel.isSelected(t.id)}
+                    onChange={() => sel.toggle(t.id)}
+                    className="h-3.5 w-3.5 accent-amber-500 cursor-pointer"
+                  />
+                </td>
                 <td className="max-w-md px-4 py-3">
                   <p className="text-[var(--aw-text-2)]">&ldquo;{t.quote.length > 180 ? t.quote.slice(0, 180) + "…" : t.quote}&rdquo;</p>
                   {t.submittedBy && <p className="mt-1 text-[10px] text-[var(--aw-text-3)]">entered by {t.submittedBy}</p>}

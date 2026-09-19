@@ -118,3 +118,37 @@ export async function revokeKey(codeId: string) {
   revalidatePath('/admin/keys');
   return { success: true };
 }
+
+/**
+ * Vol. 2 #4 — Bulk revoke. Marks all selected keys inactive.
+ * Capped at 200 to prevent runaway admin operations.
+ */
+export async function bulkRevokeKeys(codeIds: string[]) {
+  const actorId = await requireRole('admin_plus');
+  const safeIds = codeIds.slice(0, 200);
+
+  const result = await db.inviteCode.updateMany({
+    where: { id: { in: safeIds }, active: true },
+    data: { active: false },
+  });
+
+  await logAudit({
+    action: "key.bulk.revoke",
+    entity: "InviteCode",
+    actorId,
+    before: { count: safeIds.length },
+    after: { affected: result.count },
+  });
+
+  await dispatchWebhooks('key.bulk.revoke', { count: safeIds.length, affected: result.count });
+  await broadcastNotification({
+    title: 'Bulk Key Revocation',
+    body: `${result.count} of ${safeIds.length} keys revoked`,
+    type: 'warning',
+    href: '/admin/keys',
+  });
+
+  revalidatePath('/admin/overview');
+  revalidatePath('/admin/keys');
+  return { success: true, affected: result.count };
+}

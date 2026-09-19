@@ -202,6 +202,90 @@ export async function deleteTestimonial(id: string) {
   return { success: true as const };
 }
 
+/**
+ * Vol. 2 #4 — Bulk operations for testimonials.
+ * Approve, hide, feature, or delete many rows in one call.
+ * Each row is updated individually (small N, keeps audit log per-row).
+ */
+export async function bulkApproveTestimonials(ids: string[]) {
+  await requireAdmin();
+  const safeIds = ids.slice(0, 200);
+  let affected = 0;
+  for (const id of safeIds) {
+    try {
+      await db.testimonial.update({
+        where: { id },
+        data: { status: "APPROVED", approvedAt: new Date() },
+      });
+      affected++;
+    } catch { /* row may have been deleted concurrently — skip */ }
+  }
+  await logAudit({
+    action: "testimonial.bulk.approve",
+    entity: "Testimonial",
+    after: { count: safeIds.length, affected },
+  });
+  void pingConsultations();
+  revalidatePath("/admin/testimonials");
+  revalidatePath("/consultations");
+  return { success: true as const, affected };
+}
+
+export async function bulkHideTestimonials(ids: string[]) {
+  await requireAdmin();
+  const safeIds = ids.slice(0, 200);
+  let affected = 0;
+  for (const id of safeIds) {
+    try {
+      await db.testimonial.update({
+        where: { id },
+        data: { status: "HIDDEN", featured: false },
+      });
+      affected++;
+    } catch { /* skip */ }
+  }
+  await logAudit({
+    action: "testimonial.bulk.hide",
+    entity: "Testimonial",
+    after: { count: safeIds.length, affected },
+  });
+  revalidatePath("/admin/testimonials");
+  revalidatePath("/consultations");
+  return { success: true as const, affected };
+}
+
+export async function bulkDeleteTestimonials(ids: string[]) {
+  await requireAdmin();
+  const safeIds = ids.slice(0, 200);
+  const result = await db.testimonial.deleteMany({ where: { id: { in: safeIds } } });
+  await logAudit({
+    action: "testimonial.bulk.delete",
+    entity: "Testimonial",
+    after: { count: safeIds.length, affected: result.count },
+  });
+  revalidatePath("/admin/testimonials");
+  revalidatePath("/consultations");
+  return { success: true as const, affected: result.count };
+}
+
+export async function bulkFeatureTestimonials(ids: string[], featured: boolean) {
+  await requireAdmin();
+  const safeIds = ids.slice(0, 200);
+  // Only APPROVED rows can be featured
+  const result = await db.testimonial.updateMany({
+    where: { id: { in: safeIds }, status: "APPROVED" },
+    data: { featured },
+  });
+  await logAudit({
+    action: "testimonial.bulk.feature",
+    entity: "Testimonial",
+    after: { count: safeIds.length, affected: result.count, featured },
+  });
+  revalidatePath("/admin/testimonials");
+  revalidatePath("/consultations");
+  return { success: true as const, affected: result.count };
+}
+
 async function pingConsultations(): Promise<void> {
   try {
     const { pingIndexNow } = await import("@/lib/seo/indexnow");

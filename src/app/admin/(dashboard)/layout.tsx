@@ -5,6 +5,8 @@ import { AdminBreadcrumbs } from "@/components/admin/breadcrumbs";
 import { AdminSessionProvider } from "@/components/admin/session-provider";
 import { MobileSidebarToggle } from "@/components/admin/mobile-sidebar-toggle";
 import { GlobalSearch } from "@/components/admin/global-search";
+import { CommandPalette } from "@/components/admin/CommandPalette";
+import { GlobalShortcutRegistrar } from "@/components/admin/GlobalShortcutRegistrar";
 import { NotificationBell } from "@/components/admin/notification-bell";
 import { ThemeToggle } from "@/components/admin/theme-toggle";
 import { TwoFactorGraceBanner } from "@/components/admin/two-factor-grace-banner";
@@ -37,6 +39,8 @@ export default async function AdminDashboardLayout({
   return (
     <AdminSessionProvider user={userData}>
       <TourProvider>
+        <GlobalShortcutRegistrar />
+        <CommandPalette />
         <div className="aw-shell flex h-screen text-[var(--aw-text)]">
           <div className="hidden lg:block">
             <AdminSidebar />

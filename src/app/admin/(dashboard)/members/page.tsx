@@ -1,8 +1,11 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import { BulkActionBar, useRowSelection } from "@/components/admin/BulkActionBar";
+import { bulkUpdateTier } from "./actions";
 
 const TIERS = ["ALL", "prithvi", "jal", "agni", "akash"];
+const TIER_BADGE: Record<string, string> = { prithvi: "bg-emerald-500/10 text-emerald-400", jal: "bg-blue-500/10 text-blue-400", agni: "bg-orange-500/10 text-orange-400", akash: "bg-violet-500/10 text-violet-400" };
 
 export default function MembersPage() {
   const [members, setMembers] = useState<any[]>([]);
@@ -13,6 +16,11 @@ export default function MembersPage() {
   const [tier, setTier] = useState("ALL");
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
+  const [notice, setNotice] = useState("");
+
+  // Vol. 2 #4 — bulk selection
+  const sel = useRowSelection();
+  const [bulkBusy, setBulkBusy] = useState(false);
 
   const fetchMembers = useCallback(async () => {
     setLoading(true);
@@ -30,7 +38,20 @@ export default function MembersPage() {
 
   useEffect(() => { fetchMembers(); }, [fetchMembers]);
 
-  const TIER_BADGE: Record<string, string> = { prithvi: "bg-emerald-500/10 text-emerald-400", jal: "bg-blue-500/10 text-blue-400", agni: "bg-orange-500/10 text-orange-400", akash: "bg-violet-500/10 text-violet-400" };
+  const onBulkTier = useCallback(async (newTier: string) => {
+    if (sel.selectedCount === 0) return;
+    const reason = prompt(`Set ${sel.selectedCount} members to tier "${newTier}"? Reason:`);
+    if (!reason) return;
+    setBulkBusy(true);
+    try {
+      const r = await bulkUpdateTier(sel.selectedIds, newTier, reason);
+      setNotice(`Updated ${r.affected} members to ${newTier}.`);
+      sel.clear();
+      await fetchMembers();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Bulk update failed.");
+    } finally { setBulkBusy(false); }
+  }, [sel, fetchMembers]);
 
   return (
     <div className="space-y-6">
@@ -45,12 +66,35 @@ export default function MembersPage() {
         </div>
       </div>
 
+      {/* Vol. 2 #4 — BulkActionBar for tier updates */}
+      <BulkActionBar
+        selectedCount={sel.selectedCount}
+        onClear={sel.clear}
+        actions={[
+          { label: '→ Prithvi', onClick: () => onBulkTier('prithvi'), loading: bulkBusy },
+          { label: '→ Jal', onClick: () => onBulkTier('jal'), loading: bulkBusy },
+          { label: '→ Agni', onClick: () => onBulkTier('agni'), loading: bulkBusy },
+          { label: '→ Akash', onClick: () => onBulkTier('akash'), loading: bulkBusy },
+        ]}
+      />
+
+      {notice && <p className="text-xs text-emerald-300">{notice}</p>}
       {err && <p className="text-red-400 text-sm">{err}</p>}
       {loading && <p className="text-[var(--aw-text-2)] text-sm">Loading...</p>}
 
       <div className="overflow-x-auto aw-table">
         <table className="w-full text-left text-sm">
           <thead><tr className="border-b border-[var(--aw-border-2)] bg-[var(--aw-glass-1)]">
+            <th scope="col" className="px-2 py-3 w-10">
+              <input
+                type="checkbox"
+                aria-label="Select all members"
+                checked={members.length > 0 && members.every(m => sel.isSelected(m.id))}
+                ref={el => { if (el) el.indeterminate = sel.selectedCount > 0 && sel.selectedCount < members.length; }}
+                onChange={() => sel.toggleAll(members.map(m => m.id))}
+                className="h-3.5 w-3.5 accent-amber-500 cursor-pointer"
+              />
+            </th>
             <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Email</th>
             <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Name</th>
             <th scope="col" className="px-4 py-3 font-medium text-[var(--aw-text-2)]">Tier</th>
@@ -60,7 +104,16 @@ export default function MembersPage() {
           </tr></thead>
           <tbody className="divide-y divide-zinc-800/50">
             {members.map(m => (
-              <tr key={m.id} className="transition hover:bg-[var(--aw-glass-1)]/30">
+              <tr key={m.id} className={`transition hover:bg-[var(--aw-glass-1)]/30 ${sel.isSelected(m.id) ? 'bg-[var(--aw-glass-1)]/40' : ''}`}>
+                <td className="px-2 py-3">
+                  <input
+                    type="checkbox"
+                    aria-label={`Select ${m.email}`}
+                    checked={sel.isSelected(m.id)}
+                    onChange={() => sel.toggle(m.id)}
+                    className="h-3.5 w-3.5 accent-amber-500 cursor-pointer"
+                  />
+                </td>
                 <td className="px-4 py-3"><Link href={`/admin/members/${m.id}`} className="text-[var(--aw-cyan)] hover:text-amber-300">{m.email}</Link></td>
                 <td className="px-4 py-3 text-[var(--aw-text-2)]">{m.name || "-"}</td>
                 <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-medium ${TIER_BADGE[m.tier] || "text-[var(--aw-text-2)]"}`}>{m.tier}</span></td>

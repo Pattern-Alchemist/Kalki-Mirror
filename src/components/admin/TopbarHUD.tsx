@@ -1,15 +1,34 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useAdminSWR } from '@/components/admin/use-admin-swr';
 
 // =============================================================
 // VOL. 8 #8 — Topbar HUD Strip
 // Persistent status bar: env badge, 2FA status, pending counts, clock
+// VOL. 2 #5 — Upgraded to SWR: revalidates every 30s + on focus.
 // =============================================================
+
+interface PendingStats {
+  pendingConsultations: number;
+}
 
 export function TopbarHUD() {
   const [time, setTime] = useState('');
-  const [pendingConsultations, setPendingConsultations] = useState<number | null>(null);
+
+  // Vol. 2 #5 — SWR keeps the pending count live.
+  // Refreshes every 30s + on window focus + on reconnect.
+  const { data: stats } = useAdminSWR<PendingStats>({
+    key: 'hud-pending-stats',
+    fetcher: async () => {
+      const res = await fetch('/api/admin/stats?summary=pending');
+      if (!res.ok) throw new Error('failed');
+      const d = await res.json();
+      return { pendingConsultations: d.pendingConsultations ?? 0 };
+    },
+    refreshInterval: 30_000,
+    revalidateOnFocus: true,
+  });
 
   useEffect(() => {
     // Live clock (IST)
@@ -25,29 +44,11 @@ export function TopbarHUD() {
     };
     updateClock();
     const interval = setInterval(updateClock, 30000);
-
-    // Fetch pending consultations count (fail-soft)
-    const fetchPending = async () => {
-      try {
-        const res = await fetch('/api/admin/stats?summary=pending');
-        if (res.ok) {
-          const data = await res.json();
-          setPendingConsultations(data.pendingConsultations ?? 0);
-        }
-      } catch {
-        // fail-soft — don't show the count
-      }
-    };
-    fetchPending();
-    const pendingInterval = setInterval(fetchPending, 60000);
-
-    return () => {
-      clearInterval(interval);
-      clearInterval(pendingInterval);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   const isProd = typeof window !== 'undefined' && window.location.hostname === 'www.astrokalki.com';
+  const pendingConsultations = stats?.pendingConsultations ?? null;
 
   return (
     <div className="aw-hud-strip">

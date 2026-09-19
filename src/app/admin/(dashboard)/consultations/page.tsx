@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useIsMobile } from "@/components/admin/use-responsive";
 import {
   getConsultations,
   updateConsultationStatus,
@@ -144,6 +145,18 @@ export default function ConsultationsPage() {
   useEffect(() => {
     loadPipeline();
   }, [loadPipeline]);
+
+  // Vol. 2 #5 — SWR-style live refresh: revalidate every 30s + on focus.
+  // Doesn't disrupt the optimistic mutations — loadPipeline reads fresh from DB.
+  useEffect(() => {
+    const id = setInterval(() => {
+      // Only refresh if no drawer is open (don't clobber an in-flight edit)
+      if (!selected) loadPipeline();
+    }, 30_000);
+    const onFocus = () => { if (!selected) loadPipeline(); };
+    window.addEventListener('focus', onFocus);
+    return () => { clearInterval(id); window.removeEventListener('focus', onFocus); };
+  }, [loadPipeline, selected]);
 
   // Vol. 3 #3 — load the follow-up queue alongside the pipeline.
   const loadFollowUps = useCallback(async () => {
@@ -520,6 +533,51 @@ export default function ConsultationsPage() {
           onNudgeTestimonial={nudgeTestimonialFor}
         />
       )}
+
+      {/* Vol. 2 #3 — Mobile sticky bottom action bar for the selected lead.
+          Touch-first: large tap targets, visible only on screens < md. */}
+      {selected && <MobileLeadActions lead={selected} onStatus={(s) => changeStatus(selected, s)} onOpenDrawer={() => { /* drawer already open */ }} />}
+    </div>
+  );
+}
+
+/* ─── Vol. 2 #3 — Mobile sticky bottom action bar ──────────────────────── */
+function MobileLeadActions({
+  lead,
+  onStatus,
+  onOpenDrawer,
+}: {
+  lead: ConsultationRow;
+  onStatus: (status: string) => void;
+  onOpenDrawer: () => void;
+}) {
+  const isMobile = useIsMobile();
+  if (!isMobile) return null;
+  // Only show for leads that are still in-flight (not terminal)
+  if (lead.status === "COMPLETED" || lead.status === "CANCELLED") return null;
+
+  return (
+    <div className="fixed bottom-0 left-0 right-0 z-40 flex items-center gap-2 border-t border-[var(--aw-border-2)] bg-[var(--aw-glass-2)] px-3 py-2 backdrop-blur-xl md:hidden">
+      <button
+        onClick={() => onStatus("ACKNOWLEDGED")}
+        disabled={lead.status === "ACKNOWLEDGED"}
+        className="flex-1 rounded-lg bg-amber-500/20 px-3 py-2.5 text-xs font-medium text-amber-300 transition active:scale-95 disabled:opacity-40"
+      >
+        ✓ Ack
+      </button>
+      <button
+        onClick={() => onStatus("SCHEDULED")}
+        disabled={lead.status === "SCHEDULED"}
+        className="flex-1 rounded-lg bg-violet-500/20 px-3 py-2.5 text-xs font-medium text-violet-300 transition active:scale-95 disabled:opacity-40"
+      >
+        📅 Schedule
+      </button>
+      <button
+        onClick={() => onStatus("COMPLETED")}
+        className="flex-1 rounded-lg bg-emerald-500/20 px-3 py-2.5 text-xs font-medium text-emerald-300 transition active:scale-95"
+      >
+        ✓ Done
+      </button>
     </div>
   );
 }
