@@ -1504,3 +1504,26 @@ Stage Summary:
 - VOL. 7 OPS DAY 3: chain rebuild #4 (poolside/inclusionai, 3 pools). Production chain failing from Vercel IPs (free-tier congestion). Vol. 8 enlisted with self-healing as the founding theme.
 - FOUNDER CRITICAL: $5-10 OpenRouter credit. This is the single fix that stops the rot cycle. The chain works from non-cloud IPs; it fails from Vercel. Paid models don't have this problem. This is not a code fix — it's a billing action.
 
+
+---
+Task ID: admin-os-vol1-complete + admin-os-vol2-enlistment
+Agent: Z (Super Z, main session)
+Task: Admin OS Vol. 1 closeout (all 20 enhancements shipped) + Vol. 2 enlistment (next 20).
+
+Work Log:
+- ADMIN OS VOL. 1 — THE 20 ENHANCEMENTS SHIPPED (4 weeks, 7 commits):
+  - Week A (#1-5) ONBOARDING: TourProvider context + CoachMarkOverlay, WelcomeModal (first-login), HelpSlideOver (? key shortcut), per-page tour flows, QuickTourFAB + HelpButton (moved to client component after Server Components render error).
+  - Week B (#6-10) DESIGN SWEEP: Alien warship CSS system (.aw-* classes, glassmorphism, neon accents, HUD strip), light theme overrides, TopbarHUD (env badge / 2FA status / pending count / IST clock), sidebar 4-group taxonomy (Command/People/Craft/System), role-ui NavItem gains section + badgeSource fields, getVisibleNavGrouped().
+  - Week C (#11-15) COMMAND INTEL: morning-brief.tsx (AI-summarized admin brief), anomaly-callouts.tsx (red/amber/green anomaly cards), KeyQRModal.tsx (QR code + shareable URL), broadcast AI Magic Compose (purple-glow input → /api/ai/ask), sidebar badge counts (live fetch from API).
+  - Week D (#16-20) CRAFT TOOLS: content autosave indicator (debounced save), testimonials WhatsApp paste-and-parse (auto-extract name/quote/rating), audit expandable diff viewer + actor/action filters, memberships revenue HUD (MRR/ARR/Active/Pending), folio AI Playground tab (inline /api/ai/ask).
+  - #13 CONSULTATIONS KANBAN + SLA (final pending item, commit 9368880): HTML5 drag-and-drop on lead cards (draggable + cursor-grab), drop zones on all 5 pipeline columns (NEW/CONTACTED/SCHEDULED/COMPLETED/CANCELLED) → changeStatusRaw() server action, empty columns show 'Drop here' dashed placeholder, SLA timer glow (amber >24h, red >72h via ageHours calc).
+- ALL 20/20 ADMIN ENHANCEMENTS COMPLETE. 1161/1161 vitest (91 files). tsc clean. Build green (466 pages).
+- Pushed to GitHub (commits 4601579..9368880, 7 commits). Production deployment READY.
+
+- ADMIN OS VOL. 2 — THE NEXT 20 ENLISTED: docs/admin-os-vol2-next-20.md written. 20 items in 4 tiers: T33 Operator Velocity (command palette, keyboard layer, mobile admin, bulk ops sweep, SWR real-time), T34 Data Flow (export/import, notifications panel, activity feed, email templates editor, backup/restore UI), T35 Intelligence (AI auto-tagging, campaign analytics, content scheduling, folio visualizer, member enrichment), T36 Reach (SEO dashboard, A/B testing, perf monitoring, hi/admin twins, personalization).
+- Founding theme of Vol. 2: THE OPERATOR IS STILL MANUAL. Vol. 1 made the admin beautiful and discoverable. Vol. 2 makes it fast: keyboard-first navigation, real-time data, bulk operations, AI assistance on every surface that has recurring patterns. The doctrine: the founder should never wait for a page reload, never click 8 times to do a 1-keypress task, never paste data into a flat form when the machine can parse it.
+
+Stage Summary:
+- ADMIN OS VOL. 1 CLOSED: 20/20. The alien warship is live, the coach-marks are wired, the HUD is persistent, the sidebar is grouped, the morning brief lands, anomalies glow, QR codes share keys, AI composes broadcasts, content autosaves, testimonials paste-parse, audit diffs expand, revenue HUD tracks MRR, AI Playground grounds inline. Consultations drag-drop with SLA timers is the capstone.
+- ADMIN OS VOL. 2 ENLISTED: 20 items, 4 tiers. The operator velocity theme is the founding incident — the admin is beautiful but slow (page reloads, single-item edits, no keyboard layer). Vol. 2 fixes that.
+- FOUNDER-ONLY REMAINING (carry-overs): $5-10 OpenRouter credit (chain rot fix), GSC OAuth consent, EMBED_API_KEY, Sentry DSN flip, letters sign-off (5 drafts), first campaign mint, TOTP re-enroll.
