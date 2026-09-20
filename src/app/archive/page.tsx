@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { allSiddhis, SIDDHI_COUNT } from '@/lib/data/siddhis';
 import { siddhiCategoryLabel } from '@/lib/data/tantra-categories';
 import { TEN_MAHAVIDYAS } from '@/lib/data/archetypes';
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import type { ArchivePageProps } from './ArchivePageClient';
 
@@ -11,8 +12,6 @@ export const metadata: Metadata = {
 };
 
 // Facet counts: public category label -> number of siddhis.
-// Only categories that actually hold folios become filter chips —
-// this eliminates dead-end filters that render "Showing 0 of 0".
 const categoryCounts: Record<string, number> = {};
 for (const s of allSiddhis) {
   const label = siddhiCategoryLabel(s.category);
@@ -22,10 +21,6 @@ const categoryFacets = Object.entries(categoryCounts)
   .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
   .map(([name, count]) => ({ name, count }));
 
-// Vol. 5 #18 — the page-weight diet: the archive card UI consumes SIX
-// siddhi fields, but the full objects (summaries, benefits, warnings,
-// evidence sources, mantras) serialized ~200KB of RSC payload into every
-// hub view. Project to the render contract — folio pages carry the depth.
 const siddhiProjection = allSiddhis.map((s) => ({
   slug: s.slug,
   name: s.name,
@@ -37,7 +32,6 @@ const siddhiProjection = allSiddhis.map((s) => ({
   tradition: s.tradition,
   authenticityScore: s.authenticityScore,
 }));
-// the Mahāvidyā chips render id, name and pattern — nothing else
 const mahaVidyasProjection = TEN_MAHAVIDYAS.map((a) => ({
   id: a.id,
   name: a.name,
@@ -51,9 +45,29 @@ const pageProps: ArchivePageProps = {
   categoryFacets,
 };
 
-// Dynamic import defers framer-motion (~40KB) out of
-// the critical rendering path. SSR HTML is sacrificed for faster FCP/LCP;
-// metadata export handles SEO for search engines.
+// Audit2 #21 — Crawlable folio links. Previously the archive used dynamic()
+// with a loading fallback, so only 12 folios appeared in the SSR HTML
+// (the loading state). The rest loaded client-side via JS, invisible to
+// crawlers. This SSR-only nav renders ALL 56 folio links in the initial
+// HTML using a visually-hidden-but-crawlable pattern (sr-only / clip-path).
+// Googlebot sees every link; JS users get the rich interactive client.
+function CrawlableFolioNav() {
+  return (
+    <nav aria-label="All siddhis" className="sr-only">
+      <h2>All {SIDDHI_COUNT} Siddhis in the Archive</h2>
+      <ul>
+        {siddhiProjection.map((s) => (
+          <li key={s.slug}>
+            <Link href={`/archive/${s.slug}`}>
+              {s.name}{s.sanskrit ? ` (${s.sanskrit})` : ''} — {s.summary}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
 const ArchivePageClient = dynamic(
   () => import('./ArchivePageClient'),
   {
@@ -76,5 +90,10 @@ const ArchivePageClient = dynamic(
 );
 
 export default function ArchivePage() {
-  return <ArchivePageClient {...pageProps} />;
+  return (
+    <>
+      <CrawlableFolioNav />
+      <ArchivePageClient {...pageProps} />
+    </>
+  );
 }

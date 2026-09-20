@@ -243,6 +243,9 @@ export function KalkiChatWidget() {
                 <button
                   key={t.id}
                   onClick={() => { setTab(t.id); setHasInteracted(true); }}
+                  aria-label={t.id === 'ai' ? 'Ask the Archivist — AI Q&A grounded in the corpus' : t.id === 'whatsapp' ? 'Talk to Kaustubh on WhatsApp' : 'Get the 10 Doors email course'}
+                  aria-selected={tab === t.id}
+                  role="tab"
                   className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium transition-colors ${
                     tab === t.id
                       ? 'text-gold border-b-2 border-gold/50 bg-gold/5'
@@ -262,7 +265,7 @@ export function KalkiChatWidget() {
               {/* AI Chat Tab */}
               {tab === 'ai' && (
                 <div className="flex flex-col h-full">
-                  <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-3 space-y-3">
+                  <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-3 space-y-3" role="log" aria-label="Archivist conversation" aria-live="polite">
                     {messages.map((msg, i) => (
                       <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div
@@ -322,6 +325,7 @@ export function KalkiChatWidget() {
                       <button
                         type="submit"
                         disabled={chatState === 'loading' || !input.trim()}
+                        aria-label="Send question to the Archivist"
                         className="bg-gold/90 text-deep-black rounded-lg px-3 py-2 text-sm font-medium hover:bg-gold disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
                       >
                         <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

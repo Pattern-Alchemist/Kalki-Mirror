@@ -78,6 +78,9 @@ export const EVENT_NAMES = [
   'consultation_funnel_step',
   // Audit #2 — Kundli calculator usage. Properties: { hasResult }.
   'kundli_computed',
+  // Audit2 #33 — Client-side error pipeline. Properties: { message, stack, path, userAgent }.
+  // Captured by a global error handler + reported to /api/events.
+  'client_error',
 ] as const;
 
 export type EventName = (typeof EVENT_NAMES)[number];
@@ -138,6 +141,7 @@ export const EVENT_META: Record<
   subscribe_submit: { label: 'Subscribe form submit (Audit #5)', group: 'Conversion' },
   consultation_funnel_step: { label: 'Consultation funnel step (Audit #5)', group: 'Conversion' },
   kundli_computed: { label: 'Kundli calculator used (Audit #2)', group: 'Conversion' },
+  client_error: { label: 'Client-side error (Audit2 #33)', group: 'Discovery' },
 };
 
 export const GROUP_NAMES = ['Discovery', 'Education', 'Practice', 'Conversion', 'Retention'] as const;

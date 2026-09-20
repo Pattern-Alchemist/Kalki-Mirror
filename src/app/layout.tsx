@@ -12,6 +12,7 @@ import { KalkiChatWidget } from '@/components/chat/KalkiChatWidget';
 import { TawkToScript } from '@/components/chat/TawkToScript';
 import { WebVitalsBeacon } from '@/components/WebVitalsBeacon';
 import { PageViewTracker } from '@/components/analytics/PageViewTracker';
+import { ErrorCapture } from '@/components/analytics/ErrorCapture';
 
 /* ============================================================
    TYPOGRAPHY
@@ -131,6 +132,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             <WebVitalsBeacon />
             {/* Audit #5 — Universal page view tracker (fires on every route change) */}
             <PageViewTracker />
+            {/* Audit2 #33 — Global error pipeline (captures unhandled errors → /api/events) */}
+            <ErrorCapture />
             <PublicShell>{children}</PublicShell>
             <KalkiChatWidget />
             <TawkToScript />

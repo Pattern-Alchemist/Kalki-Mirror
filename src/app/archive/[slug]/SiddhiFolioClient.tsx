@@ -7,6 +7,8 @@ import { useNativeReducedMotion } from '@/hooks/useNativeReducedMotion';
 import type { Archetype } from '@/lib/data/archetypes';
 import { AuthenticityMeter } from '@/components/archive/AuthenticityMeter';
 import { CautionBadge, getCautionLevel } from '@/components/archive/CautionBadge';
+import { PrintButton } from '@/components/PrintButton';
+import { LangAware } from '@/components/Sanskrit';
 import dynamic from 'next/dynamic';
 import { WhatsAppCTA } from '@/components/booking/WhatsAppCTA';
 import { TIER_LABELS } from '@/lib/utils/tier-gate';
@@ -49,7 +51,11 @@ export default function SiddhiFolioClient({ siddhi, relatedSiddhis, relatedPatte
       {/* Atmospheric header */}
       <header className="border-b border-gold/5">
         <div className="w-full max-w-4xl mx-auto px-6 lg:px-10 pt-32 pb-16">
-          <BackButton href="/archive" label="Back to Archive" className="mb-8" />
+          <div className="flex items-center justify-between gap-3">
+            <BackButton href="/archive" label="Back to Archive" className="mb-8" />
+            {/* Audit2 #39 — Printable sādhana card */}
+            <PrintButton />
+          </div>
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <motion.p 
               className="font-mono text-[0.8125rem] tracking-[0.2em] uppercase text-copper" 
@@ -69,7 +75,7 @@ export default function SiddhiFolioClient({ siddhi, relatedSiddhis, relatedPatte
             {siddhi.name}
           </motion.h1>
           <motion.p className="font-mono text-gold-dim text-sm tracking-[0.12em] mb-8" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.15 }}>
-            {siddhi.sanskrit}
+            <LangAware>{siddhi.sanskrit}</LangAware>
           </motion.p>
           <motion.div className="flex flex-wrap gap-3" initial={reduced ? { opacity: 1 } : fadeInUp.hidden} animate={fadeInUp.visible} transition={{ delay: 0.2 }}>
             <span className="glass-chip px-4 py-1.5 font-mono text-[0.8125rem] text-gold tracking-[0.15em] uppercase">{siddhi.level}</span>

@@ -5,8 +5,8 @@ import { EVENT_NAMES, EVENT_META } from '@/lib/analytics-db';
    Analytics event dictionary (TGA §12) — completeness guards
    ══════════════════════════════════════════════════════════════ */
 describe('Event dictionary', () => {
-  it('has exactly the 46 dictionary events (22 TGA §12 + library_entry_viewed Vol. 3 #2 + library_type_viewed Vol. 4 #6 + email_subscribed + 11 ai_* Vol. 4 #17 + 4 chat_widget_* Vol. 7 + experiment_converted + web_vitals Vol. 2 #17/#18 + page_view + cta_click + subscribe_submit + consultation_funnel_step + kundli_computed Audit #5/#2)', () => {
-    expect(EVENT_NAMES).toHaveLength(46);
+  it('has exactly the 47 dictionary events (46 prior + client_error Audit2 #33)', () => {
+    expect(EVENT_NAMES).toHaveLength(47);
   });
 
   it('every ai_* route event is prefixed ai_ and unique (Vol. 4 #17)', () => {

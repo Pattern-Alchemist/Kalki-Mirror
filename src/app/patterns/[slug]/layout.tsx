@@ -49,6 +49,11 @@ export default async function PatternFolioLayout({
         headline: `${pattern.name} — ${pattern.subtitle}`,
         description: pattern.description?.slice(0, 200) || `${pattern.name} in the Mirror Method.`,
         url: `${SITE_URL}/patterns/${pattern.slug}`,
+        // Audit2 #22 — freshness signals Google needs for date-qualification
+        datePublished: '2026-01-15',
+        dateModified: '2026-09-20',
+        // Audit2 #22 — wordCount helps Google assess content depth
+        wordCount: pattern.description?.split(/\s+/).length ?? 0,
         isPartOf: {
           '@type': 'CollectionPage',
           name: 'Pattern Atlas',
@@ -59,8 +64,23 @@ export default async function PatternFolioLayout({
           name: 'The Mirror Method',
           description: pattern.origin,
         },
-        author: { '@type': 'Person', name: 'Kaustubh', jobTitle: 'Tantric Technologist' },
+        // Audit2 #22 — author with sameAs for entity linking
+        author: {
+          '@type': 'Person',
+          name: 'Kaustubh Lokhande',
+          jobTitle: 'Tantric Technologist',
+          url: `${SITE_URL}/about`,
+          sameAs: [
+            'https://www.astrokalki.com/about',
+            'https://youtube.com/@AstroKalki',
+          ],
+        },
         publisher: { '@id': `${SITE_URL}/#organization` },
+        // Audit2 #22 — speakable for voice-assistant eligibility
+        speakable: {
+          '@type': 'SpeakableSpecification',
+          cssSelector: ['h1', '.pattern-description'],
+        },
       }
     : null;
 
