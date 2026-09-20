@@ -11,6 +11,7 @@ import { getLocale, getMessages } from 'next-intl/server';
 import { KalkiChatWidget } from '@/components/chat/KalkiChatWidget';
 import { TawkToScript } from '@/components/chat/TawkToScript';
 import { WebVitalsBeacon } from '@/components/WebVitalsBeacon';
+import { PageViewTracker } from '@/components/analytics/PageViewTracker';
 
 /* ============================================================
    TYPOGRAPHY
@@ -128,6 +129,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             <SwRegister />
             {/* Vol. 2 #18 — Core Web Vitals RUM beacon (fires once per session) */}
             <WebVitalsBeacon />
+            {/* Audit #5 — Universal page view tracker (fires on every route change) */}
+            <PageViewTracker />
             <PublicShell>{children}</PublicShell>
             <KalkiChatWidget />
             <TawkToScript />

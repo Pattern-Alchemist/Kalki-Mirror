@@ -20,9 +20,9 @@ const BASE = 'https://www.astrokalki.com';
  */
 const FLOORS: Record<string, number> = {
   // one-off top-level surfaces (the hub pages themselves)
-  'static-core': 11, // / plus method, research, pricing, consultations,
-  // email-course, primer, codex, karma, about, guhya — the class hubs
-  // themselves classify into their own families below
+  'static-core': 16, // / plus method, research, pricing, consultations,
+  // email-course, primer, codex, karma, about, guhya — 10 + 4 legal (Audit #1)
+  // + kundli (Audit #2) + 1 = 16
   archive: 57, // 56 siddhi folios + hub-adjacent detail pages
   patterns: 21, // 20 loops + hub
   archetypes: 11, // 10 Mahāvidyās + hub
@@ -60,6 +60,10 @@ function classify(pathname: string): string {
   const STATIC_TOP = new Set([
     '/method', '/research', '/pricing', '/consultations', '/email-course',
     '/primer', '/codex', '/karma', '/about', '/guhya',
+    // Audit #1 — legal pages
+    '/privacy', '/terms', '/refund', '/disclaimer',
+    // Audit #2 — free kundli calculator (lead magnet)
+    '/kundli',
   ]);
   if (STATIC_TOP.has(p)) return 'static-core';
   return 'UNREGISTERED';

@@ -67,6 +67,17 @@ export const EVENT_NAMES = [
   // Vol. 2 #18 — Core Web Vitals RUM. Properties: { metric, value, rating, path, device }.
   // Fired once per session (beacon) with LCP/FID/CLS/INP/TTFB.
   'web_vitals',
+  // Audit #5 — Funnel instrumentation. Universal page view (fires on every route
+  // change). Properties: { path, referrer, duration }.
+  'page_view',
+  // Audit #5 — CTA clicks. Properties: { ctaId, ctaText, path, destination }.
+  'cta_click',
+  // Audit #5 — Subscribe form submit. Properties: { source, path, success }.
+  'subscribe_submit',
+  // Audit #5 — Consultation funnel step. Properties: { step, path }.
+  'consultation_funnel_step',
+  // Audit #2 — Kundli calculator usage. Properties: { hasResult }.
+  'kundli_computed',
 ] as const;
 
 export type EventName = (typeof EVENT_NAMES)[number];
@@ -122,6 +133,11 @@ export const EVENT_META: Record<
   chat_widget_subscribe: { label: 'Chat widget: email subscribe (Vol. 7)', group: 'Conversion' },
   experiment_converted: { label: 'A/B experiment conversion (Vol. 2 #17)', group: 'Conversion' },
   web_vitals: { label: 'Core Web Vitals beacon (Vol. 2 #18)', group: 'Discovery' },
+  page_view: { label: 'Universal page view (Audit #5)', group: 'Discovery' },
+  cta_click: { label: 'CTA click (Audit #5)', group: 'Conversion' },
+  subscribe_submit: { label: 'Subscribe form submit (Audit #5)', group: 'Conversion' },
+  consultation_funnel_step: { label: 'Consultation funnel step (Audit #5)', group: 'Conversion' },
+  kundli_computed: { label: 'Kundli calculator used (Audit #2)', group: 'Conversion' },
 };
 
 export const GROUP_NAMES = ['Discovery', 'Education', 'Practice', 'Conversion', 'Retention'] as const;

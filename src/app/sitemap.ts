@@ -36,6 +36,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/pricing`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/consultations`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/email-course`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.85 },
+    // Audit #1 — Legal pages (DPDP/GDPR/CCPA compliance)
+    { url: `${base}/privacy`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${base}/terms`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${base}/refund`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${base}/disclaimer`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'yearly', priority: 0.3 },
+    // Audit #2 — Free Kundli calculator (lead magnet)
+    { url: `${base}/kundli`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.9 },
     // Vol. 4 #7 — the broadcast archive (letters are DB rows, added live below)
     { url: `${base}/letters`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'weekly', priority: 0.6 },
     { url: `${base}/primer`, lastModified: new Date(SITE_LASTMOD), changeFrequency: 'monthly', priority: 0.8 },

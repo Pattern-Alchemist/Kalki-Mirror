@@ -25,6 +25,13 @@ const FOOTER_LINKS = {
     { href: '/consultations', label: 'Consultations' },
     { href: '/usa', label: 'KALKI for US Seekers' },
   ],
+  // Audit #1 — Legal links (DPDP Act 2023, GDPR, CCPA compliance)
+  Legal: [
+    { href: '/privacy', label: 'Privacy Policy' },
+    { href: '/terms', label: 'Terms of Service' },
+    { href: '/refund', label: 'Refund Policy' },
+    { href: '/disclaimer', label: 'Disclaimer' },
+  ],
 };
 
 export function SacredFooter() {

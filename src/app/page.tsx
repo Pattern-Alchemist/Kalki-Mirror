@@ -137,6 +137,7 @@ export default function HomePage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {[
                 { href: '/pricing', label: 'Pricing & Tiers', desc: 'Jal · Agni · Akash' },
+                { href: '/kundli', label: 'Free Kundli', desc: 'Birth chart calculator' },
                 { href: '/consultations', label: 'Consultations', desc: '1:1 guidance' },
                 { href: '/letters', label: 'Letters', desc: 'Broadcast archive' },
                 { href: '/email-course', label: '10 Doors Course', desc: 'Free email sādhanā' },
